@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-
 class UserTracking extends Migration
 {
     /**
@@ -13,22 +12,15 @@ class UserTracking extends Migration
      * @return void
      */
     public function up()
-    
-{
-      
-	Schema::create('user_tracking', function (Blueprint $table) {
- 
-         $table->id('ds_id');
+    {
+      Schema::create('user_tracking', function (Blueprint $table) {
+          $table->id('ds_id');
+          $table->integer('user_id');
           $table->date('date')->foreignId();
-  
-         $table->foreignId('calls')->default(0);
-   
-	 $table->integer('user_id');   
-	 $table->integer('saves')->default(0);
-
-         $table->integer('cancels')->default(0);
-          
-	$table->integer('service')->default(0);
+          $table->foreignId('calls')->default(0);
+          $table->integer('saves')->default(0);
+          $table->integer('cancels')->default(0);
+          $table->integer('service')->default(0);
           $table->text('type')->default('SSC');
           $table->text('division')->default('Retention');
           $table->timestamps();
