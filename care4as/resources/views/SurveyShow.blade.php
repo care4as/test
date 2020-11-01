@@ -5,7 +5,8 @@
 
 <div class="container-fluid" style="width: 75vw;">
   <div class="row ">
-    <div class="col text-center text-white bg-light" style="border-radius: 15px;">
+    <div class="col text-center text-dark bg-light" style="border-radius: 15px;">
+      <h2>Bewertungen</h2>
       <table class="table table-hover table-bordered">
         <tr>
           <th>Frage</th>
@@ -23,16 +24,20 @@
   </div>
   <hr>
   <div class="row ">
+
     <div class="col text-center text-white bg-light" style="border-radius: 15px;">
+      <h2 class="text-dark">Fragen in der Umfrage</h2>
       <table class="table table-hover">
         <tr>
           <th>#</th>
           <th>Frage</th>
+          <th>Optionen</th>
         </tr>
           @foreach($survey->Questions as $question)
           <tr>
             <td style="width: 10%;">{{$question->question->id}}</td>
             <td>{{$question->question->question}}</td>
+            <td><a href="{{route('survey.delete.question',['surveyid'=>$survey->id, 'questionid'=>$question->question->id])}}"><i class="now-ui-icons ui-1_simple-remove"></i></a> </td>
           </tr>
           @endforeach
       </table>
@@ -40,7 +45,7 @@
   </div>
   <hr>
   <div class="row mt-2">
-  <div class="col text-center text-white bg-light" style="border-radius: 15px;">
+  <div class="col text-center text-dark bg-light" style="border-radius: 15px;">
     <form action="{{route('survey.edit.post')}}" method="post">
       <input type="hidden" name="surveyid" value="{{$survey->id}}">
       @csrf
@@ -49,7 +54,7 @@
         <th>Frage übernehmen?</th>
         <th>Frage</th>
       </tr>
-        @foreach($questions as $question)
+        @foreach($freequestions as $question)
         <tr>
           <td style="width: 10%;">
             <input class="" name="questions[]" type="checkbox" value="{{$question->id}}">

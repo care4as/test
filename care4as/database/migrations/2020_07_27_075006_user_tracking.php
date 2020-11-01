@@ -17,7 +17,7 @@ class UserTracking extends Migration
           $table->id('ds_id');
           $table->integer('user_id');
           $table->date('date')->foreignId();
-          $table->foreignId('calls')->default(0);
+          $table->integer('calls')->default(0);
           $table->integer('saves')->default(0);
           $table->integer('cancels')->default(0);
           $table->integer('service')->default(0);

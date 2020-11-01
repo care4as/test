@@ -97,10 +97,18 @@ class SurveyController extends Controller
     public function show($id)
     {
         $survey = Survey::where('id',$id)->with('Questions')->first();
+        $alreadyUsedIds = array();
+
+        foreach ($survey->Questions as $key => $value) {
+          $alreadyUsedIds[] = $value->question->id;
+        }
+
+        // $freequestions = Question::whereNotIn('id',$alreadyUsedIds)->get();
         $questions = Question::all();
+        $freequestions = $questions->whereNotIn('id',$alreadyUsedIds);
         $results = Survey::where('id',$id)->with('answeredQuestions')->first();
-        // dd($results);
-        return view('SurveyShow', compact('survey', 'questions','results'));
+        // dd($alreadyUsedIds);
+        return view('SurveyShow', compact('survey', 'questions','results','freequestions'));
     }
 
     /**
@@ -109,6 +117,13 @@ class SurveyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function deleteQuestionFromSurvey($surveyid='',$questionid='')
+    {
+      $question = SurveyQuestion::where('survey_id',$surveyid)->where('question_id',$questionid)->delete();
+
+      // dd($questionid);
+      return redirect()->back();
+    }
     public function addQuestions(Request $request)
     {
       // dd($request->questions);

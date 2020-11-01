@@ -62,6 +62,7 @@ Route::get('/survey/index', 'SurveyController@index')->name('surveys.index');
 Route::get('/survey/show/{id}', 'SurveyController@show')->name('survey.show')->middleware('auth');
 Route::get('/survey/attendSurvey', 'SurveyController@attendSurvey')->name('survey.attend')->middleware('auth');
 Route::post('/survey/attend', 'SurveyController@attend')->name('survey.user.post')->middleware('auth');
+Route::get('/survey/deleteQuestion/{surveyid}/{questionid}', 'SurveyController@deleteQuestionFromSurvey')->name('survey.delete.question')->middleware('auth');
 Route::get('/survey/changeStatus/{action}/{id}', 'SurveyController@changeStatus')->name('survey.changeStatus');
 //
 // tracking routes
