@@ -46,9 +46,9 @@
                             <i class="now-ui-icons ui-1_simple-remove"></i>
                         </button>
                         </a>
-                        <a href="{{route('user.show', ['id' => $user->id])}}">
+                        <a href="{{route('user.stats', ['id' => $user->id])}}">
                         <button class="btn btn-success btn-fab btn-icon btn-round">
-                            <i class="now-ui-icons files_single-copy-04"></i>
+                          <i class="now-ui-icons ui-1_zoom-bold"></i>
                         </button>
                         </a>
                         <a href="">

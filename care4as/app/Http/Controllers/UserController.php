@@ -90,7 +90,11 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        $user->person_id = $request->person_id;
+
+        $user->save();
+        return redirect()->back();
     }
 
     /**
@@ -102,22 +106,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-    public function showWithStats($id)
-    {
-      $user = User::where('id', $id)->first();
-      $stats = 1;
-
-      if(!$stats)
-      {
-        $stats = 1;
-      }
-      else {
-          // $stats = Report::where('person_id',$user->id);
-      }
-
-
-      return view('UserShow', compact('user','stats'));
     }
 
     public function dashboard()
@@ -134,6 +122,15 @@ class UserController extends Controller
       //   $tracking = new Tracking;
       // }
       return view('dashboard',compact('user'));
+    }
+    public function AgentAnalytica($id='')
+    {
+      $user = User::find($id);
+      $reports = \App\RetentionDetail::where('person_id',$user->person_id)
+      ->orderBY('call_date','DESC')
+      ->paginate(20);
+
+      return view('AgentAnalytics', compact('user','reports'));
     }
 
     public function saveCancel(Request $request)

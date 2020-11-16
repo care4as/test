@@ -26,8 +26,10 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/create/user', 'UserController@create')->name('user.create');
   Route::post('/create/user', 'UserController@store')->name('create.user.post');
   Route::get('/user/index', 'UserController@index')->name('user.index');
-  Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
+  // Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
   Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post');
+  Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
+  Route::post('/user/update/{id}', 'UserController@update')->name('user.update');
   //endusers
   //cancels
   Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses');
@@ -46,7 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   //Report Routes
   Route::view('/report/retention/', 'reports.report')->name('reports.report');
-  Route::post('/report/test', 'ExcelEditorController@test')->name('excel.test');
+  Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport');
   Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload');
   //end Report Routes
