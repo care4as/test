@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\DailyAgent;
 use App\CapacitySuitReport;
+use App\RetentionDetail;
 
 
 class ExcelEditorController extends Controller
@@ -131,6 +132,42 @@ class ExcelEditorController extends Controller
 
       }
       return redirect()->back();
+    }
+    public function RetentionDetailsReport(Request $request)
+    {
+      $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
+      unset($data[0]);
+      // dd($data);
+      foreach($data as $row)
+      {
+        $UNIX_DATE = ($row[1] - 25569) * 86400;
+        $date = date("Y-m-d H:i:s", $UNIX_DATE);
+
+        if($row[0] != null && !RetentionDetail::where('person_id',$row[0])->where('call_date',$date)->exists())
+        {
+          $report = new RetentionDetail;
+          $report->person_id = $row[0];
+          $report->call_date = $date;
+          $report->department_desc = $row[9];
+          $report->calls_handled = $row[11];
+          $report->call_handled_Small_Screen = $row[14];
+          $report->call_handled_Big_Screen = $row[15];
+          $report->call_handled_Mobile_Portale = $row[16];
+          $report->Orders_TWVVL_RET = $row[17];
+          $report->Orders_TWVVL_PREV = $row[21];
+          $report->Orders_TWVVL_SSC_RET = $row[22];
+          $report->Orders_TWVVL_Mobile_Portale_RET = $row[26];
+          $report->Rabatt_Guthaben_Brutto_Mobile = $row[28];
+          $report->Rabatt_Guthaben_Brutto_SSC = $row[29];
+          $report->Rabatt_Guthaben_Brutto_BSC = $row[30];
+          $report->MVLZ_Mobile = $row[33];
+          $report->RLZ_Plus_MVLZ_Mobile = $row[35];
+          $report->save();
+        }
+      }
+      return redirect()->back();
+      // dd($data);
+
     }
 
 }
