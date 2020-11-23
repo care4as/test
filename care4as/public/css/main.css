@@ -1,3 +1,31 @@
 body{
   font-family: Roboto, sans-serif;
 }
+.page-link
+{
+  border-radius: 50% !important;
+  margin-left: 0.25em;
+  border-color: #f96332 ;
+  color: #f96332 ;
+  /* height: 33px; */
+  /* width: 35px; */
+}
+.page-link:hover
+{
+  background-color: #f7a88e ;
+  color: white;
+  /* height: 33px; */
+  /* width: 35px; */
+}
+.clicked
+{
+  background-color: #f96332 ;
+  color: white;
+}
+.page-item a
+{
+  /* color: white; */
+  text-decoration: none;
+  /* height: 33px !important; */
+  /* width: 35px !important; */
+}

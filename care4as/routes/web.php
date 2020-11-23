@@ -83,3 +83,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
+
+Route::get('/test', function(){
+  return view('home');}
+  )->name('test');
