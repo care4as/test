@@ -28,7 +28,7 @@
 
   <!--     Fonts and icons     -->
   <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
-  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <!-- CSS Files -->
   <link href="{{asset('css/now-ui-dashboard-master/assets/css/bootstrap.min.css')}}" rel="stylesheet" />
   <link href="{{asset('css/now-ui-dashboard-master/assets/css/now-ui-dashboard.css?v=1.5.0')}}" rel="stylesheet" />
@@ -78,7 +78,7 @@
                 @endif
               </ul>
             </li>
-          @if(Auth()->user()->role == 'superadmin')
+          @if(Auth()->user()->role == 'superadmin' or (Auth()->user()->role =='overhead'))
           <li>
             <a class="" data-toggle="collapse" href="#collapseUser" role="button" aria-expanded="false" aria-controls="collapseUser">
               <i class="now-ui-icons users_single-02"></i>
@@ -86,8 +86,10 @@
             </a>
             <div class="collapse" id="collapseUser" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
+                @if(Auth()->user()->role == 'superadmin')
                 <li><a href="{{route('user.create')}}">User anlegen</a></li>
-                <li><a href="{{route('user.index')}}">User Index</a></li>
+                @endif
+                  <li><a href="{{route('user.index')}}">User Index</a></li>
                 <li><a href="#">User xyz</a></li>
               </ul>
 

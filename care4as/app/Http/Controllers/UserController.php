@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Cancel;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use App\Support\Collection;
 
 
 class UserController extends Controller
@@ -123,14 +124,49 @@ class UserController extends Controller
       // }
       return view('dashboard',compact('user'));
     }
-    public function AgentAnalytica($id='')
+    public function AgentAnalytica($id='', Request $request=null)
     {
-      $user = User::find($id);
-      $reports = \App\RetentionDetail::where('person_id',$user->person_id)
-      ->orderBY('call_date','DESC')
-      ->paginate(20);
+      // sum of all orders during the timespan
+      $sumorders = 0;
+      // sum of all calls during the timespan
 
-      return view('AgentAnalytics', compact('user','reports'));
+      $sumcalls = 0;
+
+      $sumNMlz = 0;
+      $sumrlz24 = 0;
+
+      // dd($request);
+      $user = User::find($id);
+      $query = \App\RetentionDetail::query();
+
+      $query->where('person_id',$user->person_id)
+      ->orderBY('call_date','DESC');
+
+      // the filter section
+      $query->when(request('start_date'), function ($q) {
+          return $q->where('call_date', '>=',request('start_date'));
+      });
+      $query->when(request('end_date'), function ($q) {
+          return $q->where('call_date', '<=',request('end_date'));
+      });
+
+      $reports = $query->get();
+
+      for($i = 0; $i <= count($reports)-1; $i++)
+      {
+        if($reports[$i])
+        {
+          $sumorders += ($reports[$i]->Orders_TWVVL_RET) + ($reports[$i]->Orders_TWVVL_PREV);
+          $sumcalls += ($reports[$i]->calls_handled);
+          $sumrlz24 += ($reports[$i]->RLZ_Plus_MVLZ_Mobile);
+          $sumNMlz += ($reports[$i]->MVLZ_Mobile);
+        }
+
+      }
+
+      $reports = (new Collection($reports))->paginate(10);
+
+      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz'));
     }
 
     public function saveCancel(Request $request)
