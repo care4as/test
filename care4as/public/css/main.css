@@ -29,3 +29,14 @@ body{
   /* height: 33px !important; */
   /* width: 35px !important; */
 }
+.tooLow
+{
+  background-color: red;
+  color: white;
+  /* border: 2px solid white; */
+}
+.stillOK
+{
+  background-color: green;
+  color: white;
+}

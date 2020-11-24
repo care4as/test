@@ -149,19 +149,17 @@ class ExcelEditorController extends Controller
           $report->person_id = $row[0];
           $report->call_date = $date;
           $report->department_desc = $row[9];
-          $report->calls_handled = $row[11];
-          $report->call_handled_Small_Screen = $row[14];
-          $report->call_handled_Big_Screen = $row[15];
-          $report->call_handled_Mobile_Portale = $row[16];
-          $report->Orders_TWVVL_RET = $row[17];
-          $report->Orders_TWVVL_PREV = $row[21];
-          $report->Orders_TWVVL_SSC_RET = $row[22];
-          $report->Orders_TWVVL_Mobile_Portale_RET = $row[26];
+          $report->calls = $row[11];
+          $report->calls_smallscreen = $row[14];
+          $report->calls_bigscreen = $row[15];
+          $report->calls_portale = $row[16];
+          $report->orders = $row[17] + $row[22];
+          $report->orders_smallscreen = $row[18] + $row[23];
+          $report->orders_bigscreen = $row[19] + $row[24];
+          $report->orders_portale = $row[21] + $row[26];
           $report->Rabatt_Guthaben_Brutto_Mobile = $row[28];
-          $report->Rabatt_Guthaben_Brutto_SSC = $row[29];
-          $report->Rabatt_Guthaben_Brutto_BSC = $row[30];
-          $report->MVLZ_Mobile = $row[33];
-          $report->RLZ_Plus_MVLZ_Mobile = $row[35];
+          $report->mvlzNeu = $row[33];
+          $report->rlzPlus = $row[35];
           $report->save();
         }
       }
