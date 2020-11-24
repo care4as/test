@@ -48,43 +48,11 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12 d-flex justify-content-center">
-          {{$reports->appends(Request::except('page'))->links()}}
-        </div>
-        <div class="col">
-          <div class="d-flex p-3 w-100 justify-content-center">
-            <table class="table table-bordered w-50" style="width:;">
-              <tr>
-                <th>Datum</th>
-                <th>Calls handled</th>
-                <th>Abschlüsse</th>
-                <th>Tages CR</th>
-                <th>vergebenes Guthaben</th>
-                <th>VLZ 24 Monate neu</th>
-                <th>VLZ RLZ + 24 Monate</th>
-              </tr>
-              @foreach($reports as $report)
-              <tr>
-                <td>{{$report->call_date}}</td>
-                <td>{{$report->calls_handled}}</td>
-                <td>{{$report->Orders_TWVVL_RET + $report->Orders_TWVVL_PREV}}</td>
-                @php $CR = (($report->Orders_TWVVL_RET + $report->Orders_TWVVL_PREV) / $report->calls_handled)*100 @endphp
-                <td style="@if($CR < 40) background-color: red; color: white;@endif"> {{round($CR,2)}}</td>
-
-                <td>{{$report->Rabatt_Guthaben_Brutto_Mobile}}</td>
-                <td>{{$report->MVLZ_Mobile}}</td>
-                <td>{{$report->RLZ_Plus_MVLZ_Mobile}}</td>
-              </tr>
-              @endforeach
-            </table>
-          </div>
-        </div>
         <div class="col d-block align-items-center">
           <div class="row w-100 justify-content-center">
             <div class="d-flex w-100 justify-content-center">
               <h4>Gesamt</h4>
             </div>
-
             <div class="d-flex w-100 justify-content-center">
               <table class="table table-hover w-50">
                 <tr>
@@ -100,7 +68,7 @@
                   <td>{{$sumrlz24 }}</td>
                   <td>{{$sumNMlz}}</td>
                   @php $RLZQoute =  ($sumrlz24 / ($sumrlz24 + $sumNMlz))*100; @endphp
-                  <td style="@if($RLZQoute < 80) background-color: red; color: white;@endif">@if($sumrlz24 + $sumNMlz == 0) 0 @else {{round($RLZQoute,2)}} @endif</td>
+                  <td style="@if($RLZQoute < 70) background-color: red; color: white;@endif">@if($sumrlz24 + $sumNMlz == 0) 0 @else {{round($RLZQoute,2)}} @endif</td>
                 </tr>
               </table>
             </div>
@@ -129,6 +97,82 @@
             </div>
 
         </div>
+
+        <div class="col-12 d-flex justify-content-center mt-3">
+          {{$reports->appends(Request::except('page'))->links()}}
+        </div>
+        <div class="col">
+          <div class="d-flex p-3 w-100 justify-content-center">
+            <table class="table table-bordered w-50" style="width:;">
+              <tr>
+                <th>Datum</th>
+                <th>Calls</th>
+                <th>Abschlüsse</th>
+                <th>GeVo-CR</th>
+                <th>SSC Calls/<b>Abschlüsse</b></th>
+                <th>BSC Calls/<b>Abschlüsse</b></th>
+                <th>Portale Calls/<b>Abschlüsse</b></th>
+                <th>SSC CR</th>
+                <th>BSC CR</th>
+                <th>Portale CR</th>
+                <th>Opt-In</th>
+                <!-- <th>vergebenes Guthaben</th> -->
+                <th>24 Monate</th>
+                <th>RLZ+24</th>
+              </tr>
+              @foreach($reports as $report)
+              <tr>
+                <td>{{$report->call_date}}</td>
+                <td>{{$report->calls}}</td>
+                <td>{{$report->orders}}</td>
+                @php $CR = (($report->orders) / $report->calls)*100;
+
+                  if($report->calls_smallscreen == 0)
+                  {
+                    $sscCR = 0;
+                  }
+
+                  else
+                  {
+                     $sscCR = (($report->orders_smallscreen) / $report->calls_smallscreen)*100;
+                  }
+
+                  if($report->calls_bigscreen == 0)
+                  {
+
+                    $bscCR = 0;
+                  }
+                  else
+                  {
+                    $bscCR = (($report->orders_bigscreen) / $report->calls_bigscreen)*100;
+                  }
+                  if($report->calls_portale == 0)
+                  {
+                     $portalCR = 0;
+                  }
+                  else
+                  {
+                    $portalCR = (($report->orders_portale) / $report->calls_portale)*100;
+                  }
+                @endphp
+                <td @if($CR < 40) class="tooLow" @endif> {{round($CR,2)}}</td>
+
+                <td>{{$report->calls_smallscreen}}/ <b>{{$report->orders_smallscreen}}</b> </td>
+                <td>{{$report->calls_bigscreen}}/<b>{{$report->orders_bigscreen}}</b></td>
+                <td>{{$report->calls_portale}}/<b>{{$report->orders_portale}}</b></td>
+                <td @if($sscCR < 46 && $report->calls_smallscreen != 0) class="tooLow" @elseif($report->calls_smallscreen == 0) class="stillOK"  @endif> {{round($sscCR,2)}}</td>
+                <td @if($bscCR < 17 && $report->calls_bigscreen != 0) class="tooLow" @elseif($report->calls_bigscreen == 0) class="stillOK" @endif> {{round($bscCR,2)}}</td>
+                <td @if($portalCR < 60 && $report->calls_portale != 0) class="tooLow" @elseif($report->calls_portale == 0) class="stillOK" @endif> {{round($portalCR,2)}}</td>
+                <td>noch keine Datenquelle</td>
+                <!-- <td>{{$report->Rabatt_Guthaben_Brutto_Mobile}}</td> -->
+                <td>{{$report->mvlzNeu}}</td>
+                <td>{{$report->rlzPlus}}</td>
+              </tr>
+              @endforeach
+            </table>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

@@ -91,6 +91,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+      $request->validate([
+        'person_id' => 'required|integer'
+        ]);
         $user = User::find($id);
         $user->person_id = $request->person_id;
 
@@ -126,6 +129,7 @@ class UserController extends Controller
     }
     public function AgentAnalytica($id='', Request $request=null)
     {
+
       // sum of all orders during the timespan
       $sumorders = 0;
       // sum of all calls during the timespan
@@ -156,16 +160,13 @@ class UserController extends Controller
       {
         if($reports[$i])
         {
-          $sumorders += ($reports[$i]->Orders_TWVVL_RET) + ($reports[$i]->Orders_TWVVL_PREV);
-          $sumcalls += ($reports[$i]->calls_handled);
-          $sumrlz24 += ($reports[$i]->RLZ_Plus_MVLZ_Mobile);
-          $sumNMlz += ($reports[$i]->MVLZ_Mobile);
+          $sumorders += ($reports[$i]->orders);
+          $sumcalls += ($reports[$i]->calls);
+          $sumrlz24 += ($reports[$i]->rlzPlus);
+          $sumNMlz += ($reports[$i]->mvlzNeu);
         }
-
       }
-
-      $reports = (new Collection($reports))->paginate(10);
-
+      $reports = (new Collection($reports))->paginate(20);
       return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz'));
     }
 

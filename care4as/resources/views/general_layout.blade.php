@@ -87,7 +87,7 @@
             <div class="collapse" id="collapseUser" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 @if(Auth()->user()->role == 'superadmin')
-                <li><a href="{{route('user.create')}}">User anlegen</a></li>
+                  <li><a href="{{route('user.create')}}">User anlegen</a></li>
                 @endif
                   <li><a href="{{route('user.index')}}">User Index</a></li>
                 <li><a href="#">User xyz</a></li>
