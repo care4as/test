@@ -31,8 +31,8 @@
                   <td><input type="text" name="person_id" value="{{$user->person_id}}"></td>
                 </tr>
                 <tr>
-                  <th>TestID2</th>
-                  <td>testwert</td>
+                  <th>tägliche Arbeitszeit</th>
+                  <td><input type="text" name="dailyhours" value="{{$user->dailyhours}}"></td>
                 </tr>
               </table>
               <button type="submit" class="btn btn-rounded btn-primary rounded-pill"name="button">Daten ändern</button>
@@ -103,10 +103,12 @@
         </div>
         <div class="col">
           <div class="d-flex p-3 w-100 justify-content-center">
-            <table class="table table-bordered w-50" style="width:;">
+
+            <table class="table table-bordered w-50" style="width:auto;">
               <tr>
                 <th>Datum</th>
                 <th>Calls</th>
+                <th>Calls/hour</th>
                 <th>Abschlüsse</th>
                 <th>GeVo-CR</th>
                 <th>SSC Calls/<b>Abschlüsse</b></th>
@@ -116,6 +118,7 @@
                 <th>BSC CR</th>
                 <th>Portale CR</th>
                 <th>Opt-In</th>
+
                 <!-- <th>vergebenes Guthaben</th> -->
                 <th>24 Monate</th>
                 <th>RLZ+24</th>
@@ -124,6 +127,7 @@
               <tr>
                 <td>{{$report->call_date}}</td>
                 <td>{{$report->calls}}</td>
+                <td>{{round($report->calls/$user->dailyhours,2)}}</td>
                 <td>{{$report->orders}}</td>
                 @php $CR = (($report->orders) / $report->calls)*100;
 
