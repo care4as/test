@@ -92,10 +92,12 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
       $request->validate([
-        'person_id' => 'required|integer'
+        // 'person_id' => 'required|integer'
         ]);
         $user = User::find($id);
         $user->person_id = $request->person_id;
+        $user->dailyhours = $request->dailyhours;
+
 
         $user->save();
         return redirect()->back();
