@@ -45,7 +45,7 @@
                         <button class="btn btn-danger btn-fab btn-icon btn-round">
                             <i class="now-ui-icons ui-1_simple-remove"></i>
                         </button>
-                    
+
                       </td>
                     <tr>
                   @endforeach

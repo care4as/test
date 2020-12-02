@@ -132,7 +132,7 @@ class CancelController extends Controller
      */
     public function agentCancels($id)
     {
-      $cancels = Cancel::where('created_by', $id)->whereDate('created_at', \Carbon\Carbon::today())->get();
+      $cancels = Cancel::where('created_by', $id)->get();
       return view('agentCancels', compact('cancels'));
 
     }
