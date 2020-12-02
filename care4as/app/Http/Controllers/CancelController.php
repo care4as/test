@@ -133,6 +133,7 @@ class CancelController extends Controller
     public function agentCancels($id)
     {
       $cancels = Cancel::where('created_by', $id)->paginate(10);
+      dd($cancels);
       return view('agentCancels', compact('cancels'));
 
     }

@@ -20,6 +20,7 @@
           </div>
       </div><div class="card-body ">
           <div class="tab-content text-center">
+            {{$cancels->links()}}
               <div class="tab-pane active" id="home">
                 <table class="table table-striped">
                 <thead>
