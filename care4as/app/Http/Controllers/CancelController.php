@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cancel;
+use App\Support\Collection;
 
 class CancelController extends Controller
 {
@@ -19,7 +20,7 @@ class CancelController extends Controller
      */
     public function index()
     {
-        $cancels = Cancel::where('status', 0)->with('user')->paginate(20);
+        $cancels = Cancel::where('status', 0)->with('user')->get();
         $categories = $cancels->pluck('Category');
 
         if(!$categories->first())
@@ -33,7 +34,8 @@ class CancelController extends Controller
           }
         }
 
-
+        // $cancels->paginate(12);
+        $cancels = (new Collection($cancels))->paginate(12);
         // $categories->('Category');
         $categories2 = json_encode($categories2);
         $dokus = Cancel::where('status', 1)->paginate(25);
@@ -64,7 +66,7 @@ class CancelController extends Controller
             return $q->where('Category', request('category'));
         });
 
-        $cancels = $query->paginate(20);
+        $cancels = $query->get();
         // dd($cancels);
         $categories = $cancels->pluck('Category');
 
@@ -78,8 +80,7 @@ class CancelController extends Controller
             $categories2[$categorie] = $cancels->where('Category', $categorie)->count();
           }
         }
-
-
+        $cancels = (new Collection($cancels))->paginate(12);
         // $categories->('Category');
         $categories2 = json_encode($categories2);
         $dokus = Cancel::where('status', 1)->get();
