@@ -127,7 +127,7 @@
               <tr>
                 <td>{{$report->call_date}}</td>
                 <td>{{$report->calls}}</td>
-                <td>{{round($report->calls/$user->dailyhours,2)}}</td>
+                <td>@if($user->dailyhours) round($report->calls/$user->dailyhours,2) @else keine Arbeitszeit eingetragen @endif</td>
                 <td>{{$report->orders}}</td>
                 @php $CR = (($report->orders) / $report->calls)*100;
 
