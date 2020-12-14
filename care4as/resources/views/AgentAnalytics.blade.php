@@ -54,6 +54,7 @@
               <h4>Gesamt</h4>
             </div>
             <div class="d-flex w-100 justify-content-center">
+              @if($user->person_id)
               <table class="table table-hover w-50">
                 <tr>
                   <th>Calls</th>
@@ -71,6 +72,7 @@
                   <td style="@if($RLZQoute < 70) background-color: red; color: white;@endif">@if($sumrlz24 + $sumNMlz == 0) 0 @else {{round($RLZQoute,2)}} @endif</td>
                 </tr>
               </table>
+              @endif
             </div>
 
           </div>
