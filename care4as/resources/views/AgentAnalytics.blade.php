@@ -103,7 +103,7 @@
         </div>
         <div class="col">
           <div class="d-flex p-3 w-100 justify-content-center">
-
+            @if($user->person_id)
             <table class="table table-bordered w-50" style="width:auto;">
               <tr>
                 <th>Datum</th>
@@ -174,6 +174,7 @@
               </tr>
               @endforeach
             </table>
+            @endif
           </div>
         </div>
 
