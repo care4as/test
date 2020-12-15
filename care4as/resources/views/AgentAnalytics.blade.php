@@ -120,7 +120,6 @@
                 <th>BSC CR</th>
                 <th>Portale CR</th>
                 <th>Opt-In</th>
-
                 <!-- <th>vergebenes Guthaben</th> -->
                 <th>24 Monate</th>
                 <th>RLZ+24</th>
@@ -129,20 +128,21 @@
               <tr>
                 <td>{{$report->call_date}}</td>
                 <td>{{$report->calls}}</td>
-                <td>@if($user->dailyhours) round($report->calls/$user->dailyhours,2) @else keine Arbeitszeit eingetragen @endif</td>
+                @if($user->dailyhours)
+                  <td @if($report->calls/$user->dailyhours < 4) class=" tooLow" @endif> {{round($report->calls/$user->dailyhours,2)}}</td>
+                @else
+                  <td>keine Arbeitszeit eingetragen</td>
+                @endif
                 <td>{{$report->orders}}</td>
                 @php $CR = (($report->orders) / $report->calls)*100;
-
                   if($report->calls_smallscreen == 0)
                   {
                     $sscCR = 0;
                   }
-
                   else
                   {
                      $sscCR = (($report->orders_smallscreen) / $report->calls_smallscreen)*100;
                   }
-
                   if($report->calls_bigscreen == 0)
                   {
 
