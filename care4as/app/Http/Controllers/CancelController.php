@@ -20,7 +20,10 @@ class CancelController extends Controller
      */
     public function index()
     {
-        $cancels = Cancel::where('status', 0)->with('user')->get();
+        $cancels = Cancel::where('status', 0)
+        ->with('user')
+        ->orderBy('created_at','DESC')
+        ->get();
         $categories = $cancels->pluck('Category');
 
         if(!$categories->first())
@@ -70,7 +73,9 @@ class CancelController extends Controller
             return $q->where('created_by', $userid);
         });
 
+        $query->orderBy('created_at','DESC');
         $cancels = $query->get();
+
         // dd($cancels);
         $categories = $cancels->pluck('Category');
 
