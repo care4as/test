@@ -65,6 +65,10 @@ class CancelController extends Controller
         $query->when(request('category'), function ($q) {
             return $q->where('Category', request('category'));
         });
+        $query->when(request('username'), function ($q) {
+            $userid = \App\User::where('name',request('username'))->value('id');
+            return $q->where('created_by', $userid);
+        });
 
         $cancels = $query->get();
         // dd($cancels);
