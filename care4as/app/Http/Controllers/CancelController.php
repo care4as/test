@@ -47,7 +47,6 @@ class CancelController extends Controller
     public function filter(Request $request)
     {
         // dd($request);
-
         $query = Cancel::query();
         $query->where('status', 0)->with('user');
 
@@ -64,7 +63,6 @@ class CancelController extends Controller
               return $q->where('created_at','<=',request('to'));
           });
         }
-
         $query->when(request('category'), function ($q) {
             return $q->where('Category', request('category'));
         });
@@ -72,13 +70,10 @@ class CancelController extends Controller
             $userid = \App\User::where('name',request('username'))->value('id');
             return $q->where('created_by', $userid);
         });
-
         $query->orderBy('created_at','DESC');
         $cancels = $query->get();
-
         // dd($cancels);
         $categories = $cancels->pluck('Category');
-
         if(!$categories->first())
         {
           $categories2 = false;
@@ -108,7 +103,6 @@ class CancelController extends Controller
        if($status == 2 )
        {
          $cancel = Cancel::where('id',$id)->first();
-
          $callback = new \App\Callback;
          $callback->customer = $cancel->Customer;
          $callback->time = 'unbestimmt';
@@ -117,7 +111,6 @@ class CancelController extends Controller
          $callback->directed_to = null ;
 
          $callback->save();
-
          $cancel->delete();
        }
        else
