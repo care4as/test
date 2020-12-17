@@ -1,7 +1,6 @@
 @extends('general_layout')
 
 @section('content')
-
 <div class="container-fluid bg-light rounded">
   <div class="row bg-info" id="headline">
     <div class="col">
@@ -12,7 +11,9 @@
     <div class="col d-flex justify-content-center">
       <img src="img-fluid" alt="Bewerbungsfoto">
     </div>
-
+    <div class="col d-flex justify-content-center">
+      <img src="img-fluid" alt="Bewerbungsfoto">
+    </div>
     <div class="col d-flex justify-content-center">
       <img src="img-fluid" alt="Bewerbungsfoto">
     </div>
@@ -20,11 +21,6 @@
     <div class="col d-flex justify-content-center">
       <img src="img-fluid" alt="Bewerbungsfoto">
     </div>
-
-    <div class="col d-flex justify-content-center">
-      <img src="img-fluid" alt="Bewerbungsfoto">
-    </div>
-
   </div>
   <div class="row mt-2 justify-content-center">
     <div class="col-6 text-dark rounded shadow-lg">
