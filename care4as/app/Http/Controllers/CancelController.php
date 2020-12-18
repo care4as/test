@@ -90,8 +90,6 @@ class CancelController extends Controller
         $dokus = Cancel::where('status', 1)->get();
         return view('cancelsAdmin', compact('cancels','dokus','categories2'));
     }
-
-
     /**
      * Show the form for creating a new resource.
      *

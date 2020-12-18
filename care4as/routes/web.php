@@ -79,6 +79,12 @@ Route::group(['middleware' => ['auth']], function () {
   //
 
   Route::post('/callbackcauses', 'CallbackController@store')->name('callback.save');
+
+  //trainings
+  Route::get('/trainings/offers', function(){
+    return view('TrainingOffers');
+  }
+  )->name('trainings');
 });
 
 Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
