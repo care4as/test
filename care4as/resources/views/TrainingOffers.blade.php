@@ -2,6 +2,6 @@
 
 @section('content')
 <div class="container bg-white" id="app">
-  <Example-Component> </Example-Component>
+  <simulator> </simulator>
 </div>
 @endsection
