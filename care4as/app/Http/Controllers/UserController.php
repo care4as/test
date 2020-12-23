@@ -140,7 +140,14 @@ class UserController extends Controller
 
       $sumNMlz = 0;
       $sumrlz24 = 0;
+      $sumSSCCalls = 0;
+      $sumBSCCalls = 0;
+      $sumPortalCalls = 0;
+      $sumSSCOrders = 0;
+      $sumBSCOrders = 0;
+      $sumPortalOrders = 0;
 
+      $monthlyReports = null;
       // dd($request);
       $user = User::find($id);
       $query = \App\RetentionDetail::query();
@@ -164,12 +171,60 @@ class UserController extends Controller
         {
           $sumorders += ($reports[$i]->orders);
           $sumcalls += ($reports[$i]->calls);
+
+          $sumSSCCalls += ($reports[$i]->calls_smallscreen);
+          $sumBSCCalls += ($reports[$i]->calls_bigscreen);
+          $sumPortalCalls += ($reports[$i]->calls_portale);
+          $sumSSCOrders += ($reports[$i]->orders_smallscreen);
+          $sumBSCOrders += ($reports[$i]->orders_bigscreen);
+          $sumPortalOrders += ($reports[$i]->orders_portale);
+
           $sumrlz24 += ($reports[$i]->rlzPlus);
           $sumNMlz += ($reports[$i]->mvlzNeu);
         }
       }
+      if($sumSSCCalls == 0)
+      {
+        $SSCQouta = 0;
+      }
+      else {
+        $SSCQouta = ($sumSSCOrders/$sumSSCCalls)*100;
+      }
+      if($sumBSCCalls == 0)
+      {
+        $BSCQuota = 0;
+      }
+      else {
+        $BSCQuota = ($sumBSCOrders/$sumBSCCalls)*100;
+      }
+      if($sumPortalCalls == 0)
+      {
+        $portalQuota = 0;
+      }
+      else {
+        $portalQuota = ($sumPortalOrders/$sumPortalCalls) *100;
+      }
+
+      $salesdata = array(
+        'sscCalls' => $sumSSCCalls,
+        'sscOrders' => $sumSSCOrders,
+        'bscCalls' =>  $sumBSCCalls,
+        'bscOrders' => $sumBSCOrders,
+        'portalCalls' => $sumPortalCalls,
+        'portalOrders' => $sumPortalOrders );
+
       $reports = (new Collection($reports))->paginate(20);
-      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz'));
+
+      // $monthlyReports = \App\RetentionDetail::where('person_id',$user->person_id);
+
+      for($i=1; $i <= 12; $i++)
+      {
+        $monthlyReports[] = \App\RetentionDetail::where('person_id',$user->person_id)->whereDate('call_date','>',\Carbon\Carbon::createFromDate(2020,$i,1))->whereDate('call_date','<',\Carbon\Carbon::createFromDate(2020,$i,31))->select('calls_smallscreen','calls_bigscreen','calls_portale','orders_smallscreen','orders_bigscreen','orders_portale','mvlzNeu','rlzPlus')->get();
+      }
+      // dd($monthlyCalls);
+      // return 'break';
+
+      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports'));
     }
 
     public function saveCancel(Request $request)

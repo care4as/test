@@ -156,6 +156,19 @@
             </ul>
           </li>
           @endif
+          @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead')
+          <li>
+            <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+              <i class="now-ui-icons education_atom"></i>
+              <p><b>Trainings</b></p>
+            </a>
+            <div class="collapse" id="collapseTrainings" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+              <li><a href="{{route('trainings')}}">Angebots Simulator</a> </li>
+              <!-- <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li> -->
+            </ul>
+          </li>
+          @endif
         </ul>
       </div>
     </div>
