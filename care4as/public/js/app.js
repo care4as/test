@@ -1981,9 +1981,119 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      test: 2,
+      offers: [1, 2],
+      counter: 2
+    };
+  },
   mounted: function mounted() {
     console.log('Simulator mounted.');
+  },
+  methods: {
+    addOffer: function addOffer() {
+      // $('#OffersModal').show()
+      this.counter = this.counter + 1;
+      this.offers.push(this.counter);
+    },
+    deleteOffer: function deleteOffer(offer) {
+      // console.log(offer)
+      function removeA(arr) {
+        var what,
+            a = arguments,
+            L = a.length,
+            ax;
+
+        while (L > 1 && arr.length) {
+          what = a[--L];
+
+          while ((ax = arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1);
+          }
+        }
+
+        return arr;
+      } // this.counter = this.counter-1
+
+
+      removeA(this.offers, offer);
+    }
   }
 });
 
@@ -6431,7 +6541,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.columOffer\n{\n  width: 250px;\n  background-color: green;\n}\n.btn-primary\n{\n  background-color: white;\n  border: 2px solid blue;\n  color: blue;\n  height: 40px;\n  width: 40px;\n  align-self: center;\n}\n", ""]);
+exports.push([module.i, "\n.engulfingRow\n{\n  overflow: scroll;\n  width:auto;\n}\n.columOffer\n{\n  min-width: 250px;\n  background-color: ;\n}\n.btn-button1\n{\n  background-color: white;\n  border: 2px solid blue;\n  color: blue;\n  height: 40px;\n  width: 40px;\n  align-self: center;\n}\n.hwbutton\n{\n  background-color: white !important;\n  width: 95%;\n  height: 50px;\n  border: 1px dotted grey;\n  border-radius: 15px;\n}\n", ""]);
 
 // exports
 
@@ -41793,38 +41903,226 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "div",
+      { staticClass: "d-flex bg-light engulfingRow", attrs: { id: "" } },
+      [
+        _vm._l(_vm.offers, function(offer) {
+          return _c("div", { staticClass: "p-1 m-3 bg-white columOffer" }, [
+            _c(
+              "div",
+              {
+                staticClass: "row m-0 justify-content-center bg-info text-white"
+              },
+              [_vm._v("\n        Vorschläge\n      ")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "row m-0" }, [
+              _c("div", { staticClass: "col align-self-center" }, [
+                _vm._v(
+                  "\n            Angebot Name " + _vm._s(offer) + "\n        "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-2 p-2 align-self-end" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn-close m-0 ml",
+                    attrs: { type: "button", "aria-label": "Close" },
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteOffer(offer)
+                      }
+                    }
+                  },
+                  [_vm._v("X")]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "row m-0" }, [
+              _vm._v("\n        LTE / D-Netz\n      ")
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "row m-0" }, [
+              _vm._v("\n        10 GB\n      ")
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm._m(0, true),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "row m-0" }, [
+              _vm._v("\n        Grundgebühr: 9,99€\n      ")
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm._m(1, true),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm._m(2, true),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm._m(3, true),
+            _vm._v(" "),
+            _c("hr")
+          ])
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "align-self-center" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn-button1",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.addOffer()
+                }
+              }
+            },
+            [_vm._v("+")]
+          ),
+          _vm._v("\n      Neu- und Bestandskundenangebote\n    ")
+        ])
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _vm._m(4)
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "d-flex", attrs: { id: "engulfingRow" } }, [
-        _c("div", { staticClass: "p-1 m-3 columOffer" }, [
-          _c("div", { staticClass: "row m-0" }, [
-            _vm._v("\n        Angebot1 Bestandskunden\n      ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row m-0" })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "p-1 m-3 columOffer" }, [
-          _c("div", { staticClass: "row m-0" }, [
-            _vm._v("\n        Angebot2 VVL\n      ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row m-0" })
-        ]),
-        _vm._v(" "),
+    return _c("div", { staticClass: "row m-0 " }, [
+      _c("button", { staticClass: "hwbutton", attrs: { type: "button" } }, [
         _c(
-          "button",
-          { staticClass: "btn-primary", attrs: { type: "button" } },
-          [_vm._v("+")]
+          "div",
+          { staticClass: "d-flex align-items-center justify-content-center" },
+          [
+            _c("i", { staticClass: "fas fa-plus-circle fa-2x" }),
+            _vm._v("\n            Hardware hinzufügen\n          ")
+          ]
         )
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row m-0" }, [
+      _c(
+        "button",
+        { staticClass: "hwbutton", attrs: { type: "button", name: "button" } },
+        [_vm._v("  Rabatt hinzufügen")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row m-0" }, [
+      _vm._v("\n        24 Monate "),
+      _c("br"),
+      _vm._v("\n        neue Laufzeit bis 19.12.2022\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row m-0" }, [
+      _vm._v("\n        Monatliche Kosten "),
+      _c("br"),
+      _vm._v("\n        Grundgebürh: 9,99€\n      ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal",
+        attrs: { tabindex: "-1", role: "dialog", id: "OffersModal" }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h5", { staticClass: "modal-title" }, [
+                  _vm._v("Neukunden oder Bestandskunden")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("select", { attrs: { name: "", id: "offerCategory" } }, [
+                  _c("option", { attrs: { value: "" } }, [_vm._v("ANF LTE M")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "" } }, [_vm._v("ANF LTE S")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "" } }, [_vm._v("ANF ")])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
+                  [_vm._v("Save changes")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true

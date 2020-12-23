@@ -22,7 +22,8 @@
                   </ul>
               </div>
           </div>
-      </div><div class="card-body ">
+      </div>
+      <div class="card-body ">
           <div class="tab-content text-center">
               <div class="tab-pane active" id="userinfo">
                 <table class="table table-striped">
