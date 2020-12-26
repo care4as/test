@@ -213,15 +213,23 @@ class UserController extends Controller
         'portalCalls' => $sumPortalCalls,
         'portalOrders' => $sumPortalOrders );
 
-      $reports = (new Collection($reports))->paginate(20);
+      $reports = (new Collection($reports))->paginate(31);
 
       // $monthlyReports = \App\RetentionDetail::where('person_id',$user->person_id);
 
+      $year = 2020;
+
       for($i=1; $i <= 12; $i++)
       {
-        $monthlyReports[] = \App\RetentionDetail::where('person_id',$user->person_id)->whereDate('call_date','>',\Carbon\Carbon::createFromDate(2020,$i,1))->whereDate('call_date','<',\Carbon\Carbon::createFromDate(2020,$i,31))->select('calls_smallscreen','calls_bigscreen','calls_portale','orders_smallscreen','orders_bigscreen','orders_portale','mvlzNeu','rlzPlus')->get();
+        $startOfMonth= \Carbon\Carbon::createFromDate($year,$i,1);
+        $Date2ToTransform= \Carbon\Carbon::createFromDate($year,$i,1);
+        // $endOfMonth= \Carbon\Carbon::createFromDate($year,$i,31);
+        $endOfMonth= $Date2ToTransform->modify('last day of this month');
+        // echo $endOfMonth.'</br>';
+
+        $monthlyReports[] = \App\RetentionDetail::where('person_id',$user->person_id)->whereDate('call_date','>',$startOfMonth)->whereDate('call_date','<',$endOfMonth)->select('calls_smallscreen','calls_bigscreen','calls_portale','orders_smallscreen','orders_bigscreen','orders_portale','mvlzNeu','rlzPlus')->get();
       }
-      // dd($monthlyCalls);
+      // dd($monthlyReports);
       // return 'break';
 
       return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports'));
