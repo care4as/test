@@ -246,9 +246,9 @@
                       {{date("F", mktime(0, 0, 0, $counter, 10))}}
                     </th>
                     @if($report->first())
-                    <td>{{round(($report->sum('orders_smallscreen')/$report->sum('calls_smallscreen'))*100,2)}}</td>
-                    <td>{{round(($report->sum('orders_bigscreen')/$report->sum('calls_bigscreen'))*100,2)}}</td>
-                    <td>{{round(($report->sum('orders_portale')/$report->sum('calls_portale'))*100,2)}}</td>
+                    <td>@if($report->sum('calls_smallscreen')!=0){{round(($report->sum('orders_smallscreen')/$report->sum('calls_smallscreen'))*100,2)}} @else  keine SSC Calls @endif</td>
+                    <td>@if($report->sum('calls_bigscreen')!=0){{round(($report->sum('orders_bigscreen')/$report->sum('calls_bigscreen'))*100,2)}} @else  keine BSC Calls @endif</td>
+                    <td>@if($report->sum('calls_portale')!=0){{round(($report->sum('orders_portale')/$report->sum('calls_portale'))*100,2)}} @else keine Portal Calls @endif</td>
                     <td>test</td>
                     <td>test</td>
                     @else
