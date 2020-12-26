@@ -239,7 +239,6 @@
                   </tr>
                   @php
                     $counter = 1;
-
                   @endphp
                   @foreach($monthlyReports as $report)
                   <tr>
@@ -247,7 +246,6 @@
                       {{date("F", mktime(0, 0, 0, $counter, 10))}}
                     </th>
                     @if($report->first())
-
                     <td>{{round(($report->sum('orders_smallscreen')/$report->sum('calls_smallscreen'))*100,2)}}</td>
                     <td>{{round(($report->sum('orders_bigscreen')/$report->sum('calls_bigscreen'))*100,2)}}</td>
                     <td>{{round(($report->sum('orders_portale')/$report->sum('calls_portale'))*100,2)}}</td>
