@@ -2,7 +2,22 @@
 
 @section('content')
 <div class="container-fluid mt-5" style="border-radius: 15px;width: 75vw;">
-  <a href="{{ url()->previous() }}" class="btn btn-rounded btn-primary btn-outline">Zurück</a>
+  <div class="row">
+    <div class="col d-flex justify-content-start">
+      @if(App\User::where('id', '<', $user->id)->max('id'))
+        <a href="{{route('user.stats', ['id' => App\User::where('id', '<', $user->id)->max('id') ])}}" class="btn btn-rounded btn-primary btn-outline">vorheriger Agent</a>
+      @else
+        <a href="" class="btn btn-rounded btn-primary btn-outline" disabled>vorheriger Agent</a>
+      @endif
+    </div>
+    <div class="col d-flex justify-content-end">
+      @if(App\User::where('id', '>', $user->id)->min('id'))
+        <a href="{{route('user.stats', ['id' => App\User::where('id', '>', $user->id)->min('id') ])}}" class="btn btn-rounded btn-primary btn-outline">nächster Agent</a>
+      @else
+        <a href="" class="btn btn-rounded btn-primary btn-outline" disabled>nächster Agent</a>
+      @endif
+    </div>
+  </div>
   <div class="row bg-light" id="mainrow"  style="border-radius: 35px;">
     <div class="col p-0" id="maincol">
       <div class="row m-0">

@@ -135,9 +135,7 @@ class UserController extends Controller
       // sum of all orders during the timespan
       $sumorders = 0;
       // sum of all calls during the timespan
-
       $sumcalls = 0;
-
       $sumNMlz = 0;
       $sumrlz24 = 0;
       $sumSSCCalls = 0;
@@ -150,6 +148,12 @@ class UserController extends Controller
       $monthlyReports = null;
       // dd($request);
       $user = User::find($id);
+
+      if(!$user)
+      {
+        // get previous user id
+       return redirect()->back()->withErrors('User nicht vorhanden');
+      }
       $query = \App\RetentionDetail::query();
 
       $query->where('person_id',$user->person_id)
