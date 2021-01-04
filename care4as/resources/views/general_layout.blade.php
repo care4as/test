@@ -156,7 +156,7 @@
             </ul>
           </li>
           @endif
-          @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead')
+          @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'trainee')
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="now-ui-icons education_atom"></i>
@@ -165,6 +165,9 @@
             <div class="collapse" id="collapseTrainings" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
               <li><a href="{{route('trainings')}}">Angebots Simulator</a> </li>
+              @if(Auth()->user()->role != 'Agent')
+                <li><a href="{{route('offers.create')}}">Angebote einspielen</a> </li>
+              @endif
               <!-- <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li> -->
             </ul>
           </li>
