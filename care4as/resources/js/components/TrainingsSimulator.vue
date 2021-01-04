@@ -100,8 +100,6 @@
                   <b>Monatlich</b>
                 </div>
               </div>
-
-
               <div class="tarife" v-for="offer in offers2"  @click="getOffer(offer.id)">
                 <div class="radio">
                   <label for="flexRadioDefault1"></label>

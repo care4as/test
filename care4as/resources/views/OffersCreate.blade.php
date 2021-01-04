@@ -13,9 +13,18 @@
   <div class="col-md-4">
     <label for="price" class="form-label">Preis</label>
     <div class="input-group">
-
       <input type="text" name="price" class="form-control" id="price">
       <span class="input-group-text">€</span>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="form-group">
+      <label for="net">Netz</label>
+      <select name="net" class="form-control" id="net">
+        <option value="LTE">LTE-Netz</option>
+        <option value="D">D-Netz</option>
+        <option value="E">E-Netz</option>
+      </select>
     </div>
   </div>
   <div class="col-md-12">

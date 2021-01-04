@@ -15,10 +15,11 @@ class OfferController extends Controller
         'volume' => 'required',
         'price' => 'required',
         'telefon' => 'required',
+        'net' => 'required',
       ]);
 
       $offer = new Offer;
-      $offer->saveOffer($request->name,$request->volume,$request->price,$request->telefon,$request->Categories);
+      $offer->saveOffer($request->name,$request->volume,$request->price,$request->telefon,$request->net,$request->Categories);
 
       return redirect()->back();
     }
