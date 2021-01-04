@@ -2319,11 +2319,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2356,7 +2351,7 @@ __webpack_require__.r(__webpack_exports__);
         "updated_at": "2020-12-28T14:27:29.000000Z"
       }],
       counter: 2,
-      offers2: 5
+      offers2: 0
     };
   },
   mounted: function mounted() {
@@ -42663,7 +42658,7 @@ var staticRenderFns = [
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "cards" }, [
-                _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-simulator" }, [
                   _c("div", { staticClass: "maincard" }, [
                     _c("div", { staticClass: "titel_card" }, [
                       _vm._v(
@@ -42743,7 +42738,7 @@ var staticRenderFns = [
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-simulator" }, [
                   _c("div", { staticClass: "maincard" }, [
                     _c("div", { staticClass: "titel_card" }, [
                       _vm._v(
@@ -42823,7 +42818,7 @@ var staticRenderFns = [
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-simulator" }, [
                   _c("div", { staticClass: "maincard" }, [
                     _c("div", { staticClass: "titel_card " }, [
                       _vm._v(
@@ -42903,9 +42898,9 @@ var staticRenderFns = [
                   ])
                 ])
               ]),
-              _vm._v("\n\n        Aktuelle Bestseller mit [Tarif]\n\n        "),
+              _vm._v("\n        Aktuelle Bestseller mit [Tarif]\n        "),
               _c("div", { staticClass: "cards" }, [
-                _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-simulator" }, [
                   _c("div", { staticClass: "maincard" }, [
                     _c("div", { staticClass: "name_card" }, [
                       _vm._v(
@@ -42979,7 +42974,7 @@ var staticRenderFns = [
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-simulator" }, [
                   _c("div", { staticClass: "maincard" }, [
                     _c("div", { staticClass: "name_card" }, [
                       _vm._v(
@@ -43053,7 +43048,7 @@ var staticRenderFns = [
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-simulator" }, [
                   _c("div", { staticClass: "maincard" }, [
                     _c("div", { staticClass: "name_card" }, [
                       _vm._v(
