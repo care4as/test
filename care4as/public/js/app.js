@@ -2055,23 +2055,315 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       test: 2,
-      offers: [1, 2],
-      counter: 2
+      offers: [{
+        "id": 3,
+        "name": "ANF S LTE",
+        "volume": "5",
+        "telefon": "Flat",
+        "price": "9,99",
+        "BK": 1,
+        "NK": 1,
+        "Special": null,
+        "Cyber": null,
+        "Beginner": null,
+        "created_at": "2020-12-27T18:32:33.000000Z",
+        "updated_at": "2020-12-27T18:32:33.000000Z"
+      }, {
+        "id": 4,
+        "name": "ANF M LTE",
+        "volume": "10",
+        "telefon": "Flat",
+        "price": "14.99",
+        "BK": 1,
+        "NK": 1,
+        "Special": null,
+        "Cyber": null,
+        "Beginner": null,
+        "created_at": "2020-12-28T14:27:29.000000Z",
+        "updated_at": "2020-12-28T14:27:29.000000Z"
+      }],
+      counter: 2,
+      offers2: 5
     };
   },
   mounted: function mounted() {
     console.log('Simulator mounted.');
+    this.getOffers();
   },
   methods: {
-    addOffer: function addOffer() {
-      // $('#OffersModal').show()
-      this.counter = this.counter + 1;
-      this.offers.push(this.counter);
-    },
     deleteOffer: function deleteOffer(offer) {
       // console.log(offer)
       function removeA(arr) {
@@ -2093,6 +2385,59 @@ __webpack_require__.r(__webpack_exports__);
 
 
       removeA(this.offers, offer);
+    },
+    getOffers: function getOffers() {
+      var _this = this;
+
+      axios.get('../offers/JSON').then(function (response) {
+        // console.log(response.data)
+        _this.offers2 = response.data; // console.log(this.offers2)
+      })["catch"](function (err) {
+        console.log(err.response.data.message);
+      });
+    },
+    getOffer: function getOffer(id) {
+      var _this2 = this;
+
+      axios.get('../offer/JSON/' + id).then(function (response) {
+        // console.log(response.data)
+        _this2.offers.push(response.data);
+
+        _this2.$nextTick(function () {
+          _this2.destroyModal('OffersModal');
+
+          $('.modal-backdrop').remove();
+        });
+      })["catch"](function (err) {
+        console.log('error');
+        console.log(err.response.data);
+      });
+    },
+    openHWModal: function openHWModal() {
+      console.log('HW Modal');
+      $('#HWModal').modal('show');
+    },
+    destroyModal: function destroyModal(modalname) {
+      var modal = document.querySelector('#' + modalname);
+      modal.style.display = "none";
+    },
+    setActive: function setActive(category) {
+      $('.subauswahl').each(function () {
+        this.className = '';
+        this.className = 'subauswahl';
+      });
+      event.target.className = 'subauswahl aktiv';
+      this.getOffersByCategorie(category);
+    },
+    getOffersByCategorie: function getOffersByCategorie(category) {
+      var _this3 = this;
+
+      axios.get('../offers/JSON/category/' + category).then(function (response) {
+        _this3.offers2 = response.data;
+      })["catch"](function (err) {
+        console.log('error');
+        console.log(err.response.data);
+      });
     }
   }
 });
@@ -41915,13 +42260,13 @@ var render = function() {
               {
                 staticClass: "row m-0 justify-content-center bg-info text-white"
               },
-              [_vm._v("\n        Vorschläge\n      ")]
+              [_vm._v("\n            Vorschläge\n          ")]
             ),
             _vm._v(" "),
             _c("div", { staticClass: "row m-0" }, [
               _c("div", { staticClass: "col align-self-center" }, [
                 _vm._v(
-                  "\n            Angebot Name " + _vm._s(offer) + "\n        "
+                  "\n                " + _vm._s(offer.name) + "\n            "
                 )
               ]),
               _vm._v(" "),
@@ -41945,23 +42290,39 @@ var render = function() {
             _c("hr"),
             _vm._v(" "),
             _c("div", { staticClass: "row m-0" }, [
-              _vm._v("\n        LTE / D-Netz\n      ")
+              _vm._v("\n            LTE / D-Netz\n          ")
             ]),
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
             _c("div", { staticClass: "row m-0" }, [
-              _vm._v("\n        10 GB\n      ")
+              _vm._v(
+                "\n            " + _vm._s(offer.volume) + " GB\n          "
+              )
             ]),
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
-            _vm._m(0, true),
+            _c("div", { staticClass: "row m-0 " }, [
+              _c(
+                "button",
+                {
+                  staticClass: "hwbutton",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.openHWModal()
+                    }
+                  }
+                },
+                [_vm._m(0, true)]
+              )
+            ]),
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
             _c("div", { staticClass: "row m-0" }, [
-              _vm._v("\n        Grundgebühr: 9,99€\n      ")
+              _vm._v("\n            " + _vm._s(offer.price) + " €\n          ")
             ]),
             _vm._v(" "),
             _c("hr"),
@@ -41974,33 +42335,209 @@ var render = function() {
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
-            _vm._m(3, true),
+            _c("div", { staticClass: "row m-0" }, [
+              _vm._v("\n            Monatliche Kosten "),
+              _c("br"),
+              _vm._v(
+                "\n            Grundgebühr: " +
+                  _vm._s(offer.price) +
+                  "\n          "
+              )
+            ]),
             _vm._v(" "),
             _c("hr")
           ])
         }),
         _vm._v(" "),
-        _c("div", { staticClass: "align-self-center" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn-button1",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  return _vm.addOffer()
-                }
-              }
-            },
-            [_vm._v("+")]
-          ),
-          _vm._v("\n      Neu- und Bestandskundenangebote\n    ")
-        ])
+        _vm._m(3)
       ],
       2
     ),
     _vm._v(" "),
-    _vm._m(4)
+    _c(
+      "div",
+      {
+        staticClass: "modal bd-example-modal-xl",
+        attrs: {
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "OffersModal",
+          "aria-hidden": "true",
+          id: "OffersModal"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog modal-xl", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content p-1" }, [
+              _c("div", { staticClass: "titel" }, [
+                _c("h5", [
+                  _vm._v("Weitere Angebote "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: { type: "button", "data-dismiss": "modal" },
+                      on: {
+                        click: function($event) {
+                          return _vm.destroyModal("OffersModal")
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("Hier können Sie ein alternatives Angebot auswählen")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "auswahl" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "subauswahl aktiv",
+                    on: {
+                      click: function($event) {
+                        return _vm.setActive("NK")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                Neukundenangebote\n              "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "subauswahl text-break",
+                    on: {
+                      click: function($event) {
+                        return _vm.setActive("BK")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                Bestandskundenangebote\n              "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "subauswahl",
+                    on: {
+                      click: function($event) {
+                        return _vm.setActive("Special")
+                      }
+                    }
+                  },
+                  [_vm._v("\n                Spezialangebote\n              ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "subauswahl",
+                    on: {
+                      click: function($event) {
+                        return _vm.setActive("Cyber")
+                      }
+                    }
+                  },
+                  [_vm._v("\n                Cyberangebote\n              ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "subauswahl",
+                    on: {
+                      click: function($event) {
+                        return _vm.setActive("Beginner")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                Einsteigerangebote\n              "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "inhalt" },
+                [
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _vm._l(_vm.offers2, function(offer) {
+                    return _c(
+                      "div",
+                      {
+                        staticClass: "tarife",
+                        on: {
+                          click: function($event) {
+                            return _vm.getOffer(offer.id)
+                          }
+                        }
+                      },
+                      [
+                        _vm._m(5, true),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "element_1" }, [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(offer.name) +
+                              "\n                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "element" }, [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(offer.volume) +
+                              " GB\n                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "element" }, [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(offer.telefon) +
+                              "\n                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "element" }, [
+                          _c("b", [_vm._v("  " + _vm._s(offer.price) + " €")])
+                        ])
+                      ]
+                    )
+                  })
+                ],
+                2
+              )
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _vm._m(6)
   ])
 }
 var staticRenderFns = [
@@ -42008,18 +42545,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row m-0 " }, [
-      _c("button", { staticClass: "hwbutton", attrs: { type: "button" } }, [
-        _c(
-          "div",
-          { staticClass: "d-flex align-items-center justify-content-center" },
-          [
-            _c("i", { staticClass: "fas fa-plus-circle fa-2x" }),
-            _vm._v("\n            Hardware hinzufügen\n          ")
-          ]
-        )
-      ])
-    ])
+    return _c(
+      "div",
+      { staticClass: "d-flex align-items-center justify-content-center" },
+      [
+        _c("i", { staticClass: "fas fa-plus-circle fa-2x" }),
+        _vm._v("\n                Hardware hinzufügen\n              ")
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -42038,19 +42571,63 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row m-0" }, [
-      _vm._v("\n        24 Monate "),
+      _vm._v("\n            24 Monate "),
       _c("br"),
-      _vm._v("\n        neue Laufzeit bis 19.12.2022\n      ")
+      _vm._v("\n            neue Laufzeit bis 19.12.2022\n          ")
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row m-0" }, [
-      _vm._v("\n        Monatliche Kosten "),
-      _c("br"),
-      _vm._v("\n        Grundgebürh: 9,99€\n      ")
+    return _c("div", { staticClass: "align-self-center" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn-button1",
+          attrs: {
+            type: "button",
+            "data-toggle": "modal",
+            "data-target": ".bd-example-modal-xl"
+          }
+        },
+        [_vm._v("+")]
+      ),
+      _vm._v("\n          Neu- und Bestandskundenangebote\n        ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "ueberschriften" }, [
+      _c("div", { staticClass: "radio" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "element_1" }, [_c("b", [_vm._v("Tarif")])]),
+      _vm._v(" "),
+      _c("div", { staticClass: "element" }, [
+        _c("b", [_vm._v("Datenvolumen")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "element" }, [_c("b", [_vm._v("Telefonie")])]),
+      _vm._v(" "),
+      _c("div", { staticClass: "element" }, [_c("b", [_vm._v("Monatlich")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "radio" }, [
+      _c("label", { attrs: { for: "flexRadioDefault1" } }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "radio",
+          name: "flexRadioDefault",
+          id: "flexRadioDefault1"
+        }
+      })
     ])
   },
   function() {
@@ -42060,63 +42637,495 @@ var staticRenderFns = [
     return _c(
       "div",
       {
-        staticClass: "modal",
-        attrs: { tabindex: "-1", role: "dialog", id: "OffersModal" }
+        staticClass: "modal bd-example-modal-xl",
+        attrs: {
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "OffersModal",
+          "aria-hidden": "true",
+          id: "HWModal"
+        }
       },
       [
         _c(
           "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          { staticClass: "modal-dialog modal-xl", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c("h5", { staticClass: "modal-title" }, [
-                  _vm._v("Neukunden oder Bestandskunden")
-                ]),
+              _c("div", { staticClass: "titelleiste ml-3" }, [
+                _c("h5", [_vm._v("Hardware hinzufügen")]),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("select", { attrs: { name: "", id: "offerCategory" } }, [
-                  _c("option", { attrs: { value: "" } }, [_vm._v("ANF LTE M")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [_vm._v("ANF LTE S")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [_vm._v("ANF ")])
+                _c("p", [
+                  _vm._v(
+                    "Wie empfehlen dem Kunden diese Geräte, basierend auf dem zuletzt gekauften [zuletzt gekauftes Gerät]."
+                  )
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
-                  [_vm._v("Save changes")]
-                ),
+              _c("div", { staticClass: "cards" }, [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "maincard" }, [
+                    _c("div", { staticClass: "titel_card" }, [
+                      _vm._v(
+                        "\n                        Empfehlung\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "name_card" }, [
+                      _vm._v(
+                        "\n                        Samsung Galaxy S20+\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "bild_card" }, [
+                      _c("img", { attrs: { src: "/images/1.png", alt: "" } })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "key_card" }, [
+                      _vm._v("\n                        Cosmic Black "),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        120GB\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "box_card" }, [
+                      _c("div", { staticClass: "box_card_inside" }, [
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("Einmalig")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("0,00 €")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("1. - 10. Monat")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("49,99 €")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "box_card_inside_element" }, [
+                          _vm._v("danach 54,99 €")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "infobox_card" }, [
+                      _vm._v(
+                        "\n                        - Großes 6,7 Zoll hochauflösendes AMOLED Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Flüssigste Bilddarstellung dank 120 Hz Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Hochaufklösende 64 MP 3-Fach Kamera mit 30x Zoom und 8k Videoaufnahmes\n                    "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "subcard" }, [
+                    _vm._v(
+                      "\n                    + vergleichen\n                "
+                    )
+                  ])
+                ]),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Close")]
-                )
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "maincard" }, [
+                    _c("div", { staticClass: "titel_card" }, [
+                      _vm._v(
+                        "\n                        Sehr gute Alternative\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "name_card" }, [
+                      _vm._v(
+                        "\n                        Samsung Galaxy S20+\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "bild_card" }, [
+                      _c("img", { attrs: { src: "/images/1.png", alt: "" } })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "key_card" }, [
+                      _vm._v("\n                        Cosmic Black "),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        120GB\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "box_card" }, [
+                      _c("div", { staticClass: "box_card_inside" }, [
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("Einmalig")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("0,00 €")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("1. - 10. Monat")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("49,99 €")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "box_card_inside_element" }, [
+                          _vm._v("danach 54,99 €")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "infobox_card" }, [
+                      _vm._v(
+                        "\n                        - Großes 6,7 Zoll hochauflösendes AMOLED Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Flüssigste Bilddarstellung dank 120 Hz Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Hochaufklösende 64 MP 3-Fach Kamera mit 30x Zoom und 8k Videoaufnahmes\n                    "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "subcard" }, [
+                    _vm._v(
+                      "\n                    + vergleichen\n                "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "maincard" }, [
+                    _c("div", { staticClass: "titel_card " }, [
+                      _vm._v(
+                        "\n                        High-End Empfehlung\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "name_card" }, [
+                      _vm._v(
+                        "\n                        Samsung Galaxy S20+\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "bild_card" }, [
+                      _c("img", { attrs: { src: "/images/1.png", alt: "" } })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "key_card" }, [
+                      _vm._v("\n                        Cosmic Black "),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        120GB\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "box_card" }, [
+                      _c("div", { staticClass: "box_card_inside" }, [
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("Einmalig")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("0,00 €")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("1. - 10. Monat")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("49,99 €")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "box_card_inside_element" }, [
+                          _vm._v("danach 54,99 €")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "infobox_card" }, [
+                      _vm._v(
+                        "\n                        - Großes 6,7 Zoll hochauflösendes AMOLED Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Flüssigste Bilddarstellung dank 120 Hz Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Hochaufklösende 64 MP 3-Fach Kamera mit 30x Zoom und 8k Videoaufnahmes\n                    "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "subcard" }, [
+                    _vm._v(
+                      "\n                    + vergleichen\n                "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v("\n\n        Aktuelle Bestseller mit [Tarif]\n\n        "),
+              _c("div", { staticClass: "cards" }, [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "maincard" }, [
+                    _c("div", { staticClass: "name_card" }, [
+                      _vm._v(
+                        "\n                        Samsung Galaxy S20+\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "bild_card" }, [
+                      _c("img", { attrs: { src: "/images/1.png", alt: "" } })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "key_card" }, [
+                      _vm._v("\n                        Cosmic Black "),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        120GB\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "box_card" }, [
+                      _c("div", { staticClass: "box_card_inside" }, [
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("Einmalig")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("0,00 €")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("1. - 10. Monat")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("49,99 €")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "box_card_inside_element" }, [
+                          _vm._v("danach 54,99 €")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "infobox_card" }, [
+                      _vm._v(
+                        "\n                        - Großes 6,7 Zoll hochauflösendes AMOLED Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Flüssigste Bilddarstellung dank 120 Hz Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Hochaufklösende 64 MP 3-Fach Kamera mit 30x Zoom und 8k Videoaufnahmes\n                    "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "subcard" }, [
+                    _vm._v(
+                      "\n                    + vergleichen\n                "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "maincard" }, [
+                    _c("div", { staticClass: "name_card" }, [
+                      _vm._v(
+                        "\n                        Samsung Galaxy S20+\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "bild_card" }, [
+                      _c("img", { attrs: { src: "/images/1.png", alt: "" } })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "key_card" }, [
+                      _vm._v("\n                        Cosmic Black "),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        120GB\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "box_card" }, [
+                      _c("div", { staticClass: "box_card_inside" }, [
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("Einmalig")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("0,00 €")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("1. - 10. Monat")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("49,99 €")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "box_card_inside_element" }, [
+                          _vm._v("danach 54,99 €")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "infobox_card" }, [
+                      _vm._v(
+                        "\n                        - Großes 6,7 Zoll hochauflösendes AMOLED Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Flüssigste Bilddarstellung dank 120 Hz Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Hochaufklösende 64 MP 3-Fach Kamera mit 30x Zoom und 8k Videoaufnahmes\n                    "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "subcard" }, [
+                    _vm._v(
+                      "\n                    + vergleichen\n                "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "maincard" }, [
+                    _c("div", { staticClass: "name_card" }, [
+                      _vm._v(
+                        "\n                        Samsung Galaxy S20+\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "bild_card" }, [
+                      _c("img", { attrs: { src: "/images/1.png", alt: "" } })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "key_card" }, [
+                      _vm._v("\n                        Cosmic Black "),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        120GB\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "box_card" }, [
+                      _c("div", { staticClass: "box_card_inside" }, [
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("Einmalig")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("0,00 €")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_u" },
+                          [_vm._v("1. - 10. Monat")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "box_card_inside_element_g" },
+                          [_vm._v("49,99 €")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "box_card_inside_element" }, [
+                          _vm._v("danach 54,99 €")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "infobox_card" }, [
+                      _vm._v(
+                        "\n                        - Großes 6,7 Zoll hochauflösendes AMOLED Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Flüssigste Bilddarstellung dank 120 Hz Display "
+                      ),
+                      _c("br"),
+                      _vm._v(
+                        "\n                        - Hochaufklösende 64 MP 3-Fach Kamera mit 30x Zoom und 8k Videoaufnahmes\n                    "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "subcard" }, [
+                    _vm._v(
+                      "\n                    + vergleichen\n                "
+                    )
+                  ])
+                ])
               ])
             ])
           ]

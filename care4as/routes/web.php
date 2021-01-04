@@ -86,7 +86,14 @@ Route::group(['middleware' => ['auth']], function () {
   }
   )->name('trainings');
 });
+//offers
+Route::get('/offers/create', 'OfferController@create')->name('offers.create');
+Route::post('/offers/store', 'OfferController@store')->name('offers.store');
+Route::get('/offers/JSON', 'OfferController@OffersInJSON')->name('offers.inJSON');
+Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');
+Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');
 
+//endoffers
 Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
 
