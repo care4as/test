@@ -134,7 +134,7 @@
         </div>
 
         <div class="cards">
-            <div class="card">
+            <div class="card-simulator">
                 <div class="maincard">
                     <div class="titel_card">
                         Empfehlung
@@ -169,7 +169,7 @@
                     + vergleichen
                 </div>
             </div>
-            <div class="card">
+            <div class="card-simulator">
                 <div class="maincard">
                     <div class="titel_card">
                         Sehr gute Alternative
@@ -191,7 +191,6 @@
                             <div class="box_card_inside_element_u">1. - 10. Monat</div>
                             <div class="box_card_inside_element_g">49,99 €</div>
                             <div class="box_card_inside_element">danach 54,99 €</div>
-
                         </div>
                     </div>
                     <div class="infobox_card">
@@ -205,7 +204,7 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card-simulator">
                 <div class="maincard">
                     <div class="titel_card ">
                         High-End Empfehlung
@@ -227,7 +226,6 @@
                             <div class="box_card_inside_element_u">1. - 10. Monat</div>
                             <div class="box_card_inside_element_g">49,99 €</div>
                             <div class="box_card_inside_element">danach 54,99 €</div>
-
                         </div>
                     </div>
                     <div class="infobox_card">
@@ -240,13 +238,10 @@
                     + vergleichen
                 </div>
             </div>
-
         </div>
-
         Aktuelle Bestseller mit [Tarif]
-
         <div class="cards">
-            <div class="card">
+            <div class="card-simulator">
                 <div class="maincard">
                     <div class="name_card">
                         Samsung Galaxy S20+
@@ -278,7 +273,7 @@
                     + vergleichen
                 </div>
             </div>
-            <div class="card">
+            <div class="card-simulator">
                 <div class="maincard">
                     <div class="name_card">
                         Samsung Galaxy S20+
@@ -311,7 +306,7 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card-simulator">
                 <div class="maincard">
                     <div class="name_card">
                         Samsung Galaxy S20+
@@ -388,7 +383,7 @@
           test: 2,
           offers: [{"id":3,"name":"ANF S LTE","volume":"5","telefon":"Flat","price":"9,99","BK":1,"NK":1,"Special":null,"Cyber":null,"Beginner":null,"created_at":"2020-12-27T18:32:33.000000Z","updated_at":"2020-12-27T18:32:33.000000Z"},{"id":4,"name":"ANF M LTE","volume":"10","telefon":"Flat","price":"14.99","BK":1,"NK":1,"Special":null,"Cyber":null,"Beginner":null,"created_at":"2020-12-28T14:27:29.000000Z","updated_at":"2020-12-28T14:27:29.000000Z"}],
           counter: 2,
-          offers2: 5,
+          offers2: 0,
         }
       },
         mounted() {
