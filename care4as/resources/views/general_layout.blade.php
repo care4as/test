@@ -45,11 +45,10 @@
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
-      <div class="logo">
+      <div class="logo bg-white m-2">
         <a href="" class="simple-text logo-normal">
           <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 190px; margin: 25px; margin-bottom: 0px; margin-top: 10px;">
         </a>
-
       </div>
       <div class="sidebar-wrapper " id="sidebar-wrapper">
         <ul class="nav">
@@ -59,10 +58,8 @@
               <i class="now-ui-icons education_atom"></i>
               <p><b>Dashboard</b></p>
             </a>
-
           </li>
           @endif
-
             <li>
               <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
                 <i class="now-ui-icons education_atom"></i>
@@ -78,6 +75,18 @@
                 @endif
               </ul>
             </li>
+            @if((Auth()->user()->role == 'superadmin'))
+              <li>
+                <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
+                  <i class="now-ui-icons education_atom"></i>
+                  <p><b>Provision</b></p>
+                </a>
+                <div class="collapse" id="collapseCancel" style="margin-left:50px;">
+                  <ul class="list-group list-group-flush" style="list-style-type: none;">
+                  <li><a href="{{route('buchungsliste.show')}}">Buchungslisten</a></li>
+                </ul>
+              </li>
+            @endif
           @if(Auth()->user()->role == 'superadmin' or (Auth()->user()->role =='overhead'))
           <li>
             <a class="" data-toggle="collapse" href="#collapseUser" role="button" aria-expanded="false" aria-controls="collapseUser">
@@ -106,6 +115,7 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
               <li><a href="{{route('reports.report')}}">Retention Details Report</a></li>
               <li><a href="{{route('reports.capacitysuitreport')}}">Capacity Suit Report</a></li>
+              <li><a href="{{route('reports.provision.view')}}">Provision</a></li>
             </ul>
           </li>
           @endif
@@ -135,11 +145,9 @@
               <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
               <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
               <li><a href="{{route('reports.report')}}">Mitarbeiterumfrage auswerten</a></li>
-
               @else
                 <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
               @endif
-
             </ul>
           </li>
           @endif
