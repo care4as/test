@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Imports\DataImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 use App\DailyAgent;
 use App\CapacitySuitReport;
@@ -166,6 +167,58 @@ class ExcelEditorController extends Controller
       return redirect()->back();
       // dd($data);
 
+    }
+    public function provisionView()
+    {
+      return view('reports/provisionInput');
+    }
+    public function provisionUpload(Request $request)
+    {
+      $name ='Dirki';
+      $path1 = request()->file('file')->store('temp');
+      $path= storage_path('app').'/'.$path1;
+
+      // $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
+      $data = Excel::ToArray(new DataImport, $path)[0];
+
+      unset($data[0]);
+
+      // dd($data);
+      foreach ($data as $row) {
+        if($row[0] && $row[1] && is_numeric($row[1]) && $row[2])
+        {
+          $UNIX_DATE = ($row[0] - 25569) * 86400;
+
+          $date = date("Y-m-d H:i:s", $UNIX_DATE);
+
+          if(!DB::table('buchungsliste')->where('date',$date)->where('contractnumber',$row[1])->exists())
+          {
+            if($row[1] != null)
+            {
+              if(is_int($row[1]))
+              {
+                $contract = $row[1];
+              }
+              else {
+                $contract = 0;
+              }
+              if($date == '08.12.2020')
+              {
+                echo $date;
+              }
+              DB::table('buchungsliste')
+              ->updateOrInsert([
+                'date' => $date,
+                'contractnumber' => $contract,
+                'SaveAgent' => $row[2],
+                'edited_by' => $name,
+              ]);
+            }
+          }
+        }
+      }
+
+      // return redirect()->back();
     }
 
 }

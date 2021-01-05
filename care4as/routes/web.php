@@ -51,6 +51,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport');
   Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload');
+  Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view');
+  Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload');
+
   //end Report Routes
 
   //questions & surveys
@@ -86,6 +89,9 @@ Route::group(['middleware' => ['auth']], function () {
   }
   )->name('trainings');
 });
+//Provision
+  Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');
+//end Provison
 //offers
 Route::get('/offers/create', 'OfferController@create')->name('offers.create');
 Route::post('/offers/store', 'OfferController@store')->name('offers.store');
