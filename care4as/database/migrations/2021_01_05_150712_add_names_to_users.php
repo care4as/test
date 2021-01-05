@@ -15,7 +15,7 @@ class AddNamesToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
               $table->text('surname')->nullable();
-              $table->text('name')->nullable();
+              $table->text('lastname')->nullable();
         });
     }
 
@@ -28,7 +28,7 @@ class AddNamesToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['surname']);
-            $table->dropColumn(['name']);
+            $table->dropColumn(['lastname']);
         });
     }
 }
