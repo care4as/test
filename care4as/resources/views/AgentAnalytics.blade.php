@@ -34,12 +34,12 @@
               @csrf
               <table class="table table-bordered w-50" style="">
                 <tr>
-                  <th>test</th>
-                  <td>testname</td>
+                  <th>Vorname</th>
+                  <td><input type="text" name="surname" value="{{$user->surname}}"></td>
                 </tr>
                 <tr>
-                  <th>Alter</th>
-                  <td>testname</td>
+                  <th>Nachname</th>
+                  <td><input type="text" name="lastname" value="{{$user->lastname}}"></td>
                 </tr>
                 <tr>
                   <th>PersonID</th>
