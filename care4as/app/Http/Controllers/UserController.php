@@ -97,6 +97,8 @@ class UserController extends Controller
         $user = User::find($id);
         $user->person_id = $request->person_id;
         $user->dailyhours = $request->dailyhours;
+        $user->surname = $request->surname;
+        $user->lastname = $request->lastname;
 
 
         $user->save();
