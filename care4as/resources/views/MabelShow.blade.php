@@ -47,6 +47,7 @@
       <table class='table table-hover w-100'>
         <tr>
           <th>#</th>
+          <th>Case ID</th>
           <th>gemabelt von</th>
           <th>gemabelt an</th>
           <th>aus folgendem Grund</th>
@@ -56,8 +57,9 @@
           @foreach($mabelCs as $mabelC)
             <tr>
               <td>{{$mabelC->id}}</td>
-              <td>{{$mabelC->DidIt->name}}</td>
-              <td>{{$mabelC->GotIt->name}}</td>
+              <td>{{$mabelC->ContractID}}</td>
+              <td>{{$mabelC->DidIt->surname}} {{$mabelC->DidIt->surname}}</td>
+              <td>{{$mabelC->GotIt->surname}} {{$mabelC->GotIt->lastname}}</td>
               <td>{{$mabelC->WhyBro}}</td>
               <td>{{$mabelC->created_at}}</td>
               <td><a href="route()"> <i class="now-ui-icons ui-1_zoom-bold"></i></a></td>

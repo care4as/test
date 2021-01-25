@@ -30,7 +30,8 @@
                 <thead>
                   <tr>
                   <th>#</th>
-                    <th>name</th>
+                    <th>username</th>
+                    <th>Name</th>
                     <th>options</th>
                   <tr>
                 </thead>
@@ -39,8 +40,8 @@
                     <tr>
                       <td>{{$user->id}}</td>
                       <td>{{$user->name}}</td>
+                      <td>{{$user->surname}} {{$user->lastname}} </td>
                       <td>{{$user->role}}</td>
-
                       <td>
                         <a href="">
                         <button class="btn btn-danger btn-fab btn-icon btn-round">
