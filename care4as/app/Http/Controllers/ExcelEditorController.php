@@ -7,16 +7,117 @@ use App\Imports\DataImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\ImportDailyAgentChunks;
 
 use App\DailyAgent;
 use App\CapacitySuitReport;
 use App\RetentionDetail;
 
-
 class ExcelEditorController extends Controller
 {
-    public function test(Request $request)
+    public function dailyAgentView($value='')
     {
+      return view('reports/dailyAgent');
+    }
+    public function dailyAgentUploadQueue(Request $request)
+    {
+      //determines which sheet should be used
+      if($request->sheet)
+      {
+        $sheet = $request->sheet;
+      }
+      else {
+        $sheet = 3;
+      }
+
+      if($request->fromRow)
+      {
+        $fromRow = $request->fromRow;
+      }
+      else
+      {
+        $fromRow = 2;
+      }
+      //determines from which row the the app starts editing the data
+
+
+      $request->validate([
+        'file' => 'required',
+        // 'name' => 'required',
+      ]);
+      $file = request()->file('file');
+      $path = $file->getRealPath();
+
+      ini_set('memory_limit', '-1');
+
+      $data = Excel::ToArray(new DataImport, request()->file('file'));
+      $counter=0;
+      $insertData=array();
+
+      dd($data[2]);
+      for($i=$fromRow;$i <= count($data[3])-1; $i++ )
+      {
+        $cell = $data[$sheet-1][$i];
+        $UNIX_DATE = ($cell[1] - 25569) * 86400;
+        $date = date("Y-m-d H:i:s", $UNIX_DATE);
+
+        if(is_numeric($cell[24]))
+        {
+          $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
+          $start_time = date("Y-m-d H:i:s",$UNIX_DATE2);
+        }
+
+        $UNIX_DATE3 = ($cell[25] - 25569) * 86400;
+        $end_time = date("Y-m-d H:i:s", $UNIX_DATE3);
+
+        if($cell[4] == '')
+        {
+          $cell[4] = 0;
+        }
+        if($cell[13] == '')
+        {
+          $cell[13] = 0;
+        }
+        if($cell[15] == '')
+        {
+          $cell[15] = 0;
+        }
+
+        $insertData[$i] = [
+          'date' => $date,
+          'start_time' => $start_time,
+          'end_time' => $end_time,
+          'kw' => $cell[3],
+          'dialog_call_id' => $cell[5],
+          'agent_id' => $cell[7],
+          'agent_login_name' => $cell[8],
+          'agent_name' => $cell[9],
+          'agent_group_id' => $cell[10],
+          'agent_group_name' => $cell[11],
+          'agent_team_id' => $cell[12],
+          'queue_id' => $cell[18],
+          'queue_name' => $cell[20],
+          'skill_id' => $cell[21],
+          'skill_name' => $cell[22],
+          'status' => $cell[23],
+          'time_in_state' => $cell[26],
+          ];
+      }
+        dd($insertData);
+        $insertData = array_chunk($insertData, 1000);
+        DB::table('dailyagent')->insert($insertData[0]);
+        for($i=0; $i <= count($insertData)-1; $i++)
+        {
+          ImportDailyAgentChunks::dispatch($insertData[$i])
+          ->delay(now()->addMinutes($i*2));
+        }
+
+        return redirect()->back();
+    }
+    public function dailyAgentUpload(Request $request)
+    {
+      DB::disableQueryLog();
+      // return 1;
       $request->validate([
         'file' => 'required',
         // 'name' => 'required',
@@ -24,8 +125,9 @@ class ExcelEditorController extends Controller
       $file = request()->file('file');
       $path = $file->getRealPath();
       $data = Excel::ToArray(new DataImport, request()->file('file'));
+      $counter=0;
 
-      for($i=0;$i <= 10; $i++ )
+      for($i=0;$i <= 1; $i++ )
       {
         unset($data[0][$i]);
       }
@@ -36,6 +138,7 @@ class ExcelEditorController extends Controller
       // dd($data[0]);
         foreach($data[0] as $cell)
         {
+          $counter = $counter +1;
           $dailyAgent = new DailyAgent;
 
           if($cell[4] == '')
@@ -54,33 +157,36 @@ class ExcelEditorController extends Controller
           $UNIX_DATE = ($cell[0] - 25569) * 86400;
           $dailyAgent->date = date("Y-m-d H:i:s", $UNIX_DATE);
 
-          $UNIX_DATE2 = ($cell[23] - 25569) * 86400;
-          $dailyAgent->start_time = date("Y-m-d H:i:s",$UNIX_DATE2);
+          if(is_numeric($cell[24]))
+          {
+            $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
+            $dailyAgent->start_time = date("Y-m-d H:i:s",$UNIX_DATE2);
+          }
+          else {
+            return 'Datenfehler in Zeile '.$counter.':'.json_encode($cell[23]);
+          }
 
-          $UNIX_DATE3 = ($cell[24] - 25569) * 86400;
+          $UNIX_DATE3 = ($cell[25] - 25569) * 86400;
           $dailyAgent->end_time = date("Y-m-d H:i:s", $UNIX_DATE3);
-
-          $dailyAgent->kw = $cell[2];
-          $dailyAgent->dialog_call_id  = $cell[4];
-          $dailyAgent->agent_id = $cell[6];
-          $dailyAgent->agent_login_name = $cell[7];
-          $dailyAgent->agent_name = $cell[8];
-          $dailyAgent->agent_group_id = $cell[9];
-          $dailyAgent->agent_group_name = $cell[10];
-          $dailyAgent->agent_team_id = $cell[11];
-          $dailyAgent->agent_team_name = $cell[14];
-          $dailyAgent->queue_id = $cell[20];
-          $dailyAgent->queue_name = $cell[21];
-          $dailyAgent->skill_id = $cell[15];
-          $dailyAgent->skill_name = $cell[16];
-          $dailyAgent->status = $cell[22];
-          $dailyAgent->time_in_state = $cell[25];
-          $dailyAgent->timezone = $cell[26];
+          $dailyAgent->kw = $cell[3];
+          $dailyAgent->dialog_call_id  = $cell[5];
+          $dailyAgent->agent_id = $cell[7];
+          $dailyAgent->agent_login_name = $cell[8];
+          $dailyAgent->agent_name = $cell[9];
+          $dailyAgent->agent_group_id = $cell[10];
+          $dailyAgent->agent_group_name = $cell[11];
+          $dailyAgent->agent_team_id = $cell[12];
+          $dailyAgent->queue_id = $cell[18];
+          $dailyAgent->queue_name = $cell[20];
+          $dailyAgent->skill_id = $cell[21];
+          $dailyAgent->skill_name = $cell[22];
+          $dailyAgent->status = $cell[23];
+          $dailyAgent->time_in_state = $cell[26];
 
           $dailyAgent->save();
 
         }
-      // $array = (new ExcelImport)->toArray($file);
+
       return redirect()->back();
     }
     public function capacitysuitReport ()
@@ -180,17 +286,13 @@ class ExcelEditorController extends Controller
 
       // $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
       $data = Excel::ToArray(new DataImport, $path)[0];
-
       unset($data[0]);
-
       // dd($data);
       foreach ($data as $row) {
         if($row[0] && $row[1] && is_numeric($row[1]) && $row[2])
         {
           $UNIX_DATE = ($row[0] - 25569) * 86400;
-
           $date = date("Y-m-d H:i:s", $UNIX_DATE);
-
           if(!DB::table('buchungsliste')->where('date',$date)->where('contractnumber',$row[1])->exists())
           {
             if($row[1] != null)

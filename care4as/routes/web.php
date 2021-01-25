@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
 
+
 Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
 Route::get('/messageOfTheDay', function()
 {
@@ -22,6 +23,7 @@ Route::get('/messageOfTheDay', function()
 })->name('dailyMessage');
 
 Route::group(['middleware' => ['auth']], function () {
+  Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard');
   //users
   Route::get('/create/user', 'UserController@create')->name('user.create');
   Route::post('/create/user', 'UserController@store')->name('create.user.post');
@@ -49,6 +51,9 @@ Route::group(['middleware' => ['auth']], function () {
   //Report Routes
   Route::view('/report/retention/', 'reports.report')->name('reports.report');
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
+  // Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
+  Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue');
+  Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import');
   Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport');
   Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload');
   Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view');
@@ -56,6 +61,12 @@ Route::group(['middleware' => ['auth']], function () {
 
   //end Report Routes
 
+  //start Mabelgründe
+  Route::get('/mabel/Form', 'MabelController@create')->name('mabelcause.create');
+  Route::post('/mabel/index/filtered', 'MabelController@showThemAllFiltered')->name('mabelcause.index.filtered');
+  Route::post('/mabel/save', 'MabelController@save')->name('mabelcause.save');
+  Route::get('/mabel/index', 'MabelController@showThemAll')->name('mabelcause.index');
+  //end Mabelgründe
   //questions & surveys
   Route::get('/question/create', 'QuestionController@create')->name('question.create');
   Route::get('/survey/create', 'SurveyController@create')->name('survey.create');

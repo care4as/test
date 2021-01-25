@@ -15,7 +15,6 @@
           <p><h4> Buchungslisten </h4> </p>
           <p>Link: Z:\1und1 DSL RET IB\Agenten\NACHARBEITS-AV\DSL_MOB_Shared\01_Buchungsliste\ + Monatsordner</p>
         </div>
-
       </div>
       <div class="row">
         <div class="col text-center bg-light">
@@ -23,7 +22,6 @@
             @csrf
             <div class="dz-message text-dark" data-dz-message><span>Bitte Dateien einfügen</span></div>
           </form>
-
           <!-- <form class="" action="{{route('excel.provision.upload')}}" method="post" enctype="multipart/form-data">
             @csrf
             <input type="file" name="file" value="">
@@ -34,7 +32,6 @@
     </div>
   </div>
 </div>
-
 @endsection
 
 @section('additional_js')
