@@ -12,7 +12,6 @@
           <label for="case">Vertragsnummer</label>
           <input type="text" class="form-control" name="contractnumber" id="case" aria-describedby="case" Placeholder="z.B. 90191910">
         </div>
-
         <div class="form-group">
           <label for="exampleFormControlSelect1">Für wen?</label>
            <select class="form-control" name="whogotit" id="exampleFormControlSelect1">
