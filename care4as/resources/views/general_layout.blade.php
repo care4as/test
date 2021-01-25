@@ -113,11 +113,9 @@
             </a>
             <div class="collapse" id="collapseMable" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-
                   <li><a href="{{route('mabelcause.create')}}">Mabelgrund aufnehmen</a></li>
                   <li><a href="{{route('mabelcause.index')}}">alle Mabelgründe</a></li>
               </ul>
-
             </div>
           </li>
           @endif
