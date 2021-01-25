@@ -58,7 +58,7 @@
             <tr>
               <td>{{$mabelC->id}}</td>
               <td>{{$mabelC->ContractID}}</td>
-              <td>{{$mabelC->DidIt->surname}} {{$mabelC->DidIt->surname}}</td>
+              <td>{{$mabelC->DidIt->surname}} {{$mabelC->DidIt->lastname}}</td>
               <td>{{$mabelC->GotIt->surname}} {{$mabelC->GotIt->lastname}}</td>
               <td>{{$mabelC->WhyBro}}</td>
               <td>{{$mabelC->created_at}}</td>
