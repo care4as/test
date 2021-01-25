@@ -18,7 +18,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('TrackingToday')->get();
+        $users = User::with('TrackingToday')
+        ->orderBy('surname', 'ASC')
+        ->get();
 
         return view('usersIndex', compact('users'));
     }
@@ -244,6 +246,6 @@ class UserController extends Controller
 
     public function testAHT()
     {
-      
+
     }
 }

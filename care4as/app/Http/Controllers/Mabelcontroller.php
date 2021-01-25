@@ -13,13 +13,16 @@ class Mabelcontroller extends Controller
       $stats2 = array();
       $mabelCs = mabelcause::with('DidIt', 'GotIt')->get();
 
+      $mabelCs = $query->get();
+
       $users= \App\User::where('role','agent')
       ->get();
 
       foreach ($users as $user) {
         // code...
         $count = $mabelCs->where('WhoGotIt', $user->id)->count();
-        $stats1[$user->name] = $count;
+        $username = $user->surname.' '.$user->lastname;
+        $stats1[$username] = $count;
       }
 
       $mablers= \App\User::where('role','!=','agent')
@@ -28,7 +31,8 @@ class Mabelcontroller extends Controller
       foreach ($mablers as $user) {
         // code...
         $count = $mabelCs->where('WhoDidIt', $user->id)->count();
-        $stats2[$user->name] = $count;
+        $username = $user->surname.' '.$user->lastname;
+        $stats2[$username] = $count;
       }
       // $whoGotTheMost = $mabelCs->pluck('');
       // dd($count);
@@ -52,7 +56,6 @@ class Mabelcontroller extends Controller
             return $q->where('created_at','<=',request('to'));
         });
       }
-
       $mabelCs = $query->get();
 
       $users= \App\User::where('role','agent')
@@ -61,7 +64,8 @@ class Mabelcontroller extends Controller
       foreach ($users as $user) {
         // code...
         $count = $mabelCs->where('WhoGotIt', $user->id)->count();
-        $stats1[$user->name] = $count;
+        $username = $user->surname.' '.$user->lastname;
+        $stats1[$username] = $count;
       }
 
       $mablers= \App\User::where('role','!=','agent')
@@ -70,7 +74,8 @@ class Mabelcontroller extends Controller
       foreach ($mablers as $user) {
         // code...
         $count = $mabelCs->where('WhoDidIt', $user->id)->count();
-        $stats2[$user->name] = $count;
+        $username = $user->surname.' '.$user->lastname;
+        $stats2[$username] = $count;
       }
 
       return view('MabelShow', compact('mabelCs', 'stats1', 'stats2'));
