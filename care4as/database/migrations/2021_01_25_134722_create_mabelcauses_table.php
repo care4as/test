@@ -19,6 +19,8 @@ class CreateMabelcausesTable extends Migration
             $table->text('ContractID');
             $table->text('WhoGotIt');
             $table->text('WhyBro')->nullable();
+            $table->text('category');
+            $table->text('productgroup');
             $table->timestamps();
         });
     }

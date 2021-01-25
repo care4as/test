@@ -47,10 +47,12 @@
       <table class='table table-hover w-100'>
         <tr>
           <th>#</th>
-          <th>Case ID</th>
+          <th>Vertragsnummer</th>
           <th>gemabelt von</th>
-          <th>gemabelt an</th>
+          <th>gemabelt für</th>
           <th>aus folgendem Grund</th>
+          <th>Produktgruppe</th>
+          <th>Kategorie</th>
           <th>erstellt am</th>
           <th>Optionen</th>
         </tr>
@@ -61,6 +63,8 @@
               <td>{{$mabelC->DidIt->surname}} {{$mabelC->DidIt->lastname}}</td>
               <td>{{$mabelC->GotIt->surname}} {{$mabelC->GotIt->lastname}}</td>
               <td>{{$mabelC->WhyBro}}</td>
+              <td>{{$mabelC->category}}</td>
+              <td>{{$mabelC->productgroup}}</td>
               <td>{{$mabelC->created_at}}</td>
               <td><a href="route()"> <i class="now-ui-icons ui-1_zoom-bold"></i></a></td>
             </tr>

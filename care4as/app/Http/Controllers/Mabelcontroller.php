@@ -91,6 +91,8 @@ class Mabelcontroller extends Controller
       $mabelC->ContractID = $request->contractnumber;
       $mabelC->WhoGotIt = $request->whogotit;
       $mabelC->WhyBro = $request->why;
+      $mabelC->category = $request->category;
+      $mabelC->productgroup = $request->productgroup;
 
       $mabelC->save();
 
