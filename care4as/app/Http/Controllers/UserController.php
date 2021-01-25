@@ -146,6 +146,7 @@ class UserController extends Controller
       $sumSSCOrders = 0;
       $sumBSCOrders = 0;
       $sumPortalOrders = 0;
+      $AHT = null;
 
       $monthlyReports = null;
       // dd($request);
@@ -241,8 +242,8 @@ class UserController extends Controller
       return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports'));
     }
 
-    public function saveCancel(Request $request)
+    public function testAHT()
     {
-
+      
     }
 }

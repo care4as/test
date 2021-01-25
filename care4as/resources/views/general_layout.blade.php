@@ -105,6 +105,20 @@
             </div>
           </li>
           @endif
+          @if(Auth()->user()->role == 'superadmin' or (Auth()->user()->role =='overhead'))
+          <li>
+            <a class="" data-toggle="collapse" href="#collapseMable" role="button" aria-expanded="false" aria-controls="collapseUser">
+              <i class="now-ui-icons users_single-02"></i>
+              <p><b>Mabelgründe</b></p>
+            </a>
+            <div class="collapse" id="collapseMable" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+                  <li><a href="{{route('mabelcause.create')}}">Mabelgrund aufnehmen</a></li>
+                  <li><a href="{{route('mabelcause.index')}}">alle Mabelgründe</a></li>
+              </ul>
+            </div>
+          </li>
+          @endif
           @if(Auth()->user()->role == 'superadmin')
           <li>
             <a class="" data-toggle="collapse" href="#collapseReport" role="button" aria-expanded="false" aria-controls="collapseCancel">
@@ -115,6 +129,7 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
               <li><a href="{{route('reports.report')}}">Retention Details Report</a></li>
               <li><a href="{{route('reports.capacitysuitreport')}}">Capacity Suit Report</a></li>
+              <li><a href="{{route('excel.dailyAgent.import')}}">Daily Agent Import</a></li>
               <li><a href="{{route('reports.provision.view')}}">Provision</a></li>
             </ul>
           </li>
