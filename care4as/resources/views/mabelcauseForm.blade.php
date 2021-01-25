@@ -12,15 +12,32 @@
           <label for="case">Vertragsnummer</label>
           <input type="text" class="form-control" name="contractnumber" id="case" aria-describedby="case" Placeholder="z.B. 90191910">
         </div>
-
         <div class="form-group">
           <label for="exampleFormControlSelect1">Für wen?</label>
-             <select class="form-control" name="whogotit" id="exampleFormControlSelect1">
-               @foreach($users as $user)
-                <option value="{{$user->id}}">{{$user->name}}</option>
-              @endforeach
-             </select>
-           </div>
+           <select class="form-control" name="whogotit" id="exampleFormControlSelect1">
+             @foreach($users as $user)
+              <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
+            @endforeach
+           </select>
+         </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Produktgruppe</label>
+           <select class="form-control" name="category" id="exampleFormControlSelect1" required>
+              <option value="" disabled selected></option>
+              <option value="SSC">SSC</option>
+              <option value="BSC">BSC</option>
+              <option value="Portal">Portal</option>
+           </select>
+         </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Schweregrad</label>
+           <select class="form-control" name="productgroup" id="exampleFormControlSelect1" required>
+              <option value="" disabled selected> </option>
+              <option value="green">systemseitig benötigt</option>
+              <option value="yellow">Anfang der Grauzone</option>
+              <option value="red">Ende der Grauzone</option>
+           </select>
+         </div>
         <div class="form-group">
           <label for="cause">Mabelgrund</label>
           <textarea class="form-control" name="why" id="cause" rows="3" Placeholder="bitte hier eingeben..."></textarea>
