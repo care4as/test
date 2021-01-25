@@ -13,8 +13,6 @@ class Mabelcontroller extends Controller
       $stats2 = array();
       $mabelCs = mabelcause::with('DidIt', 'GotIt')->get();
 
-      $mabelCs = $query->get();
-
       $users= \App\User::where('role','agent')
       ->get();
 
