@@ -105,4 +105,9 @@ class Mabelcontroller extends Controller
 
       return view('mabelcauseForm', compact('users'));
     }
+    public function delete($id)
+    {
+      mabelcause::where('id',$id)->delete();
+      return redirect()->back();
+    }
 }

@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/mabel/index/filtered', 'MabelController@showThemAllFiltered')->name('mabelcause.index.filtered');
   Route::post('/mabel/save', 'MabelController@save')->name('mabelcause.save');
   Route::get('/mabel/index', 'MabelController@showThemAll')->name('mabelcause.index');
+  Route::get('/mabel/delete/{id}', 'MabelController@delete')->name('mabel.delete');
   //end Mabelgründe
   //questions & surveys
   Route::get('/question/create', 'QuestionController@create')->name('question.create');
