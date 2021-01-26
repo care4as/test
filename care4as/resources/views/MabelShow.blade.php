@@ -63,8 +63,8 @@
               <td>{{$mabelC->DidIt->surname}} {{$mabelC->DidIt->lastname}}</td>
               <td>{{$mabelC->GotIt->surname}} {{$mabelC->GotIt->lastname}}</td>
               <td>{{$mabelC->WhyBro}}</td>
-              <td>{{$mabelC->category}}</td>
-              <td>{{$mabelC->productgroup}}</td>
+              <td >{{$mabelC->category}}</td>
+              <td style="background-color: {{$mabelC->productgroup}};">{{$mabelC->productgroup}}</td>
               <td>{{$mabelC->created_at}}</td>
               <td><a href="route()"> <i class="now-ui-icons ui-1_zoom-bold"></i></a></td>
             </tr>
