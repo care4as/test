@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post');
   Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
   Route::post('/user/update/{id}', 'UserController@update')->name('user.update');
+  Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
+  Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
   //endusers
   //cancels
   Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses');

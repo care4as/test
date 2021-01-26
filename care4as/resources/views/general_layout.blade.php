@@ -263,6 +263,7 @@
                   </div>
                   <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Profileinstellungen</a>
+                    <a class="dropdown-item" href="{{route('user.changePasswort.view')}}">Passwort ändern</a>
                     <a class="dropdown-item" href="{{route('user.logout')}}">Logout</a>
                 </div>
               </li>

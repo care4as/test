@@ -244,8 +244,23 @@ class UserController extends Controller
       return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports'));
     }
 
-    public function testAHT()
+    public function changePassword(Request $request)
     {
+      $request->validate([
+        'newpassword' => 'required',
+        'confirm_newpassword' => 'required|same:newpassword',
+      ]);
 
+      if($request->newpassword == $request->confirm_newpassword)
+      {
+          Auth()->user()->password = Hash::make($request->newpassword);
+          Auth()->user()->save();
+      }
+
+      return redirect()->back();
+    }
+    public function changePasswordView()
+    {
+      return view('changePassword');
     }
 }
