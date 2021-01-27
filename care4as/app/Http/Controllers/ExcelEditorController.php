@@ -39,8 +39,6 @@ class ExcelEditorController extends Controller
         $fromRow = 2;
       }
       //determines from which row the the app starts editing the data
-
-
       $request->validate([
         'file' => 'required',
         // 'name' => 'required',
@@ -54,8 +52,9 @@ class ExcelEditorController extends Controller
       $counter=0;
       $insertData=array();
 
-      dd($data[2]);
-      for($i=$fromRow;$i <= count($data[3])-1; $i++ )
+      // dd($data[$sheet-1]);
+
+      for($i=$fromRow-1; $i <= count($data[$sheet-1])-1; $i++ )
       {
         $cell = $data[$sheet-1][$i];
         $UNIX_DATE = ($cell[1] - 25569) * 86400;
@@ -103,13 +102,13 @@ class ExcelEditorController extends Controller
           'time_in_state' => $cell[26],
           ];
       }
-        dd($insertData);
-        $insertData = array_chunk($insertData, 1000);
+        // dd($insertData);
+        $insertData = array_chunk($insertData, 2500);
         DB::table('dailyagent')->insert($insertData[0]);
         for($i=0; $i <= count($insertData)-1; $i++)
         {
           ImportDailyAgentChunks::dispatch($insertData[$i])
-          ->delay(now()->addMinutes($i*2));
+          ->delay(now()->addMinutes($i*0.5));
         }
 
         return redirect()->back();

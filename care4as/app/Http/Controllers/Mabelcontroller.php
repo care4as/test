@@ -62,8 +62,12 @@ class Mabelcontroller extends Controller
       foreach ($users as $user) {
         // code...
         $count = $mabelCs->where('WhoGotIt', $user->id)->count();
-        $username = $user->surname.' '.$user->lastname;
-        $stats1[$username] = $count;
+        if($count > 0)
+        {
+          $username = $user->surname.' '.$user->lastname;
+          $stats1[$username] = $count;
+
+        }
       }
 
       $mablers= \App\User::where('role','!=','agent')
@@ -72,8 +76,12 @@ class Mabelcontroller extends Controller
       foreach ($mablers as $user) {
         // code...
         $count = $mabelCs->where('WhoDidIt', $user->id)->count();
-        $username = $user->surname.' '.$user->lastname;
-        $stats2[$username] = $count;
+        if($count > 0)
+        {
+          $username = $user->surname.' '.$user->lastname;
+          $stats2[$username] = $count;
+        }
+
       }
 
       return view('MabelShow', compact('mabelCs', 'stats1', 'stats2'));
