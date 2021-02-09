@@ -38,7 +38,6 @@
   <link href="{{asset('css/main.css')}}" rel="stylesheet" />
   @yield('additional_css')
 </head>
-
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="orange">
@@ -245,9 +244,9 @@
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                  <a class="dropdown-item" href="#">test1</a>
+                  <a class="dropdown-item" href="#">test2</a>
+                  <a class="dropdown-item" href="#">test3</a>
                 </div>
               </li>
               <li class="nav-item dropdown">
