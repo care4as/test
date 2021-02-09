@@ -16,7 +16,6 @@ class UserTracking extends Migration
       Schema::create('user_tracking', function (Blueprint $table) {
           $table->id('id');
           $table->integer('user_id');
-          // $table->date('date')->foreignId();
           $table->integer('calls')->default(0);
           $table->integer('save')->default(0);
           $table->integer('cancel')->default(0);
