@@ -42,6 +42,7 @@ class CancelController extends Controller
         // $categories->('Category');
         $categories2 = json_encode($categories2);
         $dokus = Cancel::where('status', 1)->paginate(25);
+
         return view('cancelsAdmin', compact('cancels','dokus','categories2'));
     }
     public function filter(Request $request)
@@ -88,6 +89,7 @@ class CancelController extends Controller
         // $categories->('Category');
         $categories2 = json_encode($categories2);
         $dokus = Cancel::where('status', 1)->get();
+
         return view('cancelsAdmin', compact('cancels','dokus','categories2'));
     }
     /**
@@ -160,6 +162,13 @@ class CancelController extends Controller
 
       $cancel->save();
 
+      if($request->cancel)
+      {
+        $type = explode('/',$request->cancel)[1];
+        $division = explode('/',$request->cancel)[0];
+
+        return redirect()->route('user.trackEvent', ['action' => 'cancel', 'division' => $division, 'type' => $type, 'operator' => 1]);
+      }
       //track the cancel
 
       return redirect()->back();
