@@ -51,25 +51,35 @@ class UserTrackingController extends Controller
 
               break;
       }
-      // if (Support\Carbon::now()->isToday())
-      // {
-      //   switch ($action) {
-      //     case 'save':
-      //         echo "i ist gleich 0";
-      //         break;
-      //     case 'service':
-      //         echo "i ist gleich 1";
-      //         break;
-      //     case 'cancel':
-      //         echo "i ist gleich 2";
-      //         break;
-      // }
-      //   return 1;
-      // }
-      // else
-      // {
-      //   return 2;
-      // }
+
       return redirect()->route('dashboard');
+    }
+    public function getTracking($id='')
+    {
+      $timestamparray = array();
+      $quotaarray = array();
+      $trackings = UserTRacking::where('user_id',$id)->whereDate('created_at', \Carbon\Carbon::today())->get();
+      $saves = $trackings->where('save',1);
+
+      foreach ($saves as $key => $save) {
+
+        $countcalls = $trackings->where('division','call')->where('created_at','<=',$save->created_at)->count();
+        $countsaves= $saves->where('save','1')->where('created_at','<=',$save->created_at)->count();
+        $countsavecorrections= $saves->where('save','-1')->where('created_at','<=',$save->created_at)->count();
+
+        if($countcalls == 0)
+        {
+          $countcalls = 1;
+        }
+        $quota = round((($countsaves-$countsavecorrections) / $countcalls)*100, 0);
+
+        $timestamparray[] = 'Save/'.$save->created_at->format('h:i:s');
+        $quotaarray[] = $quota;
+        // $dataarray[] = array($save->created_at->format('h:m:s'), $quota);
+      }
+      $dataarray = array($timestamparray, $quotaarray);
+      return response()->json($dataarray);
+      // return response()->json(1);
+      // dd($timestamparray);
     }
 }

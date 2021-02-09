@@ -117,6 +117,7 @@ Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategory
 Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
 
+Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 Route::get('/test', function(){
-  return view('home');}
+  return view('dashboardtracker');}
   )->name('test');

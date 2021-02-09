@@ -10,7 +10,10 @@ body
         flex-wrap: wrap;
         font-size: 0.8rem;
     }
-
+    .rowdashboardsize
+    {
+      min-height: 50px;
+    }
     .card-simulator
     {
         width: 31%;

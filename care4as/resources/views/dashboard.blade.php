@@ -1,7 +1,7 @@
 @extends('general_layout')
 
 @section('content')
-<div class="container-fluid" style="width: 75vw;">
+<div class="container-fluid" style="width: 75vw; font-size: 0.9em;">
   <div class="row bg-light align-items-center"  style="border-radius: 15px;">
     <div class="col">
         <div class="row">
@@ -50,18 +50,32 @@
     <div class="col text-center bg-light mr-1 mt-1 align-items-center" style="border-radius: 15px;">
       <h5 class="m-1"> Retention</h5>
       <div class="row">
+        <div class="col-1 ml-1">
+          <div class="row" style="height: 23.5px;">
+          </div>
+          <div class="row align-items-center rowdashboardsize p-1">
+            <div class="col p-0">
+              SSC
+            </div>
+          </div>
+          <div class="row align-items-center rowdashboardsize">
+            <div class="col p-0">
+              BSC
+            </div>
+          </div>
+          <div class="row align-items-center rowdashboardsize">
+            <div class="col p-0">
+              Portal
+            </div>
+          </div>
+        </div>
         <div class="col">
           <div class="row justify-content-center">
-            <div class="col-1 p-0">
-            </div>
             <div class="col">
               Save
             </div>
           </div>
           <div class="row align-items-center">
-            <div class="col-1 p-0 ml-1">
-              SSC
-            </div>
             <div class="col p-0">
               <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'save', 'division' => 'Retention', 'type' => 'SSC','operator' => 1])}}">
                 <i class="now-ui-icons ui-1_simple-add"></i>
@@ -80,9 +94,6 @@
             </div>
           </div>
           <div class="row align-items-center">
-            <div class="col-1 p-0 ml-1">
-              BSC
-            </div>
             <div class="col p-0">
               <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'save', 'division' => 'Retention', 'type' => 'BSC','operator' => 1])}}">
                   <i class="now-ui-icons ui-1_simple-add"></i>
@@ -98,9 +109,7 @@
             </div>
           </div>
           <div class="row align-items-center">
-            <div class="col-1 p-0 ml-1">
-              Portal
-            </div>
+
             <div class="col p-0">
               <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'save', 'division' => 'Retention', 'type' => 'Portal', 'operator' => 1])}}">
                   <i class="now-ui-icons ui-1_simple-add"></i>
@@ -123,7 +132,7 @@
           <div class="row align-items-center">
 
             <div class="col p-0">
-              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" data-toggle="modal" data-target="#exampleModal" >
+              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" data-toggle="modal" data-target="#exampleModal" data-division="Retention" data-type="SSC">
                   <i class="now-ui-icons ui-1_simple-add"></i>
               </a>
             </div>
@@ -131,14 +140,14 @@
                   @if($user->TrackingToday){{$user->TrackingToday->where('type','SSC')->where('division','Retention')->sum('cancel')}} @else 0 @endif
             </div>
             <div class="col p-0">
-              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'cancel', 'division' => 'Retention', 'type' => 'SSC', 'operator' => 1])}}">
+              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'cancel', 'division' => 'Retention', 'type' => 'SSC', 'operator' => 0])}}">
                   <i class="now-ui-icons ui-1_simple-delete"></i>
               </a>
             </div>
           </div>
           <div class="row align-items-center">
             <div class="col p-0">
-              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'cancel', 'division' => 'Retention', 'type' => 'BSC', 'operator' => 1])}}">
+              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm"  data-toggle="modal" data-target="#exampleModal" data-division="Retention" data-type="BSC">
                 <i class="now-ui-icons ui-1_simple-add"></i>
               </a>
             </div>
@@ -146,14 +155,14 @@
               @if($user->TrackingToday){{$user->TrackingToday->where('type','BSC')->where('division','Retention')->sum('cancel')}} @else 0 @endif
             </div>
             <div class="col p-0">
-              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'cancel', 'division' => 'Retention', 'type' => 'Portal','operator' => 0])}}">
+              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'cancel', 'division' => 'Retention', 'type' => 'BSC','operator' => 0])}}">
                   <i class="now-ui-icons ui-1_simple-delete"></i>
               </a>
             </div>
           </div>
           <div class="row align-items-center">
             <div class="col p-0">
-              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'cancel', 'division' => 'Retention', 'type' => 'Portal','operator' => 1])}}">
+              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm"  data-toggle="modal" data-target="#exampleModal" data-division="Retention" data-type="Portal">
                   <i class="now-ui-icons ui-1_simple-add"></i>
               </a>
             </div>
@@ -161,9 +170,9 @@
               @if($user->TrackingToday){{$user->TrackingToday->where('type','Portal')->where('division','Retention')->sum('cancel')}} @else 0 @endif
             </div>
             <div class="col p-0">
-              <button class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm">
+              <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'cancel', 'division' => 'Retention', 'type' => 'Portal','operator' => 0])}}">
                   <i class="now-ui-icons ui-1_simple-delete"></i>
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -626,7 +635,7 @@
           <button class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round">
               <i class="now-ui-icons ui-1_simple-add"></i>
             </button>
-          <div class="d-flex align-items-center border bordercolor m-1" style="  border-width: 9px;  border-style: solid;  border-color: orange;">
+          <div class="d-flex align-items-center border bordercolor m-1" style="  border-width: 9px; border-style: solid; border-color: orange;">
               KüRü (5)
           </div>
           <button class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round">
@@ -651,8 +660,8 @@
         <div class="row ">
           <div class="col text-center text-white bg-light" style="border-radius: 15px;">
             <form class="w-50  text-dark p-4" action="{{route('cancels.save')}}" method="post" style="margin-left: 25%;">
-
               @csrf
+              <input type="hidden" name="cancel" value="" id="type_division">
               <div class="form-group text-dark">
                 <label for="case">Case ID</label>
                 <input type="text" class="form-control" name="case" id="case" aria-describedby="case" Placeholder="z.B. 90191910">
@@ -663,7 +672,7 @@
               </div>
               <div class="form-group">
                 <label for="exampleFormControlSelect1">Kategorie</label>
-                   <select class="form-control" id="exampleFormControlSelect1">
+                   <select class="form-control" name="Category" id="exampleFormControlSelect1">
                      <option>Fehlrouting</option>
                      <option>Negativflag</option>
                      <option>Angebot zu teuer</option>
@@ -679,11 +688,8 @@
               <button type="submit" class="btn btn-primary">Daten absenden</button>
               </form>
           </div>
-
         </div>
       </div>
-
-
     </div>
   </div>
 </div>
@@ -732,6 +738,23 @@
     // Javascript method's body can be found in assets/js/demos.js
     // demo.initDashboardPageCharts();
 
+    $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
+
+    var data_division = '';
+    var data_type = '';
+
+    if (typeof $(this).data('division') !== 'undefined') {
+
+      data_division = $(this).data('division');
+      if(typeof $(this).data('type') !== 'undefined')
+      {
+        data_type = $(this).data('type')
+      }
+    }
+
+    var data = data_division+'/'+data_type
+    $('#type_division').val(data);
+  })
   });
 </script>
 @endsection

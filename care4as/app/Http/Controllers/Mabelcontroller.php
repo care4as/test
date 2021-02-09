@@ -66,7 +66,6 @@ class Mabelcontroller extends Controller
         {
           $username = $user->surname.' '.$user->lastname;
           $stats1[$username] = $count;
-
         }
       }
 
@@ -83,7 +82,7 @@ class Mabelcontroller extends Controller
         }
 
       }
-
+      $mabelCs= (new Collection($mabelCs))->paginate(20);
       return view('MabelShow', compact('mabelCs', 'stats1', 'stats2'));
 
     }

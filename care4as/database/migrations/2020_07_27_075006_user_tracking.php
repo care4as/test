@@ -18,8 +18,8 @@ class UserTracking extends Migration
           $table->integer('user_id');
           $table->date('date')->foreignId();
           $table->integer('calls')->default(0);
-          $table->integer('saves')->default(0);
-          $table->integer('cancels')->default(0);
+          $table->integer('save')->default(0);
+          $table->integer('cancel')->default(0);
           $table->integer('service')->default(0);
           $table->text('type')->default('SSC');
           $table->text('division')->default('Retention');
