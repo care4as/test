@@ -29,7 +29,6 @@
     </div>
   </div>
 </div>
-
 @endsection
 
 @section('additional_js')
