@@ -10,7 +10,7 @@
               <i class="now-ui-icons ui-1_simple-add"></i>
             </a>
                <button class="btn btn-primary btn-outline-primary m-1">@if($user->TrackingToday){{$user->TrackingToday->sum('calls')}} @else 0 @endif</button>
-            <a class="btn btn-primary btn-fab btn-icon btn-round m-1" data-toggle="modal" data-target="#exampleModal" >
+            <a class="btn btn-primary btn-fab btn-icon btn-round m-1" href="{{route('user.trackEvent', ['action' => 'sub', 'division' => 'call', 'type' => 0, 'operator' => 0])}}">
               <!-- -->
                 <i class="now-ui-icons ui-1_simple-delete text-white"></i>
               </a>
@@ -40,7 +40,6 @@
         <div class="row border border-bottom m-0">
           <p class="">Monat CR: 50%</p>
         </div>
-
         '
         data-html="true">
         CR einblenden</button>

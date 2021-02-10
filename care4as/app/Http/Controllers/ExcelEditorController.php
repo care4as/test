@@ -81,26 +81,30 @@ class ExcelEditorController extends Controller
         {
           $cell[15] = 0;
         }
+        //check if the row hast data
+        if($date && $cell[7])
+        {
+          $insertData[$i] = [
+            'date' => $date,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'kw' => $cell[3],
+            'dialog_call_id' => $cell[5],
+            'agent_id' => $cell[7],
+            'agent_login_name' => $cell[8],
+            'agent_name' => $cell[9],
+            'agent_group_id' => $cell[10],
+            'agent_group_name' => $cell[11],
+            'agent_team_id' => $cell[12],
+            'queue_id' => $cell[18],
+            'queue_name' => $cell[20],
+            'skill_id' => $cell[21],
+            'skill_name' => $cell[22],
+            'status' => $cell[23],
+            'time_in_state' => $cell[26],
+            ];
+        }
 
-        $insertData[$i] = [
-          'date' => $date,
-          'start_time' => $start_time,
-          'end_time' => $end_time,
-          'kw' => $cell[3],
-          'dialog_call_id' => $cell[5],
-          'agent_id' => $cell[7],
-          'agent_login_name' => $cell[8],
-          'agent_name' => $cell[9],
-          'agent_group_id' => $cell[10],
-          'agent_group_name' => $cell[11],
-          'agent_team_id' => $cell[12],
-          'queue_id' => $cell[18],
-          'queue_name' => $cell[20],
-          'skill_id' => $cell[21],
-          'skill_name' => $cell[22],
-          'status' => $cell[23],
-          'time_in_state' => $cell[26],
-          ];
       }
         // dd($insertData);
         $insertData = array_chunk($insertData, 2500);
@@ -110,7 +114,6 @@ class ExcelEditorController extends Controller
           ImportDailyAgentChunks::dispatch($insertData[$i])
           ->delay(now()->addMinutes($i*0.5));
         }
-
         return redirect()->back();
     }
     public function dailyAgentUpload(Request $request)
