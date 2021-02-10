@@ -16,12 +16,12 @@
         @csrf
         <input type="file" name="file" value="">
 
-        <div class="form-row">
-          <label for="sheet">Welches Sheet?</label> <br>
-          <input class="form-control w-50" type="number" id="sheet" name="sheet" value="">
+        <div class="form-row mt-2 justify-content-center">
+          <label for="sheet">Welches Sheet?</label> </br>
+          <input class="form-control w-25" type="number" id="sheet" name="sheet" value="">
         </div>
-        <div class="form-row">
-          <label for="sheet">Ab welcher Zeile?</label>
+        <div class="form-row mt-2 justify-content-center">
+          <label for="sheet">Ab welcher Zeile?</label></br>
           <input class="form-control w-25" type="number" name="fromRow" value="">
         </div>
         <button type="submit" name="button">Absenden</button>
