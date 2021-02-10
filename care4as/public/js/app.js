@@ -1962,8 +1962,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
-    this.getUserData(this.userid);
+    console.log('Tracker Component mounted.');
+    this.getUserData(50);
   },
   methods: {
     createChart: function createChart(chartId, chartData) {
@@ -1987,6 +1987,7 @@ __webpack_require__.r(__webpack_exports__);
 
       console.log(this.userid);
       axios.get('user/getTracking/' + id).then(function (response) {
+        // console.log(response)
         _this.createChart('myChart', response.data);
       })["catch"](function (err) {
         console.log('error');

@@ -20,8 +20,8 @@ export default {
     }
   },
     mounted() {
-        console.log('Component mounted.')
-        this.getUserData(this.userid)
+        console.log('Tracker Component mounted.')
+        this.getUserData(50)
     },
   methods:{
     createChart(chartId, chartData) {
@@ -48,8 +48,9 @@ export default {
   getUserData(id)
   {
     console.log(this.userid)
-    axios.get('user/getTracking/'+50)
+    axios.get('user/getTracking/'+id)
     .then(response => {
+      // console.log(response)
       this.createChart('myChart',response.data)
       })
     .catch(function (err) {
