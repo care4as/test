@@ -21,7 +21,7 @@ export default {
   },
     mounted() {
         console.log('Tracker Component mounted.')
-        this.getUserData(50)
+        this.getUserData(1)
     },
   methods:{
     createChart(chartId, chartData) {
@@ -51,7 +51,15 @@ export default {
     axios.get('user/getTracking/'+id)
     .then(response => {
       // console.log(response)
-      this.createChart('myChart',response.data)
+      if(response.data[0][0])
+      {
+        console.log(response.data)
+        this.createChart('myChart',response.data)
+      }
+      else
+      {
+        console.log('No Data avaiable')
+      }
       })
     .catch(function (err) {
       console.log('error')

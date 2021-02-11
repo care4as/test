@@ -26,7 +26,7 @@
         Calls +-
       </div>
       <div class="col">
-        <button class="btn btn-primary float-right" data-toggle="modal" data-target="#redirectModal"> Rückruf weiterleiten</button>
+        <button class="btn btn-primary float-right" data-toggle="modal" data-target="#redirectModal">Rückruf weiterleiten</button>
       </div>
       <div class="col">
         <button class="btn btn-primary float-right" data-container="body" data-toggle="popover" data-placement="top" data-content='
@@ -395,11 +395,9 @@
         </div>
       </div>
     </div>
-
     <div class="col-2 text-center bg-light mt-1 ml-1" style="border-radius: 15px;">
       <h5 class="m-1">KüRü</h5>
         <div class="row justify-content-center text-white" style="height: 21px;">
-
         </div>
         <div class="row align-items-center">
           <div class="col-3 p-0">
@@ -641,11 +639,9 @@
             <i class="now-ui-icons ui-1_simple-delete"></i>
           </button>
       </div>
-
     </div>
   </div>
 </div>
-
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
@@ -678,13 +674,19 @@
                      <option>zuwenig DV</option>
                      <option>lange Laufzeiten</option>
                      <option>DSL Kunde</option>
+                     <option>oVL Kunde</option>
+                     <option>Authentifizierung nicht möglich</option>
+                     <option>HAG zu hoch</option>
+                     <option>unzufrieden mit der 1&1</option>
+                     <option>sonstige </option>
+                     <option>keine Netzabdeckung</option>
                    </select>
                  </div>
               <div class="form-group">
                 <label for="cause">Cancelgrund</label>
                 <textarea class="form-control" name="Cause" id="cause" rows="3" Placeholder="bitte hier eingeben..."></textarea>
               </div>
-              <button type="submit" class="btn btn-primary">Daten absenden</button>
+              <button type="submit" class="btn btn-primary" id="button1">Daten absenden</button>
               </form>
           </div>
         </div>
@@ -731,17 +733,33 @@
 @section('additional_js')
 <script>
   $(document).ready(function() {
+
     $(function () {
     $('[data-toggle="popover"]').popover()
   })
+  let element = document.getElementById('exampleFormControlSelect1');
+
+  element.addEventListener("change", function(){
+    if(element.value == "sonstige") {
+      // console.log($('#button1').disabled)
+      document.getElementById("button1").disabled = true;
+      alert('gib bitte eine Beschreibung im Textfeld ein')
+      let textarea = document.getElementById("cause");
+      textarea.addEventListener("input", function(){
+        document.getElementById("button1").disabled = false;
+      }, false);
+    }
+    else {
+      {
+        document.getElementById("button1").disabled = false;
+      }
+    }
+  }, false);
     // Javascript method's body can be found in assets/js/demos.js
     // demo.initDashboardPageCharts();
-
     $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
-
     var data_division = '';
     var data_type = '';
-
     if (typeof $(this).data('division') !== 'undefined') {
 
       data_division = $(this).data('division');
@@ -750,7 +768,6 @@
         data_type = $(this).data('type')
       }
     }
-
     var data = data_division+'/'+data_type
     $('#type_division').val(data);
   })
