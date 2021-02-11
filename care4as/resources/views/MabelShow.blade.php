@@ -66,7 +66,7 @@
               <td >{{$mabelC->category}}</td>
               <td style="background-color: {{$mabelC->productgroup}};">{{$mabelC->productgroup}}</td>
               <td>{{$mabelC->created_at}}</td>
-              <td><a href=""> <i class="now-ui-icons ui-1_zoom-bold p-1">@if(Auth()->user()->role == 'superadmin')</i></a><a href="{{route('mabel.delete', ['id' => $mabelC->id])}}"><i class="far fa-trash-alt p-1">@endif</i></a></td>
+              <td><a href=""> <i class="now-ui-icons ui-1_zoom-bold p-1"></i></a>@if(Auth()->user()->role == 'superadmin')<a href="{{route('mabel.delete', ['id' => $mabelC->id])}}"><i class="far fa-trash-alt p-1">@endif</i></a></td>
             </tr>
           @endforeach
       </table>
