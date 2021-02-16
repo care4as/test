@@ -11,7 +11,6 @@
         <div class="row ">
           <div class="col text-center text-white bg-light" style="border-radius: 15px;">
             <form class="w-50  text-dark p-4" action="{{route('cancels.save')}}" method="post" style="margin-left: 25%;">
-
               @csrf
               <div class="form-group text-dark">
                 <label for="case">Case ID</label>
@@ -42,8 +41,6 @@
 
         </div>
       </div>
-
-
     </div>
   </div>
 </div>

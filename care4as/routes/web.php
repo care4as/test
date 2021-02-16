@@ -35,34 +35,42 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
   Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
   //endusers
-  //cancels
-  Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses');
-  Route::get('/cancels/admin', 'CancelController@index')->name('cancels.index');
-  Route::get('/cancels/agent/{id}', 'CancelController@agentCancels')->name('agent.cancels');
-  Route::get('/cancels/callback', 'CallbackController@callback')->name('cancels.callback');
-  Route::get('/cancels/delete/{id}', 'CancelController@destroy')->name('cancels.delete');
-  Route::get('/cancels/status/{id}/{status}', 'CancelController@changeStatus')->name('cancels.change.status');
-  Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save');
-  Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post');
-  //endcancels
-  //dashboard
-  Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard');
 
+  //cancels
+    Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses');
+    Route::get('/cancels/admin', 'CancelController@index')->name('cancels.index');
+    Route::get('/cancels/agent/{id}', 'CancelController@agentCancels')->name('agent.cancels');
+    Route::get('/cancels/callback', 'CallbackController@callback')->name('cancels.callback');
+    Route::get('/cancels/delete/{id}', 'CancelController@destroy')->name('cancels.delete');
+    Route::get('/cancels/status/{id}/{status}', 'CancelController@changeStatus')->name('cancels.change.status');
+    Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save');
+    Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post');
+  //endcancels
+
+  //dashboard
+    Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard');
   //enddashboard
 
   //Report Routes
-  Route::view('/report/retention/', 'reports.report')->name('reports.report');
-  Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
-  // Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
-  Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue');
-  Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import');
-  Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport');
-  Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload');
-  Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view');
-  Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload');
-
+    Route::view('/report/retention/', 'reports.report')->name('reports.report');
+    Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
+    // Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
+    Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue');
+    Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import');
+    Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport');
+    Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload');
+    Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view');
+    Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload');
   //end Report Routes
 
+  //roles and rights
+    Route::get('/roles/index', 'RolesController@index')->name('roles.index');
+    Route::get('/role/show/{id}', 'RolesController@show')->name('role.show');
+    Route::post('/roles/save', 'RolesController@store')->name('role.save');
+    Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete');
+    Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update');
+
+  //end Roles & Rights
   //start Mabelgründe
   Route::get('/mabel/Form', 'MabelController@create')->name('mabelcause.create');
   Route::post('/mabel/index/filtered', 'MabelController@showThemAllFiltered')->name('mabelcause.index.filtered');
@@ -94,9 +102,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/feedback/show/{id}', 'FeedbackController@show')->name('feedback.show');
   Route::post('/feedback/fill', 'FeedbackController@store')->name('feedback.store');
   //
-
   Route::post('/callbackcauses', 'CallbackController@store')->name('callback.save');
-
   //trainings
   Route::get('/trainings/offers', function(){
     return view('TrainingOffers');

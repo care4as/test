@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Cancel;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
 use App\Support\Collection;
 
 
@@ -93,15 +95,17 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+      // dd($request);
       $request->validate([
         // 'person_id' => 'required|integer'
         ]);
+
         $user = User::find($id);
         $user->person_id = $request->person_id;
         $user->dailyhours = $request->dailyhours;
         $user->surname = $request->surname;
         $user->lastname = $request->lastname;
-
+        $user->agent_id = $request->agentid;
 
         $user->save();
         return redirect()->back();
@@ -150,6 +154,7 @@ class UserController extends Controller
       $sumPortalOrders = 0;
       $AHT = null;
 
+      $monthlyAHT = null;
       $monthlyReports = null;
       // dd($request);
       $user = User::find($id);
@@ -237,11 +242,77 @@ class UserController extends Controller
         // echo $endOfMonth.'</br>';
 
         $monthlyReports[] = \App\RetentionDetail::where('person_id',$user->person_id)->whereDate('call_date','>',$startOfMonth)->whereDate('call_date','<',$endOfMonth)->select('calls_smallscreen','calls_bigscreen','calls_portale','orders_smallscreen','orders_bigscreen','orders_portale','mvlzNeu','rlzPlus')->get();
+
+        $monthlyActive = DB::table('dailyagent')
+        ->where('agent_id',$user->agent_id)
+        ->where('status','Wrap Up')
+        // ->orWhere('status','Ringing')
+        // ->orWhere('status','In Call')
+        // ->orWhere('status','On Hold')
+        ->whereDate('date','>',$startOfMonth)->whereDate('date','<',$endOfMonth)
+        ->sum('time_in_state');
+
+        // $monthlyWrapUp = DB::table('dailyagent')
+        // ->where('agent_id',$user->agent_id)
+        // ->where('status','Wrap Up')
+        // ->whereDate('date','>',$startOfMonth)->whereDate('date','<',$endOfMonth)
+        // ->sum('time_in_state');
+
+        // $monthlyRinging = DB::table('dailyagent')
+        // ->where('agent_id',$user->agent_id)
+        // ->where('status','Ringing')
+        // ->whereDate('date','>',$startOfMonth)->whereDate('date','<',$endOfMonth)
+        // ->sum('time_in_state');
+        //
+        // $monthlyInCall = DB::table('dailyagent')
+        // ->where('agent_id',$user->agent_id)
+        // ->where('status','In Call')
+        // ->whereDate('date','>',$startOfMonth)->whereDate('date','<',$endOfMonth)
+        // ->sum('time_in_state');
+        //
+        // $monthlyOnHold = DB::table('dailyagent')
+        // ->where('agent_id',$user->agent_id)
+        // ->where('status','On Hold')
+        // ->whereDate('date','>',$startOfMonth)->whereDate('date','<',$endOfMonth)
+        // ->sum('time_in_state');
+
+        $monthlyCalls = DB::table('dailyagent')
+        ->where('agent_id',$user->agent_id)
+        ->where('status','Ringing')
+        ->count();
+
+
+
+        if($monthlyCalls == 0)
+        {
+          $monthlyCalls = 1;
+        }
+
+        $monthlyAHT[] = ($monthlyWrapUp)/$monthlyCalls;
+        dd($monthlyActive);
+        // $monthlyAHT[] = ($monthlyWrapUp + $monthlyRinging + $monthlyInCall + $monthlyOnHold)/$monthlyCalls;
+        // dd($monthlyAHT);
       }
-      // dd($monthlyReports);
+
+      //get the AHT data
+      $wrapup = DB::table('dailyagent')->where('agent_id',$user->agent_id)->where('status','Wrap Up')->sum('time_in_state');
+
+      $ringing = DB::table('dailyagent')->where('agent_id',$user->agent_id)->where('status','Ringing')->sum('time_in_state');
+      $incall = DB::table('dailyagent')->where('agent_id',$user->agent_id)->where('status','In Call')->sum('time_in_state');
+      $onhold = DB::table('dailyagent')->where('agent_id',$user->agent_id)->where('status','On Hold')->sum('time_in_state');
+      $countringing = DB::table('dailyagent')->where('agent_id',$user->agent_id)->where('status','Ringing')->count();
+
+      if($countringing == 0)
+      {
+        $countringing = 1;
+      }
+
+      $AHT= ($wrapup + $ringing +$incall + $onhold)/$countringing;
+
+
       // return 'break';
 
-      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports'));
+      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports','monthlyAHT','AHT'));
     }
 
     public function changePassword(Request $request)

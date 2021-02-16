@@ -12,9 +12,8 @@
           <div class="nav-tabs-navigation">
               <div class="nav-tabs-wrapper">
                   <ul class="nav nav-tabs" data-tabs="tabs">
-                      <li class="nav-item">
-                          <a class="nav-link active" href="#home" data-toggle="tab">Deine Cancelliste</a>
-
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#home" data-toggle="tab">Deine Cancelliste</a>
                   </ul>
               </div>
           </div>
@@ -42,11 +41,9 @@
                       <td style="max-width: 100px;">{{$cancel->Notice}}</td>
                       <td>{{$cancel->created_at}}</td>
                       <td>
-
                         <button class="btn btn-danger btn-fab btn-icon btn-round">
                             <i class="now-ui-icons ui-1_simple-remove"></i>
                         </button>
-
                       </td>
                     <tr>
                   @endforeach

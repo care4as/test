@@ -178,6 +178,7 @@
             </ul>
           </li>
           @endif
+
           @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'trainee')
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
@@ -192,6 +193,18 @@
               @endif
               <!-- <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li> -->
             </ul>
+          </li>
+          @endif
+          @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'trainee')
+          <li>
+            <a class="" data-toggle="collapse" href="#collapseRoles" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+              <i class="now-ui-icons education_atom"></i>
+              <p><b>Rollen & Rechte</b></p>
+            </a>
+            <div class="collapse" id="collapseRoles" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('roles.index')}}">Rollen</a> </li>
+              </ul>
           </li>
           @endif
         </ul>

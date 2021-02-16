@@ -101,9 +101,7 @@
                         <td>@if($user->TrackingToday){{$user->TrackingToday->where('type','Portal')->where('division','Retention')->sum('service')}} @else 0 @endif</td>
                         <td>
                           <a href="">
-
                           </a>
-
                         </td>
                       <tr>
                     @endforeach
@@ -113,14 +111,11 @@
 
               </div>
               <div class="tab-pane" id="history">
-
               </div>
           </div>
       </div>
     </div>
-
     </div>
-
   </div>
 </div>
 
