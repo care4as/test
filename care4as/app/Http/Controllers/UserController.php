@@ -237,6 +237,15 @@ class UserController extends Controller
         // echo $endOfMonth.'</br>';
 
         $monthlyReports[] = \App\RetentionDetail::where('person_id',$user->person_id)->whereDate('call_date','>',$startOfMonth)->whereDate('call_date','<',$endOfMonth)->select('calls_smallscreen','calls_bigscreen','calls_portale','orders_smallscreen','orders_bigscreen','orders_portale','mvlzNeu','rlzPlus')->get();
+
+        $monthlyActive = DB::table('dailyagent')
+        ->where('agent_id',$user->agent_id)
+        ->where('status','Wrap Up')
+        ->orWhere('status','Ringing')
+        ->orWhere('status','In Call')
+        ->orWhere('status','On Hold')
+        ->whereDate('date','>',$startOfMonth)->whereDate('date','<',$endOfMonth)
+        ->sum('time_in_state');
       }
       // dd($monthlyReports);
       // return 'break';
@@ -265,6 +274,6 @@ class UserController extends Controller
     }
     public function getAHTofMonth($month)
     {
-      
+
     }
 }
