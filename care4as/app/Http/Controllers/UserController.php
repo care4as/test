@@ -263,4 +263,8 @@ class UserController extends Controller
     {
       return view('changePassword');
     }
+    public function getAHTofMonth($month)
+    {
+      
+    }
 }
