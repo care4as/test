@@ -86,7 +86,7 @@ class ExcelEditorController extends Controller
           $cell[15] = 0;
         }
         //check if the row hast data
-        if($date && $cell[7] && !DB::table('dailyagent')->where('date',$date)->where('agent_id', $cell[7])->where('status',$cell[23])->exists())
+        if($date &&  $cell[8])
         {
           $insertData[$i] = [
             'date' => $date,
@@ -108,7 +108,6 @@ class ExcelEditorController extends Controller
             'time_in_state' => $cell[26],
             ];
         }
-
       }
         // dd($insertData);
         $insertData = array_chunk($insertData, 3500);

@@ -100,26 +100,7 @@
           <div class="tab-pane fade show active" id="scorecard" role="tabpanel" aria-labelledby="home-tab">
             <div class="container mt-4 bg-white">
               <div class="row">
-                <!-- Table Scorecard Variante 1 -->
-                <!-- <table class="table table-hover">
-                  <tr>
-                    <th>SSC</th>
-                    <th>BSC</th>
-                    <th>Poratle</th>
-                    <th>RLZ Quote</th>
-                    <th>AHT</th>
-                    <th>KQ</th>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                  </tr>
-                </table> -->
-                <!-- Table Scorecard Variante 2 -->
+
                 <table class="table table-hover">
                   <tr>
                     <th>#</th>
@@ -264,15 +245,15 @@
                     <td>@if($report->sum('calls_smallscreen')!=0){{round(($report->sum('orders_smallscreen')/$report->sum('calls_smallscreen'))*100,2)}} @else  keine SSC Calls @endif</td>
                     <td>@if($report->sum('calls_bigscreen')!=0){{round(($report->sum('orders_bigscreen')/$report->sum('calls_bigscreen'))*100,2)}} @else  keine BSC Calls @endif</td>
                     <td>@if($report->sum('calls_portale')!=0){{round(($report->sum('orders_portale')/$report->sum('calls_portale'))*100,2)}} @else keine Portal Calls @endif</td>
-                    <td>test</td>
+                    <td><button type="button" name="button" onclick="getAHT()">AHT {{date("F", mktime(0, 0, 0, $counter, 10))}}</button> </td>
                     <td>test</td>
                     @else
-                    <td>keine Werte</td>
+                      <td>keine Werte</td>
                     @endif
                   </tr>
-                  @php
-                    $counter = $counter+1;
-                  @endphp
+                    @php
+                      $counter = $counter+1;
+                    @endphp
                   @endforeach
 
                 </table>

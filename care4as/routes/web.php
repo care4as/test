@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/user/update/{id}', 'UserController@update')->name('user.update');
   Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
   Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
+  Route::get('/user/getAHT', 'UserController@getAHTofMonth')->name('user.aht');
   //endusers
   //cancels
   Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses');
