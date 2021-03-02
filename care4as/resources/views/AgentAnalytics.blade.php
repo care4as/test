@@ -1,5 +1,14 @@
 @extends('general_layout')
 
+@section('additional_css')
+<style media="screen">
+  .form-control
+  {
+    min-width: 150px;
+  }
+</style>
+@endsection
+
 @section('content')
 <div class="container-fluid mt-5" style="border-radius: 15px;width: 75vw;">
   <div class="row">
@@ -32,27 +41,45 @@
           <div class="row p-3 justify-content-left">
             <form class="" action="{{route('user.update', ['id' => $user->id])}}" method="post">
               @csrf
-              <table class="table table-bordered w-50" style="">
+              <table class="table table-bordered w-50">
                 <tr>
-                  <th>Vorname</th>
-                  <td><input type="text" name="surname" value="{{$user->surname}}"></td>
-                </tr>
-                <tr>
-                  <th>Nachname</th>
-                  <td><input type="text" name="lastname" value="{{$user->lastname}}"></td>
-                </tr>
-                <tr>
-                  <th>PersonID</th>
-                  <td><input type="text" name="person_id" value="{{$user->person_id}}"></td>
-                </tr>
-                <tr>
-                  <th>tägliche Arbeitszeit</th>
-                  <td><input type="text" name="dailyhours" value="{{$user->dailyhours}}"></td>
+                  <td>
+                    <table class="" style="">
+                      <tr>
+                        <th>Team</th>
+                        <td>
+                          <select class="form-control" name="team" id="Team" style="width:218px;">
+                            <option value="" @if(!$user->team)  selected @endif disabled>Wähle dein Team</option>
+                            <option value="Liesa" @if($user->team == 'Liesa') selected @endif>Liesa</option>
+
+                            <option value="Jacha" @if($user->team == 'Jacha') selected @endif>Jacha</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>  <table class="" style="">
+                      <tr>
+                        <th>Vorname</th>
+                        <td><input class="form-control" type="text" name="surname" value="{{$user->surname}}"></td>
+                      </tr>
+                      <tr>
+                        <th>Nachname</th>
+                        <td><input class="form-control" type="text" name="lastname" value="{{$user->lastname}}"></td>
+                      </tr>
+                      <tr>
+                        <th>PersonID</th>
+                        <td><input class="form-control" type="text" name="person_id" value="{{$user->person_id}}"></td>
+                      </tr>
+                      <tr>
+                        <th>tägliche Arbeitszeit</th>
+                        <td><input class="form-control" type="text" name="dailyhours" value="{{$user->dailyhours}}"></td>
+                      </tr>
+                    </table></td>
                 </tr>
               </table>
               <button type="submit" class="btn btn-rounded btn-primary rounded-pill"name="button">Daten ändern</button>
             </form>
-
           </div>
         </div>
       </div>
@@ -100,26 +127,7 @@
           <div class="tab-pane fade show active" id="scorecard" role="tabpanel" aria-labelledby="home-tab">
             <div class="container mt-4 bg-white">
               <div class="row">
-                <!-- Table Scorecard Variante 1 -->
-                <!-- <table class="table table-hover">
-                  <tr>
-                    <th>SSC</th>
-                    <th>BSC</th>
-                    <th>Poratle</th>
-                    <th>RLZ Quote</th>
-                    <th>AHT</th>
-                    <th>KQ</th>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                  </tr>
-                </table> -->
-                <!-- Table Scorecard Variante 2 -->
+
                 <table class="table table-hover">
                   <tr>
                     <th>#</th>
@@ -264,15 +272,15 @@
                     <td>@if($report->sum('calls_smallscreen')!=0){{round(($report->sum('orders_smallscreen')/$report->sum('calls_smallscreen'))*100,2)}} @else  keine SSC Calls @endif</td>
                     <td>@if($report->sum('calls_bigscreen')!=0){{round(($report->sum('orders_bigscreen')/$report->sum('calls_bigscreen'))*100,2)}} @else  keine BSC Calls @endif</td>
                     <td>@if($report->sum('calls_portale')!=0){{round(($report->sum('orders_portale')/$report->sum('calls_portale'))*100,2)}} @else keine Portal Calls @endif</td>
-                    <td>test</td>
+                    <td><button type="button" name="button" onclick="getAHT()">AHT {{date("F", mktime(0, 0, 0, $counter, 10))}}</button> </td>
                     <td>test</td>
                     @else
-                    <td>keine Werte</td>
+                      <td>keine Werte</td>
                     @endif
                   </tr>
-                  @php
-                    $counter = $counter+1;
-                  @endphp
+                    @php
+                      $counter = $counter+1;
+                    @endphp
                   @endforeach
 
                 </table>
@@ -289,6 +297,9 @@
             <div class="row">
               <div class="col-12 d-flex justify-content-center mt-3">
                 {{$reports->appends(Request::except('page'))->links()}}
+              </div>
+              <div class="col-12 d-flex justify-content-center mt-3">
+                <a href="{{route('retentiondetails.removeDuplicates')}}">Duplikate entfernen</a>
               </div>
               <div class="col">
                 <div class="d-flex p-3 w-100 justify-content-center">

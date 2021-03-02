@@ -44,11 +44,15 @@ class ExcelEditorController extends Controller
         // 'name' => 'required',
       ]);
       $file = request()->file('file');
-      $path = $file->getRealPath();
+      // $path1 = request()->file('file')->store('temp');
+      // $path= storage_path('app').'/'.$path1;
+      // $path = $file->getRealPath();
+      // $path= storage_path('app').'/'.$path1;
 
       ini_set('memory_limit', '-1');
 
-      $data = Excel::ToArray(new DataImport, request()->file('file'));
+      $data = Excel::ToArray(new DataImport, $file );
+      // $data = Excel::ToArray(new DataImport, $file );
       $counter=0;
       $insertData=array();
 
@@ -82,7 +86,7 @@ class ExcelEditorController extends Controller
           $cell[15] = 0;
         }
         //check if the row hast data
-        if($date && $cell[7])
+        if($date &&  $cell[8])
         {
           $insertData[$i] = [
             'date' => $date,
@@ -104,15 +108,15 @@ class ExcelEditorController extends Controller
             'time_in_state' => $cell[26],
             ];
         }
-
       }
         // dd($insertData);
-        $insertData = array_chunk($insertData, 2500);
-        DB::table('dailyagent')->insert($insertData[0]);
+        $insertData = array_chunk($insertData, 3500);
+        // DB::table('dailyagent')->insert($insertData[0]);
+
         for($i=0; $i <= count($insertData)-1; $i++)
         {
           ImportDailyAgentChunks::dispatch($insertData[$i])
-          ->delay(now()->addMinutes($i*0.5));
+          ->delay(now()->addMinutes($i*0.2));
         }
         return redirect()->back();
     }
@@ -250,9 +254,9 @@ class ExcelEditorController extends Controller
       foreach($data as $row)
       {
         $UNIX_DATE = ($row[1] - 25569) * 86400;
-        $date = date("Y-m-d H:i:s", $UNIX_DATE);
+        $date = date("Y-m-d", $UNIX_DATE);
 
-        if($row[0] != null && !RetentionDetail::where('person_id',$row[0])->where('call_date',$date)->exists())
+        if($row[0] && !RetentionDetail::where('person_id',$row[0])->where('call_date',$date)->exists())
         {
           $report = new RetentionDetail;
           $report->person_id = $row[0];

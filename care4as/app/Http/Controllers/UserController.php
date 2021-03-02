@@ -59,7 +59,6 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back();
-
     }
 
     /**
@@ -101,7 +100,7 @@ class UserController extends Controller
         $user->dailyhours = $request->dailyhours;
         $user->surname = $request->surname;
         $user->lastname = $request->lastname;
-
+        $user->team = $request->team;
 
         $user->save();
         return redirect()->back();
@@ -238,8 +237,6 @@ class UserController extends Controller
 
         $monthlyReports[] = \App\RetentionDetail::where('person_id',$user->person_id)->whereDate('call_date','>',$startOfMonth)->whereDate('call_date','<',$endOfMonth)->select('calls_smallscreen','calls_bigscreen','calls_portale','orders_smallscreen','orders_bigscreen','orders_portale','mvlzNeu','rlzPlus')->get();
       }
-      // dd($monthlyReports);
-      // return 'break';
 
       return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports'));
     }
@@ -262,5 +259,34 @@ class UserController extends Controller
     public function changePasswordView()
     {
       return view('changePassword');
+    }
+    public function getAHTofMonth($month, $id)
+    {
+      $startOfMonth= \Carbon\Carbon::createFromDate($year,$month,1);
+      $Date2ToTransform= \Carbon\Carbon::createFromDate($year,$month,1);
+      // $endOfMonth= \Carbon\Carbon::createFromDate($year,$i,31);
+      $endOfMonth= $Date2ToTransform->modify('last day of this month');
+
+      $monthlyActive = DB::table('dailyagent')
+      ->where('agent_id',$user->agent_id)
+      ->where('status','Wrap Up')
+      ->orWhere('status','Ringing')
+      ->orWhere('status','In Call')
+      ->orWhere('status','On Hold')
+      ->whereDate('date','>',$startOfMonth)->whereDate('date','<',$endOfMonth)
+      ->sum('time_in_state');
+
+      $monthlyCalls = DB::table('dailyagent')
+      ->where('agent_id',$user->agent_id)
+      ->where('status','Ringing')
+      ->count();
+
+      if($monthlyCalls == 0)
+      {
+        $monthlyCalls = 1;
+      }
+
+      $monthlyAHT = ($monthlyActive)/$monthlyCalls;
+      return response()->json($monthlyAHT);
     }
 }

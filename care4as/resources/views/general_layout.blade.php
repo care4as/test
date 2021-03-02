@@ -16,7 +16,6 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -40,10 +39,7 @@
 </head>
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="orange">
-      <!--
-        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
-    -->
+    <div class="sidebar" data-color="orange" id='sidebar'>
       <div class="logo bg-white m-2">
         <a href="" class="simple-text logo-normal">
           <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 190px; margin: 25px; margin-bottom: 0px; margin-top: 10px;">
@@ -100,7 +96,6 @@
                   <li><a href="{{route('user.index')}}">User Index</a></li>
                 <li><a href="#">User xyz</a></li>
               </ul>
-
             </div>
           </li>
           @endif
@@ -194,6 +189,14 @@
             </ul>
           </li>
           @endif
+            @if(Auth()->user()->role != 'agent')
+            <li>
+              <a class="" href="{{route('presentation')}}">
+                <i class="far fa-file-powerpoint"></i>
+                <p><b>Präsentation</b></p>
+              </a>
+            </li>
+            @endif
         </ul>
       </div>
     </div>
@@ -202,14 +205,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <div class="navbar-toggle">
-              <button type="button" class="navbar-toggler">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
-              </button>
-            </div>
-            <a class="navbar-brand" href="#pablo">Test</a>
+            <i class="fas fa-bars" onclick="toggleSidebar()"></i>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -319,7 +315,7 @@
   </div>
   <!--   Core JS Files   -->
   <script src="{{asset('css/now-ui-dashboard-master/assets/js/core/popper.min.js')}}"></script>
-  <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/js/plugins/perfect-scrollbar.jquery.min.js')}}"></script> -->
+  <script src="{{asset('js/main.js')}}"></script>
 
   <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/js/core/bootstrap.min.js')}}"></script> -->
   <!--  Google Maps Plugin    -->
