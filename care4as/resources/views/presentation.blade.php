@@ -215,7 +215,8 @@
             <td></td>
             <td></td>
             <td>
-              anzeigen/<a href="">löschen</a>
+              <a href="{{route('user.stats', ['id' => $user->id])}}">anzeigen</a>
+              /<a href="">löschen</a>
             </td>
           <tr>
         @endforeach
