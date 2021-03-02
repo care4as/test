@@ -48,7 +48,7 @@
                       <td>{{$user->department}} </td>
                       <td>{{$user->role}}</td>
                       <td>
-                        <a href="">
+                        <a href="{{route('user.delete', ['id' => $user->id])}}">
                         <button class="btn btn-danger btn-fab btn-icon btn-round">
                             <i class="now-ui-icons ui-1_simple-remove"></i>
                         </button>
