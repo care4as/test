@@ -296,4 +296,9 @@ class UserController extends Controller
       $monthlyAHT = ($monthlyActive)/$monthlyCalls;
       return response()->json($monthlyAHT);
     }
+    public function delete($id)
+    {
+      User::where('id',$id)->delete();
+      return redirect()->back();
+    }
 }
