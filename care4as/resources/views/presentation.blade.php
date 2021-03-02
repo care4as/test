@@ -75,8 +75,8 @@
         @foreach($users as $user)
           <tr>
             <td>{{$user->id}}</td>
-            <!-- <td>{{$user->surname}} {{$user->lastname}}</td> -->
-            <td>{{$user->name}}</td>
+            <td>{{$user->surname}} {{$user->lastname}}</td>
+            <!-- <td>{{$user->name}}</td> -->
             <td>{{$user->team}}</td>
             <td>{{$user->salesdata['calls']}}</td>
             @if($user->dailyhours and $user->salesdata['workedDays'] != 0)
