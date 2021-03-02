@@ -32,6 +32,9 @@
                   <th>#</th>
                     <th>username</th>
                     <th>Name</th>
+                    <th>team</th>
+                    <th>Abteilung</th>
+                    <th>Rolle</th>
                     <th>options</th>
                   <tr>
                 </thead>
@@ -41,6 +44,8 @@
                       <td>{{$user->id}}</td>
                       <td>{{$user->name}}</td>
                       <td>{{$user->surname}} {{$user->lastname}} </td>
+                      <td>{{$user->team}} </td>
+                      <td>{{$user->department}} </td>
                       <td>{{$user->role}}</td>
                       <td>
                         <a href="">

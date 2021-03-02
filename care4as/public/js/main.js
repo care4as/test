@@ -25,3 +25,11 @@ function toggleSidebar()
   }
 
 }
+
+function getAHT(date1,date2)
+{
+  let loader = document.querySelector('.loader')
+  loader.style.display = 'block'
+  let button = document.querySelector('.aht')
+  button.style.display = 'none'
+}

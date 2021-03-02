@@ -50,6 +50,7 @@ class ExcelEditorController extends Controller
       // $path= storage_path('app').'/'.$path1;
 
       ini_set('memory_limit', '-1');
+      DB::disableQueryLog();
 
       $data = Excel::ToArray(new DataImport, $file );
       // $data = Excel::ToArray(new DataImport, $file );
@@ -190,7 +191,6 @@ class ExcelEditorController extends Controller
           $dailyAgent->time_in_state = $cell[26];
 
           $dailyAgent->save();
-
         }
 
       return redirect()->back();
@@ -263,16 +263,26 @@ class ExcelEditorController extends Controller
           $report->call_date = $date;
           $report->department_desc = $row[9];
           $report->calls = $row[11];
-          $report->calls_smallscreen = $row[14];
-          $report->calls_bigscreen = $row[15];
-          $report->calls_portale = $row[16];
+
+          if($row[9] !='Care4as Retention DSL Eggebek')
+          {
+            $report->calls_smallscreen = $row[14];
+            $report->calls_bigscreen = $row[15];
+            $report->calls_portale = $row[16];
+            $report->orders_smallscreen = $row[18] + $row[23];
+            $report->orders_bigscreen = $row[19] + $row[24];
+            $report->orders_portale = $row[21] + $row[26];
+            $report->mvlzNeu = $row[33];
+            $report->rlzPlus = $row[35];
+          }
+          else
+          {
+            $report->mvlzNeu = $row[32];
+            $report->rlzPlus = $row[34];
+          }
           $report->orders = $row[17] + $row[22];
-          $report->orders_smallscreen = $row[18] + $row[23];
-          $report->orders_bigscreen = $row[19] + $row[24];
-          $report->orders_portale = $row[21] + $row[26];
           $report->Rabatt_Guthaben_Brutto_Mobile = $row[28];
-          $report->mvlzNeu = $row[33];
-          $report->rlzPlus = $row[35];
+
           $report->save();
         }
       }
