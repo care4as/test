@@ -47,14 +47,19 @@ class UserController extends Controller
         $request->validate([
           'name' => 'required',
           'password' => 'required',
-          // 'name' => 'required',
+          'role' => 'required',
         ]);
 
         $user = new User;
         $user->name = $request->name;
+        $user->surname = $request->surname;
+        $user->lastname = $request->lastname;
         $user->password = Hash::make($request->password);
         $user->email = 'testmail'.rand(1,2500).'@mail.de';
         $user->role = $request->role;
+        $user->team = $request->team;
+        $user->department = $request->department;
+        $user->person_id = $request->personid;
 
         $user->save();
 
@@ -101,8 +106,10 @@ class UserController extends Controller
         $user->surname = $request->surname;
         $user->lastname = $request->lastname;
         $user->team = $request->team;
+        $user->department = $request->department;
 
         $user->save();
+
         return redirect()->back();
     }
 

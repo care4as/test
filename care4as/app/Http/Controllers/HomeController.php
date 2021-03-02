@@ -28,9 +28,19 @@ class HomeController extends Controller
     }
     public function presentation(Request $request)
     {
+
+
+      if ($request->department) {
+        $department = $request->department;
+      }
+      else {
+        $department = '1&1 Mobile Retention';
+      }
       $modul = 'Userübersicht';
 
-      $users = User::where('role','agent')->get();
+      $users = User::where('role','agent')
+      ->where('department', $department)
+      ->get();
 
       foreach ($users as $key => $user) {
 
@@ -89,32 +99,52 @@ class HomeController extends Controller
           $SSCQouta = 0;
         }
         else {
-          $SSCQouta = ($sumSSCOrders/$sumSSCCalls)*100;
+          $SSCQouta = round(($sumSSCOrders/$sumSSCCalls)*100,2).'%';
         }
         if($sumBSCCalls == 0)
         {
           $BSCQuota = 0;
         }
         else {
-          $BSCQuota = ($sumBSCOrders/$sumBSCCalls)*100;
+          $BSCQuota = round(($sumBSCOrders/$sumBSCCalls)*100,2).'%';
         }
         if($sumPortalCalls == 0)
         {
           $portalQuota = 0;
         }
         else {
-          $portalQuota = ($sumPortalOrders/$sumPortalCalls) *100;
+          $portalQuota = round(($sumPortalOrders/$sumPortalCalls) *100,2).'%';
+        }
+
+        if($sumrlz24 == 0 or $sumNMlz == 0)
+        {
+          $RLZQouta = 'keine Daten';
+        }
+        else {
+          $RLZQouta = round((($sumrlz24 / ($sumrlz24 + $sumNMlz))*100),2).'%';
+        }
+        if($sumcalls == 0)
+        {
+          $gevocr = 'Fehler: keine Calls';
+        }
+        else
+        {
+          $gevocr = round(($sumorders/$sumcalls) * 100,2).'%';
         }
 
         $user->salesdata = array(
-          'calls' => $sumSSCCalls + $sumBSCCalls +$sumPortalCalls,
+          'calls' => $sumcalls,
+          'orders' => $sumorders,
           'workedDays' => $workdays,
-          'sscCalls' => $sumSSCCalls,
+          'sscQuota' => $SSCQouta,
           'sscOrders' => $sumSSCOrders,
-          'bscCalls' =>  $sumBSCCalls,
+          'bscQuota' =>  $BSCQuota,
           'bscOrders' => $sumBSCOrders,
-          'portalCalls' => $sumPortalCalls,
-          'portalOrders' => $sumPortalOrders );
+          'portalQuota' => $portalQuota,
+          'portalOrders' => $sumPortalOrders,
+          'RLZ24Qouta' => $RLZQouta,
+          'GeVo-Cr' => $gevocr,
+        );
       }
 
       // dd($users);

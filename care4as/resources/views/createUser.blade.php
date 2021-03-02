@@ -18,18 +18,29 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="inputPassword4">CCU_ID</label>
-            <input type="text" class="form-control" id="inputPassword4" placeholder="Password" value="">
+            <label for="surname">Vorname</label>
+            <input type="text" name="surname" class="form-control" id="surname" placeholder="">
           </div>
           <div class="form-group col-md-6">
-            <label for="inputPassword4">Person-ID</label>
-            <input type="text" class="form-control" name="personid" id="inputPassword4" placeholder="" value="">
+            <label for="lastname">Nachname</label>
+            <input type="text" name="lastname" class="form-control" id="lastname" placeholder="" value="">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="ccuid">CCU_ID</label>
+            <input type="text" class="form-control" id="ccuid" placeholder="" name="ccuid" value="">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="personid">Person-ID</label>
+            <input type="text" class="form-control" name="personid" id="personid" placeholder="" value="">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="role">Rolle:</label><br>
-            <select class="" name="role" id="role">
+            <select class="form-control" name="role" id="role" required>
+              <option value="" selected disabled>Wähle die Rolle</option>
               <option value="overhead">Overhead</option>
               <option value="agent">Agent</option>
             </select>
@@ -37,9 +48,28 @@
           </div>
           <div class="form-group col-md-6">
             <label for="inputPassword4">Team</label><br>
-            <select class="" name="team" id="Team">
-              <option value="overhead">Liesa</option>
-              <option value="agent">Jacha</option>
+            <select class="form-control" name="team" id="Team">
+              <option value="" selected disabled>Wähle das Team</option>
+              <option value="Liesa">Liesa</option>
+              <option value="Jacha">Jacha</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="role">Abteilung:</label><br>
+            <select class="form-control" name="department" id="department" style="width:218px;">
+              <option value="" selected disabled>Wähle die Abteilung</option>
+              <option value="1&1 DSL Retention">1&1 DSL Retention</option>
+              <option value="1&1 Mobile Retention">1&1 Mobile Retention</option>
+            </select>
+            <!-- <input type="text" class="form-control" id="inputPassword4" placeholder="Password" value="Start#15"> -->
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputPassword4">zukünftige Werte</label><br>
+            <select class="" name="" id="">
+              <option value="test">test1</option>
+              <option value="test">test2</option>
             </select>
           </div>
         </div>

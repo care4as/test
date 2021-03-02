@@ -46,12 +46,21 @@
                   <td>
                     <table class="" style="">
                       <tr>
+                        <th>Abteilung</th>
+                        <td>
+                          <select class="form-control" name="department" id="department" style="width:218px;">
+                            <option value="" @if(!$user->department)  selected @endif disabled>Wähle die Abteilung</option>
+                            <option value="1&1 DSL Retention" @if($user->department == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
+                            <option value="1&1 Mobile Retention" @if($user->department == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
                         <th>Team</th>
                         <td>
                           <select class="form-control" name="team" id="Team" style="width:218px;">
                             <option value="" @if(!$user->team)  selected @endif disabled>Wähle dein Team</option>
                             <option value="Liesa" @if($user->team == 'Liesa') selected @endif>Liesa</option>
-
                             <option value="Jacha" @if($user->team == 'Jacha') selected @endif>Jacha</option>
                           </select>
                         </td>

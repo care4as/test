@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
   // Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
   Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post');
   Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
+  Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
   Route::post('/user/update/{id}', 'UserController@update')->name('user.update');
   Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
   Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
@@ -77,7 +78,6 @@ Route::group(['middleware' => ['auth']], function () {
       );
         // return 1;
       return redirect()->back();
-
   })->name('retentiondetails.removeDuplicates');
 
   //end Report Routes
