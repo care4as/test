@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAgentIdToUsers extends Migration
+class AddTeamToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddAgentIdToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('agent_id')->nullable();
+            $table->text('team')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddAgentIdToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['agent_id']);
+            $table->dropColumn(['team']);
         });
     }
 }

@@ -1,5 +1,14 @@
 @extends('general_layout')
 
+@section('additional_css')
+<style media="screen">
+  .form-control
+  {
+    min-width: 150px;
+  }
+</style>
+@endsection
+
 @section('content')
 <div class="container-fluid mt-5" style="border-radius: 15px;width: 75vw;">
   <div class="row">
@@ -32,27 +41,45 @@
           <div class="row p-3 justify-content-left">
             <form class="" action="{{route('user.update', ['id' => $user->id])}}" method="post">
               @csrf
-              <table class="table table-bordered w-50" style="">
+              <table class="table table-bordered w-50">
                 <tr>
-                  <th>Vorname</th>
-                  <td><input type="text" name="surname" value="{{$user->surname}}"></td>
-                </tr>
-                <tr>
-                  <th>Nachname</th>
-                  <td><input type="text" name="lastname" value="{{$user->lastname}}"></td>
-                </tr>
-                <tr>
-                  <th>PersonID</th>
-                  <td><input type="text" name="person_id" value="{{$user->person_id}}"></td>
-                </tr>
-                <tr>
-                  <th>tägliche Arbeitszeit</th>
-                  <td><input type="text" name="dailyhours" value="{{$user->dailyhours}}"></td>
+                  <td>
+                    <table class="" style="">
+                      <tr>
+                        <th>Team</th>
+                        <td>
+                          <select class="form-control" name="team" id="Team" style="width:218px;">
+                            <option value="" @if(!$user->team)  selected @endif disabled>Wähle dein Team</option>
+                            <option value="Liesa" @if($user->team == 'Liesa') selected @endif>Liesa</option>
+
+                            <option value="Jacha" @if($user->team == 'Jacha') selected @endif>Jacha</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>  <table class="" style="">
+                      <tr>
+                        <th>Vorname</th>
+                        <td><input class="form-control" type="text" name="surname" value="{{$user->surname}}"></td>
+                      </tr>
+                      <tr>
+                        <th>Nachname</th>
+                        <td><input class="form-control" type="text" name="lastname" value="{{$user->lastname}}"></td>
+                      </tr>
+                      <tr>
+                        <th>PersonID</th>
+                        <td><input class="form-control" type="text" name="person_id" value="{{$user->person_id}}"></td>
+                      </tr>
+                      <tr>
+                        <th>tägliche Arbeitszeit</th>
+                        <td><input class="form-control" type="text" name="dailyhours" value="{{$user->dailyhours}}"></td>
+                      </tr>
+                    </table></td>
                 </tr>
               </table>
               <button type="submit" class="btn btn-rounded btn-primary rounded-pill"name="button">Daten ändern</button>
             </form>
-
           </div>
         </div>
       </div>
@@ -270,6 +297,9 @@
             <div class="row">
               <div class="col-12 d-flex justify-content-center mt-3">
                 {{$reports->appends(Request::except('page'))->links()}}
+              </div>
+              <div class="col-12 d-flex justify-content-center mt-3">
+                <a href="{{route('retentiondetails.removeDuplicates')}}">Duplikate entfernen</a>
               </div>
               <div class="col">
                 <div class="d-flex p-3 w-100 justify-content-center">

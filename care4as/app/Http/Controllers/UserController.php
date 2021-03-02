@@ -59,7 +59,6 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back();
-
     }
 
     /**
@@ -101,7 +100,7 @@ class UserController extends Controller
         $user->dailyhours = $request->dailyhours;
         $user->surname = $request->surname;
         $user->lastname = $request->lastname;
-
+        $user->team = $request->team;
 
         $user->save();
         return redirect()->back();
@@ -238,10 +237,6 @@ class UserController extends Controller
 
         $monthlyReports[] = \App\RetentionDetail::where('person_id',$user->person_id)->whereDate('call_date','>',$startOfMonth)->whereDate('call_date','<',$endOfMonth)->select('calls_smallscreen','calls_bigscreen','calls_portale','orders_smallscreen','orders_bigscreen','orders_portale','mvlzNeu','rlzPlus')->get();
       }
-
-
-      // dd($monthlyReports);
-      // return 'break';
 
       return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports'));
     }

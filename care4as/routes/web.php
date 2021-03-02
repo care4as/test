@@ -62,6 +62,24 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view');
   Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload');
 
+  Route::get('/retentiondetails/removeDuplicates', function(){
+    DB::statement(
+    '
+    DELETE FROM retention_details
+      WHERE id IN (
+        SELECT calc_id FROM (
+        SELECT MAX(id) AS calc_id
+        FROM retention_details
+        GROUP BY call_date, person_id
+        HAVING COUNT(id) > 1
+        ) temp)
+        '
+      );
+        // return 1;
+      return redirect()->back();
+
+  })->name('retentiondetails.removeDuplicates');
+
   //end Report Routes
 
   //start Mabelgründe
@@ -104,6 +122,11 @@ Route::group(['middleware' => ['auth']], function () {
   }
   )->name('trainings');
 });
+
+//Presentation
+  Route::get('/presentation', 'HomeController@presentation')->name('presentation');
+//endpresentation
+
 //Provision
   Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');
 //end Provison

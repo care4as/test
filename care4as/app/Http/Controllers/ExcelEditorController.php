@@ -254,9 +254,9 @@ class ExcelEditorController extends Controller
       foreach($data as $row)
       {
         $UNIX_DATE = ($row[1] - 25569) * 86400;
-        $date = date("Y-m-d H:i:s", $UNIX_DATE);
+        $date = date("Y-m-d", $UNIX_DATE);
 
-        if($row[0] != null && !RetentionDetail::where('person_id',$row[0])->where('call_date',$date)->exists())
+        if($row[0] && !RetentionDetail::where('person_id',$row[0])->where('call_date',$date)->exists())
         {
           $report = new RetentionDetail;
           $report->person_id = $row[0];

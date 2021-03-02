@@ -19,30 +19,31 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="inputPassword4">CCU_ID</label>
-            <input type="text" class="form-control" id="inputPassword4" placeholder="Password" value="Start#15">
+            <input type="text" class="form-control" id="inputPassword4" placeholder="Password" value="">
           </div>
           <div class="form-group col-md-6">
-            <label for="inputPassword4">Rolle</label>
-            <input type="text" class="form-control" id="inputPassword4" placeholder="zB. Agent / Admin / Teamleiter" >
+            <label for="inputPassword4">Person-ID</label>
+            <input type="text" class="form-control" name="personid" id="inputPassword4" placeholder="" value="">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="role">Rolle</label>
+            <label for="role">Rolle:</label><br>
             <select class="" name="role" id="role">
               <option value="overhead">Overhead</option>
               <option value="agent">Agent</option>
-
             </select>
             <!-- <input type="text" class="form-control" id="inputPassword4" placeholder="Password" value="Start#15"> -->
           </div>
           <div class="form-group col-md-6">
-            <label for="inputPassword4">Test-Daten</label>
-            <input type="text" class="form-control" id="inputPassword4" placeholder="Password" value="">
+            <label for="inputPassword4">Team</label><br>
+            <select class="" name="team" id="Team">
+              <option value="overhead">Liesa</option>
+              <option value="agent">Jacha</option>
+            </select>
           </div>
         </div>
-
-
+        <hr>
         <button type="submit" class="btn btn-primary">Create User</button>
       </form>
 
