@@ -114,7 +114,11 @@
                           {{$cancel->Notice}}
                         </div></td>
                         <td>{{$cancel->created_at}}</td>
-                        <td>{{$cancel->user->name}}</td>
+                        @if($cancel->user)
+                          <td>{{$cancel->user->name}}</td>
+                        @else
+                          <td>user gelöscht</td>
+                        @endif
                         <td>
                           <a href="{{route('cancels.delete', ['id' => $cancel->id])}}">
                           <button class="btn btn-danger btn-fab btn-icon btn-round">
