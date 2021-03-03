@@ -68,47 +68,52 @@ class ExcelEditorController extends Controller
 
         if(is_numeric($cell[18]))
         {
-          $UNIX_DATE2 = ($cell[18] - 25569) * 86400;
+          $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
           $start_time = date("Y-m-d H:i:s",$UNIX_DATE2);
         }
 
-        $UNIX_DATE3 = ($cell[19] - 25569) * 86400;
+        $UNIX_DATE3 = ($cell[25] - 25569) * 86400;
         $end_time = date("Y-m-d H:i:s", $UNIX_DATE3);
 
         if($cell[5] == '')
         {
           $cell[5] = 0;
         }
-        if($cell[13] == '')
+        if($cell[12] == '')
         {
-          $cell[13] = 0;
+          $cell[12] = 0;
         }
         if($cell[15] == '')
         {
           $cell[15] = 0;
         }
         //check if the row hast data
-        if($date &&  $cell[6])
+        if($date &&  $cell[7])
         {
+
           $insertData[$i] = [
             'date' => $date,
             'start_time' => $start_time,
             'end_time' => $end_time,
-            'kw' => $cell[2],
+            'kw' => $cell[3],
             'dialog_call_id' => $cell[5],
-            'agent_id' => $cell[6],
-            'agent_login_name' => $cell[7],
-            'agent_name' => $cell[8],
-            'agent_group_id' => $cell[9],
-            'agent_group_name' => $cell[10],
-            'agent_team_id' => $cell[11],
-            'queue_id' => $cell[13],
-            'queue_name' => $cell[14],
+            'agent_id' => $cell[7],
+            'agent_login_name' => $cell[8],
+            'agent_name' => $cell[9],
+            'agent_group_id' => $cell[10],
+            'agent_group_name' => $cell[11],
+            'agent_team_id' => $cell[12],
+            'queue_id' => $cell[18],
+            'queue_name' => $cell[20],
             'skill_id' => $cell[15],
-            'skill_name' => $cell[16],
-            'status' => $cell[17],
-            'time_in_state' => $cell[20],
+            'skill_name' => $cell[22],
+            'status' => $cell[23],
+            'time_in_state' => $cell[26],
             ];
+        }
+        else
+        {
+          // return $cell;
         }
       }
         // dd($insertData);
