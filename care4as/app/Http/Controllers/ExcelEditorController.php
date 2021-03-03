@@ -51,6 +51,7 @@ class ExcelEditorController extends Controller
 
       ini_set('memory_limit', '-1');
       DB::disableQueryLog();
+      ini_set('max_execution_time', '0'); // for infinite time of execution
 
       $data = Excel::ToArray(new DataImport, $file );
       // $data = Excel::ToArray(new DataImport, $file );
@@ -105,7 +106,7 @@ class ExcelEditorController extends Controller
             'agent_team_id' => $cell[12],
             'queue_id' => $cell[18],
             'queue_name' => $cell[20],
-            'skill_id' => $cell[15],
+            'skill_id' => $cell[21],
             'skill_name' => $cell[22],
             'status' => $cell[23],
             'time_in_state' => $cell[26],
