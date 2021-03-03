@@ -13,12 +13,12 @@
   width: 11em;
   height: 11em;
   border-radius: 50%;
-  background: #ffffff;
-  background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-  background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-  background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-  background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-  background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  /* background: #ffffff; */
+  /* background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%); */
+  /* background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%); */
+  /* background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%); */
+  /* background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%); */
+  /* background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%); */
   position: relative;
   -webkit-animation: load3 1.4s infinite linear;
   animation: load3 1.4s infinite linear;
@@ -29,7 +29,7 @@
 .loader:before {
   width: 50%;
   height: 50%;
-  background: #ffffff;
+  background: #0dc5c1;
   border-radius: 100% 0 0 0;
   position: absolute;
   top: 0;
@@ -37,7 +37,7 @@
   content: '';
 }
 .loader:after {
-  background: #0dc5c1;
+  background: #ffffff;
   width: 75%;
   height: 75%;
   border-radius: 50%;
@@ -92,9 +92,9 @@
               <div class="col-6 p-0">
                 <label for="department">Abteilung:</label>
                 <select class="form-control" name="department" id="department" style="width:218px;">
-                  <option value="" selected disabled>Wähle die Abteilung</option>
-                  <option value="1&1 DSL Retention">1&1 DSL Retention</option>
-                  <option value="1&1 Mobile Retention">1&1 Mobile Retention</option>
+                  <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
+                  <option value="1&1 DSL Retention" @if(request('department') == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
+                  <option value="1&1 Mobile Retention" @if(request('department') == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
                 </select>
               </div>
             </div>
