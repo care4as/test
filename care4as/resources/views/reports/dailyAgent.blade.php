@@ -15,7 +15,7 @@
         <input type="hidden" name="fromRow" value="2">
          <div class="dz-message text-dark" data-dz-message><span>Bitte Dateien einfügen</span></div>
       </form> -->
-      <form class="" action="{{route('excel.dailyAgent.upload.queue')}}" method="post" enctype="multipart/form-data">
+      <form class="" action="{{route('excel.dailyAgent.upload')}}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="file" name="file" value="">
 
