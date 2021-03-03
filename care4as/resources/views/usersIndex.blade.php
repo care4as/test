@@ -8,19 +8,19 @@
       <div class="card-header card-header-danger">
           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
           <div class="nav-tabs-navigation">
-              <div class="nav-tabs-wrapper">
-                  <ul class="nav nav-tabs" data-tabs="tabs">
-                      <li class="nav-item">
-                          <a class="nav-link active" href="#userinfo" data-toggle="tab">Userdaten</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#userstats" data-toggle="tab">Userstatistiken</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#history" data-toggle="tab">Weitere Funktion</a>
-                      </li>
-                  </ul>
-              </div>
+            <div class="nav-tabs-wrapper">
+              <ul class="nav nav-tabs" data-tabs="tabs">
+                  <li class="nav-item">
+                      <a class="nav-link active" href="#userinfo" data-toggle="tab">Userdaten</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#userstats" data-toggle="tab">Userstatistiken</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#history" data-toggle="tab">Weitere Funktion</a>
+                  </li>
+              </ul>
+            </div>
           </div>
       </div>
       <div class="card-body ">
@@ -106,20 +106,17 @@
                         <td>@if($user->TrackingToday){{$user->TrackingToday->where('type','Portal')->where('division','Retention')->sum('service')}} @else 0 @endif</td>
                         <td>
                           <a href="">
-
                           </a>
-
                         </td>
                       <tr>
                     @endforeach
                   </tbody>
-              </table>
-                </div>
-
+                </table>
               </div>
-              <div class="tab-pane" id="history">
+            </div>
+            <div class="tab-pane" id="history">
 
-              </div>
+            </div>
           </div>
       </div>
     </div>
