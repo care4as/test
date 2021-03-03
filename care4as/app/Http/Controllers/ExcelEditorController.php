@@ -125,6 +125,7 @@ class ExcelEditorController extends Controller
     public function dailyAgentUpload(Request $request)
     {
       DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
       // return 1;
       $request->validate([
         'file' => 'required',
