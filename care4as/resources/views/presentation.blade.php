@@ -131,7 +131,7 @@
         }
         else
         {
-          $pricepersave = 16;
+          $pricepersave = 15;
         }
       @endphp
       <table class="table table-hover table-striped  table-bordered" id="tableoverview">
