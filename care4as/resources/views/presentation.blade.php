@@ -100,7 +100,7 @@
               <div class="col-3 p-0 mr-2">
                 <label for="department">Welche MA:</label>
                 <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 50px; overflow:scroll;">
-                    @foreach($users1 = App\User::where('department',request('department'))->get() as $user)
+                    @foreach($users1 = App\User::where('department',request('department'))->where('role','agent')->get() as $user)
                       <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
                     @endforeach
                 </select>
