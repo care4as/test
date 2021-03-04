@@ -12,6 +12,7 @@ use App\Jobs\ImportDailyAgentChunks;
 use App\DailyAgent;
 use App\CapacitySuitReport;
 use App\RetentionDetail;
+use App\Hoursreport;
 
 class ExcelEditorController extends Controller
 {
@@ -49,8 +50,8 @@ class ExcelEditorController extends Controller
       // $path = $file->getRealPath();
       // $path= storage_path('app').'/'.$path1;
 
-      ini_set('memory_limit', '-1');
       DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
 
       $data = Excel::ToArray(new DataImport, $file );
@@ -345,6 +346,66 @@ class ExcelEditorController extends Controller
       }
 
       // return redirect()->back();
+    }
+    public function reportHours(Request $request)
+    {
+      if($request->sheet)
+      {
+        $sheet = $request->sheet;
+      }
+      else {
+        $sheet = 3;
+      }
+
+      if($request->fromRow)
+      {
+        $fromRow = $request->fromRow;
+      }
+      else
+      {
+        $fromRow = 2;
+      }
+      //determines from which row the the app starts editing the data
+      $request->validate([
+        'file' => 'required',
+        // 'name' => 'required',
+      ]);
+      $file = request()->file('file');
+      
+      DB::disableQueryLog();
+
+      $data = Excel::ToArray(new DataImport, $file)[0];
+      // dd($data);
+
+      for ($i=$fromRow; $i < count($data)-1; $i++) {
+
+        $row = $data[$i];
+
+
+        $UNIX_DATE = ($row[0] - 25569) * 86400;
+        $date = date("Y-m-d", $UNIX_DATE);
+
+        if(!HoursReport::where('name',$row[1])->where('date',$date)->count() > 0)
+        {
+          $hoursReport = new Hoursreport;
+          $hoursReport->date = $date;
+          $hoursReport->name = $row[1];
+          $hoursReport->IST = $row[2];
+          $hoursReport->vacation = $row[3];
+          $hoursReport->SA = $row[4];
+          $hoursReport->sick = $row[5];
+          $hoursReport->IST_Angepasst = $row[6];
+          $hoursReport->vacation_Angepasst = $row[7];
+          $hoursReport->SA_Angepasst = $row[8];
+          $hoursReport->sick_Angepasst = $row[9];
+
+          $hoursReport->save();
+        }
+
+      }
+
+      return redirect()->back();
+
     }
 
 }

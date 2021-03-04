@@ -6,15 +6,27 @@
 
 @section('content')
 <div class="container  text-center bg-light">
-  <h2>Reporting</h2>
+  <h2>Reporting Stundenreport</h2>
   <div class="row" id="app">
     <div class="col text-center bg-light">
-      <!-- <form action="/file-upload" class="dropzone" id="exceldropzone">
-        <!-- <div class="dz-message text-dark" data-dz-message><span>Bitte Dateien einfügen</span></div>
+      <!-- <form action="{{route('excel.dailyAgent.upload.queue')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="sheet" value="3">
+        <input type="hidden" name="fromRow" value="2">
+         <div class="dz-message text-dark" data-dz-message><span>Bitte Dateien einfügen</span></div>
       </form> -->
-      <form class="" action="{{route('excel.test')}}" method="post" enctype="multipart/form-data">
+      <form class="" action="{{route('reports.reportHours.post')}}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="file" name="file" value="">
+
+        <div class="form-row mt-2 justify-content-center">
+          <label for="sheet">Welches Sheet?</label> </br>
+          <input class="form-control w-25" type="number" id="sheet" name="sheet" value="">
+        </div>
+        <div class="form-row mt-2 justify-content-center">
+          <label for="sheet">Ab welcher Zeile?</label></br>
+          <input class="form-control w-25" type="number" name="fromRow" value="">
+        </div>
         <button type="submit" name="button">Absenden</button>
       </form>
     </div>

@@ -125,6 +125,7 @@
               <li><a href="{{route('reports.capacitysuitreport')}}">Capacity Suit Report</a></li>
               <li><a href="{{route('excel.dailyAgent.import')}}">Daily Agent Import</a></li>
               <li><a href="{{route('reports.provision.view')}}">Provision</a></li>
+              <li><a href="{{route('reports.reportHours.view')}}">Stundenreport</a></li>
             </ul>
           </li>
           @endif
