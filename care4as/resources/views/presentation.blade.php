@@ -100,9 +100,15 @@
               <div class="col-3 p-0 mr-2">
                 <label for="department">Welche MA:</label>
                 <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 50px; overflow:scroll;">
+                  @if(request('department'))
                     @foreach($users1 = App\User::where('department',request('department'))->where('role','agent')->get() as $user)
                       <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
                     @endforeach
+                  @else
+                    @foreach($users1 = App\User::where('department','1 & 1 Mobile Retention')->where('role','agent')->get() as $user)
+                      <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
+                    @endforeach
+                  @endif
                 </select>
               </div>
             </div>
@@ -129,7 +135,11 @@
     </div>
     </form>
   </div>
+
   <div class="row m-2 bg-white shadow justify-content-center align-self-center" >
+    <div class="col-12">
+      <h5>Retention Details letztmals geupdates am: 22.02.2021</h5>
+    </div>
     <div class="col p-1">
       @php
         if(request('department') == '1&1 DSL Retention')
