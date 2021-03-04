@@ -29,7 +29,6 @@ class HomeController extends Controller
     public function presentation(Request $request)
     {
 
-
       if ($request->department) {
         $department = $request->department;
       }
@@ -38,9 +37,18 @@ class HomeController extends Controller
       }
       $modul = 'Userübersicht';
 
-      $users = User::where('role','agent')
-      ->where('department', $department)
-      ->get();
+      if($request->employees)
+      {
+        $users = User::where('role','agent')
+        ->whereIn('id', $request->employees)
+        ->get();
+      }
+      else {
+        $users = User::where('role','agent')
+        ->where('department', $department)
+        ->get();
+      }
+
 
       foreach ($users as $key => $user) {
 
