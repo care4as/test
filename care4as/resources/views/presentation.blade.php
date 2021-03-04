@@ -89,12 +89,20 @@
         <div class="row m-0 justify-content-center">
           <div class="col-6 p-0" style="border-right: 2px solid black;">
             <div class="row m-2 justify-content-end">
-              <div class="col-6 p-0">
+              <div class="col-4 ml-1 p-0">
                 <label for="department">Abteilung:</label>
                 <select class="form-control" name="department" id="department" style="width:218px;">
                   <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
                   <option value="1&1 DSL Retention" @if(request('department') == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
                   <option value="1&1 Mobile Retention" @if(request('department') == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
+                </select>
+              </div>
+              <div class="col-3 p-0 mr-2">
+                <label for="department">Welche MA:</label>
+                <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 50px; overflow:scroll;">
+                    @foreach($users1 = App\User::where('department',request('department'))->get() as $user)
+                      <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
+                    @endforeach
                 </select>
               </div>
             </div>
@@ -110,7 +118,6 @@
                  <input type="date" id="end_date" name="end_date" class="form-control" placeholder="">
                </div>
             </div>
-
           </div>
         </div>
 
