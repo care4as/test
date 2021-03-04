@@ -371,8 +371,10 @@ class ExcelEditorController extends Controller
         // 'name' => 'required',
       ]);
       $file = request()->file('file');
-      
+
       DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0');
 
       $data = Excel::ToArray(new DataImport, $file)[0];
       // dd($data);
@@ -380,8 +382,6 @@ class ExcelEditorController extends Controller
       for ($i=$fromRow; $i < count($data)-1; $i++) {
 
         $row = $data[$i];
-
-
         $UNIX_DATE = ($row[0] - 25569) * 86400;
         $date = date("Y-m-d", $UNIX_DATE);
 
@@ -401,11 +401,8 @@ class ExcelEditorController extends Controller
 
           $hoursReport->save();
         }
-
       }
-
       return redirect()->back();
-
     }
 
 }
