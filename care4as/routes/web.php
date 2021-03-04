@@ -55,6 +55,8 @@ Route::group(['middleware' => ['auth']], function () {
 
   //Report Routes
   Route::view('/report/retention/', 'reports.report')->name('reports.report');
+  Route::view('/report/hoursreport', 'reports.reportHours')->name('reports.reportHours.view');
+  Route::post('/report/hoursreport', 'ExcelEditorController@reportHours')->name('reports.reportHours.post');
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
   Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue');

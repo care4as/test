@@ -138,7 +138,8 @@
 
   <div class="row m-2 bg-white shadow justify-content-center align-self-center" >
     <div class="col-12">
-      <h5>Retention Details letztmals geupdates am: 22.02.2021</h5>
+      <h5>letzter Retention Details Eintrag vom: {{App\RetentionDetail::orderBy('id', 'desc')->limit(1)->value('call_date')}}</h5>
+      <h5>letzter Daily Agent Eintrag vom: {{App\DailyAgent::orderBy('id', 'desc')->limit(1)->value('date')}}</h5>
     </div>
     <div class="col p-1">
       @php
