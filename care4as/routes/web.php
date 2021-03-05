@@ -132,7 +132,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     if(!$eobmail = App\eobmail::where('datum', Date('Y-m-d'))->first())
     {
-      $eobmail = new eobmail;
+      $eobmail = new App\eobmail;
       $eobmail->datum = Date('Y-m-d');
 
       $eobmail->save();
