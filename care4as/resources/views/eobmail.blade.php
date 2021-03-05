@@ -5,6 +5,10 @@
   table td{
     border: 1px solid black;
   }
+  textarea.form-control
+  {
+    max-height: 500px;
+  }
 </style>
 @endsection
 @section('content')
@@ -14,38 +18,38 @@
     <div class="row align-items-center">
       <div class="col">
         <label for="title">An:</label>
-        <input type="" name="emails" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
+        <input type="" name="emails" value="andreas.robrahn@care4as.de" placeholder="" class="form-control w-50" id="title" aria-describedby="title">
       </div>
 
     </div>
     <div class="row align-items-center">
       <div class="col">
         <label for="title">Serivecelevel:</label>
-        <input type="text" name="serivecelevel" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
+        <input type="text" name="servicelevel" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
       </div>
       <div class="col">
         <label for="title">Gevo CR:</label>
-        <input type="text" name="GeVoCr" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
+        <input type="text" name="gevocr" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
       </div>
     </div>
     <div class="row align-items-center">
       <div class="col">
         <label for="title">Erreichbarkeit:</label>
-        <input type="text" name="serivecelevel" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
+        <input type="text" name="erreichbarkeit" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
       </div>
       <div class="col">
         <label for="title">SSC CR:</label>
-        <input type="text" name="GeVoCr" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
+        <input type="text" name="ssccr" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
       </div>
     </div>
     <div class="row align-items-center">
       <div class="col">
         <label for="title">Abnahme:</label>
-        <input type="text" name="Abnahme" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
+        <input type="text" name="abnahme" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
       </div>
       <div class="col">
         <label for="title">IV Erfüllung:</label>
-        <input type="text" name="IV_Erfüllung" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
+        <input type="text" name="iverfüllung" value="" placeholder=""  class="form-control w-50" id="title" aria-describedby="title">
       </div>
     </div>
 
@@ -55,8 +59,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="col">
-        <textarea name="comments" class="form-control" rows="8" cols="200">@if(isset($eobmail))@foreach($eobmail->notes as $note)- {{($note->note) }}&#010;@endforeach @endif</textarea>
+      <div class="col"  style="height: 200px; ">
+        <textarea name="comment" class="form-control" rows="10" cols="200" style="">@if(isset($eobmail))@foreach($eobmail->notes as $note)- {{($note->note) }}&#010;@endforeach @endif</textarea>
       </div>
     </div>
     <div class="row mt-3">

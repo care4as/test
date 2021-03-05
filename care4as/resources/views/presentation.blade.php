@@ -105,7 +105,7 @@
                       <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
                     @endforeach
                   @else
-                    @foreach($users1 = App\User::where('department','1 & 1 Mobile Retention')->where('role','agent')->get() as $user)
+                    @foreach($users1 = App\User::where('role','agent')->where('department','1&1 Mobile Retention')->get() as $user)
                       <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
                     @endforeach
                   @endif
@@ -117,11 +117,11 @@
             <div class="row m-2 justify-content-start">
               <div class="col-sm-3">
                 <label for="datefrom">Von:</label>
-                 <input type="date" id="start_date" name="start_date" class="form-control" placeholder="">
+                 <input type="date" id="start_date" name="start_date" class="form-control" placeholder="" value="{{request('start_date')}}">
                </div>
                <div class="col-sm-3">
                  <label for="dateTo">Bis:</label>
-                 <input type="date" id="end_date" name="end_date" class="form-control" placeholder="">
+                 <input type="date" id="end_date" name="end_date" class="form-control" placeholder="" value="{{request('end_date')}}">
                </div>
             </div>
           </div>
@@ -136,8 +136,9 @@
   </div>
   <div class="row m-2 bg-white shadow justify-content-center align-self-center" >
     <div class="col-12">
-      <h5>Retention Details vom <u>{{App\RetentionDetail::orderBy('id', 'asc')->limit(1)->value('call_date')->format('d.m.Y')}}</u> bis zum <u>{{App\RetentionDetail::orderBy('id', 'desc')->limit(1)->value('call_date')->format('d.m.Y')}}</u>  </h5>
-      <h5>Daily Agent Zeitraum vom <u>{{App\DailyAgent::orderBy('id', 'asc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{App\DailyAgent::orderBy('id', 'desc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u> </h5>
+      <h5>Retention im Details vom <u>{{App\RetentionDetail::orderBy('id', 'asc')->limit(1)->value('call_date')->format('d.m.Y')}}</u> bis zum <u>{{App\RetentionDetail::orderBy('id', 'desc')->limit(1)->value('call_date')->format('d.m.Y')}}</u>  </h5>
+      <h5>Daily Agent im Zeitraum vom <u>{{App\DailyAgent::orderBy('id', 'asc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{App\DailyAgent::orderBy('id', 'desc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u> </h5>
+      <h5>Stundenreport im Zeitraum vom <u>{{App\Hoursreport::orderBy('id', 'asc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{App\Hoursreport::orderBy('id', 'desc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u> </h5>
     </div>
     <div class="col p-1">
       @php
@@ -176,6 +177,7 @@
             <th>Umsatz({{$pricepersave}} )</th>
             <th>Umsatz/h bez</th>
             <th>Umsatz/h Std. prod</th>
+            <th>KQ</th>
             <th>Optionen</th>
           </tr>
       </thead>
@@ -232,7 +234,13 @@
             @else
               <td>Fehler</td>
             @endif
-            <td></td>
+            @if($user->salesdata['workedHours'] != 0)
+              <td>{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['workedHours'],2) }}€</td>
+            @else
+                <td>Fehler Arbeitsstunden</td>
+            @endif
+            <td>{{$user->salesdata['workedHours'] }} / {{$user->salesdata['sickHours'] }}</td>
+            <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td>
               <a href="{{route('user.stats', ['id' => $user->id])}}">anzeigen</a>
               /<a href="">löschen</a>
