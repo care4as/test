@@ -13,7 +13,7 @@ class MailController extends Controller
     public function storeComment(Request $request)
     {
 
-      dd($request);
+      // dd($request);
 
       if(!$eobmail = eobmail::where('datum', Date('Y-m-d'))->first())
       {
