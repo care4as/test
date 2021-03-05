@@ -126,7 +126,6 @@
             </div>
           </div>
         </div>
-
     </div>
     <div class="col-12 p-0">
       <div class="row m-2 justify-content-center">
@@ -135,7 +134,6 @@
     </div>
     </form>
   </div>
-
   <div class="row m-2 bg-white shadow justify-content-center align-self-center" >
     <div class="col-12">
       <h5>Retention Details vom <u>{{App\RetentionDetail::orderBy('id', 'asc')->limit(1)->value('call_date')->format('d.m.Y')}}</u> bis zum <u>{{App\RetentionDetail::orderBy('id', 'desc')->limit(1)->value('call_date')->format('d.m.Y')}}</u>  </h5>
