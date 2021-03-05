@@ -138,8 +138,8 @@
 
   <div class="row m-2 bg-white shadow justify-content-center align-self-center" >
     <div class="col-12">
-      <h5>letzter Retention Details Eintrag vom: {{App\RetentionDetail::orderBy('id', 'desc')->limit(1)->value('call_date')}}</h5>
-      <h5>letzter Daily Agent Eintrag vom: {{App\DailyAgent::orderBy('id', 'desc')->limit(1)->value('date')}}</h5>
+      <h5>Retention Details vom <u>{{App\RetentionDetail::orderBy('id', 'asc')->limit(1)->value('call_date')}}</u> bis zum <u>{{App\RetentionDetail::orderBy('id', 'desc')->limit(1)->value('call_date')}}</u>  </h5>
+      <h5>Daily Agent Zeitraum vom <u>{{App\DailyAgent::orderBy('id', 'asc')->limit(1)->value('date')}}</u>  bis zum <u>{{App\DailyAgent::orderBy('id', 'desc')->limit(1)->value('date')}}</u> </h5>
     </div>
     <div class="col p-1">
       @php
@@ -201,18 +201,17 @@
                   <button type="button" name="button" class="btn-sm btn-info rounded" onclick="getAHT(1,2)">AHT</button>
                 </div>
               </div>
-
             </td>
             @if($user->department == '1&1 DSL Retention')
               <td>{{$user->salesdata['orders']}}</td>
             @else
               <td>{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
             @endif
-            <td>KüRü</td>
+            <td>X</td>
             <td>{{$user->salesdata['sscOrders']}}</td>
             <td>{{$user->salesdata['bscOrders']}}</td>
             <td>{{$user->salesdata['portalOrders']}}</td>
-            <td>SSE</td>
+            <td>X</td>
             @if($user->dailyhours and $user->salesdata['workedDays'] != 0)
               @if($user->department == '1&1 DSL Retention')
                 <td>{{round($user->salesdata['orders']/($user->salesdata['workedDays'] * $user->dailyhours),2)}}</td>
@@ -223,14 +222,18 @@
               <td>fehler</td>
             @endif
             <td>{{$user->salesdata['RLZ24Qouta']}}</td>
-            <td>Go CR</td>
+            <td>X</td>
             <td> {{$user->salesdata['GeVo-Cr']}}</td>
             <td>{{$user->salesdata['sscQuota']}}</td>
             <td>{{$user->salesdata['bscQuota']}}</td>
             <td>{{$user->salesdata['portalQuota']}}</td>
-            <td>KüRü Quote?</td>
+            <td>X</td>
             <td>{{$user->salesdata['orders'] * $pricepersave}}</td>
-            <td></td>
+            @if(($user->salesdata['workedDays'] * $user->dailyhours) != 0)
+              <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedDays'] * $user->dailyhours),2)}}€</td>
+            @else
+              <td>Fehler</td>
+            @endif
             <td></td>
             <td>
               <a href="{{route('user.stats', ['id' => $user->id])}}">anzeigen</a>
