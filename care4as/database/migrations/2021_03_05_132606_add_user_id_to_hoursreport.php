@@ -14,7 +14,7 @@ class AddUserIdToHoursreport extends Migration
     public function up()
     {
         Schema::table('hoursreport', function (Blueprint $table) {
-            //
+            $table->integer('user_id')->nullable();
         });
     }
 
@@ -26,7 +26,8 @@ class AddUserIdToHoursreport extends Migration
     public function down()
     {
         Schema::table('hoursreport', function (Blueprint $table) {
-            //
+            $table->dropColumn(['user_id']);
         });
     }
+    // UPDATE hoursreport SET user_id = (SELECT users.id, users.lastname from users where users.lastname = (Select SUBSTRING_INDEX(`hoursreport`.`name`,',',1) FROM hoursreport Where SUBSTRING_INDEX(`hoursreport`.`name`,',',1) = users.lastname GROUP By SUBSTRING_INDEX(`hoursreport`.`name`,',',1)))
 }
