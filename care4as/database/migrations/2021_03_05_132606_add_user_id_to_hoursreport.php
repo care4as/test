@@ -30,4 +30,5 @@ class AddUserIdToHoursreport extends Migration
         });
     }
     // UPDATE hoursreport SET user_id = (SELECT users.id, users.lastname from users where users.lastname = (Select SUBSTRING_INDEX(`hoursreport`.`name`,',',1) FROM hoursreport Where SUBSTRING_INDEX(`hoursreport`.`name`,',',1) = users.lastname GROUP By SUBSTRING_INDEX(`hoursreport`.`name`,',',1)))
+    // UPDATE hoursreport INNER JOIN users  ON SUBSTRING_INDEX(`hoursreport`.`name`,',',1) = users.lastname set hoursreport.user_id = users.id
 }

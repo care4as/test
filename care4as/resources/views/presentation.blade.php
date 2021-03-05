@@ -138,8 +138,8 @@
 
   <div class="row m-2 bg-white shadow justify-content-center align-self-center" >
     <div class="col-12">
-      <h5>Retention Details vom <u>{{App\RetentionDetail::orderBy('id', 'asc')->limit(1)->value('call_date')}}</u> bis zum <u>{{App\RetentionDetail::orderBy('id', 'desc')->limit(1)->value('call_date')}}</u>  </h5>
-      <h5>Daily Agent Zeitraum vom <u>{{App\DailyAgent::orderBy('id', 'asc')->limit(1)->value('date')}}</u>  bis zum <u>{{App\DailyAgent::orderBy('id', 'desc')->limit(1)->value('date')}}</u> </h5>
+      <h5>Retention Details vom <u>{{App\RetentionDetail::orderBy('id', 'asc')->limit(1)->value('call_date')->format('d.m.Y')}}</u> bis zum <u>{{App\RetentionDetail::orderBy('id', 'desc')->limit(1)->value('call_date')->format('d.m.Y')}}</u>  </h5>
+      <h5>Daily Agent Zeitraum vom <u>{{App\DailyAgent::orderBy('id', 'asc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{App\DailyAgent::orderBy('id', 'desc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u> </h5>
     </div>
     <div class="col p-1">
       @php
