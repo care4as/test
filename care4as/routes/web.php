@@ -124,7 +124,31 @@ Route::group(['middleware' => ['auth']], function () {
     return view('TrainingOffers');
   }
   )->name('trainings');
+
+  //endtrainings
+
+  //eobmail
+  Route::get('/eobmail', function(){
+
+    if(!$eobmail = App\eobmail::where('datum', Date('Y-m-d'))->first())
+    {
+      $eobmail = new eobmail;
+      $eobmail->datum = Date('Y-m-d');
+
+      $eobmail->save();
+    }
+
+    return view('eobmail', compact('eobmail'));
+
+  })->name('eobmail');
+
+  Route::post('/eobmail/post', 'MailController@eobmail')->name('eobmail.send');
+  Route::post('/eobmail/comment', 'MailController@storeComment')->name('eobmail.note.store');
+  Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
+
+  //endeobmail
 });
+
 
 //Presentation
   Route::get('/presentation', 'HomeController@presentation')->name('presentation');
