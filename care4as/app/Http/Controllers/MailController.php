@@ -34,7 +34,7 @@ class MailController extends Controller
       }
       $eobmail->load('notes');
 
-      return view('eobmail', compact('eobmail'));
+      return redirect()->route('eobmail');
     }
     public function deleteComment($id='')
     {
@@ -42,7 +42,7 @@ class MailController extends Controller
       return redirect()->route('eobmail');
     }
 
-    public function send(Request $request)
+    public function eobMailSend(Request $request)
     {
       $request->validate([
         'emails' => 'required',

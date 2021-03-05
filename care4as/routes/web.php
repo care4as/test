@@ -142,7 +142,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   })->name('eobmail');
 
-  Route::post('/eobmail/post', 'MailController@eobmail')->name('eobmail.send');
+  Route::post('/eobmail/post', 'MailController@eobMailSend')->name('eobmail.send');
   Route::post('/eobmail/comment', 'MailController@storeComment')->name('eobmail.note.store');
   Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
 

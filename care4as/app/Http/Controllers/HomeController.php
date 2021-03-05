@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Hoursreport;
+use App\RetentionDetail;
 
 class HomeController extends Controller
 {
@@ -57,17 +59,23 @@ class HomeController extends Controller
         $query->where('person_id',$user->person_id)
         ->orderBY('call_date','DESC');
         // the filter section
-        $query->when(request('start_date'), function ($q) {
-            return $q->where('call_date', '>=',request('start_date'));
-        });
-        $query->when(request('end_date'), function ($q) {
-            return $q->where('call_date', '<=',request('end_date'));
-        });
+        if(request('start_date') != request('end_date'))
+        {
+          $query->when(request('start_date'), function ($q) {
+              return $q->where('call_date', '>=',request('start_date'));
+          });
+          $query->when(request('end_date'), function ($q) {
+              return $q->where('call_date', '<=',request('end_date'));
+          });
+        }
+        else {
+          $query->when(request('start_date'), function ($q) {
+              return $q->where('call_date', '=',request('start_date'));
+          });
+        }
 
         $user->reports = $query->get();
-
         $reports = $user->reports;
-
         $sumorders = 0;
         // sum of all calls during the timespan
         $sumcalls = 0;
@@ -81,6 +89,9 @@ class HomeController extends Controller
         $sumPortalOrders = 0;
         $AHT = null;
         $workdays = 0;
+        $workedHours = 0;
+        $sickHours = 0;
+        $sicknessquota = '';
 
         for($i = 0; $i <= count($reports)-1; $i++)
         {
@@ -140,6 +151,37 @@ class HomeController extends Controller
           $gevocr = round(($sumorders/$sumcalls) * 100,2).'%';
         }
 
+        $queryWorktime = Hoursreport::query();
+        $queryWorktime->where('user_id',$user->id)
+        ->orderBY('date','DESC');
+
+        // the filter section
+        $queryWorktime->when(request('start_date'), function ($q) {
+            return $q->where('date', '>=',request('start_date'));
+        });
+        $queryWorktime->when(request('end_date'), function ($q) {
+            return $q->where('date', '<=',request('end_date'));
+        });
+
+        $workTimeData = $queryWorktime->get();
+        // dd($user->workTimeData);
+
+        for($i = 0; $i <= count($workTimeData)-1; $i++)
+        {
+          $workday = $workTimeData[$i];
+          $workedHours += $workday['IST_Angepasst'];
+          $sickHours += $workTimeData[$i]['sick_Angepasst'];
+        }
+
+        if($workedHours == 0)
+        {
+          $sicknessquota = 'keine validen Daten';
+        }
+        else {
+          $sicknessquota =  ($sickHours/$workedHours)*100;
+        }
+
+
         $user->salesdata = array(
           'calls' => $sumcalls,
           'orders' => $sumorders,
@@ -152,10 +194,12 @@ class HomeController extends Controller
           'portalOrders' => $sumPortalOrders,
           'RLZ24Qouta' => $RLZQouta,
           'GeVo-Cr' => $gevocr,
+          'workedHours' => $workedHours,
+          'sickHours' => $sickHours,
+          // 'sicknessquota' => $sicknessquota,
         );
       }
 
-      // dd($users);
       // return view('usersIndex', compact('users'));
       return view('presentation', compact('modul', 'users'));
     }
