@@ -138,7 +138,7 @@
             <div class="collapse" id="collapseEmail" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
               <li><a href="{{route('eobmail')}}">Feierabendmail </a></li>
-              <li><a href="{{route('reports.report')}}">Email xyz2</a></li>
+              <li><a href="{{route('reports.choose')}}">Top/Worst Report</a></li>
             </ul>
           </li>
           @endif

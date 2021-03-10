@@ -30,14 +30,16 @@ class HomeController extends Controller
     }
     public function presentation(Request $request)
     {
+      $modul = 'Userübersicht';
 
       if ($request->department) {
         $department = $request->department;
       }
       else {
         $department = '1&1 Mobile Retention';
+        $users = collect();
+        return view('presentation', compact('modul', 'users'));
       }
-      $modul = 'Userübersicht';
 
       if($request->employees)
       {
