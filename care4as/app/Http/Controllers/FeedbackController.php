@@ -41,11 +41,17 @@ class FeedbackController extends Controller
         foreach($kws as $kwi)
         {
           $query = null;
-          $query = \App\RetentionDetail::query();
-          $query->where('person_id',$userreport->person_id);
+          //determin the date from monday 00:00:00 to sunday 23:59:59
+          $start_date = Carbon::now();
+          $end_date = Carbon::now();
 
-          $queryDepartment = \App\RetentionDetail::query();
-          // $queryDepartment->where('person_id','!=',$userreport->person_id);
+          $start_date->setISODate($year,$kwi,1)->format('Y-m-d');
+          $start_date->setTime(0,0);
+          // return $start_date;
+          $end_date->setISODate($year,$kwi,7)->format('Y-m-d');
+          $end_date->setTime(23,59,59);
+
+          $weekperformance[] = $userreport->getSalesDataInTimespan($start_date,$end_date);
 
           if($userreport->department == '1&1 Mobile Retention')
           {
@@ -56,19 +62,8 @@ class FeedbackController extends Controller
             $department = 'Care4as Retention DSL Eggebek';
           }
 
+          $queryDepartment = \App\RetentionDetail::query();
           $queryDepartment->where('department_desc',$department);
-
-          $start_date = Carbon::now();
-          $end_date = Carbon::now();
-
-          $start_date->setISODate($year,$kwi,1)->format('Y-m-d');
-          $start_date->setTime(0,0);
-          // return $start_date;
-          $end_date->setISODate($year,$kwi,7)->format('Y-m-d');
-          $end_date->setTime(23,59,59);
-
-          $query->where('call_date','>=', $start_date);
-          $query->where('call_date','<=', $end_date);
 
           $query2 = \App\DailyAgent::query();
 
@@ -83,7 +78,6 @@ class FeedbackController extends Controller
           else {
             $kwworkdata[$kwi] = 'keine agent_id';
           }
-          $kwdata[$kwi] = $query->get();
 
           $queryDepartment->where('call_date','>=', $start_date);
           $queryDepartment->where('call_date','<=', $end_date);
@@ -92,7 +86,23 @@ class FeedbackController extends Controller
         }
 
         $activestatus = array('Wrap Up','Ringing', 'In Call','On Hold','Available');
-        // dd($teamdata);
+
+
+        foreach($teamdata as $data)
+        {
+          $teamcalls = $data->sum('calls');
+          $sscTeam = $data->sum('orders_smallscreen');
+          $bscTeam = $data->sum('orders_bigscreen');
+          $portalTeam = $data->sum('orders_portale');
+
+          $teamweekperformance[] =  array(
+            'callsTeam' => $teamcalls,
+            'sscTeam' => $sscTeam,
+            'bscTeam' => $bscTeam,
+            'portalTeam' => $portalTeam,
+          );
+        }
+        // dd($teamweekperformance);
         if($userreport->agent_id)
         {
 
@@ -113,7 +123,6 @@ class FeedbackController extends Controller
           else {
             $aht = $active/$calls;
           }
-
           $workdata[] = array(
             'gesamt' => $totaltime,
             'aktiv' => $active,
@@ -126,42 +135,41 @@ class FeedbackController extends Controller
           abort(403,'user: '.$userreport->name.' hat keine agent ID');
           }
 
-        foreach ($kwdata as $kwn => $RETday) {
+        // foreach ($kwdata as $kwn => $RETday) {
+        //   // userperformance
+        //   $calls = $kwdata[$kwn]->sum('calls');
+        //   $savesssc = $kwdata[$kwn]->sum('orders_smallscreen');
+        //   $savesbsc = $kwdata[$kwn]->sum('orders_bigscreen');
+        //   $savesportal = $kwdata[$kwn]->sum('orders_portale');
+        //   $mvlzneu = $kwdata[$kwn]->sum('mvlzNeu');
+        //   $rlzPlus = $kwdata[$kwn]->sum('rlzPlus');
+        //   // enduserperformance
+        //
+        //   //teamperformance including user
+        //   $teamcalls = $teamdata[$kwn]->sum('calls');
+        //   $sscTeam = $teamdata[$kwn]->sum('orders_smallscreen');
+        //   $bscTeam = $teamdata[$kwn]->sum('orders_bigscreen');
+        //   $portalTeam = $teamdata[$kwn]->sum('orders_portale');
+        //   //end teamperformance
+        //
+        //   $weekperformance[] = array(
+        //     'name' => $kwn,
+        //     'calls' => $calls,
+        //     'savesssc' => $savesssc,
+        //     'savesbsc' => $savesbsc,
+        //     'savesportal' => $savesportal,
+        //     'mvlzneu' => $mvlzneu,
+        //     'rlzPlus' => $rlzPlus,
+        //     'callsTeam' => $teamcalls,
+        //     'sscTeam' => $sscTeam,
+        //     'bscTeam' => $bscTeam,
+        //     'portalTeam' => $portalTeam,
+        //   );
+        //
+        // }
 
-          //userperformance
-          $calls = $kwdata[$kwn]->sum('calls');
-          $savesssc = $kwdata[$kwn]->sum('orders_smallscreen');
-          $savesbsc = $kwdata[$kwn]->sum('orders_bigscreen');
-          $savesportal = $kwdata[$kwn]->sum('orders_portale');
-          $mvlzneu = $kwdata[$kwn]->sum('mvlzNeu');
-          $rlzPlus = $kwdata[$kwn]->sum('rlzPlus');
-
-          //enduserperformance
-
-          //teamperformance including user
-          $teamcalls = $teamdata[$kwn]->sum('calls');
-          $sscTeam = $teamdata[$kwn]->sum('orders_smallscreen');
-          $bscTeam = $teamdata[$kwn]->sum('orders_bigscreen');
-          $portalTeam = $teamdata[$kwn]->sum('orders_portale');
-          //end teamperformance
-
-          $weekperformance[] = array(
-            'name' => $kwn,
-            'calls' => $calls,
-            'savesssc' => $savesssc,
-            'savesbsc' => $savesbsc,
-            'savesportal' => $savesportal,
-            'mvlzneu' => $mvlzneu,
-            'rlzPlus' => $rlzPlus,
-            'callsTeam' => $teamcalls,
-            'sscTeam' => $sscTeam,
-            'bscTeam' => $bscTeam,
-            'portalTeam' => $portalTeam,
-          );
-
-        }
-        // dd($workdata);
-        return view('FeedBackPrint', compact('users','userreport','weekperformance','workdata'));
+        // dd($weekperformance);
+        return view('FeedBackPrint', compact('users','userreport','workdata','weekperformance','teamweekperformance'));
       }
 
       return view('FeedBackPrint', compact('users'));

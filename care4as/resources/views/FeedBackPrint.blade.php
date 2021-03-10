@@ -54,18 +54,21 @@
         <table class="table table-hover table-striped" style="border: 3px solid black;">
           <thead class="thead-dark">
             <tr>
-              <th>2021</th>
+              <th>{{Carbon\Carbon::now()->year}}</th>
               <th>
-                KW{{$weekperformance['3']['name']}}
+                @php
+                  $week = Carbon\Carbon::now()->weekOfYear;
+                @endphp
+                KW{{$week -4}}
               </th>
               <th>
-                KW{{$weekperformance['2']['name']}}
+                KW{{$week - 3}}
               </th>
               <th>
-                KW{{$weekperformance['1']['name']}}
+                KW{{$week - 2}}
               </th>
               <th>
-                KW{{$weekperformance['0']['name']}}
+                KW{{$week - 1}}
               </th>
             </tr>
             <tr>
@@ -78,31 +81,31 @@
           </thead>
           <tr>
             <td>Calls</td>
-            <td>{{$weekperformance['3']['calls']}} | <b>{{$weekperformance['3']['callsTeam']}}</b> </td>
-            <td>{{$weekperformance['2']['calls']}} | <b>{{$weekperformance['2']['callsTeam']}}</b> </td>
-            <td>{{$weekperformance['1']['calls']}} | <b>{{$weekperformance['1']['callsTeam']}}</b> </td>
-            <td>{{$weekperformance['0']['calls']}} | <b>{{$weekperformance['0']['callsTeam']}}</b> </td>
+            <td>{{$weekperformance['3']['calls']}} | <b>{{$teamweekperformance['3']['callsTeam']}}</b> </td>
+            <td>{{$weekperformance['2']['calls']}} | <b>{{$teamweekperformance['2']['callsTeam']}}</b> </td>
+            <td>{{$weekperformance['1']['calls']}} | <b>{{$teamweekperformance['1']['callsTeam']}}</b> </td>
+            <td>{{$weekperformance['0']['calls']}} | <b>{{$teamweekperformance['0']['callsTeam']}}</b> </td>
           </tr>
           <tr>
             <td>Saves SSC GeVo (RET + PREV)</td>
-            <td>{{$weekperformance['3']['savesssc']}} | <b>{{$weekperformance['3']['sscTeam']}}</b> </td>
-            <td>{{$weekperformance['2']['savesssc']}} | <b>{{$weekperformance['2']['sscTeam']}}</b> </td>
-            <td>{{$weekperformance['1']['savesssc']}} | <b>{{$weekperformance['1']['sscTeam']}}</b> </td>
-            <td>{{$weekperformance['0']['savesssc']}} | <b>{{$weekperformance['0']['sscTeam']}}</b></td>
+            <td>{{$weekperformance['3']['savesssc']}} | <b>{{$teamweekperformance['3']['sscTeam']}}</b> </td>
+            <td>{{$weekperformance['2']['savesssc']}} | <b>{{$teamweekperformance['2']['sscTeam']}}</b> </td>
+            <td>{{$weekperformance['1']['savesssc']}} | <b>{{$teamweekperformance['1']['sscTeam']}}</b> </td>
+            <td>{{$weekperformance['0']['savesssc']}} | <b>{{$teamweekperformance['0']['sscTeam']}}</b></td>
           </tr>
           <tr>
             <td>Saves BSC GeVo</td>
-            <td>{{$weekperformance['3']['savesbsc']}} | <b>{{$weekperformance['3']['bscTeam']}}</b> </td>
-            <td>{{$weekperformance['2']['savesbsc']}} |  <b>{{$weekperformance['2']['bscTeam']}}</b> </td>
-            <td>{{$weekperformance['1']['savesbsc']}}  | <b>{{$weekperformance['1']['bscTeam']}}</b>  </td>
-            <td>{{$weekperformance['0']['savesbsc']}}  | <b>{{$weekperformance['0']['bscTeam']}}</b> </td>
+            <td>{{$weekperformance['3']['savesbsc']}} | <b>{{$teamweekperformance['3']['bscTeam']}}</b> </td>
+            <td>{{$weekperformance['2']['savesbsc']}} |  <b>{{$teamweekperformance['2']['bscTeam']}}</b> </td>
+            <td>{{$weekperformance['1']['savesbsc']}}  | <b>{{$teamweekperformance['1']['bscTeam']}}</b>  </td>
+            <td>{{$weekperformance['0']['savesbsc']}}  | <b>{{$teamweekperformance['0']['bscTeam']}}</b> </td>
           </tr>
           <tr>
             <td>Portal Saves</td>
-            <td>{{$weekperformance['3']['savesportal']}} | <b>{{$weekperformance['3']['portalTeam']}}</b>  </td>
-            <td>{{$weekperformance['2']['savesportal']}} | <b>{{$weekperformance['2']['portalTeam']}}</b> </td>
-            <td>{{$weekperformance['1']['savesportal']}}  | <b>{{$weekperformance['1']['portalTeam']}}</b> </td>
-            <td>{{$weekperformance['0']['savesportal']}}  | <b>{{$weekperformance['0']['portalTeam']}}</b></td>
+            <td>{{$weekperformance['3']['savesportal']}} | <b>{{$teamweekperformance['3']['portalTeam']}}</b>  </td>
+            <td>{{$weekperformance['2']['savesportal']}} | <b>{{$teamweekperformance['2']['portalTeam']}}</b> </td>
+            <td>{{$weekperformance['1']['savesportal']}}  | <b>{{$teamweekperformance['1']['portalTeam']}}</b> </td>
+            <td>{{$weekperformance['0']['savesportal']}}  | <b>{{$teamweekperformance['0']['portalTeam']}}</b></td>
           </tr>
           <tr>
             <td>Saves Gesamt</td>

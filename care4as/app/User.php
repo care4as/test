@@ -44,13 +44,14 @@ class User extends Authenticatable
     }
     public function getSalesDataInTimespan($date1,$date2)
     {
+      // echo $date1.' / '.$date2.'</br>';
       $query = \App\RetentionDetail::query();
 
       if($this->person_id)
       {
         $query->where('person_id',$this->person_id);
-        $query->where('call_date','>=', '2021-03-01');
-        $query->where('call_date','<=', '2021-03-07');
+        $query->where('call_date','>=', $date1);
+        $query->where('call_date','<=', $date2);
 
         $salesdata = $query->get();
 
@@ -70,6 +71,7 @@ class User extends Authenticatable
           abort(403,'user: '.$this->name.' hat keine Personen ID');
         }
       }
+      $salesdataFinal = null;
       $salesdataFinal = array(
 
         'calls' => $calls,

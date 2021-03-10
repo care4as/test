@@ -127,21 +127,16 @@ Route::group(['middleware' => ['auth']], function () {
         [
           'user_id' => $user->id,
         ]);
-      // ->get();
-      // dd($updates);
     }
 
-    // DB::statement(
-    // '
-    // UPDATE hoursreport INNER JOIN users ON `hoursreport`.`name` = CONCAT(users.lastname, ', ',users.surname)')
-    // 'set hoursreport.user_id = users.id
-    // '
-    //   );
     return redirect()->back();
 
   })->name('hoursreport.sync');
 
+  Route::view('/reports', 'reports')->name('reports.choose');
   //end Report Routes
+
+
 
   //start Mabelgründe
   Route::get('/mabel/Form', 'MabelController@create')->name('mabelcause.create');
@@ -229,9 +224,4 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('
 
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
-Route::get('/test', function(){
-
-  $user = App\User::find(7);
-  $user->getSalesDataInTimespan(date(now()),date(now()));
-
-})->name('test');
+Route::get('/test', 'ReportController@bestWorstReport')->name('test');
