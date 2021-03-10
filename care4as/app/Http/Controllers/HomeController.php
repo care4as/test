@@ -51,7 +51,6 @@ class HomeController extends Controller
         ->get();
       }
 
-
       foreach ($users as $key => $user) {
 
         $query = \App\RetentionDetail::query();

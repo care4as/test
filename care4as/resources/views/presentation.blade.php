@@ -136,10 +136,41 @@
   </div>
   <div class="row m-2 bg-white shadow justify-content-center align-self-center" >
     <div class="col-12">
-      <h5>Retention im Details vom <u>{{App\RetentionDetail::orderBy('id', 'asc')->limit(1)->value('call_date')->format('d.m.Y')}}</u> bis zum <u>{{App\RetentionDetail::orderBy('id', 'desc')->limit(1)->value('call_date')->format('d.m.Y')}}</u>  </h5>
-      <h5>Daily Agent im Zeitraum vom <u>{{App\DailyAgent::orderBy('id', 'asc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{App\DailyAgent::orderBy('id', 'desc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u> </h5>
-      <h5>Stundenreport im Zeitraum vom <u>{{App\Hoursreport::orderBy('id', 'asc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{App\Hoursreport::orderBy('id', 'desc')->limit(1)->value('date')->format('d.m.Y H:i:s')}}</u> </h5>
-    </div>
+      <div class="row">
+        <div class="col-8">
+          <h5>Retention im Details vom <u>{{Carbon\Carbon::parse(App\RetentionDetail::min('call_date'))->format('d.m.Y')}}</u> bis zum <u>{{Carbon\Carbon::parse(App\RetentionDetail::max('call_date'))->format('d.m.Y')}}</u></h5>
+        </div>
+        <div class="col-4">
+        <a href="{{route('dailyagent.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-8">
+          @if(!App\DailyAgent::min('date'))
+            <h5>keine Daten eingegeben</h5>
+          @else
+            <h5>Daily Agent im Zeitraum vom <u>{{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y')}}</u> </h5>
+          @endif
+        </div>
+        <div class="col-4">
+          <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-8">
+          @if(!App\Hoursreport::min('date'))
+            <h5>keine Daten eingegeben</h5>
+          @else
+            <h5>Stundenreport im Zeitraum vom <u>{{Carbon\Carbon::parse(App\Hoursreport::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\Hoursreport::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
+          @endif
+        </div>
+        <div class="col-2">
+          <a href="{{route('hoursreport.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+        </div>
+        <div class="col-2">
+          <a href="{{route('hoursreport.sync')}}"><button type="button" class="btn btn-sm btn-success border-round" name="button">Userdaten verknüpfen</button></a>
+        </div>
+      </div>
     <div class="col p-1">
       @php
         if(request('department') == '1&1 DSL Retention')

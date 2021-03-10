@@ -50,14 +50,14 @@
           @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'agent')
           <li class="">
             <a href="{{route('dashboard')}}">
-              <i class="now-ui-icons education_atom"></i>
+              <i class="fas fa-table"></i>
               <p><b>Dashboard</b></p>
             </a>
           </li>
           @endif
             <li>
               <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
-                <i class="now-ui-icons education_atom"></i>
+                <i class="fas fa-skull-crossbones"></i>
                 <p><b>Cancelliste</b></p>
               </a>
               <div class="collapse" id="collapseCancel" style="margin-left:50px;">
@@ -73,7 +73,7 @@
             @if((Auth()->user()->role == 'superadmin'))
               <li>
                 <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
-                  <i class="now-ui-icons education_atom"></i>
+                  <i class="fas fa-euro-sign"></i>
                   <p><b>Provision</b></p>
                 </a>
                 <div class="collapse" id="collapseCancel" style="margin-left:50px;">
@@ -85,7 +85,7 @@
           @if(Auth()->user()->role == 'superadmin' or (Auth()->user()->role =='overhead'))
           <li>
             <a class="" data-toggle="collapse" href="#collapseUser" role="button" aria-expanded="false" aria-controls="collapseUser">
-              <i class="now-ui-icons users_single-02"></i>
+              <i class="fas fa-users"></i>
               <p><b>Usermenü</b></p>
             </a>
             <div class="collapse" id="collapseUser" style="margin-left:50px;">
@@ -102,7 +102,7 @@
           @if(Auth()->user()->role == 'superadmin' or (Auth()->user()->role =='overhead'))
           <li>
             <a class="" data-toggle="collapse" href="#collapseMable" role="button" aria-expanded="false" aria-controls="collapseUser">
-              <i class="now-ui-icons users_single-02"></i>
+              <i class="fas fa-hammer"></i>
               <p><b>Mabelgründe</b></p>
             </a>
             <div class="collapse" id="collapseMable" style="margin-left:50px;">
@@ -116,8 +116,8 @@
           @if(Auth()->user()->role == 'superadmin')
           <li>
             <a class="" data-toggle="collapse" href="#collapseReport" role="button" aria-expanded="false" aria-controls="collapseCancel">
-              <i class="now-ui-icons education_atom"></i>
-              <p><b>Reporting</b></p>
+              <i class="fas fa-upload"></i>
+              <p><b>Daten Import</b></p>
             </a>
             <div class="collapse" id="collapseReport" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
@@ -132,7 +132,7 @@
           @if(Auth()->user()->role == 'superadmin')
           <li>
             <a class="" data-toggle="collapse" href="#collapseEmail" role="button" aria-expanded="false" aria-controls="collapseCancel">
-              <i class="now-ui-icons education_atom"></i>
+            <i class="fas fa-mail-bulk"></i>
               <p><b>Email Versand</b></p>
             </a>
             <div class="collapse" id="collapseEmail" style="margin-left:50px;">
@@ -145,7 +145,7 @@
           @if(Auth()->user()->role == 'agent' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
           <li>
             <a class="" data-toggle="collapse" href="#collapseSurvey" role="button" aria-expanded="false" aria-controls="collapseSurvey">
-              <i class="now-ui-icons education_atom"></i>
+              <i class="fas fa-poll-h"></i>
               <p><b>Mitarbeiterumfragen</b></p>
             </a>
             <div class="collapse" id="collapseSurvey" style="margin-left:50px;">
@@ -164,12 +164,13 @@
           @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead')
           <li>
             <a class="" data-toggle="collapse" href="#collapseFeedback" role="button" aria-expanded="false" aria-controls="collapseFeedback">
-              <i class="now-ui-icons education_atom"></i>
+              <i class="far fa-comments"></i>
               <p><b>Feedbackgespräche</b></p>
             </a>
             <div class="collapse" id="collapseFeedback" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-              <li><a href="{{route('feedback.view')}}">Feedbackgespräche</a> </li>
+              <li><a href="{{route('feedback.print')}}">Feedbackgespräche zum Ausdrucken</a> </li>
+              <li><a href="{{route('feedback.view')}}">Feedbackgespräche zum Speichern</a> </li>
               <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li>
             </ul>
           </li>
@@ -177,7 +178,7 @@
           @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'trainee')
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
-              <i class="now-ui-icons education_atom"></i>
+              <i class="fas fa-running"></i>
               <p><b>Trainings</b></p>
             </a>
             <div class="collapse" id="collapseTrainings" style="margin-left:50px;">

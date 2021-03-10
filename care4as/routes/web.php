@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
   // Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
   Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post');
   Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
-  Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
+  // Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
   Route::post('/user/update/{id}', 'UserController@update')->name('user.update');
   Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
   Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth']], function () {
   //enddashboard
 
   //Report Routes
-  Route::view('/report/retention/', 'reports.report')->name('reports.report');
+  Route::view('/report/retention/', 'reports.RetentionDetailsReport')->name('reports.report');
   Route::view('/report/hoursreport', 'reports.reportHours')->name('reports.reportHours.view');
   Route::post('/report/hoursreport', 'ExcelEditorController@reportHours')->name('reports.reportHours.post');
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
@@ -82,6 +82,64 @@ Route::group(['middleware' => ['auth']], function () {
         // return 1;
       return redirect()->back();
   })->name('retentiondetails.removeDuplicates');
+  Route::get('/dailyagent/removeDuplicates', function(){
+    DB::statement(
+    '
+    DELETE FROM dailyagent
+      WHERE id IN (
+        SELECT calc_id FROM (
+        SELECT MAX(id) AS calc_id
+        FROM dailyagent
+        GROUP BY agent_id, date, status
+        HAVING COUNT(id) > 1
+        ) temp)
+        '
+      );
+        // return 1;
+      return redirect()->back();
+  })->name('dailyagent.removeDuplicates');
+  Route::get('/hoursreport/removeDuplicates', function(){
+    DB::statement(
+    '
+    DELETE FROM hoursreport
+      WHERE id IN (
+        SELECT calc_id FROM (
+        SELECT MAX(id) AS calc_id
+        FROM hoursreport
+        GROUP BY name,date
+        HAVING COUNT(id) > 1
+        ) temp)
+        '
+      );
+        // return 1;
+      return redirect()->back();
+  })->name('hoursreport.removeDuplicates');
+
+  Route::get('/hoursreport/sync', function(){
+
+    $users = App\User::all();
+
+    foreach($users as $user)
+    {
+      $updates = DB::table('hoursreport')
+      ->where('name',$user->lastname.', '.$user->surname)
+      ->update(
+        [
+          'user_id' => $user->id,
+        ]);
+      // ->get();
+      // dd($updates);
+    }
+
+    // DB::statement(
+    // '
+    // UPDATE hoursreport INNER JOIN users ON `hoursreport`.`name` = CONCAT(users.lastname, ', ',users.surname)')
+    // 'set hoursreport.user_id = users.id
+    // '
+    //   );
+    return redirect()->back();
+
+  })->name('hoursreport.sync');
 
   //end Report Routes
 
@@ -110,6 +168,7 @@ Route::group(['middleware' => ['auth']], function () {
   //end tracking routes
 
   //feedback
+  Route::get('/feedback/print', 'FeedbackController@print')->name('feedback.print');
   Route::get('/feedback/view', 'FeedbackController@create')->name('feedback.view');
   Route::get('/feedback/index', 'FeedbackController@index')->name('feedback.myIndex');
   Route::post('/feedback/update', 'FeedbackController@update')->name('feedback.update');
@@ -169,6 +228,10 @@ Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post'
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
 
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
+
 Route::get('/test', function(){
-  return view('dashboardtracker');}
-  )->name('test');
+
+  $user = App\User::find(7);
+  $user->getSalesDataInTimespan(date(now()),date(now()));
+
+})->name('test');
