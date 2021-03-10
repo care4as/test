@@ -12,7 +12,11 @@ function toggleSidebar()
     sidebar.style.display = 'none'
     content.style.width = '100%'
     let table = document.querySelector('#tableoverview')
-    table.style.width = '100%'
+    if(table)
+    {
+      table.style.width = '100%'
+    }
+
 
     // let logo = document.querySelector('.logo')
     // logo.style.display = 'none'
@@ -32,4 +36,14 @@ function getAHT(date1,date2)
   loader.style.display = 'block'
   let button = document.querySelector('.aht')
   button.style.display = 'none'
+}
+function printPage()
+{
+  // console.log('test')
+  toggleSidebar()
+
+  let container = document.querySelector('.printer')
+  console.log(container)
+  container.style.width = '100%'
+  window.print()
 }

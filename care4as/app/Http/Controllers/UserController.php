@@ -60,6 +60,7 @@ class UserController extends Controller
         $user->team = $request->team;
         $user->department = $request->department;
         $user->person_id = $request->personid;
+        $user->agent_id = $request->agent_id;
 
         $user->save();
 
@@ -107,7 +108,8 @@ class UserController extends Controller
         $user->lastname = $request->lastname;
         $user->team = $request->team;
         $user->department = $request->department;
-
+        $user->agent_id = $request->agent_id;
+        
         $user->save();
 
         return redirect()->back();

@@ -42,4 +42,44 @@ class User extends Authenticatable
     {
       return $this->hasMany('\App\UserTracking')->whereDate('created_at', DB::raw('CURDATE()'));
     }
+    public function getSalesDataInTimespan($date1,$date2)
+    {
+      $query = \App\RetentionDetail::query();
+
+      if($this->person_id)
+      {
+        $query->where('person_id',$this->person_id);
+        $query->where('call_date','>=', '2021-03-01');
+        $query->where('call_date','<=', '2021-03-07');
+
+        $salesdata = $query->get();
+
+        $calls = $salesdata->sum('calls');
+        $savesssc = $salesdata->sum('orders_smallscreen');
+        $savesbsc = $salesdata->sum('orders_bigscreen');
+        $savesportal = $salesdata->sum('orders_portale');
+        $mvlzneu = $salesdata->sum('mvlzNeu');
+        $rlzPlus = $salesdata->sum('rlzPlus');
+      }
+      else {
+        if($this->surname)
+        {
+          abort(403,'user: '.$this->surname.' '.$this->lastname.' hat keine Personen ID');
+        }
+        else {
+          abort(403,'user: '.$this->name.' hat keine Personen ID');
+        }
+      }
+      $salesdataFinal = array(
+
+        'calls' => $calls,
+        'savesssc' => $savesssc,
+        'savesbsc' => $savesbsc,
+        'savesportal' => $savesportal,
+        'mvlzneu' => $mvlzneu,
+        'rlzPlus' => $rlzPlus,
+      );
+
+      return ($salesdataFinal);
+    }
 }

@@ -27,7 +27,7 @@
           <div class="tab-content text-center">
               <div class="tab-pane active" id="userinfo">
                 <table class="table table-striped">
-                <thead>
+                <thead class="thead-dark">
                   <tr>
                   <th>#</th>
                     <th>username</th>
@@ -36,6 +36,7 @@
                     <th>Abteilung</th>
                     <th>Rolle</th>
                     <th>Person-ID</th>
+                    <th>Agent-ID</th>
                     <th>options</th>
                   <tr>
                 </thead>
@@ -49,6 +50,7 @@
                       <td>{{$user->department}} </td>
                       <td>{{$user->role}}</td>
                       <td>{{$user->person_id}}</td>
+                      <td>{{$user->agent_id}}</td>
                       <td>
                         <a href="{{route('user.delete', ['id' => $user->id])}}">
                         <button class="btn btn-danger btn-fab btn-icon btn-round">

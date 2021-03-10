@@ -65,9 +65,6 @@
                           </select>
                         </td>
                       </tr>
-                    </table>
-                  </td>
-                  <td>  <table class="" style="">
                       <tr>
                         <th>Vorname</th>
                         <td><input class="form-control" type="text" name="surname" value="{{$user->surname}}"></td>
@@ -76,13 +73,25 @@
                         <th>Nachname</th>
                         <td><input class="form-control" type="text" name="lastname" value="{{$user->lastname}}"></td>
                       </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <table class="" style="">
                       <tr>
                         <th>PersonID</th>
                         <td><input class="form-control" type="text" name="person_id" value="{{$user->person_id}}"></td>
                       </tr>
                       <tr>
+                        <th>agent ID</th>
+                        <td><input class="form-control" type="text" name="agent_id" value="{{$user->agent_id}}"></td>
+                      </tr>
+                      <tr>
                         <th>tägliche Arbeitszeit</th>
                         <td><input class="form-control" type="text" name="dailyhours" value="{{$user->dailyhours}}"></td>
+                      </tr>
+                      <tr>
+                        <th>Email</th>
+                        <td><input class="form-control" type="email" name="email" value="{{$user->email}}"></td>
                       </tr>
                     </table></td>
                 </tr>
@@ -386,15 +395,10 @@
                   @endif
                 </div>
               </div>
-
             </div>
           </div>
         </div>
       </div>
-
-
-
-
     </div>
   </div>
 </div>

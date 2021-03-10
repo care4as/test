@@ -59,64 +59,76 @@ class ExcelEditorController extends Controller
       $counter=0;
       $insertData=array();
 
-      // dd($data[$sheet-1]);
-
-      for($i=$fromRow-1; $i <= count($data[$sheet-1])-1; $i++ )
+      if(count($data[$sheet-1]) > 50000)
       {
-        $cell = $data[$sheet-1][$i];
-        // return $cell;
-        $UNIX_DATE = ($cell[1] - 25569) * 86400;
-        $date = date("Y-m-d H:i:s", $UNIX_DATE);
+        $data2 = $data[$sheet-1];
+      }
+      else
+      {
+        $data2 = $data[$sheet];
+      }
+      // dd($data[3]);
 
-        if(is_numeric($cell[18]))
+      for($i=$fromRow-1; $i <= count($data2)-1; $i++ )
+      {
+        $cell = $data2[$i];
+
+        if(is_numeric($cell[1]))
         {
-          $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
-          $start_time = date("Y-m-d H:i:s",$UNIX_DATE2);
+          $UNIX_DATE = ($cell[1] - 25569) * 86400;
+          $date = date("Y-m-d H:i:s", $UNIX_DATE);
         }
 
-        $UNIX_DATE3 = ($cell[25] - 25569) * 86400;
-        $end_time = date("Y-m-d H:i:s", $UNIX_DATE3);
+        else {
+          $date = $cell[1];
+        }
 
-        if($cell[5] == '')
-        {
-          $cell[5] = 0;
-        }
-        if($cell[12] == '')
-        {
-          $cell[12] = 0;
-        }
-        if($cell[15] == '')
-        {
-          $cell[15] = 0;
-        }
-        //check if the row hast data
-        if($date &&  $cell[7])
-        {
-
-          $insertData[$i] = [
-            'date' => $date,
-            'start_time' => $start_time,
-            'end_time' => $end_time,
-            'kw' => $cell[3],
-            'dialog_call_id' => $cell[5],
-            'agent_id' => $cell[7],
-            'agent_login_name' => $cell[8],
-            'agent_name' => $cell[9],
-            'agent_group_id' => $cell[10],
-            'agent_group_name' => $cell[11],
-            'agent_team_id' => $cell[12],
-            'queue_id' => $cell[18],
-            'queue_name' => $cell[20],
-            'skill_id' => $cell[21],
-            'skill_name' => $cell[22],
-            'status' => $cell[23],
-            'time_in_state' => $cell[26],
-            ];
-        }
-        else
+        if($date &&  is_numeric($cell[7]))
         {
           // return $cell;
+          if(is_numeric($cell[18]))
+          {
+            $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
+            $start_time = date("Y-m-d H:i:s",$UNIX_DATE2);
+          }
+
+          $UNIX_DATE3 = ($cell[25] - 25569) * 86400;
+          $end_time = date("Y-m-d H:i:s", $UNIX_DATE3);
+
+          if($cell[5] == '')
+          {
+            $cell[5] = 0;
+          }
+          if($cell[12] == '')
+          {
+            $cell[12] = 0;
+          }
+          if($cell[15] == '')
+          {
+            $cell[15] = 0;
+          }
+          //check if the row hast data
+            $insertData[$i] = [
+              'date' => $date,
+              'start_time' => $start_time,
+              'end_time' => $end_time,
+              'kw' => $cell[3],
+              'dialog_call_id' => $cell[5],
+              'agent_id' => $cell[7],
+              'agent_login_name' => $cell[8],
+              'agent_name' => $cell[9],
+              'agent_group_id' => $cell[10],
+              'agent_group_name' => $cell[11],
+              'agent_team_id' => $cell[12],
+              'queue_id' => $cell[18],
+              'queue_name' => $cell[20],
+              'skill_id' => $cell[21],
+              'skill_name' => $cell[22],
+              'status' => $cell[23],
+              'time_in_state' => $cell[26],
+              ];
         }
+
       }
         // dd($insertData);
         $insertData = array_chunk($insertData, 3500);
@@ -257,8 +269,29 @@ class ExcelEditorController extends Controller
     }
     public function RetentionDetailsReport(Request $request)
     {
+      if($request->sheet)
+      {
+        $sheet = $request->sheet;
+      }
+      else {
+        $sheet = 3;
+      }
+
+      if($request->fromRow)
+      {
+        $fromRow = $request->fromRow;
+      }
+      else
+      {
+        $fromRow = 2;
+      }
+
       $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
-      unset($data[0]);
+
+      for ($i=0; $i < $fromRow-1; $i++) {
+        unset($data[$i]);
+      }
+
       // dd($data);
       foreach($data as $row)
       {
