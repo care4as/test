@@ -96,12 +96,19 @@ class ReportController extends Controller
       // dd($users);
       $sorted = $users->sortBy('performance')->values();
 
-      for ($i=0; $i < $worstAgents; $i++) {
-        $worstusers[] = $sorted[$i];
+      if( $users->count() < $worstAgents || $users->count() < $bestAgents)
+      {
+        return view('reports')->withErrors('Zu wenige User');
       }
-      for ($i=0; $i < $bestAgents; $i++) {
-        $bestusers[] = $sorted[(count($sorted)-1) - $i];
+      else {
+        for ($i=0; $i < $worstAgents; $i++) {
+          $worstusers[] = $sorted[$i];
+        }
+        for ($i=0; $i < $bestAgents; $i++) {
+          $bestusers[] = $sorted[(count($sorted)-1) - $i];
+        }
       }
+
       // dd($bestusers);
 
       $data= array(
