@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload');
   Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view');
   Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload');
+  Route::post('/report/bestworst', 'ReportController@bestWorstReport')->name('report.bestworst');
 
   Route::get('/retentiondetails/removeDuplicates', function(){
     DB::statement(
@@ -224,4 +225,5 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('
 
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
-Route::get('/test', 'ReportController@bestWorstReport')->name('test');
+
+Route::post('/test', 'ReportController@bestWorstReport')->name('test');
