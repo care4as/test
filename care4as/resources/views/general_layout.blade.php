@@ -275,11 +275,11 @@
         <div class="content" style="height: 60vh;">
           @yield('content')
         </div>
-        <div class="container bg-white">
+        <!-- <div class="container bg-white">
           @if($errors->any())
           {{$errors->first()}}
           @endif
-        </div>
+        </div> -->
       </div>
       <footer class="footer">
       </footer>
