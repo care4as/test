@@ -61,18 +61,22 @@ class ReportController extends Controller
       for ($i=0; $i < $worstAgents; $i++) {
         $bestusers[] = $sorted[(count($sorted)-1) - $i];
       }
-
       // dd($bestusers);
-
       $data= array(
         'from' => $from,
         'to' => $to,
         'bestusers' => $bestusers,
         'worstusers' => $worstusers,
       );
-      // $mail = new BestWorst($data);
-      // return $mail;
-      Mail::to('andreas.robrahn@care4as.de')->send(new BestWorst($data));
+      $mail = new BestWorst($data);
+
+      if($request->asEmail)
+      {
+        Mail::to('andreas.robrahn@care4as.de')->send(new BestWorst($mail));
+      }
+      else {
+        return $mail;
+      }
 
 
     }
