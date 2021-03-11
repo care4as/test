@@ -2,7 +2,7 @@
 <html lang="de">
     <head>
         <meta charset="utf-8">
-        <title>Feierabendmail</title>
+        <title>Agentenreport</title>
         <style>
             *{
                 font-family: Calibri, sans-serif;
@@ -85,7 +85,7 @@
             <p>anbei finden Sie den Report über die 3 besten/schlechtesten Agents im Zeitraum vom <b>{{Carbon\Carbon::parse($data['from'])->format('d.m.Y')}}</b> bis zum <b>{{Carbon\Carbon::parse($data['to'])->format('d.m.Y')}}</b></p>
             <div class="FAM_projekt">
                 <div class="FAM_title">
-                    <p>3 Beste Agents</p>
+                    <p>@if($data['best'] > 1) {{$data['best']}} Beste Agents @else Bester Agent @endif</p>
                 </div>
                 <div class="FAM_content">
                     <table >
@@ -110,7 +110,7 @@
                             <tr>
                               <td>Tag</td>
                               @foreach($user['dailyPerformance'] as $date)
-                              <td>{{Carbon\Carbon::parse($date['call_date'])->format('d.')}}</td>
+                              <td>{{Carbon\Carbon::parse($date['call_date'])->format('d.m')}}</td>
                               @endforeach
                             </tr>
                             <tr>
@@ -126,7 +126,7 @@
             </div>
             <div class="FAM_projekt">
                 <div class="FAM_title">
-                    <p>3 Schlechteste Agents</p>
+                    <p>@if($data['worst'] > 1) {{$data['worst']}} Schlechteste Agents @else Schlechtester Agent @endif</p>
                 </div>
                 <div class="FAM_content">
                   <table >
@@ -150,7 +150,7 @@
                           <tr>
                             <td>Tag</td>
                             @foreach($user['dailyPerformance'] as $date)
-                            <td>{{Carbon\Carbon::parse($date['call_date'])->format('d.')}}</td>
+                            <td>{{Carbon\Carbon::parse($date['call_date'])->format('d.m')}}</td>
                             @endforeach
                           </tr>
                           <tr>
