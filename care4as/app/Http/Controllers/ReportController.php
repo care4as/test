@@ -78,11 +78,13 @@ class ReportController extends Controller
       if(request('employees'))
       {
         $users = User::whereIn('person_id',$personids)
+        ->where('role','agent')
         ->whereNotIn('id', request('employees'))
         ->get();
       }
       else {
         $users = User::whereIn('person_id',$personids)
+        ->where('role','agent')
         ->get();
       }
 
