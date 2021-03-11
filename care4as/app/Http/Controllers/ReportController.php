@@ -46,10 +46,6 @@ class ReportController extends Controller
       $bestAgents = $request->best;
       $worstAgents = $request->worst;
 
-      $mailinglist = array(
-        'andreas.robrahn@care4as.de',
-      );
-
       $query = RetentionDetail::query();
 
       $query->when(request('from'), function ($q,$from) {
@@ -108,8 +104,6 @@ class ReportController extends Controller
       }
       // dd($bestusers);
 
-
-
       $data= array(
         'best' => $bestAgents,
         'worst' => $worstAgents,
@@ -123,13 +117,17 @@ class ReportController extends Controller
 
       if($request->asEmail)
       {
-        Mail::to('andreas.robrahn@care4as.de')->send($mail);
+        $mailinglist = explode(';',$request->mailinglist);
+
+        foreach($mailinglist as $adress)
+        {
+          Mail::to($adress)->send($mail);
+        }
+
         return redirect()->back();
       }
       else {
         return $mail;
       }
-
-
     }
 }

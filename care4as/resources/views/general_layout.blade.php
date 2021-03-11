@@ -326,7 +326,7 @@
   <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script> -->
 
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script> -->
-  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js'></script>
+  <script src='bootstrap.bundle.min.js'></script>
   <!-- Chart JS -->
   <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/plugins/chartjs.min.js')}}"></script>
   <!--  Notifications Plugin    -->
@@ -335,6 +335,7 @@
   <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript')}}"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
 
   <script src="{{asset('js/app.js')}}"></script>
+
   @if($errors->any())
   <script>
     $('#errorModal').modal('show');

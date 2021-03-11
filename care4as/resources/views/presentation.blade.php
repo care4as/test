@@ -1,6 +1,7 @@
 @extends('general_layout')
 
 @section('additional_css')
+
 <style media="screen">
   .table td, th
   {
@@ -182,7 +183,8 @@
           $pricepersave = 15;
         }
       @endphp
-      <table class="table table-hover table-striped  table-bordered" id="tableoverview">
+
+      <table class="table table-hover table-striped table-bordered display" id="tableoverview">
         <thead class="thead-dark">
           <tr>
             <th>#</th>
@@ -238,11 +240,11 @@
             @else
               <td>{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
             @endif
-            <td>X</td>
+            <td>50</td>
             <td>{{$user->salesdata['sscOrders']}}</td>
             <td>{{$user->salesdata['bscOrders']}}</td>
             <td>{{$user->salesdata['portalOrders']}}</td>
-            <td>X</td>
+            <td>50</td>
             @if($user->dailyhours and $user->salesdata['workedDays'] != 0)
               @if($user->department == '1&1 DSL Retention')
                 <td>{{round($user->salesdata['orders']/($user->salesdata['workedDays'] * $user->dailyhours),2)}}</td>
@@ -253,12 +255,12 @@
               <td>fehler</td>
             @endif
             <td>{{$user->salesdata['RLZ24Qouta']}}</td>
-            <td>X</td>
+            <td>50</td>
             <td> {{$user->salesdata['GeVo-Cr']}}</td>
             <td>{{$user->salesdata['sscQuota']}}</td>
             <td>{{$user->salesdata['bscQuota']}}</td>
             <td>{{$user->salesdata['portalQuota']}}</td>
-            <td>X</td>
+            <td>50</td>
             <td>{{$user->salesdata['orders'] * $pricepersave}}</td>
             @if(($user->salesdata['workedDays'] * $user->dailyhours) != 0)
               <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedDays'] * $user->dailyhours),2)}}€</td>
@@ -274,14 +276,29 @@
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td>
               <a href="{{route('user.stats', ['id' => $user->id])}}">anzeigen</a>
-              /<a href="">löschen</a>
+              <a href="">löschen</a>
             </td>
-          <tr>
+          </tr>
         @endforeach
       </tbody>
+
   </table>
     </div>
   </div>
 </div>
 
+@endsection
+
+@section('additional_js')
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    let table = $('#tableoverview').DataTable({
+    });
+
+  });
+</script>
 @endsection

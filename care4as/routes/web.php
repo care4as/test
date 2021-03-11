@@ -137,8 +137,6 @@ Route::group(['middleware' => ['auth']], function () {
   Route::view('/reports', 'reports')->name('reports.choose');
   //end Report Routes
 
-
-
   //start Mabelgründe
   Route::get('/mabel/Form', 'MabelController@create')->name('mabelcause.create');
   Route::post('/mabel/index/filtered', 'MabelController@showThemAllFiltered')->name('mabelcause.index.filtered');

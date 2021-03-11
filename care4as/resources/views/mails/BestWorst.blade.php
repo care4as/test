@@ -82,7 +82,7 @@
     <body>
         <div class="FAM_container">
             <p>Sehr geehrte Damen und Herren,</p>
-            <p>anbei finden Sie den Report über die 3 besten/schlechtesten Agents im Zeitraum vom <b>{{Carbon\Carbon::parse($data['from'])->format('d.m.Y')}}</b> bis zum <b>{{Carbon\Carbon::parse($data['to'])->format('d.m.Y')}}</b></p>
+            <p>anbei finden Sie den Report über die besten und schlechtesten Agents im Zeitraum vom <b>{{Carbon\Carbon::parse($data['from'])->format('d.m.Y')}}</b> bis zum <b>{{Carbon\Carbon::parse($data['to'])->format('d.m.Y')}}</b></p>
             <div class="FAM_projekt">
                 <div class="FAM_title">
                     <p>@if($data['best'] > 1) {{$data['best']}} Beste Agents @else Bester Agent @endif</p>
