@@ -94,8 +94,11 @@
     <div class="col-8">
       <h5>Retention Details vom <u>{{Carbon\Carbon::parse(App\RetentionDetail::min('call_date'))->format('d.m.Y')}}</u> bis zum <u>{{Carbon\Carbon::parse(App\RetentionDetail::max('call_date'))->format('d.m.Y')}}</u></h5>
     </div>
-    <div class="col-4">
-    <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+    <div class="col-2">
+      <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+    </div>
+    <div class="col-2">
+      <a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
     </div>
     <div class="col-8">
       @if(!App\DailyAgent::min('date'))
@@ -204,7 +207,7 @@
             <th>Calls/h</th>
             <th>AHT</th>
             <th>Saves</th>
-            <th>KÜRÜ</th>
+            <th>Produktivzeit</th>
             <th>SSC</th>
             <th>BSC</th>
             <th>Portal</th>

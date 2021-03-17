@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container  text-center bg-light">
-  <h2>Reporting</h2>
+  <h2>Retention Details Import</h2>
   <div class="row" id="app">
     <div class="col text-center bg-light">
       <!-- <form action="/file-upload" class="dropzone" id="exceldropzone">
