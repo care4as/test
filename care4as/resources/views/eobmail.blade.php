@@ -112,12 +112,6 @@
         <form class="" action="{{route('eobmail.kpi.store')}}" method="post" id="eobmailformdsl">
           <input type="hidden" name="department" value="2">
           @csrf
-          <div class="row align-items-center">
-            <div class="col">
-              <label for="title">An:</label>
-              <input type="text" name="emails" value="andreas.robrahn@care4as.de;maximilian.steinberg@care4as.de" placeholder="" class="form-control w-50" id="title" aria-describedby="title">
-            </div>
-          </div>
           <hr>
           <div class="row align-items-center mt-2">
             <div class="col">
