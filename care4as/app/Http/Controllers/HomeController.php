@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Hoursreport;
 use App\RetentionDetail;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -30,6 +31,8 @@ class HomeController extends Controller
     }
     public function presentation(Request $request)
     {
+      DB::disableQueryLog();
+
       $modul = 'Userübersicht';
 
       if ($request->department) {
@@ -39,6 +42,7 @@ class HomeController extends Controller
         $department = '1&1 Mobile Retention';
         $users = User::where('role','agent')
         ->where('department',$department)
+        ->select('id','surname','lastname')
         ->get();
 
         // return view('presentation', compact('modul', 'users'));
@@ -48,11 +52,13 @@ class HomeController extends Controller
       {
         $users = User::where('role','agent')
         ->whereIn('id', $request->employees)
+        ->select('id','surname','lastname')
         ->get();
       }
       else {
         $users = User::where('role','agent')
         ->where('department', $department)
+        ->select('id','surname','lastname')
         ->get();
       }
 
@@ -79,6 +85,7 @@ class HomeController extends Controller
         }
 
         $user->reports = $query->get();
+
         $reports = $user->reports;
         $sumorders = 0;
         // sum of all calls during the timespan
@@ -201,6 +208,7 @@ class HomeController extends Controller
           'sickHours' => $sickHours,
           // 'sicknessquota' => $sicknessquota,
         );
+
       }
 
       // return view('usersIndex', compact('users'));

@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container  text-center bg-light">
-  <h2>Reporting</h2>
+  <h2>Daily Agent Import</h2>
   <div class="row" id="app">
     <div class="col text-center bg-light">
       <!-- <form action="{{route('excel.dailyAgent.upload.queue')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
