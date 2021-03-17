@@ -42,7 +42,7 @@ class HomeController extends Controller
         $department = '1&1 Mobile Retention';
         $users = User::where('role','agent')
         ->where('department',$department)
-        ->select('id','surname','lastname')
+        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
         ->get();
 
         // return view('presentation', compact('modul', 'users'));
@@ -52,16 +52,17 @@ class HomeController extends Controller
       {
         $users = User::where('role','agent')
         ->whereIn('id', $request->employees)
-        ->select('id','surname','lastname')
+        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
         ->get();
       }
       else {
         $users = User::where('role','agent')
         ->where('department', $department)
-        ->select('id','surname','lastname')
+        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
         ->get();
       }
 
+      // dd($users);
       foreach ($users as $key => $user) {
 
         $query = \App\RetentionDetail::query();
