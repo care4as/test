@@ -87,7 +87,6 @@ class FeedbackController extends Controller
 
         $activestatus = array('Wrap Up','Ringing', 'In Call','On Hold');
 
-
         foreach($teamdata as $data)
         {
           $teamcalls = $data->sum('calls');
@@ -139,8 +138,6 @@ class FeedbackController extends Controller
         else {
           abort(403,'user: '.$userreport->name.' hat keine agent ID');
           }
-
-
 
         // dd($weekperformance);
         return view('FeedBackPrint', compact('users','userreport','workdata','weekperformance','teamweekperformance'));
