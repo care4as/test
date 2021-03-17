@@ -28,7 +28,8 @@
   <!--     Fonts and icons     -->
   <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-  <!-- CSS Files -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="{{asset('css/now-ui-dashboard-master/assets/css/bootstrap.min.css')}}" rel="stylesheet" />
   <link href="{{asset('css/now-ui-dashboard-master/assets/css/now-ui-dashboard.css?v=1.5.0')}}" rel="stylesheet" />
 
@@ -72,11 +73,11 @@
             </li>
             @if((Auth()->user()->role == 'superadmin'))
               <li>
-                <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
+                <a class="" data-toggle="collapse" href="#collapseProvision" role="button" aria-expanded="false" aria-controls="collapseCancel">
                   <i class="fas fa-euro-sign"></i>
                   <p><b>Provision</b></p>
                 </a>
-                <div class="collapse" id="collapseCancel" style="margin-left:50px;">
+                <div class="collapse" id="collapseProvision" style="margin-left:50px;">
                   <ul class="list-group list-group-flush" style="list-style-type: none;">
                   <li><a href="{{route('buchungsliste.show')}}">Buchungslisten</a></li>
                 </ul>

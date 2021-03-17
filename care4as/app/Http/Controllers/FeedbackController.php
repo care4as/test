@@ -85,7 +85,7 @@ class FeedbackController extends Controller
           $teamdata[$kwi] = $queryDepartment->get();
         }
 
-        $activestatus = array('Wrap Up','Ringing', 'In Call','On Hold','Available');
+        $activestatus = array('Wrap Up','Ringing', 'In Call','On Hold');
 
 
         foreach($teamdata as $data)
@@ -110,7 +110,11 @@ class FeedbackController extends Controller
 
           $totaltime = $DAweek->sum('time_in_state');
 
-          $occutime = $DAweek->where('status','Released (05_occupied)')->sum('time_in_state');
+          $afterwork = $DAweek->where('status','Wrap Up')->sum('time_in_state');
+
+          $pausestatus = array('Released (01_screen break)','Released (03_away)','Released (02_lunch break)');
+
+          $pause = $DAweek->whereIn('status',$pausestatus)->sum('time_in_state');
 
           $active = $DAweek->whereIn('status',$activestatus)
           ->sum('time_in_state');
@@ -126,8 +130,9 @@ class FeedbackController extends Controller
           $workdata[] = array(
             'gesamt' => $totaltime,
             'aktiv' => $active,
-            'nacharbeit' => $occutime,
-            'aht' => $aht
+            'nacharbeit' => $afterwork,
+            'aht' => $aht,
+            'pause' => $pause,
           );
           }
         }
@@ -135,38 +140,7 @@ class FeedbackController extends Controller
           abort(403,'user: '.$userreport->name.' hat keine agent ID');
           }
 
-        // foreach ($kwdata as $kwn => $RETday) {
-        //   // userperformance
-        //   $calls = $kwdata[$kwn]->sum('calls');
-        //   $savesssc = $kwdata[$kwn]->sum('orders_smallscreen');
-        //   $savesbsc = $kwdata[$kwn]->sum('orders_bigscreen');
-        //   $savesportal = $kwdata[$kwn]->sum('orders_portale');
-        //   $mvlzneu = $kwdata[$kwn]->sum('mvlzNeu');
-        //   $rlzPlus = $kwdata[$kwn]->sum('rlzPlus');
-        //   // enduserperformance
-        //
-        //   //teamperformance including user
-        //   $teamcalls = $teamdata[$kwn]->sum('calls');
-        //   $sscTeam = $teamdata[$kwn]->sum('orders_smallscreen');
-        //   $bscTeam = $teamdata[$kwn]->sum('orders_bigscreen');
-        //   $portalTeam = $teamdata[$kwn]->sum('orders_portale');
-        //   //end teamperformance
-        //
-        //   $weekperformance[] = array(
-        //     'name' => $kwn,
-        //     'calls' => $calls,
-        //     'savesssc' => $savesssc,
-        //     'savesbsc' => $savesbsc,
-        //     'savesportal' => $savesportal,
-        //     'mvlzneu' => $mvlzneu,
-        //     'rlzPlus' => $rlzPlus,
-        //     'callsTeam' => $teamcalls,
-        //     'sscTeam' => $sscTeam,
-        //     'bscTeam' => $bscTeam,
-        //     'portalTeam' => $portalTeam,
-        //   );
-        //
-        // }
+
 
         // dd($weekperformance);
         return view('FeedBackPrint', compact('users','userreport','workdata','weekperformance','teamweekperformance'));

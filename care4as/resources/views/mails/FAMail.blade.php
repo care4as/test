@@ -81,7 +81,8 @@
     <body>
         <div class="FAM_container">
             <p>Sehr geehrte Damen und Herren,</p>
-            <p>anbei finden Sie die Feierabendmail vom date</p>
+            <p>anbei finden Sie die Feierabendmail vom @if(isset($data['mobile'])) {{Carbon\Carbon::parse($data['mobile']->created_at)->format('d.m.Y')}} @else {{Carbon\Carbon::parse($data['dsl']->created_at)->format('d.m.Y')}} @endif</p>
+            @if(isset($data['mobile']))
             <div class="FAM_projekt">
                 <div class="FAM_title">
                     <p>Projekt: RT Mobile</p>
@@ -97,65 +98,61 @@
                         <tr>
                             <td>Krankenquote:</td>
                             <td>5%</td>
-                            <td>5%</td>
+                            <td>{{$data['mobile']->krankenquote}}%</td>
                         </tr>
                         <tr>
                             <td>Service Level:</td>
                             <td>80%</td>
-                            <td>servicelevel</td>
+                            <td>{{$data['mobile']->servicelevel}}%</td>
                         </tr>
                         <tr>
                             <td>Erreichbarkeit:</td>
                             <td>100%</td>
-                            <td>erreichbarkeit</td>
+                            <td>{{$data['mobile']->erreichbarkeit}}%</td>
                         </tr>
                         <tr>
                             <td>Abnahme FHR:</td>
                             <td>100%</td>
-                            <td>abnahme</td>
+                            <td>{{$data['mobile']->abnahme}}%</td>
                         </tr>
                         <tr>
                             <td>IV Erfüllung:</td>
                             <td>28</td>
-                            <td>iverfüllung</td>
+                            <td>{{$data['mobile']->iv_erfuellung}}</td>
                         </tr>
                         <tr>
                             <td>GeVo CR:</td>
-                            <td></td>
-                            <td></td>
+                            <td>46%</td>
+                            <td>{{$data['mobile']->gevocr}}%</td>
                         </tr>
                         <tr>
                             <td>SSC CR:</td>
-                            <td></td>
-                            <td></td>
+                            <td>50%</td>
+                            <td>{{$data['mobile']->ssccr}}%</td>
                         </tr>
                     </table>
                     <p class="FAM_ueberschrift">Service Performance</p>
-                    <ul>
-                        <li>Eintrag 1</li>
-                        <li>Eintrag 2</li>
-                        <li>Eintrag 3</li>
-                        <li>Eintrag 4</li>
-                        <li>Eintrag 5</li>
-                    </ul>
+                    <ol>
+                        @foreach($data['mobile']->notes->where('type','service')->values() as $note)
+                          <li>{{$note->note}}</li>
+                        @endforeach
+                    </ol>
                     <p class="FAM_ueberschrift">Sales Performance</p>
-                    <ul>
-                        <li>Eintrag 1</li>
-                        <li>Eintrag 2</li>
-                        <li>Eintrag 3</li>
-                        <li>Eintrag 4</li>
-                        <li>Eintrag 5</li>
-                    </ul>
+                    <ol>
+                      @foreach($data['mobile']->notes->where('type','sales')->values() as $note)
+                        <li>{{$note->note}}</li>
+                      @endforeach
+                    </ol>
                     <p class="FAM_ueberschrift">Sonstige Anmerkungen</p>
-                    <ul>
-                        <li>Eintrag 1</li>
-                        <li>Eintrag 2</li>
-                        <li>Eintrag 3</li>
-                        <li>Eintrag 4</li>
-                        <li>Eintrag 5</li>
-                    </ul>
+                    <ol>
+                      @foreach($data['mobile']->notes->where('type','others')->values() as $note)
+                        <li>{{$note->note}}</li>
+                      @endforeach
+                    </ol>
                 </div>
             </div>
+            @endif
+            @if(isset($data['dsl']))
             <div class="FAM_projekt">
                 <div class="FAM_title">
                     <p>Projekt: RT DSL</p>
@@ -170,61 +167,56 @@
                         </tr>
                         <tr>
                             <td>Krankenquote:</td>
-                            <td>-</td>
-                            <td></td>
+                            <td>9%</td>
+                            <td>{{$data['dsl']->krankenquote}}%</td>
                         </tr>
                         <tr>
                             <td>Service Level:</td>
-                            <td></td>
-                            <td></td>
+                            <td>80%</td>
+                            <td>{{$data['dsl']->servicelevel}}%</td>
                         </tr>
                         <tr>
                             <td>Erreichbarkeit:</td>
-                            <td></td>
-                            <td></td>
+                            <td>100%</td>
+                            <td>{{$data['dsl']->erreichbarkeit}}%</td>
                         </tr>
                         <tr>
                             <td>Abnahme FHR:</td>
-                            <td></td>
-                            <td></td>
+                            <td>100%</td>
+                            <td>{{$data['dsl']->abnahme}}%</td>
                         </tr>
                         <tr>
                             <td>IV Erfüllung:</td>
-                            <td></td>
-                            <td></td>
+                            <td>28</td>
+                            <td>{{$data['dsl']->iv_erfuellung}}</td>
                         </tr>
                         <tr>
                             <td>GeVo CR:</td>
-                            <td></td>
-                            <td></td>
+                            <td>39%</td>
+                            <td>{{$data['dsl']->iv_erfuellung}}%</td>
                         </tr>
                     </table>
                     <p class="FAM_ueberschrift">Service Performance</p>
-                    <ul>
-                        <li>Eintrag 1</li>
-                        <li>Eintrag 2</li>
-                        <li>Eintrag 3</li>
-                        <li>Eintrag 4</li>
-                        <li>Eintrag 5</li>
-                    </ul>
+                    <ol>
+                      @foreach($data['dsl']->notes->where('type','service')->values() as $note)
+                        <li>{{$note->note}}</li>
+                      @endforeach
+                    </ol>
                     <p class="FAM_ueberschrift">Sales Performance</p>
-                    <ul>
-                        <li>Eintrag 1</li>
-                        <li>Eintrag 2</li>
-                        <li>Eintrag 3</li>
-                        <li>Eintrag 4</li>
-                        <li>Eintrag 5</li>
-                    </ul>
+                    <ol>
+                      @foreach($data['dsl']->notes->where('type','sales')->values() as $note)
+                        <li>{{$note->note}}</li>
+                      @endforeach
+                    </ol>
                     <p class="FAM_ueberschrift">Sonstige Anmerkungen</p>
-                    <ul>
-                        <li>Eintrag 1</li>
-                        <li>Eintrag 2</li>
-                        <li>Eintrag 3</li>
-                        <li>Eintrag 4</li>
-                        <li>Eintrag 5</li>
-                    </ul>
+                    <ol>
+                      @foreach($data['dsl']->notes->where('type','others')->values() as $note)
+                        <li>{{$note->note}}</li>
+                      @endforeach
+                    </ol>
                 </div>
             </div>
+            @endif
             <p>Dies ist eine systemseitig generierte E-Mail.</p>
         </div>
     </body>

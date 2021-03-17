@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\RetentionDetail;
 use App\Mail\BestWorst;
+use App\Mail\FAMail;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -14,9 +15,12 @@ class ReportController extends Controller
     public function allReports()
     {
       return view('reports');
-
     }
 
+    public function FaMail(Request $request)
+    {
+
+    }
     public function bestWorstReport(Request $request)
     {
       // dd($request);
@@ -61,9 +65,6 @@ class ReportController extends Controller
         return $q->where('department_desc','=', 'Care4as Retention DSL Eggebek');
       });
 
-
-      // $query->where('call_date','>=', $from);
-      // $query->where('call_date','<=', $to);
       $reports = $query->get();
 
       $personids = $reports->unique('person_id')->pluck('person_id');
@@ -108,9 +109,6 @@ class ReportController extends Controller
           $bestusers[] = $sorted[(count($sorted)-1) - $i];
         }
       }
-
-      // dd($bestusers);
-
       $data= array(
         'best' => $bestAgents,
         'worst' => $worstAgents,
@@ -125,11 +123,7 @@ class ReportController extends Controller
       if($request->asEmail)
       {
         $mailinglist = explode(';',$request->mailinglist);
-
-        foreach($mailinglist as $adress)
-        {
-          Mail::to($adress)->send($mail);
-        }
+        Mail::to($mailinglist)->send($mail);
 
         return redirect()->back();
       }

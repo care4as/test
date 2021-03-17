@@ -37,8 +37,11 @@ class HomeController extends Controller
       }
       else {
         $department = '1&1 Mobile Retention';
-        $users = collect();
-        return view('presentation', compact('modul', 'users'));
+        $users = User::where('role','agent')
+        ->where('department',$department)
+        ->get();
+
+        // return view('presentation', compact('modul', 'users'));
       }
 
       if($request->employees)
@@ -181,7 +184,6 @@ class HomeController extends Controller
         else {
           $sicknessquota =  ($sickHours/$workedHours)*100;
         }
-
 
         $user->salesdata = array(
           'calls' => $sumcalls,
