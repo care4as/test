@@ -207,6 +207,7 @@
             <th>Calls/h</th>
             <th>AHT</th>
             <th>Saves</th>
+            <th>bezahlte Zeit</th>
             <th>Produktivzeit</th>
             <th>SSC</th>
             <th>BSC</th>
@@ -253,7 +254,8 @@
             @else
               <td>{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
             @endif
-            <td>50</td>
+            <td>{{$user->salesdata['payedtime']}}</td>
+            <td>{{$user->salesdata['productive']}}</td>
             <td>{{$user->salesdata['sscOrders']}}</td>
             <td>{{$user->salesdata['bscOrders']}}</td>
             <td>{{$user->salesdata['portalOrders']}}</td>
@@ -275,13 +277,13 @@
             <td>{{$user->salesdata['portalQuota']}}</td>
             <td>50</td>
             <td>{{$user->salesdata['orders'] * $pricepersave}}</td>
-            @if(($user->salesdata['workedDays'] * $user->dailyhours) != 0)
-              <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedDays'] * $user->dailyhours),2)}}€</td>
+            @if($user->salesdata['payedtime'] != 0)
+              <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['payedtime']),2)}}€</td>
             @else
               <td>Fehler</td>
             @endif
-            @if($user->salesdata['workedHours'] != 0)
-              <td>{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['workedHours'],2) }}€</td>
+            @if($user->salesdata['productive'] != 0)
+              <td>{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}€</td>
             @else
                 <td>Fehler: Arbeitsstunden Stundenreport</td>
             @endif

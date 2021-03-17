@@ -2,18 +2,47 @@
 
 @section('additional_css')
 <style media="screen">
-  tr
-  {
-    border: 2px solid black;
-  }
+td
+{
+  border: 2px solid black;
+  border-collapse: collapse;
+}
+th
+{
+  border: 2px solid black;
+  border-collapse: collapse;
+}
+</style>
+<style media="print">
+
   td
   {
     border: 2px solid black;
+    border-collapse: collapse;
+  }
+  th
+  {
+    border: 2px solid black;
+    border-collapse: collapse;
   }
   .printBorder
   {
     border: 2px solid black;
   }
+  .no-print
+  {
+      display: none !important;
+  }
+
+  .page-break
+  {
+      page-break-after: always;
+  }
+
+  .last-page{
+      page-break-after: avoid;
+  }
+
 </style>
 @endsection
 @section('content')
@@ -51,7 +80,7 @@
     @if(isset($userreport))
     <div class="row mt-3 bg-white">
       <div class="col-12 d-flex  justify-content-center">
-        <table class="table table-hover table-striped" style="border: 3px solid black;">
+        <table class="table table-hover table-striped" >
           <thead class="thead-dark">
             <tr>
               <th>{{Carbon\Carbon::now()->year}}</th>
@@ -130,28 +159,28 @@
             @if($weekperformance['0']['rlzPlus'] + $weekperformance['0']['mvlzneu'] == 0)
               <td class="tooLow">Fehler RLZ24 + MVLZ ergibt 0</td>
             @else
-              <td>{{round($weekperformance['0']['rlzPlus']/($weekperformance['0']['rlzPlus'] + $weekperformance['0']['mvlzneu']),2)}}</td>
+              <td>{{round($weekperformance['0']['rlzPlus']/($weekperformance['0']['rlzPlus'] + $weekperformance['0']['mvlzneu']),2)*100}}%</td>
             @endif
           </tr>
           <tr>
               <td>Anteil Pause</td>
               @if($workdata[3]['gesamt'] == 0)
-                <td class="tooLow">Fehler DailyAgent <a href="#">zum Upload</a></td>
+                <td class="tooLow">Fehler DailyAgent </td>
               @else
                 <td>{{ round(($workdata[3]['pause']*100)/$workdata[3]['gesamt'],2) }}%</td>
               @endif
               @if($workdata[2]['gesamt'] == 0)
-                <td class="tooLow">Fehler DailyAgent <a href="#">zum Upload</a></td>
+                <td class="tooLow">Fehler DailyAgent </a></td>
               @else
                 <td>{{ round(($workdata[2]['pause']*100)/$workdata[2]['gesamt'],2) }}%</td>
               @endif
               @if($workdata[1]['gesamt'] == 0)
-                <td class="tooLow">Fehler DailyAgent <a href="#">zum Upload</a></td>
+                <td class="tooLow">Fehler DailyAgent </td>
               @else
                 <td>{{ round(($workdata[1]['pause']*100)/$workdata[1]['gesamt'],2) }}%</td>
               @endif
               @if($workdata[0]['gesamt'] == 0)
-                <td class="tooLow">Fehler DailyAgent <a href="#">zum Upload</a></td>
+                <td class="tooLow">Fehler DailyAgent </td>
               @else
                 <td>>{{ round(($workdata[0]['pause']*100)/$workdata[0]['gesamt'],0) }}%</td>
               @endif
@@ -187,7 +216,7 @@
               <td>{{round($workdata[1]['aht'],0)}}</td>
               <td>{{round($workdata[0]['aht'],0)}}</td>
             @else
-              <td colspan=4 class="text-center">keine Werte/ kein agent_id im Datensatz <a href="{{route('user.stats',['id' => $userreport->id])}}">zum User</a> </td>
+              <td class="text-center">keine Werte/ kein agent_id im Datensatz <a class="no-print" href="{{route('user.stats',['id' => $userreport->id])}}">zum User</a> </td>
             @endif
           </tr>
         </table>
@@ -217,7 +246,7 @@
 
 </div>
 
-<button onclick="printPage()" class="noPrint btn-lg border-round" > Drucken </button>
+<button onclick="printPage()" class="no-print btn-lg border-round" > Drucken </button>
 
 @endsection
 @section('additional_js')

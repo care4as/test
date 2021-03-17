@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Hoursreport;
 use App\RetentionDetail;
+use App\DailyAgent;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -32,6 +33,7 @@ class HomeController extends Controller
     public function presentation(Request $request)
     {
       DB::disableQueryLog();
+      ini_set('max_execution_time', '0');
 
       $modul = 'Userübersicht';
 
@@ -55,7 +57,6 @@ class HomeController extends Controller
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
         ->get();
       }
-
 
       foreach ($users as $key => $user) {
 
@@ -156,7 +157,6 @@ class HomeController extends Controller
         {
           $gevocr = round(($sumorders/$sumcalls) * 100,2).'%';
         }
-
         $queryWorktime = Hoursreport::query();
         $queryWorktime->where('user_id',$user->id)
         ->orderBY('date','DESC');
@@ -171,13 +171,15 @@ class HomeController extends Controller
 
         $workTimeData = $queryWorktime->get();
         // dd($user->workTimeData);
+        $workedHours = $workTimeData->sum('IST_Angepasst');
+        $sickHours = $workTimeData->sum('sick_Angepasst');
 
-        for($i = 0; $i <= count($workTimeData)-1; $i++)
-        {
-          $workday = $workTimeData[$i];
-          $workedHours += $workday['IST_Angepasst'];
-          $sickHours += $workTimeData[$i]['sick_Angepasst'];
-        }
+        // for($i = 0; $i <= count($workTimeData)-1; $i++)
+        // {
+        //   $workday = $workTimeData[$i];
+        //   $workedHours += $workday['IST_Angepasst'];
+        //   $sickHours += $workTimeData[$i]['sick_Angepasst'];
+        // }
 
         if($workedHours == 0)
         {
@@ -187,6 +189,28 @@ class HomeController extends Controller
           $sicknessquota =  ($sickHours/$workedHours)*100;
         }
 
+        $querypayed = DailyAgent::query();
+
+        $querypayed->where('agent_id', $user->agent_id);
+
+        $querypayed->when(request('start_date'), function ($q) {
+            return $q->where('date', '>=',request('start_date'));
+        });
+        $querypayed->when(request('end_date'), function ($q) {
+            return $q->where('date', '<=',request('end_date'));
+        });
+
+        $payed = round(($querypayed->sum('time_in_state')/3600),2);
+
+        if($payed == 0)
+        {
+          $payed = 'Fehler: bezahlte Zeit ist 0';
+        }
+
+        $productiveStates = array('Wrap Up','Ringing', 'In Call','On Hold','Available','Released (05_occupied)','Released (06_practice)','Released (09_outbound)');
+        $productive = $querypayed->whereIn('status', $productiveStates)
+        ->sum('time_in_state');
+        $productive = round(($productive/3600),2);
         $user->salesdata = array(
           'calls' => $sumcalls,
           'orders' => $sumorders,
@@ -201,11 +225,10 @@ class HomeController extends Controller
           'GeVo-Cr' => $gevocr,
           'workedHours' => $workedHours,
           'sickHours' => $sickHours,
-          // 'sicknessquota' => $sicknessquota,
+          'payedtime' => $payed,
+          'productive' => $productive,
         );
-
       }
-
       // return view('usersIndex', compact('users'));
       return view('presentation', compact('modul', 'users'));
     }
