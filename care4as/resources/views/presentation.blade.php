@@ -7,7 +7,7 @@
   {
     font-size: 0.8vw !important;
     text-align: left;
-    min-width: 70px;
+    min-width: auto;
     overflow: hidden;
     text-overflow: ellipsis;
 
@@ -95,23 +95,26 @@
       <h5>Retention Details vom <u>{{Carbon\Carbon::parse(App\RetentionDetail::min('call_date'))->format('d.m.Y')}}</u> bis zum <u>{{Carbon\Carbon::parse(App\RetentionDetail::max('call_date'))->format('d.m.Y')}}</u></h5>
     </div>
     <div class="col-4">
-    <a href="{{route('dailyagent.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+    <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
     </div>
     <div class="col-8">
       @if(!App\DailyAgent::min('date'))
         <h5>keine Daten eingegeben</h5>
       @else
-        <h5>Daily Agent im Zeitraum vom <u>{{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y')}}</u> </h5>
+        <h5>Daily Agent im Zeitraum vom <u>{{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
       @endif
     </div>
-    <div class="col-4">
+    <div class="col-2">
       <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+    </div>
+    <div class="col-2">
+      <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
     </div>
     <div class="col-8">
       @if(!App\Hoursreport::min('date'))
         <h5>keine Daten eingegeben</h5>
       @else
-        <h5>Stundenreport im Zeitraum vom <u>{{Carbon\Carbon::parse(App\Hoursreport::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\Hoursreport::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
+        <h5>Stundenreport im Zeitraum vom <u>{{Carbon\Carbon::parse(App\Hoursreport::min('date'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\Hoursreport::max('date'))->format('d.m.Y ')}}</u> </h5>
       @endif
     </div>
     <div class="col-2">
@@ -277,9 +280,9 @@
             @if($user->salesdata['workedHours'] != 0)
               <td>{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['workedHours'],2) }}€</td>
             @else
-                <td>Fehler Arbeitsstunden</td>
+                <td>Fehler: Arbeitsstunden Stundenreport</td>
             @endif
-            <td>{{$user->salesdata['workedHours'] }} / {{$user->salesdata['sickHours'] }}</td>
+            <td>{{$user->salesdata['sickHours'] }}/ {{$user->salesdata['workedHours'] }}</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td>
               <a href="{{route('user.stats', ['id' => $user->id])}}">anzeigen</a>

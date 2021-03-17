@@ -26,7 +26,7 @@
       <div class="card-body ">
           <div class="tab-content text-center">
               <div class="tab-pane active" id="userinfo">
-                <table class="table table-striped">
+                <table class="table table-striped" id="userdata">
                 <thead class="thead-dark">
                   <tr>
                   <th>#</th>
@@ -38,7 +38,7 @@
                     <th>Person-ID</th>
                     <th>Agent-ID</th>
                     <th>options</th>
-                  <tr>
+                  </tr>
                 </thead>
                 <tbody>
                   @foreach($users as $user)
@@ -68,7 +68,7 @@
                         </button>
                         </a>
                       </td>
-                    <tr>
+                    </tr>
                   @endforeach
                 </tbody>
             </table>
@@ -79,19 +79,19 @@
                   <thead>
                     <tr>
                     <th>#</th>
-                      <th>name</th>
-                      <th>Calls</th>
-                      <th>Saves SSC</th>
-                      <th>Cancels SSC</th>
-                      <th>Service SSC</th>
-                      <th>Saves BSC</th>
-                      <th>Cancels BSC</th>
-                      <th>Service BSC</th>
-                      <th>Saves Portal</th>
-                      <th>Cancels Portal</th>
-                      <th>Service Portal</th>
-                      <th>Optionen</th>
-                    <tr>
+                    <th>name</th>
+                    <th>Calls</th>
+                    <th>Saves SSC</th>
+                    <th>Cancels SSC</th>
+                    <th>Service SSC</th>
+                    <th>Saves BSC</th>
+                    <th>Cancels BSC</th>
+                    <th>Service BSC</th>
+                    <th>Saves Portal</th>
+                    <th>Cancels Portal</th>
+                    <th>Service Portal</th>
+                    <th>Optionen</th>
+                    </tr>
                   </thead>
                   <tbody>
                     @foreach($users as $user)
@@ -112,22 +112,35 @@
                           <a href="">
                           </a>
                         </td>
-                      <tr>
+                      </tr>
                     @endforeach
                   </tbody>
                 </table>
               </div>
             </div>
-            <div class="tab-pane" id="history">
 
+            <div class="tab-pane" id="history">
             </div>
           </div>
       </div>
     </div>
-
     </div>
-
   </div>
 </div>
+
+@endsection
+
+@section('additional_js')
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+  let table = $('#userdata').DataTable({
+    ordering: true,
+  });
+
+});
+</script>
 
 @endsection
