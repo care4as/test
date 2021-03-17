@@ -3,9 +3,14 @@
 @section('additional_css')
 
 <style media="screen">
-  .table td, th
+  th, td
   {
     font-size: 0.8vw !important;
+    text-align: left;
+    min-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
   }
   .loader {
   font-size: 2px;
@@ -184,7 +189,7 @@
         }
       @endphp
 
-      <table class="table table-hover table-striped table-bordered display" id="tableoverview">
+      <table class="table table-hover table-striped table-bordered table-responsive overflow-scroll" id="tableoverview">
         <thead class="thead-dark">
           <tr>
             <th>#</th>
@@ -207,7 +212,7 @@
             <th>BSC CR</th>
             <th>Portal CR</th>
             <th>KüRü CR</th>
-            <th>Umsatz({{$pricepersave}} )</th>
+            <th>Umsatz</th>
             <th>Umsatz/h bez</th>
             <th>Umsatz/h Std. prod</th>
             <th>KQ</th>
@@ -297,6 +302,7 @@
   $(document).ready(function(){
 
     let table = $('#tableoverview').DataTable({
+      ordering: true,
     });
 
   });

@@ -116,20 +116,78 @@
           </tr>
           <tr>
             <td>RLZ 24</td>
-            <td>{{$weekperformance['3']['rlzPlus']/($weekperformance['3']['rlzPlus'] + $weekperformance['3']['mvlzneu'])}}</td>
-            <td>{{$weekperformance['2']['rlzPlus']/($weekperformance['2']['rlzPlus'] + $weekperformance['2']['mvlzneu'])}}</td>
-            <td>{{$weekperformance['1']['rlzPlus']/($weekperformance['1']['rlzPlus'] + $weekperformance['1']['mvlzneu'])}}</td>
-            <td>{{$weekperformance['0']['rlzPlus']/($weekperformance['0']['rlzPlus'] + $weekperformance['0']['mvlzneu'])}}</td>
+            @if($weekperformance['3']['rlzPlus'] + $weekperformance['3']['mvlzneu'] == 0)
+              <td class="tooLow">Fehler RLZ24 + MVLZ ergibt 0</td>
+            @else
+              <td>{{round($weekperformance['3']['rlzPlus']/($weekperformance['3']['rlzPlus'] + $weekperformance['3']['mvlzneu'])*100,2)}}%</td>
+            @endif
+            @if($weekperformance['2']['rlzPlus'] + $weekperformance['2']['mvlzneu'] == 0)
+              <td class="tooLow">Fehler: RLZ24 + MVLZ ergibt 0</td>
+            @else
+              <td>{{round($weekperformance['2']['rlzPlus']/($weekperformance['2']['rlzPlus'] + $weekperformance['2']['mvlzneu']),2)*100}}%</td>
+            @endif
+            <td>{{round($weekperformance['1']['rlzPlus']/($weekperformance['1']['rlzPlus'] + $weekperformance['1']['mvlzneu']),2)*100}}%</td>
+            @if($weekperformance['0']['rlzPlus'] + $weekperformance['0']['mvlzneu'] == 0)
+              <td class="tooLow">Fehler RLZ24 + MVLZ ergibt 0</td>
+            @else
+              <td>{{round($weekperformance['0']['rlzPlus']/($weekperformance['0']['rlzPlus'] + $weekperformance['0']['mvlzneu']),2)}}</td>
+            @endif
+          </tr>
+          <tr>
+              <td>Anteil Pause</td>
+              @if($workdata[3]['gesamt'] == 0)
+                <td class="tooLow">Fehler DailyAgent <a href="#">zum Upload</a></td>
+              @else
+                <td>{{ round(($workdata[3]['pause']*100)/$workdata[3]['gesamt'],2) }}%</td>
+              @endif
+              @if($workdata[2]['gesamt'] == 0)
+                <td class="tooLow">Fehler DailyAgent <a href="#">zum Upload</a></td>
+              @else
+                <td>{{ round(($workdata[2]['pause']*100)/$workdata[2]['gesamt'],2) }}%</td>
+              @endif
+              @if($workdata[1]['gesamt'] == 0)
+                <td class="tooLow">Fehler DailyAgent <a href="#">zum Upload</a></td>
+              @else
+                <td>{{ round(($workdata[1]['pause']*100)/$workdata[1]['gesamt'],2) }}%</td>
+              @endif
+              @if($workdata[0]['gesamt'] == 0)
+                <td class="tooLow">Fehler DailyAgent <a href="#">zum Upload</a></td>
+              @else
+                <td>>{{ round(($workdata[0]['pause']*100)/$workdata[0]['gesamt'],0) }}%</td>
+              @endif
+          </tr>
+          <tr>
+            <td>Anteil Nacharbeit</td>
+            @if($workdata[3]['gesamt'] == 0)
+              <td class="tooLow">Gesamtzeit ergibt 0</td>
+            @else
+              <td>{{ round(($workdata[3]['nacharbeit']*100)/$workdata[3]['gesamt'],2) }}%</td>
+            @endif
+            @if($workdata[2]['gesamt'] == 0)
+              <td class="tooLow">Gesamtzeit ergibt 0</td>
+            @else
+              <td>{{ round(($workdata[2]['nacharbeit']*100)/$workdata[2]['gesamt'],2) }}%</td>
+            @endif
+            @if($workdata[1]['gesamt'] == 0)
+              <td class="tooLow">Gesamtzeit ergibt 0</td>
+            @else
+              <td>{{ round(($workdata[1]['nacharbeit']*100)/$workdata[1]['gesamt'],2) }}%</td>
+            @endif
+            @if($workdata[0]['gesamt'] == 0)
+              <td class="tooLow">Gesamtzeit ergibt 0</td>
+            @else
+              <td>{{ round(($workdata[0]['nacharbeit']*100)/$workdata[0]['gesamt'],2) }}%</td>
+            @endif
           </tr>
           <tr>
             <td>AHT</td>
             @if($userreport->agent_id)
-            <td>{{$workdata[3]['aht']}}</td>
-            <td>{{$workdata[2]['aht']}}</td>
-            <td>{{$workdata[1]['aht']}}</td>
-            <td>{{$workdata[0]['aht'] }}</td>
+              <td>{{round($workdata[3]['aht'],0)}}</td>
+              <td>{{round($workdata[2]['aht'],0)}}</td>
+              <td>{{round($workdata[1]['aht'],0)}}</td>
+              <td>{{round($workdata[0]['aht'],0)}}</td>
             @else
-            <td colspan=4 class="text-center">keine Werte/ kein agent_id im Datensatz <a href="{{route('user.stats',['id' => $userreport->id])}}">zum User</a> </td>
+              <td colspan=4 class="text-center">keine Werte/ kein agent_id im Datensatz <a href="{{route('user.stats',['id' => $userreport->id])}}">zum User</a> </td>
             @endif
           </tr>
         </table>

@@ -16,6 +16,8 @@ class CreateEobmailHasNotesTable extends Migration
         Schema::create('eobmail_has_notes', function (Blueprint $table) {
             $table->id();
             $table->integer('eobmail_id');
+            $table->text('department')->nullable();
+            $table->text('type')->nullable();
             $table->text('note');
             $table->timestamps();
         });

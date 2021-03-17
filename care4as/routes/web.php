@@ -181,27 +181,15 @@ Route::group(['middleware' => ['auth']], function () {
   //endtrainings
 
   //eobmail
-  Route::get('/eobmail', function(){
+  Route::get('/eobmail', 'MailController@eobmail')->name('eobmail');
 
-    if(!$eobmail = App\eobmail::where('datum', Date('Y-m-d'))->first())
-    {
-      $eobmail = new App\eobmail;
-      $eobmail->datum = Date('Y-m-d');
-
-      $eobmail->save();
-    }
-
-    return view('eobmail', compact('eobmail'));
-
-  })->name('eobmail');
-
-  Route::post('/eobmail/post', 'MailController@eobMailSend')->name('eobmail.send');
+  Route::post('/eobmail/send', 'MailController@eobMailSend')->name('eobmail.send');
   Route::post('/eobmail/comment', 'MailController@storeComment')->name('eobmail.note.store');
+  Route::post('/eobmail/FaMailStoreKPIs', 'MailController@FaMailStoreKPIs')->name('eobmail.kpi.store');
   Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
 
   //endeobmail
 });
-
 
 //Presentation
   Route::get('/presentation', 'HomeController@presentation')->name('presentation');
@@ -224,4 +212,4 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 
-Route::post('/test', 'ReportController@bestWorstReport')->name('test');
+Route::post('/test', 'MailController@eobMailSend')->name('test');

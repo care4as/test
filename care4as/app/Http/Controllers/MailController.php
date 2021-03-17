@@ -2,37 +2,116 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
 
 use App\eobmail;
+use App\Mail\FAMail;
 
 
 class MailController extends Controller
 {
-    public function storeComment(Request $request)
+    // Abteilung 1 = mobile
+    // Abteilung 2 = dsl
+
+    public function eobmail($value='')
     {
-
-      // dd($request);
-
-      if(!$eobmail = eobmail::where('datum', Date('Y-m-d'))->first())
+      if(!$eobmail = eobmail::where('datum', Date('Y-m-d'))->where('abteilung', 1)->first())
       {
         $eobmail = new eobmail;
         $eobmail->datum = Date('Y-m-d');
+        $eobmail->abteilung = '1';
 
         $eobmail->save();
+        $eobmail->load('notes');
+      }
+      if(!$eobmaildsl = eobmail::where('datum', Date('Y-m-d'))->where('abteilung', 2)->first())
+      {
+        $eobmaildsl = new eobmail;
+        $eobmaildsl->datum = Date('Y-m-d');
+        $eobmaildsl->abteilung = '2';
+        $eobmaildsl->save();
+        $eobmaildsl->load('notes');
+      }
+
+      return view('eobmail', compact('eobmail','eobmaildsl'));
+    }
+
+    public function storeComment(Request $request)
+    {
+      // dd($request);
+
+      $request->validate([
+        'note' => 'required',
+        'departmentComment' => 'required',
+        'type' => 'required',
+      ]);
+
+      if(!$eobmail = eobmail::where('datum', Date('Y-m-d'))->where('abteilung','1')->first())
+      {
+        $eobmail = new eobmail;
+        $eobmail->datum = Date('Y-m-d');
+        $eobmail->abteilung = 1;
+
+        $eobmail->save();
+      }
+      if (!$eobmaildsl = eobmail::where('datum', Date('Y-m-d'))->where('abteilung','2')->first()) {
+
+        $eobmaildsl = new eobmail;
+        $eobmaildsl->datum = Date('Y-m-d');
+        $eobmaildsl->abteilung = 2;
+
+        $eobmaildsl->save();
       }
 
       if($request->note)
       {
-        DB::table('eobmail_has_notes')
-        ->insert([
-          'eobmail_id' => $eobmail->id,
-          'note' => $request->note,
-        ]);
-        // dd($request);
+        if ($request->departmentComment == 'dsl') {
+
+          DB::table('eobmail_has_notes')
+          ->insert([
+            'eobmail_id' => $eobmaildsl->id,
+            'note' => $request->note,
+            'department' => 'dsl',
+            'type' => $request->type,
+          ]);
+
+        }
+        else {
+          DB::table('eobmail_has_notes')
+          ->insert([
+            'eobmail_id' => $eobmail->id,
+            'note' => $request->note,
+            'department' => 'mobile',
+            'type' => $request->type,
+          ]);
+
+        }
       }
-      $eobmail->load('notes');
+      return redirect()->route('eobmail');
+    }
+
+    public function FaMailStoreKPIs(Request $request)
+    {
+      // dd($request);
+
+      $request->validate([
+        'department' => 'required',
+      ]);
+
+      if($request->department == 1)
+      {
+        $eobmail = eobmail::where('datum', Date('Y-m-d'))->where('abteilung','1')->first();
+      }
+      else {
+          $eobmail = eobmail::where('datum', Date('Y-m-d'))->where('abteilung','2')->first();
+      }
+      foreach ($request->except(['_token','department','emails','comment','cancels']) as $key => $value) {
+        $eobmail->$key = $value;
+      }
+
+      $eobmail->save();
 
       return redirect()->route('eobmail');
     }
@@ -44,26 +123,66 @@ class MailController extends Controller
 
     public function eobMailSend(Request $request)
     {
+      // dd($request);
+
       $request->validate([
-        'emails' => 'required',
-        'servicelevel' => 'required',
-        'erreichbarkeit' => 'required',
-        'abnahme' => 'required',
-        'iverfüllung' => 'required',
-        'gevocr' => 'required',
-        'ssccr' => 'required',
-        'comment' => 'required',
+        'emails2send' => 'required',
       ]);
 
-      $eobmail = eobmail::where('datum', Date('Y-m-d'))->first();
-      $emails = implode(';',$request->emails);
+      if ($request->department == 'both') {
 
-      $eobmail->servicelevel = $request->servicelevel;
-      $eobmail->erreichbarkeit = $request->erreichbarkeit;
-      $eobmail->abnahme = $request->abnahme;
-      $eobmail->iverfüllung = $request->iverfüllung;
-      $eobmail->gevocr = $request->gevocr;
-      $eobmail->ssccr = $request->ssccr;
-      $eobmail->comment = $request->comment;
+        $eobmail = eobmail::where('datum', Date('Y-m-d'))->where('abteilung',1)->first();
+        $eobmaildsl = eobmail::where('datum', Date('Y-m-d'))->where('abteilung',2)->first();
+        $eobmail->load('notes');
+        $eobmaildsl->load('notes');
+
+        $data = array(
+          'mobile' => $eobmail,
+          'dsl' => $eobmaildsl,
+        );
+        $eobmail->update([
+          'send' => 1,
+        ]);
+        $eobmaildsl->update([
+          'send' => 1,
+        ]);
+
+      }
+      elseif ($request->department == 'mobile') {
+
+        $eobmail = eobmail::where('datum', Date('Y-m-d'))->where('abteilung',1)->first();
+        $eobmail->load('notes');
+
+        $data = array(
+          'mobile' => $eobmail,
+        );
+
+        $eobmail->update([
+          'send' => 1,
+        ]);
+      }
+      else {
+        $eobmaildsl = eobmail::where('datum', Date('Y-m-d'))->where('abteilung',2)->first();
+        $eobmaildsl->load('notes');
+
+        $data = array(
+          'dsl' => $eobmaildsl,
+        );
+        $eobmaildsl->update([
+          'send' => 1,
+        ]);
+      }
+
+      $mail = new FAMail($data);
+
+
+      // return $mail;
+      if ($eobmail->send == 1) {
+
+        $mailinglist = explode(';',$request->emails2send);
+        Mail::to($mailinglist)->send($mail);
+      }
+
+      return redirect()->route('eobmail');
     }
 }
