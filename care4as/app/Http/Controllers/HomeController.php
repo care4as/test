@@ -35,19 +35,6 @@ class HomeController extends Controller
 
       $modul = 'Userübersicht';
 
-      if ($request->department) {
-        $department = $request->department;
-      }
-      else {
-        $department = '1&1 Mobile Retention';
-        $users = User::where('role','agent')
-        ->where('department',$department)
-        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
-        ->get();
-
-        // return view('presentation', compact('modul', 'users'));
-      }
-
       if($request->employees)
       {
         $users = User::where('role','agent')
@@ -56,13 +43,20 @@ class HomeController extends Controller
         ->get();
       }
       else {
+
+        if ($request->department) {
+          $department = $request->department;
+        }
+        else {
+          $department = '';
+        }
         $users = User::where('role','agent')
         ->where('department', $department)
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
         ->get();
       }
 
-      // dd($users);
+
       foreach ($users as $key => $user) {
 
         $query = \App\RetentionDetail::query();
