@@ -33,7 +33,8 @@ class HomeController extends Controller
     public function presentation(Request $request)
     {
       DB::disableQueryLog();
-      ini_set('max_execution_time', '0');
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
 
       $modul = 'Userübersicht';
 
@@ -65,7 +66,7 @@ class HomeController extends Controller
             $q->where('date','<=',$end_date);
           }
           }])
-        ->get();
+        ->limit(10);
       }
       else {
 
