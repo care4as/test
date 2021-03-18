@@ -33,7 +33,8 @@ class HomeController extends Controller
     public function presentation(Request $request)
     {
       DB::disableQueryLog();
-      ini_set('max_execution_time', '0');
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
 
       $modul = 'Userübersicht';
 
@@ -47,7 +48,6 @@ class HomeController extends Controller
       if ($request->end_date) {
         $end_date = $request->end_date;
       }
-
       // return $end_date;
 
       if($request->employees)
@@ -66,6 +66,7 @@ class HomeController extends Controller
             $q->where('date','<=',$end_date);
           }
           }])
+        // ->limit(10)
         ->get();
       }
       else {
@@ -74,7 +75,7 @@ class HomeController extends Controller
           $department = $request->department;
         }
         else {
-          $department = '1&1 Mobile Retention';
+          $department = '';
         }
 
         $users = User::where('role','agent')
@@ -92,7 +93,7 @@ class HomeController extends Controller
             $q->where('date','<=',$end_date);
           }
         }])
-        // ->limit(10)
+        ->limit(10)
         ->get();
       }
 
