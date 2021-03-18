@@ -93,7 +93,7 @@ class HomeController extends Controller
             $q->where('date','<=',$end_date);
           }
         }])
-        ->limit(10)
+        // ->limit(10)
         ->get();
       }
 
