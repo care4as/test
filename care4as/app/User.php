@@ -73,7 +73,6 @@ class User extends Authenticatable
       }
       $salesdataFinal = null;
       $salesdataFinal = array(
-
         'calls' => $calls,
         'savesssc' => $savesssc,
         'savesbsc' => $savesbsc,
@@ -83,5 +82,11 @@ class User extends Authenticatable
       );
 
       return ($salesdataFinal);
+    }
+    public function dailyagent()
+    {
+      // return $this->agent_id;
+      return $this->hasMany('\App\DailyAgent','agent_id','agent_id')->select(['id','status']);
+
     }
 }

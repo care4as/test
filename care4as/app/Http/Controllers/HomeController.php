@@ -37,11 +37,35 @@ class HomeController extends Controller
 
       $modul = 'Userübersicht';
 
+      $start_date = 1;
+      $end_date = 1;
+
+      if($request->start_date)
+      {
+        $start_date = $request->start_date;
+      }
+      if ($request->end_date) {
+        $end_date = $request->end_date;
+      }
+
+      // return $end_date;
+
       if($request->employees)
       {
         $users = User::where('role','agent')
         ->whereIn('id', $request->employees)
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
+        ->with(['dailyagent' => function($q) use ($start_date,$end_date){
+          $q->select(['id','agent_id','status','time_in_state','date']);
+          if($start_date !== 1)
+          {
+            $q->where('date','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('date','<=',$end_date);
+          }
+          }])
         ->get();
       }
       else {
@@ -50,11 +74,25 @@ class HomeController extends Controller
           $department = $request->department;
         }
         else {
-          $department = '';
+          $department = '1&1 Mobile Retention';
         }
+
         $users = User::where('role','agent')
         ->where('department', $department)
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
+        ->where('agent_id','!=',null)
+        ->with(['dailyagent' => function($q) use ($start_date,$end_date){
+          $q->select(['id','agent_id','status','time_in_state','date']);
+          if($start_date !== 1)
+          {
+            $q->where('date','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('date','<=',$end_date);
+          }
+        }])
+        // ->limit(10)
         ->get();
       }
 
@@ -174,13 +212,6 @@ class HomeController extends Controller
         $workedHours = $workTimeData->sum('IST_Angepasst');
         $sickHours = $workTimeData->sum('sick_Angepasst');
 
-        // for($i = 0; $i <= count($workTimeData)-1; $i++)
-        // {
-        //   $workday = $workTimeData[$i];
-        //   $workedHours += $workday['IST_Angepasst'];
-        //   $sickHours += $workTimeData[$i]['sick_Angepasst'];
-        // }
-
         if($workedHours == 0)
         {
           $sicknessquota = 'keine validen Daten';
@@ -189,18 +220,8 @@ class HomeController extends Controller
           $sicknessquota =  ($sickHours/$workedHours)*100;
         }
 
-        $querypayed = DailyAgent::query();
 
-        $querypayed->where('agent_id', $user->agent_id);
-
-        $querypayed->when(request('start_date'), function ($q) {
-            return $q->where('date', '>=',request('start_date'));
-        });
-        $querypayed->when(request('end_date'), function ($q) {
-            return $q->where('date', '<=',request('end_date'));
-        });
-
-        $payed = round(($querypayed->sum('time_in_state')/3600),2);
+        $payed = round(($user->dailyagent->sum('time_in_state')/3600),2);
 
         if($payed == 0)
         {
@@ -208,9 +229,12 @@ class HomeController extends Controller
         }
 
         $productiveStates = array('Wrap Up','Ringing', 'In Call','On Hold','Available','Released (05_occupied)','Released (06_practice)','Released (09_outbound)');
-        $productive = $querypayed->whereIn('status', $productiveStates)
+
+        $productive = $user->dailyagent->whereIn('status', $productiveStates)
         ->sum('time_in_state');
+
         $productive = round(($productive/3600),2);
+
         $user->salesdata = array(
           'calls' => $sumcalls,
           'orders' => $sumorders,
