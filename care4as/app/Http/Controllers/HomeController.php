@@ -47,7 +47,6 @@ class HomeController extends Controller
       if ($request->end_date) {
         $end_date = $request->end_date;
       }
-
       // return $end_date;
 
       if($request->employees)
@@ -74,7 +73,7 @@ class HomeController extends Controller
           $department = $request->department;
         }
         else {
-          $department = '1&1 Mobile Retention';
+          $department = '';
         }
 
         $users = User::where('role','agent')
