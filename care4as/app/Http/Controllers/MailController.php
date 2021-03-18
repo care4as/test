@@ -40,8 +40,6 @@ class MailController extends Controller
 
     public function storeComment(Request $request)
     {
-      // dd($request);
-
       $request->validate([
         'note' => 'required',
         'departmentComment' => 'required',
