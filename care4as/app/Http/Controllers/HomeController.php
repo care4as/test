@@ -212,13 +212,6 @@ class HomeController extends Controller
         $workedHours = $workTimeData->sum('IST_Angepasst');
         $sickHours = $workTimeData->sum('sick_Angepasst');
 
-        // for($i = 0; $i <= count($workTimeData)-1; $i++)
-        // {
-        //   $workday = $workTimeData[$i];
-        //   $workedHours += $workday['IST_Angepasst'];
-        //   $sickHours += $workTimeData[$i]['sick_Angepasst'];
-        // }
-
         if($workedHours == 0)
         {
           $sicknessquota = 'keine validen Daten';
@@ -227,16 +220,7 @@ class HomeController extends Controller
           $sicknessquota =  ($sickHours/$workedHours)*100;
         }
 
-        // $querypayed = DailyAgent::query();
-        //
-        // $querypayed->where('agent_id', $user->agent_id);
-        //
-        // $querypayed->when(request('start_date'), function ($q) {
-        //     return $q->where('date', '>=',request('start_date'));
-        // });
-        // $querypayed->when(request('end_date'), function ($q) {
-        //     return $q->where('date', '<=',request('end_date'));
-        // });
+
         $payed = round(($user->dailyagent->sum('time_in_state')/3600),2);
 
         if($payed == 0)
