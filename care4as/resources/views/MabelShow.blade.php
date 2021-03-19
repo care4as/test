@@ -60,8 +60,16 @@
             <tr>
               <td>{{$mabelC->id}}</td>
               <td>{{$mabelC->ContractID}}</td>
-              <td>{{$mabelC->DidIt->surname}} {{$mabelC->DidIt->lastname}}</td>
-              <td>{{$mabelC->GotIt->surname}} {{$mabelC->GotIt->lastname}}</td>
+              @if($mabelC->DidIt)
+                <td>{{$mabelC->DidIt->surname}} {{$mabelC->DidIt->lastname}}</td>
+              @else
+                <td>Mablerdaten gelöscht</td>
+              @end
+              @if
+                <td>{{$mabelC->GotIt->surname}} {{$mabelC->GotIt->lastname}}</td>
+              @else
+                <td>Empfängerdaten gelöscht</td>
+              @endif
               <td>{{$mabelC->WhyBro}}</td>
               <td >{{$mabelC->category}}</td>
               <td style="background-color: {{$mabelC->productgroup}};">{{$mabelC->productgroup}}</td>
