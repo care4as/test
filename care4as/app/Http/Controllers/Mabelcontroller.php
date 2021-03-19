@@ -35,7 +35,6 @@ class Mabelcontroller extends Controller
         $stats2[$username] = $count;
       }
 
-
       return view('MabelShow', compact('mabelCs', 'stats1', 'stats2'));
 
     }
@@ -44,7 +43,7 @@ class Mabelcontroller extends Controller
       $query = mabelcause::query();
       $stats1 = array();
       $stats2 = array();
-      
+
       if(request('to') == request('from') and request('to'))
       {
         // return 1;
