@@ -12,6 +12,7 @@ class Mabelcontroller extends Controller
     {
       $stats1 = array();
       $stats2 = array();
+
       $mabelCs = mabelcause::with('DidIt', 'GotIt')->get();
 
       $users= \App\User::where('role','agent')
@@ -33,15 +34,17 @@ class Mabelcontroller extends Controller
         $username = $user->surname.' '.$user->lastname;
         $stats2[$username] = $count;
       }
-      // $whoGotTheMost = $mabelCs->pluck('');
-      // dd($count);
+
+
       return view('MabelShow', compact('mabelCs', 'stats1', 'stats2'));
 
     }
     public function showThemAllFiltered(Request $request)
     {
       $query = mabelcause::query();
-
+      $stats1 = array();
+      $stats2 = array();
+      
       if(request('to') == request('from') and request('to'))
       {
         // return 1;
