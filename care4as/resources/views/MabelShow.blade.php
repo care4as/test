@@ -64,7 +64,7 @@
                 <td>{{$mabelC->DidIt->surname}} {{$mabelC->DidIt->lastname}}</td>
               @else
                 <td>Mablerdaten gelöscht</td>
-              @end
+              @endif
               @if($mabelC->GotIt)
                 <td>{{$mabelC->GotIt->surname}} {{$mabelC->GotIt->lastname}}</td>
               @else
