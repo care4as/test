@@ -196,10 +196,10 @@ class HomeController extends Controller
         {
           $gevocr = round(($sumorders/$sumcalls) * 100,2).'%';
         }
+
         $queryWorktime = Hoursreport::query();
         $queryWorktime->where('user_id',$user->id)
         ->orderBY('date','DESC');
-
         // the filter section
         $queryWorktime->when(request('start_date'), function ($q) {
             return $q->where('date', '>=',request('start_date'));
@@ -221,13 +221,7 @@ class HomeController extends Controller
           $sicknessquota =  ($sickHours/$workedHours)*100;
         }
 
-
         $payed = round(($user->dailyagent->sum('time_in_state')/3600),2);
-
-        if($payed == 0)
-        {
-          $payed = 'Fehler: bezahlte Zeit ist 0';
-        }
 
         $productiveStates = array('Wrap Up','Ringing', 'In Call','On Hold','Available','Released (05_occupied)','Released (06_practice)','Released (09_outbound)');
 
@@ -235,6 +229,7 @@ class HomeController extends Controller
         ->sum('time_in_state');
 
         $productive = round(($productive/3600),2);
+
 
         $user->salesdata = array(
           'calls' => $sumcalls,

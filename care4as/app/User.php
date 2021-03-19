@@ -62,6 +62,7 @@ class User extends Authenticatable
         $mvlzneu = $salesdata->sum('mvlzNeu');
         $rlzPlus = $salesdata->sum('rlzPlus');
       }
+
       else {
         if($this->surname)
         {
@@ -71,7 +72,9 @@ class User extends Authenticatable
           abort(403,'user: '.$this->name.' hat keine Personen ID');
         }
       }
+
       $salesdataFinal = null;
+      
       $salesdataFinal = array(
         'calls' => $calls,
         'savesssc' => $savesssc,
@@ -85,8 +88,10 @@ class User extends Authenticatable
     }
     public function dailyagent()
     {
-      // return $this->agent_id;
-      return $this->hasMany('\App\DailyAgent','agent_id','agent_id')->select(['id','status']);
-
+      return $this->hasMany('\App\DailyAgent','agent_id','agent_id');
+    }
+    public function retentionDetails()
+    {
+      return $this->hasMany('\App\RetentionDetail','person_id','person_id');
     }
 }
