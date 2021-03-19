@@ -32,6 +32,9 @@ class HomeController extends Controller
     }
     public function presentation(Request $request)
     {
+
+
+
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
@@ -52,6 +55,7 @@ class HomeController extends Controller
 
       if($request->employees)
       {
+
         $users = User::where('role','agent')
         ->whereIn('id', $request->employees)
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
@@ -125,7 +129,17 @@ class HomeController extends Controller
         // ->limit(10)
         ->get();
       }
+      $begin = \Carbon\Carbon::parse($start_date);
 
+      $begin->setTime(0,0,0);
+
+      $end =  \Carbon\Carbon::parse($end_date);
+      $end->setTime(23,59,59);
+
+      $days = $begin->diffInDaysFiltered(function (\Carbon\Carbon $date){
+        return $date->isWeekday();
+
+      }, $end);
 
       foreach ($users as $key => $user) {
 
@@ -216,12 +230,12 @@ class HomeController extends Controller
         $workedHours = $workTimeData->sum('IST_Angepasst');
         $sickHours = $workTimeData->sum('sick_Angepasst');
 
-        if($workedHours == 0)
+        if($days == 0)
         {
           $sicknessquota = 'keine validen Daten';
         }
         else {
-          $sicknessquota =  ($sickHours/$workedHours)*100;
+          $sicknessquota =  ($sickHours/$days*$user->dailyhours)*100;
         }
 
         $payed = round(($user->dailyagent->sum('time_in_state')/3600),2);
@@ -246,7 +260,8 @@ class HomeController extends Controller
           'RLZ24Qouta' => $RLZQouta,
           'GeVo-Cr' => $gevocr,
           'workedHours' => $workedHours,
-          'sickHours' => $sickHours,
+          // 'sickHours' => $sickHours,
+          'sicknessquota' => $sicknessquota,
           'payedtime' => $payed,
           'productive' => $productive,
           'aht' => $AHT,

@@ -41,8 +41,8 @@
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="orange" id='sidebar'>
-      <div class="logo bg-white m-2">
-        <a href="" class="simple-text logo-normal">
+      <div class="logo bg-white m-2 rounded-pill">
+        <a href="text-muted" class="simple-text logo-normal">
           <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 190px; margin: 25px; margin-bottom: 0px; margin-top: 10px;">
         </a>
       </div>

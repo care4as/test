@@ -5,10 +5,25 @@
 @endsection
 
 @section('content')
-<div class="container  text-center bg-light">
+<div class="container text-center bg-light p-2">
   <h2>Reporting Stundenreport</h2>
-  <div class="row" id="app">
-    <div class="col text-center bg-light">
+  <div class="row m-2 mt-2 shadow bg-white">
+    <div class="col-8">
+      @if(!App\Hoursreport::min('date'))
+        <h5>keine Daten eingegeben</h5>
+      @else
+        <h5>Stundenreport im Zeitraum vom <u>{{Carbon\Carbon::parse(App\Hoursreport::min('date'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\Hoursreport::max('date'))->format('d.m.Y ')}}</u> </h5>
+      @endif
+    </div>
+    <div class="col-2">
+      <a href="{{route('hoursreport.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+    </div>
+    <div class="col-2">
+      <a href="{{route('hoursreport.sync')}}"><button type="button" class="btn btn-sm btn-success border-round" name="button">Userdaten verknüpfen</button></a>
+    </div>
+  </div>
+  <div class="row m-2 mt-2 shadow bg-white" id="app">
+    <div class="col text-center mt-2">
       <!-- <form action="{{route('excel.dailyAgent.upload.queue')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="sheet" value="3">

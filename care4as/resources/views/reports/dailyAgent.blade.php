@@ -7,7 +7,26 @@
 @section('content')
 <div class="container  text-center bg-light">
   <h2>Daily Agent Import</h2>
-  <div class="row" id="app">
+  <div class="row bg-white shadow m-2 mt-2">
+    <div class="col-12">
+      <h4 class="text-center">Aktueller Datenstand:</h4>
+    </div>
+    <div class="col-8">
+      @if(!App\DailyAgent::min('date'))
+        <h5>keine Daten eingegeben</h5>
+      @else
+        <h5>Daily Agent im Zeitraum vom <u>{{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
+      @endif
+    </div>
+    <div class="col-2">
+      <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+    </div>
+    <div class="col-2">
+      <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
+    </div>
+
+  </div>
+  <div class="row m-2 mt-2 bg-white shadow" id="app">
     <div class="col text-center bg-light">
       <!-- <form action="{{route('excel.dailyAgent.upload.queue')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
         @csrf

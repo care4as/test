@@ -7,7 +7,19 @@
 @section('content')
 <div class="container  text-center bg-light">
   <h2>Retention Details Import</h2>
-  <div class="row" id="app">
+  <div class="row bg-white m-2 shadow">
+    <div class="col-8">
+      <h5>Retention Details vom <u>{{Carbon\Carbon::parse(App\RetentionDetail::min('call_date'))->format('d.m.Y')}}</u> bis zum <u>{{Carbon\Carbon::parse(App\RetentionDetail::max('call_date'))->format('d.m.Y')}}</u></h5>
+    </div>
+    <div class="col-2">
+      <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+    </div>
+    <div class="col-2">
+      <a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
+    </div>
+  </div>
+  <div class="row bg-white m-2 mt-2 shadow" id="app">
+
     <div class="col text-center bg-light">
       <!-- <form action="/file-upload" class="dropzone" id="exceldropzone">
         <!-- <div class="dz-message text-dark" data-dz-message><span>Bitte Dateien einfügen</span></div>

@@ -3,14 +3,13 @@
 @section('additional_css')
 
 <style media="screen">
+
   th, td
   {
-    font-size: 0.8vw !important;
+    font-size: 0.7vw !important;
     text-align: left;
-    min-width: auto;
     overflow: hidden;
-    text-overflow: ellipsis;
-
+    /* text-overflow: ellipsis; */
   }
   .loader {
   font-size: 2px;
@@ -75,7 +74,6 @@
     transform: rotate(360deg);
   }
 }
-
 </style>
 
 @endsection
@@ -85,47 +83,6 @@
 <div class="container-fluid bg-light m-1">
   <div class="row justify-content-center align-self-center m-1">
       <h4 >Präsentation des aktuellen Moduls: {{$modul ?? ''}}</h4>
-  </div>
-
-  <div class="row bg-white shadow m-1">
-    <div class="col-12">
-      <h4 class="text-center">Aktueller Datenstand:</h4>
-    </div>
-    <div class="col-8">
-      <h5>Retention Details vom <u>{{Carbon\Carbon::parse(App\RetentionDetail::min('call_date'))->format('d.m.Y')}}</u> bis zum <u>{{Carbon\Carbon::parse(App\RetentionDetail::max('call_date'))->format('d.m.Y')}}</u></h5>
-    </div>
-    <div class="col-2">
-      <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
-    </div>
-    <div class="col-2">
-      <a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
-    </div>
-    <div class="col-8">
-      @if(!App\DailyAgent::min('date'))
-        <h5>keine Daten eingegeben</h5>
-      @else
-        <h5>Daily Agent im Zeitraum vom <u>{{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
-      @endif
-    </div>
-    <div class="col-2">
-      <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
-    </div>
-    <div class="col-2">
-      <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
-    </div>
-    <div class="col-8">
-      @if(!App\Hoursreport::min('date'))
-        <h5>keine Daten eingegeben</h5>
-      @else
-        <h5>Stundenreport im Zeitraum vom <u>{{Carbon\Carbon::parse(App\Hoursreport::min('date'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\Hoursreport::max('date'))->format('d.m.Y ')}}</u> </h5>
-      @endif
-    </div>
-    <div class="col-2">
-      <a href="{{route('hoursreport.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
-    </div>
-    <div class="col-2">
-      <a href="{{route('hoursreport.sync')}}"><button type="button" class="btn btn-sm btn-success border-round" name="button">Userdaten verknüpfen</button></a>
-    </div>
   </div>
 
   <div class="row bg-white shadow  m-1 mt-4" id="filtermenu">
@@ -184,7 +141,6 @@
   </div>
   <div class="row m-2 mt-4 bg-white shadow justify-content-center align-self-center" >
     <div class="col-12">
-
     <div class="col p-1">
       @php
         if(request('department') == '1&1 DSL Retention')
@@ -197,21 +153,22 @@
         }
       @endphp
 
-      <table class="table table-hover table-striped table-bordered table-responsive overflow-scroll" id="tableoverview">
+      <table class="table table-hover table-striped table-bordered" id="tableoverview">
         <thead class="thead-dark">
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Team</th>
             <th>AHT</th>
             <th>1&1 bezahlte Zeit</th>
             <th>1&1 Produktivzeit</th>
             <th>Saves</th>
             <th>Calls</th>
             <th>Calls/h</th>
-            <th>SSC</th>
-            <th>BSC</th>
-            <th>Portal</th>
+            @if(request('department') == '1&1 Mobile Retention')
+              <th>SSC</th>
+              <th>BSC</th>
+              <th>Portal</th>
+            @endif
             <th>SSE</th>
             <th>Saves/h</th>
             <th>RLZ+24 %</th>
@@ -234,7 +191,6 @@
             <td>{{$user->id}}</td>
             <td>{{$user->surname}} {{$user->lastname}}</td>
             <!-- <td>{{$user->name}}</td> -->
-            <td>{{$user->team}}</td>
             <td>
               {{$user->salesdata['aht']}}
             </td>
@@ -251,9 +207,11 @@
               @else
               <td>@if(!$user->dailyhours) Fehler Agent @else Fehler Retention Details @endif</td>
             @endif
-            <td>{{$user->salesdata['sscOrders']}}</td>
-            <td>{{$user->salesdata['bscOrders']}}</td>
-            <td>{{$user->salesdata['portalOrders']}}</td>
+            @if(request('department') == '1&1 Mobile Retention')
+              <td>{{$user->salesdata['sscOrders']}}</td>
+              <td>{{$user->salesdata['bscOrders']}}</td>
+              <td>{{$user->salesdata['portalOrders']}}</td>
+            @endif
             <td>50</td>
             @if($user->dailyhours and $user->salesdata['workedDays'] != 0)
               @if($user->department == '1&1 DSL Retention')
@@ -282,7 +240,7 @@
             @else
                 <td>Fehler: Arbeitsstunden Stundenreport</td>
             @endif
-            <td>{{$user->salesdata['sickHours'] }}/ {{$user->salesdata['workedHours'] }}</td>
+            <td>{{$user->salesdata['sicknessquota']}}</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td>
               <a href="{{route('user.stats', ['id' => $user->id])}}">anzeigen</a>
