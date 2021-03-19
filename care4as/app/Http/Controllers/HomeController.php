@@ -57,13 +57,29 @@ class HomeController extends Controller
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
+
+          if($start_date != 1)
+          {
+            $datemod = \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
+            // return $datemod ;
+            $q->where('date','>=',$datemod);
+          }
+          if($end_date != 1)
+          {
+            $datemod2 = \Carbon\Carbon::parse($end_date)->setTime(23,59,59);
+            // return $end_date ;
+            $q->where('date','<=',$datemod2);
+          }
+          }])
+          ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
+          // $q->select(['id','person_id','calls','time_in_state','call_date']);
           if($start_date !== 1)
           {
-            $q->where('date','>=',$start_date);
+            $q->where('call_date','>=',$start_date);
           }
           if($end_date !== 1)
           {
-            $q->where('date','<=',$end_date);
+            $q->where('call_date','<=',$end_date);
           }
           }])
         // ->limit(10)
@@ -77,7 +93,7 @@ class HomeController extends Controller
         else {
           $department = '';
         }
-
+        // return \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
         $users = User::where('role','agent')
         ->where('department', $department)
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
@@ -86,78 +102,65 @@ class HomeController extends Controller
           $q->select(['id','agent_id','status','time_in_state','date']);
           if($start_date !== 1)
           {
-            $q->where('date','>=',$start_date);
+            $datemod = \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
+            $q->where('date','>=',$datemod);
           }
           if($end_date !== 1)
           {
-            $q->where('date','<=',$end_date);
+            $datemod2 = \Carbon\Carbon::parse($end_date)->setTime(23,59,59);
+            $q->where('date','<=',$datemod2);
           }
-        }])
+          }])
+        ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
+          // $q->select(['id','person_id','calls','time_in_state','call_date']);
+          if($start_date !== 1)
+          {
+            $q->where('call_date','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('call_date','<=',$end_date);
+          }
+          }])
         // ->limit(10)
         ->get();
       }
 
+
       foreach ($users as $key => $user) {
 
-        $query = \App\RetentionDetail::query();
+        $reports = $user->retentionDetails;
+        $sumorders = $reports->sum('orders');
+        // sum of all calls during the timespan
+        $sumcalls = $reports->sum('calls');
+        $sumNMlz = $reports->sum('mvlzNeu');
+        $sumrlz24 = $reports->sum('rlzPlus');
+        $sumSSCCalls = $reports->sum('calls_smallscreen');
+        $sumBSCCalls = $reports->sum('calls_bigscreen');
+        $sumPortalCalls = $reports->sum('calls_portale');
+        $sumSSCOrders = $reports->sum('orders_smallscreen');
+        $sumBSCOrders = $reports->sum('orders_bigscreen');
+        $sumPortalOrders = $reports->sum('orders_portale');
 
-        $query->where('person_id',$user->person_id)
-        ->orderBY('call_date','DESC');
-        // the filter section
-        if(request('start_date') != request('end_date'))
+        $ahtStates = array('On Hold','Wrap Up','In Call');
+
+        $casetime = $user->dailyagent->whereIn('status', $ahtStates)->sum('time_in_state');
+
+        $calls = $user->dailyagent->where('status', 'Ringing')
+        ->count();
+
+        if($calls == 0)
         {
-          $query->when(request('start_date'), function ($q) {
-              return $q->where('call_date', '>=',request('start_date'));
-          });
-          $query->when(request('end_date'), function ($q) {
-              return $q->where('call_date', '<=',request('end_date'));
-          });
+          $AHT = 0;
         }
         else {
-          $query->when(request('start_date'), function ($q) {
-              return $q->where('call_date', '=',request('start_date'));
-          });
+          $AHT =  round(($casetime/ $calls),0);
         }
 
-        $user->reports = $query->get();
-
-        $reports = $user->reports;
-        $sumorders = 0;
-        // sum of all calls during the timespan
-        $sumcalls = 0;
-        $sumNMlz = 0;
-        $sumrlz24 = 0;
-        $sumSSCCalls = 0;
-        $sumBSCCalls = 0;
-        $sumPortalCalls = 0;
-        $sumSSCOrders = 0;
-        $sumBSCOrders = 0;
-        $sumPortalOrders = 0;
-        $AHT = null;
-        $workdays = 0;
+        $workdays = $reports->count();
         $workedHours = 0;
         $sickHours = 0;
         $sicknessquota = '';
-
-        for($i = 0; $i <= count($reports)-1; $i++)
-        {
-          if($reports[$i])
-          {
-            $workdays ++;
-            $sumorders += ($reports[$i]->orders);
-            $sumcalls += ($reports[$i]->calls);
-
-            $sumSSCCalls += ($reports[$i]->calls_smallscreen);
-            $sumBSCCalls += ($reports[$i]->calls_bigscreen);
-            $sumPortalCalls += ($reports[$i]->calls_portale);
-            $sumSSCOrders += ($reports[$i]->orders_smallscreen);
-            $sumBSCOrders += ($reports[$i]->orders_bigscreen);
-            $sumPortalOrders += ($reports[$i]->orders_portale);
-
-            $sumrlz24 += ($reports[$i]->rlzPlus);
-            $sumNMlz += ($reports[$i]->mvlzNeu);
-          }
-        }
 
         if($sumSSCCalls == 0)
         {
@@ -230,7 +233,6 @@ class HomeController extends Controller
 
         $productive = round(($productive/3600),2);
 
-
         $user->salesdata = array(
           'calls' => $sumcalls,
           'orders' => $sumorders,
@@ -247,6 +249,7 @@ class HomeController extends Controller
           'sickHours' => $sickHours,
           'payedtime' => $payed,
           'productive' => $productive,
+          'aht' => $AHT,
         );
       }
       // return view('usersIndex', compact('users'));
