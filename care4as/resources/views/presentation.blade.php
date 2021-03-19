@@ -203,12 +203,12 @@
             <th>#</th>
             <th>Name</th>
             <th>Team</th>
+            <th>AHT</th>
+            <th>1&1 bezahlte Zeit</th>
+            <th>1&1 Produktivzeit</th>
+            <th>Saves</th>
             <th>Calls</th>
             <th>Calls/h</th>
-            <th>AHT</th>
-            <th>Saves</th>
-            <th>bezahlte Zeit</th>
-            <th>Produktivzeit</th>
             <th>SSC</th>
             <th>BSC</th>
             <th>Portal</th>
@@ -235,27 +235,22 @@
             <td>{{$user->surname}} {{$user->lastname}}</td>
             <!-- <td>{{$user->name}}</td> -->
             <td>{{$user->team}}</td>
+            <td>
+              {{$user->salesdata['aht']}}
+            </td>
+            <td>{{$user->salesdata['payedtime']}}</td>
+            <td>{{$user->salesdata['productive']}}</td>
+            @if($user->department == '1&1 DSL Retention')
+              <td>{{$user->salesdata['orders']}}</td>
+            @else
+              <td>{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
+            @endif
             <td>{{$user->salesdata['calls']}}</td>
             @if($user->dailyhours and $user->salesdata['workedDays'] != 0)
               <td>{{round($user->salesdata['calls'] / ($user->salesdata['workedDays']* $user->dailyhours),2)}}</td>
               @else
               <td>@if(!$user->dailyhours) Fehler Agent @else Fehler Retention Details @endif</td>
             @endif
-            <td>
-              <div class="d-flex w-100 justify-content-center">
-                <div class="loader" style="display:none;">Loading...</div>
-                <div class="aht ">
-                  <button type="button" name="button" class="btn-sm btn-info rounded" onclick="getAHT(1,2)">AHT</button>
-                </div>
-              </div>
-            </td>
-            @if($user->department == '1&1 DSL Retention')
-              <td>{{$user->salesdata['orders']}}</td>
-            @else
-              <td>{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
-            @endif
-            <td>{{$user->salesdata['payedtime']}}</td>
-            <td>{{$user->salesdata['productive']}}</td>
             <td>{{$user->salesdata['sscOrders']}}</td>
             <td>{{$user->salesdata['bscOrders']}}</td>
             <td>{{$user->salesdata['portalOrders']}}</td>
