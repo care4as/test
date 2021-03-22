@@ -48,9 +48,59 @@
   </div>
 </div>
 
+<div class="container text-center bg-light p-2">
+  <div class="row m-2 bg-white">
+    <h5>Noch nicht zugewiesene Datensätze</h5>
+  </div>
+  <div class="row m-2 bg-white">
+    <table class="table table-striped table-hover table-responsive" id="hourstable">
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Eintrag löschen</th>
+          <th style="font-size: 1em;">löschen nach Name</th>
+          <th style="font-size: 1em;">synchronisieren</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($unsyncedHoursreports as $report)
+          <tr>
+            <td>{{$report->id}}</td>
+            <td>{{$report->date}}</td>
+            <td>{{$report->name}}</td>
+            <td><a href="{{route('hoursreport.delete', ['id' => $report->id])}}">
+              <span class="material-icons text-dark">
+              delete_forever
+              </span>
+              </a>
+            </td>
+            <td ><a href="{{route('hoursreport.deleteByName', ['name' => $report->name])}}">
+              <span class="material-icons">
+                delete
+              </span>
+              </a>
+            </td>
+            <td><a href="{{route('hoursreport.syncByName', ['name' => $report->name])}}">
+              <span class="material-icons">
+              sync
+              </span>
+            </a>
+          </td>
+          </tr>
+        @endforeach
+      </tbody>
+
+    </table>
+  </div>
+</div>
 @endsection
 
 @section('additional_js')
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
+
 <script type="text/javascript">
 
 Dropzone.options.exceldropzone = {
@@ -71,7 +121,7 @@ Dropzone.options.exceldropzone = {
 
 $( document ).ready(function() {
 
-  console.log('test')
+  $('#hourstable').DataTable()
 
 
 });

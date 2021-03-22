@@ -240,7 +240,7 @@
             @else
                 <td>Fehler: Arbeitsstunden Stundenreport</td>
             @endif
-            <td>{{$user->salesdata['sicknessquota']}}</td>
+            <td>{{$user->salesdata['sicknessquota']}}%</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td>
               <a href="{{route('user.stats', ['id' => $user->id])}}">anzeigen</a>

@@ -7,7 +7,9 @@ use App\User;
 use App\Hoursreport;
 use App\RetentionDetail;
 use App\DailyAgent;
+
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -32,9 +34,6 @@ class HomeController extends Controller
     }
     public function presentation(Request $request)
     {
-
-
-
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
@@ -64,13 +63,13 @@ class HomeController extends Controller
 
           if($start_date != 1)
           {
-            $datemod = \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
+            $datemod = Carbon::parse($start_date)->setTime(2,0,0);
             // return $datemod ;
             $q->where('date','>=',$datemod);
           }
           if($end_date != 1)
           {
-            $datemod2 = \Carbon\Carbon::parse($end_date)->setTime(23,59,59);
+            $datemod2 = Carbon::parse($end_date)->setTime(23,59,59);
             // return $end_date ;
             $q->where('date','<=',$datemod2);
           }
@@ -106,12 +105,12 @@ class HomeController extends Controller
           $q->select(['id','agent_id','status','time_in_state','date']);
           if($start_date !== 1)
           {
-            $datemod = \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
+            $datemod = Carbon::parse($start_date)->setTime(2,0,0);
             $q->where('date','>=',$datemod);
           }
           if($end_date !== 1)
           {
-            $datemod2 = \Carbon\Carbon::parse($end_date)->setTime(23,59,59);
+            $datemod2 = Carbon::parse($end_date)->setTime(23,59,59);
             $q->where('date','<=',$datemod2);
           }
           }])
@@ -126,17 +125,51 @@ class HomeController extends Controller
             $q->where('call_date','<=',$end_date);
           }
           }])
+        ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+          // $q->select(['id','person_id','calls','time_in_state','call_date']);
+          if($start_date !== 1)
+          {
+            $q->where('date','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('date','<=',$end_date);
+          }
+          }])
         // ->limit(10)
         ->get();
       }
-      $begin = \Carbon\Carbon::parse($start_date);
 
-      $begin->setTime(0,0,0);
+      if($start_date != 1)
+      {
+        $begin = Carbon::parse($start_date)->setTime(2,0,0);
 
-      $end =  \Carbon\Carbon::parse($end_date);
-      $end->setTime(23,59,59);
+      }
+      else {
 
-      $days = $begin->diffInDaysFiltered(function (\Carbon\Carbon $date){
+        $begin = Carbon::parse(Hoursreport::min('date'));
+        $begin->setTime(2,0,0);
+      }
+
+      if($end_date != 1)
+      {
+        $end =  Carbon::parse($end_date)->setTime(23,59,59);
+      }
+      else {
+
+        $end = Carbon::parse(Hoursreport::max('date'));
+        $end->setTime(23,59,59);
+      }
+
+      $holidays = [
+          Carbon::create(2014, 2, 2),
+          Carbon::create(2014, 4, 17),
+          Carbon::create(2014, 5, 19),
+          Carbon::create(2014, 7, 3),
+      ];
+
+      $days = $begin->diffInDaysFiltered(function (Carbon $date){
+
         return $date->isWeekday();
 
       }, $end);
@@ -214,28 +247,32 @@ class HomeController extends Controller
           $gevocr = round(($sumorders/$sumcalls) * 100,2).'%';
         }
 
-        $queryWorktime = Hoursreport::query();
-        $queryWorktime->where('user_id',$user->id)
-        ->orderBY('date','DESC');
-        // the filter section
-        $queryWorktime->when(request('start_date'), function ($q) {
-            return $q->where('date', '>=',request('start_date'));
-        });
-        $queryWorktime->when(request('end_date'), function ($q) {
-            return $q->where('date', '<=',request('end_date'));
-        });
+        // $queryWorktime = Hoursreport::query();
+        // $queryWorktime->where('user_id',$user->id)
+        // ->orderBY('date','DESC');
+        // // the filter section
+        // $queryWorktime->when(request('start_date'), function ($q) {
+        //     return $q->where('date', '>=',request('start_date'));
+        // });
+        // $queryWorktime->when(request('end_date'), function ($q) {
+        //     return $q->where('date', '<=',request('end_date'));
+        // });
+        //
+        // $workTimeData = $queryWorktime->get();
 
-        $workTimeData = $queryWorktime->get();
-        // dd($user->workTimeData);
-        $workedHours = $workTimeData->sum('IST_Angepasst');
-        $sickHours = $workTimeData->sum('sick_Angepasst');
+        // dd($user->hoursReport);
+
+        $workedHours = $user->hoursReport->sum('IST_Angepasst');
+
+        $sickHours = $user->hoursReport->sum('sick_Angepasst');
 
         if($days == 0)
         {
           $sicknessquota = 'keine validen Daten';
         }
         else {
-          $sicknessquota =  ($sickHours/$days*$user->dailyhours)*100;
+          // $sicknessquota =  $sickHours.' /d:'.$days.'/dh:'.$user->dailyhours;
+          $sicknessquota =  round(($sickHours/($days * $user->dailyhours))*100,2);
         }
 
         $payed = round(($user->dailyagent->sum('time_in_state')/3600),2);

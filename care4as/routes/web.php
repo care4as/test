@@ -48,14 +48,56 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save');
   Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post');
   //endcancels
+
   //dashboard
   Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard');
-
   //enddashboard
 
   //Report Routes
   Route::view('/report/retention/', 'reports.RetentionDetailsReport')->name('reports.report');
-  Route::view('/report/hoursreport', 'reports.reportHours')->name('reports.reportHours.view');
+  Route::get('/report/hoursreport', function(){
+
+    $unsyncedHoursreports = App\HoursReport::where('user_id', null)->get();
+
+    return view('reports.reportHours', compact('unsyncedHoursreports'));
+
+  })->name('reports.reportHours.view');
+
+  Route::get('hoursreport/delete/{id}', function($id){
+
+    App\HoursReport::where('id',$id)->delete();
+
+    return redirect()->back();
+
+  })->name('hoursreport.delete');
+  Route::get('hoursreport/deleteByName/{name}', function($name){
+
+    App\HoursReport::where('name',$name)->delete();
+
+    return redirect()->back();
+
+  })->name('hoursreport.deleteByName');
+
+  Route::get('hoursreport/syncName/{name}', function($name){
+
+    // return $name;
+    DB::connection()->enableQueryLog();
+    $user_id = App\User::whereRaw("CONCAT(`users`.`lastname`,', ',`users`.`surname`) = ?", [$name])->value('id');
+
+    if($user_id)
+    {
+      App\HoursReport::where('name',$name)->update([
+            'user_id' => $user_id,
+        ]);
+    }
+    else {
+      Redirect::back()->withErrors(['User nicht gefunden']);
+    }
+
+    return redirect()->back();
+
+  })->name('hoursreport.syncByName');
+
   Route::post('/report/hoursreport', 'ExcelEditorController@reportHours')->name('reports.reportHours.post');
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
@@ -144,6 +186,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/mabel/index', 'MabelController@showThemAll')->name('mabelcause.index');
   Route::get('/mabel/delete/{id}', 'MabelController@delete')->name('mabel.delete');
   //end Mabelgründe
+
   //questions & surveys
   Route::get('/question/create', 'QuestionController@create')->name('question.create');
   Route::get('/survey/create', 'SurveyController@create')->name('survey.create');
@@ -157,6 +200,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/survey/deleteQuestion/{surveyid}/{questionid}', 'SurveyController@deleteQuestionFromSurvey')->name('survey.delete.question');
   Route::get('/survey/changeStatus/{action}/{id}', 'SurveyController@changeStatus')->name('survey.changeStatus');
   //
+
   // tracking routes
   Route::get('/trackEvent/{action}/{division}/{type}/{operator}', 'UserTrackingController@trackEvent')->name('user.trackEvent');
   //end tracking routes

@@ -45,7 +45,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-          'name' => 'required',
+          'name' => 'required| unique:users',
           'password' => 'required',
           'role' => 'required',
         ]);
@@ -60,7 +60,7 @@ class UserController extends Controller
         $user->team = $request->team;
         $user->department = $request->department;
         $user->person_id = $request->personid;
-        $user->agent_id = $request->agent_id;
+        $user->agent_id = $request->agentid;
 
         $user->save();
 
@@ -109,7 +109,7 @@ class UserController extends Controller
         $user->team = $request->team;
         $user->department = $request->department;
         $user->agent_id = $request->agent_id;
-        
+
         $user->save();
 
         return redirect()->back();
