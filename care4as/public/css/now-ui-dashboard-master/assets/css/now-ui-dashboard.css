@@ -4002,7 +4002,7 @@ Created using IcoMoon - icomoon.io
   right: 15px;
   height: 1px;
   width: calc(100% - 30px);
-  background-color: rgba(255, 255, 255, 0.5);
+  /* background-color: rgba(255, 255, 255, 0.5); */
 }
 
 .sidebar .logo p,

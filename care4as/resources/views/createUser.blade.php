@@ -29,7 +29,7 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="ccuid">CCU_ID</label>
-            <input type="text" class="form-control" id="ccuid" placeholder="" name="ccuid" value="">
+            <input type="text" class="form-control" id="agentid" placeholder="" name="agentid" value="">
           </div>
           <div class="form-group col-md-6">
             <label for="personid">Person-ID</label>

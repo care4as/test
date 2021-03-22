@@ -74,7 +74,7 @@ class User extends Authenticatable
       }
 
       $salesdataFinal = null;
-      
+
       $salesdataFinal = array(
         'calls' => $calls,
         'savesssc' => $savesssc,
@@ -93,5 +93,9 @@ class User extends Authenticatable
     public function retentionDetails()
     {
       return $this->hasMany('\App\RetentionDetail','person_id','person_id');
+    }
+    public function hoursReport()
+    {
+      return $this->hasMany('\App\Hoursreport','user_id','id');
     }
 }
