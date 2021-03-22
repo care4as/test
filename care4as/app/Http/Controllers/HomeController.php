@@ -10,6 +10,7 @@ use App\DailyAgent;
 
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Fgits\CarbonGermanHolidays\CarbonGermanHolidays;
 
 class HomeController extends Controller
 {
@@ -246,21 +247,6 @@ class HomeController extends Controller
         {
           $gevocr = round(($sumorders/$sumcalls) * 100,2).'%';
         }
-
-        // $queryWorktime = Hoursreport::query();
-        // $queryWorktime->where('user_id',$user->id)
-        // ->orderBY('date','DESC');
-        // // the filter section
-        // $queryWorktime->when(request('start_date'), function ($q) {
-        //     return $q->where('date', '>=',request('start_date'));
-        // });
-        // $queryWorktime->when(request('end_date'), function ($q) {
-        //     return $q->where('date', '<=',request('end_date'));
-        // });
-        //
-        // $workTimeData = $queryWorktime->get();
-
-        // dd($user->hoursReport);
 
         $workedHours = $user->hoursReport->sum('IST_Angepasst');
 
