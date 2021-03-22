@@ -149,7 +149,7 @@
         }
         else
         {
-          $pricepersave = 16;
+          $pricepersave = 15;
         }
       @endphp
 
@@ -248,7 +248,35 @@
           </tr>
         @endforeach
       </tbody>
-
+      <tfoot class="">
+        <tr class="bg-dark text-white">
+          <td>Total:</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+          <td>11</td>
+          <td>12</td>
+          <td>13</td>
+          <td>14</td>
+          <td>15</td>
+          <td>16</td>
+          <td>17</td>
+          <td>18</td>
+          <td>19</td>
+          <td id="revenue">20</td>
+          <td>21</td>
+          <td>22</td>
+          <td>23</td>
+          <td>24</td>
+        </tr>
+      </tfoot>
   </table>
     </div>
   </div>
@@ -259,6 +287,7 @@
 @section('additional_js')
 <script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -266,6 +295,8 @@
     let table = $('#tableoverview').DataTable({
       ordering: true,
     });
+    let element = $('#revenue')
+    element.html('<b>'+table.column(20).data().sum()+'€ </b>')
 
   });
 </script>

@@ -80,8 +80,6 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('hoursreport/syncName/{name}', function($name){
 
-    // return $name;
-    DB::connection()->enableQueryLog();
     $user_id = App\User::whereRaw("CONCAT(`users`.`lastname`,', ',`users`.`surname`) = ?", [$name])->value('id');
 
     if($user_id)
