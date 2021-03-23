@@ -291,7 +291,6 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-
     let table = $('#tableoverview').DataTable({
       "columnDefs": [ {
             "targets": [13,16,17,18,19,24],
@@ -303,7 +302,7 @@
               else {
                 return +data+'%';
               }}},
-            {  
+            {
             "targets": [21,22,23],
             "render": function ( data, type, full, meta ) {
               if(isNaN(data))
@@ -313,8 +312,7 @@
               else {
                 return +data+'€';
               }
-            },
-
+            }
           }]
     });
     let element = $('#revenue')
