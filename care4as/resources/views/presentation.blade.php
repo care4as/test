@@ -315,7 +315,7 @@
     $('#aht').html('<b>'+Math.round(table.column(2).data().average()*100)/100 +'</b>')
     $('#kdw').html('<b>'+Math.round(table.column(3).data().average()*100)/100 +'</b>')
     $('#payed11avg').html('<b>'+Math.round(table.column(4).data().sum()) +'</b>')
-    $('#productive11avg').html('<b>'+table.column(5).data().sum() +'</b>')
+    $('#productive11avg').html('<b>'+Math.round(table.column(5).data().sum()*100)/100 +'</b>')
     $('#savessum').html('<b>'+allsaves+'</b>')
     $('#callssum').html('<b>'+allcalls +'</b>')
     $('#callsPerHourAVG').html('<b>'+Math.round(table.column(8).data().average()*100)/100 +'</b>')
