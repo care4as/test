@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   //Report Routes
   Route::view('/report/retention/', 'reports.RetentionDetailsReport')->name('reports.report');
+
   Route::get('/report/hoursreport', function(){
 
     $unsyncedHoursreports = App\HoursReport::where('user_id', null)->get();
@@ -170,7 +171,7 @@ Route::group(['middleware' => ['auth']], function () {
         ]);
     }
 
-    return redirect()->back();
+    return redirect()->route('reports.reportHours.view');
 
   })->name('hoursreport.sync');
 

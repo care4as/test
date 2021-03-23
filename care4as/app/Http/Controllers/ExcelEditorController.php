@@ -418,7 +418,7 @@ class ExcelEditorController extends Controller
         $UNIX_DATE = ($row[0] - 25569) * 86400;
         $date = date("Y-m-d", $UNIX_DATE);
 
-        if(!HoursReport::where('name',$row[1])->where('date',$date)->exists() > 0 && $row[1])
+        if(!HoursReport::where('name',$row[1])->where('date',$date)->exists() && $row[1])
         {
           $hoursReport = new Hoursreport;
           $hoursReport->date = $date;
@@ -435,7 +435,8 @@ class ExcelEditorController extends Controller
           $hoursReport->save();
         }
       }
-      return redirect()->back();
+
+      return redirect()->route('hoursreport.sync');
     }
 
 
