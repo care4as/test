@@ -235,14 +235,14 @@ class HomeController extends Controller
 
         if($sumrlz24 == 0 or $sumNMlz == 0)
         {
-          $RLZQouta = 'keine Daten';
+          $RLZQouta = 0;
         }
         else {
           $RLZQouta = round((($sumrlz24 / ($sumrlz24 + $sumNMlz))*100),2);
         }
         if($sumcalls == 0)
         {
-          $gevocr = 'Fehler: keine Calls';
+          $gevocr = 0;
         }
         else
         {
@@ -260,7 +260,7 @@ class HomeController extends Controller
         else {
           // $sicknessquota =  $sickHours.' /d:'.$days.'/dh:'.$user->dailyhours;
           if (!$user->dailyhours) {
-            $sicknessquota = 'Fehler Agentdaten';
+            $sicknessquota = 0;
           }
           else {
             $sicknessquota =  round(($sickHours/($days * $user->dailyhours))*100,2);
