@@ -303,7 +303,7 @@
               else {
                 return +data+'%';
               }}},
-            {  
+            {
             "targets": [21,22,23],
             "render": function ( data, type, full, meta ) {
               if(isNaN(data))
@@ -313,8 +313,7 @@
               else {
                 return +data+'€';
               }
-            },
-
+            }
           }]
     });
     let element = $('#revenue')
