@@ -205,7 +205,7 @@
             @if($user->salesdata['workedHours'] != 0)
               <td>{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}</td>
               @else
-              <td>Stunden im Zeitraum 0</td>
+              <td>0</td>
             @endif
             <td>{{$user->salesdata['sscOrders']}}</td>
             <td>{{$user->salesdata['bscOrders']}}</td>
@@ -218,7 +218,7 @@
                 <td>{{round($sumSaves/($user->salesdata['workedHours']),2)}}</td>
               @endif
             @else
-              <td>fehler</td>
+              <td>0</td>
             @endif
             <td>{{$user->salesdata['RLZ24Qouta']}}</td>
             <td>50</td>
@@ -293,24 +293,37 @@
   $(document).ready(function(){
 
     let table = $('#tableoverview').DataTable({
-      ordering: true,
+      "columnDefs": [ {
+            "targets": [14,16,17,18,19],
+            "render": function ( data, type, full, meta ) {
+              if(isNaN(data))
+              {
+                return 0;
+              }
+              else {
+                return +data+'%';
+              }
+
+            }}],
     });
     let element = $('#revenue')
-    element.html('<b>'+table.column(21).data().sum()+'€ </b>')
+    element.html('<b>'+table.column(21).data().sum()+'€</b>')
+    let allsaves = table.column(6).data().sum()
+    let allcalls = table.column(7).data().sum()
 
-    $('#rlz').html('<b>'+Math.round(table.column(14).data().average()*100)/100 +'% </b>')
+    $('#rlz').html('<b>'+Math.round(table.column(14).data().average()*100)/100 +'%</b>')
     $('#aht').html('<b>'+Math.round(table.column(2).data().average()*100)/100 +'</b>')
     $('#kdw').html('<b>'+Math.round(table.column(3).data().average()*100)/100 +'</b>')
     $('#payed11avg').html('<b>'+Math.round(table.column(4).data().sum()) +'</b>')
     $('#productive11avg').html('<b>'+table.column(5).data().sum() +'</b>')
-    $('#savessum').html('<b>'+table.column(6).data().sum() +'</b>')
-    $('#callssum').html('<b>'+table.column(7).data().sum() +'</b>')
+    $('#savessum').html('<b>'+allsaves+'</b>')
+    $('#callssum').html('<b>'+allcalls +'</b>')
     $('#callsPerHourAVG').html('<b>'+Math.round(table.column(8).data().average()*100)/100 +'</b>')
     $('#sscSum').html('<b>'+table.column(9).data().sum() +'</b>')
     $('#bscSum').html('<b>'+table.column(10).data().sum() +'</b>')
     $('#portalSum').html('<b>'+table.column(11).data().sum() +'</b>')
     $('#savesPerHourAVG').html('<b>'+Math.round(table.column(13).data().average()*100)/100 +'</b>')
-    $('#gevoCrAVG').html('<b>'+Math.round(table.column(16).data().average()*100)/100 +'%</b>')
+    $('#gevoCrAVG').html('<b>'+Math.round((allsaves*100/allcalls)*100)/100 +'%</b>')
     $('#sscCrAVG').html('<b>'+Math.round(table.column(17).data().average()*100)/100 +'%</b>')
     $('#bscCrAVG').html('<b>'+Math.round(table.column(18).data().average()*100)/100 +'%</b>')
     $('#portalCrAVG').html('<b>'+Math.round(table.column(19).data().average()*100)/100 +'%</b>')
