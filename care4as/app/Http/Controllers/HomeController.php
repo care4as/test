@@ -215,21 +215,21 @@ class HomeController extends Controller
           $SSCQouta = 0;
         }
         else {
-          $SSCQouta = round(($sumSSCOrders/$sumSSCCalls)*100,2).'%';
+          $SSCQouta = round(($sumSSCOrders/$sumSSCCalls)*100,2);
         }
         if($sumBSCCalls == 0)
         {
           $BSCQuota = 0;
         }
         else {
-          $BSCQuota = round(($sumBSCOrders/$sumBSCCalls)*100,2).'%';
+          $BSCQuota = round(($sumBSCOrders/$sumBSCCalls)*100,2);
         }
         if($sumPortalCalls == 0)
         {
           $portalQuota = 0;
         }
         else {
-          $portalQuota = round(($sumPortalOrders/$sumPortalCalls) *100,2).'%';
+          $portalQuota = round(($sumPortalOrders/$sumPortalCalls) *100,2);
         }
 
         if($sumrlz24 == 0 or $sumNMlz == 0)
@@ -237,7 +237,7 @@ class HomeController extends Controller
           $RLZQouta = 'keine Daten';
         }
         else {
-          $RLZQouta = round((($sumrlz24 / ($sumrlz24 + $sumNMlz))*100),2).'%';
+          $RLZQouta = round((($sumrlz24 / ($sumrlz24 + $sumNMlz))*100),2);
         }
         if($sumcalls == 0)
         {
@@ -245,7 +245,7 @@ class HomeController extends Controller
         }
         else
         {
-          $gevocr = round(($sumorders/$sumcalls) * 100,2).'%';
+          $gevocr = round(($sumorders/$sumcalls) * 100,2);
         }
 
         $workedHours = $user->hoursReport->sum('IST_Angepasst');
@@ -261,7 +261,7 @@ class HomeController extends Controller
           $sicknessquota =  round(($sickHours/($days * $user->dailyhours))*100,2);
         }
 
-        $payed = round(($user->dailyagent->sum('time_in_state')/3600),2);
+        $payed11 = round(($user->dailyagent->sum('time_in_state')/3600),2);
 
         $productiveStates = array('Wrap Up','Ringing', 'In Call','On Hold','Available','Released (05_occupied)','Released (06_practice)','Released (09_outbound)');
 
@@ -285,7 +285,7 @@ class HomeController extends Controller
           'workedHours' => $workedHours,
           // 'sickHours' => $sickHours,
           'sicknessquota' => $sicknessquota,
-          'payedtime' => $payed,
+          'payedtime11' => $payed11,
           'productive' => $productive,
           'aht' => $AHT,
         );
