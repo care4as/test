@@ -127,7 +127,9 @@ class HomeController extends Controller
           }
           }])
         ->with(['hoursReport' => function($q) use ($start_date,$end_date){
-          // $q->select(['id','person_id','calls','time_in_state','call_date']);
+
+          $q->select(['IST_Angepasst','sick_Angepasst','user_id']);
+
           if($start_date !== 1)
           {
             $q->where('date','>=',$start_date);
