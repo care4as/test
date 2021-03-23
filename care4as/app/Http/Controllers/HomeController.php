@@ -181,6 +181,7 @@ class HomeController extends Controller
         $sumorders = $reports->sum('orders');
         // sum of all calls during the timespan
         $sumcalls = $reports->sum('calls');
+        $sumcalls = $reports->sum('calls');
         $sumNMlz = $reports->sum('mvlzNeu');
         $sumrlz24 = $reports->sum('rlzPlus');
         $sumSSCCalls = $reports->sum('calls_smallscreen');
@@ -258,7 +259,13 @@ class HomeController extends Controller
         }
         else {
           // $sicknessquota =  $sickHours.' /d:'.$days.'/dh:'.$user->dailyhours;
-          $sicknessquota =  round(($sickHours/($days * $user->dailyhours))*100,2);
+          if (!$user->dailyhours) {
+            $sicknessquota = 'Fehler Agentdaten';
+          }
+          else {
+            $sicknessquota =  round(($sickHours/($days * $user->dailyhours))*100,2);
+          }
+
         }
 
         $payed11 = round(($user->dailyagent->sum('time_in_state')/3600),2);
@@ -272,6 +279,7 @@ class HomeController extends Controller
 
         $user->salesdata = array(
           'calls' => $sumcalls,
+          // 'calls' => $calls,
           'orders' => $sumorders,
           'workedDays' => $workdays,
           'sscQuota' => $SSCQouta,

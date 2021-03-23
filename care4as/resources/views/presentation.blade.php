@@ -165,11 +165,9 @@
             <th>Saves</th>
             <th>Calls</th>
             <th>Calls/h</th>
-            @if(request('department') == '1&1 Mobile Retention')
-              <th>SSC</th>
-              <th>BSC</th>
-              <th>Portal</th>
-            @endif
+            <th>SSC</th>
+            <th>BSC</th>
+            <th>Portal</th>
             <th>SSE</th>
             <th>Saves/h</th>
             <th>RLZ+24 %</th>
@@ -204,22 +202,20 @@
               <td>{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
             @endif
             <td>{{$user->salesdata['calls']}}</td>
-            @if($user->dailyhours and $user->salesdata['workedDays'] != 0)
-              <td>{{round($user->salesdata['calls'] / ($user->salesdata['workedDays']* $user->dailyhours),2)}}</td>
+            @if($user->salesdata['workedHours'] != 0)
+              <td>{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}</td>
               @else
-              <td>@if(!$user->dailyhours) Fehler Agent @else Fehler Retention Details @endif</td>
+              <td>Stunden im Zeitraum 0</td>
             @endif
-            @if(request('department') == '1&1 Mobile Retention')
-              <td>{{$user->salesdata['sscOrders']}}</td>
-              <td>{{$user->salesdata['bscOrders']}}</td>
-              <td>{{$user->salesdata['portalOrders']}}</td>
-            @endif
-            <td>50</td>
-            @if($user->dailyhours and $user->salesdata['workedDays'] != 0)
+            <td>{{$user->salesdata['sscOrders']}}</td>
+            <td>{{$user->salesdata['bscOrders']}}</td>
+            <td>{{$user->salesdata['portalOrders']}}</td>
+              <td>50</td>
+            @if($user->salesdata['workedHours'] != 0)
               @if($user->department == '1&1 DSL Retention')
-                <td>{{round($user->salesdata['orders']/($user->salesdata['workedDays'] * $user->dailyhours),2)}}</td>
+                <td>{{round($user->salesdata['orders']/($user->salesdata['workedHours']),2)}}</td>
               @else
-                <td>{{round($sumSaves/($user->salesdata['workedDays'] * $user->dailyhours),2)}}</td>
+                <td>{{round($sumSaves/($user->salesdata['workedHours']),2)}}</td>
               @endif
             @else
               <td>fehler</td>
@@ -233,14 +229,14 @@
             <td>50</td>
             <td>{{$user->salesdata['orders'] * $pricepersave}}</td>
             @if($user->salesdata['payedtime11'] != 0)
-              <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['payedtime11']),2)}}€</td>
+              <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['payedtime11']),2)}}</td>
             @else
               <td>0</td>
             @endif
             @if($user->salesdata['productive'] != 0)
-              <td>{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}€</td>
+              <td>{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}</td>
             @else
-                <td>Fehler: Arbeitsstunden Stundenreport</td>
+                <td>0</td>
             @endif
             <td>{{$user->salesdata['sicknessquota']}}</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
@@ -276,11 +272,11 @@
           <td id="revenue">21</td>
           <td id="revenuePerHourPayedAVG">22</td>
           <td id="revenuePerHourProductiveAVG">23</td>
-          <td id="revenuePerHourProductiveAVG">24</td>
+          <td id="sicknessquotaAVG">24</td>
           <td>25</td>
         </tr>
       </tfoot>
-  </table>
+    </table>
     </div>
   </div>
 </div>
@@ -301,6 +297,7 @@
     });
     let element = $('#revenue')
     element.html('<b>'+table.column(21).data().sum()+'€ </b>')
+
     $('#rlz').html('<b>'+Math.round(table.column(14).data().average()*100)/100 +'% </b>')
     $('#aht').html('<b>'+Math.round(table.column(2).data().average()*100)/100 +'</b>')
     $('#kdw').html('<b>'+Math.round(table.column(3).data().average()*100)/100 +'</b>')
@@ -313,14 +310,13 @@
     $('#bscSum').html('<b>'+table.column(10).data().sum() +'</b>')
     $('#portalSum').html('<b>'+table.column(11).data().sum() +'</b>')
     $('#savesPerHourAVG').html('<b>'+Math.round(table.column(13).data().average()*100)/100 +'</b>')
-    $('#gevoCrAVG').html('<b>'+Math.round(table.column(16).data().average()*100)/100 +'</b>')
-    $('#sscCrAVG').html('<b>'+Math.round(table.column(17).data().average()*100)/100 +'</b>')
-    $('#bscCrAVG').html('<b>'+Math.round(table.column(18).data().average()*100)/100 +'</b>')
-    $('#portalCrAVG').html('<b>'+Math.round(table.column(19).data().average()*100)/100 +'</b>')
-    $('#revenuePerHourPayedAVG').html('<b>'+Math.round(table.column(22).data().average()*100)/100 +'</b>')
-    $('#revenuePerHourProductiveAVG').html('<b>'+Math.round(table.column(23).data().average()*100)/100 +'</b>')
-    $('#revenuePerHourProductiveAVG').html('<b>'+Math.round(table.column(24).data().average()*100)/100 +'</b>')
-
+    $('#gevoCrAVG').html('<b>'+Math.round(table.column(16).data().average()*100)/100 +'%</b>')
+    $('#sscCrAVG').html('<b>'+Math.round(table.column(17).data().average()*100)/100 +'%</b>')
+    $('#bscCrAVG').html('<b>'+Math.round(table.column(18).data().average()*100)/100 +'%</b>')
+    $('#portalCrAVG').html('<b>'+Math.round(table.column(19).data().average()*100)/100 +'%</b>')
+    $('#revenuePerHourPayedAVG').html('<b>'+Math.round(table.column(22).data().average()*100)/100 +'€</b>')
+    $('#revenuePerHourProductiveAVG').html('<b>'+Math.round(table.column(23).data().average()*100)/100 +'€</b>')
+    $('#sicknessquotaAVG').html('<b>'+Math.round(table.column(24).data().average()*100)/100 +'%</b>')
   });
 </script>
 @endsection
