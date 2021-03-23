@@ -294,7 +294,7 @@
 
     let table = $('#tableoverview').DataTable({
       "columnDefs": [ {
-            "targets": [14,16,17,18,19],
+            "targets": [13,16,17,18,19,24],
             "render": function ( data, type, full, meta ) {
               if(isNaN(data))
               {
@@ -302,9 +302,20 @@
               }
               else {
                 return +data+'%';
+              }}},
+            {  
+            "targets": [21,22,23],
+            "render": function ( data, type, full, meta ) {
+              if(isNaN(data))
+              {
+                return 0;
               }
+              else {
+                return +data+'€';
+              }
+            },
 
-            }}],
+          }]
     });
     let element = $('#revenue')
     element.html('<b>'+table.column(21).data().sum()+'€</b>')
