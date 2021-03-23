@@ -291,7 +291,6 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-
     let table = $('#tableoverview').DataTable({
       "columnDefs": [ {
             "targets": [13,16,17,18,19,24],
