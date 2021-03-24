@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container text-center bg-light p-2">
-  <h2>Reporting Stundenreport</h2>
+  <h2>Import Stundenreport</h2>
   <div class="row m-2 mt-2 shadow bg-white">
     <div class="col-8">
       @if(!App\Hoursreport::min('date'))

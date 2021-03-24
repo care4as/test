@@ -39,8 +39,11 @@ class HomeController extends Controller
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
 
+      date_default_timezone_set('Europe/Berlin');
+
       $modul = 'Userübersicht';
 
+      $year = Carbon::now()->year;
       $start_date = 1;
       $end_date = 1;
 
@@ -165,15 +168,33 @@ class HomeController extends Controller
       }
 
       $holidays = [
-          Carbon::create(2014, 2, 2),
-          Carbon::create(2014, 4, 17),
-          Carbon::create(2014, 5, 19),
-          Carbon::create(2014, 7, 3),
+          //new years day
+          Carbon::createFromDate($year, 1, 1)->toDateString(),
+
+          $eastersunday = Carbon::createFromDate($year,3,21)->addDays(easter_days($year))->toDateString(),
+          $easterfriday = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)-2)->toDateString(),
+          $ascchrist = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+39)->toDateString(),
+          $pentecost = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+49)->toDateString(),
+          $pentecostmonday = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+50)->toDateString(),
+
+          // 1. Mai
+          Carbon::create($year, 5, 1)->toDateString(),
+
+          //erster Weihnachstag
+          Carbon::create($year, 12, 25)->toDateString(),
+
+          //zweiter Weihnachstag
+          Carbon::create($year, 12, 26)->toDateString(),
+
+          //Tag der deutschen Einheit
+          Carbon::create($year, 10, 3)->toDateString(),
       ];
 
-      $days = $begin->diffInDaysFiltered(function (Carbon $date){
+      // return $pentecostmonday;
 
-        return $date->isWeekday();
+      $days = $begin->diffInDaysFiltered(function (Carbon $date) use($holidays){
+
+        return $date->isWeekday() && !in_array($date->toDateString(),$holidays);
 
       }, $end);
 

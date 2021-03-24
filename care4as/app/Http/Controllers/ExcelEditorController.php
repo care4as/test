@@ -20,6 +20,94 @@ class ExcelEditorController extends Controller
     {
       return view('reports/dailyAgent');
     }
+    public function sseTrackingUpload(Request $request)
+    {
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+
+      if($request->sheet)
+      {
+        $sheet = $request->sheet;
+      }
+      else {
+        $sheet = 1;
+      }
+
+      if($request->fromRow)
+      {
+        $fromRow = $request->fromRow;
+      }
+      else
+      {
+        $fromRow = 2;
+      }
+      //determines from which row the the app starts editing the data
+      $request->validate([
+        'file' => 'required',
+        // 'name' => 'required',
+      ]);
+      $file = request()->file('file');
+
+      $data = Excel::ToArray(new DataImport, $file);
+      // $data = Excel::ToArray(new DataImport, $file );
+
+      $insertData=array();
+
+      $data2 = $data[$sheet-1];
+
+      $insertData=array();
+
+      // dd($data2);
+
+      for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
+
+        $cell = $data2[$i];
+
+        // dd($cell);
+        if(!DB::table('sse_tracking')->where('sse_case_id',$cell[7])->where('person_id',$cell[10])->exists())
+        {
+          $UNIX_DATE1 = ($cell[0] - 25569) * 86400;
+          $date = date("Y-m-d H:i:s", $UNIX_DATE1);
+
+          $UNIX_DATE2 = ($cell[17] - 25569) * 86400;
+          $duedate = date("Y-m-d H:i:s", $UNIX_DATE2);
+
+          if($cell[18] == 1)
+          {
+            $ret = 1;
+            $prev = null;
+          }
+          else {
+            $ret = 2;
+          }
+
+          if($cell[16] == null)
+          {
+            $cell[16] = 0;
+          }
+
+          $insertData[$i] = [
+            'trackingdate' => $date,
+            'department' => $cell[5],
+            'sse_case_id' => $cell[7],
+            'sseType' => $cell[8],
+            'contract_id' => $cell[9],
+            'person_id' => $cell[10],
+            'Tracking_Item1' => $cell[15],
+            'Tracking_Item2' => $cell[16],
+            'created_at' => now(),
+          ];
+        }}
+      $insertData = array_chunk($insertData, 3500);
+
+      // dd($insertData);
+      for($i=0; $i <= count($insertData)-1; $i++)
+      {
+        DB::table('sse_tracking')->insert($insertData[$i]);
+      }
+      return redirect()->back();
+    }
     public function dailyAgentUploadQueue(Request $request)
     {
       //determines which sheet should be used
@@ -59,7 +147,7 @@ class ExcelEditorController extends Controller
       $counter=0;
       $insertData=array();
 
-      if(count($data[$sheet-1]) > 50000)
+      if(count($data[$sheet-1]) > 2000)
       {
         $data2 = $data[$sheet-1];
       }
