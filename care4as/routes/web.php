@@ -99,6 +99,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::post('/report/hoursreport', 'ExcelEditorController@reportHours')->name('reports.reportHours.post');
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
+  Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
   Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue');
   Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import');
@@ -170,12 +171,18 @@ Route::group(['middleware' => ['auth']], function () {
           'user_id' => $user->id,
         ]);
     }
-
     return redirect()->route('reports.reportHours.view');
 
   })->name('hoursreport.sync');
 
   Route::view('/reports', 'reports')->name('reports.choose');
+
+    //ssetracking
+    Route::view('/report/ssetracking','reports.sseTracking')->name('ssetracking.view');
+    Route::post('/report/ssetracking/post','ExcelEditorController@sseTrackingUpload')->name('reports.ssetracking.upload');
+
+    //end ssetracking
+
   //end Report Routes
 
   //start Mabelgründe

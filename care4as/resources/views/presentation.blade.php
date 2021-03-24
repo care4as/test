@@ -293,7 +293,7 @@
   $(document).ready(function(){
     let table = $('#tableoverview').DataTable({
       "columnDefs": [ {
-            "targets": [13,16,17,18,19,24],
+            "targets": [14,16,17,18,19,24],
             "render": function ( data, type, full, meta ) {
               if(isNaN(data))
               {
@@ -322,7 +322,7 @@
 
     $('#rlz').html('<b>'+Math.round(table.column(14).data().average()*100)/100 +'%</b>')
     $('#aht').html('<b>'+Math.round(table.column(2).data().average()*100)/100 +'</b>')
-    $('#kdw').html('<b>'+Math.round(table.column(3).data().average()*100)/100 +'</b>')
+    $('#kdw').html('<b>'+Math.round(table.column(3).data().sum()) +'</b>')
     $('#payed11avg').html('<b>'+Math.round(table.column(4).data().sum()) +'</b>')
     $('#productive11avg').html('<b>'+Math.round(table.column(5).data().sum()*100)/100 +'</b>')
     $('#savessum').html('<b>'+allsaves+'</b>')
