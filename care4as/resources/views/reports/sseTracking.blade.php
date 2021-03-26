@@ -12,7 +12,7 @@
       @if(!App\SSETracking::min('trackingdate'))
         <h5>keine Daten eingegeben</h5>
       @else
-        <h5>Stundenreport im Zeitraum vom <u>{{Carbon\Carbon::parse(App\SSETracking::min('trackingdate'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\SSETracking::max('trackingdate'))->format('d.m.Y ')}}</u> </h5>
+        <h5>SSE Tracking im Zeitraum vom <u>{{Carbon\Carbon::parse(App\SSETracking::min('trackingdate'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\SSETracking::max('trackingdate'))->format('d.m.Y ')}}</u> </h5>
       @endif
     </div>
     <div class="col">

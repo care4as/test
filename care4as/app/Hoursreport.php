@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hoursreport extends Model
 {
-    protected $table = 'hoursreport';
+    protected $table = 'hours_report_imitation';
     protected $dates = ['date'];
 }

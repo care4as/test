@@ -21,6 +21,60 @@ class ReportController extends Controller
     {
 
     }
+    public function updateHoursReport($value='')
+    {
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0');
+
+      $insertData=array();
+
+      $userids =   DB::table('users')
+      ->where('role','agent')
+      ->pluck('ds_id');
+
+      $chronology = DB::connection('mysqlkdw')
+      ->table('chronology_work')
+      ->whereIn('MA_id', $userids)
+      ->get()
+      ->toArray();
+
+      for ($i = 0; $i <= count($chronology)-1; $i++) {
+
+        $data = $chronology[$i];
+
+        if(!DB::table('hours_report_imitation')->where('work_date',$data->work_date)->where('MA_id',$data->MA_id)->exists())
+
+        $insertData[$i] = [
+
+          'work_date' => $data->work_date,
+          'MA_id' => $data->MA_id,
+          'state_id' => $data->state_id,
+          'work_time_begin' => $data->work_time_begin,
+          'work_time_end' => $data->work_time_end,
+          'work_hours' => $data->work_hours,
+          'pause_hours' => $data->pause_hours,
+          'pay_break_hours' => $data->pay_break_hours,
+          'over_time_hours' => $data->over_time_hours,
+          'pay_hours' => $data->pay_hours,
+          'meeting_hours' => $data->meeting_hours,
+          'wc_hours' => $data->wc_hours,
+          'drink_hours' => $data->drink_hours,
+          'smok_hours' => $data->smok_hours,
+          'lunch_hours' => $data->lunch_hours,
+          'contacts_hours' => $data->contacts_hours,
+        ];
+      }
+
+      $insertData = array_chunk($insertData, 3500);
+
+      for($i=0; $i <= count($insertData)-1; $i++)
+      {
+        DB::table('hours_report_imitation')->insert($insertData[$i]);
+      }
+
+      return redirect()->back();
+    }
     public function bestWorstReport(Request $request)
     {
       // dd($request);

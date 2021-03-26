@@ -7,7 +7,7 @@ use App\Cancel;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Support\Collection;
-
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -301,6 +301,27 @@ class UserController extends Controller
     public function delete($id)
     {
       User::where('id',$id)->delete();
+      return redirect()->back();
+    }
+
+    public function connectUsersToKDW($value='')
+    {
+      $workers = DB::connection('mysqlkdw')
+      ->table('MA')
+      ->join('projekte', 'MA.projekt_id', '=', 'projekte.ds_id')
+      ->select('MA.ds_id','MA.vorname','MA.familienname', 'MA.standort','projekte.bezeichnung')
+      ->whereIN('projekte.bezeichnung', array('1und1 Retention','1und1 DSL Retention'))
+      ->where('MA.austritt',null)
+      ->get();
+
+      foreach($workers as $worker)
+      {
+        DB::table('users')->where('surname',$worker->vorname)->where('lastname',$worker->familienname)
+        ->update([
+          'ds_id' => $worker->ds_id
+        ]);
+      }
+
       return redirect()->back();
     }
 }
