@@ -68,24 +68,10 @@ class ExcelEditorController extends Controller
         if(!DB::table('sse_tracking')->where('sse_case_id',$cell[7])->where('person_id',$cell[10])->exists())
         {
           $UNIX_DATE1 = ($cell[0] - 25569) * 86400;
-          $date = date("Y-m-d H:i:s", $UNIX_DATE1);
+          $date = date("Y-m-d", $UNIX_DATE1);
 
           $UNIX_DATE2 = ($cell[17] - 25569) * 86400;
-          $duedate = date("Y-m-d H:i:s", $UNIX_DATE2);
-
-          if($cell[18] == 1)
-          {
-            $ret = 1;
-            $prev = null;
-          }
-          else {
-            $ret = 2;
-          }
-
-          if($cell[16] == null)
-          {
-            $cell[16] = 0;
-          }
+          $duedate = date("Y-m-d", $UNIX_DATE2);
 
           $insertData[$i] = [
             'trackingdate' => $date,

@@ -96,6 +96,10 @@ class User extends Authenticatable
     }
     public function hoursReport()
     {
-      return $this->hasMany('\App\Hoursreport','user_id','id');
+      return $this->hasMany('\App\Hoursreport','MA_id','ds_id');
+    }
+    public function SSETracking()
+    {
+      return $this->hasMany('\App\SSETracking','person_id','person_id');
     }
 }

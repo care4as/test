@@ -64,21 +64,18 @@ class HomeController extends Controller
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
-
-          if($start_date != 1)
+          if($start_date !== 1)
           {
             $datemod = Carbon::parse($start_date)->setTime(2,0,0);
-            // return $datemod ;
             $q->where('date','>=',$datemod);
           }
-          if($end_date != 1)
+          if($end_date !== 1)
           {
             $datemod2 = Carbon::parse($end_date)->setTime(23,59,59);
-            // return $end_date ;
             $q->where('date','<=',$datemod2);
           }
           }])
-          ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
+        ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
           // $q->select(['id','person_id','calls','time_in_state','call_date']);
           if($start_date !== 1)
           {
@@ -88,6 +85,27 @@ class HomeController extends Controller
           {
             $q->where('call_date','<=',$end_date);
           }
+          }])
+          ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+
+            if($start_date !== 1)
+            {
+              $q->where('work_date','>=',$start_date);
+            }
+            if($end_date !== 1)
+            {
+              $q->where('work_date','<=',$end_date);
+            }
+            }])
+          ->with(['SSETracking' => function($q) use ($start_date,$end_date){
+            if($start_date != 1)
+            {
+              $q->where('trackingdate','>=',$start_date);
+            }
+            if($end_date != 1)
+            {
+              $q->where('trackingdate','<=',$end_date);
+            }
           }])
         // ->limit(10)
         ->get();
@@ -103,7 +121,7 @@ class HomeController extends Controller
         // return \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
         $users = User::where('role','agent')
         ->where('department', $department)
-        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
+        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
         ->where('agent_id','!=',null)
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
@@ -129,18 +147,26 @@ class HomeController extends Controller
             $q->where('call_date','<=',$end_date);
           }
           }])
-        ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+          ->with(['hoursReport' => function($q) use ($start_date,$end_date){
 
-          $q->select(['IST_Angepasst','sick_Angepasst','user_id']);
-
-          if($start_date !== 1)
-          {
-            $q->where('date','>=',$start_date);
-          }
-          if($end_date !== 1)
-          {
-            $q->where('date','<=',$end_date);
-          }
+            if($start_date !== 1)
+            {
+              $q->where('work_date','>=',$start_date);
+            }
+            if($end_date !== 1)
+            {
+              $q->where('work_date','<=',$end_date);
+            }
+            }])
+          ->with(['SSETracking' => function($q) use ($start_date,$end_date){
+            if($start_date != 1)
+            {
+              $q->where('trackingdate','>=',$start_date);
+            }
+            if($end_date != 1)
+            {
+              $q->where('trackingdate','<=',$end_date);
+            }
           }])
         // ->limit(10)
         ->get();
@@ -149,11 +175,9 @@ class HomeController extends Controller
       if($start_date != 1)
       {
         $begin = Carbon::parse($start_date)->setTime(2,0,0);
-
       }
       else {
-
-        $begin = Carbon::parse(Hoursreport::min('date'));
+        $begin = Carbon::parse(Hoursreport::min('work_date'));
         $begin->setTime(2,0,0);
       }
 
@@ -163,7 +187,7 @@ class HomeController extends Controller
       }
       else {
 
-        $end = Carbon::parse(Hoursreport::max('date'));
+        $end = Carbon::parse(Hoursreport::max('work_date'));
         $end->setTime(23,59,59);
       }
 
@@ -176,13 +200,10 @@ class HomeController extends Controller
           $ascchrist = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+39)->toDateString(),
           $pentecost = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+49)->toDateString(),
           $pentecostmonday = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+50)->toDateString(),
-
           // 1. Mai
           Carbon::create($year, 5, 1)->toDateString(),
-
           //erster Weihnachstag
           Carbon::create($year, 12, 25)->toDateString(),
-
           //zweiter Weihnachstag
           Carbon::create($year, 12, 26)->toDateString(),
 
@@ -197,6 +218,17 @@ class HomeController extends Controller
         return $date->isWeekday() && !in_array($date->toDateString(),$holidays);
 
       }, $end);
+      $dayscount = $begin->diffInDays($end);
+
+      for ($i=1; $i <= $dayscount; $i++) {
+
+        $day = $begin->copy()->addDays($i);
+
+        if($day->isWeekend())
+        {
+          $weekenddays[] = $day->format('Y-m-d');
+        }
+      }
 
       foreach ($users as $key => $user) {
 
@@ -213,6 +245,7 @@ class HomeController extends Controller
         $sumSSCOrders = $reports->sum('orders_smallscreen');
         $sumBSCOrders = $reports->sum('orders_bigscreen');
         $sumPortalOrders = $reports->sum('orders_portale');
+        $ssesaves = $user->SSETracking->where('Tracking_Item1','Save')->count();
 
         $ahtStates = array('On Hold','Wrap Up','In Call');
 
@@ -272,9 +305,9 @@ class HomeController extends Controller
           $gevocr = round(($sumorders/$sumcalls) * 100,2);
         }
 
-        $workedHours = $user->hoursReport->sum('IST_Angepasst');
-
-        $sickHours = $user->hoursReport->sum('sick_Angepasst');
+        $workedHours = $user->hoursReport->sum('work_hours');
+        $contracthours = $days * $user->dailyhours;
+        $sickHours = $user->hoursReport->whereIn('state_id',array(1,7))->whereNotIn('work_date',$weekenddays)->sum('work_hours');
 
         if($days == 0)
         {
@@ -286,9 +319,8 @@ class HomeController extends Controller
             $sicknessquota = 0;
           }
           else {
-            $sicknessquota =  round(($sickHours/($days * $user->dailyhours))*100,2);
+            $sicknessquota =  round(($sickHours/($contracthours))*100,2);
           }
-
         }
 
         $payed11 = round(($user->dailyagent->sum('time_in_state')/3600),2);
@@ -304,6 +336,7 @@ class HomeController extends Controller
           'calls' => $sumcalls,
           // 'calls' => $calls,
           'orders' => $sumorders,
+          'ssesaves' => $ssesaves,
           'workedDays' => $workdays,
           'sscQuota' => $SSCQouta,
           'sscOrders' => $sumSSCOrders,
@@ -321,11 +354,32 @@ class HomeController extends Controller
           'aht' => $AHT,
         );
       }
+      // dd($users->where('id',26));
       // return view('usersIndex', compact('users'));
       return view('presentation', compact('modul', 'users'));
     }
-    public function FunctionName($value='')
+    public function test($value='')
     {
+      $start_date = '2021-02-01';
+      $end_date = '2021-02-28';
 
+      $users = User::where('role','agent')
+      ->with(['SSETracking' => function($q) use ($start_date,$end_date){
+        if($start_date != 1)
+        {
+          // echo $datemod ;
+          $q->where('trackingdate','>=',$start_date);
+        }
+        if($end_date != 1)
+        {
+          $q->where('trackingdate','<=',$end_date);
+        }
+      }])
+      ->get();
+
+      foreach ($users as $key => $user) {
+        $user->ssesaves = $user->SSETracking->where('Tracking_Item1','Save')->count();
+      }
+      dd($users[0]);
     }
 }

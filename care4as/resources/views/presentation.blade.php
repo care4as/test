@@ -210,10 +210,10 @@
             <td>{{$user->salesdata['sscOrders']}}</td>
             <td>{{$user->salesdata['bscOrders']}}</td>
             <td>{{$user->salesdata['portalOrders']}}</td>
-              <td>50</td>
+              <td>{{$user->salesdata['ssesaves']}}</td>
             @if($user->salesdata['workedHours'] != 0)
               @if($user->department == '1&1 DSL Retention')
-                <td>{{round($user->salesdata['orders']/($user->salesdata['workedHours']),2)}}</td>
+                <td>{{round($user->salesdata['ssesaves']/($user->salesdata['workedHours']),2)}}</td>
               @else
                 <td>{{round($sumSaves/($user->salesdata['workedHours']),2)}}</td>
               @endif

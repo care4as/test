@@ -37,7 +37,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
   Route::get('/user/getAHT', 'UserController@getAHTofMonth')->name('user.aht');
   Route::get('/user/delete/{id}', 'UserController@delete')->name('user.delete');
+  Route::get('/user/kdw/syncUserData', 'UserController@connectUsersToKDW')->name('user.connectUsersToKDW');
   //endusers
+
   //cancels
   Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses');
   Route::get('/cancels/admin', 'CancelController@index')->name('cancels.index');
@@ -55,49 +57,52 @@ Route::group(['middleware' => ['auth']], function () {
 
   //Report Routes
   Route::view('/report/retention/', 'reports.RetentionDetailsReport')->name('reports.report');
+  Route::get('/report/hoursreport/update', 'ReportController@updateHoursReport')->name('reports.reportHours.update');
 
   Route::get('/report/hoursreport', function(){
 
-    $unsyncedHoursreports = App\HoursReport::where('user_id', null)->get();
+    $usersNotSynced = App\User::where('ds_id', null)->where('role','agent')->get();
 
-    return view('reports.reportHours', compact('unsyncedHoursreports'));
+    return view('reports.reportHours', compact('usersNotSynced'));
 
   })->name('reports.reportHours.view');
 
-  Route::get('hoursreport/delete/{id}', function($id){
+  // Route::get('hoursreport/delete/{id}', function($id){
+  //
+  //   App\HoursReport::where('id',$id)->delete();
+  //
+  //   return redirect()->back();
+  //
+  // })->name('hoursreport.delete');
 
-    App\HoursReport::where('id',$id)->delete();
+  // Route::get('hoursreport/deleteByName/{name}', function($name){
+  //
+  //   App\HoursReport::where('name',$name)->delete();
+  //
+  //   return redirect()->back();
+  //
+  // })->name('hoursreport.deleteByName');
 
-    return redirect()->back();
+  // Route::get('hoursreport/syncName/{name}', function($name){
+  //
+  //   $user_id = App\User::whereRaw("CONCAT(`users`.`lastname`,', ',`users`.`surname`) = ?", [$name])->value('id');
+  //
+  //   if($user_id)
+  //   {
+  //     App\HoursReport::where('name',$name)->update([
+  //           'user_id' => $user_id,
+  //       ]);
+  //   }
+  //   else {
+  //     Redirect::back()->withErrors(['User nicht gefunden']);
+  //   }
+  //
+  //   return redirect()->back();
+  //
+  // })->name('hoursreport.syncByName');
 
-  })->name('hoursreport.delete');
-  Route::get('hoursreport/deleteByName/{name}', function($name){
+  // Route::post('/report/hoursreport', 'ExcelEditorController@reportHours')->name('reports.reportHours.post');
 
-    App\HoursReport::where('name',$name)->delete();
-
-    return redirect()->back();
-
-  })->name('hoursreport.deleteByName');
-
-  Route::get('hoursreport/syncName/{name}', function($name){
-
-    $user_id = App\User::whereRaw("CONCAT(`users`.`lastname`,', ',`users`.`surname`) = ?", [$name])->value('id');
-
-    if($user_id)
-    {
-      App\HoursReport::where('name',$name)->update([
-            'user_id' => $user_id,
-        ]);
-    }
-    else {
-      Redirect::back()->withErrors(['User nicht gefunden']);
-    }
-
-    return redirect()->back();
-
-  })->name('hoursreport.syncByName');
-
-  Route::post('/report/hoursreport', 'ExcelEditorController@reportHours')->name('reports.reportHours.post');
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
@@ -262,4 +267,4 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 
-Route::post('/test', 'MailController@eobMailSend')->name('test');
+Route::get('/test', 'HomeController@test')->name('test');
