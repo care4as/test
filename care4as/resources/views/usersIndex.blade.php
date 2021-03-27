@@ -29,7 +29,7 @@
                 <table class="table table-striped" id="userdata">
                 <thead class="thead-dark">
                   <tr>
-                  <th>#</th>
+                    <th class="">#</th>
                     <th>username</th>
                     <th>Name</th>
                     <th>team</th>
