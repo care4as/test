@@ -8,8 +8,38 @@
   {
     font-size: 0.7vw !important;
     text-align: left;
-    overflow: hidden;
+    margin: 0;
+    border: 0;
+    /* overflow: hidden; */
     /* text-overflow: ellipsis; */
+  }
+  div .dataTables_scrollFoot{
+     /* display: none; */
+   }
+  div .DTFC_RightFootWrapper
+  {
+    display: none;
+  }
+  div .DTFC_LeftFootWrapper
+  {
+    display: none;
+  }
+  .DTFC_LeftBodyLiner
+  {
+    overflow-y: hidden !important;;
+  }
+  .DTFC_LeftBodyWrapper
+  {
+    overflow-x: scroll !important;
+
+  }
+  .DTFC_RightWrapper
+  {
+    right: 0px !important;
+  }
+  #footerdata
+  {
+    display: hidden;
   }
   .loader {
   font-size: 2px;
@@ -156,12 +186,14 @@
       <table class="table table-hover table-striped table-bordered" id="tableoverview">
         <thead class="thead-dark">
           <tr>
-            <th>#</th>
-            <th>Name</th>
+            <th >#</th>
+            <th >Name</th>
             <th>AHT</th>
-            <th>KDW bezahlte Zeit</th>
-            <th>1&1 bezahlte Zeit</th>
-            <th>1&1 Produktivzeit</th>
+            <th>KDW bez Zeit</th>
+            <th>1&1 bez Zeit</th>
+            <th>1&1 ProZ</th>
+            <th>PQ</th>
+            <th>1&1 PQ</th>
             <th>Saves</th>
             <th>Calls</th>
             <th>Calls/h</th>
@@ -187,8 +219,8 @@
       <tbody>
         @foreach($users as $user)
           <tr>
-            <td>{{$user->id}}</td>
-            <td>{{$user->surname}} {{$user->lastname}}</td>
+            <td class="bg-dark text-white" style="width: auto; ">{{$user->id}}</td>
+            <td class="bg-dark text-white" style="width: 90px;word-break: normal;">{{$user->surname}} {{$user->lastname}}</td>
             <!-- <td>{{$user->name}}</td> -->
             <td>
               {{$user->salesdata['aht']}}
@@ -196,6 +228,16 @@
             <td>{{$user->salesdata['workedHours']}}</td>
             <td>{{$user->salesdata['payedtime11']}}</td>
             <td>{{$user->salesdata['productive']}}</td>
+            @if($user->salesdata['workedHours'] != 0)
+              <td>{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}</td>
+            @else
+              <td>0</td>
+            @endif
+            @if($user->salesdata['payedtime11'] != 0)
+              <td>{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11']),2}}</td>
+            @else
+              <td>0</td>
+            @endif
             @if($user->department == '1&1 DSL Retention')
               <td>{{$user->salesdata['orders']}}</td>
             @else
@@ -229,7 +271,7 @@
             <td>50</td>
             <td>{{$user->salesdata['orders'] * $pricepersave}}</td>
             @if($user->salesdata['payedtime11'] != 0)
-              <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['payedtime11']),2)}}</td>
+              <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
             @else
               <td>0</td>
             @endif
@@ -240,39 +282,43 @@
             @endif
             <td>{{$user->salesdata['sicknessquota']}}</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
-            <td>
-              <a href="{{route('user.stats', ['id' => $user->id])}}">anzeigen</a>
+            <td class="bg-dark" style="text-align:center">
+              <a class="text-muted" href="{{route('user.stats', ['id' => $user->id])}}">
+                <span class="material-icons text-white">preview</span>
+              </a>
             </td>
           </tr>
         @endforeach
       </tbody>
       <tfoot class="">
-        <tr class="bg-dark text-white">
+        <tr class="bg-dark text-white" id='footerdata'>
           <td>Total:</td>
           <td>1</td>
           <td id="aht">2</td>
           <td id="kdw">3</td>
           <td id="payed11avg">4</td>
           <td id="productive11avg">5</td>
-          <td id="savessum">6</td>
-          <td id="callssum">7</td>
-          <td id="callsPerHourAVG">8</td>
-          <td id="sscSum">9</td>
-          <td id="bscSum">10</td>
-          <td id="portalSum">11</td>
-          <td id="sse">12</td>
-          <td id="savesPerHourAVG">13</td>
-          <td id="rlz">14</td>
-          <td id="gocr">15</td>
-          <td id="gevoCrAVG">16</td>
-          <td id="sscCrAVG">17</td>
-          <td id="bscCrAVG">18</td>
-          <td id="portalCrAVG">19</td>
-          <td id="kürücr">20</td>
-          <td id="revenue">21</td>
-          <td id="revenuePerHourPayedAVG">22</td>
-          <td id="revenuePerHourProductiveAVG">23</td>
-          <td id="sicknessquotaAVG">24</td>
+          <td id="produktivequote">6</td>
+          <td id="savessum">7</td>
+          <td id="savessum">8</td>
+          <td id="callssum">9</td>
+          <td id="callsPerHourAVG">10</td>
+          <td id="sscSum">11</td>
+          <td id="bscSum">12</td>
+          <td id="portalSum">13</td>
+          <td id="sse">14</td>
+          <td id="savesPerHourAVG">15</td>
+          <td id="rlz">16</td>
+          <td id="gocr">17</td>
+          <td id="gevoCrAVG">18</td>
+          <td id="sscCrAVG">19</td>
+          <td id="bscCrAVG">20</td>
+          <td id="portalCrAVG">21</td>
+          <td id="kürücr">22</td>
+          <td id="revenue">23</td>
+          <td id="revenuePerHourPayedAVG">24</td>
+          <td id="revenuePerHourProductiveAVG">25</td>
+          <td id="sicknessquotaAVG">26</td>
           <td>25</td>
         </tr>
       </tfoot>
@@ -288,22 +334,76 @@
 <script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
+<script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
 
 <script type="text/javascript">
   $(document).ready(function(){
     let table = $('#tableoverview').DataTable({
+
+      "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            $(api.column( 2 ).footer() ).html('<b>'+Math.round(api.column(2).data().average()*100)/100 +'s</b>');
+            $(api.column( 3 ).footer() ).html('<b>'+Math.round(api.column(3).data().sum()) +'h</b>');
+            $(api.column( 4 ).footer() ).html('<b>'+Math.round(api.column(4).data().sum()) +'h</b>')
+            $(api.column( 5 ).footer() ).html('<b>'+Math.round(api.column(5).data().sum()) +'h</b>')
+            $(api.column( 6 ).footer() ).html('<b>'+Math.round(api.column(6).data().average()) +'%</b>')
+            $(api.column( 7 ).footer() ).html('<b>'+Math.round(api.column(7).data().average()) +'%</b>')
+            $(api.column( 8 ).footer() ).html('<b>'+Math.round(api.column(8).data().sum()) +'</b>')
+            $(api.column( 9 ).footer() ).html('<b>'+Math.round(api.column(9).data().sum()) +'</b>')
+            $(api.column( 10 ).footer() ).html('<b>'+Math.round(api.column(10).data().average()) +'</b>')
+            $(api.column( 11 ).footer() ).html('<b>'+Math.round(api.column(11).data().sum()) +'</b>')
+            $(api.column( 12 ).footer() ).html('<b>'+Math.round(api.column(12).data().sum()) +'</b>')
+            $(api.column( 13 ).footer() ).html('<b>'+Math.round(api.column(13).data().sum()) +'</b>')
+            $(api.column( 14 ).footer() ).html('<b>'+Math.round(api.column(14).data().sum()) +'</b>')
+            $(api.column( 15 ).footer() ).html('<b>'+(Math.round(api.column(15).data().average())*100)/100 +'/h</b>')
+            $(api.column( 16 ).footer() ).html('<b>'+Math.round(api.column(16).data().average()) +'%</b>')
+            $(api.column( 17 ).footer() ).html('<b>'+Math.round(api.column(17).data().average()) +'%</b>')
+            $(api.column( 18 ).footer() ).html('<b>'+Math.round(api.column(18).data().average()) +'%</b>')
+            $(api.column( 19 ).footer() ).html('<b>'+Math.round(api.column(19).data().average()) +'%</b>')
+            $(api.column( 20 ).footer() ).html('<b>'+Math.round(api.column(20).data().average()) +'%</b>')
+            $(api.column( 21 ).footer() ).html('<b>'+Math.round(api.column(21).data().average()) +'%</b>')
+            $(api.column( 22 ).footer() ).html('<b>'+Math.round(api.column(22).data().average()) +'%</b>')
+            $(api.column( 23 ).footer() ).html('<b>'+Math.round(api.column(23).data().sum()) +'€</b>')
+            $(api.column( 24 ).footer() ).html('<b>'+Math.round(api.column(24).data().average()) +'€</b>')
+            $(api.column( 25 ).footer() ).html('<b>'+Math.round(api.column(25).data().average()) +'€</b>')
+            $(api.column( 26 ).footer() ).html('<b>'+Math.round(api.column(26).data().average()) +'%</b>')
+            $(api.column( 27 ).footer() ).html('<b> total</b>')
+
+          },
+      scrollX: true,
+      scrollY: "600px",
+      scrollCollapse: true,
+      fixedColumns:   {
+            leftColumns: 2,
+            rightColumns: 1,
+        },
+        fnInitComplete: function(){
+           // $('#footerdata').style.display = 'hidden';
+       },
+
       "columnDefs": [ {
-            "targets": [14,16,17,18,19,24],
+            "targets": [6,7,16,17,18,19,26],
+            "width": '65px',
             "render": function ( data, type, full, meta ) {
               if(isNaN(data))
               {
                 return 0;
               }
               else {
-                return +data+'%';
+
+                return data+'%';
               }}},
             {
-            "targets": [21,22,23],
+            "targets": [21,22,23,24,25],
             "render": function ( data, type, full, meta ) {
               if(isNaN(data))
               {
@@ -313,32 +413,8 @@
                 return +data+'€';
               }
             }
-          }]
-    });
-    let element = $('#revenue')
-    element.html('<b>'+table.column(21).data().sum()+'€</b>')
-    let allsaves = table.column(6).data().sum()
-    let allcalls = table.column(7).data().sum()
-
-    $('#rlz').html('<b>'+Math.round(table.column(14).data().average()*100)/100 +'%</b>')
-    $('#aht').html('<b>'+Math.round(table.column(2).data().average()*100)/100 +'</b>')
-    $('#kdw').html('<b>'+Math.round(table.column(3).data().sum()) +'</b>')
-    $('#payed11avg').html('<b>'+Math.round(table.column(4).data().sum()) +'</b>')
-    $('#productive11avg').html('<b>'+Math.round(table.column(5).data().sum()*100)/100 +'</b>')
-    $('#savessum').html('<b>'+allsaves+'</b>')
-    $('#callssum').html('<b>'+allcalls +'</b>')
-    $('#callsPerHourAVG').html('<b>'+Math.round(table.column(8).data().average()*100)/100 +'</b>')
-    $('#sscSum').html('<b>'+table.column(9).data().sum() +'</b>')
-    $('#bscSum').html('<b>'+table.column(10).data().sum() +'</b>')
-    $('#portalSum').html('<b>'+table.column(11).data().sum() +'</b>')
-    $('#savesPerHourAVG').html('<b>'+Math.round(table.column(13).data().average()*100)/100 +'</b>')
-    $('#gevoCrAVG').html('<b>'+Math.round((allsaves*100/allcalls)*100)/100 +'%</b>')
-    $('#sscCrAVG').html('<b>'+Math.round(table.column(17).data().average()*100)/100 +'%</b>')
-    $('#bscCrAVG').html('<b>'+Math.round(table.column(18).data().average()*100)/100 +'%</b>')
-    $('#portalCrAVG').html('<b>'+Math.round(table.column(19).data().average()*100)/100 +'%</b>')
-    $('#revenuePerHourPayedAVG').html('<b>'+Math.round(table.column(22).data().average()*100)/100 +'€</b>')
-    $('#revenuePerHourProductiveAVG').html('<b>'+Math.round(table.column(23).data().average()*100)/100 +'€</b>')
-    $('#sicknessquotaAVG').html('<b>'+Math.round(table.column(24).data().average()*100)/100 +'%</b>')
-  });
+          }],
+        });
+      });
 </script>
 @endsection

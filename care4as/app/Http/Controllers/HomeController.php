@@ -218,6 +218,7 @@ class HomeController extends Controller
         return $date->isWeekday() && !in_array($date->toDateString(),$holidays);
 
       }, $end);
+
       $dayscount = $begin->diffInDays($end);
 
       for ($i=1; $i <= $dayscount; $i++) {
@@ -262,7 +263,7 @@ class HomeController extends Controller
           $AHT =  round(($casetime/ $calls),0);
         }
 
-        $workdays = $reports->count();
+        // $workdays = $reports->count();
         $workedHours = 0;
         $sickHours = 0;
         $sicknessquota = '';
@@ -305,6 +306,8 @@ class HomeController extends Controller
           $gevocr = round(($sumorders/$sumcalls) * 100,2);
         }
 
+        //der Teil zum Stundenreport
+
         $workedHours = $user->hoursReport->sum('work_hours');
         $contracthours = $days * $user->dailyhours;
         $sickHours = $user->hoursReport->whereIn('state_id',array(1,7))->whereNotIn('work_date',$weekenddays)->sum('work_hours');
@@ -337,7 +340,7 @@ class HomeController extends Controller
           // 'calls' => $calls,
           'orders' => $sumorders,
           'ssesaves' => $ssesaves,
-          'workedDays' => $workdays,
+          // 'workedDays' => $workdays,
           'sscQuota' => $SSCQouta,
           'sscOrders' => $sumSSCOrders,
           'bscQuota' =>  $BSCQuota,
