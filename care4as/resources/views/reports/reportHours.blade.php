@@ -9,7 +9,7 @@
   <h2>Import Stundenreport</h2>
   <div class="row m-2 mt-2 shadow bg-white">
     <div class="col-8">
-      @if(!App\Hoursreport::min('date'))
+      @if(!App\Hoursreport::min('work_date'))
         <h5>keine Daten eingegeben</h5>
       @else
         <h5>Stundenreport im Zeitraum vom <u>{{Carbon\Carbon::parse(DB::table('hours_report_imitation')->min('work_date'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(DB::table('hours_report_imitation')->max('work_date'))->format('d.m.Y ')}}</u> </h5>
