@@ -51,6 +51,9 @@ class HomeController extends Controller
       {
         $start_date = $request->start_date;
       }
+      else {
+        $start_date = Carbon::now()->subDays(7)->format('Y-m-d H:i:s');
+      }
       if ($request->end_date) {
         $end_date = $request->end_date;
       }
