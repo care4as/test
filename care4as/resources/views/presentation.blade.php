@@ -270,7 +270,7 @@
             <td>{{$user->salesdata['portalQuota']}}</td>
             <td>50</td>
             <td>{{$user->salesdata['orders'] * $pricepersave}}</td>
-            @if($user->salesdata['payedtime11'] != 0)
+            @if($user->salesdata['workedHours'] != 0)
               <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
             @else
               <td>0</td>
