@@ -127,6 +127,7 @@ class ExcelEditorController extends Controller
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
+      DB::statement('SET SESSION interactive_timeout = 28800');
 
       $data = Excel::ToArray(new DataImport, $file );
 
