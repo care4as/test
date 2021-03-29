@@ -40,11 +40,11 @@
 
         <div class="form-row mt-2 justify-content-center">
           <label for="sheet">Welches Sheet?</label> </br>
-          <input class="form-control w-25" type="number" id="sheet" name="sheet" value="">
+          <input class="form-control w-25" type="number" id="sheet" name="sheet" value="1">
         </div>
         <div class="form-row mt-2 justify-content-center">
           <label for="sheet">Ab welcher Zeile?</label></br>
-          <input class="form-control w-25" type="number" name="fromRow" value="">
+          <input class="form-control w-25" type="number" name="fromRow" value="2">
         </div>
         <button type="submit" name="button">Absenden</button>
       </form>

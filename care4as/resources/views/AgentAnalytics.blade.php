@@ -108,11 +108,11 @@
           <div class="row m-2 justify-content-center">
             <div class="col-sm-3">
               <label for="datefrom">Von:</label>
-               <input type="date" id="start_date" name="start_date" class="form-control" placeholder="">
+               <input type="date" id="start_date" name="start_date" class="form-control" value="{{request('start_date')}}" placeholder="">
              </div>
              <div class="col-sm-3">
                <label for="dateTo">Bis:</label>
-               <input type="date" id="end_date" name="end_date" class="form-control" placeholder="">
+               <input type="date" id="end_date" name="end_date" class="form-control" value="{{request('end_date')}}" placeholder="">
              </div>
           </div>
 
@@ -196,11 +196,11 @@
                   </tr>
                   <tr>
                     <th>AHT</th>
-                    <td>5</td>
+                    <td>{{$AHT}}</td>
                   </tr>
                   <tr>
                     <th>KQ</th>
-                    <td>5</td>
+                    <td>{{$sicknessquotastring}}</td>
                   </tr>
               </table>
 
@@ -286,12 +286,12 @@
                     <th>
                       {{date("F", mktime(0, 0, 0, $counter, 10))}}
                     </th>
-                    @if($report->first())
-                    <td>@if($report->sum('calls_smallscreen')!=0){{round(($report->sum('orders_smallscreen')/$report->sum('calls_smallscreen'))*100,2)}} @else  keine SSC Calls @endif</td>
-                    <td>@if($report->sum('calls_bigscreen')!=0){{round(($report->sum('orders_bigscreen')/$report->sum('calls_bigscreen'))*100,2)}} @else  keine BSC Calls @endif</td>
-                    <td>@if($report->sum('calls_portale')!=0){{round(($report->sum('orders_portale')/$report->sum('calls_portale'))*100,2)}} @else keine Portal Calls @endif</td>
-                    <td><button type="button" name="button" onclick="getAHT()">AHT {{date("F", mktime(0, 0, 0, $counter, 10))}}</button> </td>
-                    <td>test</td>
+                    @if($report['retentiondata'][0])
+                    <td>@if($report['retentiondata'][0]->sum('calls_smallscreen')!=0){{round(($report['retentiondata'][0]->sum('orders_smallscreen')/$report['retentiondata'][0]->sum('calls_smallscreen'))*100,2)}} @else  keine SSC Calls @endif</td>
+                    <td>@if($report['retentiondata'][0]->sum('calls_bigscreen')!=0){{round(($report['retentiondata'][0]->sum('orders_bigscreen')/$report['retentiondata'][0]->sum('calls_bigscreen'))*100,2)}} @else  keine BSC Calls @endif</td>
+                    <td>@if($report['retentiondata'][0]->sum('calls_portale')!=0){{round(($report['retentiondata'][0]->sum('orders_portale')/$report['retentiondata'][0]->sum('calls_portale'))*100,2)}} @else keine Portal Calls @endif</td>
+                      <td id='ahtcell{{$counter}}'><button class="btn-secondary btn-round" type="button" name="button" onclick="getAHTofMonth({{$counter}},{{$user->id}})">AHT {{date("F", mktime(0, 0, 0, $counter, 10))}}</button></td>
+                    <td>{{$report['sicknessquota']}}%<td>
                     @else
                       <td>keine Werte</td>
                     @endif
@@ -402,4 +402,39 @@
     </div>
   </div>
 </div>
+@endsection
+
+@section('additional_js')
+
+<script type="text/javascript">
+
+  function  getAHTofMonth(monthAsNumber, userid)
+  {
+    let month = monthAsNumber
+    let user = userid
+
+    var date = new Date();
+    var firstDay = new Date(date.getFullYear(), month - 1, 1);
+    var lastDay = new Date(date.getFullYear(), month, 0, 23, 59, 59);
+
+    var host = window.location.origin;
+    console.log(host)
+
+    axios.post(host + '/care4as/care4as/public/user/getAht',
+    {
+    userid: user,
+    firstDay: firstDay,
+    lastDay: lastDay
+    }).then(response => {
+        console.log(response.data)
+        $('#ahtcell' + month).html(response.data)
+
+      })
+      .catch(function (err) {
+        console.log('error')
+        console.log(err.response);
+      })
+  }
+
+</script>
 @endsection

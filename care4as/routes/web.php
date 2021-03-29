@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/user/getAHT', 'UserController@getAHTofMonth')->name('user.aht');
   Route::get('/user/delete/{id}', 'UserController@delete')->name('user.delete');
   Route::get('/user/kdw/syncUserData', 'UserController@connectUsersToKDW')->name('user.connectUsersToKDW');
+  Route::post('/user/getAht', 'UserController@getAHTbetweenDates');
   //endusers
 
   //cancels

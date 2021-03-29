@@ -20,6 +20,9 @@
   </div>
   <div class="row bg-white m-2 mt-2 shadow" id="app">
 
+    <div class="col-12">
+      <h5>Wähle die Datei</h5>
+    </div>
     <div class="col text-center bg-light">
       <!-- <form action="/file-upload" class="dropzone" id="exceldropzone">
         <!-- <div class="dz-message text-dark" data-dz-message><span>Bitte Dateien einfügen</span></div>
@@ -30,11 +33,11 @@
         <input type="file" name="file" value="">
         <div class="form-row mt-2 justify-content-center">
           <label for="sheet">Welches Sheet?</label> </br>
-          <input class="form-control w-25" type="number" id="sheet" name="sheet" value="">
+          <input class="form-control w-25" type="number" id="sheet" name="sheet" value="1">
         </div>
         <div class="form-row mt-2 justify-content-center">
           <label for="sheet">Ab welcher Zeile?</label></br>
-          <input class="form-control w-25" type="number" name="fromRow" value="">
+          <input class="form-control w-25" type="number" name="fromRow" value="2">
         </div>
 
         <button type="submit" name="button">Absenden</button>
