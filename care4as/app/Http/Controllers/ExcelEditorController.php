@@ -129,6 +129,8 @@ class ExcelEditorController extends Controller
       ini_set('max_execution_time', '0'); // for infinite time of execution
 
       $data = Excel::ToArray(new DataImport, $file );
+
+      // dd($data);
       // $data = Excel::ToArray(new DataImport, $file );
       $counter=0;
       $insertData=array();
@@ -141,7 +143,7 @@ class ExcelEditorController extends Controller
       {
         $data2 = $data[$sheet];
       }
-      // dd($data[3]);
+      // dd($data2);
 
       for($i=$fromRow-1; $i <= count($data2)-1; $i++ )
       {
@@ -224,6 +226,7 @@ class ExcelEditorController extends Controller
         'file' => 'required',
         // 'name' => 'required',
       ]);
+
       $file = request()->file('file');
       $path = $file->getRealPath();
       $data = Excel::ToArray(new DataImport, request()->file('file'));

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Cancel;
 use App\User;
+use App\Hoursreport;
 use Illuminate\Support\Facades\Hash;
 use App\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -157,10 +159,123 @@ class UserController extends Controller
       $sumBSCOrders = 0;
       $sumPortalOrders = 0;
       $AHT = null;
+      $year = Carbon::now()->year;
+      $start_date = 1;
+      $end_date = 1;
+
+      if(request('start_date'))
+      {
+        $start_date = request('start_date');
+      }
+      else {
+        $start_date = Carbon::now()->subDays(21)->format('Y-m-d H:i:s');
+      }
+      if (request('end_date')) {
+        $end_date = request('end_date');
+      }
 
       $monthlyReports = null;
-      // dd($request);
-      $user = User::find($id);
+
+      if($start_date != 1)
+      {
+        $begin = Carbon::parse($start_date)->setTime(2,0,0);
+      }
+      else {
+        $begin = Carbon::parse(Hoursreport::min('work_date'));
+        $begin->setTime(2,0,0);
+      }
+
+      if($end_date != 1)
+      {
+        $end =  Carbon::parse($end_date)->setTime(23,59,59);
+      }
+      else {
+
+        $end = Carbon::parse(Hoursreport::max('work_date'));
+        $end->setTime(23,59,59);
+      }
+
+      $holidays = [
+          //new years day
+          Carbon::createFromDate($year, 1, 1)->toDateString(),
+
+          $eastersunday = Carbon::createFromDate($year,3,21)->addDays(easter_days($year))->toDateString(),
+          $easterfriday = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)-2)->toDateString(),
+          $ascchrist = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+39)->toDateString(),
+          $pentecost = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+49)->toDateString(),
+          $pentecostmonday = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+50)->toDateString(),
+          // 1. Mai
+          Carbon::create($year, 5, 1)->toDateString(),
+          //erster Weihnachstag
+          Carbon::create($year, 12, 25)->toDateString(),
+          //zweiter Weihnachstag
+          Carbon::create($year, 12, 26)->toDateString(),
+
+          //Tag der deutschen Einheit
+          Carbon::create($year, 10, 3)->toDateString(),
+      ];
+
+      // dd($begin);
+
+      $days = $begin->diffInDaysFiltered(function (Carbon $date) use($holidays){
+
+        return $date->isWeekday() && !in_array($date->toDateString(),$holidays);
+
+      }, $end);
+
+      $dayscount = $begin->diffInDays($end);
+
+      $weekenddays = array();
+
+      for ($i=1; $i <= $dayscount; $i++) {
+
+        $day = $begin->copy()->addDays($i);
+
+        if($day->isWeekend())
+        {
+          $weekenddays[] = $day->format('Y-m-d');
+        }
+      }
+
+      $user = User::where('id',$id)
+      ->with(['dailyagent' => function($q) use ($start_date,$end_date){
+        $q->select(['id','agent_id','status','time_in_state','date']);
+        if($start_date !== 1)
+        {
+
+          $datemod = Carbon::parse($start_date)->setTime(2,0,0);
+          $q->where('date','>=',$datemod);
+        }
+        if($end_date !== 1)
+        {
+          $datemod2 = Carbon::parse($end_date)->setTime(23,59,59);
+          $q->where('date','<=',$datemod2);
+        }
+        }])
+      ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
+        // $q->select(['id','person_id','calls','time_in_state','call_date']);
+        if($start_date !== 1)
+        {
+          $q->where('call_date','>=',$start_date);
+        }
+        if($end_date !== 1)
+        {
+          $q->where('call_date','<=',$end_date);
+        }
+        }])
+        ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+
+          if($start_date !== 1)
+          {
+            $q->where('work_date','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('work_date','<=',$end_date);
+          }
+          }])
+
+        ->first();
 
       if(!$user)
       {
@@ -234,20 +349,79 @@ class UserController extends Controller
 
       // $monthlyReports = \App\RetentionDetail::where('person_id',$user->person_id);
 
-      $year = 2020;
+      $ahtStates = array('On Hold','Wrap Up','In Call');
 
       for($i=1; $i <= 12; $i++)
       {
-        $startOfMonth= \Carbon\Carbon::createFromDate($year,$i,1);
-        $Date2ToTransform= \Carbon\Carbon::createFromDate($year,$i,1);
+        $startOfMonth= Carbon::createFromDate($year,$i,1);
+        $Date2ToTransform= Carbon::createFromDate($year,$i,1);
         // $endOfMonth= \Carbon\Carbon::createFromDate($year,$i,31);
         $endOfMonth= $Date2ToTransform->modify('last day of this month');
         // echo $endOfMonth.'</br>';
 
-        $monthlyReports[] = \App\RetentionDetail::where('person_id',$user->person_id)->whereDate('call_date','>',$startOfMonth)->whereDate('call_date','<',$endOfMonth)->select('calls_smallscreen','calls_bigscreen','calls_portale','orders_smallscreen','orders_bigscreen','orders_portale','mvlzNeu','rlzPlus')->get();
+        $retentiondetailreport = \App\RetentionDetail::where('person_id',$user->person_id)->whereDate('call_date','>=',$startOfMonth)->whereDate('call_date','<=',$endOfMonth)->select('call_date','calls_smallscreen','calls_bigscreen','calls_portale','orders_smallscreen','orders_bigscreen','orders_portale','mvlzNeu','rlzPlus')->get();
+        $workreport = \App\Hoursreport::where('MA_id',$user->ds_id)->whereDate('work_date','>=',$startOfMonth)->whereDate('work_date','<=',$endOfMonth)->get();
+
+
+        $workedHours = $workreport->sum('work_hours');
+
+        $contracthours = $days * $user->dailyhours;
+        $sickHours = $workreport->whereIn('state_id',array(1,7))->whereNotIn('work_date',$weekenddays)->sum('work_hours');
+
+        if($workedHours !=0)
+        {
+          $sicknessquota = round($sickHours*100/$workedHours,2);
+        }
+        else {
+          $sicknessquota = 0;
+        }
+
+        // $productivereport = \App\DailyAgent::where('agent_id',$user->agent_id)->whereDate('date','>=',$startOfMonth)->whereDate('date','<=',$endOfMonth)->get();
+        // $casetimemo = $productivereport->whereIn('status', $ahtStates)->sum('time_in_state');#
+        // $callsmo = $productivereport->where('status', 'Ringing')
+        // ->count();
+        //
+        // if($callsmo != 0)
+        // {
+        //   $ahtmo = round($casetimemo/$callsmo);
+        // }
+        // else {
+        //   $ahtmo = 'keine validen Daten';
+        // }
+
+
+        $monthlyReports[$i]['sicknessquota'] = $sicknessquota;
+        $monthlyReports[$i]['retentiondata'][] = $retentiondetailreport;
+        // $monthlyReports[$i]['aht'] = 700;
+
+        $ahtmo = 0;
+      }
+      // dd($monthlyReports);
+
+
+      $casetime = $user->dailyagent->whereIn('status', $ahtStates)->sum('time_in_state');
+
+      $calls = $user->dailyagent->where('status', 'Ringing')
+      ->count();
+
+      if($calls == 0)
+      {
+        $AHT = 0;
+      }
+      else {
+        $AHT =  round(($casetime/ $calls),0);
       }
 
-      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports'));
+
+      $workedHours = $user->hoursReport->sum('work_hours');
+      $contracthours = $days * $user->dailyhours;
+      $sickHours = $user->hoursReport->whereIn('state_id',array(1,7))->whereNotIn('work_date',$weekenddays)->sum('work_hours');
+
+
+      $sicknessquota = round($sickHours*100/$workedHours,2);
+      $sicknessquotastring = $sicknessquota.'%';
+
+      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports','AHT','sicknessquotastring'));
     }
 
     public function changePassword(Request $request)
@@ -269,35 +443,30 @@ class UserController extends Controller
     {
       return view('changePassword');
     }
-    public function getAHTofMonth($month, $id)
+    public function getAHTbetweenDates(Request $request)
     {
-      $startOfMonth= \Carbon\Carbon::createFromDate($year,$month,1);
-      $Date2ToTransform= \Carbon\Carbon::createFromDate($year,$month,1);
       // $endOfMonth= \Carbon\Carbon::createFromDate($year,$i,31);
-      $endOfMonth= $Date2ToTransform->modify('last day of this month');
 
-      $monthlyActive = DB::table('dailyagent')
-      ->where('agent_id',$user->agent_id)
-      ->where('status','Wrap Up')
-      ->orWhere('status','Ringing')
-      ->orWhere('status','In Call')
-      ->orWhere('status','On Hold')
-      ->whereDate('date','>',$startOfMonth)->whereDate('date','<',$endOfMonth)
-      ->sum('time_in_state');
+      $user = User::find($request->userid);
 
-      $monthlyCalls = DB::table('dailyagent')
-      ->where('agent_id',$user->agent_id)
-      ->where('status','Ringing')
+      $productivereport = \App\DailyAgent::where('agent_id',$user->agent_id)->whereDate('date','>=',$request->firstDay)->whereDate('date','<=',$request->lastDay)->get();
+
+      $ahtStates = array('On Hold','Wrap Up','In Call');
+
+      $casetime = $productivereport->whereIn('status', $ahtStates)->sum('time_in_state');#
+      $calls = $productivereport->where('status', 'Ringing')
       ->count();
 
-      if($monthlyCalls == 0)
+      if($calls != 0)
       {
-        $monthlyCalls = 1;
+        $aht = round($casetime/$calls);
+      }
+      else {
+        $aht = 'keine validen Daten';
       }
 
-      $monthlyAHT = ($monthlyActive)/$monthlyCalls;
-      return response()->json($monthlyAHT);
-    }
+      return response()->json($aht);
+  }
     public function delete($id)
     {
       User::where('id',$id)->delete();

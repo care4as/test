@@ -175,6 +175,7 @@ class HomeController extends Controller
         ->get();
       }
 
+      //the days without holiday and weekends and sickdays stuff
       if($start_date != 1)
       {
         $begin = Carbon::parse($start_date)->setTime(2,0,0);
@@ -223,6 +224,8 @@ class HomeController extends Controller
       }, $end);
 
       $dayscount = $begin->diffInDays($end);
+
+      $weekenddays = array();
 
       for ($i=1; $i <= $dayscount; $i++) {
 
