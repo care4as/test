@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/report/hoursreport', function(){
 
     $usersNotSynced = App\User::where('ds_id', null)->where('role','agent')->get();
-
+      // dd($usersNotSynced);
     return view('reports.reportHours', compact('usersNotSynced'));
 
   })->name('reports.reportHours.view');

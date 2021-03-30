@@ -60,7 +60,6 @@
           <th>Vorname</th>
           <th>Name</th>
           <th>KDW ID</th>
-
         </tr>
       </thead>
       <tbody>
@@ -69,7 +68,13 @@
             <td>{{$user->id}}</td>
             <td>{{$user->surname}}</td>
             <td>{{$user->lastname}}</td>
-            <td class="text-center"><input class="form-control w-25" type="text" name="kdwid" value="" style="margin-left:40%; border: 2px solid black;"> </td>
+            <td class="text-center">
+              <form class="d-flex" action="{{route('user.update',['id' => $user->id])}}" method="post">
+                @csrf
+                <input class="form-control w-25" type="text" name="kdwid" value="" style="margin-left:40%; border: 2px solid black;">
+                <button type="submit" name="button"><span class="material-icons">send</span></button>
+              </form>
+            </td>
           </tr>
         @endforeach
       </tbody>

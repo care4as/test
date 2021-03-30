@@ -8,11 +8,9 @@
     background-color: #ddf8e8;
 }
 .table-striped>tbody>tr:nth-child(odd) {
-    background-color: #f8f8f6;
+    background-color: #fefdfa;
 }
-.table-hover tbody tr:hover {
 
-}
   th, td
   {
     font-size: 1.4em !important;
@@ -22,6 +20,10 @@
     color: #746e58;
     /* overflow: hidden; */
     /* text-overflow: ellipsis; */
+  }
+  .table-hover tbody td:hover {
+    background-color: black;
+    color:white;
   }
   div .dataTables_scrollFoot{
      /* display: none; */

@@ -280,11 +280,12 @@
                   </tr>
                   @php
                     $counter = 1;
+
                   @endphp
                   @foreach($monthlyReports as $report)
                   <tr>
                     <th>
-                      {{date("F", mktime(0, 0, 0, $counter, 10))}}
+                      {{date("F", mktime(0, 0, 0, $counter, 10))}}/{{$year}}
                     </th>
                     @if($report['retentiondata'][0])
                     <td>@if($report['retentiondata'][0]->sum('calls_smallscreen')!=0){{round(($report['retentiondata'][0]->sum('orders_smallscreen')/$report['retentiondata'][0]->sum('calls_smallscreen'))*100,2)}} @else  keine SSC Calls @endif</td>
