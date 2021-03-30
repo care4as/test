@@ -420,7 +420,7 @@
     var host = window.location.origin;
     console.log(host)
 
-    axios.post(host + '/care4as/care4as/public/user/getAht',
+    axios.post(host + '/user/getAht',
     {
     userid: user,
     firstDay: firstDay,
