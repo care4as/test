@@ -104,13 +104,39 @@ class UserController extends Controller
         // 'person_id' => 'required|integer'
         ]);
         $user = User::find($id);
-        $user->person_id = $request->person_id;
-        $user->dailyhours = $request->dailyhours;
-        $user->surname = $request->surname;
-        $user->lastname = $request->lastname;
-        $user->team = $request->team;
-        $user->department = $request->department;
-        $user->agent_id = $request->agent_id;
+
+
+        if ($request->person_id) {
+          $user->person_id = $request->person_id;
+        }
+
+        if ($request->dailyhours) {
+          $user->dailyhours = $request->dailyhours;
+        }
+
+        if ($request->surname) {
+          $user->surname = $request->surname;
+        }
+
+        if ($request->lastname) {
+          $user->lastname = $request->lastname;
+        }
+
+        if ($request->team) {
+          $user->team = $request->team;
+        }
+
+        if ($request->department) {
+          $user->department = $request->department;
+        }
+
+        if ($request->agent_id) {
+          $user->agent_id = $request->agent_id;
+        }
+
+        if ($request->kdwid) {
+            $user->ds_id = $request->kdwid;
+        }
 
         $user->save();
 
@@ -417,11 +443,16 @@ class UserController extends Controller
       $contracthours = $days * $user->dailyhours;
       $sickHours = $user->hoursReport->whereIn('state_id',array(1,7))->whereNotIn('work_date',$weekenddays)->sum('work_hours');
 
+      if($workedHours != 0)
+      {
+        $sicknessquota = round($sickHours*100/$workedHours,2);
+        $sicknessquotastring = $sicknessquota.'%';
+      }
+      else {
+        $sicknessquotastring = 0;
+      }
 
-      $sicknessquota = round($sickHours*100/$workedHours,2);
-      $sicknessquotastring = $sicknessquota.'%';
-
-      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports','AHT','sicknessquotastring'));
+      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports','AHT','sicknessquotastring', 'year'));
     }
 
     public function changePassword(Request $request)
