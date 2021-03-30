@@ -4,12 +4,22 @@
 
 <style media="screen">
 
+.table-striped>tbody>tr:nth-child(even) {
+    background-color: #ddf8e8;
+}
+.table-striped>tbody>tr:nth-child(odd) {
+    background-color: #f8f8f6;
+}
+.table-hover tbody tr:hover {
+
+}
   th, td
   {
-    font-size: 0.7vw !important;
+    font-size: 1.4em !important;
     text-align: left;
     margin: 0;
     border: 0;
+    color: #746e58;
     /* overflow: hidden; */
     /* text-overflow: ellipsis; */
   }
@@ -26,11 +36,17 @@
   }
   .DTFC_LeftBodyLiner
   {
-    overflow-y: hidden !important;;
+    overflow: hidden !important;;
+
+  }
+
+  .DTFC_RightBodyLiner
+  {
+    overflow: hidden !important;;
   }
   .DTFC_LeftBodyWrapper
   {
-    overflow-x: scroll !important;
+    overflow: hidden !important;
 
   }
   .DTFC_RightWrapper
@@ -211,7 +227,7 @@
             <th>KüRü CR</th>
             <th>Umsatz</th>
             <th>Umsatz/h bez</th>
-            <th>Umsatz/h Std. prod</th>
+            <th>Umsatz/h prod</th>
             <th>KQ</th>
             <th>Optionen</th>
           </tr>
@@ -282,7 +298,7 @@
             @endif
             <td>{{$user->salesdata['sicknessquota']}}</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
-            <td class="bg-dark" style="text-align:center">
+            <td class="bg-dark" style="text-align:center; font-size: 1.4em;">
               <a class="text-muted" href="{{route('user.stats', ['id' => $user->id])}}">
                 <span class="material-icons text-white">preview</span>
               </a>
