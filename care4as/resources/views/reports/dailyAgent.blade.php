@@ -27,14 +27,26 @@
 
   </div>
   <div class="row m-2 mt-2 bg-white shadow" id="app">
-    <div class="col text-center bg-light">
-      <!-- <form action="{{route('excel.dailyAgent.upload.queue')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
+    <div class="col text-center bg-light p-2">
+      <form action="{{route('excel.dailyAgent.upload.queue')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="sheet" value="3">
-        <input type="hidden" name="fromRow" value="2">
-         <div class="dz-message text-dark" data-dz-message><span>Bitte Dateien einfügen</span></div>
-      </form> -->
-      <form class="" action="{{route('excel.dailyAgent.upload.queue')}}" method="post" enctype="multipart/form-data">
+        <div class="form-row dropzone-previews dz-default dz-message" id="previewContainer" style="width: 100%; height: 18vh; padding: 5px; border-radius: 25px; border: 2px solid black;">
+          <p class=" w-100 text-center">Ziehe die Dateien hier rein oder klick mich!</p>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              Sheet: <input class="form-control" type="text" name="sheet" />
+            </div>
+            <div class="col">
+              Ab Zeile: <input class="form-control" type="text" name="fromRow" />
+            </div>
+          </div>
+        <div class="form-row">
+          <button type="submit" class="btn btn-sm btn-block" name="button">Absenden</button>
+        </div>
+      </form>
+
+      <!-- <form class="" action="{{route('excel.dailyAgent.upload.queue')}}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="file" name="file" value="">
 
@@ -46,8 +58,8 @@
           <label for="sheet">Ab welcher Zeile?</label></br>
           <input class="form-control w-25" type="number" name="fromRow" value="2">
         </div>
-        <button type="submit" name="button">Absenden</button>
-      </form>
+
+      </form> -->
     </div>
   </div>
 </div>
@@ -56,22 +68,33 @@
 @section('additional_js')
 <script type="text/javascript">
 
+
 Dropzone.options.exceldropzone = {
 
+
+  previewsContainer: "#previewContainer",
   addRemoveLinks: true,
-  dictDefaultMessage: "Ziehe die Dateien in die Dropzone oder klicke hier",
+  dictDefaultMessage: 'test',
   dictFallbackMessage: 'Testmessage',
   paramName: "file", // The name that will be used to transfer the file
-  maxFilesize: 80, // MB
-  chunking:true,
+  maxFilesize: 120, // MB
+  // chunking:true,
   dictRemoveFile: 'entfernen',
-  autoProcessQueue: true,
-  dictResponseError: true,
+  dictResponseError: null,
+  autoProcessQueue: false,
+  dictResponseError: false,
+  timeout: 180000,
 
   init: function () {
 
       var myDropzone = this;
       // Update selector to match your button
+      this.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
+     // Make sure that the form isn't actually being sent.
+       e.preventDefault();
+       e.stopPropagation();
+       myDropzone.processQueue();
+      });
 
       this.on('error', function (file, xhr, formData) {
           // Append all form inputs to the formData Dropzone will POST

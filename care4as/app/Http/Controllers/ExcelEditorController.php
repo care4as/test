@@ -102,7 +102,7 @@ class ExcelEditorController extends Controller
         $sheet = $request->sheet;
       }
       else {
-        $sheet = 3;
+        $sheet = 1;
       }
 
       if($request->fromRow)
@@ -129,7 +129,7 @@ class ExcelEditorController extends Controller
       ini_set('max_execution_time', '0'); // for infinite time of execution
       DB::statement('SET SESSION interactive_timeout = 28800');
 
-      $data = Excel::ToArray(new DataImport, $file );
+      $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
 
       // dd($data);
       // $data = Excel::ToArray(new DataImport, $file );
@@ -144,11 +144,10 @@ class ExcelEditorController extends Controller
       {
         $data2 = $data[$sheet];
       }
-      // dd($data2);
 
-      for($i=$fromRow-1; $i <= count($data2)-1; $i++ )
+      for($i=$fromRow-1; $i <= count($data)-1; $i++ )
       {
-        $cell = $data2[$i];
+        $cell = $data[$i];
 
         if(is_numeric($cell[1]))
         {
@@ -228,9 +227,9 @@ class ExcelEditorController extends Controller
         // 'name' => 'required',
       ]);
 
-      $file = request()->file('file');
-      $path = $file->getRealPath();
-      $data = Excel::ToArray(new DataImport, request()->file('file'));
+      // $file = request()->file('file');
+      // $path = $file->getRealPath();
+      $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
       $counter=0;
 
       for($i=0;$i <= 1; $i++ )
