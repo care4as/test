@@ -23,11 +23,11 @@
     <div class="col-12">
       <h5>Wähle die Datei</h5>
     </div>
-    <div class="col text-center bg-light">
-      <!-- <form action="/file-upload" class="dropzone" id="exceldropzone">
-        <!-- <div class="dz-message text-dark" data-dz-message><span>Bitte Dateien einfügen</span></div>
-      </form> -->
-
+    <div class="col text-center bg-light p-1">
+      <form action="{{route('excel.test')}}" class="dropzone" id="exceldropzone" method="post">
+        @csrf
+      </form>
+      <!--
       <form class="" action="{{route('excel.test')}}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="file" name="file" value="">
@@ -41,7 +41,7 @@
         </div>
 
         <button type="submit" name="button">Absenden</button>
-      </form>
+      </form> -->
 
     </div>
 
@@ -63,7 +63,20 @@ Dropzone.options.exceldropzone = {
 
   dictRemoveFile: 'doch nicht',
   dictRemoveFile: 'entfernen',
-  autoProcessQueue: false,
+  autoProcessQueue: true,
+
+  init: function () {
+
+      var myDropzone = this;
+      // Update selector to match your button
+
+      this.on('error', function (file, xhr, formData) {
+          // Append all form inputs to the formData Dropzone will POST
+          // console.log(xhr.message)
+          alert(xhr.message);
+      });
+
+    }
 };
 </script>
 

@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-<div class="container-fluid mt-5" style="border-radius: 15px;width: 75vw;">
+<div class="container-fluid mt-2" style="border-radius: 15px;width: 75vw;">
   <div class="row">
     <div class="col d-flex justify-content-start">
       @if(App\User::where('id', '<', $user->id)->max('id'))
@@ -73,6 +73,14 @@
                         <th>Nachname</th>
                         <td><input class="form-control" type="text" name="lastname" value="{{$user->lastname}}"></td>
                       </tr>
+                      <tr>
+                        <th>Rolle</th>
+                        <td><select class="form-control" type="text" name="lastname" value="{{$user->role}}">
+                          <option value="">agent</option>
+                          <option value="">overhead</option>
+                        </select>
+                        </td>
+                      </tr>
                     </table>
                   </td>
                   <td>
@@ -82,7 +90,7 @@
                         <td><input class="form-control" type="text" name="person_id" value="{{$user->person_id}}"></td>
                       </tr>
                       <tr>
-                        <th>agent ID</th>
+                        <th>Agent ID</th>
                         <td><input class="form-control" type="text" name="agent_id" value="{{$user->agent_id}}"></td>
                       </tr>
                       <tr>
@@ -90,10 +98,11 @@
                         <td><input class="form-control" type="text" name="dailyhours" value="{{$user->dailyhours}}"></td>
                       </tr>
                       <tr>
-                        <th>Email</th>
-                        <td><input class="form-control" type="email" name="email" value="{{$user->email}}"></td>
+                        <th>KDW ID</th>
+                        <td><input class="form-control" type="email" name="email" value="{{$user->ds_id}}"></td>
                       </tr>
-                    </table></td>
+                    </table>
+                  </td>
                 </tr>
               </table>
               <button type="submit" class="btn btn-rounded btn-primary rounded-pill"name="button">Daten ändern</button>
@@ -154,37 +163,49 @@
                     <th>Quote</th>
                   </tr>
                   <tr>
-                    <th>SSC</th>
-                    <td>{{$salesdata['sscCalls']}}</td>
-                    <td>{{$salesdata['sscOrders']}}</td>
-                    @if($salesdata['sscCalls'] != 0)
-                      <td class="@if(($salesdata['sscOrders']/$salesdata['sscCalls'])*100 < 48) tooLow @endif">{{round(($salesdata['sscOrders']/$salesdata['sscCalls'])*100,2)}}</td>
+                    <td><b>GeVo-CR</b> </td>
+                    <td>{{$sumcalls}}</td>
+                    <td>{{$sumorders}}</td>
+                    @if($sumcalls != 0)
+                      <td>{{round(($sumorders*100/$sumcalls),2)}}%</td>
                     @else
-                      <td>keine Werte</td>
+                      <td>Calls 0</td>
                     @endif
                   </tr>
-                  <tr>
-                    <th>BSC</th>
-                    <td>{{$salesdata['bscCalls']}}</td>
-                    <td>{{$salesdata['bscOrders']}}</td>
-                    @if($salesdata['bscCalls'] != 0)
-                      <td class="@if(($salesdata['bscOrders']/$salesdata['bscCalls'])*100 < 20) tooLow @endif">{{round(($salesdata['bscOrders']/$salesdata['bscCalls'])*100,2)}}</td>
-                    @else
-                      <td>keine Werte</td>
-                    @endif
-                  </tr>
-                  <tr>
+                  @if($user->department == '1&1 Mobile Retention')
+                    <tr>
+                      <th>SSC</th>
+                      <td>{{$salesdata['sscCalls']}}</td>
+                      <td>{{$salesdata['sscOrders']}}</td>
+                      @if($salesdata['sscCalls'] != 0)
+                        <td class="@if(($salesdata['sscOrders']/$salesdata['sscCalls'])*100 < 48) tooLow @endif">{{round(($salesdata['sscOrders']/$salesdata['sscCalls'])*100,2)}}</td>
+                      @else
+                        <td>keine Werte</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      <th>BSC</th>
+                      <td>{{$salesdata['bscCalls']}}</td>
+                      <td>{{$salesdata['bscOrders']}}</td>
+                      @if($salesdata['bscCalls'] != 0)
+                        <td class="@if(($salesdata['bscOrders']/$salesdata['bscCalls'])*100 < 20) tooLow @endif">{{round(($salesdata['bscOrders']/$salesdata['bscCalls'])*100,2)}}</td>
+                      @else
+                        <td>keine Werte</td>
+                      @endif
+                    </tr>
+                    <tr>
+                      <th>Portale</th>
+                      <td>{{$salesdata['portalCalls']}}</td>
+                      <td>{{$salesdata['portalOrders']}}</td>
+                      @if($salesdata['portalCalls'] != 0)
+                      <td class="@if(($salesdata['portalOrders']/$salesdata['portalCalls'])*100 < 70) tooLow @endif">{{round(($salesdata['portalOrders']/$salesdata['portalCalls'])*100,2)}}</td>
 
-                    <th>Portale</th>
-                    <td>{{$salesdata['portalCalls']}}</td>
-                    <td>{{$salesdata['portalOrders']}}</td>
-                    @if($salesdata['portalCalls'] != 0)
-                    <td class="@if(($salesdata['portalOrders']/$salesdata['portalCalls'])*100 < 70) tooLow @endif">{{round(($salesdata['portalOrders']/$salesdata['portalCalls'])*100,2)}}</td>
-                  </tr>
-                    @else
-                      <td>keine Werte</td>
+                      @else
+                        <td>keine Werte</td>
+                      @endif
+                    </tr>
                     @endif
-                  <tr>
+                    <tr>
                     <th>RLZ</th>
                     <td><b>RLZ + 24:</b> {{$sumrlz24}}</td>
                     <td><b>neue MVLZ:</b> {{$sumNMlz}}</td>

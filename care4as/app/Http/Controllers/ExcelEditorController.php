@@ -42,6 +42,7 @@ class ExcelEditorController extends Controller
       {
         $fromRow = 2;
       }
+
       //determines from which row the the app starts editing the data
       $request->validate([
         'file' => 'required',
@@ -97,12 +98,12 @@ class ExcelEditorController extends Controller
     public function dailyAgentUploadQueue(Request $request)
     {
       //determines which sheet should be used
-      if($request->sheet)
+      if($request->sheet && $request->sheet > 1)
       {
         $sheet = $request->sheet;
       }
       else {
-        $sheet = 3;
+        $sheet = 1;
       }
 
       if($request->fromRow)
@@ -113,6 +114,7 @@ class ExcelEditorController extends Controller
       {
         $fromRow = 2;
       }
+
       //determines from which row the the app starts editing the data
       $request->validate([
         'file' => 'required',
@@ -129,26 +131,28 @@ class ExcelEditorController extends Controller
       ini_set('max_execution_time', '0'); // for infinite time of execution
       DB::statement('SET SESSION interactive_timeout = 28800');
 
-      $data = Excel::ToArray(new DataImport, $file );
+      $data = Excel::ToArray(new DataImport, request()->file('file'));
 
+      // dd($data);
+      if(!isset($data[$sheet-1]) && empty($data[$sheet-1]))
+      {
+        return abort(403, 'das Sheet '.$sheet.' wurde nicht gefunden');
+      }
+      else {
+        $data = $data[$sheet-1];
+      }
+      if($countsheet = count($data) < 2000)
+      {
+        return abort(403, 'weniger als 2000 ('.$countsheet.') Datensätze in dem Sheet');
+      }
       // dd($data);
       // $data = Excel::ToArray(new DataImport, $file );
       $counter=0;
       $insertData=array();
 
-      if(count($data[$sheet-1]) > 2000)
+      for($i=$fromRow-1; $i <= count($data)-1; $i++ )
       {
-        $data2 = $data[$sheet-1];
-      }
-      else
-      {
-        $data2 = $data[$sheet];
-      }
-      // dd($data2);
-
-      for($i=$fromRow-1; $i <= count($data2)-1; $i++ )
-      {
-        $cell = $data2[$i];
+        $cell = $data[$i];
 
         if(is_numeric($cell[1]))
         {
@@ -204,19 +208,17 @@ class ExcelEditorController extends Controller
               'status' => $cell[23],
               'time_in_state' => $cell[26],
               ];
-        }
-
-      }
+        }}
         // dd($insertData);
         $insertData = array_chunk($insertData, 3500);
         // DB::table('dailyagent')->insert($insertData[0]);
-
         for($i=0; $i <= count($insertData)-1; $i++)
         {
           ImportDailyAgentChunks::dispatch($insertData[$i])
           ->delay(now()->addMinutes($i*0.2));
         }
-        return redirect()->back();
+        return response()->json('success');
+        // return redirect()->back();
     }
     public function dailyAgentUpload(Request $request)
     {
@@ -228,9 +230,9 @@ class ExcelEditorController extends Controller
         // 'name' => 'required',
       ]);
 
-      $file = request()->file('file');
-      $path = $file->getRealPath();
-      $data = Excel::ToArray(new DataImport, request()->file('file'));
+      // $file = request()->file('file');
+      // $path = $file->getRealPath();
+      $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
       $counter=0;
 
       for($i=0;$i <= 1; $i++ )

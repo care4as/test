@@ -105,7 +105,6 @@ Route::group(['middleware' => ['auth']], function () {
   // Route::post('/report/hoursreport', 'ExcelEditorController@reportHours')->name('reports.reportHours.post');
 
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
-  Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
   Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue');
   Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import');
@@ -131,20 +130,20 @@ Route::group(['middleware' => ['auth']], function () {
         // return 1;
       return redirect()->back();
   })->name('retentiondetails.removeDuplicates');
+
   Route::get('/dailyagent/removeDuplicates', function(){
-    DB::statement(
-    '
-    DELETE FROM dailyagent
-      WHERE id IN (
-        SELECT calc_id FROM (
-        SELECT MAX(id) AS calc_id
-        FROM dailyagent
-        GROUP BY agent_id, date, status
-        HAVING COUNT(id) > 1
-        ) temp)
-        '
-      );
-        // return 1;
+    DB::disableQueryLog();
+    ini_set('memory_limit', '-1');
+    ini_set('max_execution_time', '0');
+    $idstodelete = App\DailyAgent::groupBy(['id','date', 'agent_id','status'])
+          ->pluck('id')
+          ->toArray();
+
+    foreach(array_chunk($idstodelete, 500) as $chunked)
+    {
+      App\DailyAgent::whereNotIn('id',$chunked)->delete();
+    }
+
       return redirect()->back();
   })->name('dailyagent.removeDuplicates');
   Route::get('/hoursreport/removeDuplicates', function(){
