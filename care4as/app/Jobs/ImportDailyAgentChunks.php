@@ -35,6 +35,6 @@ class ImportDailyAgentChunks implements ShouldQueue
      */
     public function handle()
     {
-      DB::table('dailyagent')->insert($this->data);
+      DB::table('dailyagent')->insertOrIgnore($this->data);
     }
 }
