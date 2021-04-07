@@ -29,6 +29,7 @@ class CreateTableRetentionDetails extends Migration
             $table->decimal('Rabatt_Guthaben_Brutto_Mobile')->nullable();
             $table->integer('mvlzNeu')->nullable();
             $table->integer('rlzPlus')->nullable();
+            $table->unique(['call_date','person_id']);
             $table->timestamps();
         });
     }

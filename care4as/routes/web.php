@@ -270,4 +270,26 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 
-Route::get('/test', 'HomeController@test')->name('test');
+Route::get('/test', function(){
+
+  function lz($num)
+{
+    return (strlen($num) < 2) ? "0{$num}" : $num;
+}
+
+      $dec = 43920.3315277778;
+      // start by converting to seconds
+      $seconds = ($dec * 3600);
+      // we're given hours, so let's get those the easy way
+      $hours = floor($dec);
+      // since we've "calculated" hours, let's remove them from the seconds variable
+      $seconds -= $hours * 3600;
+      // calculate minutes left
+      $minutes = floor($seconds / 60);
+      // remove those from seconds as well
+      $seconds -= $minutes * 60;
+      // return the time formatted HH:MM:SS
+      return lz($hours).":".lz($minutes).":".lz($seconds);
+
+
+})->name('test');
