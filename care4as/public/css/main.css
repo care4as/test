@@ -245,3 +245,15 @@ body
   width: 90%;
   height:auto
 }
+#previewContainer
+{
+  background: rgb(203,200,244);
+  background: linear-gradient(90deg, rgba(203,200,244,1) 0%, rgba(159,231,208,1) 0%, rgba(223,249,241,1) 0%, rgba(178,238,233,0.8827731776304272) 100%);
+  width: 100%;
+  height: auto;
+  min-height: 15vh;
+  padding: 5px;
+  border-radius: 25px;
+  border: 2px solid black;
+  box-shadow:10px 10px 5px grey;
+}

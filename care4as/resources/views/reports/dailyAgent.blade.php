@@ -165,7 +165,7 @@
 @endsection
 
 @section('content')
-<div class="container  text-center bg-light" style="position:relative;">
+<div class="container p-0 text-center bg-light" style="position:relative;">
   <div class="loaderDiv" id="loaderDiv">
     <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
   </div>
@@ -193,17 +193,7 @@
     <div class="col text-center bg-light p-2">
       <form action="{{route('excel.dailyAgent.upload.queue')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
         @csrf
-        <div class="form-row dropzone-previews dz-default dz-message" id="previewContainer"
-        style="
-        background: rgb(203,200,244);
-        background: linear-gradient(90deg, rgba(203,200,244,1) 0%, rgba(159,231,208,1) 0%, rgba(223,249,241,1) 0%, rgba(178,238,233,0.8827731776304272) 100%);
-        width: 100%;
-        height: auto;
-        min-height: 15vh;
-        padding: 5px;
-        border-radius: 25px;
-        border: 2px solid black;
-        box-shadow:10px 10px 5px grey;">
+        <div class="form-row dropzone-previews dz-default dz-message" id="previewContainer">
           <p class=" w-100 text-center">Ziehe die Dateien hier rein oder klick mich!</p>
           </div>
           <div class="form-row">
@@ -218,8 +208,6 @@
           <button type="button" id="dropZoneSubmitter" class="btn btn-sm btn-block" name="button">Absenden</button>
         </div>
       </form>
-
-
     </div>
   </div>
   <!-- <div class="row">

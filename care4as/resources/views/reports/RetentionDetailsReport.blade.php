@@ -26,6 +26,20 @@
     <div class="col text-center bg-light p-1">
       <form action="{{route('excel.test')}}" class="dropzone" id="exceldropzone" method="post">
         @csrf
+        <div class="form-row dropzone-previews dz-default dz-message" id="previewContainer">
+          <p class=" w-100 text-center">Ziehe die Dateien hier rein oder klick mich!</p>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              Sheet: <input class="form-control" type="text" name="sheet" value="1"/>
+            </div>
+            <div class="col">
+              Ab Zeile: <input class="form-control" type="text" name="fromRow" value="2"/>
+            </div>
+          </div>
+        <div class="form-row">
+          <button type="button" id="dropZoneSubmitter" class="btn btn-sm btn-block" name="button">Absenden</button>
+        </div>
       </form>
       <!--
       <form class="" action="{{route('excel.test')}}" method="post" enctype="multipart/form-data">

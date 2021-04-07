@@ -69,10 +69,10 @@ class ExcelEditorController extends Controller
         if(!DB::table('sse_tracking')->where('sse_case_id',$cell[7])->where('person_id',$cell[10])->exists())
         {
           $UNIX_DATE1 = ($cell[0] - 25569) * 86400;
-          $date = date("Y-m-d", $UNIX_DATE1);
+          $date = gmdate("Y-m-d", $UNIX_DATE1);
 
           $UNIX_DATE2 = ($cell[17] - 25569) * 86400;
-          $duedate = date("Y-m-d", $UNIX_DATE2);
+          $duedate = gmdate("Y-m-d", $UNIX_DATE2);
 
           $insertData[$i] = [
             'trackingdate' => $date,
@@ -157,7 +157,8 @@ class ExcelEditorController extends Controller
         if(is_numeric($cell[1]))
         {
           $UNIX_DATE = ($cell[1] - 25569) * 86400;
-          $date = date("Y-m-d H:i:s", $UNIX_DATE);
+          $date = gmdate("Y-m-d H:i:s", $UNIX_DATE);
+          // date_timezone_set ( $date, 'Europe/Berlin' );
         }
 
         else {
@@ -170,11 +171,11 @@ class ExcelEditorController extends Controller
           if(is_numeric($cell[18]))
           {
             $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
-            $start_time = date("Y-m-d H:i:s",$UNIX_DATE2);
+            $start_time = gmdate("Y-m-d H:i:s",$UNIX_DATE2);
           }
 
           $UNIX_DATE3 = ($cell[25] - 25569) * 86400;
-          $end_time = date("Y-m-d H:i:s", $UNIX_DATE3);
+          $end_time = gmdate("Y-m-d H:i:s", $UNIX_DATE3);
 
           if($cell[5] == '')
           {
@@ -261,21 +262,23 @@ class ExcelEditorController extends Controller
           {
             $cell[15] = 0;
           }
+
           //convert all the excel dates to unix date
+
           $UNIX_DATE = ($cell[0] - 25569) * 86400;
-          $dailyAgent->date = date("Y-m-d H:i:s", $UNIX_DATE);
+          $dailyAgent->date = gmdate("Y-m-d H:i:s", $UNIX_DATE);
 
           if(is_numeric($cell[24]))
           {
             $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
-            $dailyAgent->start_time = date("Y-m-d H:i:s",$UNIX_DATE2);
+            $dailyAgent->start_time = gmdate("Y-m-d H:i:s",$UNIX_DATE2);
           }
           else {
             return 'Datenfehler in Zeile '.$counter.':'.json_encode($cell[23]);
           }
 
           $UNIX_DATE3 = ($cell[25] - 25569) * 86400;
-          $dailyAgent->end_time = date("Y-m-d H:i:s", $UNIX_DATE3);
+          $dailyAgent->end_time = gmdate("Y-m-d H:i:s", $UNIX_DATE3);
           $dailyAgent->kw = $cell[3];
           $dailyAgent->dialog_call_id  = $cell[5];
           $dailyAgent->agent_id = $cell[7];
@@ -376,38 +379,36 @@ class ExcelEditorController extends Controller
       foreach($data as $row)
       {
         $UNIX_DATE = ($row[1] - 25569) * 86400;
-        $date = date("Y-m-d", $UNIX_DATE);
+        $date = gmdate("Y-m-d", $UNIX_DATE);
 
-        if($row[0] && !RetentionDetail::where('person_id',$row[0])->where('call_date',$date)->exists())
+        $report = new RetentionDetail;
+        $report->person_id = $row[0];
+        $report->call_date = $date;
+        $report->department_desc = $row[9];
+        $report->calls = $row[11];
+
+        if($row[9] !='Care4as Retention DSL Eggebek')
         {
-          $report = new RetentionDetail;
-          $report->person_id = $row[0];
-          $report->call_date = $date;
-          $report->department_desc = $row[9];
-          $report->calls = $row[11];
-
-          if($row[9] !='Care4as Retention DSL Eggebek')
-          {
-            $report->calls_smallscreen = $row[14];
-            $report->calls_bigscreen = $row[15];
-            $report->calls_portale = $row[16];
-            $report->orders_smallscreen = $row[18] + $row[23];
-            $report->orders_bigscreen = $row[19] + $row[24];
-            $report->orders_portale = $row[21] + $row[26];
-            $report->mvlzNeu = $row[33];
-            $report->rlzPlus = $row[35];
-          }
-          else
-          {
-            $report->mvlzNeu = $row[32];
-            $report->rlzPlus = $row[34];
-          }
-          $report->orders = $row[17] + $row[22];
-          $report->Rabatt_Guthaben_Brutto_Mobile = $row[28];
-
-          $report->save();
+          $report->calls_smallscreen = $row[14];
+          $report->calls_bigscreen = $row[15];
+          $report->calls_portale = $row[16];
+          $report->orders_smallscreen = $row[18] + $row[23];
+          $report->orders_bigscreen = $row[19] + $row[24];
+          $report->orders_portale = $row[21] + $row[26];
+          $report->mvlzNeu = $row[33];
+          $report->rlzPlus = $row[35];
         }
+        else
+        {
+          $report->mvlzNeu = $row[32];
+          $report->rlzPlus = $row[34];
+        }
+        $report->orders = $row[17] + $row[22];
+        $report->Rabatt_Guthaben_Brutto_Mobile = $row[28];
+
+        $report->save();
       }
+
       return redirect()->back();
       // dd($data);
 
@@ -430,7 +431,7 @@ class ExcelEditorController extends Controller
         if($row[0] && $row[1] && is_numeric($row[1]) && $row[2])
         {
           $UNIX_DATE = ($row[0] - 25569) * 86400;
-          $date = date("Y-m-d H:i:s", $UNIX_DATE);
+          $date = gmdate("Y-m-d H:i:s", $UNIX_DATE);
           if(!DB::table('buchungsliste')->where('date',$date)->where('contractnumber',$row[1])->exists())
           {
             if($row[1] != null)
@@ -496,7 +497,7 @@ class ExcelEditorController extends Controller
 
         $row = $data[$i];
         $UNIX_DATE = ($row[0] - 25569) * 86400;
-        $date = date("Y-m-d", $UNIX_DATE);
+        $date = gmdate("Y-m-d", $UNIX_DATE);
 
         if(!HoursReport::where('name',$row[1])->where('date',$date)->exists() && $row[1])
         {
