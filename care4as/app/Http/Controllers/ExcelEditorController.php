@@ -368,47 +368,72 @@ class ExcelEditorController extends Controller
       {
         $fromRow = 2;
       }
-
       $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
-
-      for ($i=0; $i < $fromRow-1; $i++) {
-        unset($data[$i]);
-      }
-
       // dd($data);
-      foreach($data as $row)
+      $insertarray = array();
+      for($i = $fromRow-1; $i <= count($data)-1; $i++)
       {
-        $UNIX_DATE = ($row[1] - 25569) * 86400;
+        $UNIX_DATE = ($data[$i][1] - 25569) * 86400;
         $date = gmdate("Y-m-d", $UNIX_DATE);
+        // $report = new RetentionDetail;
+        // $report->person_id = $row[0];
+        $insertarray[$i]['person_id'] = $data[$i][0];
+        // $report->call_date = $date;
+        $insertarray[$i]['call_date'] = $date;
+        // $report->department_desc = $row[9];
+        $insertarray[$i]['department_desc']  = $data[$i][9];
 
-        $report = new RetentionDetail;
-        $report->person_id = $row[0];
-        $report->call_date = $date;
-        $report->department_desc = $row[9];
-        $report->calls = $row[11];
+        // $report->calls = $row[11];
+        $insertarray[$i]['calls']  = $data[$i][11];
 
-        if($row[9] !='Care4as Retention DSL Eggebek')
+        if($data[$i][9] !='Care4as Retention DSL Eggebek')
         {
-          $report->calls_smallscreen = $row[14];
-          $report->calls_bigscreen = $row[15];
-          $report->calls_portale = $row[16];
-          $report->orders_smallscreen = $row[18] + $row[23];
-          $report->orders_bigscreen = $row[19] + $row[24];
-          $report->orders_portale = $row[21] + $row[26];
-          $report->mvlzNeu = $row[33];
-          $report->rlzPlus = $row[35];
+          // $report->calls_smallscreen = $row[14];
+          $insertarray[$i]['calls_smallscreen'] = $data[$i][14];
+
+          // $report->calls_bigscreen = $row[15];
+          $insertarray[$i]['calls_bigscreen'] = $data[$i][15];
+
+          // $report->calls_portale = $row[16];
+          $insertarray[$i]['calls_portale'] = $data[$i][16];
+
+          // $report->orders_smallscreen = $row[18] + $row[23];
+          $insertarray[$i]['orders_smallscreen'] = $data[$i][18] + $data[$i][23];
+
+          // $report->orders_bigscreen = $row[19] + $row[24];
+          $insertarray[$i]['orders_bigscreen'] = $data[$i][19] + $data[$i][24];
+
+          // $report->orders_portale = $row[21] + $row[26];
+          $insertarray[$i]['orders_portale'] = $data[$i][21] + $data[$i][26];
+
+          // $report->mvlzNeu = $row[33];
+          $insertarray[$i]['mvlzNeu'] = $data[$i][33];
+
+          // $report->rlzPlus = $row[35];
+          $insertarray[$i]['rlzPlus'] = $data[$i][35];
         }
         else
         {
-          $report->mvlzNeu = $row[32];
-          $report->rlzPlus = $row[34];
-        }
-        $report->orders = $row[17] + $row[22];
-        $report->Rabatt_Guthaben_Brutto_Mobile = $row[28];
+          // $report->mvlzNeu = $row[32];
+          $insertarray[$i]['mvlzNeu'] = $data[$i][32];
 
-        $report->save();
+          // $report->rlzPlus = $row[34];
+          $insertarray[$i]['rlzPlus'] = $data[$i][34];
+        }
+        // $report->orders = $row[17] + $row[22];
+        $insertarray[$i]['orders'] = $data[$i][17] + $data[$i][22];
+
+        // $report->Rabatt_Guthaben_Brutto_Mobile = $row[28];
+        $insertarray[$i]['Rabatt_Guthaben_Brutto_Mobile'] = $data[$i][28];
+
+        // $insertarray2[] = $insertarray;
       }
 
+      for($i=$fromRow-1; $i <= count($insertarray); $i++)
+      {
+        DB::table('retention_details')->insertOrIgnore($insertarray[$i]);
+      }
+      // return response()->json($insertarray);
       return redirect()->back();
       // dd($data);
 
