@@ -35,7 +35,7 @@ class CreateDailyagentTable extends Migration
             $table->integer('time_in_state')->nullable()->default(0);
             $table->string('timezone')->nullable();
             $table->timestamps();
-            // $table->unique(['start_time','agent_id','status']);
+            $table->unique(['start_time','agent_id','status']);
         });
     }
 

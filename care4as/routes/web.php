@@ -132,17 +132,20 @@ Route::group(['middleware' => ['auth']], function () {
   })->name('retentiondetails.removeDuplicates');
 
   Route::get('/dailyagent/removeDuplicates', function(){
+
     DB::disableQueryLog();
     ini_set('memory_limit', '-1');
     ini_set('max_execution_time', '0');
-    $idstodelete = App\DailyAgent::groupBy(['id','date', 'agent_id','status'])
-          ->pluck('id')
-          ->toArray();
 
-    foreach(array_chunk($idstodelete, 500) as $chunked)
-    {
-      App\DailyAgent::whereNotIn('id',$chunked)->delete();
-    }
+    DB::statement(
+      '
+      DELETE t1 FROM dailyagent t1
+        INNER JOIN dailyagent t2
+        WHERE t1.id > t2.id
+        AND t1.start_time = t2.start_time
+        AND t1.agent_id = t2.agent_id
+        AND t1.status = t2.status
+    ');
 
       return redirect()->back();
   })->name('dailyagent.removeDuplicates');

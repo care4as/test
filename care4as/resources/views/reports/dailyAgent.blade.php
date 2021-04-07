@@ -222,7 +222,7 @@
 
     </div>
   </div>
-  <div class="row">
+  <!-- <div class="row">
     <form class="" action="{{route('excel.dailyAgent.upload.queue')}}" method="post" enctype="multipart/form-data">
       @csrf
       <input type="file" name="file" value="">
@@ -239,7 +239,7 @@
         <button type="submit" class="btn btn-rounded btn-block" name="button">Test</button>
       </div>
     </form>
-  </div>
+  </div> -->
 </div>
 
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
