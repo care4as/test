@@ -286,7 +286,7 @@ Dropzone.options.exceldropzone = {
   dictResponseError: null,
   autoProcessQueue: false,
   dictResponseError: false,
-  timeout: 600000,
+  timeout: 1200000,
 
   init: function () {
 
