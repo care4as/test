@@ -14,12 +14,12 @@
   th, td
   {
     font-size: 1.4em !important;
-    text-align: left;
+    text-align: center;
     margin: 0;
     border: 0;
     color: #746e58;
-    /* overflow: hidden; */
-    /* text-overflow: ellipsis; */
+    white-space: nowrap;
+
   }
   .table-hover tbody td:hover {
     background-color: black;
@@ -90,7 +90,7 @@
               </div>
               <div class="col-3 p-0 mr-2">
                 <label for="department">Welche MA:</label>
-                <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 50px; overflow:scroll;">
+                <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 150px; overflow:scroll;">
                   @if(request('department'))
                     @foreach($users1 = App\User::where('department',request('department'))->where('role','agent')->get() as $user)
                       <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
@@ -138,16 +138,33 @@
           $pricepersave = 15;
         }
       @endphp
-
+      <div class="row m-0 justify-content-center">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="view" id="allData" value="option1" checked>
+          <label class="form-check-label" for="allData">alle Daten</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="view" id="teamleiterview" value="option1">
+          <label class="form-check-label" for="teamleiterview">Teamleiter Daten</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="view" id="crview" value="option2">
+          <label class="form-check-label" for="crview">Cr bezogene Daten</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="view" id="timesview" value="option3" >
+          <label class="form-check-label" for="timesview">Zeit bezogene Daten</label>
+        </div>
+      </div>
       <table class="table table-hover table-striped table-bordered" id="tableoverview">
         <thead class="thead-dark">
           <tr>
-            <th >#</th>
-            <th >Name</th>
+            <th>#</th>
+            <th>Name</th>
             <th>AHT</th>
-            <th>KDW bez Zeit</th>
-            <th>1&1 bez Zeit</th>
-            <th>1&1 ProZ</th>
+            <th>h bezahlt </th>
+            <th>h anwesend</th>
+            <th>h produktiv</th>
             <th>PQ</th>
             <th>1&1 PQ</th>
             <th>Saves</th>
@@ -165,9 +182,12 @@
             <th>BSC CR</th>
             <th>Portal CR</th>
             <th>KüRü CR</th>
+            <th>SaS</th>
+            <th>OptIn</th>
             <th>Umsatz</th>
             <th>Umsatz/h bez</th>
             <th>Umsatz/h prod</th>
+            <th>Kr h</th>
             <th>KQ</th>
             <th>Optionen</th>
           </tr>
@@ -176,7 +196,7 @@
         @foreach($users as $user)
           <tr>
             <td class="bg-dark text-white" style="width: auto; ">{{$user->id}}</td>
-            <td class="bg-dark text-white" style="width: 90px;word-break: normal;">{{$user->surname}} {{$user->lastname}}</td>
+            <td class="bg-dark text-white" style="text-align: left;">{{$user->surname}} {{$user->lastname}}</td>
             <!-- <td>{{$user->name}}</td> -->
             <td>
               {{$user->salesdata['aht']}}
@@ -205,9 +225,11 @@
               @else
               <td>0</td>
             @endif
+
             <td>{{$user->salesdata['sscOrders']}}</td>
             <td>{{$user->salesdata['bscOrders']}}</td>
             <td>{{$user->salesdata['portalOrders']}}</td>
+
               <td>{{$user->salesdata['ssesaves']}}</td>
             @if($user->salesdata['workedHours'] != 0)
               @if($user->department == '1&1 DSL Retention')
@@ -225,6 +247,8 @@
             <td>{{$user->salesdata['bscQuota']}}</td>
             <td>{{$user->salesdata['portalQuota']}}</td>
             <td>50</td>
+            <td>SaS</td>
+            <td>Optin</td>
             <td>{{$user->salesdata['orders'] * $pricepersave}}</td>
             @if($user->salesdata['workedHours'] != 0)
               <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
@@ -236,6 +260,7 @@
             @else
                 <td>0</td>
             @endif
+            <td>{{$user->salesdata['sickhours']}}</td>
             <td>{{$user->salesdata['sicknessquota']}}</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td class="bg-dark" style="text-align:center; font-size: 1.4em;">
@@ -271,11 +296,14 @@
           <td id="bscCrAVG">20</td>
           <td id="portalCrAVG">21</td>
           <td id="kürücr">22</td>
-          <td id="revenue">23</td>
-          <td id="revenuePerHourPayedAVG">24</td>
-          <td id="revenuePerHourProductiveAVG">25</td>
-          <td id="sicknessquotaAVG">26</td>
-          <td>25</td>
+          <td id="sas">23</td>
+          <td id="optin">24</td>
+          <td id="revenue">25</td>
+          <td id="revenuePerHourPayedAVG">26</td>
+          <td id="revenuePerHourProductiveAVG">27</td>
+          <td id="sick hours">28</td>
+          <td id="sicknessquotaAVG">29</td>
+          <td>total</td>
         </tr>
       </tfoot>
     </table>
@@ -291,14 +319,21 @@
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
 <script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
+<script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
   $(document).ready(function(){
     let table = $('#tableoverview').DataTable({
 
+
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
-
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -331,10 +366,27 @@
             $(api.column( 23 ).footer() ).html('<b>'+Math.round(api.column(23).data().sum()) +'€</b>')
             $(api.column( 24 ).footer() ).html('<b>'+Math.round(api.column(24).data().average()) +'€</b>')
             $(api.column( 25 ).footer() ).html('<b>'+Math.round(api.column(25).data().average()) +'€</b>')
-            $(api.column( 26 ).footer() ).html('<b>'+Math.round(api.column(26).data().average()) +'%</b>')
-            $(api.column( 27 ).footer() ).html('<b> total</b>')
-
+            $(api.column( 26 ).footer() ).html('<b>'+Math.round(api.column(26).data().average()) +'h</b>')
+            $(api.column( 27 ).footer() ).html('<b>'+Math.round(api.column(27).data().average()) +'%</b>')
+            $(api.column( 28 ).footer() ).html('<b> </b>')
+            $(api.column( 29 ).footer() ).html('<b> </b>')
+            $(api.column( 30 ).footer() ).html('<b> Total</b>')
           },
+          select: true,
+          dom: 'Blfrtip',
+          lengthMenu: [
+              [10, 25, 50, 100],
+              ['10', '25', '50 ', '100']
+          ],
+          buttons: [
+
+                  { extend: 'pdf', text: '<i class="fas fa-file-pdf fa-2x" aria-hidden="true"></i>' },
+                  { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' },
+                  { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' },
+                  // 'excel',
+
+              ],
+      colReorder: true,
       scrollX: true,
       scrollY: "600px",
       scrollCollapse: true,
@@ -342,13 +394,16 @@
             leftColumns: 2,
             rightColumns: 1,
         },
+
         fnInitComplete: function(){
            // $('#footerdata').style.display = 'hidden';
        },
 
-      "columnDefs": [ {
-            "targets": [6,7,16,17,18,19,26],
-            "width": '65px',
+      "columnDefs": [
+            { "width": "60px", "targets": "_all" },
+            {
+            "targets": [6,7,16,17,18,19,27],
+
             "render": function ( data, type, full, meta ) {
               if(isNaN(data))
               {
@@ -371,6 +426,49 @@
             }
           }],
         });
+
+        if (document.querySelector('input[name="view"]')) {
+          document.querySelectorAll('input[name="view"]').forEach((elem) => {
+            elem.addEventListener("change", function(event) {
+              switch(event.target.id) {
+                case 'allData':
+                    table.colReorder.reset();
+                    table.columns().visible( false );
+                    table.columns().visible( true );
+
+                  break;
+                case 'teamleiterview':
+
+                  table.colReorder.reset();
+                  table.columns().visible( false );
+                  table.columns([0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30]).visible( true );
+                  $('.DTFC_LeftBodyWrapper').hide()
+                  $('.DTFC_RightWrapper').hide()
+                  $('#tableoverview').css('margin','0px');
+                  table.colReorder.order( [0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30]);
+                  table.columns.adjust().draw();
+
+                  // table.colReorder.order( [1,3,4,26,27,5,7,9,10,8,17,18,24,25,28]);
+                  break;
+                case 'crview':
+                table.colReorder.reset();
+                table.columns().visible( false );
+                table.columns([0,1,8,9,11,12,13,14,17,18,19,20,21,22,30]).visible( true );
+                $('.DTFC_LeftBodyWrapper').hide()
+                $('.DTFC_RightWrapper').hide()
+                $('#tableoverview').css('margin','0px');
+                table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30]);
+                table.columns.adjust().draw();
+                break;
+              }
+
+              // var item = event.target.id;
+
+            });
+          });
+        }
+
+        table.columns.adjust();
       });
 </script>
 @endsection

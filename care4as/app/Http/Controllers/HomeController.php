@@ -361,6 +361,7 @@ class HomeController extends Controller
           'payedtime11' => $payed11,
           'productive' => $productive,
           'aht' => $AHT,
+          'sickhours' => $sickHours,
         );
       }
       // dd($users->where('id',26));

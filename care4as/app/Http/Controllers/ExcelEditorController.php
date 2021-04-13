@@ -97,6 +97,11 @@ class ExcelEditorController extends Controller
     }
     public function dailyAgentUploadQueue(Request $request)
     {
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+      DB::statement('SET SESSION interactive_timeout = 28800');
+
       //determines which sheet should be used
       if($request->sheet && $request->sheet > 1)
       {
@@ -106,6 +111,8 @@ class ExcelEditorController extends Controller
         $sheet = 1;
       }
 
+
+      //determines from which row the the app starts editing the data
       if($request->fromRow)
       {
         $fromRow = $request->fromRow;
@@ -115,21 +122,12 @@ class ExcelEditorController extends Controller
         $fromRow = 2;
       }
 
-      //determines from which row the the app starts editing the data
       $request->validate([
         'file' => 'required',
         // 'name' => 'required',
       ]);
       $file = request()->file('file');
-      // $path1 = request()->file('file')->store('temp');
-      // $path= storage_path('app').'/'.$path1;
-      // $path = $file->getRealPath();
-      // $path= storage_path('app').'/'.$path1;
 
-      DB::disableQueryLog();
-      ini_set('memory_limit', '-1');
-      ini_set('max_execution_time', '0'); // for infinite time of execution
-      DB::statement('SET SESSION interactive_timeout = 28800');
 
       $data = Excel::ToArray(new DataImport, request()->file('file'));
 
@@ -139,9 +137,22 @@ class ExcelEditorController extends Controller
         return abort(403, 'das Sheet '.$sheet.' wurde nicht gefunden');
       }
       else {
-        $data = $data[$sheet-1];
+        $data2 = $data[$sheet-1];
       }
-      if($countsheet = count($data) < 2000)
+      if($countsheet = count($data2) < 2000)
+      {
+        for ($i=0; $i <= count($data)-1; $i++) {
+          if($data[$i] > 2000)
+          {
+            $data2 = $data[$i];
+            $check = true;
+          }
+          if ($i == count($data)-1 && !$check) {
+            abort(403, 'kein Sheet mit mehr als 2000 Datensätzen gefunden');
+          }
+        }
+      }
+      else
       {
         return abort(403, 'weniger als 2000 ('.$countsheet.') Datensätze in dem Sheet');
       }
@@ -150,9 +161,9 @@ class ExcelEditorController extends Controller
       $counter=0;
       $insertData=array();
 
-      for($i=$fromRow-1; $i <= count($data)-1; $i++ )
+      for($i=$fromRow-1; $i <= count($data2)-1; $i++ )
       {
-        $cell = $data[$i];
+        $cell = $data2[$i];
 
         if(is_numeric($cell[1]))
         {
@@ -209,9 +220,11 @@ class ExcelEditorController extends Controller
               'status' => $cell[23],
               'time_in_state' => $cell[26],
               ];
-        }}
-        // dd($insertData);
+        }
+        }
+
         $insertData = array_chunk($insertData, 3500);
+
         // DB::table('dailyagent')->insert($insertData[0]);
         for($i=0; $i <= count($insertData)-1; $i++)
         {
