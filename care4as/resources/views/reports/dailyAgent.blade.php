@@ -54,7 +54,7 @@
       </form>
     </div>
   </div>
-  <!-- <div class="row">
+  <div class="row">
     <form class="" action="{{route('excel.dailyAgent.upload.queue')}}" method="post" enctype="multipart/form-data">
       @csrf
       <input type="file" name="file" value="">
@@ -71,7 +71,7 @@
         <button type="submit" class="btn btn-rounded btn-block" name="button">Test</button>
       </div>
     </form>
-  </div> -->
+  </div>
 </div>
 
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -105,8 +105,6 @@
 
 
 Dropzone.options.exceldropzone = {
-
-
   previewsContainer: "#previewContainer",
   addRemoveLinks: true,
   dictDefaultMessage: 'test',
@@ -122,8 +120,13 @@ Dropzone.options.exceldropzone = {
   init: function () {
 
       var myDropzone = this;
+
       // Update selector to match your button
       document.querySelector("#dropZoneSubmitter").addEventListener("click", function(e) {
+        if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
+          alert('keine Datei abgelegt')
+           throw new Error('keine Datei abgelegt');
+       }
      // Make sure that the form isn't actually being sent.
        e.preventDefault();
        e.stopPropagation();
@@ -153,6 +156,8 @@ Dropzone.options.exceldropzone = {
       });
     }
 };
+
+
 </script>
 
 <script type="text/javascript">
