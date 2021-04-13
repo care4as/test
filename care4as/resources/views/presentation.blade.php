@@ -205,14 +205,14 @@
             <td>{{$user->salesdata['payedtime11']}}</td>
             <td>{{$user->salesdata['productive']}}</td>
             @if($user->salesdata['workedHours'] != 0)
-              <td>{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}</td>
+              <td data-order="{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}">{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}%</td>
             @else
-              <td>0</td>
+              <td data-order="0">0%</td>
             @endif
             @if($user->salesdata['payedtime11'] != 0)
-              <td>{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11']),2}}</td>
+              <td data-order="{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11'],2)}}">{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11']),2}}%</td>
             @else
-              <td>0</td>
+              <td data-order="0">0</td>
             @endif
             @if($user->department == '1&1 DSL Retention')
               <td>{{$user->salesdata['orders']}}</td>
@@ -240,16 +240,16 @@
             @else
               <td>0</td>
             @endif
-            <td>{{$user->salesdata['RLZ24Qouta']}}</td>
+            <td data-order="{{$user->salesdata['RLZ24Qouta']}}">{{$user->salesdata['RLZ24Qouta']}}%</td>
             <td>50</td>
-            <td> {{$user->salesdata['GeVo-Cr']}}</td>
-            <td>{{$user->salesdata['sscQuota']}}</td>
-            <td>{{$user->salesdata['bscQuota']}}</td>
-            <td>{{$user->salesdata['portalQuota']}}</td>
-            <td>50</td>
+            <td data-order="{{$user->salesdata['GeVo-Cr']}}"> {{$user->salesdata['GeVo-Cr']}}%</td>
+            <td data-order="{{$user->salesdata['sscQuota']}}">{{$user->salesdata['sscQuota']}}%</td>
+            <td data-order="{{$user->salesdata['bscQuota']}}">{{$user->salesdata['bscQuota']}}%</td>
+            <td data-order="{{$user->salesdata['portalQuota']}}">{{$user->salesdata['portalQuota']}}%</td>
+            <td>50%</td>
             <td>SaS</td>
             <td>Optin</td>
-            <td>{{$user->salesdata['orders'] * $pricepersave}}</td>
+            <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
             @if($user->salesdata['workedHours'] != 0)
               <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
             @else
@@ -261,7 +261,7 @@
                 <td>0</td>
             @endif
             <td>{{$user->salesdata['sickhours']}}</td>
-            <td>{{$user->salesdata['sicknessquota']}}</td>
+            <td data-order="{{$user->salesdata['sicknessquota']}}">{{$user->salesdata['sicknessquota']}}%</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td class="bg-dark" style="text-align:center; font-size: 1.4em;">
               <a class="text-muted" href="{{route('user.stats', ['id' => $user->id])}}">
@@ -331,23 +331,37 @@
   $(document).ready(function(){
     let table = $('#tableoverview').DataTable({
 
-
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
             // Remove the formatting to get integer data for summation
-            var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '')*1 :
-                    typeof i === 'number' ?
-                        i : 0;
-            };
+
+            function getQuota(column)
+            {
+              let productiveQuota = api.column(column).nodes().toArray().map(function(node) {
+                return $(node).attr('data-order');
+              });
+              let counter = 0;
+              let sumPQ = productiveQuota.reduce(function (sum, currentValue) {
+                if(currentValue != 0)
+                {
+                  counter = counter + 1
+                  return  (1*parseFloat(sum) + 1*parseFloat(currentValue))
+                }
+                else {
+                  return 1*parseFloat(sum)
+                }
+              }, 0)
+
+              let Quota = sumPQ/counter
+              return Quota
+            }
 
             $(api.column( 2 ).footer() ).html('<b>'+Math.round(api.column(2).data().average()*100)/100 +'s</b>');
             $(api.column( 3 ).footer() ).html('<b>'+Math.round(api.column(3).data().sum()) +'h</b>');
             $(api.column( 4 ).footer() ).html('<b>'+Math.round(api.column(4).data().sum()) +'h</b>')
             $(api.column( 5 ).footer() ).html('<b>'+Math.round(api.column(5).data().sum()) +'h</b>')
-            $(api.column( 6 ).footer() ).html('<b>'+Math.round(api.column(6).data().average()) +'%</b>')
-            $(api.column( 7 ).footer() ).html('<b>'+Math.round(api.column(7).data().average()) +'%</b>')
+            $(api.column( 6 ).footer() ).html('<b>'+getQuota(6).toFixed(2)+'%</b>')
+            $(api.column( 7 ).footer() ).html('<b>'+getQuota(7).toFixed(2)+'%</b>')
             $(api.column( 8 ).footer() ).html('<b>'+Math.round(api.column(8).data().sum()) +'</b>')
             $(api.column( 9 ).footer() ).html('<b>'+Math.round(api.column(9).data().sum()) +'</b>')
             $(api.column( 10 ).footer() ).html('<b>'+Math.round(api.column(10).data().average()) +'</b>')
@@ -356,20 +370,20 @@
             $(api.column( 13 ).footer() ).html('<b>'+Math.round(api.column(13).data().sum()) +'</b>')
             $(api.column( 14 ).footer() ).html('<b>'+Math.round(api.column(14).data().sum()) +'</b>')
             $(api.column( 15 ).footer() ).html('<b>'+(Math.round(api.column(15).data().average())*100)/100 +'/h</b>')
-            $(api.column( 16 ).footer() ).html('<b>'+Math.round(api.column(16).data().average()) +'%</b>')
+            $(api.column( 16 ).footer() ).html('<b>'+getQuota(16).toFixed(2)+'%</b>')
             $(api.column( 17 ).footer() ).html('<b>'+Math.round(api.column(17).data().average()) +'%</b>')
-            $(api.column( 18 ).footer() ).html('<b>'+Math.round(api.column(18).data().average()) +'%</b>')
-            $(api.column( 19 ).footer() ).html('<b>'+Math.round(api.column(19).data().average()) +'%</b>')
-            $(api.column( 20 ).footer() ).html('<b>'+Math.round(api.column(20).data().average()) +'%</b>')
-            $(api.column( 21 ).footer() ).html('<b>'+Math.round(api.column(21).data().average()) +'%</b>')
-            $(api.column( 22 ).footer() ).html('<b>'+Math.round(api.column(22).data().average()) +'%</b>')
+            $(api.column( 18 ).footer() ).html('<b>'+getQuota(18).toFixed(2)+'%</b>')
+            $(api.column( 19 ).footer() ).html('<b>'+getQuota(19).toFixed(2)+'%</b>')
+            $(api.column( 20 ).footer() ).html('<b>'+getQuota(20).toFixed(2)+'%</b>')
+            $(api.column( 21 ).footer() ).html('<b>'+getQuota(21).toFixed(2)+'%</b>')
+            $(api.column( 22 ).footer() ).html('<b>'+getQuota(22).toFixed(2)+'%</b>')
             $(api.column( 23 ).footer() ).html('<b>'+Math.round(api.column(23).data().sum()) +'€</b>')
             $(api.column( 24 ).footer() ).html('<b>'+Math.round(api.column(24).data().average()) +'€</b>')
             $(api.column( 25 ).footer() ).html('<b>'+Math.round(api.column(25).data().average()) +'€</b>')
             $(api.column( 26 ).footer() ).html('<b>'+Math.round(api.column(26).data().average()) +'h</b>')
-            $(api.column( 27 ).footer() ).html('<b>'+Math.round(api.column(27).data().average()) +'%</b>')
-            $(api.column( 28 ).footer() ).html('<b> </b>')
-            $(api.column( 29 ).footer() ).html('<b> </b>')
+            $(api.column( 27 ).footer() ).html('<b>test</b>')
+            $(api.column( 28 ).footer() ).html('<b>'+Math.round(api.column(28).data().sum()) +'</b>')
+            $(api.column( 29 ).footer() ).html('<b>'+getQuota(29).toFixed(2)+'%</b>')
             $(api.column( 30 ).footer() ).html('<b> Total</b>')
           },
           select: true,
@@ -380,12 +394,12 @@
           ],
           buttons: [
 
-                  { extend: 'pdf', text: '<i class="fas fa-file-pdf fa-2x" aria-hidden="true"></i>' },
                   { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' },
                   { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' },
                   // 'excel',
 
               ],
+      rowReorder: true,
       colReorder: true,
       scrollX: true,
       scrollY: "600px",
@@ -401,30 +415,8 @@
 
       "columnDefs": [
             { "width": "60px", "targets": "_all" },
-            {
-            "targets": [6,7,16,17,18,19,27],
 
-            "render": function ( data, type, full, meta ) {
-              if(isNaN(data))
-              {
-                return 0;
-              }
-              else {
-
-                return data+'%';
-              }}},
-            {
-            "targets": [21,22,23,24,25],
-            "render": function ( data, type, full, meta ) {
-              if(isNaN(data))
-              {
-                return 0;
-              }
-              else {
-                return +data+'€';
-              }
-            }
-          }],
+          ],
         });
 
         if (document.querySelector('input[name="view"]')) {
@@ -439,15 +431,17 @@
                   break;
                 case 'teamleiterview':
 
-                  table.colReorder.reset();
+                  // table.colReorder.reset();
                   table.columns().visible( false );
                   table.columns([0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
                   table.colReorder.order( [0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30]);
-                  table.columns.adjust().draw();
+                  $(table.columns().footer()).html('test')
+                  // table.rows().invalidate().draw()
 
+                  console.log('erfolg')
                   // table.colReorder.order( [1,3,4,26,27,5,7,9,10,8,17,18,24,25,28]);
                   break;
                 case 'crview':
@@ -458,7 +452,7 @@
                 $('.DTFC_RightWrapper').hide()
                 $('#tableoverview').css('margin','0px');
                 table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30]);
-                table.columns.adjust().draw();
+                // table.columns.adjust().draw();
                 break;
               }
 
@@ -468,7 +462,6 @@
           });
         }
 
-        table.columns.adjust();
       });
 </script>
 @endsection
