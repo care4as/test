@@ -99,7 +99,7 @@
                       </tr>
                       <tr>
                         <th>KDW ID</th>
-                        <td><input class="form-control" type="email" name="email" value="{{$user->ds_id}}"></td>
+                        <td><input class="form-control" type="text" name="kdwid" value="{{$user->ds_id}}"></td>
                       </tr>
                     </table>
                   </td>

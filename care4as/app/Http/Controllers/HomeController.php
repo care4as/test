@@ -390,6 +390,6 @@ class HomeController extends Controller
       foreach ($users as $key => $user) {
         $user->ssesaves = $user->SSETracking->where('Tracking_Item1','Save')->count();
       }
-      dd($users[0]);
+    
     }
 }
