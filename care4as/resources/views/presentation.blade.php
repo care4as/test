@@ -212,7 +212,7 @@
             @if($user->salesdata['payedtime11'] != 0)
               <td data-order="{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11'],2)}}">{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11']),2}}%</td>
             @else
-              <td data-order="0">0</td>
+              <td data-order="0">0%</td>
             @endif
             @if($user->department == '1&1 DSL Retention')
               <td>{{$user->salesdata['orders']}}</td>
@@ -329,11 +329,21 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
+
+
     let table = $('#tableoverview').DataTable({
 
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
             // Remove the formatting to get integer data for summation
+
+            var intVal = function ( i ) {
+                return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ?  i : 0;
+            };
+            if (data['var']==1)
+            total = api.column().data().reduce( function (a, b) {
+            return intVal(a) + intVal(b);
+            },0 );
 
             function getQuota(column)
             {
@@ -421,25 +431,24 @@
 
         if (document.querySelector('input[name="view"]')) {
           document.querySelectorAll('input[name="view"]').forEach((elem) => {
-            elem.addEventListener("change", function(event) {
+            elem.addEventListener("click", function(event) {
               switch(event.target.id) {
                 case 'allData':
                     table.colReorder.reset();
                     table.columns().visible( false );
                     table.columns().visible( true );
+                    // table.draw()
 
                   break;
                 case 'teamleiterview':
-
                   // table.colReorder.reset();
                   table.columns().visible( false );
                   table.columns([0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-                  table.colReorder.order( [0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30]);
-                  $(table.columns().footer()).html('test')
-                  // table.rows().invalidate().draw()
+                  table.colReorder.order( [0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30],true);
+                  console.log($(table.columns().footer()))
 
                   console.log('erfolg')
                   // table.colReorder.order( [1,3,4,26,27,5,7,9,10,8,17,18,24,25,28]);
