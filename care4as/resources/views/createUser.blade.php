@@ -41,8 +41,9 @@
             <label for="role">Rolle:</label><br>
             <select class="form-control" name="role" id="role" required>
               <option value="" selected disabled>Wähle die Rolle</option>
-              <option value="overhead">Overhead</option>
-              <option value="agent">Agent</option>
+              @foreach(App\Role::where('name','!=','superadmin')->get('name') as $role)
+                <option value="{{$role->name}}">{{$role->name}}</option>
+              @endforeach
             </select>
             <!-- <input type="text" class="form-control" id="inputPassword4" placeholder="Password" value="Start#15"> -->
           </div>
