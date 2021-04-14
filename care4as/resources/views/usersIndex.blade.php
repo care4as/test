@@ -119,10 +119,15 @@
                   </tbody>
                 </table>
               </div>
+<<<<<<< HEAD
             </div>
 
             <div class="tab-pane" id="history">
             </div>
+=======
+              <div class="tab-pane" id="history">
+              </div>
+>>>>>>> test
           </div>
       </div>
     </div>

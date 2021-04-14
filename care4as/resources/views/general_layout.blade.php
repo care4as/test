@@ -177,6 +177,7 @@
             </ul>
           </li>
           @endif
+
           @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'trainee')
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">

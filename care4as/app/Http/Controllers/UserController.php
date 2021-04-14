@@ -7,6 +7,8 @@ use App\Cancel;
 use App\User;
 use App\Hoursreport;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
 use App\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -100,9 +102,11 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+      // dd($request);
       $request->validate([
         // 'person_id' => 'required|integer'
         ]);
+
         $user = User::find($id);
 
 
@@ -200,6 +204,7 @@ class UserController extends Controller
         $end_date = request('end_date');
       }
 
+      $monthlyAHT = null;
       $monthlyReports = null;
 
       if($start_date != 1)

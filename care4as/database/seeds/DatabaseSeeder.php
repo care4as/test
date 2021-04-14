@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UserSeeder::class);
+        // $this->call(UserSeeder::class);
+        $this->call(RightsSeeder::class);
     }
 
 }
@@ -33,6 +34,63 @@ class UserSeeder extends Seeder
       'updated_at' => Carbon::now(),
 
    ]);
+  }
+}
+
+class RightsSeeder extends Seeder
+{
+
+  function run()
+  {
+    if(!DB::table('roles')->where('name','superadmin')->exists())
+    {
+      \DB::table('roles')->insert(
+      [
+        'name' => 'superadmin',
+        'created_at' => Carbon::now(),
+        'updated_at' => Carbon::now(),
+     ]);
+    }
+
+    $rightsarray = array(
+      'dashboard',
+      'createUser',
+      'updateUser',
+      'indexUser',
+      'indexCancels',
+      'createCancels',
+      'deleteCancels',
+      'changeCancels',
+      'importReports',
+      'createMabel',
+      'indexMabel',
+      'deleteMabel',
+      'createSurvey',
+      'indexSurvey',
+      'deleteSurvey',
+    );
+    $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
+
+    foreach ($rightsarray as  $right) {
+
+    if(!\DB::table('rights')->where('name', $right)->exists())
+    {
+      $right = \DB::table('rights')->insert(
+      [
+        'name' => $right,
+        'created_at' => Carbon::now(),
+        'updated_at' => Carbon::now(),
+     ]);
+    }
+    $rightsid = DB::getPdo()->lastInsertId();
+
+    if(!\DB::table('roles_has_rights')->where('role_id',$superadminid)->where('rights_id',$rightsid)->exists())
+     DB::table('roles_has_rights')
+     ->insert([
+       'role_id' => $superadminid,
+       'rights_id' => $rightsid,
+     ]);
+    }
   }
 }
 /**
