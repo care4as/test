@@ -9,6 +9,7 @@ use App\Mail\FAMail;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -36,6 +37,7 @@ class ReportController extends Controller
       $chronology = DB::connection('mysqlkdw')
       ->table('chronology_work')
       ->whereIn('MA_id', $userids)
+      ->whereDate('work_date', '>', Carbon::today()->startOfWeek()->subWeeks(10))
       ->get()
       ->toArray();
 
@@ -43,12 +45,14 @@ class ReportController extends Controller
 
         $data = $chronology[$i];
 
-        if(!DB::table('hours_report_imitation')->where('work_date',$data->work_date)->where('MA_id',$data->MA_id)->exists())
-
-        $insertData[$i] = [
+        $checkData[$i] = [
 
           'work_date' => $data->work_date,
           'MA_id' => $data->MA_id,
+        ];
+
+        $insertData[$i] = [
+
           'state_id' => $data->state_id,
           'work_time_begin' => $data->work_time_begin,
           'work_time_end' => $data->work_time_end,
@@ -66,11 +70,18 @@ class ReportController extends Controller
         ];
       }
 
+
       $insertData = array_chunk($insertData, 3500);
+      $checkData = array_chunk($checkData, 3500);
 
       for($i=0; $i <= count($insertData)-1; $i++)
       {
-        DB::table('hours_report_imitation')->insert($insertData[$i]);
+        for ($j=0; $j < count($insertData[$i])-1; $j++) {
+          DB::table('hours_report_imitation')->updateOrInsert(
+            $checkData[$i][$j],
+            $insertData[$i][$j],
+          );
+        }
       }
 
       return redirect()->back();

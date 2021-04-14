@@ -42,14 +42,14 @@ Route::group(['middleware' => ['auth']], function () {
   //endusers
 
   //cancels
-  Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses');
-  Route::get('/cancels/admin', 'CancelController@index')->name('cancels.index');
-  Route::get('/cancels/agent/{id}', 'CancelController@agentCancels')->name('agent.cancels');
-  Route::get('/cancels/callback', 'CallbackController@callback')->name('cancels.callback');
-  Route::get('/cancels/delete/{id}', 'CancelController@destroy')->name('cancels.delete');
-  Route::get('/cancels/status/{id}/{status}', 'CancelController@changeStatus')->name('cancels.change.status');
-  Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save');
-  Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post');
+    Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses');
+    Route::get('/cancels/admin', 'CancelController@index')->name('cancels.index');
+    Route::get('/cancels/agent/{id}', 'CancelController@agentCancels')->name('agent.cancels');
+    Route::get('/cancels/callback', 'CallbackController@callback')->name('cancels.callback');
+    Route::get('/cancels/delete/{id}', 'CancelController@destroy')->name('cancels.delete');
+    Route::get('/cancels/status/{id}/{status}', 'CancelController@changeStatus')->name('cancels.change.status');
+    Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save');
+    Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post');
   //endcancels
 
   //dashboard
@@ -67,42 +67,6 @@ Route::group(['middleware' => ['auth']], function () {
     return view('reports.reportHours', compact('usersNotSynced'));
 
   })->name('reports.reportHours.view');
-
-  // Route::get('hoursreport/delete/{id}', function($id){
-  //
-  //   App\HoursReport::where('id',$id)->delete();
-  //
-  //   return redirect()->back();
-  //
-  // })->name('hoursreport.delete');
-
-  // Route::get('hoursreport/deleteByName/{name}', function($name){
-  //
-  //   App\HoursReport::where('name',$name)->delete();
-  //
-  //   return redirect()->back();
-  //
-  // })->name('hoursreport.deleteByName');
-
-  // Route::get('hoursreport/syncName/{name}', function($name){
-  //
-  //   $user_id = App\User::whereRaw("CONCAT(`users`.`lastname`,', ',`users`.`surname`) = ?", [$name])->value('id');
-  //
-  //   if($user_id)
-  //   {
-  //     App\HoursReport::where('name',$name)->update([
-  //           'user_id' => $user_id,
-  //       ]);
-  //   }
-  //   else {
-  //     Redirect::back()->withErrors(['User nicht gefunden']);
-  //   }
-  //
-  //   return redirect()->back();
-  //
-  // })->name('hoursreport.syncByName');
-
-  // Route::post('/report/hoursreport', 'ExcelEditorController@reportHours')->name('reports.reportHours.post');
 
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
@@ -193,6 +157,14 @@ Route::group(['middleware' => ['auth']], function () {
 
   //end Report Routes
 
+  //roles and rights
+    Route::get('/roles/index', 'RolesController@index')->name('roles.index');
+    Route::get('/role/show/{id}', 'RolesController@show')->name('role.show');
+    Route::post('/roles/save', 'RolesController@store')->name('role.save');
+    Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete');
+    Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update');
+
+  //end Roles & Rights
   //start Mabelgründe
   Route::get('/mabel/Form', 'MabelController@create')->name('mabelcause.create');
   Route::post('/mabel/index/filtered', 'MabelController@showThemAllFiltered')->name('mabelcause.index.filtered');
@@ -227,9 +199,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/feedback/show/{id}', 'FeedbackController@show')->name('feedback.show');
   Route::post('/feedback/fill', 'FeedbackController@store')->name('feedback.store');
   //
-
   Route::post('/callbackcauses', 'CallbackController@store')->name('callback.save');
-
   //trainings
   Route::get('/trainings/offers', function(){
     return view('TrainingOffers');

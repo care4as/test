@@ -47,8 +47,12 @@
         </a>
       </div>
       <div class="sidebar-wrapper " id="sidebar-wrapper">
+        @php
+          Auth()->user()->rights();
+
+        @endphp
         <ul class="nav">
-          @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'agent')
+          @if(in_array('dashboard',Auth()->user()->rights))
           <li class="">
             <a href="{{route('dashboard')}}">
               <i class="fas fa-table"></i>
@@ -71,7 +75,7 @@
                 @endif
               </ul>
             </li>
-            @if((Auth()->user()->role == 'superadmin'))
+            @if(in_array('importReports',Auth()->user()->rights))
               <li>
                 <a class="" data-toggle="collapse" href="#collapseProvision" role="button" aria-expanded="false" aria-controls="collapseCancel">
                   <i class="fas fa-euro-sign"></i>
@@ -83,7 +87,7 @@
                 </ul>
               </li>
             @endif
-          @if(Auth()->user()->role == 'superadmin' or (Auth()->user()->role =='overhead'))
+          @if(in_array('indexUser',Auth()->user()->rights))
           <li>
             <a class="" data-toggle="collapse" href="#collapseUser" role="button" aria-expanded="false" aria-controls="collapseUser">
               <i class="fas fa-users"></i>
@@ -91,7 +95,7 @@
             </a>
             <div class="collapse" id="collapseUser" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-                @if(Auth()->user()->role == 'superadmin')
+                @if(in_array('createUser',Auth()->user()->rights))
                   <li><a href="{{route('user.create')}}">User anlegen</a></li>
                 @endif
                   <li><a href="{{route('user.index')}}">User Index</a></li>
@@ -100,7 +104,7 @@
             </div>
           </li>
           @endif
-          @if(Auth()->user()->role == 'superadmin' or (Auth()->user()->role =='overhead'))
+          @if(in_array('indexMabel',Auth()->user()->rights))
           <li>
             <a class="" data-toggle="collapse" href="#collapseMable" role="button" aria-expanded="false" aria-controls="collapseUser">
               <i class="fas fa-hammer"></i>
@@ -114,7 +118,7 @@
             </div>
           </li>
           @endif
-          @if(Auth()->user()->role == 'superadmin')
+          @if(in_array('importReports',Auth()->user()->rights))
           <li>
             <a class="" data-toggle="collapse" href="#collapseReport" role="button" aria-expanded="false" aria-controls="collapseCancel">
               <i class="fas fa-upload"></i>
@@ -131,7 +135,7 @@
             </ul>
           </li>
           @endif
-          @if(Auth()->user()->role == 'superadmin')
+          @if(in_array('importReports',Auth()->user()->rights))
           <li>
             <a class="" data-toggle="collapse" href="#collapseEmail" role="button" aria-expanded="false" aria-controls="collapseCancel">
             <i class="fas fa-mail-bulk"></i>
@@ -144,7 +148,7 @@
             </ul>
           </li>
           @endif
-          @if(Auth()->user()->role == 'agent' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
+          @if(in_array('indexSurvey',Auth()->user()->rights))
           <li>
             <a class="" data-toggle="collapse" href="#collapseSurvey" role="button" aria-expanded="false" aria-controls="collapseSurvey">
               <i class="fas fa-poll-h"></i>
@@ -163,7 +167,7 @@
             </ul>
           </li>
           @endif
-          @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead')
+          @if(in_array('indexFeedback',Auth()->user()->rights))
           <li>
             <a class="" data-toggle="collapse" href="#collapseFeedback" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="far fa-comments"></i>
@@ -177,7 +181,24 @@
             </ul>
           </li>
           @endif
-          @if(Auth()->user()->role == 'superadmin' or Auth()->user()->role == 'overhead' or Auth()->user()->role == 'trainee')
+          @if(in_array('changeConfig',Auth()->user()->rights))
+          <li class="">
+            <a class="" data-toggle="collapse" href="#collapseConfiguration" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+              <i class="material-icons">
+                brightness_high
+              </i>
+              <b>Konfiguration</b>
+            </a>
+            <div class="collapse" id="collapseConfiguration" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+              <li><a href="{{route('roles.index')}}">Rollen</a> </li>
+              <li><a href="{{route('feedback.view')}}">Rollen und Rechte</a> </li>
+              <li><a href="{{route('feedback.myIndex')}}">allgemeine Einstellungen</a> </li>
+            </ul>
+          </li>
+          @endif
+
+          @if(in_array('trainings',Auth()->user()->rights))
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="fas fa-running"></i>
@@ -193,14 +214,14 @@
             </ul>
           </li>
           @endif
-            @if(Auth()->user()->role != 'agent')
-            <li>
-              <a class="" href="{{route('presentation')}}">
-                <i class="far fa-file-powerpoint"></i>
-                <p><b>Präsentation</b></p>
-              </a>
-            </li>
-            @endif
+          @if(in_array('presentation',Auth()->user()->rights))
+          <li>
+            <a class="" href="{{route('presentation')}}">
+              <i class="far fa-file-powerpoint"></i>
+              <p><b>Präsentation</b></p>
+            </a>
+          </li>
+          @endif
 
         </ul>
       </div>

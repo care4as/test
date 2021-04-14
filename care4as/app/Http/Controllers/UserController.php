@@ -7,8 +7,9 @@ use App\Cancel;
 use App\User;
 use App\Hoursreport;
 use Illuminate\Support\Facades\Hash;
-use App\Support\Collection;
 use Illuminate\Support\Facades\DB;
+
+use App\Support\Collection;
 use Carbon\Carbon;
 
 class UserController extends Controller
@@ -100,9 +101,11 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+      // dd($request);
       $request->validate([
         // 'person_id' => 'required|integer'
         ]);
+
         $user = User::find($id);
 
 
@@ -136,6 +139,9 @@ class UserController extends Controller
 
         if ($request->kdwid) {
             $user->ds_id = $request->kdwid;
+        }
+        if ($request->role) {
+            $user->role = $request->role;
         }
 
         $user->save();
@@ -200,6 +206,7 @@ class UserController extends Controller
         $end_date = request('end_date');
       }
 
+      $monthlyAHT = null;
       $monthlyReports = null;
 
       if($start_date != 1)
@@ -402,20 +409,6 @@ class UserController extends Controller
           $sicknessquota = 0;
         }
 
-        // $productivereport = \App\DailyAgent::where('agent_id',$user->agent_id)->whereDate('date','>=',$startOfMonth)->whereDate('date','<=',$endOfMonth)->get();
-        // $casetimemo = $productivereport->whereIn('status', $ahtStates)->sum('time_in_state');#
-        // $callsmo = $productivereport->where('status', 'Ringing')
-        // ->count();
-        //
-        // if($callsmo != 0)
-        // {
-        //   $ahtmo = round($casetimemo/$callsmo);
-        // }
-        // else {
-        //   $ahtmo = 'keine validen Daten';
-        // }
-
-
         $monthlyReports[$i]['sicknessquota'] = $sicknessquota;
         $monthlyReports[$i]['retentiondata'][] = $retentiondetailreport;
         // $monthlyReports[$i]['aht'] = 700;
@@ -452,7 +445,8 @@ class UserController extends Controller
         $sicknessquotastring = 0;
       }
 
-      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports','AHT','sicknessquotastring', 'year'));
+      $roles = \App\Role::where('name','!=','superadmin')->get();
+      return view('AgentAnalytics', compact('user','reports','sumorders','sumcalls','sumrlz24','sumNMlz','salesdata','monthlyReports','AHT','sicknessquotastring', 'year','roles'));
     }
 
     public function changePassword(Request $request)

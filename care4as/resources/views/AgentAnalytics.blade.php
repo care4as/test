@@ -75,9 +75,14 @@
                       </tr>
                       <tr>
                         <th>Rolle</th>
-                        <td><select class="form-control" type="text" name="lastname" value="{{$user->role}}">
-                          <option value="">agent</option>
-                          <option value="">overhead</option>
+                        <td><select class="form-control" type="text" name="role">
+                          @foreach($roles as $role)
+                            @if($role->name == $user->role)
+                              <option value="{{$role->name}}"selected>{{$role->name}}</option>
+                            @else
+                              <option value="{{$role->name}}">{{$role->name}}</option>
+                            @endif
+                          @endforeach
                         </select>
                         </td>
                       </tr>
@@ -225,65 +230,6 @@
                   </tr>
               </table>
 
-                <!-- <div class="col d-block align-items-center">
-                  <div class="row w-100 justify-content-center">
-                    <div class="d-flex w-100 justify-content-center">
-                      <h4>Daten</h4>
-                    </div>
-                    <div class="d-flex w-100 justify-content-center">
-                      @if($user->person_id)
-                      <table class="table table-hover w-50">
-                        <tr>
-                          <th>Calls</th>
-                          <th>Abschlüsse</th>
-                          <th>RLZ +24</th>
-                          <th>24 Monate</th>
-                          <th>Anteil RLZ+24</th>
-                        </tr>
-                        <tr>
-                          <td>{{$sumcalls}}</td>
-                          <td>{{$sumorders}}</td>
-                          <td>{{$sumrlz24 }}</td>
-                          <td>{{$sumNMlz}}</td>
-                          @php
-
-                          if(($sumrlz24 + $sumNMlz) != 0)
-                          {
-                            $RLZQoute =  ($sumrlz24 / ($sumrlz24 + $sumNMlz))*100;
-                          }
-                          else
-                          {
-                            $RLZQoute = 0;
-                          }  @endphp
-                          <td style="@if($RLZQoute < 70) background-color: red; color: white;@endif">@if($sumrlz24 + $sumNMlz == 0) 0 @else {{round($RLZQoute,2)}} @endif</td>
-                        </tr>
-                      </table>
-                      @endif
-                    </div>
-                  </div>
-                  <hr width="40%" size="5" align="center" >
-                    <div class="row m-0 w-100">
-                      <form class="mt-2 w-100" action="{{route('user.stats',['id' => $user->id])}}" method="get">
-                      <div class="col p-0">
-                        <div class="row m-2 justify-content-center">
-                          <div class="col-sm-3">
-                            <label for="datefrom">Von:</label>
-                             <input type="date" id="start_date" name="start_date" class="form-control" placeholder="">
-                           </div>
-                           <div class="col-sm-3">
-                             <label for="dateTo">Bis:</label>
-                             <input type="date" id="end_date" name="end_date" class="form-control" placeholder="">
-                           </div>
-                        </div>
-
-                        <div class="row m-2 justify-content-center">
-                          <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
-                        </div>
-                      </div>
-                      </form>
-                    </div>
-
-                </div> -->
               </div>
             </div>
           </div>
