@@ -68,6 +68,11 @@ class RightsSeeder extends Seeder
       'createSurvey',
       'indexSurvey',
       'deleteSurvey',
+      'sendReports',
+      'indexFeedback',
+      'changeConfig',
+      'trainings',
+      'presentation',
     );
     $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
 

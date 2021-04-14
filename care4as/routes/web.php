@@ -68,42 +68,6 @@ Route::group(['middleware' => ['auth']], function () {
 
   })->name('reports.reportHours.view');
 
-  // Route::get('hoursreport/delete/{id}', function($id){
-  //
-  //   App\HoursReport::where('id',$id)->delete();
-  //
-  //   return redirect()->back();
-  //
-  // })->name('hoursreport.delete');
-
-  // Route::get('hoursreport/deleteByName/{name}', function($name){
-  //
-  //   App\HoursReport::where('name',$name)->delete();
-  //
-  //   return redirect()->back();
-  //
-  // })->name('hoursreport.deleteByName');
-
-  // Route::get('hoursreport/syncName/{name}', function($name){
-  //
-  //   $user_id = App\User::whereRaw("CONCAT(`users`.`lastname`,', ',`users`.`surname`) = ?", [$name])->value('id');
-  //
-  //   if($user_id)
-  //   {
-  //     App\HoursReport::where('name',$name)->update([
-  //           'user_id' => $user_id,
-  //       ]);
-  //   }
-  //   else {
-  //     Redirect::back()->withErrors(['User nicht gefunden']);
-  //   }
-  //
-  //   return redirect()->back();
-  //
-  // })->name('hoursreport.syncByName');
-
-  // Route::post('/report/hoursreport', 'ExcelEditorController@reportHours')->name('reports.reportHours.post');
-
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
   Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue');

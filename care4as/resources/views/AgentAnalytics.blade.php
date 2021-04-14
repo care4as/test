@@ -75,9 +75,14 @@
                       </tr>
                       <tr>
                         <th>Rolle</th>
-                        <td><select class="form-control" type="text" name="lastname" value="{{$user->role}}">
-                          <option value="">agent</option>
-                          <option value="">overhead</option>
+                        <td><select class="form-control" type="text" name="role">
+                          @foreach($roles as $role)
+                            @if($role->name == $user->role)
+                              <option value="{{$role->name}}"selected>{{$role->name}}</option>
+                            @else
+                              <option value="{{$role->name}}">{{$role->name}}</option>
+                            @endif
+                          @endforeach
                         </select>
                         </td>
                       </tr>
