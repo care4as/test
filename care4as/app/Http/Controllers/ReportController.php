@@ -31,7 +31,7 @@ class ReportController extends Controller
       $insertData=array();
 
       $userids =   DB::table('users')
-      ->where('role','agent')
+      ->where('role','Agent')
       ->pluck('ds_id');
 
       $chronology = DB::connection('mysqlkdw')
