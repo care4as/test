@@ -23,42 +23,42 @@ Route::get('/messageOfTheDay', function()
 })->name('dailyMessage');
 
 Route::group(['middleware' => ['auth']], function () {
-  Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard');
+  Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
   //users
-  Route::get('/create/user', 'UserController@create')->name('user.create');
-  Route::post('/create/user', 'UserController@store')->name('create.user.post');
-  Route::get('/user/index', 'UserController@index')->name('user.index');
+  Route::get('/create/user', 'UserController@create')->name('user.create')->middleware('hasRight:createUser');
+  Route::post('/create/user', 'UserController@store')->name('create.user.post')->middleware('hasRight:createUser');
+  Route::get('/user/index', 'UserController@index')->name('user.index')->middleware('hasRight:indexUser');
   // Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
-  Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post');
-  Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
+  Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post')->middleware('hasRight:updateUser');
+  Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats')->middleware('hasRight:updateUser');
   // Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
-  Route::post('/user/update/{id}', 'UserController@update')->name('user.update');
+  Route::post('/user/update/{id}', 'UserController@update')->name('user.update')->middleware('hasRight:updateUser');
   Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
   Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
   Route::get('/user/getAHT', 'UserController@getAHTofMonth')->name('user.aht');
-  Route::get('/user/delete/{id}', 'UserController@delete')->name('user.delete');
-  Route::get('/user/kdw/syncUserData', 'UserController@connectUsersToKDW')->name('user.connectUsersToKDW');
+  Route::get('/user/delete/{id}', 'UserController@delete')->name('user.delete')->middleware('hasRight:createUser');
+  Route::get('/user/kdw/syncUserData', 'UserController@connectUsersToKDW')->name('user.connectUsersToKDW')->middleware('hasRight:importReports');
   Route::post('/user/getAht', 'UserController@getAHTbetweenDates');
   //endusers
 
   //cancels
-    Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses');
-    Route::get('/cancels/admin', 'CancelController@index')->name('cancels.index');
-    Route::get('/cancels/agent/{id}', 'CancelController@agentCancels')->name('agent.cancels');
+    Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses')->middleware('hasRight:createCancels');
+    Route::get('/cancels/admin', 'CancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
+    Route::get('/cancels/agent/{id}', 'CancelController@agentCancels')->name('agent.cancels')->middleware('hasRight:createUser');
     Route::get('/cancels/callback', 'CallbackController@callback')->name('cancels.callback');
-    Route::get('/cancels/delete/{id}', 'CancelController@destroy')->name('cancels.delete');
-    Route::get('/cancels/status/{id}/{status}', 'CancelController@changeStatus')->name('cancels.change.status');
-    Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save');
-    Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post');
+    Route::get('/cancels/delete/{id}', 'CancelController@destroy')->name('cancels.delete')->middleware('hasRight:deleteCancels');
+    Route::get('/cancels/status/{id}/{status}', 'CancelController@changeStatus')->name('cancels.change.status')->middleware('hasRight:changeCancels');
+    Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save')->middleware('hasRight:createCancels');
+    Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post')->middleware('hasRight:analyzeCancels');
   //endcancels
 
   //dashboard
-  Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard');
+  Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard')->middleware('hasRight:dashboard');
   //enddashboard
 
   //Report Routes
-  Route::view('/report/retention/', 'reports.RetentionDetailsReport')->name('reports.report');
-  Route::get('/report/hoursreport/update', 'ReportController@updateHoursReport')->name('reports.reportHours.update');
+  Route::view('/report/retention/', 'reports.RetentionDetailsReport')->name('reports.report')->middleware('hasRight:importReports');
+  Route::get('/report/hoursreport/update', 'ReportController@updateHoursReport')->name('reports.reportHours.update')->middleware('hasRight:importReports');
 
   Route::get('/report/hoursreport', function(){
 
@@ -66,17 +66,25 @@ Route::group(['middleware' => ['auth']], function () {
       // dd($usersNotSynced);
     return view('reports.reportHours', compact('usersNotSynced'));
 
-  })->name('reports.reportHours.view');
+  })->name('reports.reportHours.view')->middleware('hasRight:importReports');
 
-  Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test');
-  Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload');
-  Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue');
-  Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import');
-  Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport');
-  Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload');
-  Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view');
-  Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload');
-  Route::post('/report/bestworst', 'ReportController@bestWorstReport')->name('report.bestworst');
+  Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:importReports');
+  Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
+  Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
+  Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');
+  Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport')->middleware('hasRight:importReports');
+  Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload')->middleware('hasRight:importReports');
+  Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view')->middleware('hasRight:importReports');
+  Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload')->middleware('hasRight:importReports');
+  Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload')->middleware('hasRight:importReports');
+  Route::post('/report/bestworst', 'ReportController@bestWorstReport')->name('report.bestworst')->middleware('hasRight:sendReports');
+
+  //SAS Import
+  Route::view('/report/SAS/', 'reports.SASReport')->name('reports.SAS')->middleware('hasRight:importReports');
+  Route::post('/report/SAS/', 'ExcelEditorController@SASupload')->name('reports.SAS.upload')->middleware('hasRight:importReports');
+  //OptIn Import
+  Route::view('/report/Optin/', 'reports.OptInReport')->name('reports.OptIn')->middleware('hasRight:importReports');
+  Route::post('/report/Optin/', 'ExcelEditorController@OptInupload')->name('reports.OptIn.upload')->middleware('hasRight:importReports');
 
   Route::get('/retentiondetails/removeDuplicates', function(){
     DB::statement(
@@ -93,7 +101,7 @@ Route::group(['middleware' => ['auth']], function () {
       );
         // return 1;
       return redirect()->back();
-  })->name('retentiondetails.removeDuplicates');
+  })->name('retentiondetails.removeDuplicates')->middleware('hasRight:importReports');
 
   Route::get('/dailyagent/removeDuplicates', function(){
 
@@ -112,7 +120,8 @@ Route::group(['middleware' => ['auth']], function () {
     ');
 
       return redirect()->back();
-  })->name('dailyagent.removeDuplicates');
+  })->name('dailyagent.removeDuplicates')->middleware('hasRight:importReports');
+
   Route::get('/hoursreport/removeDuplicates', function(){
     DB::statement(
     '
@@ -128,7 +137,7 @@ Route::group(['middleware' => ['auth']], function () {
       );
         // return 1;
       return redirect()->back();
-  })->name('hoursreport.removeDuplicates');
+  })->name('hoursreport.removeDuplicates')->middleware('hasRight:importReports');
 
   Route::get('/hoursreport/sync', function(){
 
@@ -145,50 +154,51 @@ Route::group(['middleware' => ['auth']], function () {
     }
     return redirect()->route('reports.reportHours.view');
 
-  })->name('hoursreport.sync');
+  })->name('hoursreport.sync')->middleware('hasRight:importReports');
 
   Route::view('/reports', 'reports')->name('reports.choose');
 
     //ssetracking
-    Route::view('/report/ssetracking','reports.sseTracking')->name('ssetracking.view');
-    Route::post('/report/ssetracking/post','ExcelEditorController@sseTrackingUpload')->name('reports.ssetracking.upload');
+    Route::view('/report/ssetracking','reports.sseTracking')->name('ssetracking.view')->middleware('hasRight:importReports');
+    Route::post('/report/ssetracking/post','ExcelEditorController@sseTrackingUpload')->name('reports.ssetracking.upload')->middleware('hasRight:importReports');
 
     //end ssetracking
 
   //end Report Routes
 
   //roles and rights
-    Route::get('/roles/index', 'RolesController@index')->name('roles.index');
-    Route::get('/role/show/{id}', 'RolesController@show')->name('role.show');
-    Route::post('/roles/save', 'RolesController@store')->name('role.save');
-    Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete');
-    Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update');
+    Route::get('/roles/index', 'RolesController@index')->name('roles.index')->middleware('hasRight:createRole');
+    Route::get('/role/show/{id}', 'RolesController@show')->name('role.show')->middleware('hasRight:changeRole');
+    Route::post('/roles/save', 'RolesController@store')->name('role.save')->middleware('hasRight:createRole');
+    Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete')->middleware('hasRight:createRole');
+
+    Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update')->middleware('hasRight:changeRole');
 
   //end Roles & Rights
   //start Mabelgründe
-  Route::get('/mabel/Form', 'MabelController@create')->name('mabelcause.create');
-  Route::post('/mabel/index/filtered', 'MabelController@showThemAllFiltered')->name('mabelcause.index.filtered');
-  Route::post('/mabel/save', 'MabelController@save')->name('mabelcause.save');
-  Route::get('/mabel/index', 'MabelController@showThemAll')->name('mabelcause.index');
-  Route::get('/mabel/delete/{id}', 'MabelController@delete')->name('mabel.delete');
+  Route::get('/mabel/Form', 'MabelController@create')->name('mabelcause.create')->middleware('hasRight:createMabel');
+  Route::post('/mabel/index/filtered', 'MabelController@showThemAllFiltered')->name('mabelcause.index.filtered')->middleware('hasRight:indexMabel');
+  Route::post('/mabel/save', 'MabelController@save')->name('mabelcause.save')->middleware('hasRight:createMabel');
+  Route::get('/mabel/index', 'MabelController@showThemAll')->name('mabelcause.index')->middleware('hasRight:indexMabel');
+  Route::get('/mabel/delete/{id}', 'MabelController@delete')->name('mabel.delete')->middleware('hasRight:deleteMabel');
   //end Mabelgründe
 
   //questions & surveys
-  Route::get('/question/create', 'QuestionController@create')->name('question.create');
-  Route::get('/survey/create', 'SurveyController@create')->name('survey.create');
-  Route::post('/question/create/post', 'QuestionController@store')->name('question.create.post');
-  Route::post('/survey/create/post', 'SurveyController@store')->name('survey.create.post');
-  Route::post('/survey/edit/post', 'SurveyController@addQuestions')->name('survey.edit.post');
-  Route::get('/survey/index', 'SurveyController@index')->name('surveys.index');
-  Route::get('/survey/show/{id}', 'SurveyController@show')->name('survey.show');
-  Route::get('/survey/attendSurvey', 'SurveyController@attendSurvey')->name('survey.attend');
-  Route::post('/survey/attend', 'SurveyController@attend')->name('survey.user.post');
-  Route::get('/survey/deleteQuestion/{surveyid}/{questionid}', 'SurveyController@deleteQuestionFromSurvey')->name('survey.delete.question');
-  Route::get('/survey/changeStatus/{action}/{id}', 'SurveyController@changeStatus')->name('survey.changeStatus');
+  Route::get('/question/create', 'QuestionController@create')->name('question.create')->middleware('hasRight:createSurvey');
+  Route::get('/survey/create', 'SurveyController@create')->name('survey.create')->middleware('hasRight:createSurvey');
+  Route::post('/question/create/post', 'QuestionController@store')->name('question.create.post')->middleware('hasRight:createSurvey');
+  Route::post('/survey/create/post', 'SurveyController@store')->name('survey.create.post')->middleware('hasRight:createSurvey');
+  Route::post('/survey/edit/post', 'SurveyController@addQuestions')->name('survey.edit.post')->middleware('hasRight:createSurvey');
+  Route::get('/survey/index', 'SurveyController@index')->name('surveys.index')->middleware('hasRight:indexSurvey');
+  Route::get('/survey/show/{id}', 'SurveyController@show')->name('survey.show')->middleware('hasRight:indexSurvey');
+  Route::get('/survey/attendSurvey', 'SurveyController@attendSurvey')->name('survey.attend')->middleware('hasRight:indexSurvey');
+  Route::post('/survey/attend', 'SurveyController@attend')->name('survey.user.post')->middleware('hasRight:attendSurvey');
+  Route::get('/survey/deleteQuestion/{surveyid}/{questionid}', 'SurveyController@deleteQuestionFromSurvey')->name('survey.delete.question')->middleware('hasRight:createSurvey');
+  Route::get('/survey/changeStatus/{action}/{id}', 'SurveyController@changeStatus')->name('survey.changeStatus')->middleware('hasRight:createSurvey');
   //
 
   // tracking routes
-  Route::get('/trackEvent/{action}/{division}/{type}/{operator}', 'UserTrackingController@trackEvent')->name('user.trackEvent');
+  Route::get('/trackEvent/{action}/{division}/{type}/{operator}', 'UserTrackingController@trackEvent')->name('user.trackEvent')->middleware('hasRight:dashboard');
   //end tracking routes
 
   //feedback
@@ -217,23 +227,27 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
 
   //endeobmail
+
+  //Presentation
+    Route::get('/presentation', 'HomeController@presentation')->name('presentation');
+  //endpresentation
 });
 
-//Presentation
-  Route::get('/presentation', 'HomeController@presentation')->name('presentation');
-//endpresentation
+
 
 //Provision
   Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');
 //end Provison
+
 //offers
-Route::get('/offers/create', 'OfferController@create')->name('offers.create');
-Route::post('/offers/store', 'OfferController@store')->name('offers.store');
-Route::get('/offers/JSON', 'OfferController@OffersInJSON')->name('offers.inJSON');
-Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');
-Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');
+  Route::get('/offers/create', 'OfferController@create')->name('offers.create');
+  Route::post('/offers/store', 'OfferController@store')->name('offers.store');
+  Route::get('/offers/JSON', 'OfferController@OffersInJSON')->name('offers.inJSON');
+  Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');
+  Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');
 
 //endoffers
+
 Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
 

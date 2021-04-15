@@ -20,6 +20,157 @@ class ExcelEditorController extends Controller
     {
       return view('reports/dailyAgent');
     }
+
+    public function Optinupload(Request $request)
+    {
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+
+      if($request->sheet)
+      {
+        $sheet = $request->sheet;
+      }
+      else {
+        $sheet = 1;
+      }
+
+      if($request->fromRow)
+      {
+        $fromRow = $request->fromRow;
+      }
+      else
+      {
+        $fromRow = 2;
+      }
+
+      //determines from which row the the app starts editing the data
+      $request->validate([
+        'file' => 'required',
+        // 'name' => 'required',
+      ]);
+      $file = request()->file('file');
+
+      $data = Excel::ToArray(new DataImport, $file);
+      // $data = Excel::ToArray(new DataImport, $file );
+
+      $insertData=array();
+
+      $data2 = $data[$sheet-1];
+
+      $insertData=array();
+
+      // dd($data2);
+
+      for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
+
+        $cell = $data2[$i];
+
+        $date = \Carbon\Carbon::parse($cell[3]);
+
+        $insertData[$i] = [
+          'date' => $date->format('Y-m-d'),
+          'department' => $cell[5],
+          'person_id' => $cell[6],
+          'Anzahl_Handled_Calls' => $cell[7],
+          'Anzahl_Handled_Calls_ohne_Call-OptIn' => $cell[8],
+          'Anzahl_Handled_Calls_ohne_Daten-OptIn' => $cell[9],
+          'Anzahl_OptIn-Abfragen' =>$cell[10] ,
+          'Anzahl_OptIn-Erfolg' => $cell[11],
+          'Anzahl_Global_OptIn' => $cell[12],
+          'Anzahl_Call_OptIn' => $cell[13],
+          'Anzahl_Email_OptIn' => $cell[14],
+          'Anzahl_Print_OptIn' => $cell[15],
+          'Anzahl_SMS_OptIn' => $cell[16],
+          'Anzahl_Nutzungsdaten_OptIn' => $cell[17],
+          'Anzahl_Verkehrsdaten_OptIn' => $cell[18],
+          'Anzahl_Call_OptOut' => $cell[19],
+          'Anzahl_Email_OptOut' => $cell[20],
+        ];
+      }
+
+    $insertData = array_chunk($insertData, 3500);
+
+    // dd($insertData);
+    for($i=0; $i <= count($insertData)-1; $i++)
+    {
+      DB::table('optin')->insertOrIgnore($insertData[$i]);
+    }
+  }
+    public function SASupload(Request $request)
+    {
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+
+      if($request->sheet)
+      {
+        $sheet = $request->sheet;
+      }
+      else {
+        $sheet = 1;
+      }
+
+      if($request->fromRow)
+      {
+        $fromRow = $request->fromRow;
+      }
+      else
+      {
+        $fromRow = 2;
+      }
+
+      //determines from which row the the app starts editing the data
+      $request->validate([
+        'file' => 'required',
+        // 'name' => 'required',
+      ]);
+      $file = request()->file('file');
+
+      $data = Excel::ToArray(new DataImport, $file);
+      // $data = Excel::ToArray(new DataImport, $file );
+
+      $insertData=array();
+
+      $data2 = $data[$sheet-1];
+
+      $insertData=array();
+
+      // dd($data2);
+
+      for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
+
+        $cell = $data2[$i];
+        // dd($cell);
+        $date = \Carbon\Carbon::parse(strval($cell[1]));
+
+        // return $date;
+        if(!$cell[35])
+        {
+          $cell[35] = 0;
+        }
+        $insertData[$i] = [
+          'order_id' => $cell[0],
+          'date' => $date->format('Y-m-d'),
+          'topic' => $cell[6],
+          'serviceprovider_place' => $cell[7],
+          'person_id' => $cell[11],
+          'contract_id' => $cell[12],
+          'case' => $cell[13],
+          'productgroup' => $cell[17],
+          'productcluster' =>$cell[15] ,
+          'GO_Prov' => $cell[35],
+        ];
+    }
+    $insertData = array_chunk($insertData, 3500);
+
+    // dd($insertData);
+    for($i=0; $i <= count($insertData)-1; $i++)
+    {
+      DB::table('sas')->insertOrIgnore($insertData[$i]);
+    }
+
+    }
     public function sseTrackingUpload(Request $request)
     {
       DB::disableQueryLog();
