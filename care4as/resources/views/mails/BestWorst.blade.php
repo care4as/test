@@ -6,6 +6,7 @@
         <style>
             *{
                 font-family: Calibri, sans-serif;
+                Margin: 5px;
             }
 
             .FAM_title{
@@ -72,11 +73,22 @@
             }
 
             .FAM_content tr td{
-                text-align: center;
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
+                max-width: 70px;
+                text-align: left;
+                padding: 5px;
             }
 
+              th, td
+              {
+                font-size: 0.65vw;
+                text-align: center;
+                margin: 0;
+                border: 1px solid black;
+                border-collapse: collapse;
+                color: #746e58;
+                white-space: nowrap;
+
+              }
         </style>
     </head>
     <body>
@@ -88,15 +100,15 @@
                     <p>@if($data['best'] > 1) {{$data['best']}} Beste Agents @else Bester Agent @endif</p>
                 </div>
                 <div class="FAM_content">
-                    <table >
+                    <table style="display:inline; padding: 5px;">
                       <thead>
-                        <tr>
+                        <tr style="background-color: #ddf8e8;">
                           <td>Agent</td>
                           <td>CR</td>
                         </tr>
                       </thead>
                       @foreach($data['bestusers'] as $user)
-                        <tr>
+                        <tr style="background-color: #fefdfa;">
                           <td>{{$user['name']}}</td>
                           <td>{{round($user['performance'],2)}}%</td>
                         </tr>
@@ -105,15 +117,15 @@
                     <!-- {{$data['bestusers'][0]}} -->
                     @foreach($data['bestusers'] as $user)
                       <p class="FAM_ueberschrift">{{$user['name']}}</p>
-                        <table style="width: 100%;  overflow-y: scroll;  display: block;">
+                        <table style="overflow-y: scroll;  display: block; padding: 5px;">
                           <thead>
-                            <tr>
+                            <tr style="background-color: #ddf8e8;">
                               <td>Tag</td>
                               @foreach($user['dailyPerformance'] as $date)
                               <td>{{Carbon\Carbon::parse($date['call_date'])->format('d.m')}}</td>
                               @endforeach
                             </tr>
-                            <tr>
+                            <tr style="background-color: #fefdfa;">
                               <td>CR</td>
                               @foreach($user['dailyPerformance'] as $date)
                               <td>{{round(($date['orders'] / $date['calls'])*100,2)}}%</td>
@@ -129,15 +141,15 @@
                     <p>@if($data['worst'] > 1) {{$data['worst']}} Schlechteste Agents @else Schlechtester Agent @endif</p>
                 </div>
                 <div class="FAM_content">
-                  <table >
+                  <table style="display:inline; padding: 5px;">
                     <thead>
-                      <tr>
+                      <tr style="background-color: #ddf8e8;" >
                         <td>Agent</td>
                         <td>CR</td>
                       </tr>
                     </thead>
                     @foreach($data['worstusers'] as $user)
-                      <tr>
+                      <tr  style="background-color: #fefdfa;">
                         <td>{{$user['name']}}</td>
                         <td>{{round($user['performance'],2)}}%</td>
                       </tr>
@@ -145,15 +157,15 @@
                   </table>
                   @foreach($data['worstusers'] as $user)
                     <p class="FAM_ueberschrift">{{$user['name']}}</p>
-                      <table style="width: 100%;  overflow-y: scroll;  display: block;">
+                      <table style="overflow-y: scroll;  display: block; padding: 5px;">
                         <thead>
-                          <tr>
+                          <tr style="background-color: #ddf8e8;">
                             <td>Tag</td>
                             @foreach($user['dailyPerformance'] as $date)
                             <td>{{Carbon\Carbon::parse($date['call_date'])->format('d.m')}}</td>
                             @endforeach
                           </tr>
-                          <tr>
+                          <tr  style="background-color: #fefdfa;">
                             <td>CR</td>
                             @foreach($user['dailyPerformance'] as $date)
                             <td>{{round(($date['orders'] / $date['calls'])*100,2)}}%</td>
