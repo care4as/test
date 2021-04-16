@@ -146,18 +146,22 @@ th
           <tr>
             <td>RLZ 24</td>
             @if($weekperformance['3']['rlzPlus'] + $weekperformance['3']['mvlzneu'] == 0)
-              <td class="tooLow">Fehler RLZ24 + MVLZ ergibt 0</td>
+              <td class="tooLow  border-white">Fehler RLZ24 + MVLZ ergibt 0</td>
             @else
               <td>{{round($weekperformance['3']['rlzPlus']/($weekperformance['3']['rlzPlus'] + $weekperformance['3']['mvlzneu'])*100,2)}}%</td>
             @endif
             @if($weekperformance['2']['rlzPlus'] + $weekperformance['2']['mvlzneu'] == 0)
-              <td class="tooLow">Fehler: RLZ24 + MVLZ ergibt 0</td>
+              <td class="tooLow  border-white">Fehler: RLZ24 + MVLZ ergibt 0</td>
             @else
               <td>{{round($weekperformance['2']['rlzPlus']/($weekperformance['2']['rlzPlus'] + $weekperformance['2']['mvlzneu']),2)*100}}%</td>
             @endif
-            <td>{{round($weekperformance['1']['rlzPlus']/($weekperformance['1']['rlzPlus'] + $weekperformance['1']['mvlzneu']),2)*100}}%</td>
+            @if($weekperformance['1']['rlzPlus'] + $weekperformance['1']['mvlzneu'] == 0)
+              <td class="tooLow  border-white">Fehler: RLZ24 + MVLZ ergibt 0</td>
+            @else
+              <td>{{round($weekperformance['1']['rlzPlus']/($weekperformance['1']['rlzPlus'] + $weekperformance['1']['mvlzneu']),2)*100}}%</td>
+            @endif
             @if($weekperformance['0']['rlzPlus'] + $weekperformance['0']['mvlzneu'] == 0)
-              <td class="tooLow">Fehler RLZ24 + MVLZ ergibt 0</td>
+              <td class="tooLow  border-white">Fehler RLZ24 + MVLZ ergibt 0</td>
             @else
               <td>{{round($weekperformance['0']['rlzPlus']/($weekperformance['0']['rlzPlus'] + $weekperformance['0']['mvlzneu']),2)*100}}%</td>
             @endif

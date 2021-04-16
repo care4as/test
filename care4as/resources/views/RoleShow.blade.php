@@ -13,6 +13,7 @@
           <tr>
             <th>#</th>
             <th>Recht</th>
+            <th>Beschreibung</th>
           </tr>
             @foreach($rights as $right)
             <tr>
@@ -20,11 +21,12 @@
                 <!-- <input type="checkbox" id="scales" name="scales" >
                -->
                <div class="custom-control custom-checkbox">
-                 <input type="checkbox" name="rights[]" class="custom-control-input" id="{{$right->name}}" value="{{$right->id}}" @if($role->rights->contains($right->name)) checked @endif>
+                 <input type="checkbox" name="rights[]" class="custom-control-input" id="{{$right->name}}" value="{{$right->id}}" @if($role->name == 'superadmin' ) disabled @endif @if($role->rights->contains($right->name)) checked @endif>
                  <label class="custom-control-label" for="{{$right->name}}"></label>
              </div>
               </td>
               <td>{{$right->name}}</td>
+              <td>{{$right->description}}</td>
             </tr>
             @endforeach
         </table>

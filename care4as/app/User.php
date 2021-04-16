@@ -102,6 +102,10 @@ class User extends Authenticatable
     {
       return $this->hasMany('\App\SSETracking','person_id','person_id');
     }
+    public function SAS()
+    {
+      return $this->hasMany('\App\SAS','person_id');
+    }
     public function rights()
     {
       $roleid = Role::where('name',$this->role)->value('id');

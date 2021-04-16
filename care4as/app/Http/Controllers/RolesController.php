@@ -10,6 +10,7 @@ use App\Right;
 
 class RolesController extends Controller
 {
+
     public function index()
     {
       $roles = Role::all();
@@ -50,6 +51,9 @@ class RolesController extends Controller
     }
     public function show($id)
     {
+      
+
+      // return 1;
       $role = Role::find($id);
       $rights = Right::all();
       $role->Rights();
@@ -58,6 +62,8 @@ class RolesController extends Controller
     }
     public function update($id, Request $request)
     {
+      $this->middleware('hasRight:changeRole');
+
       $role = Role::find($id);
       DB::table('roles_has_rights')->where('role_id', $id)->delete();
 
