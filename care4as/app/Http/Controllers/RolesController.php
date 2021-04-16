@@ -51,14 +51,20 @@ class RolesController extends Controller
     }
     public function show($id)
     {
-      
-
       // return 1;
-      $role = Role::find($id);
-      $rights = Right::all();
-      $role->Rights();
 
-      return view('roleShow', compact('role','rights'));
+      $role = Role::find($id);
+      if($role)
+      {
+        $rights = Right::all();
+        $role->Rights();
+
+        return view('roleShow', compact('role','rights'));
+      }
+      else {
+        return redirect()->route('dashboard');
+      }
+
     }
     public function update($id, Request $request)
     {
