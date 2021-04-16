@@ -97,9 +97,10 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 @if(in_array('createUser',Auth()->user()->rights))
                   <li><a href="{{route('user.create')}}">User anlegen</a></li>
+                  <li><a href="{{route('user.startEnd')}}">MA Eintritt/Austritt</a></li>
                 @endif
                   <li><a href="{{route('user.index')}}">User Index</a></li>
-                <li><a href="#">User xyz</a></li>
+
               </ul>
             </div>
           </li>

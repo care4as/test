@@ -186,7 +186,7 @@ th
               @if($workdata[0]['gesamt'] == 0)
                 <td class="tooLow">Fehler DailyAgent </td>
               @else
-                <td>>{{ round(($workdata[0]['pause']*100)/$workdata[0]['gesamt'],0) }}%</td>
+                <td>{{ round(($workdata[0]['pause']*100)/$workdata[0]['gesamt'],0) }}%</td>
               @endif
           </tr>
           <tr>

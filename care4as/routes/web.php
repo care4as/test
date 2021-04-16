@@ -39,6 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/user/delete/{id}', 'UserController@delete')->name('user.delete')->middleware('hasRight:createUser');
   Route::get('/user/kdw/syncUserData', 'UserController@connectUsersToKDW')->name('user.connectUsersToKDW')->middleware('hasRight:importReports');
   Route::post('/user/getAht', 'UserController@getAHTbetweenDates');
+  Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
   //endusers
 
   //cancels
@@ -233,8 +234,6 @@ Route::group(['middleware' => ['auth']], function () {
   //endpresentation
 });
 
-
-
 //Provision
   Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');
 //end Provison
@@ -255,5 +254,7 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 
 Route::get('/test', function(){
+
+App\Jobs\SendCRMail::dispatch()->onConnection('database');
 
 })->name('test');

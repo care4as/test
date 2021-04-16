@@ -39,6 +39,34 @@ class UserController extends Controller
 
     }
 
+    public function startEnd($start_date = 0, $end_date= 0)
+    {
+      if(request('start_date'))
+      {
+        $start_date = request('start_date');
+      }
+      if(request('end_date'))
+      {
+        $end_date = request('end_date');
+      }
+
+      // return $start_date;
+
+      $history = DB::connection('mysqlkdw')
+      ->table('MA')
+      ->whereIn('standort',array('Flensburg','Eggebek'))
+      ->whereDate('eintritt','>=',$start_date)
+
+      ->where(function($q) use($start_date, $end_date){
+        $q->whereDate('eintritt','>=',$start_date);
+        $q->orWhere('austritt', '<=', $end_date);
+        })
+      ->get();
+
+      // dd($history);
+
+      return view('userStartEnd', compact('history'));
+    }
     /**
      * Store a newly created resource in storage.
      *
