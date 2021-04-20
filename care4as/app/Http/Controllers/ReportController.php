@@ -223,45 +223,61 @@ class ReportController extends Controller
       if (request('end_date')) {
         $end_date = request('end_date');
       }
+      else {
+        $end_date = Carbon::today();
+      }
 
+      // return $end_date;
       $reports = DailyAgent::whereDate('date','>=',$start_date)
-      ->where('date','<=', $end_date)
-      ->select('date','status','time_in_state')
+      ->whereDate('date','<=', $end_date)
+      ->select('date','status','time_in_state','agent_group_name')
       ->get();
 
       // dd($reports);
-      // $reports->where('department','DE_care4as_KBM_RT_Eggebek');
+      $repMobile = $reports->where('agent_group_name','DE_care4as_KBM_RT_Eggebek');
+      $repDSL = $reports->where('agent_group_name','DE_care4as_RT_DSL_Eggebek');
 
-      $dailyValues = array();
+
       $dailyValues2 = array();
 
+      function getValues($reports)
+      {
+        $dailyValues = array();
+        $ahtStates = array('On Hold','Wrap Up','In Call');
+        $finalValues = array();
 
-      foreach ($reports as $key => $value) {
+        // dd($reports);
+        foreach ($reports as $key => $value) {
 
-        $dailyValues[$value->date->format('Y-m-d')][] = $value;
-      }
-
-      $ahtStates = array('On Hold','Wrap Up','In Call');
-
-      $finalValues = array();
-      foreach ($dailyValues as $key => $array) {
-        $casetime = 0;
-        $calls = 0;
-
-        foreach ($array as $value) {
-          if(in_array($value['status'],$ahtStates))
-
-          $casetime = $casetime + $value['time_in_state'];
-          if($value['status'] == 'Ringing')
-          {
-            $calls++;
-          }
-
+          $dailyValues[$value->date->format('Y-m-d')][] = $value;
         }
-        $finalValues[$key] = array($casetime,$calls);
+
+        // dd($dailyValues);
+        foreach ($dailyValues as $key => $array) {
+          $casetime = 0;
+          $calls = 0;
+
+          foreach ($array as $value) {
+
+            if(in_array($value['status'],$ahtStates))
+
+              $casetime = $casetime + $value['time_in_state'];
+
+              if($value['status'] == 'Ringing')
+              {
+                $calls++;
+              }
+
+          }
+          $finalValues[$key] = array($casetime,$calls);
+        }
+        return $finalValues;
       }
 
-      // dd($test);
-      return view('reports.AHTdaily', compact('finalValues'));
+      $finalValuesMob = getValues($repMobile);
+      $finalValuesDSL = getValues($repDSL);
+
+      // dd($finalValues);
+      return view('reports.AHTdaily', compact('finalValuesMob','finalValuesDSL'));
     }
 }
