@@ -99,26 +99,45 @@
                 <div class="FAM_title">
                     <p>@if($data['best'] > 1) {{$data['best']}} Beste Agents @else Bester Agent @endif</p>
                 </div>
-                <div class="FAM_content">
-                    <table style="display:inline; padding: 5px;">
+                <div class="FAM_content" >
+                  <div class="" style="margin: 5px;">
+                    <p><b>Index</b></p>
+                    <table >
                       <thead>
                         <tr style="background-color: #ddf8e8;">
                           <td>Agent</td>
                           <td>CR</td>
+                          <td>SSC CR</td>
+                          <td>Calls</td>
+                          <td>Abschlüsse</td>
+                          <td>SSC Calls</td>
+                          <td>SSC Abschlüsse</td>
                         </tr>
                       </thead>
                       @foreach($data['bestusers'] as $user)
                         <tr style="background-color: #fefdfa;">
                           <td>{{$user['name']}}</td>
                           <td>{{round($user['performance'],2)}}%</td>
+                          @if($user->dailyPerformance->sum('calls_smallscreen') != 0)
+                            <td>{{round($user->dailyPerformance->sum('orders_smallscreen')*100/$user->dailyPerformance->sum('calls_smallscreen'),2)}}%</td>
+                          @else
+                            <td>keine SSC Calls</td>
+                          @endif
+                          <td>{{round($user->dailyPerformance->sum('calls'))}}</td>
+                          <td>{{round($user->dailyPerformance->sum('orders'))}}</td>
+                          <td>{{round($user->dailyPerformance->sum('calls_smallscreen'))}}</td>
+                          <td>{{round($user->dailyPerformance->sum('orders_smallscreen'))}}</td>
                         </tr>
                       @endforeach
                     </table>
+                  </div>
+
                     <!-- {{$data['bestusers'][0]}} -->
                     @foreach($data['bestusers'] as $user)
+                    <div class="" style="margin: 5px;">
                       <p class="FAM_ueberschrift">{{$user['name']}}</p>
                         <table style="overflow-y: scroll;  display: block; padding: 5px;">
-                          <thead>
+                          <tbody>
                             <tr style="background-color: #ddf8e8;">
                               <td>Tag</td>
                               @foreach($user['dailyPerformance'] as $date)
@@ -128,11 +147,51 @@
                             <tr style="background-color: #fefdfa;">
                               <td>CR</td>
                               @foreach($user['dailyPerformance'] as $date)
-                              <td>{{round(($date['orders'] / $date['calls'])*100,2)}}%</td>
+                                @if($date['calls'] != 0)
+                                  <td>{{round(($date['orders'] / $date['calls'])*100,2)}}%</td>
+                                @else
+                                  <td>keine Calls</td>
+                                @endif
                               @endforeach
                             </tr>
-                          </thead>
+                            <tr style="background-color: #fefdfa;">
+                              <td>SSC CR</td>
+                              @foreach($user['dailyPerformance'] as $date)
+                                @if($date['calls_smallscreen'] != 0)
+                                  <td>{{round(($date['orders_smallscreen'] / $date['calls_smallscreen'])*100,2)}}%</td>
+                                @else
+                                  <td>0</td>
+                                @endif
+                              @endforeach
+                            </tr>
+                            <tr style="background-color: #fefdfa;">
+                              <td>Calls</td>
+                              @foreach($user['dailyPerformance'] as $date)
+                                <td>{{$date['calls']}}</td>
+                              @endforeach
+                            </tr>
+                            <tr style="background-color: #fefdfa;">
+                              <td>Abschlüsse</td>
+                              @foreach($user['dailyPerformance'] as $date)
+                                <td>{{$date['orders']}}</td>
+                              @endforeach
+                            </tr>
+                            <tr style="background-color: #fefdfa;">
+                              <td>SSC Calls</td>
+                              @foreach($user['dailyPerformance'] as $date)
+                                <td>{{$date['calls_smallscreen']}}</td>
+                              @endforeach
+                            </tr>
+                            <tr style="background-color: #fefdfa;">
+                              <td>SSC Abschlüsse</td>
+                              @foreach($user['dailyPerformance'] as $date)
+                                <td>{{$date['orders_smallscreen']}}</td>
+                              @endforeach
+                            </tr>
+                          </tbody>
                         </table>
+                    </div>
+
                     @endforeach
                 </div>
             </div>
@@ -141,38 +200,92 @@
                     <p>@if($data['worst'] > 1) {{$data['worst']}} Schlechteste Agents @else Schlechtester Agent @endif</p>
                 </div>
                 <div class="FAM_content">
-                  <table style="display:inline; padding: 5px;">
-                    <thead>
-                      <tr style="background-color: #ddf8e8;" >
-                        <td>Agent</td>
-                        <td>CR</td>
-                      </tr>
-                    </thead>
-                    @foreach($data['worstusers'] as $user)
-                      <tr  style="background-color: #fefdfa;">
-                        <td>{{$user['name']}}</td>
-                        <td>{{round($user['performance'],2)}}%</td>
-                      </tr>
-                    @endforeach
-                  </table>
+                  <div class="" style="margin: 5px;">
+                    <p><b>Index</b></p>
+                    <table style="display:inline; padding: 5px;">
+                      <thead>
+                        <tr style="background-color: #ddf8e8;" >
+                          <td>Agent</td>
+                          <td>CR</td>
+                          <td>SSC CR</td>
+                          <td>Calls</td>
+                          <td>Abschlüsse</td>
+                          <td>SSC Calls</td>
+                          <td>SSC Abschlüsse</td>
+                        </tr>
+                      </thead>
+                      @foreach($data['worstusers'] as $user)
+                        <tr  style="background-color: #fefdfa;">
+                          <td>{{$user['name']}}</td>
+                          <td>{{round($user['performance'],2)}}%</td>
+                          <td>{{round(round($user->dailyPerformance->sum('orders_smallscreen')*100/$user->dailyPerformance->sum('calls_smallscreen'),2))}}%</td>
+                          <td>{{round($user->dailyPerformance->sum('calls'))}}</td>
+                          <td>{{round($user->dailyPerformance->sum('orders'))}}</td>
+                          <td>{{round($user->dailyPerformance->sum('calls_smallscreen'))}}</td>
+                          <td>{{round($user->dailyPerformance->sum('orders_smallscreen'))}}</td>
+                        </tr>
+                      @endforeach
+                    </table>
+                  </div>
                   @foreach($data['worstusers'] as $user)
+                  <div class="" style="margin: 5px;">
                     <p class="FAM_ueberschrift">{{$user['name']}}</p>
                       <table style="overflow-y: scroll;  display: block; padding: 5px;">
-                        <thead>
+                        <tbody>
                           <tr style="background-color: #ddf8e8;">
                             <td>Tag</td>
                             @foreach($user['dailyPerformance'] as $date)
                             <td>{{Carbon\Carbon::parse($date['call_date'])->format('d.m')}}</td>
                             @endforeach
                           </tr>
-                          <tr  style="background-color: #fefdfa;">
+                          <tr style="background-color: #fefdfa;">
                             <td>CR</td>
                             @foreach($user['dailyPerformance'] as $date)
-                            <td>{{round(($date['orders'] / $date['calls'])*100,2)}}%</td>
+                              @if($date['calls'] != 0)
+                                <td>{{round(($date['orders'] / $date['calls'])*100,2)}}%</td>
+                              @else
+                                <td>keine Calls</td>
+                              @endif
+
                             @endforeach
                           </tr>
-                        </thead>
+                          <tr style="background-color: #fefdfa;">
+                            <td>SSC CR</td>
+                            @foreach($user['dailyPerformance'] as $date)
+                              @if($date['calls_smallscreen'] != 0)
+                                <td>{{round(($date['orders_smallscreen'] / $date['calls_smallscreen'])*100,2)}}%</td>
+                              @else
+                                <td>keine SSC Calls</td>
+                              @endif
+                            @endforeach
+                          </tr>
+                          <tr style="background-color: #fefdfa;">
+                            <td>Calls</td>
+                            @foreach($user['dailyPerformance'] as $date)
+                              <td>{{$date['calls']}}</td>
+                            @endforeach
+                          </tr>
+                          <tr style="background-color: #fefdfa;">
+                            <td>Abschlüsse</td>
+                            @foreach($user['dailyPerformance'] as $date)
+                              <td>{{$date['orders']}}</td>
+                            @endforeach
+                          </tr>
+                          <tr style="background-color: #fefdfa;">
+                            <td>SSC Calls</td>
+                            @foreach($user['dailyPerformance'] as $date)
+                              <td>{{$date['calls_smallscreen']}}</td>
+                            @endforeach
+                          </tr>
+                          <tr style="background-color: #fefdfa;">
+                            <td>SSC Abschlüsse</td>
+                            @foreach($user['dailyPerformance'] as $date)
+                              <td>{{$date['orders_smallscreen']}}</td>
+                            @endforeach
+                          </tr>
+                        </tbody>
                       </table>
+                    </div>
                   @endforeach
               </div>
             </div>

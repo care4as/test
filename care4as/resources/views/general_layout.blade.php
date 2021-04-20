@@ -147,7 +147,7 @@
             <div class="collapse" id="collapseEmail" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
               <li><a href="{{route('eobmail')}}">Feierabendmail </a></li>
-              <li><a href="{{route('reports.choose')}}">Top/Worst Report</a></li>
+              <!-- <li><a href="">Top/Worst Report</a></li> -->
             </ul>
           </li>
           @endif
@@ -214,6 +214,22 @@
                 <li><a href="{{route('offers.create')}}">Angebote einspielen</a> </li>
               @endif
               <!-- <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li> -->
+            </ul>
+          </li>
+          @endif
+          @if(in_array('sendReports',Auth()->user()->rights))
+          <li>
+            <a class="" data-toggle="collapse" href="#collapseReports" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+              <i class="material-icons">
+                assessment
+              </i>
+              <b>Reporte</b>
+            </a>
+            <div class="collapse" id="collapseReports" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+              <li><a href="{{route('reports.choose')}}">Top/Worst Report</a> </li>
+              <li><a href="{{route('reports.AHTdaily')}}">AHT Report</a> </li>
+              <li><a href="route('feedback.myIndex')">Special Mistery Report </a> </li>
             </ul>
           </li>
           @endif

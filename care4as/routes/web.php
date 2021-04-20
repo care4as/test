@@ -77,7 +77,6 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload')->middleware('hasRight:importReports');
   Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view')->middleware('hasRight:importReports');
   Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload')->middleware('hasRight:importReports');
-  Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload')->middleware('hasRight:importReports');
   Route::post('/report/bestworst', 'ReportController@bestWorstReport')->name('report.bestworst')->middleware('hasRight:sendReports');
 
   //SAS Import
@@ -87,6 +86,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::view('/report/Optin/', 'reports.OptInReport')->name('reports.OptIn')->middleware('hasRight:importReports');
   Route::post('/report/Optin/', 'ExcelEditorController@OptInupload')->name('reports.OptIn.upload')->middleware('hasRight:importReports');
 
+  //AHTReport
+  Route::get('/report/AHTdaily', 'ReportController@AHTdaily')->name('reports.AHTdaily')->middleware('hasRight:sendReports');
+  //endreport
   Route::get('/retentiondetails/removeDuplicates', function(){
     DB::statement(
     '
@@ -255,6 +257,6 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 Route::get('/test', function(){
 
-App\Jobs\SendCRMail::dispatch()->onConnection('database');
+App\Jobs\SendCRMail::dispatch()->onConnection('sync');
 
 })->name('test');
