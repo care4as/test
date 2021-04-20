@@ -7,6 +7,7 @@ use App\RetentionDetail;
 use App\Mail\BestWorst;
 use App\Mail\FAMail;
 use App\User;
+use App\DailyAgent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
@@ -101,7 +102,7 @@ class ReportController extends Controller
         $from = $request->from;
       }
       else {
-        $from = \Carbon\Carbon::parse(RetentionDetail::min('call_date'))->format('Y-m-d');
+        $from = Carbon::parse(RetentionDetail::min('call_date'))->format('Y-m-d');
       }
 
       if($request->to)
@@ -109,7 +110,7 @@ class ReportController extends Controller
         $to = $request->to;
       }
       else {
-        $to = \Carbon\Carbon::parse(RetentionDetail::max('call_date'))->format('Y-m-d');
+        $to = Carbon::parse(RetentionDetail::max('call_date'))->format('Y-m-d');
       }
 
       $bestAgents = $request->best;
@@ -174,6 +175,9 @@ class ReportController extends Controller
           $bestusers[] = $sorted[(count($sorted)-1) - $i];
         }
       }
+
+      // dd($bestusers);
+
       $data= array(
         'best' => $bestAgents,
         'worst' => $worstAgents,
@@ -195,5 +199,69 @@ class ReportController extends Controller
       else {
         return $mail;
       }
+    }
+
+    public function AHTdaily()
+    {
+      ini_set('memory_limit', '-1');
+
+      $casetime = 0;
+      $calls = 0;
+
+      $department = 'DE_care4as_KBM_RT_Eggebek';
+
+      $end_date = Carbon::today()->format('Y-m-d H:i:s');
+
+      if(request('start_date'))
+      {
+        $start_date = request('start_date');
+      }
+      else {
+        $start_date = Carbon::now()->subDays(7)->format('Y-m-d H:i:s');
+        $start_date = '2021-03-01';
+      }
+      if (request('end_date')) {
+        $end_date = request('end_date');
+      }
+
+      $reports = DailyAgent::whereDate('date','>=',$start_date)
+      ->where('date','<=', $end_date)
+      ->select('date','status','time_in_state')
+      ->get();
+
+      // dd($reports);
+      // $reports->where('department','DE_care4as_KBM_RT_Eggebek');
+
+      $dailyValues = array();
+      $dailyValues2 = array();
+
+
+      foreach ($reports as $key => $value) {
+
+        $dailyValues[$value->date->format('Y-m-d')][] = $value;
+      }
+
+      $ahtStates = array('On Hold','Wrap Up','In Call');
+
+      $finalValues = array();
+      foreach ($dailyValues as $key => $array) {
+        $casetime = 0;
+        $calls = 0;
+
+        foreach ($array as $value) {
+          if(in_array($value['status'],$ahtStates))
+
+          $casetime = $casetime + $value['time_in_state'];
+          if($value['status'] == 'Ringing')
+          {
+            $calls++;
+          }
+
+        }
+        $finalValues[$key] = array($casetime,$calls);
+      }
+
+      // dd($test);
+      return view('reports.AHTdaily', compact('finalValues'));
     }
 }

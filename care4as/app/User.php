@@ -114,4 +114,26 @@ class User extends Authenticatable
       return $this->rights = Right::whereIN('id',$rightids)->pluck('name')->toArray();
 
     }
+    public function dailyPerformance($identifier, $reports)
+    {
+      switch ($identifier) {
+          case "RetentionDetails":
+
+          $user->performance = ($reports->where('person_id', $this->person_id)->sum('orders') / $reports->where('person_id', $this->person_id)->sum('calls'))*100;
+
+          $this->dailyPerformance = $reports->where('person_id',$this->person_id)->map(function ($item, $key) {
+              return $item->only(['call_date', 'orders', 'calls','calls_smallscreen','orders_smallscreen']);
+          })->values();
+
+              break;
+          case "DailyAgent":
+              return 'DailyAgent';
+            break;
+          case "HoursReport":
+              return 'HoursReport';
+            break;
+          default:
+            return 'default Case';
+        }
+    }
 }
