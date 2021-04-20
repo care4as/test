@@ -35,16 +35,18 @@
       </div>
       </form>
     </div>
-    <div class="row bg-white rounded">
+    <div class="row bg-white rounded m-1 mt-2 shadow" >
       <div class="col">
         <table class="table table-striped table-hover">
           <tr>
             <th>Tag</th>
-            <th>AHT</th>
+            <th>AHT DSL</th>
+            <th>AHT Mobile</th>
           </tr>
-          @foreach($finalValues as $key => $value)
+          @foreach($finalValuesMob as $key => $value)
           <tr>
             <td>{{$key}}</td>
+            <td>{{round(($finalValuesDSL[$key][0] / $finalValuesDSL[$key][1]),0)}}</td>
             <td>{{round(($value[0] / $value[1]),0)}}</td>
 
           </tr>
