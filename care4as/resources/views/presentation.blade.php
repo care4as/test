@@ -4,13 +4,6 @@
 
 <style media="screen">
 
-.table-striped>tbody>tr:nth-child(even) {
-    background-color: #ddf8e8;
-}
-.table-striped>tbody>tr:nth-child(odd) {
-    background-color: #fefdfa;
-}
-
   th, td
   {
     font-size: 1.4em !important;
@@ -21,10 +14,7 @@
     white-space: nowrap;
 
   }
-  .table-hover tbody td:hover {
-    background-color: black;
-    color:white;
-  }
+
   div .dataTables_scrollFoot{
      /* display: none; */
    }
