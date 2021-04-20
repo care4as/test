@@ -6,8 +6,8 @@
 
 @section('content')
 
-  <div class="container bg-light">
-    <div class="row bg-white shadow  m-1 mt-4" id="filtermenu">
+  <div class="container bg-light p-1">
+    <div class="row bg-white shadow m-1 mt-4" id="filtermenu">
       <div class="col-12 d-flex justify-content-center align-self-center">
         <h5>Filtermenü</h5>
       </div>
