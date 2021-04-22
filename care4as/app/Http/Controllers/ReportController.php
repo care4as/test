@@ -71,7 +71,6 @@ class ReportController extends Controller
         ];
       }
 
-
       $insertData = array_chunk($insertData, 3500);
       $checkData = array_chunk($checkData, 3500);
 
@@ -89,6 +88,7 @@ class ReportController extends Controller
     }
     public function bestWorstReport(Request $request)
     {
+      ini_set('memory_limit', '-1');
       // dd($request);
       $request->validate([
         'best' => 'required_without:worst',
@@ -102,7 +102,7 @@ class ReportController extends Controller
         $from = $request->from;
       }
       else {
-        $from = Carbon::parse(RetentionDetail::min('call_date'))->format('Y-m-d');
+        $from = Carbon::today()->subDays(7)->format('Y-m-d');
       }
 
       if($request->to)
@@ -110,7 +110,7 @@ class ReportController extends Controller
         $to = $request->to;
       }
       else {
-        $to = Carbon::parse(RetentionDetail::max('call_date'))->format('Y-m-d');
+        $to = Carbon::today()->format('Y-m-d');
       }
 
       $bestAgents = $request->best;
@@ -131,6 +131,15 @@ class ReportController extends Controller
         return $q->where('department_desc','=', 'Care4as Retention DSL Eggebek');
       });
 
+      $department = 'beides';
+
+      if (request('mobile') && request('dsl') == null) {
+        $department = 'mobile';
+      }
+      else {
+          $department = 'dsl';
+      }
+
       $reports = $query->get();
 
       $personids = $reports->unique('person_id')->pluck('person_id');
@@ -143,11 +152,35 @@ class ReportController extends Controller
         $users = User::whereIn('person_id',$personids)
         ->where('role','agent')
         ->whereNotIn('id', request('employees'))
+        ->with('dailyAgent')
+        ->with(['hoursReport' => function($q) use ($from,$to){
+
+          if($from !== 1)
+          {
+            $q->where('work_date','>=',$from);
+          }
+          if($to !== 1)
+          {
+            $q->where('work_date','<=',$to);
+          }
+          }])
         ->get();
       }
       else {
         $users = User::whereIn('person_id',$personids)
         ->where('role','agent')
+        ->with('dailyAgent')
+        ->with(['hoursReport' => function($q) use ($from,$to){
+
+          if($from !== 1)
+          {
+            $q->where('work_date','>=',$from);
+          }
+          if($to !== 1)
+          {
+            $q->where('work_date','<=',$to);
+          }
+          }])
         ->get();
       }
 
@@ -158,6 +191,8 @@ class ReportController extends Controller
         $user->dailyPerformance = $reports->where('person_id',$user->person_id)->map(function ($item, $key) {
             return $item->only(['call_date', 'orders', 'calls','calls_smallscreen','orders_smallscreen']);
         })->values();
+
+        $user->hrsPayed = $user->hoursReport->sum('work_hours');
       }
 
       // dd($users);
@@ -176,8 +211,8 @@ class ReportController extends Controller
         }
       }
 
-      // dd($bestusers);
 
+      // dd($bestusers);
       $data= array(
         'best' => $bestAgents,
         'worst' => $worstAgents,
@@ -185,6 +220,7 @@ class ReportController extends Controller
         'to' => $to,
         'bestusers' => $bestusers,
         'worstusers' => $worstusers,
+        'department' => $department,
       );
 
       $mail = new BestWorst($data);
@@ -279,5 +315,9 @@ class ReportController extends Controller
 
       // dd($finalValues);
       return view('reports.AHTdaily', compact('finalValuesMob','finalValuesDSL'));
+    }
+    public function FunctionName($value='')
+    {
+      App\Jobs\SendCRMail::dispatch()->onConnection('sync');
     }
 }

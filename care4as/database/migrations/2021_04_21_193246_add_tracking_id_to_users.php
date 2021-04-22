@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRightsTable extends Migration
+class AddTrackingIdToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateRightsTable extends Migration
      */
     public function up()
     {
-        Schema::create('rights', function (Blueprint $table) {
-            $table->id();
-            $table->text('name');
-            $table->text('description')->nullable();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('tracking_id')->nullable();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateRightsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rights');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['tracking_id']);
+        });
     }
 }
