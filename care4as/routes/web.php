@@ -70,8 +70,9 @@ Route::group(['middleware' => ['auth']], function () {
   })->name('reports.reportHours.view')->middleware('hasRight:importReports');
 
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:importReports');
-  Route::post('/report/dailyAgentUpload', 'ExcelEditorController@dailyAgentUpload')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
-  Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
+
+  Route::post('/report/dailyAgentUpload', 'ExcelEditorController@queueOrNot')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
+  // Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
   Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');
   Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport')->middleware('hasRight:importReports');
   Route::post('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReportUpload')->name('reports.capacitysuitreport.upload')->middleware('hasRight:importReports');
@@ -169,6 +170,10 @@ Route::group(['middleware' => ['auth']], function () {
 
   //end Report Routes
 
+  //config routes
+  Route::view('/config/app', 'general_config')->name('config.view')->middleware('hasRight:config');
+
+  //endconfig
   //roles and rights
     Route::get('/roles/index', 'RolesController@index')->name('roles.index')->middleware('hasRight:createRole');
     Route::get('/role/show/{id}', 'RolesController@show')->name('role.show')->middleware('hasRight:changeRole');
@@ -257,6 +262,10 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 Route::get('/test', function(){
 
-App\Jobs\SendCRMail::dispatch()->onConnection('sync');
-
+  // return $timeint;
+  App\Jobs\Intermediate::dispatch()->delay(now())->onQueue('intermediate')->onConnection('sync');
+  // $datetime = Carbon\Carbon::parse(1619100060);
+  // $datetime->setTimezone('Europe/Berlin');
+  //
+  // echo $datetime->format('Y-m-d H:i:s');
 })->name('test');

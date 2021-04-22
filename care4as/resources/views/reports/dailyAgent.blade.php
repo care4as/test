@@ -14,6 +14,29 @@
     <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
   </div>
   <h2>Daily Agent Import </h2>
+  <div id="accordion">
+    <div class="card m-1">
+      <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Anleitung (klick mich)
+          </button>
+        </h5>
+      </div>
+
+      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+          <p>
+          <b>Ziehe die Datei in die Dropzone (türkiser Bereich) und lege die DailyAgent Datei ab. <br>Sollte die Datei aus dem Download der 1&1 stammen, bitte achte darauf, dass sie exakt "dailyagent" oder "Daily_Agent" heißt. Benenne Sie ggf. um.
+          Bitte achte in jedem Fall darauf, dass du die richtige Zeile, in dem die Werte Zeilen im Excel Sheet anfangen, angibst.</b><br>
+          <hr>
+          Sollte die Datei aus den Agentenreporten ("Z:\WFM\1und1\Agentenreporte") kommen bitte achte darauf, dass die Datei
+          nicht exakt "dailyagent" benannt wird. Dadurch wird sie in der Verarbeitung zugewiesen und unterscheidet den Prozess.<br>
+          </p>
+        </div>
+      </div>
+    </div>
+</div>
   <div class="row bg-white shadow m-2 mt-2">
     <div class="col-12">
       <h4 class="text-center">Aktueller Datenstand:</h4>
@@ -35,7 +58,7 @@
   </div>
   <div class="row m-2 mt-2 bg-white shadow" id="app">
     <div class="col text-center bg-light p-2">
-      <form action="{{route('excel.dailyAgent.upload.queue')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
+      <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
         @csrf
         <div class="form-row dropzone-previews dz-default dz-message" id="previewContainer">
           <p class=" w-100 text-center">Ziehe die Dateien hier rein oder klick mich!</p>
@@ -54,25 +77,36 @@
       </form>
     </div>
   </div>
-  <!-- <div class="row">
-    <form class="" action="{{route('excel.dailyAgent.upload.queue')}}" method="post" enctype="multipart/form-data">
-      @csrf
-      <input type="file" name="file" value="">
+  <!-- <div class="row justify-content-center">
+    <div class="col-12">
+      <h5> Daily Agent Datei aus dem Reporting der 1&1</h5>
+    </div>
+    <div class="col-12">
 
-      <div class="form-row mt-2 justify-content-center">
-        <label for="sheet">Welches Sheet?</label> </br>
-        <input class="form-control w-25" type="number" id="sheet" name="sheet" value="1">
-      </div>
-      <div class="form-row mt-2 justify-content-center">
-        <label for="sheet">Ab welcher Zeile?</label></br>
-        <input class="form-control w-25" type="number" name="fromRow" value="2">
-      </div>
-      <div class="row">
-        <button type="submit" class="btn btn-rounded btn-block" name="button">Test</button>
-      </div>
-    </form>
-  </div> -->
-</div>
+    <hr>
+    <div class="col-12">
+      <form class="" action="{{route('excel.dailyAgent.upload')}}" method="post" enctype="multipart/form-data">
+        @csrf
+        <div class="form-row m-1 justify-content-center">
+          <input type="file" name="file" value="">
+        </div>
+
+        <div class="form-row m-2 justify-content-center">
+          <label for="sheet">Welches Sheet?</label> </br>
+          <input class="form-control w-25" type="number" id="sheet" name="sheet" value="1">
+        </div>
+        <div class="form-row m-2 justify-content-center">
+          <label for="sheet">Ab welcher Zeile?</label></br>
+          <input class="form-control w-25" type="number" name="fromRow" value="2">
+        </div>
+        <div class="form-row m-1">
+          <button type="submit" class="btn btn-rounded btn-block" name="button">Test</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div> -->
 
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">

@@ -89,6 +89,19 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+        'mysqlmgmtool' => [
+            'driver'    => 'mysql',
+            'host'      => '192.168.11.239',
+            'database'  => 'mgm_tool',
+            'username'  => 'c4a_user',
+            'password'  => 'UcDVEFGz9wVC8B9U',
+            'charset'   => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix'    => '',
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
 
         'pgsql' => [
             'driver' => 'pgsql',

@@ -246,7 +246,7 @@ class ExcelEditorController extends Controller
       }
       return redirect()->back();
     }
-    public function dailyAgentUploadQueue(Request $request)
+    public function queueOrNot(Request $request)
     {
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
@@ -262,7 +262,6 @@ class ExcelEditorController extends Controller
         $sheet = 1;
       }
 
-
       //determines from which row the the app starts editing the data
       if($request->fromRow)
       {
@@ -277,12 +276,40 @@ class ExcelEditorController extends Controller
         'file' => 'required',
         // 'name' => 'required',
       ]);
+
       $file = request()->file('file');
 
+      $filename2Check = request()->file('file')->getClientOriginalName();
 
       $data = Excel::ToArray(new DataImport, request()->file('file'));
 
-      // dd($data);
+
+      $possibleFilenames = array(
+        'dailyagent.xlsx',
+        'Daily_Agent.xlsx',
+      );
+
+      $input['row'] = $fromRow;
+      $input['sheet'] = $sheet;
+
+      if(in_array($filename2Check,$possibleFilenames))
+      {
+        $this->dailyAgentUpload($data);
+      }
+      else {
+        // return $filename2Check;
+        $this->dailyAgentUploadQueue($data,$input);
+      }
+
+        return response()->json('success');
+    }
+    public function dailyAgentUploadQueue($data,$input)
+    {
+
+      $sheet = $input['sheet'];
+      $fromRow = $input['row'];
+
+
       if(!isset($data[$sheet-1]) && empty($data[$sheet-1]))
       {
         return abort(403, 'das Sheet '.$sheet.' wurde nicht gefunden');
@@ -290,10 +317,12 @@ class ExcelEditorController extends Controller
       else {
         $data2 = $data[$sheet-1];
       }
+      // dd($data2);
       if($countsheet = count($data2) < 2000)
       {
         for ($i=0; $i <= count($data)-1; $i++) {
-          if($data[$i] > 2000)
+
+          if(count($data[$i]) > 2000)
           {
             $data2 = $data[$i];
             $check = true;
@@ -301,17 +330,16 @@ class ExcelEditorController extends Controller
           if ($i == count($data)-1 && !$check) {
             abort(403, 'kein Sheet mit mehr als 2000 Datensätzen gefunden');
           }
+
         }
       }
-      else
-      {
-        return abort(403, 'weniger als 2000 ('.$countsheet.') Datensätze in dem Sheet');
-      }
+
       // dd($data);
       // $data = Excel::ToArray(new DataImport, $file );
       $counter=0;
       $insertData=array();
 
+      // dd($data2);
       for($i=$fromRow-1; $i <= count($data2)-1; $i++ )
       {
         $cell = $data2[$i];
@@ -382,37 +410,17 @@ class ExcelEditorController extends Controller
           ImportDailyAgentChunks::dispatch($insertData[$i])
           ->delay(now()->addMinutes($i*0.2));
         }
-        return response()->json('success');
+
         // return redirect()->back();
     }
-    public function dailyAgentUpload(Request $request)
+    public function dailyAgentUpload($data)
     {
-      DB::disableQueryLog();
-      ini_set('memory_limit', '-1');
-      // return 1;
-      $request->validate([
-        'file' => 'required',
-        // 'name' => 'required',
-      ]);
+        $counter = 0;
 
-      // $file = request()->file('file');
-      // $path = $file->getRealPath();
-      $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
-      $counter=0;
-
-      for($i=0;$i <= 1; $i++ )
-      {
-        unset($data[0][$i]);
-      }
-      // $keyarray = array(0 => "xy", 1 => "xy", 2 => "xy", 3 => "xy", 4 => "xy", 5 => "xy", 6 => "xy", 7 => "xy", 8 => "xy", 9 => "xy", 10 => "xy");
-      // $convArray = array_diff_key($data[0], $keyarray);
-
-      // array_splice($data[0],-7);
-      // dd($data[0]);
         foreach($data[0] as $cell)
         {
-          $counter = $counter +1;
-          $dailyAgent = new DailyAgent;
+          $date = 0;
+
 
           if($cell[4] == '')
           {
@@ -428,40 +436,78 @@ class ExcelEditorController extends Controller
           }
 
           //convert all the excel dates to unix date
-
-          $UNIX_DATE = ($cell[0] - 25569) * 86400;
-          $dailyAgent->date = gmdate("Y-m-d H:i:s", $UNIX_DATE);
-
-          if(is_numeric($cell[24]))
+          if(is_numeric($cell[0]))
           {
-            $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
-            $dailyAgent->start_time = gmdate("Y-m-d H:i:s",$UNIX_DATE2);
-          }
-          else {
-            return 'Datenfehler in Zeile '.$counter.':'.json_encode($cell[23]);
+            $UNIX_DATE = ($cell[0] - 25569) * 86400;
+            if(!$date = gmdate("Y-m-d H:i:s", $UNIX_DATE))
+            {
+              return redirect()->back()->withErrors(['name' => 'Das Datumsfeld ist nicht vorhanden']);
+            };
+
+            // return $date;
           }
 
-          $UNIX_DATE3 = ($cell[25] - 25569) * 86400;
-          $dailyAgent->end_time = gmdate("Y-m-d H:i:s", $UNIX_DATE3);
-          $dailyAgent->kw = $cell[3];
-          $dailyAgent->dialog_call_id  = $cell[5];
-          $dailyAgent->agent_id = $cell[7];
-          $dailyAgent->agent_login_name = $cell[8];
-          $dailyAgent->agent_name = $cell[9];
-          $dailyAgent->agent_group_id = $cell[10];
-          $dailyAgent->agent_group_name = $cell[11];
-          $dailyAgent->agent_team_id = $cell[12];
-          $dailyAgent->queue_id = $cell[18];
-          $dailyAgent->queue_name = $cell[20];
-          $dailyAgent->skill_id = $cell[21];
-          $dailyAgent->skill_name = $cell[22];
-          $dailyAgent->status = $cell[23];
-          $dailyAgent->time_in_state = $cell[26];
+          if($date != 0 && $cell[6])
+          {
+            // if(is_numeric($cell[24]))
+            // {
+            //   $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
+            //   $dailyAgent->start_time = gmdate("Y-m-d H:i:s",$UNIX_DATE2);
+            // }
+            // else {
+            //   return 'Datenfehler start_time in Zeile '.$counter.':'.json_encode($cell[23]);
+            // }
 
-          $dailyAgent->save();
+            $UNIX_DATE3 = ($cell[24] - 25569) * 86400;
+
+            $insertarray[$counter]['date'] = $date;
+            $insertarray[$counter]['agent_id'] = $cell[6];
+
+            $UNIX_DATE2 = ($cell[23] - 25569) * 86400;
+            $insertarray[$counter]['start_time'] = gmdate("Y-m-d H:i:s",$UNIX_DATE2);
+            $insertarray[$counter]['end_time'] = gmdate("Y-m-d H:i:s", $UNIX_DATE3);
+            $insertarray[$counter]['kw'] = $cell[2];
+            $insertarray[$counter]['dialog_call_id']  = $cell[4];
+
+            $insertarray[$counter]['agent_login_name'] = $cell[7];
+            $insertarray[$counter]['agent_name'] = $cell[8];
+            $insertarray[$counter]['agent_group_id'] = $cell[9];
+            $insertarray[$counter]['agent_group_name'] = $cell[10];
+
+            if($cell[12])
+            {
+              $insertarray[$counter]['agent_team_id'] = $cell[12];
+            }
+            else {
+                $insertarray[$counter]['agent_team_id'] = 0;
+            }
+
+            $insertarray[$counter]['queue_id'] = $cell[17];
+            $insertarray[$counter]['queue_name'] = $cell[19];
+            $insertarray[$counter]['skill_id'] = $cell[20];
+            $insertarray[$counter]['skill_name'] = $cell[21];
+            $insertarray[$counter]['status'] = $cell[22];
+
+            if($cell[5])
+            {
+              $insertarray[$counter]['time_in_state'] = $cell[5];
+            }
+            else {
+              $insertarray[$counter]['time_in_state'] = 0;
+            }
+
+          }
+          $counter = $counter +1;
         }
 
-      return redirect()->back();
+        $insertarray = array_chunk($insertarray, 3500);
+
+        // DB::table('dailyagent')->insert($insertData[0]);
+        for($i=0; $i <= count($insertarray)-1; $i++)
+        {
+          ImportDailyAgentChunks::dispatch($insertarray[$i])
+          ->delay(now()->addMinutes($i*0.2));
+        }
     }
     public function capacitysuitReport ()
     {

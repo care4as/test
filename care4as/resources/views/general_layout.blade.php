@@ -196,7 +196,7 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
               <li><a href="{{route('roles.index')}}">Rollen</a> </li>
               <li><a href="{{route('feedback.view')}}">Rollen und Rechte</a> </li>
-              <li><a href="{{route('feedback.myIndex')}}">allgemeine Einstellungen</a> </li>
+              <li><a href="{{route('config.view')}}">allgemeine Einstellungen</a> </li>
             </ul>
           </li>
           @endif

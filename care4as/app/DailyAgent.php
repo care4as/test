@@ -8,4 +8,6 @@ class DailyAgent extends Model
 {
     protected $table = 'dailyagent';
     protected $dates = ['date'];
+
+
 }
