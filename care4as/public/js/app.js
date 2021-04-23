@@ -1963,7 +1963,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     console.log('Tracker Component mounted.');
-    this.getUserData(1);
+    this.getUserData(this.userid);
   },
   methods: {
     createChart: function createChart(chartId, chartData) {
@@ -1974,24 +1974,34 @@ __webpack_require__.r(__webpack_exports__);
           labels: chartData[0],
           datasets: [{
             data: chartData[1],
+            fill: false,
             backgroundColor: ['rgba(255, 99, 132, 0.2)'],
             borderColor: ['rgba(255, 99, 132, 1)'],
             borderWidth: 1
           }]
         },
-        options: chartData.options
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true,
+                min: 0,
+                max: 100
+              }
+            }]
+          }
+        }
       });
     },
     getUserData: function getUserData(id) {
       var _this = this;
 
-      console.log(this.userid);
-      axios.get('user/getTracking/' + id).then(function (response) {
+      axios.get('http://fl-tl-068.care4as.de/care4as/care4as/public/user/getTracking/' + this.userid).then(function (response) {
         // console.log(response)
         if (response.data[0][0]) {
           console.log(response.data);
 
-          _this.createChart('myChart', response.data);
+          _this.createChart('myChart' + _this.userid, response.data);
         } else {
           console.log('No Data avaiable');
         }
@@ -80046,20 +80056,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center w-100" }, [
-      _c("div", { staticClass: "col-12 bg-light" }, [
-        _c("canvas", { attrs: { id: "myChart" } })
-      ])
+  return _c("div", { staticClass: "row justify-content-center w-100" }, [
+    _c("div", { staticClass: "col-12 bg-light" }, [
+      _c("canvas", { attrs: { id: "myChart" + this.userid } })
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
