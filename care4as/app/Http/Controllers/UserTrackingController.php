@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\UserTracking;
+use App\User;
+use Illuminate\Support\Facades\DB;
 
 class UserTrackingController extends Controller
 {
@@ -58,25 +60,44 @@ class UserTrackingController extends Controller
     {
       $timestamparray = array();
       $quotaarray = array();
-      $trackings = UserTRacking::where('user_id',$id)->whereDate('created_at', \Carbon\Carbon::today())->get();
-      $saves = $trackings->where('save',1);
 
-      foreach ($saves as $key => $save) {
+      $user = User::find($id);
 
-        $countcalls = $trackings->where('division','call')->where('created_at','<=',$save->created_at)->count();
-        $countsaves= $saves->where('save','1')->where('created_at','<=',$save->created_at)->count();
-        $countsavecorrections= $saves->where('save','-1')->where('created_at','<=',$save->created_at)->count();
+      $intermediates = DB::Table('intermediate_status')->where('person_id',$user->person_id)->get();
 
-        if($countcalls == 0)
+      // dd($intermediates);
+
+      foreach ($intermediates as $key => $intervall) {
+
+        $intervall->date = \Carbon\Carbon::parse($intervall->date)->format('H:i');
+
+        if($user->department == '1&1 Mobile Retention')
         {
-          $countcalls = 1;
-        }
-        $quota = round((($countsaves-$countsavecorrections) / $countcalls)*100, 0);
+          if($intervall->SSC_Calls != 0)
+          {
+            $intervallquota =  round($intervall->SSC_Orders*100/$intervall->SSC_Calls,2);
+            $quotaarray[] = $intervallquota;
+          }
+          else {
+            $quotaarray[] = 0;
+          }
 
-        $timestamparray[] = 'Save/'.$save->created_at->format('h:i:s');
-        $quotaarray[] = $quota;
-        // $dataarray[] = array($save->created_at->format('h:m:s'), $quota);
+        }
+        else {
+          if ($intervall->Calls != 0) {
+
+            $intervallquota =  round($intervall->Orders*100/$intervall->Calls,2);
+            $quotaarray[] = $intervallquota;
+          }
+          else {
+            $quotaarray[] = 0;
+          }
+
+          }
       }
+
+      $timestamparray = $intermediates->pluck('date')->toArray();
+
       $dataarray = array($timestamparray, $quotaarray);
       return response()->json($dataarray);
       // return response()->json(1);

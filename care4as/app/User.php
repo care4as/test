@@ -136,4 +136,8 @@ class User extends Authenticatable
             return 'default Case';
         }
     }
+    public function wholeName()
+    {
+      return $this->surname.' '.$this->lastname;
+    }
 }

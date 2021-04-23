@@ -38,6 +38,7 @@
                     <th>Person-ID</th>
                     <th>Agent-ID</th>
                     <th>KDW-ID</th>
+                    <th>Tracking-ID</th>
                     <th>options</th>
                   </tr>
                 </thead>
@@ -53,6 +54,7 @@
                       <td>{{$user->person_id}}</td>
                       <td>{{$user->agent_id}}</td>
                       <td>{{$user->ds_id}}</td>
+                      <td>{{$user->tracking_id}}</td>
                       <td>
                         <a href="{{route('user.delete', ['id' => $user->id])}}">
                         <button class="btn btn-danger btn-fab btn-icon btn-round">

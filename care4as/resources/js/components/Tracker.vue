@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-center w-100">
     <div class="col-12 bg-light">
-    <canvas id="myChart"></canvas>
+    <canvas v-bind:id ="'myChart' + this.userid"></canvas>
     </div>
   </div>
 
@@ -21,7 +21,7 @@ export default {
   },
     mounted() {
         console.log('Tracker Component mounted.')
-        this.getUserData(1)
+        this.getUserData(this.userid)
     },
   methods:{
     createChart(chartId, chartData) {
@@ -29,10 +29,12 @@ export default {
     const ctx = document.getElementById(chartId);
     const myChart = new Chart(ctx, {
       type: 'line',
+
       data: {
         labels:chartData[0],
         datasets: [{
            data: chartData[1],
+           fill: false,
            backgroundColor: [
                'rgba(255, 99, 132, 0.2)',
            ],
@@ -42,19 +44,29 @@ export default {
            borderWidth: 1
        }]
      },
-      options: chartData.options,
+     options: {
+         scales: {
+           yAxes: [{
+             ticks: {
+               beginAtZero: true,
+               min: 0,
+               max: 100,
+           }
+           }]
+         }
+       }
     });
   },
   getUserData(id)
   {
-    console.log(this.userid)
-    axios.get('user/getTracking/'+id)
+
+    axios.get('http://fl-tl-068.care4as.de/care4as/care4as/public/user/getTracking/'+this.userid)
     .then(response => {
       // console.log(response)
       if(response.data[0][0])
       {
         console.log(response.data)
-        this.createChart('myChart',response.data)
+        this.createChart('myChart' + this.userid,response.data)
       }
       else
       {

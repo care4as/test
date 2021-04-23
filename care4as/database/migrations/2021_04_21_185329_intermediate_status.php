@@ -23,6 +23,7 @@ class IntermediateStatus extends Migration
           $table->integer('PTB_Calls')->nullable();
           $table->integer('KüRü')->nullable();
           $table->integer('Orders')->nullable();
+          $table->integer('Calls')->nullable();
           $table->integer('SSC_Orders')->nullable();
           $table->integer('BSC_Orders')->nullable();
           $table->integer('Portal_Orders')->nullable();

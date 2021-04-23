@@ -258,14 +258,26 @@ Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post'
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
 
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
+Route::get('/dashboard/admin', function(){
 
+  $userids = DB::table('intermediate_status')
+  ->whereDate('date', Carbon\Carbon::today())
+  ->pluck('person_id')
+  ->toArray();
+
+
+  $users = App\User::whereIn('person_id', $userids)->get();
+
+  return view('dashboardtracker',compact('users'));
+
+})->name('dashboard.admin')->middleware('auth');
 
 Route::get('/test', function(){
 
   // return $timeint;
   App\Jobs\Intermediate::dispatch()->delay(now())->onQueue('intermediate')->onConnection('sync');
-  // $datetime = Carbon\Carbon::parse(1619100060);
+  // $datetime = Carbon\Carbon::parse(1619170260);
   // $datetime->setTimezone('Europe/Berlin');
-  //
+  // //
   // echo $datetime->format('Y-m-d H:i:s');
 })->name('test');
