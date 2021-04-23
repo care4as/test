@@ -275,9 +275,28 @@ Route::get('/dashboard/admin', function(){
 Route::get('/test', function(){
 
   // return $timeint;
-  App\Jobs\Intermediate::dispatch()->delay(now())->onQueue('intermediate')->onConnection('sync');
+  // App\Jobs\Intermediate::dispatch()->delay(now())->onQueue('intermediate')->onConnection('sync');
   // $datetime = Carbon\Carbon::parse(1619170260);
   // $datetime->setTimezone('Europe/Berlin');
   // //
   // echo $datetime->format('Y-m-d H:i:s');
+
+$users = App\User::where('role','Agent')->get();
+
+foreach ($users as $key => $user) {
+  $user->bagent_id =  DB::connection('mysqlkdw')->table('MA')->where('ds_id',$user->ds_id)->value('agent_id');
+
+  $tracking_id = DB::connection('mysqlmgmtool')->table('user')->where('agent_id',$user->bagent_id)->value('ds_id');
+
+  // dd($tracking_id);
+  DB::table('users')
+  ->where('id',$user->id)
+  ->update([
+    'tracking_id' => $tracking_id
+  ]);
+
+}
+
+dd($users);
+
 })->name('test');
