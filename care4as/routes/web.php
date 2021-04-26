@@ -23,7 +23,9 @@ Route::get('/messageOfTheDay', function()
 })->name('dailyMessage');
 
 Route::group(['middleware' => ['auth']], function () {
+
   Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
+  Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin');
   //users
   Route::get('/create/user', 'UserController@create')->name('user.create')->middleware('hasRight:createUser');
   Route::post('/create/user', 'UserController@store')->name('create.user.post')->middleware('hasRight:createUser');
@@ -40,6 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/user/kdw/syncUserData', 'UserController@connectUsersToKDW')->name('user.connectUsersToKDW')->middleware('hasRight:importReports');
   Route::post('/user/getAht', 'UserController@getAHTbetweenDates');
   Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
+  Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:indexUser');
   //endusers
 
   //cancels
@@ -172,6 +175,8 @@ Route::group(['middleware' => ['auth']], function () {
 
   //config routes
   Route::view('/config/app', 'general_config')->name('config.view')->middleware('hasRight:config');
+  Route::get('/config/activateIntermediateMail', 'Configcontroller@activateIntermediateMail')->name('config.activateIntermediateMail')->middleware('hasRight:config');
+  Route::get('/config/deactivateIntermediateMail', 'Configcontroller@deactivateIntermediateMail')->name('config.deactivateIntermediateMail')->middleware('hasRight:config');
 
   //endconfig
   //roles and rights
@@ -258,24 +263,12 @@ Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post'
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
 
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
-Route::get('/dashboard/admin', function(){
 
-  $userids = DB::table('intermediate_status')
-  ->whereDate('date', Carbon\Carbon::today())
-  ->pluck('person_id')
-  ->toArray();
-
-
-  $users = App\User::whereIn('person_id', $userids)->get();
-
-  return view('dashboardtracker',compact('users'));
-
-})->name('dashboard.admin')->middleware('auth');
 
 Route::get('/test', function(){
 
   // return $timeint;
-  // App\Jobs\Intermediate::dispatch()->delay(now())->onQueue('intermediate')->onConnection('sync');
+
   // $datetime = Carbon\Carbon::parse(1619170260);
   // $datetime->setTimezone('Europe/Berlin');
   // //

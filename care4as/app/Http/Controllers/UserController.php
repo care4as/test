@@ -27,6 +27,27 @@ class UserController extends Controller
 
         return view('usersIndex', compact('users'));
     }
+    public function getUsersIntermediate()
+    {
+      if(request('department'))
+      {
+        $userids = DB::table('intermediate_status')
+        ->whereDate('date', Carbon::today())
+        ->pluck('person_id')
+        ->toArray();
+
+        $users= User::where('department',request('department'))
+        ->where('role','Agent')
+        ->whereIn('person_id',$userids)
+        ->get();
+
+        return response()->json($users);
+      }
+      if(request('employees'))
+      {
+        return response()->json(request('employees'));
+      }
+    }
 
     /**
      * Show the form for creating a new resource.

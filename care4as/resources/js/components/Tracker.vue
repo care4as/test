@@ -1,5 +1,6 @@
 <template>
-  <div class="row justify-content-center w-100">
+  <div class="row justify-content-center w-100" v-if="this.isHidden == false">
+    <button type="button" name="button" id="closebutton" style="position:absolute; top: 5px; right: 5px" @click='closeElement()'>X</button>
     <div class="col-12 bg-light">
     <canvas v-bind:id ="'myChart' + this.userid"></canvas>
     </div>
@@ -17,6 +18,7 @@ export default {
     return{
       testusers: [1,2,3],
       data: null,
+      isHidden: false,
     }
   },
     mounted() {
@@ -65,7 +67,7 @@ export default {
       // console.log(response)
       if(response.data[0][0])
       {
-        console.log(response.data)
+        // console.log(response.data)
         this.createChart('myChart' + this.userid,response.data)
       }
       else
@@ -77,6 +79,15 @@ export default {
       console.log('error')
       console.log(err.response);
     })
+  },
+  closeElement()
+  {
+
+    console.log($(this.$el).parent()[0].remove())
+
+      // remove the element from the DOM
+    // $(this.$el).remove();
+
   }
 },
 }

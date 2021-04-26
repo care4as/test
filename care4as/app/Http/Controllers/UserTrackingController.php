@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\UserTracking;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class UserTrackingController extends Controller
 {
@@ -63,7 +64,10 @@ class UserTrackingController extends Controller
 
       $user = User::find($id);
 
-      $intermediates = DB::Table('intermediate_status')->where('person_id',$user->person_id)->get();
+      $intermediates = DB::Table('intermediate_status')
+      ->where('person_id',$user->person_id)
+      ->whereDate('date',Carbon::today())
+      ->get();
 
       // dd($intermediates);
 
