@@ -219,20 +219,24 @@ class Intermediate implements ShouldQueue
     DB::table('intermediate_status')->insert($insertarray);
     $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $ssccr,'dslcr' => $dslcr, 'mobile' => $emailarray, 'dsl' => $emailarrayDSL);
     // dd($emailarray);
-    $email = new IntermediateMail($data);
-    $mailinglist = ['andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de'];
-    Mail::to($mailinglist)->send($email);
-    if (Mail::failures()) {
-      foreach(Mail::failures() as $email_address) {
-            $logentry = new App\Log;
-            $logentry->logEntry("Fehler Email - $email_address <br />");
-         }
-       }
+
+    // $email = new IntermediateMail($data);
+    // $mailinglist = ['andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de'];
+
+    // Mail::to($mailinglist)->send($email);
+    //
+    // if (Mail::failures()) {
+    //   foreach(Mail::failures() as $email_address) {
+    //         $logentry = new App\Log;
+    //         $logentry->logEntry("Fehler Email - $email_address <br />");
+    //      }
+    //    }
 
    $time =  time();
-   $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
+   $nextHalfHour = ceil(time() / (10 * 60)) * (10 * 60);
    $timediff = intval($nextHalfHour)-$time;
-   $asString = ($timediff/60)+1 .' Minutes';
+   // $asString = ($timediff/60)+1 .' Minutes';
+   $asString = ($timediff/60).' Minutes';
    $this::dispatch()->delay(now()->add($asString))->onConnection('database')->onQueue('intermediate');
   }
 }
