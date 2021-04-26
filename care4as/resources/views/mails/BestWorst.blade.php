@@ -284,7 +284,7 @@
                                 @else
                                   <td>keine SSC Calls</td>
                                 @endif
-                              @endforeach#
+                              @endforeach
                             </tr>
                           @endif
                           <tr style="background-color: #fefdfa;">

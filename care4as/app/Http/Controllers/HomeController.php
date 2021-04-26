@@ -33,6 +33,34 @@ class HomeController extends Controller
     {
         return view('home');
     }
+    public function dashboardAdmin()
+    {
+      if(request('employees'))
+      {
+        // dd(request('employees'));
+        $userids = DB::table('intermediate_status')
+        ->whereDate('date', Carbon::today())
+        ->pluck('person_id')
+        ->toArray();
+
+        $users = User::whereIN('id',request('employees'))
+        ->whereIN('person_id', $userids)
+        ->get();
+      }
+      else {
+        $userids = DB::table('intermediate_status')
+        ->whereDate('date', Carbon::today())
+        ->pluck('person_id')
+        ->toArray();
+
+      $users = User::whereIn('person_id', $userids)->get();
+      }
+
+
+      // dd($users);
+      return view('dashboardtracker',compact('users'));
+    }
+
     public function presentation(Request $request)
     {
       DB::disableQueryLog();
@@ -390,6 +418,6 @@ class HomeController extends Controller
       foreach ($users as $key => $user) {
         $user->ssesaves = $user->SSETracking->where('Tracking_Item1','Save')->count();
       }
-    
+
     }
 }
