@@ -109,28 +109,30 @@ $('#customSwitch2').click(function(){
 
     var host = window.location.host;
 
-    console.log(host)
+    console.log('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
 
-    axios.get('./activateIntermediateMail')
+    // axios.get('./activateIntermediateMail')
+    axios.get('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
 
 
     .then(response => {
-      alert('Zwischenstands wird nun automatisch gezogen')
+      alert('Zwischenstand wird nun automatisch geladen')
 
       })
     .catch(function (err) {
       console.log('error')
-      console.log(err.response);
+      console.log(err.reponse);
     })
   }
   else {
 
     var host = window.location.host;
 
-    axios.get(host+'/deactivateIntermediateMail')
+    // axios.get(host+'/deactivateIntermediateMail')
+    axios.get('http://'+host+'/care4as/care4as/public/config/deactivateAutomaticIntermediate')
 
     .then(response => {
-      alert('Zwischenstandsmail deaktiviert')
+      alert('automatische Zwischenstände deaktiviert')
 
       })
     .catch(function (err) {

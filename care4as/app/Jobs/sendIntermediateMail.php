@@ -139,7 +139,7 @@ class sendIntermediateMail implements ShouldQueue
             $emailarray[] = array(
 
               'SSC-CR' => $ssccr,
-              'SSC-CR_diff' => $sscr_diff,
+              'SSC-CR_diff' => 0,
               'name' => $user->surname.' '.$user->lastname,
               'Calls' => $user->intermediatesLatest->Calls,
               'Calls_differ' => 0,

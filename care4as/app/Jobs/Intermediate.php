@@ -109,56 +109,10 @@ class Intermediate implements ShouldQueue
               'Portal_Orders' => 0,
             );
           }
-      $formerValues = DB::table('intermediate_status')
-        ->whereDate('date',Carbon::today())
-        ->where('person_id', $user->person_id)
-        ->where('id','!=', DB::getPdo()->lastInsertId())
-        ->orderBY('id','DESC')
-        ->first();
-
-        if($formerValues)
-        {
-          $callsDiff = $user->salesdata->calls - $formerValues->Calls;
-          $ordersDiff = $user->salesdata->ret_de_1u1_rt_save - $formerValues->Orders;
-
-            $emailarrayDSL[] = array(
-              'name' => $user->surname.' '.$user->lastname,
-              'Calls' => $user->salesdata->calls,
-              'Calls_differ' => $callsDiff,
-              'Orders' => $user->salesdata->ret_de_1u1_rt_save,
-              'Orders_differ' => $ordersDiff,
-              'KüRü' => $user->salesdata->kuerue,
-            );
-        }
-        else {
-          $emailarrayDSL[] = array(
-            'name' => $user->surname.' '.$user->lastname,
-            'Calls' => $user->salesdata->calls,
-            'Calls_differ' => 0,
-            'Orders' => $user->salesdata->ret_de_1u1_rt_save,
-            'Orders_differ' => 0,
-            'KüRü' => $user->salesdata->kuerue,
-          );
-        }
       }
 
     DB::table('intermediate_status')->insert($insertarray);
-    $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $ssccr,'dslcr' => $dslcr, 'mobile' => $emailarray, 'dsl' => $emailarrayDSL);
-    // dd($emailarray);
-    $email = new IntermediateMail($data);
 
-    $mailinglist = ['andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de','andreas.nissen@care4as.de','aysun.yildiz@care4as.de','verena.graap@care4as.de'];
-
-    Mail::to($mailinglist)->send($email);
-    if (Mail::failures()) {
-      foreach(Mail::failures() as $email_address) {
-            $logentry = new App\Log;
-            $logentry->logEntry("Fehler Email - $email_address <br />");
-         }
-       }
-
-   // dd($this->repeat);
-   DB::table('intermediate_status')->insert($insertarray);
 
    $time =  time();
    $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
