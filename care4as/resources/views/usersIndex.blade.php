@@ -56,11 +56,13 @@
                       <td>{{$user->ds_id}}</td>
                       <td>{{$user->tracking_id}}</td>
                       <td>
-                        <a href="{{route('user.delete', ['id' => $user->id])}}">
-                        <button class="btn btn-danger btn-fab btn-icon btn-round">
-                            <i class="now-ui-icons ui-1_simple-remove"></i>
-                        </button>
-                        </a>
+                        @if(in_array('deleteUser',Auth()->user()->rights()))
+                          <a href="{{route('user.delete', ['id' => $user->id])}}">
+                          <button class="btn btn-danger btn-fab btn-icon btn-round">
+                              <i class="now-ui-icons ui-1_simple-remove"></i>
+                          </button>
+                          </a>
+                        @endif
                         <a href="{{route('user.stats', ['id' => $user->id])}}">
                         <button class="btn btn-success btn-fab btn-icon btn-round">
                           <i class="now-ui-icons ui-1_zoom-bold"></i>

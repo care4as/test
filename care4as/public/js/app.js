@@ -1960,35 +1960,60 @@ __webpack_require__.r(__webpack_exports__);
     return {
       testusers: [1, 2, 3],
       data: null,
-      isHidden: false
+      isHidden: false,
+      timer: ''
     };
   },
   mounted: function mounted() {
+    var self = this;
     console.log('Tracker Component mounted.');
     this.getUserData(this.userid);
+    setInterval(function () {
+      self.getUserData(self.userid);
+    }, 600000);
   },
   methods: {
     createChart: function createChart(chartId, chartData) {
       var ctx = document.getElementById(chartId);
       var myChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
-          labels: chartData[0],
           datasets: [{
+            type: 'line',
+            label: 'CR',
             data: chartData[1],
             fill: false,
-            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-            borderColor: ['rgba(255, 99, 132, 1)'],
+            backgroundColor: 'rgba(41, 241, 195, 1)',
+            borderColor: 'rgba(41, 241, 195, 1)',
             borderWidth: 1
-          }]
+          }, {
+            label: 'Calls',
+            type: 'bar',
+            yAxisID: 'B',
+            data: chartData[2],
+            backgroundColor: 'rgba(255, 99, 132)',
+            borderWidth: 1
+          }],
+          labels: chartData[0]
         },
         options: {
           scales: {
             yAxes: [{
+              id: 'A',
+              type: 'linear',
+              position: 'left',
               ticks: {
                 beginAtZero: true,
                 min: 0,
                 max: 100
+              }
+            }, {
+              id: 'B',
+              type: 'linear',
+              position: 'right',
+              ticks: {
+                max: 10,
+                min: 0
               }
             }]
           }
@@ -1998,6 +2023,10 @@ __webpack_require__.r(__webpack_exports__);
     getUserData: function getUserData(id) {
       var _this = this;
 
+      console.log('update für user:' + id);
+      document.querySelectorAll('.col-12 bg-light').forEach(function (column) {
+        column.innerHTML = '';
+      });
       axios.get('http://fl-tl-068.care4as.de/care4as/care4as/public/user/getTracking/' + this.userid).then(function (response) {
         // console.log(response)
         if (response.data[0][0]) {

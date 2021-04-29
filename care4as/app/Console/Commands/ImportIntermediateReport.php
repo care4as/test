@@ -1,54 +1,47 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Console\Commands;
 
-use Illuminate\Bus\Queueable;
- use App\Jobs\Job;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\User;
-use App\Mail\IntermediateMail;
-use Mail;
 
-class Intermediate implements ShouldQueue
+class ImportIntermediateReport extends Command
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'command:name';
 
     /**
-     * Create a new job instance.
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    protected $name = 'import:Intermediate';
+
+    /**
+     * Create a new command instance.
      *
      * @return void
      */
-    protected $repeat;
-
-    public $tries = 1;
-
-    public function __construct($repeat)
+    public function __construct()
     {
-        $this->repeat = $repeat;
-
-        // if($this->repeat == 'nonrepeat')
-        // {
-        //   $this->onConnection('sync');
-        // }
-        // else {
-        //   $this->onConnection('database');
-        //   $this->onQueue('intermediate');
-        // }
+        parent::__construct();
     }
 
     /**
-     * Execute the job.
+     * Execute the console command.
      *
-     * @return void
+     * @return int
      */
-    public function handle()
+    public function fire()
     {
-
       $mobileSalesSata = DB::connection('mysqlkdwtracking')
       ->table('1und1_mr_tracking_inb_new_ebk')
       // ->whereIn('MA_id', $userids)
@@ -66,13 +59,12 @@ class Intermediate implements ShouldQueue
 
       $trackingids = array_merge($trackingidsMobile, $trackingidsDSL);
 
-      $users = User::whereIn('tracking_id',$trackingids)
-      ->where('role','Agent')
-      ->get();
+      $users = User::whereIn('tracking_id',$trackingids)->get();
+
+      // dd($users);
 
       foreach($users as $user)
       {
-
         if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->tracking_id)->first())
         {
           $insertarray[] = array(
@@ -111,21 +103,6 @@ class Intermediate implements ShouldQueue
           }
       }
 
-   // dd($this->repeat);
-   DB::table('intermediate_status')->insert($insertarray);
-
-   $time =  time();
-   $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
-   $timediff = intval($nextHalfHour)-$time;
-
-   // $asString = ($timediff/60) .' Minutes';
-   $asString = ($timediff/60)+ 0.5 .' Minutes';
-   // $asString = 5 .' Seconds';
-
-   if ($this->repeat != 'nonsync') {
-
-    $this::dispatch('repeat')->delay(now()->add($asString))->onQueue('intermediate')->onConnection('database');
-   }
-
-  }
+        DB::table('intermediate_status')->insert($insertarray);
+    }
 }

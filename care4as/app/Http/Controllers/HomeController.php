@@ -92,7 +92,7 @@ class HomeController extends Controller
 
         $users = User::where('role','agent')
         ->whereIn('id', $request->employees)
-        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department')
+        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
           if($start_date !== 1)
@@ -264,6 +264,8 @@ class HomeController extends Controller
           $weekenddays[] = $day->format('Y-m-d');
         }
       }
+
+
 
       foreach ($users as $key => $user) {
 
