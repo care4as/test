@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Jobs;
 
@@ -113,6 +113,8 @@ class Intermediate implements ShouldQueue
 
     DB::table('intermediate_status')->insert($insertarray);
 
+
+   // dd($this->repeat);
 
    $time =  time();
    $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);

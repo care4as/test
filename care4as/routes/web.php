@@ -184,7 +184,10 @@ Route::group(['middleware' => ['auth']], function () {
   Route::view('/config/app', 'general_config')->name('config.view')->middleware('hasRight:config');
   Route::get('/config/activateIntermediateMail', 'Configcontroller@activateIntermediateMail')->name('config.activateIntermediateMail')->middleware('hasRight:config');
   Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
+<<<<<<< HEAD
   Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
+=======
+>>>>>>> d9021b2825e378261f43c3391168e6e7af46f2f5
   Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config');
   Route::get('/config/deactivateIntermediateMail', 'Configcontroller@deactivateIntermediateMail')->name('config.deactivateIntermediateMail')->middleware('hasRight:config');
   // Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
