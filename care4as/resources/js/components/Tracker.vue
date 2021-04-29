@@ -24,7 +24,6 @@ export default {
   },
     mounted() {
 
-
         var self = this;
         console.log('Tracker Component mounted.')
 
@@ -94,7 +93,7 @@ export default {
   {
 
     console.log('test')
-    
+
 
     console.log('update für user:' + id)
 

@@ -61,6 +61,48 @@
       <h4 >Präsentation des aktuellen Moduls: {{$modul ?? ''}}</h4>
   </div>
 
+  <div class="row bg-white shadow  m-1 mt-4">
+    <div class="col-12">
+      <h4 class="text-center">Aktueller Datenstand:</h4>
+    </div>
+    <div class="col-8">
+      @if(!App\DailyAgent::min('date'))
+        <h5>keine Daten eingegeben</h5>
+      @else
+        <h5>Daily Agent im Zeitraum vom <u>{{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
+      @endif
+    </div>
+    <div class="col-2">
+      <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+    </div>
+    <div class="col-2">
+      <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
+    </div>
+    <hr>
+      <div class="col-8">
+        @if(!App\Hoursreport::min('work_date'))
+          <h5>keine Daten eingegeben</h5>
+        @else
+          <h5>Stundenreport im Zeitraum vom <u>{{Carbon\Carbon::parse(DB::table('hours_report_imitation')->min('work_date'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(DB::table('hours_report_imitation')->max('work_date'))->format('d.m.Y ')}}</u> </h5>
+        @endif
+      </div>
+      <div class="col-2">
+        <a href="{{route('reports.reportHours.update')}}"><button type="button" class="btn btn-sm border-round" name="button">Stundenreport Updaten</button></a>
+      </div>
+      <div class="col-2">
+        <a href="{{route('user.connectUsersToKDW')}}"><button type="button" class="btn btn-sm btn-success border-round" name="button">Userdaten verknüpfen</button></a>
+      </div>
+      <div class="col-8">
+        <h5>Retention Details vom <u>{{Carbon\Carbon::parse(App\RetentionDetail::min('call_date'))->format('d.m.Y')}}</u> bis zum <u>{{Carbon\Carbon::parse(App\RetentionDetail::max('call_date'))->format('d.m.Y')}}</u></h5>
+      </div>
+      <div class="col-2">
+        <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+      </div>
+      <div class="col-2">
+        <a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
+      </div>
+    </div>
+
   <div class="row bg-white shadow  m-1 mt-4" id="filtermenu">
     <div class="col-12 d-flex justify-content-center align-self-center">
       <h5>Filtermenü</h5>
