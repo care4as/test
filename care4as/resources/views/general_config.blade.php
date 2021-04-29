@@ -96,6 +96,49 @@ td{
 
 @section('additional_js')
 <script type="text/javascript">
+
+$('#customSwitch1').click(function(){
+
+  if(this.checked == true)
+  {
+
+    var host = window.location.host;
+
+    console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
+
+    // axios.get('./activateIntermediateMail')
+    axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
+
+
+    .then(response => {
+      console.log(response.data)
+      alert('die Intervallmail wird automatisch versendet')
+
+      })
+    .catch(function (err) {
+      console.log('error')
+      console.log(err.reponse);
+    })
+  }
+  else {
+
+    var host = window.location.host;
+
+    // axios.get(host+'/deactivateIntermediateMail')
+    axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMail')
+
+    .then(response => {
+      alert('automatische Email deaktiviert')
+
+      })
+    .catch(function (err) {
+      console.log('error')
+      console.log(err.response);
+    })
+
+  }
+})
+
 $('#customSwitch2').click(function(){
 
   if(this.checked == true)
