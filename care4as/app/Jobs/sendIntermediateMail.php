@@ -208,6 +208,8 @@ class sendIntermediateMail implements ShouldQueue
             );
         }
         else {
+            $dslcrcurrent = round($dslcrcurrent,2).'%';
+
             $emailarrayDSL[] = array(
               'dslcr' => $dslcrcurrent,
               'dslcr_differ' => 0,
@@ -237,7 +239,7 @@ class sendIntermediateMail implements ShouldQueue
 
       // $mailinglist = ['andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de'];
 
-      $mailinglist = ['andreas.robrahn@care4as.de'];
+      $mailinglist = Auth()->user()->email;
 
       Mail::to($mailinglist)->send($email);
 

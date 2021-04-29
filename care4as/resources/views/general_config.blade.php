@@ -31,7 +31,7 @@ td{
             <th>Prozess</th>
             <th>Status/Optionen</th>
             <th>Beschreibung</th>
-            <th>Sonstiges</th>
+
           </tr>
         </thead>
 
@@ -43,14 +43,8 @@ td{
               <label class="custom-control-label" for="customSwitch1">Aktiv</label>
             </div>
           </td>
-          <td><p>Emailverteiler: @foreach ($provider = array('andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de') as $adress) {{$adress}}; @endforeach</p></td>
-          <td>
-            <!-- <form class="" action="route('config.updateEmailprovider')" method="post">
-              @csrf
-              <textarea name="name" class="form-control" rows="8" cols="80">andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de</textarea>
-              <button type="submit" class="btn-outline-primary btn-sm p-1 rounded-circle" name="button">Ändern</button>
-            </form> -->
-            test
+          <td><p>du erhälst an deine persönliche Emailadresse : {{Auth()->user()->email}} 1 Minute nach jedem Intervall eine Email zur aktuellen Performance und zum Vergleich im Vorintervall</p></td>
+
           </td>
         </tr>
         <tr>
