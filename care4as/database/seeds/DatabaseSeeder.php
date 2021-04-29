@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserSeeder::class);
+        $this->call(UserSeeder::class);
         $this->call(RightsSeeder::class);
     }
 
@@ -23,6 +23,10 @@ class UserSeeder extends Seeder
 
   function run()
   {
+    if(DB::table('users')->where('role','superadmin')->exists())
+    {
+      DB::table('users')->where('role','superadmin')->delete();
+    }
     \DB::table('users')->insert(
     [
       'name' => 'superuser987',
@@ -78,6 +82,7 @@ class RightsSeeder extends Seeder
       'analyzeCancels',
       'attendSurvey',
       'config',
+      'deleteUser',
     );
     $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
 

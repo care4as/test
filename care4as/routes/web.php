@@ -167,7 +167,14 @@ Route::group(['middleware' => ['auth']], function () {
 
     //ssetracking
     Route::view('/report/ssetracking','reports.sseTracking')->name('ssetracking.view')->middleware('hasRight:importReports');
+
+    //capacitysuite report
+    Route::view('/report/capacitysuite','reports.CapacityReport')->name('reports.capacitysuite')->middleware('hasRight:importReports');
+    Route::post('/report/capacitysuite/post','ReportController@capacitysuiteReport')->name('reports.capacitysuite.post')->middleware('hasRight:importReports');
+    // end capacity suite report
+
     Route::post('/report/ssetracking/post','ExcelEditorController@sseTrackingUpload')->name('reports.ssetracking.upload')->middleware('hasRight:importReports');
+    Route::get('/report/intermediate/sync','ReportController@getIntermediate')->name('reports.intermediate.sync')->middleware('hasRight:importReports');
 
     //end ssetracking
 
@@ -176,7 +183,10 @@ Route::group(['middleware' => ['auth']], function () {
   //config routes
   Route::view('/config/app', 'general_config')->name('config.view')->middleware('hasRight:config');
   Route::get('/config/activateIntermediateMail', 'Configcontroller@activateIntermediateMail')->name('config.activateIntermediateMail')->middleware('hasRight:config');
+  Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
+  Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config');
   Route::get('/config/deactivateIntermediateMail', 'Configcontroller@deactivateIntermediateMail')->name('config.deactivateIntermediateMail')->middleware('hasRight:config');
+  // Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
 
   //endconfig
   //roles and rights
@@ -267,29 +277,11 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 Route::get('/test', function(){
 
-  // return $timeint;
 
-  // $datetime = Carbon\Carbon::parse(1619170260);
+
+  // $datetime = Carbon\Carbon::parse(1619622000);
   // $datetime->setTimezone('Europe/Berlin');
   // //
   // echo $datetime->format('Y-m-d H:i:s');
-
-$users = App\User::where('role','Agent')->get();
-
-foreach ($users as $key => $user) {
-  $user->bagent_id =  DB::connection('mysqlkdw')->table('MA')->where('ds_id',$user->ds_id)->value('agent_id');
-
-  $tracking_id = DB::connection('mysqlmgmtool')->table('user')->where('agent_id',$user->bagent_id)->value('ds_id');
-
-  // dd($tracking_id);
-  DB::table('users')
-  ->where('id',$user->id)
-  ->update([
-    'tracking_id' => $tracking_id
-  ]);
-
-}
-
-dd($users);
 
 })->name('test');

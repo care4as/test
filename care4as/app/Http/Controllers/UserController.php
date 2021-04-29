@@ -192,6 +192,9 @@ class UserController extends Controller
         if ($request->role) {
             $user->role = $request->role;
         }
+        if ($request->trackingid) {
+            $user->tracking_id = $request->trackingid;
+        }
 
         $user->save();
 
@@ -556,6 +559,7 @@ class UserController extends Controller
       ->whereIN('projekte.bezeichnung', array('1und1 Retention','1und1 DSL Retention'))
       ->where('MA.austritt',null)
       ->get();
+
 
       foreach($workers as $worker)
       {

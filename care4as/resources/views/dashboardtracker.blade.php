@@ -42,7 +42,7 @@
     <div class="w-100" id="accordion">
       <div class="col-12 d-flex justify-content-center align-self-center">
         <h5><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor:pointer;">
-          Filtermenü11111
+          Filtermenü
           <span class="material-icons">
             expand_more
             </span>
@@ -100,7 +100,12 @@
 
     var host = window.location.host;
 
+<<<<<<< HEAD
     axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+=======
+    // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+    axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
+>>>>>>> 40694866e91fe448f1b6f7c8f923ba8f3a827415
 
     .then(response => {
       // console.log(response)

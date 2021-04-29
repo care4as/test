@@ -57,7 +57,13 @@ class LoginController extends Controller
 
       if(Auth::attempt($credentials))
       {
-        return Redirect()->route('dashboard');
+        if(Auth::User()->role == 'Agent')
+        {
+          return Redirect()->route('dashboard');
+        }
+        else {
+          return Redirect()->route('dashboard.admin');
+        }
       }
       else {
           return view('auth.login')->withErrors('Zugangsdaten falsch');
