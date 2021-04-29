@@ -50,7 +50,7 @@ $('#customSwitch1').click(function(){
     var host = window.location.host;
     console.log(host)
 
-    axios.get(host+'/care4as/care4as/public/config/activateIntermediateMail')
+    axios.get('./activateIntermediateMail')
 
     .then(response => {
       alert('Zwischenstandsmail aktiviert')
@@ -64,7 +64,7 @@ $('#customSwitch1').click(function(){
   else {
 
     var host = window.location.host;
-    axios.get(host+'/care4as/care4as/public/config/deactivateIntermediateMail')
+    axios.get(host+'/deactivateIntermediateMail')
     .then(response => {
       alert('Zwischenstandsmail deaktiviert')
 

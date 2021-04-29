@@ -1,4 +1,4 @@
-@extends('general_layout')
+﻿@extends('general_layout')
 
 @section('additional_css')
 <style>
@@ -42,7 +42,7 @@
     <div class="w-100" id="accordion">
       <div class="col-12 d-flex justify-content-center align-self-center">
         <h5><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor:pointer;">
-          Filtermenüg
+          Filtermenü11111
           <span class="material-icons">
             expand_more
             </span>
@@ -65,15 +65,7 @@
                   <div class="col-4 p-0 mr-2">
                     <label for="department">Welche MA:</label>
                     <select multiple class="form-control" name="employees[]" id="employees" style="height: 150px; overflow:scroll;">
-                      <!-- @if(request('department'))
-                        @foreach($users1 = App\User::where('department',request('department'))->where('role','agent')->get() as $user)
-                          <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
-                        @endforeach
-                      @else
-                        @foreach($users1 = App\User::where('role','agent')->where('department','1&1 Mobile Retention')->get() as $user)
-                          <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
-                        @endforeach
-                      @endif -->
+                   
                     </select>
                   </div>
                 </div>
@@ -86,6 +78,7 @@
     </div>
     </form>
   </div>
+
   <div class="row bg-care4as-light p-2 justify-content-center  w-100">
       @foreach($users as $user)
       <div class="col-designed m-3 p-1 border bg-white rounded shadow">
@@ -107,7 +100,7 @@
 
     var host = window.location.host;
 
-    axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
+    axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
 
     .then(response => {
       // console.log(response)

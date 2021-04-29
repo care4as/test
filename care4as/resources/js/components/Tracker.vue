@@ -22,7 +22,7 @@ export default {
     }
   },
     mounted() {
-        console.log('Tracker Component mounted.')
+        console.log('Tracker Component mounted12.')
         this.getUserData(this.userid)
     },
   methods:{
@@ -61,10 +61,10 @@ export default {
   },
   getUserData(id)
   {
-
-    axios.get('http://fl-tl-068.care4as.de/care4as/care4as/public/user/getTracking/'+this.userid)
+	console.log('test')
+    axios.get('/user/getTracking/'+this.userid)
     .then(response => {
-      // console.log(response)
+      console.log(response)
       if(response.data[0][0])
       {
         // console.log(response.data)

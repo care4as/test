@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
     <head>
         <meta charset="utf-8">
@@ -34,7 +34,7 @@
                 <th>Portal-Saves</th>
                 <th>+-</th>
               </tr>
-              @for($i = 0; $i < count($data['mobile'])-1; $i++)
+              @for($i = 0; $i < count($data['mobile']); $i++)
               <tr style="background-color: @if($i % 2 == 0) #ddf8e8 @else #fefdfa @endif; ">
                 <td>{{$data['mobile'][$i]['name']}}</td>
 
@@ -75,7 +75,7 @@
                 <th>+-</th>
                 <th>Kürü</th>
               </tr>
-              @for($i = 0; $i < count($data['dsl'])-1; $i++)
+              @for($i = 0; $i < count($data['dsl']); $i++)
               <tr style="background-color: @if($i % 2 == 0) #ddf8e8 @else #fefdfa @endif; ">
                 <td>{{$data['dsl'][$i]['name']}}</td>
 

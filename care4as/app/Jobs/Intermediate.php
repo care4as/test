@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Jobs;
 
@@ -220,7 +220,9 @@ class Intermediate implements ShouldQueue
     $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $ssccr,'dslcr' => $dslcr, 'mobile' => $emailarray, 'dsl' => $emailarrayDSL);
     // dd($emailarray);
     $email = new IntermediateMail($data);
+
     $mailinglist = ['andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de'];
+
     Mail::to($mailinglist)->send($email);
     if (Mail::failures()) {
       foreach(Mail::failures() as $email_address) {
