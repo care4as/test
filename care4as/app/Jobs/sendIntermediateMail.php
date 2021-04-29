@@ -249,7 +249,14 @@ class sendIntermediateMail implements ShouldQueue
               $logentry->logEntry("Fehler Email - $email_address <br />");
            }
          }
-    $this::dispatch()->delay(now()->add($asString))->onConnection('database');   
+
+     $time =  time();
+     $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
+     $timediff = intval($nextHalfHour)-$time;
+
+     $asString = ($timediff/60) + 1 .' Minutes';
+     
+    $this::dispatch()->delay(now()->add($asString))->onConnection('database');
     }
 
 }
