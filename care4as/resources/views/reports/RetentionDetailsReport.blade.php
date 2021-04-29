@@ -44,7 +44,7 @@
           <button type="button" id="dropZoneSubmitter" class="btn btn-sm btn-block" name="button">Absenden</button>
         </div>
       </form>
-      
+
       <form class="" action="{{route('excel.test')}}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="file" name="file" value="">

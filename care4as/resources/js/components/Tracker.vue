@@ -1,8 +1,8 @@
-<template>
+﻿<template>
   <div class="row justify-content-center w-100" v-if="this.isHidden == false">
     <button type="button" name="button" id="closebutton" style="position:absolute; top: 5px; right: 5px" @click='closeElement()'>X</button>
     <div class="col-12 bg-light">
-    <canvas v-bind:id ="'myChart' + this.userid"></canvas>
+      <canvas v-bind:id ="'myChart' + this.userid"></canvas>
     </div>
   </div>
 
@@ -19,42 +19,73 @@ export default {
       testusers: [1,2,3],
       data: null,
       isHidden: false,
+      timer: '',
     }
   },
     mounted() {
+
+
+        var self = this;
         console.log('Tracker Component mounted.')
+
         this.getUserData(this.userid)
+
+        setInterval(function()
+        {
+          self.getUserData(self.userid)
+        }, 600000);
     },
   methods:{
     createChart(chartId, chartData) {
 
     const ctx = document.getElementById(chartId);
     const myChart = new Chart(ctx, {
-      type: 'line',
+      type: 'bar',
+
 
       data: {
-        labels:chartData[0],
-        datasets: [{
+          datasets: [{
+           type: 'line',
+           label: 'CR',
            data: chartData[1],
            fill: false,
-           backgroundColor: [
-               'rgba(255, 99, 132, 0.2)',
-           ],
-           borderColor: [
-               'rgba(255, 99, 132, 1)',
-           ],
+           backgroundColor: 'rgba(41, 241, 195, 1)',
+           borderColor: 'rgba(41, 241, 195, 1)',
            borderWidth: 1
-       }]
+       },
+       {
+          label: 'Calls',
+          type: 'bar',
+          yAxisID: 'B',
+          data: chartData[2],
+          backgroundColor: 'rgba(255, 99, 132)',
+          borderWidth: 1
+    }],
+    labels:chartData[0],
      },
      options: {
          scales: {
            yAxes: [{
+             id: 'A',
+             type:'linear',
+             position: 'left',
              ticks: {
                beginAtZero: true,
                min: 0,
                max: 100,
            }
-           }]
+         },
+         {
+           id: 'B',
+           type:'linear',
+           position: 'right',
+           ticks: {
+             max: 10,
+             min: 0,
+           }
+         }
+
+       ]
          }
        }
     });
@@ -62,9 +93,17 @@ export default {
   getUserData(id)
   {
 
-    axios.get('http://fl-tl-068.care4as.de/care4as/care4as/public/user/getTracking/'+this.userid)
+    console.log('test')
+    
+
+    console.log('update für user:' + id)
+
+    document.querySelectorAll('.col-12 bg-light').forEach(function(column) {
+      column.innerHTML = ''
+    })
+    axios.get('/user/getTracking/'+this.userid)
     .then(response => {
-      // console.log(response)
+      console.log(response)
       if(response.data[0][0])
       {
         // console.log(response.data)
@@ -90,5 +129,6 @@ export default {
 
   }
 },
-}
+
+    }
 </script>

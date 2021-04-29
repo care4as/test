@@ -1960,35 +1960,60 @@ __webpack_require__.r(__webpack_exports__);
     return {
       testusers: [1, 2, 3],
       data: null,
-      isHidden: false
+      isHidden: false,
+      timer: ''
     };
   },
   mounted: function mounted() {
+    var self = this;
     console.log('Tracker Component mounted.');
     this.getUserData(this.userid);
+    setInterval(function () {
+      self.getUserData(self.userid);
+    }, 600000);
   },
   methods: {
     createChart: function createChart(chartId, chartData) {
       var ctx = document.getElementById(chartId);
       var myChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
-          labels: chartData[0],
           datasets: [{
+            type: 'line',
+            label: 'CR',
             data: chartData[1],
             fill: false,
-            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-            borderColor: ['rgba(255, 99, 132, 1)'],
+            backgroundColor: 'rgba(41, 241, 195, 1)',
+            borderColor: 'rgba(41, 241, 195, 1)',
             borderWidth: 1
-          }]
+          }, {
+            label: 'Calls',
+            type: 'bar',
+            yAxisID: 'B',
+            data: chartData[2],
+            backgroundColor: 'rgba(255, 99, 132)',
+            borderWidth: 1
+          }],
+          labels: chartData[0]
         },
         options: {
           scales: {
             yAxes: [{
+              id: 'A',
+              type: 'linear',
+              position: 'left',
               ticks: {
                 beginAtZero: true,
                 min: 0,
                 max: 100
+              }
+            }, {
+              id: 'B',
+              type: 'linear',
+              position: 'right',
+              ticks: {
+                max: 10,
+                min: 0
               }
             }]
           }
@@ -1998,8 +2023,14 @@ __webpack_require__.r(__webpack_exports__);
     getUserData: function getUserData(id) {
       var _this = this;
 
-      axios.get('http://fl-tl-068.care4as.de/care4as/care4as/public/user/getTracking/' + this.userid).then(function (response) {
-        // console.log(response)
+      console.log('test');
+      console.log('update für user:' + id);
+      document.querySelectorAll('.col-12 bg-light').forEach(function (column) {
+        column.innerHTML = '';
+      });
+      axios.get('/user/getTracking/' + this.userid).then(function (response) {
+        console.log(response);
+
         if (response.data[0][0]) {
           // console.log(response.data)
           _this.createChart('myChart' + _this.userid, response.data);
@@ -93447,8 +93478,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TrainingsSimulator_vue_vue_type_style_index_0_media_screen_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./TrainingsSimulator.vue?vue&type=style&index=0&media=screen&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TrainingsSimulator.vue?vue&type=style&index=0&media=screen&lang=css&");
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TrainingsSimulator_vue_vue_type_style_index_0_media_screen_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TrainingsSimulator_vue_vue_type_style_index_0_media_screen_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TrainingsSimulator_vue_vue_type_style_index_0_media_screen_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TrainingsSimulator_vue_vue_type_style_index_0_media_screen_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TrainingsSimulator_vue_vue_type_style_index_0_media_screen_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TrainingsSimulator_vue_vue_type_style_index_0_media_screen_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TrainingsSimulator_vue_vue_type_style_index_0_media_screen_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -93488,8 +93519,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Program Files\XAMPP\htdocs\care4as\care4as\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Program Files\XAMPP\htdocs\care4as\care4as\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\care4as\care4as\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\care4as\care4as\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

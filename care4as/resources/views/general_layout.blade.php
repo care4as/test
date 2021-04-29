@@ -54,7 +54,8 @@
         <ul class="nav">
           @if(in_array('dashboard',Auth()->user()->rights))
           <li class="">
-            <a href="{{route('dashboard')}}">
+
+            <a @if(Auth::User()->role == 'Agent') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
               <i class="fas fa-table"></i>
               <p><b>Dashboard</b></p>
             </a>
@@ -229,6 +230,7 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
               <li><a href="{{route('reports.choose')}}">Top/Worst Report</a> </li>
               <li><a href="{{route('reports.AHTdaily')}}">AHT Report</a> </li>
+              <li><a href="{{route('reports.capacitysuite')}}">Capacity Report </a> </li>
               <li><a href="route('feedback.myIndex')">Special Mistery Report </a> </li>
             </ul>
           </li>

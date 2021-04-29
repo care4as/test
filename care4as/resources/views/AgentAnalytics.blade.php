@@ -108,7 +108,7 @@
                       </tr>
                       <tr>
                         <th>Tracking ID</th>
-                        <td><input class="form-control" type="text" name="kdwid" value="{{$user->tracking_id}}"></td>
+                        <td><input class="form-control" type="text" name="trackingid" value="{{$user->tracking_id}}"></td>
                       </tr>
                     </table>
                   </td>

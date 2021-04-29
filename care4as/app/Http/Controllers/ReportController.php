@@ -11,6 +11,7 @@ use App\DailyAgent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use App\Jobs\Intermediate;
 
 class ReportController extends Controller
 {
@@ -316,8 +317,200 @@ class ReportController extends Controller
       // dd($finalValues);
       return view('reports.AHTdaily', compact('finalValuesMob','finalValuesDSL'));
     }
-    public function FunctionName($value='')
+    public function sendIntermediateMail($value='')
     {
       App\Jobs\SendCRMail::dispatch()->onConnection('sync');
+    }
+    public function getIntermediate($value='')
+    {
+      Intermediate::dispatch('nonsync')->onQueue('intermediate')->onConnection('sync');
+      return redirect()->back();
+    }
+    public function capacitysuiteReport(Request $request)
+    {
+      // dd($request);
+
+      $request->validate([
+        'department' => 'required',
+        'start_date' => 'required',
+        'end_date' => 'required',
+      ]);
+
+      $from = Carbon::parse($request->start_date);
+      $to = Carbon::parse($request->end_date);
+
+      $diff_in_days = $to->diffInDays($from);
+
+      // dd($diff_in_days);
+
+      $department = array();
+
+      if ($request->department == 'Mobile') {
+        $department = 7;
+      }
+      else {
+          $department = 10;
+      }
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+
+
+      $days = 0;
+      $sichknessquota = null;
+      $vacationquota = null;
+      $trainingquota = null;
+      $meetingquota = null;
+      $otherabsencequota = null;
+      $oparray = array();
+
+      $headarray = array(
+        'target_date',
+        'duration_days',
+        'workgroup_name',
+        'agent_id',
+        'agent_login_name',
+        'contract_leaving_date',
+        'heads',
+        'new_in_contract_heads',
+        'new_in_workgroup_heads',
+        'leaving_contract_heads',
+        'leaving_workgroup_heads',
+        'avg_contract_hrs',
+        'avg_min_hrs',
+        'avg_max_hrs',
+        'staffed_hrs',
+        'sickness_hrs',
+        'vacation_hrs',
+        'training_hrs',
+        'meeting_hrs',
+        'bank_holiday_hrs',
+        'other_absence_hrs',
+        'net_hrs',
+        'unpaid_hrs',
+        'shift_1_start',
+        'shift_1_stop',
+        'shift_2_start',
+        'shift_2_stop',
+        'shift_3_start',
+        'shift_3_stop',
+        'shift_4_start',
+        'shift_4_stop',
+        'comment'
+      );
+
+      $users = DB::connection('mysqlkdw')
+      ->table('MA')
+      ->where('projekt_id', $department)
+      ->whereNull('austritt')
+      ->whereNotNull('ext_reference_1')
+      ->orderBy('familienname','ASC')
+      ->get();
+
+
+      // $users = App\User::all();
+      // dd($users);
+
+      $oparray[] = $headarray;
+
+      for ($i=0; $i <= $diff_in_days + 1; $i++) {
+
+        if ($i == 0) {
+          $day = $from->subDays(1)->format('d.m.Y');
+        }
+        elseif ($i == 1) {
+          $day = Carbon::today()->format('d.m.Y');
+        }
+        else {
+          $day = Carbon::today()->addDays($i-1)->format('d.m.Y');
+        }
+
+        foreach($users as $user)
+        {
+          if($user->soll_h_day)
+          {
+
+            $valuearray = array();
+
+            $valuearray[] = $day;
+            $valuearray[] = 1;
+
+            if ($user->projekt_id == 7) {
+
+              $valuearray[] = 'WG_CARE4AS_SL_RETENTIONMOBILE_I';
+            }
+            else {
+
+              $valuearray[] = 'WG_CARE4AS_FL_RETENTIONDSL_I';
+            }
+
+            $valuearray[] = $user->ds_id;
+            $valuearray[] = $user->ext_reference_1;
+            $valuearray[] = null;
+            $valuearray[] = 1;
+            $valuearray[] = 0;
+            $valuearray[] = 0;
+            $valuearray[] = 0;
+            $valuearray[] = 0;
+            $valuearray[] = $user->soll_h_day*5;
+            $valuearray[] = $user->soll_h_day*4;
+            $valuearray[] = $user->soll_h_day*6;
+
+            //staffed_hours
+            $valuearray[] = $user->soll_h_day;
+            //sickness
+            $valuearray[] = $sh = $user->soll_h_day * 0.08;
+            //vacation
+            $valuearray[] = $vh = $user->soll_h_day * 0.08;
+            //training
+            $valuearray[] = $th = $user->soll_h_day * 0.02;
+            //meeting
+            $valuearray[] = $mh = $user->soll_h_day * 0.01;
+            //bank holidays
+            $valuearray[] = null;
+            //other absence
+            $valuearray[] = number_format($voa = $user->soll_h_day * 0.25, 2, ',', '.');
+
+            //net hrs
+            $valuearray[] = number_format($user->soll_h_day - $sh -$vh-$th-$mh-$voa, 2, ',', '.');
+
+            //unpaid hrs
+            $valuearray[] = 0;
+            //shift_1_start
+            $valuearray[] = null;
+            //shift_1_stop
+            $valuearray[] = null;
+            //shift_2_start
+            $valuearray[] = null;
+            //shift_2_stop
+            $valuearray[] = null;
+            //shift_3_start
+            $valuearray[] = null;
+            //shift_3_stop
+            $valuearray[] = null;
+            //shift_4_strt
+            $valuearray[] = null;
+            //shift_4_stop
+            $valuearray[] = null;
+            $valuearray[] = 'Tagesbericht';
+
+            $oparray[] = $valuearray;
+          }
+        }
+      }
+      //
+      // dd('test');
+
+      header('Content-Type: text/csv');
+      header('Content-Disposition: attachment; filename="sample.csv"');
+
+      $fp = fopen('php://output', 'wb');
+
+      foreach ( $oparray as $line ) {
+
+        fputcsv($fp, $line);
+      }
+
+      fclose($fp);
     }
 }
