@@ -161,6 +161,12 @@ class UserController extends Controller
         if ($request->person_id) {
           $user->person_id = $request->person_id;
         }
+        if ($request->email && Auth()->user()->id == $user->id) {
+          $user->email = $request->email;
+        }
+        else {
+          abort(403,'Du darfst nur deine eigene Email ändern');
+        }
 
         if ($request->dailyhours) {
           $user->dailyhours = $request->dailyhours;

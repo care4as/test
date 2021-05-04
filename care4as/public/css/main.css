@@ -34,11 +34,11 @@ body
     display: flex;
     justify-content: center;
   }
-  .lds-spinner, .lds-spinner-sm div {
+  .lds-spinner div {
     transform-origin: 40px 40px;
     animation: lds-spinner 1.2s linear infinite;
   }
-  .lds-spinner, .lds-spinner-sm div:after {
+  .lds-spinner div:after {
     content: " ";
     /* display: block; */
     position: absolute;
@@ -49,7 +49,7 @@ body
     border-radius: 20%;
     background: #fff;
   }
-  .lds-spinner, .lds-spinner-sm div:nth-child(1) {
+  .lds-spinner div:nth-child(1) {
     transform: rotate(0deg);
     animation-delay: -1.1s;
   }

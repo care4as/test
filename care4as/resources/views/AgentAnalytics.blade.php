@@ -74,6 +74,14 @@
                         <td><input class="form-control" type="text" name="lastname" value="{{$user->lastname}}"></td>
                       </tr>
                       <tr>
+                      @if(Auth()->user()->id == $user->id)
+                        <tr>
+                          <th>Email</th>
+                          <td><input class="form-control" type="text" name="email" value="{{$user->email}}"></td>
+                        </tr>
+                      @endif
+
+                      <tr>
                         <th>Rolle</th>
                         <td><select class="form-control" type="text" name="role">
                           @foreach($roles as $role)
@@ -89,6 +97,7 @@
                     </table>
                   </td>
                   <td>
+                    @if(in_array('updateUser',Auth()->user()->rights))
                     <table class="" style="">
                       <tr>
                         <th>PersonID</th>
@@ -111,6 +120,7 @@
                         <td><input class="form-control" type="text" name="trackingid" value="{{$user->tracking_id}}"></td>
                       </tr>
                     </table>
+                    @endif
                   </td>
                 </tr>
               </table>

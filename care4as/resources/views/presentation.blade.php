@@ -559,20 +559,32 @@
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
                   table.colReorder.order( [0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30],true);
-                  console.log($(table.columns().footer()))
 
-                  console.log('erfolg')
+                  // console.log($(table.columns().footer()))
                   // table.colReorder.order( [1,3,4,26,27,5,7,9,10,8,17,18,24,25,28]);
                   break;
                 case 'crview':
-                table.colReorder.reset();
-                table.columns().visible( false );
-                table.columns([0,1,8,9,11,12,13,14,17,18,19,20,21,22,30]).visible( true );
-                $('.DTFC_LeftBodyWrapper').hide()
-                $('.DTFC_RightWrapper').hide()
-                $('#tableoverview').css('margin','0px');
-                table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30]);
-                // table.columns.adjust().draw();
+                  // table.colReorder.reset();
+                  table.columns().visible( false );
+                  table.columns([0,1,18,19,21,20,22,8,9,23,24,16,25,30]).visible( true );
+
+                  $('.DTFC_LeftBodyWrapper').hide()
+                  $('.DTFC_RightWrapper').hide()
+                  $('#tableoverview').css('margin','0px');
+
+                  table.colReorder.order( [0,1,18,19,21,20,22,8,9,23,24,16,25,30],true);
+                  console.log('test cr')
+                  // table.columns.adjust().draw();
+                break;
+                case 'timesview':
+                  table.colReorder.reset();
+                  table.columns().visible( false );
+                  table.columns([0,1,2,3,4,5,6,28,30]).visible( true );
+                  $('.DTFC_LeftBodyWrapper').hide()
+                  $('.DTFC_RightWrapper').hide()
+                  $('#tableoverview').css('margin','0px');
+                  table.colReorder.order( [1,2,3,4,5,6,28,30]);
+                  // table.columns.adjust().draw();
                 break;
               }
 
