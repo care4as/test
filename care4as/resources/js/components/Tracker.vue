@@ -82,10 +82,7 @@ export default {
              max: 10,
              min: 0,
            }
-         }
-
-       ]
-         }
+         }]}
        }
     });
   },
@@ -100,7 +97,11 @@ export default {
     document.querySelectorAll('.col-12 bg-light').forEach(function(column) {
       column.innerHTML = ''
     })
-    axios.get('/user/getTracking/'+this.userid)
+
+    var host = window.location.host;
+
+    axios.get('http://'+host+'/care4as/care4as/public/user/getTracking/'+this.userid)
+    // axios.get('/user/getTracking/'+this.userid)
     .then(response => {
       console.log(response)
       if(response.data[0][0])
@@ -121,10 +122,8 @@ export default {
   closeElement()
   {
 
-    console.log($(this.$el).parent()[0].remove())
-
+    $(this.$el).parent()[0].remove()
       // remove the element from the DOM
-    // $(this.$el).remove();
 
   }
 },

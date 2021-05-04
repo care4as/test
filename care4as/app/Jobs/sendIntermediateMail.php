@@ -22,9 +22,11 @@ class sendIntermediateMail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    protected $email;
+
+    public function __construct($email)
     {
-        //
+        $this->email = $email;
     }
 
     /**
@@ -34,6 +36,7 @@ class sendIntermediateMail implements ShouldQueue
      */
     public function handle()
     {
+
       $currentSSCCR = 0;
       $dslcr = 0;
 
@@ -45,10 +48,15 @@ class sendIntermediateMail implements ShouldQueue
 
       $userids = DB::table('intermediate_status')->whereDate('date', Carbon::today())->pluck('person_id');
 
+
       $users = User::whereIn('person_id',$userids)
       ->with('intermediatesLatest')
       ->get();
 
+      if(!$users->first())
+      {
+
+      }
       // if($mobileSalesSata->sum('calls_ssc') == 0)
       // {
       //   $ssccr = 'Daten noch nicht auswertbar';
@@ -63,6 +71,7 @@ class sendIntermediateMail implements ShouldQueue
       // else {
       //   $dslcr = round($dslSalesData->sum('ret_de_1u1_rt_save')*100/$dslSalesData->sum('calls'),2).'%';
       // }
+
 
       foreach($users as $user)
       {
@@ -166,6 +175,7 @@ class sendIntermediateMail implements ShouldQueue
         $allSscOrders += $user->intermediatesLatest->SSC_Orders;
 
       }
+
       //if the agent is in the dsl department
       else {
 
@@ -228,9 +238,21 @@ class sendIntermediateMail implements ShouldQueue
         }
       }
 
-      // dd($emailarray);
-      $currentSSCCR =  round($allSscOrders * 100 / $allSscCalls,2).'%';
-      $currentDSLCR =  round($allDLSOrders * 100 / $allDSLCalls,2).'%';
+      if ($allSscCalls != 0) {
+
+        $currentSSCCR =  round($allSscOrders * 100 / $allSscCalls,2).'%';
+      }
+      else {
+        $currentSSCCR = 0;
+      }
+
+      if ($allDSLCalls != 0) {
+        $currentDSLCR =  round($allDLSOrders * 100 / $allDSLCalls,2).'%';
+      }
+      else {
+        $currentDSLCR = 0;
+      }
+
 
       $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'dslcr' => $currentDSLCR, 'mobile' => $emailarray, 'dsl' => $emailarrayDSL);
 
@@ -239,7 +261,7 @@ class sendIntermediateMail implements ShouldQueue
 
       // $mailinglist = ['andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de'];
 
-      $mailinglist = Auth()->user()->email;
+      $mailinglist = $this->email;
 
       Mail::to($mailinglist)->send($email);
 
@@ -251,12 +273,22 @@ class sendIntermediateMail implements ShouldQueue
          }
 
      $time =  time();
-     $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
-     $timediff = intval($nextHalfHour)-$time;
 
-     $asString = ($timediff/60) + 1 .' Minutes';
-     
-    $this::dispatch()->delay(now()->add($asString))->onConnection('database');
-    }
+     if (Carbon::parse($time) < Carbon::createFromTimeString('22:00'))
+     {
+       $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
+       $timediff = intval($nextHalfHour)-$time;
+
+       $asString = ($timediff/60) + 1 .' Minutes';
+     }
+     else {
+       $tommororowMorning = Carbon::createFromTimeString('08:00')->addDay();
+       $timediff = intval($tommororowMorning) - $time;
+
+       $asString = ($timediff/60) + 1 .' Minutes';
+     }
+
+    $this::dispatch($this->email)->delay(now()->add($asString))->onConnection('database');
+  }
 
 }

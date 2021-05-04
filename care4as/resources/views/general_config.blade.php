@@ -39,7 +39,7 @@ td{
           <td>Automatische Zwischenstandsmail</td>
           <td>
             <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="customSwitch1" >
+              <input type="checkbox" class="custom-control-input" id="customSwitch1" @if(DB::table('jobs')->where('queue','default')->exists()) checked @else unchecked @endif>
               <label class="custom-control-label" for="customSwitch1">Aktiv</label>
             </div>
           </td>

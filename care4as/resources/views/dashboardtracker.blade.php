@@ -65,7 +65,7 @@
                   <div class="col-4 p-0 mr-2">
                     <label for="department">Welche MA:</label>
                     <select multiple class="form-control" name="employees[]" id="employees" style="height: 150px; overflow:scroll;">
-                   
+
                     </select>
                   </div>
                 </div>
@@ -100,12 +100,11 @@
 
     var host = window.location.host;
 
-<<<<<<< HEAD
-    axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
-=======
+    // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+
     // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
     axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
->>>>>>> 40694866e91fe448f1b6f7c8f923ba8f3a827415
+
 
     .then(response => {
       // console.log(response)

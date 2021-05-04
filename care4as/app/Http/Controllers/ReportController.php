@@ -8,6 +8,7 @@ use App\Mail\BestWorst;
 use App\Mail\FAMail;
 use App\User;
 use App\DailyAgent;
+use App\Hoursreport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
@@ -512,5 +513,17 @@ class ReportController extends Controller
       }
 
       fclose($fp);
+    }
+    public function dailyAgentDataStatus()
+    {
+      return array($min = Carbon::parse(DailyAgent::min('date'))->format('d.m.Y H:i:s'), $max= Carbon::parse(DailyAgent::max('date'))->format('d.m.Y H:i:s'));
+    }
+    public function HRDataStatus()
+    {
+      return array($min = Carbon::parse(Hoursreport::min('work_date'))->format('d.m.Y'), $max= Carbon::parse(Hoursreport::max('work_date'))->format('d.m.Y'));
+    }
+    public function RDDataStatus()
+    {
+      return array($min = Carbon::parse(RetentionDetail::min('call_date'))->format('d.m.Y'), $max= Carbon::parse(RetentionDetail::max('call_date'))->format('d.m.Y'));
     }
 }

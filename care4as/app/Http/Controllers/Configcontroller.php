@@ -11,7 +11,8 @@ class Configcontroller extends Controller
 {
     public function sendIntermediateMail()
     {
-      sendIntermediateMail::dispatch()->onConnection('sync');
+      $email = Auth()->user()->email;
+      sendIntermediateMail::dispatch($email)->onConnection('sync');
       return redirect()->back();
     }
 
@@ -23,7 +24,10 @@ class Configcontroller extends Controller
 
       $asString = ($timediff/60) + 1 .' Minutes';
 
-      sendIntermediateMail::dispatch()->delay(now()->add($asString))->onConnection('database');
+      $email = Auth()->user()->email;
+      // return $email;
+
+      sendIntermediateMail::dispatch($email)->delay(now()->add($asString))->onConnection('database');
 
       // return 'tolle';
     }

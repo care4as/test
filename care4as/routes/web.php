@@ -92,6 +92,9 @@ Route::group(['middleware' => ['auth']], function () {
 
   //AHTReport
   Route::get('/report/AHTdaily', 'ReportController@AHTdaily')->name('reports.AHTdaily')->middleware('hasRight:sendReports');
+  Route::get('reports/dailyAgentDataStatus', 'ReportController@dailyAgentDataStatus')->name('reports.dailyAgentDataStatus')->middleware('hasRight:sendReports');
+  Route::get('reports/HRDataStatus', 'ReportController@HRDataStatus')->name('reports.HRDataStatus')->middleware('hasRight:sendReports');
+  Route::get('reports/RDDataStatus', 'ReportController@RDDataStatus')->name('reports.RDDataStatus')->middleware('hasRight:sendReports');
   //endreport
   Route::get('/retentiondetails/removeDuplicates', function(){
     DB::statement(
@@ -280,6 +283,7 @@ Route::get('/test', function(){
 
 
 
+  return redirect()->route('config.activateIntermediateMail');
   // $datetime = Carbon\Carbon::parse(1619622000);
   // $datetime->setTimezone('Europe/Berlin');
   // //

@@ -49,6 +49,14 @@
   {
     display: hidden;
   }
+  .loadinger{
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+  from {color: black;}
+  to {color: white;}
+}
 
 </style>
 
@@ -60,7 +68,6 @@
   <div class="row justify-content-center align-self-center m-1">
       <h4 >Präsentation des aktuellen Moduls: {{$modul ?? ''}}</h4>
   </div>
-
   <div class="row bg-white shadow  m-1 mt-4">
     <div class="col-12">
       <h4 class="text-center">Aktueller Datenstand:</h4>
@@ -69,7 +76,8 @@
       @if(!App\DailyAgent::min('date'))
         <h5>keine Daten eingegeben</h5>
       @else
-        <h5>Daily Agent im Zeitraum vom <u>{{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
+        <div class="loadingerDA">Lade Daten DailyAgent...</div>
+        <span id="dailyagentData" style="display: none;">  </span>
       @endif
     </div>
     <div class="col-2">
@@ -83,7 +91,9 @@
         @if(!App\Hoursreport::min('work_date'))
           <h5>keine Daten eingegeben</h5>
         @else
-          <h5>Stundenreport im Zeitraum vom <u>{{Carbon\Carbon::parse(DB::table('hours_report_imitation')->min('work_date'))->format('d.m.Y')}}</u>  bis zum <u>{{Carbon\Carbon::parse(DB::table('hours_report_imitation')->max('work_date'))->format('d.m.Y ')}}</u> </h5>
+          <div class="loadingerHR">Lade Daten Stundenreport...</div>
+
+          <span id="HoursreportData" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
         @endif
       </div>
       <div class="col-2">
@@ -93,7 +103,12 @@
         <a href="{{route('user.connectUsersToKDW')}}"><button type="button" class="btn btn-sm btn-success border-round" name="button">Userdaten verknüpfen</button></a>
       </div>
       <div class="col-8">
-        <h5>Retention Details vom <u>{{Carbon\Carbon::parse(App\RetentionDetail::min('call_date'))->format('d.m.Y')}}</u> bis zum <u>{{Carbon\Carbon::parse(App\RetentionDetail::max('call_date'))->format('d.m.Y')}}</u></h5>
+        @if(!App\RetentionDetail::min('call_date'))
+          <h5>keine Daten eingegeben</h5>
+        @else
+          <div class="loadingerRD">Lade Daten Retention Details...</div>
+          <span id="RDDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+        @endif
       </div>
       <div class="col-2">
         <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
@@ -362,7 +377,6 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
-
     let table = $('#tableoverview').DataTable({
 
       "footerCallback": function ( row, data, start, end, display ) {
@@ -461,6 +475,71 @@
           ],
         });
 
+        let host = window.location.host;
+
+        axios.get('http://'+host+'/care4as/care4as/public/reports/dailyAgentDataStatus')
+        // axios.get('http://'+host+'/reports/dailyAgentDataStatus')
+        .then(response => {
+
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+
+          let element = $('#dailyagentData')
+
+          $('.loadingerDA').toggle()
+
+          element.css( 'display','block')
+          element.html('DailyAgent Daten im Zeitraum '+min+' bis: '+max)
+
+        })
+        .catch(function (err) {
+          console.log('error DataStatus')
+          console.log(err.response);
+        });
+
+        axios.get('http://'+host+'/care4as/care4as/public/reports/HRDataStatus')
+        // axios.get('http://'+host+'/reports/HRDataStatus')
+        .then(response => {
+
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+
+          let element = $('#HoursreportData')
+
+          $('.loadingerHR').toggle()
+
+          element.css( 'display','block')
+          element.html('Stundenreport Daten im Zeitraum '+min+' bis: '+max)
+
+        })
+        .catch(function (err) {
+          console.log('error DataStatus')
+          console.log(err.response);
+        });
+
+        axios.get('http://'+host+'/care4as/care4as/public/reports/RDDataStatus')
+        // axios.get('http://'+host+'/reports/RDDataStatus')
+        .then(response => {
+
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+
+          let element = $('#RDDataStatus')
+
+          $('.loadingerRD').toggle()
+
+          element.css( 'display','block')
+          element.html('RetentionDetail Daten im Zeitraum '+min+' bis: '+max)
+
+        })
+        .catch(function (err) {
+          console.log('error DataStatus')
+          console.log(err.response);
+        });
+
         if (document.querySelector('input[name="view"]')) {
           document.querySelectorAll('input[name="view"]').forEach((elem) => {
             elem.addEventListener("click", function(event) {
@@ -502,6 +581,8 @@
             });
           });
         }
+
+
 
       });
 </script>
