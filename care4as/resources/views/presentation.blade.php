@@ -49,14 +49,16 @@
   {
     display: hidden;
   }
-  .loadinger{
+
+  .loadingerDA, .loadingerHR, .loadingerRD
+  {
     animation: blink 2s infinite;
   }
 
   @keyframes blink {
   from {color: black;}
   to {color: white;}
-}
+  }
 
 </style>
 

@@ -182,26 +182,32 @@ class sendIntermediateMail implements ShouldQueue
         if ( $user->intermediatesLatest->Calls == 0) {
 
             $dslcrcurrent = 0;
+            $dslcr_differ = 0;
         }
 
         else {
+
           $dslcrcurrent = $user->intermediatesLatest->Orders*100 / $user->intermediatesLatest->Calls;
         }
 
         if($formerValues)
         {
-
             $callsDiff = $user->intermediatesLatest->Calls - $formerValues->Calls;
             $ordersDiff = $user->intermediatesLatest->Orders - $formerValues->Orders;
 
             if ($formerValues->Calls == 0) {
 
-              $dslcr_differ = 0;
-
+              $formerdslcr = 0;
             }
             else {
-              $formerdslcr = $formerValues->Orders*100/$formerValues->Calls;
-            }
+
+                $formerdslcr = $formerValues->Orders *100 / $formerValues->Calls;
+              }
+
+            // if($user->name == 'jryfisch')
+            // {
+            //   dd($formerdslcr);
+            // }
 
             $dslcr_differ = round($dslcrcurrent - $formerdslcr,2).'%';
             $dslcrcurrent = round($dslcrcurrent,2).'%';
