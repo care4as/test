@@ -113,7 +113,7 @@ class UserTrackingController extends Controller
 
             $intervallquota =  round($intervall->Orders*100/$intervall->Calls,2);
             $quotaarray[] = $intervallquota;
-            $callarray[] = 2;
+            $callarray[] = $intervall->Calls - $formerValues->Calls;
           }
           else {
             $quotaarray[] = 0;
@@ -126,6 +126,7 @@ class UserTrackingController extends Controller
       $timestamparray = $intermediates->pluck('date2')->toArray();
 
       $dataarray = array($timestamparray, $quotaarray, $callarray);
+
       return response()->json($dataarray);
       // return response()->json(1);
       // dd($timestamparray);

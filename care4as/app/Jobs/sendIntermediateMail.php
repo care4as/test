@@ -23,10 +23,12 @@ class sendIntermediateMail implements ShouldQueue
      * @return void
      */
     protected $email;
+    protected $sync;
 
-    public function __construct($email)
+    public function __construct($email,$sync='')
     {
         $this->email = $email;
+        $this->sync = $sync;
     }
 
     /**
@@ -182,27 +184,31 @@ class sendIntermediateMail implements ShouldQueue
         if ( $user->intermediatesLatest->Calls == 0) {
 
             $dslcrcurrent = 0;
+            $dslcr_differ = 0;
         }
 
         else {
+
           $dslcrcurrent = $user->intermediatesLatest->Orders*100 / $user->intermediatesLatest->Calls;
         }
 
         if($formerValues)
         {
-
             $callsDiff = $user->intermediatesLatest->Calls - $formerValues->Calls;
             $ordersDiff = $user->intermediatesLatest->Orders - $formerValues->Orders;
 
             if ($formerValues->Calls == 0) {
 
-              $dslcr_differ = 0;
-
+              $formerdslcr = 0;
             }
             else {
-              $formerdslcr = $formerValues->Orders*100/$formerValues->Calls;
-            }
 
+                $formerdslcr = $formerValues->Orders *100 / $formerValues->Calls;
+              }
+            // if($user->name == 'jryfisch')
+            // {
+            //   dd($formerdslcr);
+            // }
             $dslcr_differ = round($dslcrcurrent - $formerdslcr,2).'%';
             $dslcrcurrent = round($dslcrcurrent,2).'%';
 
@@ -288,7 +294,12 @@ class sendIntermediateMail implements ShouldQueue
        $asString = ($timediff/60) + 1 .' Minutes';
      }
 
-    $this::dispatch($this->email)->delay(now()->add($asString))->onConnection('database');
+    if ($this->sync != 1) {
+
+      $this::dispatch($this->email)->delay(now()->add($asString))->onConnection('database');
+
+    }
+
   }
 
 }

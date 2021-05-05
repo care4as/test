@@ -22,7 +22,7 @@
   </div>
   <div class="row m-2 mt-2 shadow bg-white" id="app">
     <div class="col text-center mt-2">
-      <!-- <form action="{{route('excel.dailyAgent.upload.queue')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
+      <!-- <form action="" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="sheet" value="3">
         <input type="hidden" name="fromRow" value="2">
