@@ -55,8 +55,6 @@ class sendIntermediateMail implements ShouldQueue
       ->with('intermediatesLatest')
       ->get();
 
-      dd($userids);
-
       if(!$users->first())
       {
 
