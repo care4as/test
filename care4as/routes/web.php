@@ -230,7 +230,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   //feedback
   Route::get('/feedback/print', 'FeedbackController@print')->name('feedback.print');
-  Route::get('/feedback/view', 'FeedbackController@create')->name('feedback.view');
+  Route::get('/feedback/view', 'FeedbackController@create11')->name('feedback.view');
   Route::get('/feedback/index', 'FeedbackController@index')->name('feedback.myIndex');
   Route::post('/feedback/update', 'FeedbackController@update')->name('feedback.update');
   Route::get('/feedback/show/{id}', 'FeedbackController@show')->name('feedback.show');
@@ -283,10 +283,10 @@ Route::get('/test', function(){
 
 
 
-  return redirect()->route('config.activateIntermediateMail');
-  // $datetime = Carbon\Carbon::parse(1619622000);
-  // $datetime->setTimezone('Europe/Berlin');
-  // //
-  // echo $datetime->format('Y-m-d H:i:s');
+  return view('test');
+  $datetime = Carbon\Carbon::parse(1620316860);
+  $datetime->setTimezone('Europe/Berlin');
+  //
+  echo $datetime->format('Y-m-d H:i:s');
 
 })->name('test');

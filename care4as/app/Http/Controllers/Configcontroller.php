@@ -12,7 +12,7 @@ class Configcontroller extends Controller
     public function sendIntermediateMail()
     {
       // $email = Auth()->user()->email;
-      $email = array('andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de','andreas.nissen@care4as.de','aysun.yildiz@care4as.de');
+      $email = array('andreas.robrahn@care4as.de');
 
       sendIntermediateMail::dispatch($email,1)->onConnection('sync');
       return redirect()->back();
@@ -22,8 +22,8 @@ class Configcontroller extends Controller
     {
 
       $time =  time();
-      $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
-      $timediff = intval($nextHalfHour)-$time;
+      $inTowHours = ceil(time() / (120 * 60)) * (120 * 60);
+      $timediff = intval($inTowHours)-$time;
 
       $asString = ($timediff/60) + 1 .' Minutes';
 
@@ -38,7 +38,8 @@ class Configcontroller extends Controller
     }
     public function deactivateIntermediateMail()
     {
-      DB::table('jobs')->where('queue','delete')->delete();
+
+      DB::table('jobs')->where('queue','default')->delete();
 
       return response()->json('success');
     }

@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="container-fluid bg-light" style="width: 75vw; border-radius: 15px;">
+  <div class="row bg-white">
+    <div class="col">
+        <label for="lead_by">Gespräch geführt mit:</label>
+            <select name="with_user" class="form-control w-25" id="lead_by" aria-describedby="title" autocomplete="off" onchange="location = this.value;">
+              @foreach($users as $user)
+                <option value="{{route('feedback.view' , ['userid' => $user->id])}}"  @if($user->id == request('userid')) selected @endif >{{$user->surname}} {{$user->lastname}}</option>
+              @endforeach
+            </select>
+      </div>
+  </div>
   <form class="" action="{{route('feedback.store')}}" method="post">
     @csrf
     <div class="row bg-white align-items-center">
@@ -24,16 +34,7 @@
         </div>
       </div>
     </div>
-    <div class="row bg-white">
-      <div class="col">
-          <label for="lead_by">Gespräch geführt:</label>
-          <select name="with_user" class="form-control w-25" id="lead_by" aria-describedby="title" autocomplete="off">
-            @foreach($users as $user)
-              <option value="{{$user->id}}" >{{$user->name}}</option>
-            @endforeach
-          </select>
-      </div>
-    </div>
+
     <div class="row mt-3 bg-white">
       <div class="col-12 d-flex  justify-content-center">
         <table class="table table-hover table-striped  table-bordered">
@@ -106,13 +107,12 @@
     </div>
     <div class="row bg-white">
       <div class="col">
-         <button type="submit" class="btn btn-block btn-lg btn-primary">Absenden</button>
+         <button type="submit" class="btn btn-block btn-lg btn-primary">Speichern</button>
       </div>
     </div>
   </form>
 </div>
 
-<button onclick="window.print();" class="noPrint"> Drucken </button>
 @endsection
 @section('additional_js')
 <script>

@@ -30,6 +30,33 @@
           </div>
         </div>
         <div class="form-row">
+          <div class="form-col m-1">
+            <label for="sickQ">Krankenquote</label>
+            <input type="text" class="form-control" name="sickQ" value="" id="sickQ">
+          </div>
+          <div class="form-col m-1">
+            <label for="vacQ">Urlaubsquote</label>
+            <input type="text"  class="form-control" name="vacQ" value=""  id="vacQ">
+          </div>
+        </div>
+        <div class="form-row m-1">
+          <div class="form-col m-1">
+            <label for="trainQ">Trainingquote</label>
+            <input type="text" class="form-control"  name="trainQ" value="" id="trainQ">
+
+          </div>
+          <div class="form-col m-1">
+            <label for="meetQ">Meetingquote</label>
+            <input type="text"  class="form-control" name="meetQ" value="" id="meetQ">
+          </div>
+
+          <div class="form-col m-1">
+            <label for="oAQ">Other Absence</label>
+            <input type="text"  class="form-control" name="oAQ" value="" id="oAQ">
+          </div>
+
+        </div>
+        <div class="form-row">
           <button type="submit" name="button" class="btn-outline-success">Erstellen</button>
         </div>
       </form>

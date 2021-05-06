@@ -110,7 +110,7 @@
     $('#employees').empty()
     let dep = this.value
 
-    console.log(dep)
+    // console.log(dep)
 
     var host = window.location.host;
 

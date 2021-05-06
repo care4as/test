@@ -13,19 +13,145 @@ class FeedbackController extends Controller
 {
     public function index()
     {
-      $feedbacks = Feedback::all();
+      $feedbacks = Feedback::with(['Creator'],['withUser'])->get();
+
+      dd($feedbacks);
 
       return view('FeedbackIndex', compact('feedbacks'));
     }
-    public function create()
+
+    public function create11($userid = null)
     {
-      $users = User::where('role','agent')->get();
-      return view('FeedBackCreate', compact('users'));
+      $year = Carbon::now()->year;
+      $start_date = 1;
+      $end_date = 1;
+
+
+      if($userid)
+      {
+          dd($userid);
+      }
+
+      $users = User::where('role','agent')->select('id','surname','lastname','name')->get();
+
+      $kw = date("W");
+
+      for ($i= 1 ; $i <= 4; $i++) {
+       $kws[] = $kw - $i;
+       if ($i == 1) {
+         $end_date = Carbon::now();
+         $end_date->setISODate($year,$kw - $i,7)->format('Y-m-d');
+       }
+       if($i == 4)
+       {
+         $start_date = Carbon::now();
+         $start_date->setISODate($year,$kw - $i,1)->format('Y-m-d');
+       }
+
+      }
+      // dd($end_date, $start_date);
+
+      $user = User::where('role','agent')
+      ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
+      ->with(['dailyagent' => function($q) use ($start_date,$end_date){
+        $q->select(['id','agent_id','status','time_in_state','date']);
+        if($start_date !== 1)
+        {
+          $datemod = Carbon::parse($start_date)->setTime(2,0,0);
+          $q->where('date','>=',$datemod);
+        }
+        if($end_date !== 1)
+        {
+          $datemod2 = Carbon::parse($end_date)->setTime(23,59,59);
+          $q->where('date','<=',$datemod2);
+        }
+        }])
+      ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
+        // $q->select(['id','person_id','calls','time_in_state','call_date']);
+        if($start_date !== 1)
+        {
+          $q->where('call_date','>=',$start_date);
+        }
+        if($end_date !== 1)
+        {
+          $q->where('call_date','<=',$end_date);
+        }
+        }])
+        ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+
+          if($start_date !== 1)
+          {
+            $q->where('work_date','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('work_date','<=',$end_date);
+          }
+          }])
+        ->with(['SSETracking' => function($q) use ($start_date,$end_date){
+          if($start_date !== 1)
+          {
+            $q->where('trackingdate','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('trackingdate','<=',$end_date);
+          }
+        }])
+      // ->limit(10)
+      ->first();
+
+      foreach($kws as $kwi)
+      {
+        $query = null;
+        //determin the date from monday 00:00:00 to sunday 23:59:59
+        $start_date = Carbon::now();
+        $end_date = Carbon::now();
+
+        $start_date->setISODate($year,$kwi,1)->format('Y-m-d');
+        $start_date->setTime(0,0);
+        // return $start_date;
+        $end_date->setISODate($year,$kwi,7)->format('Y-m-d');
+        $end_date->setTime(23,59,59);
+
+        $weekstats =  $user->retentionDetails
+        ->where('call_date','>=', $start_date)
+        ->where('call_date','<=', $end_date);
+
+        $calls = $weekstats->sum('calls');
+        $callsssc = $weekstats->sum('calls_smallscreen');
+        $callsbsc = $weekstats->sum('calls_bigscreen');
+        $callsportale = $weekstats->sum('calls_portale');
+
+        $saves = $weekstats->sum('orders');
+        $sscSaves = $weekstats->sum('orders_smallscreen');
+        $bscSaves = $weekstats->sum('orders_bigscreen');
+        $portaleSaves = $weekstats->sum('orders_portale');
+
+        $statsArray = array(
+
+        'calls' => $calls,
+        'callsssc' => $callsssc,
+        'callsbsc' => $callsbsc,
+        'callsportale' => $callsportale,
+        'saves' => $saves,
+        'sscSaves' => $sscSaves,
+        'bscSaves' => $bscSaves,
+        'portalSaves' => $portaleSaves,
+
+        );
+        
+        $weekperformance[] =  $statsArray;
+
+      }
+
+      dd($weekperformance);
+      return view('FeedBackCreate', compact('users', 'user'));
     }
     public function print($userid = null)
     {
       DB::disableQueryLog();
-      $year = 2021;
+      $year = Carbon::now()->year;
 
       $users = User::where('role','agent')->select('id','surname','lastname')->get();
 
@@ -34,6 +160,7 @@ class FeedbackController extends Controller
           // return 1;
         $userreport = User::where('id',request('userid'))->first();
         $kw = date("W");
+
         for ($i= 1 ; $i <= 4; $i++) {
          $kws[] = $kw - $i;
         }
