@@ -29,6 +29,8 @@ class UserController extends Controller
     }
     public function getUsersIntermediate()
     {
+      // return 1;
+
       if(request('department'))
       {
         $userids = DB::table('intermediate_status')
@@ -36,10 +38,17 @@ class UserController extends Controller
         ->pluck('person_id')
         ->toArray();
 
-        $users= User::where('department',request('department'))
-        ->where('role','Agent')
-        ->whereIn('person_id',$userids)
-        ->get();
+        if(!$userids)
+        {
+            return abort(403, 'kein Zwischenstand von heute in der Datenbank');
+        }
+        else {
+          $users= User::where('department',request('department'))
+          ->where('role','Agent')
+          ->whereIn('person_id',$userids)
+          ->get();
+        }
+
 
         return response()->json($users);
       }

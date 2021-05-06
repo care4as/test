@@ -35,7 +35,7 @@ class Configcontroller extends Controller
     }
     public function deactivateIntermediateMail()
     {
-
+      
     }
 
     public function activateAutomaticeIntermediate()

@@ -88,26 +88,38 @@
   @endforeach
   </div>
 </div>
-
+<div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content bg-danger text-white" >
+      <div class="modal-body">
+        <h5>&#128577;&#128580;&#128560; Fehler aufgetreten &#128577;&#128580;&#128560;</h5>
+        <p id="failFile"></p>
+        <p id="failLine"></p>
+        <p id="failContent"></p>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('additional_js')
 <script type="text/javascript">
   $('#department').change(function() {
 
+
     $('#employees').empty()
     let dep = this.value
+
+    console.log(dep)
 
     var host = window.location.host;
 
     // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
 
-    // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
-    axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
-
-
+    axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+    // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
     .then(response => {
-      // console.log(response)
+      console.log(response)
       let users = response.data
 
       users.forEach(function(user){
@@ -123,7 +135,11 @@
 
       })
     .catch(function (err) {
-      console.log('error')
+
+      $('#failContent').html('Fehler: '+ err.response.data.message)
+      $('#failFile').html('Datei: '+ err.response.data.file)
+      $('#failLine').html('Line: '+ err.response.data.line)
+      $('#failModal').modal('show')
       console.log(err.response);
     })
   })

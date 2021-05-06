@@ -90,8 +90,6 @@ export default {
   {
 
     console.log('test')
-
-
     console.log('update für user:' + id)
 
     document.querySelectorAll('.col-12 bg-light').forEach(function(column) {
@@ -100,8 +98,8 @@ export default {
 
     var host = window.location.host;
 
-    axios.get('http://'+host+'/care4as/care4as/public/user/getTracking/'+this.userid)
-    // axios.get('/user/getTracking/'+this.userid)
+    //axios.get('http://'+host+'/care4as/care4as/public/user/getTracking/'+this.userid)
+    axios.get('http://'+host+'/user/getTracking/'+this.userid)
     .then(response => {
       console.log(response)
       if(response.data[0][0])
