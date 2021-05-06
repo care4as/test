@@ -181,6 +181,8 @@ class sendIntermediateMail implements ShouldQueue
       //if the agent is in the dsl department
       else {
 
+        $formerdslcr = 0;
+
         if ( $user->intermediatesLatest->Calls == 0) {
 
             $dslcrcurrent = 0;
@@ -205,11 +207,14 @@ class sendIntermediateMail implements ShouldQueue
 
                 $formerdslcr = $formerValues->Orders *100 / $formerValues->Calls;
               }
-            // if($user->name == 'jryfisch')
-            // {
-            //   dd($formerdslcr);
-            // }
-            $dslcr_differ = round($dslcrcurrent - $formerdslcr,2).'%';
+
+            if ($formerdslcr) {
+              $dslcr_differ = round($dslcrcurrent - $formerdslcr,2).'%';
+            }
+            else {
+              $dslcr_differ = 0;
+            }
+
             $dslcrcurrent = round($dslcrcurrent,2).'%';
 
             $emailarrayDSL[] = array(
