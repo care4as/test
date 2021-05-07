@@ -442,13 +442,13 @@ class ReportController extends Controller
       for ($i=0; $i <= $diff_in_days + 1; $i++) {
 
         if ($i == 0) {
-          $day = $from->subDays(1)->format('d.m.Y');
+          $day = $from->copy()->subDays(1)->format('d.m.Y');
         }
         elseif ($i == 1) {
-          $day = Carbon::today()->format('d.m.Y');
+          $day = $from->format('d.m.Y');
         }
         else {
-          $day = Carbon::today()->addDays($i-1)->format('d.m.Y');
+          $day = $from->copy()->addDays($i-1)->format('d.m.Y');
         }
 
         foreach($users as $user)

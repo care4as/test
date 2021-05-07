@@ -68,7 +68,7 @@ label.hamburg {
   input#hamburg {display:none}
   .col-designed
   {
-    width: 32%;
+    width: 30%;
   }
   .col:hover
   {
@@ -191,10 +191,10 @@ label.hamburg {
 
     <!-- profilecard 2 -->
 
-    <div class="col-designed m-1 p-1" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128)">
-      <div class="row bg m-2 border shadow-lg" style="background-color: rgba(250, 235, 215,0.7);">
+    <div class="col-designed m-3 pr-3 pb-3" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128)">
+      <div class="row border shadow-lg" style="background-color: rgba(250, 235, 215,1);margin: 0; margin-top: -10px; margin-left: -10px;">
         <div class="col-5 m-2 d-flex align-items-center">
-          <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" class="img-fluid" alt="">
+          <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" class="img-fluid shadow-lg" alt="" style="border: 5px solid white;">
         </div>
         <div class="col-6 overflow-auto" >
           <div class="row">
