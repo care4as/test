@@ -114,15 +114,22 @@ class Intermediate implements ShouldQueue
     DB::table('intermediate_status')->insert($insertarray);
 
 
-   // dd($this->repeat);
+    if (Carbon::parse($time) < Carbon::createFromTimeString('22:00'))
+    {
+      $time =  time();
+      $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
+      $timediff = intval($nextHalfHour)-$time;
 
-   $time =  time();
-   $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
-   $timediff = intval($nextHalfHour)-$time;
+      // $asString = ($timediff/60) .' Minutes';
+      $asString = ($timediff/60)+ 0.5 .' Minutes';
+    }
+    else {
+      $tommorrowMorning = Carbon::createFromTimeString('08:00')->addDay();
 
-   // $asString = ($timediff/60) .' Minutes';
-   $asString = ($timediff/60)+ 0.5 .' Minutes';
-   // $asString = 5 .' Seconds';
+      $timediff = intval($tommorrowMorning->timestamp) - $time;
+
+      $asString = ($timediff/60) + 1 .' Minutes';
+    }
 
    if ($this->repeat != 'nonsync') {
 

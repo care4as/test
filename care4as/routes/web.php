@@ -281,10 +281,8 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 Route::get('/test', function(){
 
-
-
   return view('test');
-  $datetime = Carbon\Carbon::parse(1620316860);
+  $datetime = Carbon\Carbon::parse(1620381660);
   $datetime->setTimezone('Europe/Berlin');
   //
   echo $datetime->format('Y-m-d H:i:s');

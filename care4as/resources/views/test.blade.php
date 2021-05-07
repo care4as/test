@@ -1,35 +1,151 @@
 @extends('general_layout')
 
-
-
 @section('additional_css')
 <style media="screen">
+.sidebartest
+{
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: relative; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  left: 0;
+  background-color: #222831;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 8px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+}
+
+/* The sidebar links */
+.sidebartest a {
+padding: 8px 8px 8px 32px;
+text-decoration: none;
+font-size: 25px;
+color: #dddddd;
+display: block;
+transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidebartest a:hover
+{
+color: #f05454;
+}
+
+/* MENÜ-Button */
+label.hamburg {
+    display: block;
+    background: #f05454; width: 10.5vmin;  height: 7vmin;
+    position: relative;
+}
+
+.line {
+  position: absolute;
+  left:1.25vmin;
+  height: 3px;
+  width: 8vmin;
+  background: #dddddd; border-radius: 2px;
+  display: block;
+  transition: 0.5s;
+  transform-origin: center;
+  }
+
+  .line:nth-child(1) { top: 1vmin; }
+  .line:nth-child(2) { top: 3vmin; }
+  .line:nth-child(3) { top: 5vmin; }
+
+  #hamburg:checked + .hamburg .line:nth-child(1){
+  transform: translateY(1.98vmin) rotate(-45deg);
+  }
+
+  #hamburg:checked + .hamburg .line:nth-child(2){
+  opacity:0;
+  }
+
+  #hamburg:checked + .hamburg .line:nth-child(3){
+  transform: translateY(-1.98vmin) rotate(45deg);
+}
+
+  input#hamburg {display:none}
   .col-designed
   {
     width: 32%;
+  }
+  .col:hover
+  {
+    opacity: 0.5;
+    background-color: hsl(0,100%,10%);
+    cursor: pointer;
   }
 </style>
 
 @endsection
 
 @section('content')
-<div class="container-fluid bg-light" style="width: 75vw;">
-  <div class="row justify-content-center align-items-center text-center">
-    <div class="col ">
-      Suche
+<div class="container-fluid bg-light"
+  style="
+  width: 75vw;
+  height: 90vh;
+  background-image:url('https://cdn.prod.www.spiegel.de/images/3f57c70a-0001-0004-0000-000000355905_w996_r1.77_fpx46.48_fpy50.jpg');
+  background-size: 100% auto;
+  background-position: center top;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  "
+  >
+  <nav>
+    <div class="row justify-content-center align-items-center text-center" style="
+    background: rgb(62,3,12);
+    background: radial-gradient(circle, rgba(62,3,12,1) 62%, rgba(134,9,12,1) 88%, rgba(162,7,33,1) 98%);
+    color: rgb(255,235,205);
+    ">
+      <div class="col">
+        <input type="checkbox" id="hamburg" onclick="showSidebar()">
+        <label for="hamburg" class="hamburg">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </label>
+      </div>
+      <div class="col ">
+        Tracking
+      </div>
+      <div class="col">
+        Nachrichten
+      </div>
+      <div class="col">
+        <img src="https://i.stack.imgur.com/UCY3T.png" alt="">
+      </div>
+      <div class="col">
+        Todos
+      </div>
+      <div class="col">
+        Profil
+      </div>
+      <div class="col d-flex justify-content-end">
+        <input type="checkbox" id="hamburg" onclick="showSidebar()">
+        <label for="hamburg" class="hamburg">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </label>
+      </div>
     </div>
-    <div class="col">
-      Nachrichten
+  </nav>
+    <div class="d-flex" style="position: absolute;">
+      <div id="mySidebar" class="sidebartest">
+        <a href="">Startseite</a>
+        <a href="">Mein Profil</a>
+        <a href="">Einstellungen</a>
+        <a href="">Person 3</a>
+        <a href="">Person 4</a>
+        <a href="">Person 5</a>
+        <a href="">Person 6</a>
     </div>
-    <div class="col">
-      <img src="https://i.stack.imgur.com/UCY3T.png" alt="">
-    </div>
-    <div class="col">
-      Favoriten
-    </div>
-    <div class="col">
-      Profilbesucher
-    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row justify-content-center mt-3">
+
+
     @for($i=0; $i <= 9; $i++ )
     <!-- <div class="col-3 m-3 p-1" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128)">
       <div class="row m-0" id="bgimage">
@@ -72,7 +188,10 @@
         </div>
       </div>
     </div> -->
-    <!-- <div class="col-designed m-1 p-1" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128)">
+
+    <!-- profilecard 2 -->
+
+    <div class="col-designed m-1 p-1" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128)">
       <div class="row bg m-2 border shadow-lg" style="background-color: rgba(250, 235, 215,0.7);">
         <div class="col-5 m-2 d-flex align-items-center">
           <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" class="img-fluid" alt="">
@@ -89,8 +208,39 @@
         </div>
 
       </div>
-    </div> -->
+    </div>
     @endfor
   </div>
-</div>
+  </div>
+  </div>
+
+
+@endsection
+
+@section('additional_js')
+
+<script>
+  /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+  function openNav() {
+      document.getElementById("mySidebar").style.width = "250px";
+      document.getElementById("main").style.marginLeft = "250px";
+  }
+
+  /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+  function closeNav() {
+      document.getElementById("mySidebar").style.width = "0";
+      document.getElementById("main").style.marginLeft = "0";
+  }
+
+  function showSidebar(){
+      var selection = document.getElementById("hamburg");
+      if (selection.checked) {
+          openNav()
+      }
+      else {
+          closeNav()
+      }
+  }
+
+  </script>
 @endsection

@@ -116,10 +116,10 @@
 
     // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
 
-    axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
-    // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
+    // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+    axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
     .then(response => {
-      console.log(response)
+      // console.log(response)
       let users = response.data
 
       users.forEach(function(user){
@@ -132,7 +132,6 @@
         $('#employees').append(option);
         // console.log(option)
         })
-
       })
     .catch(function (err) {
 

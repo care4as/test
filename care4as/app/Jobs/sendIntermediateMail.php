@@ -296,8 +296,9 @@ class sendIntermediateMail implements ShouldQueue
        $asString = ($timediff/60) + 1 .' Minutes';
      }
      else {
-       $tommororowMorning = Carbon::createFromTimeString('08:00')->addDay();
-       $timediff = intval($tommororowMorning) - $time;
+       $tommorrowMorning = Carbon::createFromTimeString('08:00')->addDay();
+
+       $timediff = intval($tommorrowMorning->timestamp) - $time;
 
        $asString = ($timediff/60) + 1 .' Minutes';
      }

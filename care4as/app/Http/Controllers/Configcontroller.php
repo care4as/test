@@ -61,15 +61,25 @@ class Configcontroller extends Controller
 
     public function updateEmailprovider(Request $request)
     {
-      $request->
-      $array = array('a@b.de', 'c@de.de');
+      $providername = 'test';
+      $adresses = array('a@b.de', 'c@de.de');
 
-      $json = json_encode($array);
+      if($request->emails)
+      {
+        $adresses = $request->emails;
+      }
+      if ($request->providername) {
+        $providername = $request->providername;
+      }
+
+      $json = json_encode($adresses);
 
       DB::table('email_providers')
-      ->where('name',$request->providername)
+      ->where('name',$providername)
       ->update([
         'adresses' => $json,
       ]);
+
+      return redirect()->back();
     }
 }
