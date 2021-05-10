@@ -358,11 +358,36 @@ class ReportController extends Controller
 
 
       $days = 0;
-      $sichknessquota = null;
-      $vacationquota = null;
-      $trainingquota = null;
-      $meetingquota = null;
-      $otherabsencequota = null;
+      $sichknessquota = 0.08;
+
+      if ($request->sickQ) {
+        $sichknessquota = $request->sickQ;
+      }
+
+      $vacationquota = 0.08;
+
+      if ($request->vacQ) {
+        $vacationquota = $request->vacQ;
+      }
+
+      $trainingquota = 0.02;
+
+      if ($request->trainQ) {
+        $trainingquota = $request->trainQ;
+      }
+
+      $meetingquota = 0.01;
+
+      if ($request->meetQ) {
+        $meetingquota = $request->meetQ;
+      }
+
+      $otherabsencequota = 0.25;
+
+      if ($request->oAQ) {
+        $otherabsencequota = $request->oAQ;
+      }
+
       $oparray = array();
 
       $headarray = array(
@@ -417,13 +442,13 @@ class ReportController extends Controller
       for ($i=0; $i <= $diff_in_days + 1; $i++) {
 
         if ($i == 0) {
-          $day = $from->subDays(1)->format('d.m.Y');
+          $day = $from->copy()->subDays(1)->format('d.m.Y');
         }
         elseif ($i == 1) {
-          $day = Carbon::today()->format('d.m.Y');
+          $day = $from->format('d.m.Y');
         }
         else {
-          $day = Carbon::today()->addDays($i-1)->format('d.m.Y');
+          $day = $from->copy()->addDays($i-1)->format('d.m.Y');
         }
 
         foreach($users as $user)
@@ -460,17 +485,17 @@ class ReportController extends Controller
             //staffed_hours
             $valuearray[] = $user->soll_h_day;
             //sickness
-            $valuearray[] = $sh = $user->soll_h_day * 0.08;
+            $valuearray[] = $sh = $user->soll_h_day * $sichknessquota;
             //vacation
-            $valuearray[] = $vh = $user->soll_h_day * 0.08;
+            $valuearray[] = $vh = $user->soll_h_day * $vacationquota;
             //training
-            $valuearray[] = $th = $user->soll_h_day * 0.02;
+            $valuearray[] = $th = $user->soll_h_day * $trainingquota;
             //meeting
-            $valuearray[] = $mh = $user->soll_h_day * 0.01;
+            $valuearray[] = $mh = $user->soll_h_day * $meetingquota;
             //bank holidays
             $valuearray[] = null;
             //other absence
-            $valuearray[] = number_format($voa = $user->soll_h_day * 0.25, 2, ',', '.');
+            $valuearray[] = number_format($voa = $user->soll_h_day * $otherabsencequota, 2, ',', '.');
 
             //net hrs
             $valuearray[] = number_format($user->soll_h_day - $sh -$vh-$th-$mh-$voa, 2, ',', '.');

@@ -141,15 +141,7 @@
                 <div class="col-3 p-0 mr-2">
                   <label for="department">Welche MA:</label>
                   <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 150px; overflow:scroll;">
-                    @if(request('department'))
-                      @foreach($users1 = App\User::where('department',request('department'))->where('role','agent')->get() as $user)
-                        <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
-                      @endforeach
-                    @else
-                      @foreach($users1 = App\User::where('role','agent')->where('department','1&1 Mobile Retention')->get() as $user)
-                        <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
-                      @endforeach
-                    @endif
+
                   </select>
                 </div>
               </div>
@@ -482,8 +474,8 @@
 
         let host = window.location.host;
 
-        //axios.get('http://'+host+'/care4as/care4as/public/reports/dailyAgentDataStatus')
-        axios.get('http://'+host+'/reports/dailyAgentDataStatus')
+        axios.get('http://'+host+'/care4as/care4as/public/reports/dailyAgentDataStatus')
+        // axios.get('http://'+host+'/reports/dailyAgentDataStatus')
         .then(response => {
 
           // console.log(response)
@@ -499,12 +491,12 @@
 
         })
         .catch(function (err) {
-          console.log('error DataStatus')
+          console.log('error DataStatus Daliyagent')
           console.log(err.response);
         });
 
-        //axios.get('http://'+host+'/care4as/care4as/public/reports/HRDataStatus')
-        axios.get('http://'+host+'/reports/HRDataStatus')
+        axios.get('http://'+host+'/care4as/care4as/public/reports/HRDataStatus')
+        // axios.get('http://'+host+'/reports/HRDataStatus')
         .then(response => {
 
           // console.log(response)
@@ -520,12 +512,12 @@
 
         })
         .catch(function (err) {
-          console.log('error DataStatus')
+          console.log('error DataStatus Hoursreport')
           console.log(err.response);
         });
 
-        //axios.get('http://'+host+'/care4as/care4as/public/reports/RDDataStatus')
-        axios.get('http://'+host+'/reports/RDDataStatus')
+        axios.get('http://'+host+'/care4as/care4as/public/reports/RDDataStatus')
+        // axios.get('http://'+host+'/reports/RDDataStatus')
         .then(response => {
 
           // console.log(response)
@@ -541,7 +533,7 @@
 
         })
         .catch(function (err) {
-          console.log('error DataStatus')
+          console.log('error DataStatus RetentionDetail')
           console.log(err.response);
         });
 
@@ -598,7 +590,44 @@
             });
           });
         }
+        $('#department').change(function() {
 
+          $('#exampleFormControlSelect2').empty()
+          let dep = this.value
+
+          console.log(dep)
+
+          var host = window.location.host;
+
+          // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+
+          // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+          axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
+          .then(response => {
+            console.log(response)
+            let users = response.data
+
+            users.forEach(function(user){
+              let option = document.createElement("option");
+              let name = user.surname + ' ' + user.lastname;
+
+              option.value = user.id;
+              option.innerHTML = name;
+
+              $('#exampleFormControlSelect2').append(option);
+              // console.log(option)
+              })
+
+            })
+          .catch(function (err) {
+
+            $('#failContent').html('Fehler: '+ err.response.data.message)
+            $('#failFile').html('Datei: '+ err.response.data.file)
+            $('#failLine').html('Line: '+ err.response.data.line)
+            $('#failModal').modal('show')
+            console.log(err.response);
+          })
+        })
 
 
       });

@@ -184,13 +184,21 @@ Route::group(['middleware' => ['auth']], function () {
   //end Report Routes
 
   //config routes
-  Route::view('/config/app', 'general_config')->name('config.view')->middleware('hasRight:config');
+  Route::get('/config/app', function(){
+
+      // $adresses = DB::table('email_providers')->where('name','test')->first('adresses');
+      //
+      // $array = json_decode($adresses->adresses);
+
+      // dd($array);
+      return view('general_config');
+  })->name('config.view')->middleware('hasRight:config');
   Route::get('/config/activateIntervallMail', 'Configcontroller@activateIntermediateMail')->name('config.activateIntermediateMail')->middleware('hasRight:config');
   Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
   Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
   Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config');
   Route::get('/config/deactivateIntervallMail', 'Configcontroller@deactivateIntermediateMail')->name('config.deactivateIntermediateMail')->middleware('hasRight:config');
-  // Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
+  Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
 
   //endconfig
   //roles and rights
@@ -230,7 +238,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   //feedback
   Route::get('/feedback/print', 'FeedbackController@print')->name('feedback.print');
-  Route::get('/feedback/view', 'FeedbackController@create')->name('feedback.view');
+  Route::get('/feedback/view', 'FeedbackController@create11')->name('feedback.view');
   Route::get('/feedback/index', 'FeedbackController@index')->name('feedback.myIndex');
   Route::post('/feedback/update', 'FeedbackController@update')->name('feedback.update');
   Route::get('/feedback/show/{id}', 'FeedbackController@show')->name('feedback.show');
@@ -281,12 +289,10 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 Route::get('/test', function(){
 
-
-
-  return redirect()->route('config.activateIntermediateMail');
-  // $datetime = Carbon\Carbon::parse(1619622000);
-  // $datetime->setTimezone('Europe/Berlin');
-  // //
-  // echo $datetime->format('Y-m-d H:i:s');
+  return view('test');
+  $datetime = Carbon\Carbon::parse(1620381660);
+  $datetime->setTimezone('Europe/Berlin');
+  //
+  echo $datetime->format('Y-m-d H:i:s');
 
 })->name('test');

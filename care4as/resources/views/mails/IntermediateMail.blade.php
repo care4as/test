@@ -72,7 +72,7 @@
               </tr>
               @endfor
             </table>
-            <h4><p><b>DSL</b> </p></h4>
+            <!-- <h4><p><b>DSL</b> </p></h4>
             <table style="border: 1px solid black; color: #746e58;text-align:center; font-size: 1.2em">
               <tr>
                 <th>Name</th>
@@ -102,7 +102,7 @@
                 <td>{{$data['dsl'][$i]['KüRü']}}</td>
               </tr>
               @endfor
-            </table>
+            </table> -->
         </div>
         <hr>
 

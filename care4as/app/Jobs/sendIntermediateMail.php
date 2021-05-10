@@ -82,11 +82,14 @@ class sendIntermediateMail implements ShouldQueue
         ->where('person_id', $user->person_id)
         ->where('id','<', $user->intermediatesLatest->id)
         ->orderBY('id','DESC')
-        ->first();
+        ->limit(4)
+        ->get();
+
+        $formerValues = $formerValues->last();
 
         if( $user->department == "1&1 Mobile Retention")
         {
-          // dd($user, $formerValues);
+          // dd($user, $formerValues->last());
           if ($user->intermediatesLatest->SSC_Calls == 0) {
             $ssccr = 0;
           }
@@ -287,14 +290,15 @@ class sendIntermediateMail implements ShouldQueue
 
      if (Carbon::parse($time) < Carbon::createFromTimeString('22:00'))
      {
-       $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
-       $timediff = intval($nextHalfHour)-$time;
+       $nextTwo = ceil(time() / (120 * 60)) * (120 * 60);
+       $timediff = intval($nextTwo)-$time;
 
        $asString = ($timediff/60) + 1 .' Minutes';
      }
      else {
-       $tommororowMorning = Carbon::createFromTimeString('08:00')->addDay();
-       $timediff = intval($tommororowMorning) - $time;
+       $tommorrowMorning = Carbon::createFromTimeString('08:00')->addDay();
+
+       $timediff = intval($tommorrowMorning->timestamp) - $time;
 
        $asString = ($timediff/60) + 1 .' Minutes';
      }

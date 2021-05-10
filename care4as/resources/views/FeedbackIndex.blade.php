@@ -20,7 +20,11 @@
               <td>{{$feedback->id}}</td>
               <td>{{$feedback->title}}</td>
               <td>{{$feedback->created_at}}</td>
-              <td>{{$feedback->Creator->name}}</td>
+              @if($feedback->Creator)
+                <td>{{$feedback->Creator->name}}</td>
+            @else
+              <td>Ersteller nicht mehr vorhanden</td>
+              @endif
               <td>{{$feedback->updated_at}}</td>
               <td>{{$feedback->withUser->name}}</td>
               <td><a href="{{route('feedback.show', ['id' => $feedback->id])}}"> <i class="now-ui-icons ui-1_zoom-bold"></i></a></td>

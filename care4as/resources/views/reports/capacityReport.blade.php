@@ -9,31 +9,75 @@
         <div class="form-row">
           <h5>Für welche Abteilung soll der Capacity Suite Report erstellt werden</h5>
         </div>
-        <div class="form-row">
+        <div class="form-row m-1">
           <div class="form-col">
             <label for="datefrom">Von:</label>
-             <input type="date" id="start_date" name="start_date" class="form-control" placeholder="" value="{{request('start_date')}}">
+             <input type="date" id="start_date" name="start_date" class="form-control" placeholder="" value="">
            </div>
            <div class="form-col">
              <label for="dateTo">Bis:</label>
-             <input type="date" id="end_date" name="end_date" class="form-control" placeholder="" value="{{request('end_date')}}">
+             <input type="date" id="end_date" name="end_date" class="form-control" placeholder="" value="">
            </div>
         </div>
-        <div class="form-row">
+        <div class="form-row m-1">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="department" id="inlineRadio1" value="Mobile">
-            <label class="form-check-label" for="inlineRadio1">Mobile</label>
+            <label class="form-check-label p-0" for="inlineRadio1">Mobile</label>
+            <input class="form-check-input ml-2" type="radio" name="department" id="inlineRadio1" value="Mobile">
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="department" id="inlineRadio2" value="DSL">
-            <label class="form-check-label" for="inlineRadio2">DSL</label>
+            <label class="form-check-label p-0" for="inlineRadio2">DSL</label>
+            <input class="form-check-input ml-2" type="radio" name="department" id="inlineRadio2" value="DSL">
           </div>
         </div>
-        <div class="form-row">
-          <button type="submit" name="button" class="btn-outline-success">Erstellen</button>
+          <div class="form-row m-1  w-25">
+            <label for="sickQ">Krankenquote</label>
+            <input type="text" class="form-control" name="sickQ" value="0.08" id="sickQ">
+          </div>
+          <div class="form-row m-1 w-25">
+            <label for="vacQ">Urlaubsquote</label>
+            <input type="text"  class="form-control" name="vacQ" value="0.08"  id="vacQ">
+          </div>
+          <div class="form-row m-1 w-25">
+            <label for="trainQ">Trainingquote</label>
+            <input type="text" class="form-control"  name="trainQ" value="0.02" id="trainQ">
+          </div>
+          <div class="form-row m-1 w-25">
+            <label for="meetQ">Meetingquote</label>
+            <input type="text"  class="form-control" name="meetQ" value="0.01" id="meetQ">
+          </div>
+
+          <div class="form-row m-1 w-25">
+            <label for="oAQ">Other Absence</label>
+            <input type="text"  class="form-control" name="oAQ" value="0.25" id="oAQ">
+          </div>
+
+        <div class="form-row mt-2">
+          <button type="submit" name="button" class="btn-outline-success p-0">Erstellen</button>
         </div>
       </form>
     </div>
   </div>
 </div>
+@endsection
+
+
+@section('additional_js')
+
+<script type="text/javascript">
+$('#start_date').on('input', function(){
+  let day = new Date(this.value)
+
+  let plusoneeighty = new Date(day.setDate(day.getDate() + 184))
+
+let dayF = ('0' + plusoneeighty.getDate()).slice(-2)
+
+var month = ("0" + (plusoneeighty.getMonth() + 1)).slice(-2)
+//
+var targetdate = plusoneeighty.getFullYear()+"-"+(month)+"-"+(dayF)
+
+  // console.log(month)
+
+  $('#end_date').val(targetdate)
+})
+</script>
 @endsection

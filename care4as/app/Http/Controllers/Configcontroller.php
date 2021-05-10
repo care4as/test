@@ -12,9 +12,19 @@ class Configcontroller extends Controller
     public function sendIntermediateMail()
     {
       // $email = Auth()->user()->email;
-      $email = array('andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de','andreas.nissen@care4as.de','aysun.yildiz@care4as.de');
+      $email = DB::table('email_providers')
+      ->where('name','intermediateMail')
+      ->first('adresses');
 
-      sendIntermediateMail::dispatch($email,1)->onConnection('sync');
+      $antijson = json_decode($email->adresses);
+
+
+
+      $trimmed_array = array_map('trim', $antijson);
+      // dd($antijson);
+      $filter = array_filter($trimmed_array);
+
+      sendIntermediateMail::dispatch($filter,1)->onConnection('sync');
       return redirect()->back();
     }
 
@@ -22,8 +32,8 @@ class Configcontroller extends Controller
     {
 
       $time =  time();
-      $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
-      $timediff = intval($nextHalfHour)-$time;
+      $inTowHours = ceil(time() / (120 * 60)) * (120 * 60);
+      $timediff = intval($inTowHours)-$time;
 
       $asString = ($timediff/60) + 1 .' Minutes';
 
@@ -38,6 +48,7 @@ class Configcontroller extends Controller
     }
     public function deactivateIntermediateMail()
     {
+
       DB::table('jobs')->where('queue','default')->delete();
 
       return response()->json('success');
@@ -60,15 +71,30 @@ class Configcontroller extends Controller
 
     public function updateEmailprovider(Request $request)
     {
-      $request->
-      $array = array('a@b.de', 'c@de.de');
+      $providername = 'intermediateMail';
+      $adresses = array('andreas.robrahn@care4as.de');
 
-      $json = json_encode($array);
+      if($request->emails)
+      {
+        $adresses = explode(';',$request->emails);
+      }
+
+      if ($request->providername) {
+        $providername = $request->providername;
+      }
+
+      $adresses = array_map('trim', $adresses);
+
+      $adresses = array_filter($adresses);
+
+      $json = json_encode($adresses);
 
       DB::table('email_providers')
-      ->where('name',$request->providername)
-      ->update([
-        'adresses' => $json,
-      ]);
+      ->updateOrInsert(
+          ['name' => $providername],
+          ['adresses' => $json]
+      );
+
+      return redirect()->back();
     }
 }

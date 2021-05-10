@@ -31,10 +31,9 @@ td{
             <th>Prozess</th>
             <th>Status/Optionen</th>
             <th>Beschreibung</th>
-
+            <th>Optionen</th>
           </tr>
         </thead>
-
         <tr class="">
           <td>Automatische Zwischenstandsmail</td>
           <td>
@@ -43,7 +42,17 @@ td{
               <label class="custom-control-label" for="customSwitch1">Aktiv</label>
             </div>
           </td>
-          <td><p>du erhälst an deine persönliche Emailadresse : {{Auth()->user()->email}} 1 Minute nach jedem Intervall eine Email zur aktuellen Performance und zum Vergleich im Vorintervall</p></td>
+          <td>
+            <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach)</p></td>
+          </td>
+          <td rowspan="2">
+            <h5>Emailadressen ändern</h5>
+            <form class="form-control" action="{{route('config.updateEmailprovider')}}" method="post">
+              @csrf
+               <label for="exampleFormControlTextarea1">Emailadressen</label>
+              <textarea type="text" name="emails" class="form-control">@if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMail')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]); @else @endif @endforeach @endif </textarea>
+              <button type="submit" name="button" class="btn btn-primary btn-sm  mt-2">Ändern</button>
+            </form>
 
           </td>
         </tr>
@@ -52,7 +61,9 @@ td{
           <td>
             <a class="btn btn-primary btn-sm" href="{{route('config.sendIntermediateMail')}}" role="button">Go</a>
           </td>
-          <td>test</td>
+          <td>
+            Eine einmalige automatisierte Mail der Zwischenstände an @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach
+          </td>
         </tr>
         <tr>
           <td>Zwischenstand laden</td>
@@ -106,8 +117,13 @@ $('#customSwitch1').click(function(){
 
     // console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
 
+<<<<<<< HEAD
     axios.get('http://'host+'/config/activateIntervallMail')
     // axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
+=======
+    // axios.get('/config/activateIntervallMail')
+    axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
+>>>>>>> f103c6ffe7976cf2763880770de905f25159158f
     .then(response => {
       console.log(response.data)
       alert('die Intervallmail wird automatisch versendet')
@@ -122,8 +138,8 @@ $('#customSwitch1').click(function(){
 
     var host = window.location.host;
 
-    axios.get('http://'+host+'/config/deactivateIntervallMail')
-    // axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMail')
+    // axios.get('http://'+host+'/config/deactivateIntervallMail')
+    axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMail')
 
     .then(response => {
       alert('automatische Email deaktiviert')
