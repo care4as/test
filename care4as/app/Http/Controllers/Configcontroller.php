@@ -38,7 +38,7 @@ class Configcontroller extends Controller
     }
     public function deactivateIntermediateMail()
     {
-      DB::table('jobs')->where('queue','delete')->delete();
+      DB::table('jobs')->where('queue','default')->delete();
 
       return response()->json('success');
     }

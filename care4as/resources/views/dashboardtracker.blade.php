@@ -106,7 +106,6 @@
 <script type="text/javascript">
   $('#department').change(function() {
 
-
     $('#employees').empty()
     let dep = this.value
 
