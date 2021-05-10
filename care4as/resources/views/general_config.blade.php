@@ -117,13 +117,8 @@ $('#customSwitch1').click(function(){
 
     // console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
 
-<<<<<<< HEAD
     axios.get('http://'host+'/config/activateIntervallMail')
     // axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
-=======
-    // axios.get('/config/activateIntervallMail')
-    axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
->>>>>>> f103c6ffe7976cf2763880770de905f25159158f
     .then(response => {
       console.log(response.data)
       alert('die Intervallmail wird automatisch versendet')
