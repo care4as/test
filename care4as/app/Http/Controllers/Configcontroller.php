@@ -12,9 +12,19 @@ class Configcontroller extends Controller
     public function sendIntermediateMail()
     {
       // $email = Auth()->user()->email;
-      $email = array('andreas.robrahn@care4as.de');
+      $email = DB::table('email_providers')
+      ->where('name','intermediateMail')
+      ->first('adresses');
 
-      sendIntermediateMail::dispatch($email,1)->onConnection('sync');
+      $antijson = json_decode($email->adresses);
+
+
+
+      $trimmed_array = array_map('trim', $antijson);
+      // dd($antijson);
+      $filter = array_filter($trimmed_array);
+
+      sendIntermediateMail::dispatch($filter,1)->onConnection('sync');
       return redirect()->back();
     }
 
@@ -61,24 +71,29 @@ class Configcontroller extends Controller
 
     public function updateEmailprovider(Request $request)
     {
-      $providername = 'test';
-      $adresses = array('a@b.de', 'c@de.de');
+      $providername = 'intermediateMail';
+      $adresses = array('andreas.robrahn@care4as.de');
 
       if($request->emails)
       {
-        $adresses = $request->emails;
+        $adresses = explode(';',$request->emails);
       }
+
       if ($request->providername) {
         $providername = $request->providername;
       }
 
+      $adresses = array_map('trim', $adresses);
+      
+      $adresses = array_filter($adresses);
+
       $json = json_encode($adresses);
 
       DB::table('email_providers')
-      ->where('name',$providername)
-      ->update([
-        'adresses' => $json,
-      ]);
+      ->updateOrInsert(
+          ['name' => $providername],
+          ['adresses' => $json]
+      );
 
       return redirect()->back();
     }

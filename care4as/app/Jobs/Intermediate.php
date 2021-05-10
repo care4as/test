@@ -113,6 +113,7 @@ class Intermediate implements ShouldQueue
 
     DB::table('intermediate_status')->insert($insertarray);
 
+    $time =  time();
 
     if (Carbon::parse($time) < Carbon::createFromTimeString('22:00'))
     {

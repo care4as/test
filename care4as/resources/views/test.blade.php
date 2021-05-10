@@ -66,7 +66,11 @@ label.hamburg {
 }
 
   input#hamburg {display:none}
-  .col-designed
+  .col_designed
+  {
+    width: 30%;
+  }
+
   {
     width: 30%;
   }
@@ -76,6 +80,52 @@ label.hamburg {
     background-color: hsl(0,100%,10%);
     cursor: pointer;
   }
+  .flip-card {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    /* border: 1px solid #f1f1f1; */
+    perspective: 1000px; /* Remove this if you don't want the 3D effect */
+  }
+
+  /* This container is needed to position the front and back side */
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+
+  /* Do an horizontal flip when you move the mouse over the flip box container */
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+
+  /* Position the front and back side */
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+  }
+
+  /* Style the front side (fallback if image is missing) */
+  .flip-card-front {
+    /* background-color: #bbb; */
+    color: black;
+  }
+
+  /* Style the back side */
+  .flip-card-back {
+    background-color: dodgerblue;
+    color: white;
+    transform: rotateY(180deg);
+  }
+
+
 </style>
 
 @endsection
@@ -144,8 +194,6 @@ label.hamburg {
   </div>
   <div class="container-fluid">
     <div class="row justify-content-center mt-3">
-
-
     @for($i=0; $i <= 9; $i++ )
     <!-- <div class="col-3 m-3 p-1" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128)">
       <div class="row m-0" id="bgimage">
@@ -191,22 +239,41 @@ label.hamburg {
 
     <!-- profilecard 2 -->
 
-    <div class="col-designed m-3 pr-3 pb-3" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128)">
-      <div class="row border shadow-lg" style="background-color: rgba(250, 235, 215,1);margin: 0; margin-top: -10px; margin-left: -10px;">
-        <div class="col-5 m-2 d-flex align-items-center">
-          <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" class="img-fluid shadow-lg" alt="" style="border: 5px solid white;">
+    <div class="col_designed m-3 pr-3 pb-3" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128); height: 300px;">
+      <div class="row border shadow-lg flipper" style="background-color: rgba(250, 235, 215,1);margin: 0; margin-top: -10px; margin-left: -10px; height: 300px;">
+        <div class="flip-card">
+         <div class="flip-card-inner">
+           <div class="flip-card-front">
+              <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" alt="" style="border-radius:50%; height: 125px; width: 125px; object-fit: cover;">
+           </div>
+           <div class="flip-card-back">
+             <h1>John Doe</h1>
+             <p>Architect & Engineer</p>
+             <p>We love that guy</p>
+           </div>
+         </div>
         </div>
-        <div class="col-6 overflow-auto" >
-          <div class="row">
-            Manuela Schwesing, 43
-          </div>
-          <div class="row" style="height: 10vh;">
-            <span style="font-size: 1em;">Motto:</span>
-            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-          </div>
+        <!-- <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front" >
+              <div class="col-5 m-2 d-flex align-items-center">
+                <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" class="img-fluid shadow-lg" alt="" style="border: 5px solid white;">
+              </div>
+              <div class="col-6 overflow-auto" style="">
+                <div class="row  d-flex align-items-center">
+                  Manuela Schwesing, 43
+                </div>
+              </div>
+            </div>
+            <div class="flip-back" >
+              <div class="row text-white" style="">
+                <span style="font-size: 1em;">Motto:</span>
+                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+              </div>
+            </div>
 
-        </div>
-
+          </div>
+        </div> -->
       </div>
     </div>
     @endfor
