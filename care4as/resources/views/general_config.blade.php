@@ -43,14 +43,14 @@ td{
             </div>
           </td>
           <td>
-            <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach)</p></td>
+            <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
           </td>
           <td rowspan="2">
             <h5>Emailadressen ändern</h5>
             <form class="form-control" action="{{route('config.updateEmailprovider')}}" method="post">
               @csrf
                <label for="exampleFormControlTextarea1">Emailadressen</label>
-              <textarea type="text" name="emails" class="form-control">@if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMail')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]); @else @endif @endforeach @endif </textarea>
+              <textarea type="text" name="emails" class="form-control"> @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMail')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]); @else @endif @endforeach @endif </textarea>
               <button type="submit" name="button" class="btn btn-primary btn-sm  mt-2">Ändern</button>
             </form>
 
@@ -62,7 +62,7 @@ td{
             <a class="btn btn-primary btn-sm" href="{{route('config.sendIntermediateMail')}}" role="button">Go</a>
           </td>
           <td>
-            Eine einmalige automatisierte Mail der Zwischenstände an @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach
+            Eine einmalige automatisierte Mail der Zwischenstände an @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach @endif
           </td>
         </tr>
         <tr>
