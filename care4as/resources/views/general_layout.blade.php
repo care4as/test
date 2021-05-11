@@ -48,11 +48,11 @@
       </div>
       <div class="sidebar-wrapper " id="sidebar-wrapper">
         @php
-          Auth()->user()->rights();
+          Auth()->user()->getRights();
 
         @endphp
         <ul class="nav">
-          @if(in_array('dashboard',Auth()->user()->rights))
+          @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
 
             <a @if(Auth::User()->role == 'Agent') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
@@ -76,7 +76,7 @@
                 @endif
               </ul>
             </li>
-            @if(in_array('importReports',Auth()->user()->rights))
+            @if(in_array('importReports',Auth()->user()->getRights()))
               <li>
                 <a class="" data-toggle="collapse" href="#collapseProvision" role="button" aria-expanded="false" aria-controls="collapseCancel">
                   <i class="fas fa-euro-sign"></i>
@@ -88,7 +88,7 @@
                 </ul>
               </li>
             @endif
-          @if(in_array('indexUser',Auth()->user()->rights))
+          @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseUser" role="button" aria-expanded="false" aria-controls="collapseUser">
               <i class="fas fa-users"></i>
@@ -96,7 +96,7 @@
             </a>
             <div class="collapse" id="collapseUser" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-                @if(in_array('createUser',Auth()->user()->rights))
+                @if(in_array('createUser',Auth()->user()->getRights()))
                   <li><a href="{{route('user.create')}}">User anlegen</a></li>
                   <li><a href="{{route('user.startEnd')}}">MA Eintritt/Austritt</a></li>
                 @endif
@@ -106,7 +106,7 @@
             </div>
           </li>
           @endif
-          @if(in_array('indexMabel',Auth()->user()->rights))
+          @if(in_array('indexMabel',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseMable" role="button" aria-expanded="false" aria-controls="collapseUser">
               <i class="fas fa-hammer"></i>
@@ -120,7 +120,7 @@
             </div>
           </li>
           @endif
-          @if(in_array('importReports',Auth()->user()->rights))
+          @if(in_array('importReports',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseReport" role="button" aria-expanded="false" aria-controls="collapseCancel">
               <i class="fas fa-upload"></i>
@@ -139,7 +139,7 @@
             </ul>
           </li>
           @endif
-          @if(in_array('importReports',Auth()->user()->rights))
+          @if(in_array('importReports',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseEmail" role="button" aria-expanded="false" aria-controls="collapseCancel">
             <i class="fas fa-mail-bulk"></i>
@@ -152,7 +152,7 @@
             </ul>
           </li>
           @endif
-          @if(in_array('indexSurvey',Auth()->user()->rights))
+          @if(in_array('indexSurvey',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseSurvey" role="button" aria-expanded="false" aria-controls="collapseSurvey">
               <i class="fas fa-poll-h"></i>
@@ -171,7 +171,7 @@
             </ul>
           </li>
           @endif
-          @if(in_array('indexFeedback',Auth()->user()->rights))
+          @if(in_array('indexFeedback',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseFeedback" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="far fa-comments"></i>
@@ -185,7 +185,7 @@
             </ul>
           </li>
           @endif
-          @if(in_array('changeConfig',Auth()->user()->rights))
+          @if(in_array('changeConfig',Auth()->user()->getRights()))
           <li class="">
             <a class="" data-toggle="collapse" href="#collapseConfiguration" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="material-icons">
@@ -202,7 +202,7 @@
           </li>
           @endif
 
-          @if(in_array('trainings',Auth()->user()->rights))
+          @if(in_array('trainings',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="fas fa-running"></i>
@@ -218,7 +218,7 @@
             </ul>
           </li>
           @endif
-          @if(in_array('sendReports',Auth()->user()->rights))
+          @if(in_array('sendReports',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseReports" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="material-icons">
@@ -235,7 +235,7 @@
             </ul>
           </li>
           @endif
-          @if(in_array('presentation',Auth()->user()->rights))
+          @if(in_array('presentation',Auth()->user()->getRights()))
           <li>
             <a class="" href="{{route('presentation')}}">
               <i class="far fa-file-powerpoint"></i>

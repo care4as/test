@@ -186,8 +186,8 @@ $(function() {
         axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
         {
           params: {
-            start: start,
-            end: end,
+            start: start.format('YY-MM-D'),
+            end: end.format('YY-MM-D'),
             userid: userid
           }
           })

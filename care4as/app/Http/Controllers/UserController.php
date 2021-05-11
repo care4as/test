@@ -259,8 +259,8 @@ class UserController extends Controller
       // return response()->json(request('userid'));
       // return request('start');
 
-      $start_date = Carbon::parse(request('start'));
-      $end_date = Carbon::parse(request('end'));
+      $start_date = Carbon::createFromFormat('YY-MM-D', request('start'));
+      $end_date = Carbon::createFromFormat('YY-MM-D', request('end'));
 
       $users = User::where('role','agent')
       ->whereIn('id', $request->employees)

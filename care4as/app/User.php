@@ -106,12 +106,13 @@ class User extends Authenticatable
     {
       return $this->hasMany('\App\SAS','person_id');
     }
-    public function rights()
+    public function getRights()
     {
       $roleid = Role::where('name',$this->role)->value('id');
       $rightids = DB::table('roles_has_rights')->where('role_id', $roleid)->pluck('rights_id');
 
-      return $this->rights = Right::whereIN('id',$rightids)->pluck('name')->toArray();
+      return $rights = Right::whereIN('id',$rightids)->pluck('name')->toArray();
+      // dd($this);
 
     }
     public function dailyPerformance($identifier, $reports)
