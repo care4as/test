@@ -117,7 +117,7 @@ $('#customSwitch1').click(function(){
 
     // console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
 
-    axios.get('http://'host+'/config/activateIntervallMail')
+    axios.get('http://'+host+'/config/activateIntervallMail')
     // axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
     .then(response => {
       console.log(response.data)

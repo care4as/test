@@ -125,6 +125,7 @@ class Intermediate implements ShouldQueue
       $asString = ($timediff/60)+ 0.5 .' Minutes';
     }
     else {
+
       $tommorrowMorning = Carbon::createFromTimeString('08:00')->addDay();
 
       $timediff = intval($tommorrowMorning->timestamp) - $time;
