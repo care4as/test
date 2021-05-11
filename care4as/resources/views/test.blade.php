@@ -93,7 +93,7 @@ label.hamburg {
     position: relative;
     width: 100%;
     height: 100%;
-    text-align: center;
+    /* text-align: center; */
     transition: transform 0.8s;
     transform-style: preserve-3d;
   }
@@ -124,7 +124,6 @@ label.hamburg {
     color: white;
     transform: rotateY(180deg);
   }
-
 
 </style>
 
@@ -244,6 +243,9 @@ label.hamburg {
         <div class="flip-card">
          <div class="flip-card-inner">
            <div class="flip-card-front">
+             <div class="row">
+
+             </div>
               <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" alt="" style="border-radius:50%; height: 125px; width: 125px; object-fit: cover;">
            </div>
            <div class="flip-card-back">

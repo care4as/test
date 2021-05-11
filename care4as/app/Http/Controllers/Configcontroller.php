@@ -9,6 +9,24 @@ use App\Jobs\Intermediate;
 
 class Configcontroller extends Controller
 {
+  public function index()
+  {
+       $adresses = DB::table('email_providers')->where('name','test')->first('adresses');
+
+       $array = json_decode($adresses->adresses);
+
+       $processes = DB::table('jobs')->get();
+       // dd($array);
+       foreach($processes as $process)
+       {
+         $datetime = \Carbon\Carbon::parse($process->available_at);
+         $datetime->setTimezone('Europe/Berlin');
+         //
+         $process->duedate = $datetime->format('Y-m-d H:i:s');
+       }
+
+       return view('general_config', compact('adresses','processes'));
+  }
     public function sendIntermediateMail()
     {
       // $email = Auth()->user()->email;
@@ -17,8 +35,6 @@ class Configcontroller extends Controller
       ->first('adresses');
 
       $antijson = json_decode($email->adresses);
-
-
 
       $trimmed_array = array_map('trim', $antijson);
       // dd($antijson);

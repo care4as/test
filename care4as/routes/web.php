@@ -32,7 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/user/index', 'UserController@index')->name('user.index')->middleware('hasRight:indexUser');
   // Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
   Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post')->middleware('hasRight:updateUser');
-  Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats')->middleware('hasRight:updateUser');
+  Route::get('/user/analytics/{id}', 'UserController@Scorecard')->name('user.stats')->middleware('hasRight:updateUser');
   // Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
   Route::post('/user/update/{id}', 'UserController@update')->name('user.update')->middleware('hasRight:updateUser');
   Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/user/delete/{id}', 'UserController@delete')->name('user.delete')->middleware('hasRight:createUser');
   Route::get('/user/kdw/syncUserData', 'UserController@connectUsersToKDW')->name('user.connectUsersToKDW')->middleware('hasRight:importReports');
   Route::post('/user/getAht', 'UserController@getAHTbetweenDates');
+  Route::get('/user/salesdataDates', 'UserController@getSalesperformanceBetweenDates');
   Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
   Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:indexUser');
   //endusers
@@ -184,15 +185,7 @@ Route::group(['middleware' => ['auth']], function () {
   //end Report Routes
 
   //config routes
-  Route::get('/config/app', function(){
-
-      // $adresses = DB::table('email_providers')->where('name','test')->first('adresses');
-      //
-      // $array = json_decode($adresses->adresses);
-
-      // dd($array);
-      return view('general_config');
-  })->name('config.view')->middleware('hasRight:config');
+  Route::get('/config/app', 'Configcontroller@index')->name('config.view')->middleware('hasRight:config');
   Route::get('/config/activateIntervallMail', 'Configcontroller@activateIntermediateMail')->name('config.activateIntermediateMail')->middleware('hasRight:config');
   Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
   Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
@@ -290,9 +283,5 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 Route::get('/test', function(){
 
   return view('test');
-  $datetime = Carbon\Carbon::parse(1620381660);
-  $datetime->setTimezone('Europe/Berlin');
-  //
-  echo $datetime->format('Y-m-d H:i:s');
 
 })->name('test');
