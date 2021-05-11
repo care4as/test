@@ -23,66 +23,115 @@ td{
 
 <div class="container-fluid bg-light" style="width: 75vw; border-radius: 15px;">
 
-  <div class="row justify-content-center" id="mainrow" style="table-layout: fixed">
-    <div class="col-12" id="maincol">
-      <table class="table table-striped">
-        <thead class="thead-dark">
-          <tr>
-            <th>Prozess</th>
-            <th>Status/Optionen</th>
-            <th>Beschreibung</th>
-            <th>Optionen</th>
-          </tr>
-        </thead>
-        <tr class="">
-          <td>Automatische Zwischenstandsmail</td>
-          <td>
-            <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="customSwitch1" @if(DB::table('jobs')->where('queue','default')->exists()) checked @else unchecked @endif>
-              <label class="custom-control-label" for="customSwitch1">Aktiv</label>
-            </div>
-          </td>
-          <td>
-            <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
-          </td>
-          <td rowspan="2">
-            <h5>Emailadressen ändern</h5>
-            <form class="form-control" action="{{route('config.updateEmailprovider')}}" method="post">
-              @csrf
-               <label for="exampleFormControlTextarea1">Emailadressen</label>
-              <textarea type="text" name="emails" class="form-control"> @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMail')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]); @else @endif @endforeach @endif </textarea>
-              <button type="submit" name="button" class="btn btn-primary btn-sm  mt-2">Ändern</button>
-            </form>
+<div class="row">
+  <div class="nav-tabs-navigation">
+    <div class="nav-tabs-wrapper">
+      <ul class="nav nav-tabs" data-tabs="tabs">
+          <li class="nav-item">
+              <a class="nav-link active" href="#settings" data-toggle="tab">Einstellungen</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="#rpi" data-toggle="tab">laufende Prozesse</a>
+          </li>
+          <!-- <li class="nav-item">
+              <a class="nav-link" href="#history" data-toggle="tab">Weitere Funktion</a>
+          </li> -->
+      </ul>
+    </div>
+  </div>
+</div>
+  <div class="tab-content">
+      <div id="settings" class="tab-pane fade in show active">
+        <div class="row justify-content-center" id="mainrow" style="table-layout: fixed">
+      <div class="col-12" id="maincol">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Prozess</th>
+              <th>Status/Optionen</th>
+              <th>Beschreibung</th>
+              <th>Optionen</th>
+            </tr>
+          </thead>
+          <tr class="">
+            <td>Automatische Zwischenstandsmail</td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch1" @if(DB::table('jobs')->where('queue','default')->exists()) checked @else unchecked @endif>
+                <label class="custom-control-label" for="customSwitch1">Aktiv</label>
+              </div>
+            </td>
+            <td>
+              <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
+            </td>
+            <td rowspan="2">
+              <h5>Emailadressen ändern</h5>
+              <form class="form-control" action="{{route('config.updateEmailprovider')}}" method="post">
+                @csrf
+                 <label for="exampleFormControlTextarea1">Emailadressen</label>
+                <textarea type="text" name="emails" class="form-control"> @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMail')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]);@else @endif @endforeach @endif </textarea>
+                <button type="submit" name="button" class="btn btn-primary btn-sm  mt-2">Ändern</button>
+              </form>
 
-          </td>
-        </tr>
-        <tr>
-          <td>Zwischenstandsmail versenden</td>
-          <td>
-            <a class="btn btn-primary btn-sm" href="{{route('config.sendIntermediateMail')}}" role="button">Go</a>
-          </td>
-          <td>
-            Eine einmalige automatisierte Mail der Zwischenstände an @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach @endif
-          </td>
-        </tr>
-        <tr>
-          <td>Zwischenstand laden</td>
-          <td>
-            <a class="btn btn-primary btn-sm" href="{{route('reports.intermediate.sync')}}" role="button">Go</a>
-          </td>
-          <td>Durch druck des Buttons wird manuell ein Zwischenstand der Zahlen aus dem KDW Tool in die Care4as Datenbank geladen. !!!Wichtig!!! Eine manueller Zwischenbericht ist fehleranfälliger und sollte automatisch erfolgen</td>
-        </tr>
-        <tr>
-          <td>Zwischenstand automatisch laden</td>
-          <td>
-            <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="customSwitch2" @if(DB::table('jobs')->where('queue','intermediate')->exists()) checked @else unchecked @endif>
-              <label class="custom-control-label" for="customSwitch2">Aktiv</label>
-            </div>
-          </td>
-          <td>Alle 30 Minuten wird nun ein Zwischenstand des KDW Tools gezogen</td>
-        </tr>
-      </table>
+            </td>
+          </tr>
+          <tr>
+            <td>Zwischenstandsmail versenden</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="{{route('config.sendIntermediateMail')}}" role="button">Go</a>
+            </td>
+            <td>
+              Eine einmalige automatisierte Mail der Zwischenstände an @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach @endif
+            </td>
+          </tr>
+          <tr>
+            <td>Zwischenstand laden</td>
+            <td>
+              <a class="btn btn-primary btn-sm" href="{{route('reports.intermediate.sync')}}" role="button">Go</a>
+            </td>
+            <td>Durch druck des Buttons wird manuell ein Zwischenstand der Zahlen aus dem KDW Tool in die Care4as Datenbank geladen. !!!Wichtig!!! Eine manueller Zwischenbericht ist fehleranfälliger und sollte automatisch erfolgen</td>
+          </tr>
+          <tr>
+            <td>Zwischenstand automatisch laden</td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch2" @if(DB::table('jobs')->where('queue','intermediate')->exists()) checked @else unchecked @endif>
+                <label class="custom-control-label" for="customSwitch2">Aktiv</label>
+              </div>
+            </td>
+            <td>Alle 30 Minuten wird nun ein Zwischenstand des KDW Tools gezogen</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    </div>
+      <div id="rpi" class="tab-pane fade in active">
+        <div class="row justify-content-center" id="mainrow" style="table-layout: fixed">
+      <div class="col-12" id="maincol">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Prozess</th>
+              <th>Wird fällig zu</th>
+              <th>Status/Optionen</th>
+              <th>Optionen</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($processes as $process)
+              <tr>
+                @if($process->queue == 'intermediate')
+                  <td>Zwischenstand laden</td>
+                @endif
+                <td> {{$process->duedate}}</td>
+                <td><a href="{{$process->id}}" class="btn btn-danger rounded-circle">X</a></td>
+
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
     </div>
   </div>
 </div>

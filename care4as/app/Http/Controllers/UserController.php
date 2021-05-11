@@ -246,6 +246,39 @@ class UserController extends Controller
       // }
       return view('dashboard',compact('user'));
     }
+
+    public function Scorecard($id)
+    {
+      $user = User::find($id);
+
+      return view('Scorecard',compact('user'));
+    }
+    public function getSalesperformanceBetweenDates()
+    {
+
+      // return response()->json(request('userid'));
+      // return request('start');
+
+      $start_date = Carbon::parse(request('start'));
+      $end_date = Carbon::parse(request('end'));
+
+      $users = User::where('role','agent')
+      ->whereIn('id', $request->employees)
+      ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
+      ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
+        // $q->select(['id','person_id','calls','time_in_state','call_date']);
+        if($start_date !== 1)
+        {
+          $q->where('call_date','>=',$start);
+        }
+        if($end_date !== 1)
+        {
+          $q->where('call_date','<=',$end);
+        }
+      }]);
+
+      return $user->retentionDetails;
+    }
     public function AgentAnalytica($id='', Request $request=null)
     {
 
