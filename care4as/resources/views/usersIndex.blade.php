@@ -56,7 +56,7 @@
                       <td>{{$user->ds_id}}</td>
                       <td>{{$user->tracking_id}}</td>
                       <td>
-                        @if(in_array('deleteUser',Auth()->user()->getRights())
+                        @if(in_array('deleteUser',Auth()->user()->getRights()))
                           <a href="{{route('user.delete', ['id' => $user->id])}}">
                           <button class="btn btn-danger btn-fab btn-icon btn-round">
                               <i class="now-ui-icons ui-1_simple-remove"></i>
