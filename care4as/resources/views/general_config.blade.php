@@ -122,6 +122,9 @@ td{
               <tr>
                 @if($process->queue == 'intermediate')
                   <td>Zwischenstand laden</td>
+                
+                @elseif($process->queue == 'default')
+                  <td>Zwischenstandsmail versenden</td>
                 @endif
                 <td> {{$process->duedate}}</td>
                 <td><a href="{{$process->id}}" class="btn btn-danger rounded-circle">X</a></td>
