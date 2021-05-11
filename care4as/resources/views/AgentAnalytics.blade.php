@@ -97,7 +97,7 @@
                     </table>
                   </td>
                   <td>
-                    @if(in_array('updateUser',Auth()->user()->rights))
+                    @if(in_array('updateUser', Auth()->user()->getRights()))
                     <table class="" style="">
                       <tr>
                         <th>PersonID</th>

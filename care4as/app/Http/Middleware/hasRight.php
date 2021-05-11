@@ -18,8 +18,7 @@ class hasRight
     {
         $user = Auth::user();
 
-
-        if(!in_array($right,$user->rights()))
+        if(!in_array($right,$user->getRights()))
         {
           abort(403,'Nicht authoriziert! Dir fehlt das Recht: '.$right);
         }
