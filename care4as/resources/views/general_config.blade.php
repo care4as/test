@@ -16,6 +16,14 @@ td{
   width: 10em;
   text-align: center;
 }
+.bordered
+{
+  border: 4px solid black;
+  border-bottom: 4px solid black !important;
+  border-top: 0px solid black !important;
+  border-collapse: collapse;
+}
+
 </style>
 @endsection
 
@@ -53,7 +61,7 @@ td{
               <th>Optionen</th>
             </tr>
           </thead>
-          <tr class="">
+          <tr class="" style="">
             <td>Automatische Zwischenstandsmail</td>
             <td>
               <div class="custom-control custom-switch">
@@ -64,25 +72,23 @@ td{
             <td>
               <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
             </td>
-            <td rowspan="2">
-              <h5>Emailadressen ändern</h5>
-              <form class="form-control" action="{{route('config.updateEmailprovider')}}" method="post">
-                @csrf
-                 <label for="exampleFormControlTextarea1">Emailadressen</label>
-                <textarea type="text" name="emails" class="form-control"> @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMail')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]);@else @endif @endforeach @endif </textarea>
-                <button type="submit" name="button" class="btn btn-primary btn-sm  mt-2">Ändern</button>
-              </form>
-
+            <td rowspan="1" class="">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailProvidersModal">
+              Verteiler
+            </button>
             </td>
           </tr>
-          <tr>
-            <td>Zwischenstandsmail versenden</td>
-            <td>
+          <tr class="">
+            <td class="">Zwischenstandsmail versenden</td>
+            <td class="">
               <a class="btn btn-primary btn-sm" href="{{route('config.sendIntermediateMail')}}" role="button">Go</a>
             </td>
             <td>
               Eine einmalige automatisierte Mail der Zwischenstände an @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach @endif
             </td>
+            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailProvidersModal">
+            Verteiler
+          </button></td>
           </tr>
           <tr>
             <td>Zwischenstand laden</td>
@@ -136,17 +142,24 @@ td{
   </div>
 </div>
 
-<div class="modal" id="emailProvidersModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="emailProvidersModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Füge oder lösche Emails aus dem Verteiler</h5>
+        <h5 class="modal-title">Adde oder lösche Mailadressen aus dem Verteiler für die Zwischenstandsmail</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p id='proivdername'></p>
+        <p>Bitte füge die Adressen in folgendem Schema hinzu um den reibungslosen Ablauf sicher zu stellen: max.mustermann@testmail.de;testuser@abc.de</p>
+        <p id='proivdername'>
+          <form class="form-control" action="{{route('config.updateEmailprovider')}}" method="post">
+            @csrf
+             <label for="exampleFormControlTextarea1">Emailadressen</label>
+            <textarea type="text" name="emails" class="form-control"> @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMail')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]);@else @endif @endforeach @endif </textarea>
+            <button type="submit" name="button" class="btn btn-primary btn-sm  mt-2">Ändern</button>
+          </form></p>
       </div>
 
     </div>
