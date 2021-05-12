@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
   Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:indexUser');
   Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:indexUser');
+  Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:indexUser');
   //endusers
 
   //cancels

@@ -18,6 +18,46 @@
     left: 12.5%;
     background-color: red;
     z-index: 100;
+    animation-name: fadeInTotally;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 1s;
+    animation-fill-mode:forwards;
+  }
+  .backdrop
+  {
+    display: none;
+   position: fixed;
+   top: 0;
+   left: 0;
+   height: 100%;
+   width: 100%;
+   background-color: black;
+   background-size: cover;
+   z-index: 20;
+    animation-name: fadeIn;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 1s;
+    animation-fill-mode:forwards;
+
+  }
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0.7;
+    }
+  }
+  @keyframes fadeInTotally {
+    0% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+    100% {
+        opacity: 1;
+    }
   }
 
 </style>
@@ -54,7 +94,7 @@
          </div>
        </div>
        <div class="row m-0 mt-2 justify-content-center bg-white align-items-center">
-         <div class="col p-2" >
+         <div class="col p-2" id="chartcontainer">
             <canvas id="RDChart" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>
          </div>
        </div>
@@ -96,20 +136,123 @@
         <div class="col">
         <h4 class="text-left">Daten</h4>
           <div class="row p-3 justify-content-left">
-
+            <table>
+              <tr class="table">
+                <td>Name</td>
+                <td>Vorname</td>
+                <td>Alter</td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>
       <hr>
       <hr>
       <div class="row justify-content-center">
-        <button type="button" name="button" id="dropdwnbtnRD" onclick="showReportDiv()">SalesPerformance</button>
-        <button type="button" name="button">AHT</button>
-        <button type="button" name="button">Umsatzperformance</button>
-      </div>
+        <form class="" action="{{route('user.update', ['id' => $user->id])}}" method="post">
+            @csrf
+            <table class="table table-bordered w-50">
+              <tr>
+                <td>
+                  <table class="" style="">
+                    <tr>
+                      <th>Abteilung</th>
+                      <td>
+                        <select class="form-control" name="department" id="department" style="width:218px;">
+                          <option value="" @if(!$user->department)  selected @endif disabled>Wähle die Abteilung</option>
+                          <option value="1&1 DSL Retention" @if($user->department == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
+                          <option value="1&1 Mobile Retention" @if($user->department == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Team</th>
+                      <td>
+                        <select class="form-control" name="team" id="Team" style="width:218px;">
+                          <option value="" @if(!$user->team)  selected @endif disabled>Wähle dein Team</option>
+                          <option value="Liesa" @if($user->team == 'Liesa') selected @endif>Liesa</option>
+                          <option value="Jacha" @if($user->team == 'Jacha') selected @endif>Jacha</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Vorname</th>
+                      <td><input class="form-control" type="text" name="surname" value="{{$user->surname}}"></td>
+                    </tr>
+                    <tr>
+                      <th>Nachname</th>
+                      <td><input class="form-control" type="text" name="lastname" value="{{$user->lastname}}"></td>
+                    </tr>
+                    <tr>
+                    @if(Auth()->user()->id == $user->id)
+                      <tr>
+                        <th>Email</th>
+                        <td><input class="form-control" type="text" name="email" value="{{$user->email}}"></td>
+                      </tr>
+                    @endif
 
+                    <tr>
+                      <th>Rolle</th>
+                      <td><select class="form-control" type="text" name="role">
+                        @foreach($roles as $role)
+                          @if($role->name == $user->role)
+                            <option value="{{$role->name}}"selected>{{$role->name}}</option>
+                          @else
+                            <option value="{{$role->name}}">{{$role->name}}</option>
+                          @endif
+                        @endforeach
+                      </select>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td>
+                  @if(in_array('updateUser', Auth()->user()->getRights()))
+                  <table class="" style="">
+                    <tr>
+                      <th>PersonID</th>
+                      <td><input class="form-control" type="text" name="person_id" value="{{$user->person_id}}"></td>
+                    </tr>
+                    <tr>
+                      <th>Agent ID</th>
+                      <td><input class="form-control" type="text" name="agent_id" value="{{$user->agent_id}}"></td>
+                    </tr>
+                    <tr>
+                      <th>tägliche Arbeitszeit</th>
+                      <td><input class="form-control" type="text" name="dailyhours" value="{{$user->dailyhours}}"></td>
+                    </tr>
+                    <tr>
+                      <th>KDW ID</th>
+                      <td><input class="form-control" type="text" name="kdwid" value="{{$user->ds_id}}"></td>
+                    </tr>
+                    <tr>
+                      <th>Tracking ID</th>
+                      <td><input class="form-control" type="text" name="trackingid" value="{{$user->tracking_id}}"></td>
+                    </tr>
+                  </table>
+                  @endif
+                </td>
+              </tr>
+            </table>
+            <button type="submit" class="btn btn-rounded btn-primary rounded-pill"name="button">Daten ändern</button>
+          </form>
+      </div>
+      <div class="row justify-content-center">
+
+        <button type="button" class="btn btn-primary rounded-circle" name="button" id="dropdwnbtnRD" onclick="showReportDiv()">
+          <i class="material-icons">
+          sentiment_dissatisfied
+          </i>
+        </button>
+        <button type="button" class="btn btn-primary rounded-circle" name="button" id="dropdwnbtnRD" onclick="showReportDiv()">
+          <i class="material-icons">
+          schedule
+          </i>
+        </button>
+      </div>
     </div>
   </div>
+
 </div>
 
 @endsection
@@ -124,9 +267,11 @@
 
 function showReportDiv(tab) {
   $('#reportdiv').toggle()
+  $('.backdrop').toggle()
 }
 function closeReportDiv(){
   $('#reportdiv').toggle()
+  $('.backdrop').toggle()
 }
 $(function() {
 
@@ -134,6 +279,7 @@ $(function() {
     var end = moment();
     var host = window.location.host;
     var userid = {!! json_encode($user->id) !!};
+
 
 
     function cb(start, end) {
@@ -152,7 +298,16 @@ $(function() {
         //   userid: userid
         // }
 
+        let chart = document.getElementById('RDChart');
+
+        if (typeof chart != 'undefined' || chart != null )
+        {
+          document.getElementById('RDChart').remove()
+          $('#chartcontainer').append('<canvas id="RDChart" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>')
+          // console.log('test')
+        }
         axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
+        // axios.get('http://'+host+'/salesdataDates',
         {
           params: {
             start: start.format('Y-MM-DD'),
@@ -163,8 +318,8 @@ $(function() {
         .then(response => {
 
           let chartData = response.data
-
           var ctx = document.getElementById('RDChart').getContext('2d')
+
             const myChart = new Chart(ctx, {
             type: 'bar',
 

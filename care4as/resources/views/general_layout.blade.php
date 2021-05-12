@@ -49,12 +49,10 @@
       <div class="sidebar-wrapper " id="sidebar-wrapper">
         @php
           Auth()->user()->getRights();
-
         @endphp
         <ul class="nav">
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
-
             <a @if(Auth::User()->role == 'Agent') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
               <i class="fas fa-table"></i>
               <p><b>Dashboard</b></p>
@@ -243,7 +241,6 @@
             </a>
           </li>
           @endif
-
         </ul>
       </div>
     </div>
@@ -315,6 +312,9 @@
       </nav>
       <!-- End Navbar -->
       <div class="panel-header panel-header-lg" style="height: 200em; overflow: scroll;">
+        <div class="backdrop">
+
+        </div>
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <div class="content" style="height: 60vh;">
           @yield('content')

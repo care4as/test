@@ -154,17 +154,17 @@
       <div class="row justify-content-center">
         <div class="nav-tabs-navigation">
             <div class="nav-tabs-wrapper">
-                <ul class="nav nav-tabs" data-tabs="tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#scorecard" data-toggle="tab">Scorecard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#monthlyStats" data-toggle="tab">Monatsstatistiken</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#dailyStats" data-toggle="tab">Tagesstatistiken</a>
-                    </li>
-                </ul>
+              <ul class="nav nav-tabs" data-tabs="tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#scorecard" data-toggle="tab">Scorecard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#monthlyStats" data-toggle="tab">Monatsstatistiken</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#dailyStats" data-toggle="tab">Tagesstatistiken</a>
+                </li>
+              </ul>
             </div>
         </div>
       </div>

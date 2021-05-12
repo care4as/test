@@ -114,6 +114,15 @@ class FeedbackController extends Controller
         $end_date->setISODate($year,$kwi,7)->format('Y-m-d');
         $end_date->setTime(23,59,59);
 
+        if($user->department == '1&1 Mobile Retention')
+        {
+          $department = 'Retention Mobile Inbound Care4as Eggebek';
+        }
+        else {
+          $department = 'Care4as Retention DSL Eggebek';
+        }
+
+
         $weekstats =  $user->retentionDetails
         ->where('call_date','>=', $start_date)
         ->where('call_date','<=', $end_date);
@@ -128,6 +137,56 @@ class FeedbackController extends Controller
         $bscSaves = $weekstats->sum('orders_bigscreen');
         $portaleSaves = $weekstats->sum('orders_portale');
 
+        $teamcalls = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('calls');
+
+        $teamcalls_ssc = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('calls_smallscreen');
+
+        $teamcalls_bsc = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('calls_bigscreen');
+
+        $teamcalls_portale = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('calls_portale');
+
+        $teamsaves = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('orders');
+
+        $teamsaves_ssc = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('orders_smallscreen');
+
+        $teamsaves_bsc = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('orders_bigscreen');
+
+        $teamsaves_portale = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('orders_portale');
+
+
+
         $statsArray = array(
 
         'calls' => $calls,
@@ -138,15 +197,22 @@ class FeedbackController extends Controller
         'sscSaves' => $sscSaves,
         'bscSaves' => $bscSaves,
         'portalSaves' => $portaleSaves,
-
+        'teamcalls' => $teamcalls,
+        'teamcalls_ssc' => $teamcalls_ssc,
+        'teamcalls_bsc' => $teamcalls_bsc,
+        'teamcalls_portale' => $teamcalls_portale,
+        'teamsaves' => $teamsaves,
+        'teamsaves_ssc' => $teamsaves_ssc,
+        'teamsaves_bsc' => $teamsaves_bsc,
+        'teamsaves_portale' => $teamsaves_portale,
         );
-        
-        $weekperformance[] =  $statsArray;
+
+        $weekperformance[$kwi] =  $statsArray;
 
       }
 
-      dd($weekperformance);
-      return view('FeedBackCreate', compact('users', 'user'));
+      // dd($weekperformance);
+      return view('FeedBackCreate', compact('users', 'user','weekperformance'));
     }
     public function print($userid = null)
     {

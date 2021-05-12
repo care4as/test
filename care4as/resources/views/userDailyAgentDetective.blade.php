@@ -34,7 +34,11 @@
             <th>ende</th>
             <th>gesamt</th>
             <th>produktiv</th>
-            <th>abwesend</th>
+            <th>produktivquote</th>
+            <th>on Hold</th>
+            <th>away</th>
+            <th>occupied</th>
+            <th>screenbreak</th>
             <th>Optionen</th>
           </tr>
       </thead>
@@ -42,27 +46,29 @@
         @foreach($users as $user)
           <tr>
             <td>{{$user->surname}} {{$user->lastname}}</td>
-            <td>{{$user->start}} </td>
-            <td>{{$user->last}}</td>
-            <td></td>
-            <td>{{$user->productive}}</td>
-            <td>{{$user->away}}</td>
             <td>
-              <a href="">
-              <button class="btn btn-danger btn-fab btn-icon btn-round">
-                  <i class="now-ui-icons ui-1_simple-remove"></i>
-              </button>
-              </a>
-              <a href="">
+              @if($user->start)
+                {{$user->start}}
+              @else
+                keine Daten für den {{Carbon\Carbon::today()->subDays(1)->format('d.m')}}.
+              @endif
+              </td>
+            <td>{{$user->last}} </td>
+            <td>{{$user->whole}} </td>
+            <td>{{$user->productive}} h</td>
+            <td>{{$user->prquota}} %</td>
+            <td>{{$user->onhold}}</td>
+            <td>{{$user->away}}</td>
+            <td>{{$user->occu}}</td>
+            <td>{{$user->screenbreak}}</td>
+            <td>
+
+              <a href="{{route('user.daDetex.single', ['id' => $user->id])}}">
               <button class="btn btn-success btn-fab btn-icon btn-round">
                 <i class="now-ui-icons ui-1_zoom-bold"></i>
               </button>
               </a>
-              <a href="">
-              <button class="btn btn-primary btn-fab btn-icon btn-round">
-                <i class="now-ui-icons ui-1_settings-gear-63"></i>
-              </button>
-              </a>
+
             </td>
           </tr>
         @endforeach
