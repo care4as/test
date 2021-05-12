@@ -26,6 +26,7 @@
   </div>
   <div class="row m-1">
     <div class="col text-center text-white bg-light" style="border-radius: 15px;">
+    @if($users->first())
       <table class="table table-striped" id="userdata">
         <thead class="thead-dark">
           <tr>
@@ -43,37 +44,42 @@
           </tr>
       </thead>
       <tbody>
-        @foreach($users as $user)
-          <tr>
-            <td>{{$user->surname}} {{$user->lastname}}</td>
-            <td>
-              @if($user->start)
-                {{$user->start}}
-              @else
-                keine Daten für den {{Carbon\Carbon::today()->subDays(1)->format('d.m')}}.
-              @endif
+
+          @foreach($users as $user)
+            <tr>
+              <td>{{$user->surname}} {{$user->lastname}}</td>
+              <td>
+                @if($user->start)
+                  {{$user->start}}
+                @else
+                  keine Daten für den {{Carbon\Carbon::today()->subDays(1)->format('d.m')}}.
+                @endif
+                </td>
+              <td>{{$user->last}} </td>
+              <td>{{$user->whole}} </td>
+              <td>{{$user->productive}} h</td>
+              <td>{{$user->prquota}} %</td>
+              <td>{{$user->onhold}}</td>
+              <td>{{$user->away}}</td>
+              <td>{{$user->occu}}</td>
+              <td>{{$user->screenbreak}}</td>
+              <td>
+
+                <a href="{{route('user.daDetex.single', ['id' => $user->id])}}">
+                <button class="btn btn-success btn-fab btn-icon btn-round">
+                  <i class="now-ui-icons ui-1_zoom-bold"></i>
+                </button>
+                </a>
+
               </td>
-            <td>{{$user->last}} </td>
-            <td>{{$user->whole}} </td>
-            <td>{{$user->productive}} h</td>
-            <td>{{$user->prquota}} %</td>
-            <td>{{$user->onhold}}</td>
-            <td>{{$user->away}}</td>
-            <td>{{$user->occu}}</td>
-            <td>{{$user->screenbreak}}</td>
-            <td>
+            </tr>
+          @endforeach
 
-              <a href="{{route('user.daDetex.single', ['id' => $user->id])}}">
-              <button class="btn btn-success btn-fab btn-icon btn-round">
-                <i class="now-ui-icons ui-1_zoom-bold"></i>
-              </button>
-              </a>
-
-            </td>
-          </tr>
-        @endforeach
       </tbody>
   </table>
+  @else
+    bisher keine Daten eingepflegt
+  @endif
   </div>
   </div>
 </div>
