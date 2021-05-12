@@ -488,7 +488,6 @@
 
           element.css( 'display','block')
           element.html('DailyAgent Daten im Zeitraum '+min+' bis: '+max)
-
         })
         .catch(function (err) {
           console.log('error DataStatus Daliyagent')
@@ -595,8 +594,6 @@
           $('#exampleFormControlSelect2').empty()
           let dep = this.value
 
-          console.log(dep)
-
           var host = window.location.host;
 
           // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
@@ -604,7 +601,7 @@
           axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
           // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
           .then(response => {
-            console.log(response)
+            // console.log(response)
             let users = response.data
 
             users.forEach(function(user){
