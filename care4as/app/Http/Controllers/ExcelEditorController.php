@@ -418,6 +418,7 @@ class ExcelEditorController extends Controller
         $counter = 0;
 
         // dd($data[0]);
+
         foreach($data[0] as $cell)
         {
           $date = 0;
@@ -488,9 +489,9 @@ class ExcelEditorController extends Controller
             $insertarray[$counter]['skill_name'] = $cell[21];
             $insertarray[$counter]['status'] = $cell[22];
 
-            if($cell[5])
+            if($cell[25] && is_numeric($cell[25]))
             {
-              $insertarray[$counter]['time_in_state'] = $cell[5];
+              $insertarray[$counter]['time_in_state'] = $cell[25];
             }
             else {
               $insertarray[$counter]['time_in_state'] = 0;

@@ -1,5 +1,21 @@
 @extends('general_layout')
 
+@section('additional_css')
+
+<style media="screen">
+
+span{
+  display:inline-block;
+  width:45%;
+  padding:0px
+}
+td,th
+{
+  width: 20%;
+  text-align: center;
+}
+</style>
+@endsection
 @section('content')
 <div class="container-fluid bg-light" style="width: 75vw; border-radius: 15px;">
   <div class="row bg-white">
@@ -37,52 +53,116 @@
 
     <div class="row mt-3 bg-white">
       <div class="col-12 d-flex  justify-content-center">
-        <table class="table table-hover table-striped  table-bordered">
-          <thead class="thead-dark">
-            <tr>
-              <th>2021</th>
-              <th>
-                KW1
-              </th>
-              <th>
-                KW2
-              </th>
-              <th>
-                KW3
-              </th>
-              <th>
-                KW4
-              </th>
-            </tr>
-            <tr>
-              <td>#</td>
-              <td>KB | Team</td>
-              <td>KB | Team</td>
-              <td>KB | Team</td>
-              <td>KB | Team</td>
-            </tr>
-          </thead>
-          <tr>
-            <td>Calls</td>
-            <td>CallsKWfirst | CallTeamsKWfirst </td>
-            <td>CallsKWsecond | CallTeamsKWsecond </td>
-            <td>CallsKWthird | CallTeamsKWthird </td>
-            <td>CallsKWfourth | CallTeamsKWfourth</td>
+        <form class="" action="index.html" method="post">
+          @csrf
+          <table class="table table-hover table-striped" >
 
-          </tr>
-          <tr>
-            <td>Saves SSC GeVo</td>
-          </tr>
-          <tr>
-            <td>Saves BSC GeVo</td>
-          </tr>
-          <tr>
-            <td>BCR Calls</td>
-          </tr>
-          <tr>
-            <td>Saves Gesamt</td>
-          </tr>
-        </table>
+            <thead class="thead-dark">
+              <tr>
+                <th>{{Carbon\Carbon::now()->year}}</th>
+                <th>
+                  @php
+                    $week = Carbon\Carbon::now()->weekOfYear;
+                  @endphp
+                  KW{{$week -4}}
+                </th>
+                <th>
+                  KW{{$week - 3}}
+                </th>
+                <th>
+                  KW{{$week - 2}}
+                </th>
+                <th>
+                  KW{{$week - 1}}
+                </th>
+              </tr>
+              <tr>
+                <td>#</td>
+                <td>KB | <b>Abteilung</b></td>
+                <td>KB | <b>Abteilung</b></td>
+                <td>KB | <b>Abteilung</b></td>
+                <td>KB | <b>Abteilung</b></td>
+              </tr>
+            </thead>
+            <tr>
+              <td>Calls</td>
+              @for($i = 4; $i >= 1 ; $i--)
+                <td><span><input type="text" name="Calls_KW{{$week - $i}}" class="form-control w-100 text-center" value="{{$weekperformance[$week - $i]['calls']}}"/> </span>|<span><input type="text" name="Calls_KW{{$week -$i}}" class="form-control text-center w-100" value="{{$weekperformance[$week -$i]['teamcalls']}}"/></span></td>
+              @endfor
+
+            </tr>
+            <tr>
+              <td>SSC GeVo CR</td>
+              @for($i = 4; $i >= 1 ; $i--)
+                <td><span><input type="text" name="Calls_KW{{$week - $i}}" class="form-control w-100 text-center" value="@if($weekperformance[$week - $i]['callsssc'] != 0) {{round(($weekperformance[$week - $i]['sscSaves']*100)/ $weekperformance[$week - $i]['callsssc'],2)}}% @else 0 @endif"/> </span>|<span><input type="text" name="Calls_KW{{$week -$i}}" class="form-control text-center w-100" value="@if($weekperformance[$week -$i]['teamcalls_ssc'] != 0) {{round(($weekperformance[$week -$i]['teamsaves_ssc']*100)/ $weekperformance[$week -$i]['teamcalls_ssc'],2)}}% @else 0 @endif"/></span></td>
+              @endfor
+
+
+            <tr>
+              <td>BSC GeVo CR</td>
+              @for($i = 4; $i >= 1 ; $i--)
+                <td><span><input type="text" name="Calls_KW{{$week - $i}}" class="form-control w-100 text-center" value="@if($weekperformance[$week - $i]['callsbsc'] != 0) {{round(($weekperformance[$week - $i]['bscSaves']*100)/ $weekperformance[$week - $i]['callsbsc'],2)}}% @else 0 @endif"/> </span>|<span><input type="text" name="Calls_KW{{$week -$i}}" class="form-control text-center w-100" value="@if($weekperformance[$week -$i]['teamcalls_bsc'] != 0) {{round(($weekperformance[$week -$i]['teamsaves_bsc']*100)/ $weekperformance[$week -$i]['teamcalls_bsc'],2)}}% @else 0 @endif"/></span></td>
+              @endfor
+            </tr>
+            <tr>
+              <td>BSC Calls</td>
+              @for($i = 4; $i >= 1 ; $i--)
+                <td><span><input type="text" name="Calls_KW{{$week - $i}}" class="form-control w-100 text-center" value="{{$weekperformance[$week - $i]['callsbsc']}}"/> </span>|<span><input type="text" name="Calls_KW{{$week -$i}}" class="form-control text-center w-100" value="{{$weekperformance[$week -$i]['teamcalls_bsc']}}"/></span></td>
+              @endfor
+            </tr>
+            <tr>
+              <td>BSC Saves</td>
+              @for($i = 4; $i >= 1 ; $i--)
+                <td><span><input type="text" name="Calls_KW{{$week - $i}}" class="form-control w-100 text-center" value="{{$weekperformance[$week - $i]['callsbsc']}}"/> </span>|<span><input type="text" name="Calls_KW{{$week -$i}}" class="form-control text-center w-100" value="{{$weekperformance[$week -$i]['teamcalls_bsc']}}"/></span></td>
+              @endfor
+            </tr>
+            <tr>
+              <td>Portal Saves</td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+            </tr>
+            <tr>
+              <td>Saves Gesamt</td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+            </tr>
+            <tr>
+              <td>RLZ 24</td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+            </tr>
+            <tr>
+                <td>Anteil Pause</td>
+                <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+                <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+                <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+                <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+            </tr>
+            <tr>
+              <td>Anteil Nacharbeit</td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+            </tr>
+            <tr>
+              <td>AHT</td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+              <td><span><input type="text" name="Calls_KW{{$week -4}}" class="form-control w-100 text-center" value="100"/></span>|<span><input type="text" name="Calls_KW{{$week -4}}" class="form-control text-center w-100" value="1200"/></span></td>
+
+            </tr>
+          </table>
+
+        </form>
+
       </div>
     </div>
     <div class="row mt-3 bg-white">

@@ -202,7 +202,7 @@ class UserTrackingController extends Controller
       ->with(['dailyAgent' => function($q) {
         // $q->select(['id','person_id','calls','call_date']);
 
-          $q->where('date','>', Carbon::today()->subdays(2));
+          $q->where('date','>', Carbon::today()->subdays(1));
 
       }])
       ->get();
@@ -218,11 +218,18 @@ class UserTrackingController extends Controller
         {
           $user->start = $user->dailyAgent->first()->date->format('Y-m-d H:i:s');
           $user->last = $user->dailyAgent->last()->date->format('Y-m-d H:i:s');
-          // dd($user);
-
-          $user->away = $user->dailyAgent->whereIn('status',$lazystates)->sum('time_in_state');
-          $user->productive = $user->dailyAgent->whereIn('status',$productivestates)->sum('time_in_state');
-          dd($user->dailyAgent->whereIn('status',$productivestates)[2]);
+          $user->whole = round(($user->dailyAgent->sum('time_in_state')/3600),2);
+          $user->away = round($user->dailyAgent->where('status','Released (03_away)')->sum('time_in_state')/60,0);
+          $user->occu = round($user->dailyAgent->where('status','Released (05_occupied)')->sum('time_in_state')/60,0);
+          $user->screenbreak = round($user->dailyAgent->where('status','Released (01_screen break)')->sum('time_in_state')/60,0);
+          $user->onhold = round($user->dailyAgent->where('status','On Hold')->sum('time_in_state')/60,0);
+          // $user->productive = $user->dailyAgent->whereIn('status','In Call')->sum('time_in_state');
+          $user->productive = round($user->dailyAgent->whereIn('status',$productivestates)->sum('time_in_state')/3600,2);
+          $user->prquota = round(($user->productive*100/$user->whole),2);
+          // dd($user->productive);
+        }
+        else {
+          $users->forget($key);
         }
 
       }
@@ -235,5 +242,17 @@ class UserTrackingController extends Controller
       }
 
 
+    }
+    public function dailyAgentDetectiveSingle($id='')
+    {
+      $user = User::where('id',$id)
+      ->with(['dailyAgent' => function($q) {
+        // $q->select(['id','person_id','calls','call_date']);
+          $q->where('date','>', Carbon::today()->subdays(1));
+      }])
+      ->first();
+
+      // dd(  $user->dailyAgent);
+      return view('userDailyAgentSingle', compact('user'));
     }
 }

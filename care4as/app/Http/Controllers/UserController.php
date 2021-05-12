@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Cancel;
 use App\User;
+use App\Role;
 use App\Hoursreport;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -251,7 +252,8 @@ class UserController extends Controller
     {
       $user = User::find($id);
 
-      return view('Scorecard',compact('user'));
+      $roles = Role::all();
+      return view('Scorecard',compact('user','roles'));
     }
     public function getSalesperformanceBetweenDates()
     {

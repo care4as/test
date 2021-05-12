@@ -37,6 +37,101 @@
           </select>
       </div>
     </div>
+    <div class="row ">
+      <table class="table table-hover table-striped" >
+        <thead class="thead-dark">
+          <tr>
+            <th>{{Carbon\Carbon::now()->year}}</th>
+            <th>
+              @php
+                $week = Carbon\Carbon::now()->weekOfYear;
+              @endphp
+              KW{{$week -4}}
+            </th>
+            <th>
+              KW{{$week - 3}}
+            </th>
+            <th>
+              KW{{$week - 2}}
+            </th>
+            <th>
+              KW{{$week - 1}}
+            </th>
+          </tr>
+          <tr>
+            <td>#</td>
+            <td>KB | <b>Abteilung</b></td>
+            <td>KB | <b>Abteilung</b></td>
+            <td>KB | <b>Abteilung</b></td>
+            <td>KB | <b>Abteilung</b></td>
+          </tr>
+        </thead>
+        <tr>
+          <td>Calls</td>
+          <td>100</td>
+          <td>100</td>
+          <td>100</td>
+          <td>100</td>
+        </tr>
+        <tr>
+          <td>Saves SSC GeVo (RET + PREV)</td>
+          <td>66</td>
+          <td>66</td>
+          <td>66</td>
+          <td>66</td>
+        </tr>
+        <tr>
+          <td>Saves BSC GeVo</td>
+          <td>55</td>
+          <td>55</td>
+          <td>55</td>
+          <td>55</td>
+        </tr>
+        <tr>
+          <td>Portal Saves</td>
+          <td>44</td>
+          <td>44</td>
+          <td>44</td>
+          <td>44</td>
+        </tr>
+        <tr>
+          <td>Saves Gesamt</td>
+          <td>Saves Gesamt</td>
+          <td>Saves Gesamt</td>
+          <td>Saves Gesamt</td>
+          <td>Saves Gesamt</td>
+        </tr>
+        <tr>
+          <td>RLZ 24</td>
+          <td>33</td>
+          <td>33</td>
+          <td>33</td>
+          <td>33</td>
+        </tr>
+        <tr>
+            <td>Anteil Pause</td>
+            <td>22</td>
+            <td>22</td>
+            <td>22</td>
+            <td>22</td>
+        </tr>
+        <tr>
+          <td>Anteil Nacharbeit</td>
+          <td>11</td>
+          <td>11</td>
+          <td>11</td>
+          <td>11</td>
+        </tr>
+        <tr>
+          <td>AHT</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+
+        </tr>
+      </table>
+    </div>
     <div class="row mt-3">
       <div class="col float-right">
         <h5>Gesprächsinhalt:</h5>
