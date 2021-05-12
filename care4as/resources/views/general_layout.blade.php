@@ -231,7 +231,7 @@
               <li><a href="{{route('reports.choose')}}">Top/Worst Report</a> </li>
               <li><a href="{{route('reports.AHTdaily')}}">AHT Report</a> </li>
               <li><a href="{{route('reports.capacitysuite')}}">Capacity Report </a> </li>
-              <li><a href="route('feedback.myIndex')">Special Mistery Report </a> </li>
+              <li><a href="{{route('user.daDetex.index')}}">Nachverfolgung Dailyagent gestern </a> </li>
             </ul>
           </li>
           @endif
@@ -357,6 +357,30 @@
 
           <a class="text-white" href="#">Es gibt Neuigkeiten</a>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content bg-danger text-white" >
+        <div class="modal-body">
+          <h5>&#128577;&#128580;&#128560; Fehler aufgetreten &#128577;&#128580;&#128560;</h5>
+          <p id="failFile"></p>
+          <p id="failLine"></p>
+          <p id="failContent"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content bg-success text-white" >
+
+        <div class="modal-body">
+          <h5>Triumph!</h5>
+          <p>Die Datei wurde erfolgreich hochgeladen &#129321;&#129321;&#129321;</p>
+        </div>
+
       </div>
     </div>
   </div>

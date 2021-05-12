@@ -41,7 +41,6 @@ export default {
     const myChart = new Chart(ctx, {
       type: 'bar',
 
-
       data: {
           datasets: [{
            type: 'line',

@@ -77,7 +77,7 @@
       </form>
     </div>
   </div>
-  <!-- <div class="row justify-content-center">
+  <div class="row justify-content-center">
     <div class="col-12">
       <h5> Daily Agent Datei aus dem Reporting der 1&1</h5>
     </div>
@@ -106,7 +106,7 @@
     </div>
 
   </div>
-</div> -->
+</div>
 
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">

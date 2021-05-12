@@ -196,4 +196,44 @@ class UserTrackingController extends Controller
 
       DB::table('intermediate_status')->insert($insertarray);
     }
+    public function dailyAgentDetectiveIndex()
+    {
+      $users = User::where('role','agent')
+      ->with(['dailyAgent' => function($q) {
+        // $q->select(['id','person_id','calls','call_date']);
+
+          $q->where('date','>', Carbon::today()->subdays(2));
+
+      }])
+      ->get();
+
+      // dd( $users[0]->dailyAgent->first());
+
+      $productivestates = array('Available','In Call','On Hold','Wrap Up');
+      $lazystates = array('Released (03_away)','Released (05_occupied)');
+
+      foreach ($users as $key => $user) {
+
+        if($user->dailyAgent->first())
+        {
+          $user->start = $user->dailyAgent->first()->date->format('Y-m-d H:i:s');
+          $user->last = $user->dailyAgent->last()->date->format('Y-m-d H:i:s');
+          // dd($user);
+
+          $user->away = $user->dailyAgent->whereIn('status',$lazystates)->sum('time_in_state');
+          $user->productive = $user->dailyAgent->whereIn('status',$productivestates)->sum('time_in_state');
+          dd($user->dailyAgent->whereIn('status',$productivestates)[2]);
+        }
+
+      }
+      // dd($users);
+      if ($users) {
+        return view('userDailyAgentDetective', compact('users'));
+      }
+      else {
+        abort(403, 'keine Daten von gestern im DA');
+      }
+
+
+    }
 }

@@ -255,30 +255,90 @@ class UserController extends Controller
     }
     public function getSalesperformanceBetweenDates()
     {
-
+      $avgCRArray = array();
       // return response()->json(request('userid'));
       // return request('start');
 
-      $start_date = Carbon::createFromFormat('YY-MM-D', request('start'));
-      $end_date = Carbon::createFromFormat('YY-MM-D', request('end'));
+      if (request('start')) {
+          $start_date = Carbon::createFromFormat('Y-m-d', request('start'))->format('Y-m-d');
+      }
+      else {
+        $start_date = 1;
+      }
 
-      $users = User::where('role','agent')
-      ->whereIn('id', $request->employees)
-      ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
+      if (request('end')) {
+
+        $end_date = Carbon::createFromFormat('Y-m-d', request('end'));
+      }
+      else {
+
+        $end_date = 1;
+      }
+
+      // return response()->json($start_date);
+
+      $user = User::where('id',request('userid'))
+      ->where('role','agent')
+      // ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
       ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
-        // $q->select(['id','person_id','calls','time_in_state','call_date']);
+        // $q->select(['id','person_id','calls','call_date']);
         if($start_date !== 1)
         {
-          $q->where('call_date','>=',$start);
+          $q->where('call_date','>=', $start_date);
+            // return response()->json($start_date);
         }
         if($end_date !== 1)
         {
-          $q->where('call_date','<=',$end);
+          $q->where('call_date','<=',$end_date);
         }
-      }]);
+      }])
+      // ->with('retentionDetails')
+      ->first();
+      // ->get();
 
-      return $user->retentionDetails;
+      if ($user->retentionDetails->sum('calls') != 0) {
+        $averageCR = round($user->retentionDetails->sum('orders') *100 / $user->retentionDetails->sum('calls'),2);
+
+      }
+      else {
+        $averageCR = 0;
+      }
+
+      if ($user->retentionDetails->sum('calls_smallscreen') != 0) {
+
+        $averageSSCCR = round($user->retentionDetails->sum('orders_smallscreen') *100 / $user->retentionDetails->sum('calls_smallscreen'),2);
+
+      }
+      else {
+        $averageSSCCR = 0;
+      }
+      foreach($user->retentionDetails as $day)
+      {
+        if ($day->calls == 0) {
+          $performanceArray[] = 0;
+        }
+        else {
+          $performanceArray[] = round($day->orders *100 / $day->calls,2);
+        }
+        if ($day->calls_smallscreen == 0) {
+          $sscArray[] = 0;
+        }
+        else {
+          $sscArray[] = round($day->orders_smallscreen *100 / $day->calls_smallscreen,2);
+        }
+
+        $timestamparray[] = $day->call_date->format('d.m.');
+        $avgCRArray[] = $averageCR;
+        $averageSSCCArray[] = $averageSSCCR;
+      }
+
+      if(!isset($performanceArray))
+      {
+        return abort(403,'keine Daten im Zeitraum');
+      }
+      return response()->json(array($timestamparray,$performanceArray,$avgCRArray,$averageSSCCArray,$sscArray));
     }
+
     public function AgentAnalytica($id='', Request $request=null)
     {
 
