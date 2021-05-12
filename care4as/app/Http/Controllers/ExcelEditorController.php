@@ -283,7 +283,7 @@ class ExcelEditorController extends Controller
 
       $data = Excel::ToArray(new DataImport, request()->file('file'));
 
-
+      // dd($data);
       $possibleFilenames = array(
         'dailyagent.xlsx',
         'Daily_Agent.xlsx',
@@ -417,10 +417,10 @@ class ExcelEditorController extends Controller
     {
         $counter = 0;
 
+        // dd($data[0]);
         foreach($data[0] as $cell)
         {
           $date = 0;
-
 
           if($cell[4] == '')
           {
@@ -500,13 +500,14 @@ class ExcelEditorController extends Controller
           $counter = $counter +1;
         }
 
+        // dd($insertarray);
         $insertarray = array_chunk($insertarray, 3500);
 
         // DB::table('dailyagent')->insert($insertData[0]);
         for($i=0; $i <= count($insertarray)-1; $i++)
         {
           ImportDailyAgentChunks::dispatch($insertarray[$i])
-          ->delay(now()->addMinutes($i*0.2));
+          ->onConnection('sync');
         }
     }
     public function capacitysuitReport ()
