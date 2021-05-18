@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid" style="width: 75vw;">
   <div class="row m-1 bg-light rounded">
-    <form class="mt-2 w-100" action="{{route('user.startEnd')}}" method="get">
+    <form class="mt-2 w-100" action="{{route('user.daDetex.index')}}" method="get">
       @csrf
       <div class="row m-0">
         <div class="col p-0">
@@ -46,6 +46,7 @@
       <tbody>
 
           @foreach($users as $user)
+          @if($user)
             <tr>
               <td>{{$user->surname}} {{$user->lastname}}</td>
               <td>
@@ -73,6 +74,7 @@
 
               </td>
             </tr>
+            @endif
           @endforeach
 
       </tbody>

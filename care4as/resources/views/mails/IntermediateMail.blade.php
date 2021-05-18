@@ -8,10 +8,16 @@
       <p>Sehr geehrte Damen und Herren, <br>
         Zwischenstand: {{$data['date']}}</p>
         <div class="" style="background-color: lightblue; color: white; font-size: 1.5em; width: auto; width: 25%;">
-          <p style="text-align:center;"><b>DSL CR: {{$data['dslcr']}}</b> | <b>Mobile SSC-CR: {{$data['ssccr']}} </b></p>
+          @if($data['isMobile'])
+            <p style="text-align:center;"><b>Mobile SSC-CR: {{$data['ssccr']}} </b></p>
+          @else
+
+          <p style="text-align:center;"><b>DSL-CR: {{$data['dslcr']}} </b></p>
+        @endif
         </div>
 
         <div class="">
+          @if($data['isMobile'])
             <h4><p><b>Mobile</b> </p> </h4>
             <table style="border: 1px solid black; color: #746e58;text-align:center; font-size: 1.2em">
               <tr>
@@ -40,7 +46,7 @@
               @for($i = 0; $i < count($data['mobile'])-1; $i++)
               <tr style="background-color: @if($i % 2 == 0) #ddf8e8 @else #fefdfa @endif; ">
                 <td>{{$data['mobile'][$i]['name']}}</td>
-                <td>{{$data['mobile'][$i]['SSC-CR']}}</td>
+                <td>{{$data['mobile'][$i]['SSC-CR']}}%</td>
                 <td style="@if($data['mobile'][$i]['SSC-CR_diff'] > 0) background-color: green; color: white; @elseif($data['mobile'][$i]['SSC-CR_diff'] < 0)background-color: red; color: white; @endif">{{$data['mobile'][$i]['SSC-CR_diff']}}</td>
 
                 <td>{{$data['mobile'][$i]['Calls']}}</td>
@@ -72,7 +78,8 @@
               </tr>
               @endfor
             </table>
-            <!-- <h4><p><b>DSL</b> </p></h4>
+            @else
+            <h4><p><b>DSL</b> </p></h4>
             <table style="border: 1px solid black; color: #746e58;text-align:center; font-size: 1.2em">
               <tr>
                 <th>Name</th>
@@ -102,7 +109,8 @@
                 <td>{{$data['dsl'][$i]['KüRü']}}</td>
               </tr>
               @endfor
-            </table> -->
+            </table>
+          @endif
         </div>
         <hr>
 

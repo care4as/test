@@ -70,12 +70,12 @@ class Intermediate implements ShouldQueue
       ->where('role','Agent')
       ->get();
 
-      foreach($users as $user)
+      if(!$users->first())
       {
         $insertarray[] = array(
           'person_id' => 0,
           'date' => 0,
-          'Calls' => 0,
+          'Calls' =>0,
           'SSC_Calls' => 0,
           'BSC_Calls' => 0,
           'Portal_Calls' => 0,
@@ -85,7 +85,11 @@ class Intermediate implements ShouldQueue
           'SSC_Orders' => 0,
           'BSC_Orders' => 0,
           'Portal_Orders' => 0,
+        );
+      }
 
+      foreach($users as $user)
+      {
 
         if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->tracking_id)->first())
         {
@@ -126,7 +130,10 @@ class Intermediate implements ShouldQueue
           }
       }
 
-    DB::table('intermediate_status')->insert($insertarray);
+      if($users->first())
+      {
+        DB::table('intermediate_status')->insert($insertarray);
+      }
 
     $time =  time();
 

@@ -62,15 +62,32 @@ td{
             </tr>
           </thead>
           <tr class="" style="">
-            <td>Automatische Zwischenstandsmail</td>
+            <td>Automatische Zwischenstandsmail Mobile</td>
             <td>
               <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="customSwitch1" @if(DB::table('jobs')->where('queue','default')->exists()) checked @else unchecked @endif>
+                <input type="checkbox" class="custom-control-input" id="customSwitch1" @if(DB::table('jobs')->where('queue','MailMobile')->exists()) checked @else unchecked @endif>
                 <label class="custom-control-label" for="customSwitch1">Aktiv</label>
               </div>
             </td>
             <td>
-              <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
+              <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMailMobile')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMailMobile')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
+            </td>
+            <td rowspan="1" class="">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailProvidersModal">
+              Verteiler
+            </button>
+            </td>
+          </tr>
+          <tr class="" style="">
+            <td>Automatische Zwischenstandsmail DSL</td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch11" @if(DB::table('jobs')->where('queue','MailDSL')->exists()) checked @else unchecked @endif>
+                <label class="custom-control-label" for="customSwitch11">Aktiv</label>
+              </div>
+            </td>
+            <td>
+              <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMailMobile')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMailMobile')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
             </td>
             <td rowspan="1" class="">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailProvidersModal">
@@ -79,12 +96,24 @@ td{
             </td>
           </tr>
           <tr class="">
-            <td class="">Zwischenstandsmail versenden</td>
+            <td class="">Zwischenstandsmail Mobile versenden</td>
             <td class="">
-              <a class="btn btn-primary btn-sm" href="{{route('config.sendIntermediateMail')}}" role="button">Go</a>
+              <a class="btn btn-primary btn-sm" href="{{route('config.sendIntermediateMail',['isMobile' => true])}}" role="button">Go</a>
             </td>
             <td>
-              Eine einmalige automatisierte Mail der Zwischenstände an @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMail')->first('adresses')  as $adress) {{$adress}} @endforeach @endif
+              Eine einmalige automatisierte Mail der Zwischenstände an @if(DB::table('email_providers')->where('name','intermediateMailMobile')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMailMobile')->first('adresses')  as $adress) {{$adress}} @endforeach @endif
+            </td>
+            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailProvidersModal">
+            Verteiler
+          </button></td>
+          </tr>
+          <tr class="">
+            <td class="">Zwischenstandsmail DSL versenden</td>
+            <td class="">
+              <a class="btn btn-primary btn-sm" href="{{route('config.sendIntermediateMail',['isMobile' => false])}}" role="button">Go</a>
+            </td>
+            <td>
+              Eine einmalige automatisierte Mail der Zwischenstände an @if(DB::table('email_providers')->where('name','intermediateMailDSL')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMailDSL')->first('adresses')  as $adress) {{$adress}} @endforeach @endif
             </td>
             <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailProvidersModal">
             Verteiler
@@ -128,9 +157,11 @@ td{
               <tr>
                 @if($process->queue == 'intermediate')
                   <td>Zwischenstand laden</td>
-                
-                @elseif($process->queue == 'default')
-                  <td>Zwischenstandsmail versenden</td>
+
+                @elseif($process->queue == 'MailMobile')
+                  <td>Zwischenstandsmail Mobile versenden</td>
+                @elseif($process->queue == 'MailDSL')
+                  <td>Zwischenstandsmail DSL versenden</td>
                 @endif
                 <td> {{$process->duedate}}</td>
                 <td><a href="{{$process->id}}" class="btn btn-danger rounded-circle">X</a></td>
@@ -159,8 +190,16 @@ td{
         <p id='proivdername'>
           <form class="form-control" action="{{route('config.updateEmailprovider')}}" method="post">
             @csrf
-             <label for="exampleFormControlTextarea1">Emailadressen</label>
-            <textarea type="text" name="emails" class="form-control"> @if(DB::table('email_providers')->where('name','intermediateMail')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMail')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]);@else @endif @endforeach @endif </textarea>
+             <label for="exampleFormControlTextarea1" class="text-center">Emailadressen Mobile</label>
+            <textarea type="text" name="emails" class="form-control"> @if(DB::table('email_providers')->where('name','intermediateMailMobile')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMailMobile')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]);@else @endif @endforeach @endif </textarea>
+            <input type="hidden" name="providername" value="intermediateMailMobile">
+            <button type="submit" name="button" class="btn btn-primary btn-sm  mt-2">Ändern</button>
+          </form></p>
+          <form class="form-control" action="{{route('config.updateEmailprovider')}}" method="post">
+            @csrf
+             <label for="exampleFormControlTextarea1">Emailverteiler DSL</label>
+            <textarea type="text" name="emails" class="form-control"> @if(DB::table('email_providers')->where('name','intermediateMailDSL')->first()) @foreach( $adresses = json_decode( DB::table('email_providers')->where('name','intermediateMailDSL')->first('adresses')->adresses) as $adress){{$adress}}@if($adress != $adresses[count($adresses)-1]);@else @endif @endforeach @endif </textarea>
+            <input type="hidden" name="providername" value="intermediateMailDSL">
             <button type="submit" name="button" class="btn btn-primary btn-sm  mt-2">Ändern</button>
           </form></p>
       </div>
@@ -177,16 +216,13 @@ $('#customSwitch1').click(function(){
 
   if(this.checked == true)
   {
-
     var host = window.location.host;
-
-    // console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
-
-    axios.get('http://'+host+'/config/activateIntervallMail')
-    // axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
+    // console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMailMobile')
+    // axios.get('http://'+host+'/config/activateIntervallMailMobile')
+    axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMailMobile')
     .then(response => {
       console.log(response.data)
-      alert('die Intervallmail wird automatisch versendet')
+      alert('die Intervallmail Mobile wird automatisch versendet')
 
       })
     .catch(function (err) {
@@ -199,7 +235,43 @@ $('#customSwitch1').click(function(){
     var host = window.location.host;
 
     // axios.get('http://'+host+'/config/deactivateIntervallMail')
-    axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMail')
+    axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMailMobile')
+
+    .then(response => {
+      alert('automatische Email deaktiviert')
+
+      })
+    .catch(function (err) {
+      console.log('error')
+      console.log(err.response);
+    })
+
+  }
+})
+$('#customSwitch11').click(function(){
+
+  if(this.checked == true)
+  {
+    var host = window.location.host;
+    // console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMailMobile')
+    // axios.get('http://'+host+'/config/activateIntervallMailMobile')
+    axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMailDSL')
+    .then(response => {
+      console.log(response.data)
+      alert('die Intervallmail DSL wird automatisch versendet')
+
+      })
+    .catch(function (err) {
+      console.log('error')
+      console.log(err.response);
+    })
+  }
+  else {
+
+    var host = window.location.host;
+
+    // axios.get('http://'+host+'/config/deactivateIntervallMail')
+    axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMailDSL')
 
     .then(response => {
       alert('automatische Email deaktiviert')
@@ -222,8 +294,8 @@ $('#customSwitch2').click(function(){
 
     // console.log('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
 
-    axios.get('http://'+host+'/config/activateAutomaticIntermediate')
-    // axios.get('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
+    // axios.get('http://'+host+'/config/activateAutomaticIntermediate')
+    axios.get('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
     .then(response => {
       alert('Zwischenstand wird nun automatisch geladen')
 

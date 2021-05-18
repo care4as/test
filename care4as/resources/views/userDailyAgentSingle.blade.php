@@ -2,7 +2,29 @@
 
 @section('content')
 <div class="container-fluid" style="width: 75vw;">
-  <div class="row ">
+  <div class="row m-1 bg-light rounded">
+    <form class="mt-2 w-100" action="{{route('user.daDetex.single', ['id' => $user->id])}}" method="get">
+      @csrf
+      <div class="row m-0">
+        <div class="col p-0">
+          <div class="row m-2 justify-content-center">
+            <div class="col-sm-3">
+              <label for="datefrom">Von:</label>
+               <input type="date" id="datefrom" name="start_date" class="form-control" placeholder="">
+             </div>
+             <div class="col-sm-3">
+               <label for="dateTo">Bis:</label>
+               <input type="date" id="dateTo" name="end_date" class="form-control" placeholder="">
+             </div>
+          </div>
+          <div class="row m-2 justify-content-center">
+            <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row m-1">
     <div class="col text-center text-white bg-light" style="border-radius: 15px;">
       <div class="card card-nav-tabs card-plain">
       <div class="card-header card-header-danger">
@@ -11,10 +33,10 @@
             <div class="nav-tabs-wrapper">
               <ul class="nav nav-tabs" data-tabs="tabs">
                   <li class="nav-item">
-                      <a class="nav-link active" href="#userinfo" data-toggle="tab">Userdaten</a>
+                      <a class="nav-link active" href="#userinfo" data-toggle="tab">DailyAgent</a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link" href="#userstats" data-toggle="tab">Userstatistiken</a>
+                      <a class="nav-link" href="#userstats" data-toggle="tab">weitere Daten</a>
                   </li>
                   <li class="nav-item">
                       <a class="nav-link" href="#history" data-toggle="tab">Weitere Funktion</a>

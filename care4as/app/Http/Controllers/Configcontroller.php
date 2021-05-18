@@ -32,9 +32,18 @@ class Configcontroller extends Controller
     public function sendIntermediateMail()
     {
       // $email = Auth()->user()->email;
-      $email = DB::table('email_providers')
-      ->where('name','intermediateMail')
-      ->first('adresses');
+
+      if(request('isMobile'))
+      {
+        $email = DB::table('email_providers')
+        ->where('name','intermediateMailMobile')
+        ->first('adresses');
+      }
+      else {
+        $email = DB::table('email_providers')
+        ->where('name','intermediateMailDSL')
+        ->first('adresses');
+      }
 
       $antijson = json_decode($email->adresses);
 
@@ -42,11 +51,20 @@ class Configcontroller extends Controller
       // dd($antijson);
       $filter = array_filter($trimmed_array);
 
-      sendIntermediateMail::dispatch($filter,1)->onConnection('sync');
+      if(request('isMobile'))
+      {
+        // return 1;
+        sendIntermediateMail::dispatch($filter,1,true)->onConnection('sync');
+      }
+      else {
+        // dd(request());
+        // return 2;
+        sendIntermediateMail::dispatch($filter,1,false)->onConnection('sync');
+      }
       return redirect()->back();
     }
 
-    public function activateIntermediateMail()
+    public function activateIntermediateMailMobile()
     {
 
       $time =  time();
@@ -54,20 +72,69 @@ class Configcontroller extends Controller
       $timediff = intval($inTowHours)-$time;
 
       $asString = ($timediff/60) + 1 .' Minutes';
+      // $asString = 0.2.' Minutes';
 
-      $email = array('andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de','andreas.nissen@care4as.de','aysun.yildiz@care4as.de');
+      // $email = array('andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de','andreas.nissen@care4as.de','aysun.yildiz@care4as.de');
+
+      $emails = DB::table('email_providers')
+      ->where('name','intermediateMailMobile')
+      ->first('adresses');
       // $email = array('andreas.robrahn@care4as.de');
-      // return $email;
 
-      sendIntermediateMail::dispatch($email,2)->delay(now()->add($asString))->onConnection('database');
+      $antijson = json_decode($emails->adresses);
+
+      $trimmed_array = array_map('trim', $antijson);
+      // dd($antijson);
+      $emails = array_filter($trimmed_array);
+
+      // return $email;
+      sendIntermediateMail::dispatch($emails,2,true)->delay(now()->add($asString))->onConnection('database')->onQueue('MailMobile');
+
       // sendIntermediateMail::dispatch($email,2)->delay(now()->add('5 Seconds'))->onConnection('database');
 
       // return 'tolle';
     }
-    public function deactivateIntermediateMail()
+    public function activateIntermediateMailDSL()
     {
 
-      DB::table('jobs')->where('queue','default')->delete();
+      $time =  time();
+      $inTowHours = ceil(time() / (120 * 60)) * (120 * 60);
+      $timediff = intval($inTowHours)-$time;
+
+      $asString = ($timediff/60) + 1 .' Minutes';
+      // $asString = 0.2.' Minutes';
+
+      $emails = DB::table('email_providers')
+      ->where('name','intermediateMailDSL')
+      ->first('adresses');
+      // $email = array('andreas.robrahn@care4as.de');
+
+      $antijson = json_decode($emails->adresses);
+
+      $trimmed_array = array_map('trim', $antijson);
+      // dd($antijson);
+      $emails = array_filter($trimmed_array);
+
+      // $email = array('andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de','andreas.nissen@care4as.de','aysun.yildiz@care4as.de');
+      // $email = array('andreas.robrahn@care4as.de');
+      // return $email;
+      sendIntermediateMail::dispatch($emails,2,false)->delay(now()->add($asString))->onConnection('database')->onQueue('MailDSL');
+
+      // sendIntermediateMail::dispatch($email,2)->delay(now()->add('5 Seconds'))->onConnection('database');
+
+      // return 'tolle';
+    }
+    public function deactivateIntermediateMailMobile()
+    {
+
+      DB::table('jobs')->where('queue','MailMobile')->delete();
+
+      return response()->json('success');
+    }
+    public function deactivateIntermediateMailDSL()
+    {
+
+      DB::table('jobs')->where('queue','MailDSL')->delete();
 
       return response()->json('success');
     }
@@ -89,7 +156,7 @@ class Configcontroller extends Controller
 
     public function updateEmailprovider(Request $request)
     {
-      $providername = 'intermediateMail';
+      $providername = 'intermediateMailMobile';
       $adresses = array('andreas.robrahn@care4as.de');
 
       if($request->emails)

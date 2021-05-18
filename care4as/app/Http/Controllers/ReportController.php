@@ -212,8 +212,6 @@ class ReportController extends Controller
           $bestusers[] = $sorted[(count($sorted)-1) - $i];
         }
       }
-
-
       // dd($bestusers);
       $data= array(
         'best' => $bestAgents,
@@ -275,7 +273,6 @@ class ReportController extends Controller
       $repMobile = $reports->where('agent_group_name','DE_care4as_KBM_RT_Eggebek');
       $repDSL = $reports->where('agent_group_name','DE_care4as_RT_DSL_Eggebek');
 
-
       $dailyValues2 = array();
 
       function getValues($reports)
@@ -330,7 +327,6 @@ class ReportController extends Controller
     public function capacitysuiteReport(Request $request)
     {
       // dd($request);
-
       $request->validate([
         'department' => 'required',
         'start_date' => 'required',
@@ -355,7 +351,6 @@ class ReportController extends Controller
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
-
 
       $days = 0;
       $sichknessquota = 0.08;

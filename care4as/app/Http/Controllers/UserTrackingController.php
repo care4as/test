@@ -196,13 +196,21 @@ class UserTrackingController extends Controller
 
       DB::table('intermediate_status')->insert($insertarray);
     }
-    public function dailyAgentDetectiveIndex()
+    public function dailyAgentDetectiveIndex(Request $request)
     {
+      // dd($request);
       $users = User::where('role','agent')
       ->with(['dailyAgent' => function($q) {
         // $q->select(['id','person_id','calls','call_date']);
 
-          $q->where('date','>', Carbon::today()->subdays(1));
+          if(request('start_date') == request('end_date'))
+          {
+            $q->whereDate('date', request('start_date'));
+          }
+          else {
+            $q->where('date','>=', request('start_date'));
+            $q->where('date','<=', request('end_date'));
+          }
 
       }])
       ->get();
@@ -216,16 +224,27 @@ class UserTrackingController extends Controller
 
         if($user->dailyAgent->first())
         {
+          // dd($user->dailyAgent,$user->dailyAgent->sum('time_in_state'));
           $user->start = $user->dailyAgent->first()->date->format('Y-m-d H:i:s');
           $user->last = $user->dailyAgent->last()->date->format('Y-m-d H:i:s');
+
           $user->whole = round(($user->dailyAgent->sum('time_in_state')/3600),2);
+
           $user->away = round($user->dailyAgent->where('status','Released (03_away)')->sum('time_in_state')/60,0);
           $user->occu = round($user->dailyAgent->where('status','Released (05_occupied)')->sum('time_in_state')/60,0);
           $user->screenbreak = round($user->dailyAgent->where('status','Released (01_screen break)')->sum('time_in_state')/60,0);
           $user->onhold = round($user->dailyAgent->where('status','On Hold')->sum('time_in_state')/60,0);
           // $user->productive = $user->dailyAgent->whereIn('status','In Call')->sum('time_in_state');
           $user->productive = round($user->dailyAgent->whereIn('status',$productivestates)->sum('time_in_state')/3600,2);
-          $user->prquota = round(($user->productive*100/$user->whole),2);
+
+          if($user->whole != 0)
+          {
+            $user->prquota = round(($user->productive*100/$user->whole),2);
+          }
+          else {
+            $user->prquota = 0;
+          }
+
           // dd($user->productive);
         }
         else {
@@ -238,17 +257,23 @@ class UserTrackingController extends Controller
         return view('userDailyAgentDetective', compact('users'));
       }
       else {
-        abort(403, 'keine Daten von gestern im DA');
+        abort(403, 'keine Daten in diesem Zeitraum im DA');
       }
-
-
     }
-    public function dailyAgentDetectiveSingle($id='')
+    
+    public function dailyAgentDetectiveSingle($id)
     {
       $user = User::where('id',$id)
       ->with(['dailyAgent' => function($q) {
         // $q->select(['id','person_id','calls','call_date']);
-          $q->where('date','>', Carbon::today()->subdays(1));
+        if(request('start_date') == request('end_date'))
+        {
+          $q->whereDate('date', request('start_date'));
+        }
+        else {
+          $q->where('date','>=', request('start_date'));
+          $q->where('date','<=', request('end_date'));
+        }
       }])
       ->first();
 

@@ -24,11 +24,13 @@ class sendIntermediateMail implements ShouldQueue
      */
     protected $email;
     protected $sync;
+    protected $isMobile;
 
-    public function __construct($email,$sync='')
+    public function __construct($email,$sync='',$isMobile = true)
     {
         $this->email = $email;
         $this->sync = $sync;
+        $this->isMobile = $isMobile;
     }
 
     /**
@@ -50,33 +52,51 @@ class sendIntermediateMail implements ShouldQueue
 
       $userids = DB::table('intermediate_status')->whereDate('date', Carbon::today())->pluck('person_id');
 
-
       $users = User::whereIn('person_id',$userids)
       ->with('intermediatesLatest')
       ->get();
 
       if(!$users->first())
       {
+          $emailarray[] = array(
+          'name' => 0,
+          'SSC-CR' => 0,
+          'SSC-CR_diff' => 0,
+          'Calls' => 0,
+          'Calls_differ' =>0,
+          'SSC_Calls' => 0,
+          'SSC_Calls_differ' => 0,
+          'BSC_Calls' => 0,
+          'BSC_Calls_differ' => 0,
+          'Portal_Calls' => 0,
+          'Portal_Calls_differ' => 0,
+          'PTB_Calls' => 0,
+          'KüRü' => 0,
+          'Orders' => 0,
+          'Orders_diff' => 0,
+          'SSC-Orders' => 0,
+          'SSC-Orders_differ' => 0,
+          'BSC-Orders' => 0,
+          'BSC-Orders_differ' => 0,
+          'Portal-Orders' => 0,
+          'Portal-Orders_differ' => 0,
+        );
 
+        $emailarrayDSL[] = array(
+          'dslcr' => 0,
+          'dslcr_differ' => 0,
+          'name' => 0,
+          'Calls' => 0,
+          'Calls_differ' => 0,
+          'Orders' => 0,
+          'Orders_differ' => 0,
+          'KüRü' => 0,
+        );
       }
-      // if($mobileSalesSata->sum('calls_ssc') == 0)
-      // {
-      //   $ssccr = 'Daten noch nicht auswertbar';
-      // }
-      // else {
-      //   $ssccr = round($mobileSalesSata->sum('ret_ssc_contract_save')*100/$mobileSalesSata->sum('calls_ssc'),2).'%';
-      // }
-      // if($dslSalesData->sum('calls') == 0)
-      // {
-      //   $dslcr = 'Daten noch nicht auswertbar';
-      // }
-      // else {
-      //   $dslcr = round($dslSalesData->sum('ret_de_1u1_rt_save')*100/$dslSalesData->sum('calls'),2).'%';
-      // }
-
 
       foreach($users as $user)
       {
+
         $formerValues = DB::table('intermediate_status')
         ->whereDate('date', Carbon::today())
         ->where('person_id', $user->person_id)
@@ -87,15 +107,14 @@ class sendIntermediateMail implements ShouldQueue
 
         $formerValues = $formerValues->last();
 
-        if( $user->department == "1&1 Mobile Retention")
+        if($user->department == "1&1 Mobile Retention" && $this->isMobile == true)
         {
-          // dd($user, $formerValues->last());
+
           if ($user->intermediatesLatest->SSC_Calls == 0) {
             $ssccr = 0;
           }
           else {
-            $ssccr = round(($user->intermediatesLatest->SSC_Orders* 100 / $user->intermediatesLatest->SSC_Calls),2).'%';
-
+            $ssccr = round(($user->intermediatesLatest->SSC_Orders* 100 / $user->intermediatesLatest->SSC_Calls),2);
           }
 
           if($formerValues)
@@ -123,7 +142,6 @@ class sendIntermediateMail implements ShouldQueue
               // dd($user->intermediatesLatest, $formerValues);
             }
 
-
             $emailarray[] = array(
               'name' => $user->surname.' '.$user->lastname,
               'SSC-CR' => $ssccr,
@@ -147,6 +165,9 @@ class sendIntermediateMail implements ShouldQueue
               'Portal-Orders' => $user->intermediatesLatest->Portal_Orders,
               'Portal-Orders_differ' => $portalSaveDiff,
             );
+            usort($emailarray, function($a, $b) {
+                return $b['SSC-CR'] <=> $a['SSC-CR'];
+            });
           }
           else {
 
@@ -174,15 +195,16 @@ class sendIntermediateMail implements ShouldQueue
               'Portal-Orders' => $user->intermediatesLatest->Portal_Orders,
               'Portal-Orders_differ' => 0,
           );
+          usort($emailarray, function($a, $b) {
+              return $b['SSC-CR'] - $a['SSC-CR'];
+          });
         }
-
         $allSscCalls += $user->intermediatesLatest->SSC_Calls;
         $allSscOrders += $user->intermediatesLatest->SSC_Orders;
-
       }
 
       //if the agent is in the dsl department
-      else {
+      elseif($user->department == "1&1 DSL Retention") {
 
         $formerdslcr = 0;
 
@@ -218,7 +240,7 @@ class sendIntermediateMail implements ShouldQueue
               $dslcr_differ = 0;
             }
 
-            $dslcrcurrent = round($dslcrcurrent,2).'%';
+            $dslcrcurrent = round($dslcrcurrent,2);
 
             $emailarrayDSL[] = array(
               'dslcr' => $dslcrcurrent,
@@ -232,7 +254,7 @@ class sendIntermediateMail implements ShouldQueue
             );
         }
         else {
-            $dslcrcurrent = round($dslcrcurrent,2).'%';
+            $dslcrcurrent = round($dslcrcurrent,2);
 
             $emailarrayDSL[] = array(
               'dslcr' => $dslcrcurrent,
@@ -249,65 +271,89 @@ class sendIntermediateMail implements ShouldQueue
         $allDSLCalls += $user->intermediatesLatest->Calls;
         $allDLSOrders += $user->intermediatesLatest->Orders;
 
+        usort($emailarrayDSL, function($a, $b) {
+            return $b['dslcr'] - $a['dslcr'];
+        });
         }
       }
 
       if ($allSscCalls != 0) {
 
-        $currentSSCCR =  round($allSscOrders * 100 / $allSscCalls,2).'%';
+        $currentSSCCR =  round($allSscOrders * 100 / $allSscCalls,2);
       }
       else {
         $currentSSCCR = 0;
       }
 
       if ($allDSLCalls != 0) {
-        $currentDSLCR =  round($allDLSOrders * 100 / $allDSLCalls,2).'%';
+        $currentDSLCR =  round($allDLSOrders * 100 / $allDSLCalls,2);
       }
       else {
         $currentDSLCR = 0;
       }
 
+      $time =  time();
 
-      $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'dslcr' => $currentDSLCR, 'mobile' => $emailarray, 'dsl' => $emailarrayDSL);
+      if (Carbon::parse($time) < Carbon::createFromTimeString('22:00'))
+      {
+        $nextTwo = ceil(time() / (120 * 60)) * (120 * 60);
+        $timediff = intval($nextTwo)-$time;
 
-      // dd($data);
-      $email = new IntermediateMail($data);
+        // $asString = 0.2 .' Minutes';
+        $asString = ($timediff/60) + 1 .' Minutes';
+      }
+      else {
+        $tommorrowMorning = Carbon::createFromTimeString('10:00')->addDay();
 
-      // $mailinglist = ['andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de'];
+        $timediff = intval($tommorrowMorning->timestamp) - $time;
 
-      $mailinglist = $this->email;
+        $asString = ($timediff/60) + 1 .' Minutes';
+        // $asString = 0.2 .' Minutes';
+      }
 
-      Mail::to($mailinglist)->send($email);
+      if($this->isMobile)
+      {
+        $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'mobile' => $emailarray, 'isMobile' => 1);
+        $email = new IntermediateMail($data);
 
-      if (Mail::failures()) {
-        foreach(Mail::failures() as $email_address) {
-              $logentry = new App\Log;
-              $logentry->logEntry("Fehler Email - $email_address <br />");
+        $mailinglist = $this->email;
+
+        Mail::to($mailinglist)->send($email);
+
+        if (Mail::failures()) {
+          foreach(Mail::failures() as $email_address) {
+                $logentry = new App\Log;
+                $logentry->logEntry("Fehler Email - $email_address <br />");
+             }
            }
-         }
+           if ($this->sync != 1) {
 
-     $time =  time();
+             $this::dispatch($this->email,2,true)->delay(now()->add($asString))->onConnection('database')->onQueue('MailMobile');
+             // $this::dispatch($this->email,,false)->delay(now()->add($asString))->onConnection('database')->onQueue('MailDSL');
+           }
+      }
+      else {
+        $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'), 'dslcr' => $currentDSLCR, 'dsl' => $emailarrayDSL,'isMobile' => false);
+        $emailDSL = new IntermediateMail($data);
+        $mailinglist = $this->email;
 
-     if (Carbon::parse($time) < Carbon::createFromTimeString('22:00'))
-     {
-       $nextTwo = ceil(time() / (120 * 60)) * (120 * 60);
-       $timediff = intval($nextTwo)-$time;
+        Mail::to($mailinglist)->send($emailDSL);
 
-       $asString = ($timediff/60) + 1 .' Minutes';
-     }
-     else {
-       $tommorrowMorning = Carbon::createFromTimeString('10:00')->addDay();
+        if (Mail::failures()) {
+          foreach(Mail::failures() as $email_address) {
+                $logentry = new App\Log;
+                $logentry->logEntry("Fehler Email - $email_address <br />");
+             }
+           }
+           if ($this->sync != 1) {
 
-       $timediff = intval($tommorrowMorning->timestamp) - $time;
+             // $this::dispatch($this->email,2,true)->delay(now()->add($asString))->onConnection('database')->onQueue('MailMobile');
+             $this::dispatch($this->email,2,false)->delay(now()->add($asString))->onConnection('database')->onQueue('MailDSL');
+           }
+      }
 
-       $asString = ($timediff/60) + 1 .' Minutes';
-     }
 
-    if ($this->sync != 1) {
 
-      $this::dispatch($this->email)->delay(now()->add($asString))->onConnection('database');
-
-    }
 
   }
 
