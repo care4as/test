@@ -13,7 +13,9 @@ class Configcontroller extends Controller
   {
        $adresses = DB::table('email_providers')->where('name','test')->first('adresses');
 
-       $array = json_decode($adresses->adresses);
+       if ($adresses) {
+         $array = json_decode($adresses->adresses);
+       }
 
        $processes = DB::table('jobs')->get();
        // dd($array);

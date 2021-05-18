@@ -128,6 +128,9 @@ td{
               <tr>
                 @if($process->queue == 'intermediate')
                   <td>Zwischenstand laden</td>
+                
+                @elseif($process->queue == 'default')
+                  <td>Zwischenstandsmail versenden</td>
                 @endif
                 <td> {{$process->duedate}}</td>
                 <td><a href="{{$process->id}}" class="btn btn-danger rounded-circle">X</a></td>
@@ -179,8 +182,8 @@ $('#customSwitch1').click(function(){
 
     // console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
 
-    // axios.get('/config/activateIntervallMail')
-    axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
+    axios.get('http://'+host+'/config/activateIntervallMail')
+    // axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMail')
     .then(response => {
       console.log(response.data)
       alert('die Intervallmail wird automatisch versendet')
@@ -217,12 +220,10 @@ $('#customSwitch2').click(function(){
 
     var host = window.location.host;
 
-    console.log('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
+    // console.log('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
 
-    // axios.get('./activateIntermediateMail')
-    axios.get('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
-
-
+    axios.get('http://'+host+'/config/activateAutomaticIntermediate')
+    // axios.get('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
     .then(response => {
       alert('Zwischenstand wird nun automatisch geladen')
 
@@ -236,8 +237,8 @@ $('#customSwitch2').click(function(){
 
     var host = window.location.host;
 
-    // axios.get(host+'/deactivateIntermediateMail')
-    axios.get('http://'+host+'/care4as/care4as/public/config/deactivateAutomaticIntermediate')
+    axios.get('http://'+host+'/config/deactivateAutomaticIntermediate')
+    // axios.get('http://'+host+'/care4as/care4as/pu7blic/config/deactivateAutomaticIntermediate')
 
     .then(response => {
       alert('automatische Zwischenstände deaktiviert')
