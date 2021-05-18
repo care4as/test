@@ -78,7 +78,8 @@
       </tbody>
   </table>
   @else
-    bisher keine Daten eingepflegt
+  <h4 class="text-dark">bisher keine Daten eingepflegt</h4>
+
   @endif
   </div>
   </div>

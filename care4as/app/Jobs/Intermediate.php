@@ -72,6 +72,20 @@ class Intermediate implements ShouldQueue
 
       foreach($users as $user)
       {
+        $insertarray[] = array(
+          'person_id' => 0,
+          'date' => 0,
+          'Calls' => 0,
+          'SSC_Calls' => 0,
+          'BSC_Calls' => 0,
+          'Portal_Calls' => 0,
+          'PTB_Calls' => 0,
+          'KüRü' => 0,
+          'Orders' => 0,
+          'SSC_Orders' => 0,
+          'BSC_Orders' => 0,
+          'Portal_Orders' => 0,
+
 
         if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->tracking_id)->first())
         {
@@ -91,10 +105,11 @@ class Intermediate implements ShouldQueue
           );
         }
         else {
+
             $user->salesdata = $dslSalesData->where('agent_ds_id', $user->tracking_id)->first();
             // dd($user);
-            $insertarray[] = array(
 
+            $insertarray[] = array(
               'person_id' => $user->person_id,
               'date' => Carbon::now()->format('Y-m-d H:i:s'),
               'Calls' => $user->salesdata->calls,
