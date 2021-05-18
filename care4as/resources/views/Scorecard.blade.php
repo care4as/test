@@ -265,7 +265,7 @@
 
 <script type="text/javascript">
 
-function showReportDiv(tab) {
+function showReportDiv() {
   $('#reportdiv').toggle()
   $('.backdrop').toggle()
 }
@@ -273,14 +273,14 @@ function closeReportDiv(){
   $('#reportdiv').toggle()
   $('.backdrop').toggle()
 }
+$( document ).ready(function() {
+
 $(function() {
 
     var start = moment().subtract(29, 'days');
     var end = moment();
     var host = window.location.host;
     var userid = {!! json_encode($user->id) !!};
-
-
 
     function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -307,7 +307,7 @@ $(function() {
           // console.log('test')
         }
         // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-        axios.get('http://'+host+'/salesdataDates',
+        axios.get('http://'+host+'/user/salesdataDates',
         {
           params: {
             start: start.format('Y-MM-DD'),
@@ -435,5 +435,6 @@ window.onclick = function(event) {
     }
   }
 }
+});
 </script>
 @endsection
