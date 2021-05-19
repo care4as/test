@@ -9,10 +9,10 @@
         Zwischenstand: {{$data['date']}}</p>
         <div class="" style="background-color: lightblue; color: white; font-size: 1.5em; width: auto; width: 25%;">
           @if($data['isMobile'])
-            <p style="text-align:center;"><b>Mobile SSC-CR: {{$data['ssccr']}} </b></p>
+            <p style="text-align:center;"><b>Mobile SSC-CR: {{$data['ssccr']}}%</b></p>
           @else
 
-          <p style="text-align:center;"><b>DSL-CR: {{$data['dslcr']}} </b></p>
+          <p style="text-align:center;"><b>DSL-CR: {{$data['dslcr']}}%</b></p>
         @endif
         </div>
 
@@ -97,7 +97,7 @@
 
                 <td>{{$data['dsl'][$i]['name']}}</td>
 
-                <td>{{$data['dsl'][$i]['dslcr']}}</td>
+                <td>{{$data['dsl'][$i]['dslcr']}}%</td>
                 <td style="@if($data['dsl'][$i]['dslcr_differ'] > 0) background-color: green; color: white;@elseif($data['dsl'][$i]['dslcr_differ'] < 0)background-color: red; color: white; @endif">{{$data['dsl'][$i]['dslcr_differ']}}</td>
 
                 <td >{{$data['dsl'][$i]['Calls']}}</td>
