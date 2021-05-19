@@ -46,11 +46,11 @@
           <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 190px; margin: 25px; margin-bottom: 0px; margin-top: 10px;">
         </a>
       </div>
-      <div class="sidebar-wrapper " id="sidebar-wrapper">
+      <div class="sidebar-wrapper " id="sidebar-wrapper" style="overflow:scroll; margin-bottom: 15px;">
         @php
           Auth()->user()->getRights();
         @endphp
-        <ul class="nav">
+        <ul class="nav" style="margin-bottom: 15px;">
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
             <a @if(Auth::User()->role == 'Agent') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">

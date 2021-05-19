@@ -125,61 +125,130 @@ label.hamburg {
     transform: rotateY(180deg);
   }
 
+  @-webkit-keyframes image_blur {
+    10% {
+      /* -webkit-filter: blur(0px); */
+      transform: skew(1deg) scale(1.1);
+
+    }
+    20% {
+      /* -webkit-filter: blur(0.5px); */
+      transform: skew(-1deg) scale(1.1);
+      }
+    30% {
+      /* -webkit-filter: blur(0.5px); */
+      transform: skew(1deg) scale(1.1);
+      }
+    40% {
+      /* -webkit-filter: blur(0.5px); */
+      transform: skew(-1deg) scale(1.1);
+      }
+    50% {
+      /* -webkit-filter: blur(1px); */
+      transform: skew(1deg) scale(1.05);;
+      /* transform: scale(0.9); */
+    }
+
+    75% {
+      /* -webkit-filter: blur(0.5px); */
+      transform: skew(-1deg) scale(1.03);;
+    }
+
+    100% {
+       /* -webkit-filter: blur(0px); */
+      transform: skew(1deg) scale(1.1);;
+    }
+}
+@keyframes grow
+{
+  FROM
+  {
+    transform: scale(0);
+    opacity: 0.1;
+    transform-origin: center;
+  }
+  to
+  {
+    transform: scale(5);
+    opacity: 0.01;
+    transform-origin: center;
+  }
+}
+#bgimage {
+  position: relative;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  -webkit-animation: image_blur 35s infinite;
+  border: 4px solid white;
+  border-radius: 15px;
+   /* transition: all 5s ease; */
+}
+.borderrectangle
+{
+  height: 10px;
+  width: 10px;
+  border: 3px solid white;
+}
 </style>
 
 @endsection
 
 @section('content')
-<div class="container-fluid bg-light"
-  style="
-  width: 75vw;
-  height: 90vh;
-  background-image:url('https://cdn.prod.www.spiegel.de/images/3f57c70a-0001-0004-0000-000000355905_w996_r1.77_fpx46.48_fpy50.jpg');
-  background-size: 100% auto;
-  background-position: center top;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  "
-  >
-  <nav>
-    <div class="row justify-content-center align-items-center text-center" style="
-    background: rgb(62,3,12);
-    background: radial-gradient(circle, rgba(62,3,12,1) 62%, rgba(134,9,12,1) 88%, rgba(162,7,33,1) 98%);
-    color: rgb(255,235,205);
+
+  <div class=""
+    style="
+    position: relative;
+    height: 100%;
+    padding: 15px;
     ">
-      <div class="col">
-        <input type="checkbox" id="hamburg" onclick="showSidebar()">
-        <label for="hamburg" class="hamburg">
-            <span class="line"></span>
-            <span class="line"></span>
-            <span class="line"></span>
-        </label>
+    <div class="border-dark " style="
+    position: relative;
+    background: rgb(138,110,77);
+    background: linear-gradient(90deg, rgba(138,110,77,1) 6%, rgba(134,105,70,1) 35%, rgba(70,53,33,1) 66%);
+    width:100%;
+    height:100%;
+    border-radius: 15px;
+    overflow: hidden;
+    ">
+    <div class=" d-flex p-2" style="position: relative;">
+
+      <div class="borderrectangle" style="position: absolute; left: 0px; top: 0px;">
+
       </div>
-      <div class="col ">
-        Tracking
+      <div class="borderrectangle" style="position: absolute; right: 0px; top: 0px;">
+
       </div>
-      <div class="col">
-        Nachrichten
+      <div class="borderrectangle" style="position: absolute; left: 0px; bottom: 0px;">
+
       </div>
-      <div class="col">
-        <img src="https://i.stack.imgur.com/UCY3T.png" alt="">
+      <div class="borderrectangle" style="position: absolute; right: 0px; bottom: 0px;">
+
       </div>
-      <div class="col">
-        Todos
-      </div>
-      <div class="col">
-        Profil
-      </div>
-      <div class="col d-flex justify-content-end">
-        <input type="checkbox" id="hamburg" onclick="showSidebar()">
-        <label for="hamburg" class="hamburg">
-            <span class="line"></span>
-            <span class="line"></span>
-            <span class="line"></span>
-        </label>
-      </div>
+      <img src="http://neuenachbarschaft.de/wp-content/uploads/2017/08/WIESE-1024x683.jpg" alt="" id="bgimage">
     </div>
-  </nav>
+  </div>
+  <div class="" style="
+    display: flex;
+    align-items: center;
+    position: absolute;
+    height: auto;
+    width: 50%;
+    left: 25%;
+    top: 25%;
+    border: 4px solid black;
+    background: rgba(255,255,255,0.4);
+    z-index: 100;
+  ">
+  <p style="
+    color: rgba(0,0,0, 1);
+    font-weight: 900;
+    font-size: 1em;
+    ">
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+  </div>
+  </div>
+
     <div class="d-flex" style="position: absolute;">
       <div id="mySidebar" class="sidebartest">
         <a href="">Startseite</a>
@@ -191,97 +260,10 @@ label.hamburg {
         <a href="">Person 6</a>
     </div>
   </div>
-  <div class="container-fluid">
-    <div class="row justify-content-center mt-3">
-    @for($i=0; $i <= 9; $i++ )
-    <!-- <div class="col-3 m-3 p-1" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128)">
-      <div class="row m-0" id="bgimage">
-        <div class="col p-0" style="position:relative">
-          <img src="https://img.fotocommunity.com/herbstbaum-98afdef5-30d2-42cb-958d-a26be878075d.jpg?height=400" alt="">
-          <div class="" style="position:absolute; bottom: 5px; left: 5px;">
-            <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" alt="" style="border-radius:50%; height: 125px; width: 125px; object-fit: cover;">
-          </div>
-          <div class="d-flex justify-content-center" role="group" style="position:absolute; top: 5px; right: 5px; border-radius: 50px; height: 30px; width: 30px;">
-            <button class="btn-white rounded-circle h-100 w-100 p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                <i class="material-icons">
-                settings
-              </i>
-              </button>
-              <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Chatten</a>
-                <a class="dropdown-item" href="#">Als Freund hinzufügen</a>
-                <a class="dropdown-item" href="#">Blockieren</a>
-              </div>
-          </div>
-        </div>
+  <!-- <div class="container-fluid"> -->
 
-      </div>
-      <div class="row">
-        <div class="col" >
-          <p>Name, Alter</p>
-          <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
 
-      </div>
-      <div class="row">
-        <div class="col">
 
-        </div>
-        <div class="col">
-
-        </div>
-        <div class="col">
-
-        </div>
-      </div>
-    </div> -->
-
-    <!-- profilecard 2 -->
-
-    <div class="col_designed m-3 pr-3 pb-3" style="background-color: rgba(250, 235, 215,1); color: 	rgb(128,128,128); height: 300px;">
-      <div class="row border shadow-lg flipper" style="background-color: rgba(250, 235, 215,1);margin: 0; margin-top: -10px; margin-left: -10px; height: 300px;">
-        <div class="flip-card">
-         <div class="flip-card-inner">
-           <div class="flip-card-front">
-             <div class="row">
-
-             </div>
-              <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" alt="" style="border-radius:50%; height: 125px; width: 125px; object-fit: cover;">
-           </div>
-           <div class="flip-card-back">
-             <h1>John Doe</h1>
-             <p>Architect & Engineer</p>
-             <p>We love that guy</p>
-           </div>
-         </div>
-        </div>
-        <!-- <div class="flip-card">
-          <div class="flip-inner">
-            <div class="flip-front" >
-              <div class="col-5 m-2 d-flex align-items-center">
-                <img src="https://spd-mvp.de/uploads/spdLandesverbandMecklenburgVorpommern/Landtagswahl-2021/_1024xAUTO_crop_center-center_none/Manuela-Schwesig.jpg" class="img-fluid shadow-lg" alt="" style="border: 5px solid white;">
-              </div>
-              <div class="col-6 overflow-auto" style="">
-                <div class="row  d-flex align-items-center">
-                  Manuela Schwesing, 43
-                </div>
-              </div>
-            </div>
-            <div class="flip-back" >
-              <div class="row text-white" style="">
-                <span style="font-size: 1em;">Motto:</span>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-              </div>
-            </div>
-
-          </div>
-        </div> -->
-      </div>
-    </div>
-    @endfor
-  </div>
-  </div>
-  </div>
 
 
 @endsection
