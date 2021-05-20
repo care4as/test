@@ -15,6 +15,8 @@ class CreateOptinTable extends Migration
     {
         Schema::create('optin', function (Blueprint $table) {
             $table->id();
+
+
             $table->datetime('date');
             $table->char('department',40)->nullable();
             $table->integer('person_id');
@@ -30,8 +32,8 @@ class CreateOptinTable extends Migration
             $table->integer('Anzahl_SMS_OptIn')->nullable();
             $table->integer('Anzahl_Nutzungsdaten_OptIn')->nullable();
             $table->integer('Anzahl_Verkehrsdaten_OptIn')->nullable();
-            $table->integer('Anzahl_Call_OptOut')->nullable();
-            $table->integer('Anzahl_Email_OptOut')->nullable();
+            $table->float('Quote Opt-In Abfragen auf Handled Calls',5,4)->nullable();
+            $table->float('Quote Opt-In Erfolg',5,4)->nullable();
             $table->unique(['date','person_id']);
             $table->timestamps();
         });

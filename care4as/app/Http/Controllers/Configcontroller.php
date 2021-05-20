@@ -182,4 +182,9 @@ class Configcontroller extends Controller
 
       return redirect()->back();
     }
+    public function deleteProcess($id)
+    {
+      DB::table('jobs')->where('id',$id)->delete();
+      return redirect()->back();
+    }
 }

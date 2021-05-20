@@ -145,6 +145,10 @@ class User extends Authenticatable
     {
       return $this->hasMany('\App\Intermediate','person_id','person_id')->whereDate('date', \Carbon\Carbon::today());
     }
+    public function Optin()
+    {
+      return $this->hasMany('\App\Optin','person_id','person_id');
+    }
     public function intermediatesLatest()
     {
       return $this->hasOne('\App\Intermediate','person_id','person_id')->latest('date');

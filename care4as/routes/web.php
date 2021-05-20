@@ -196,6 +196,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config');
   Route::get('/config/deactivateIntervallMailDSL', 'Configcontroller@deactivateIntermediateMailDSL')->name('config.deactivateIntermediateMail.dsl')->middleware('hasRight:config');
   Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
+  Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config');
 
   //endconfig
   //roles and rights
@@ -286,6 +287,20 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 Route::get('/test', function(){
 
-  return view('test');
+  $users = App\User::with('Optin')->get();
+
+  foreach ($users as $key => $user) {
+    $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
+    $optinRequests = $user->Optin->sum('Anzahl_OptIn-Abfragen');
+
+    if ($optinCalls != 0) {
+      $optinQuota = round($optinRequests*100/$optinCalls,2);
+    }
+    else {
+        $optinQuota = 0;
+    }
+    }
+  dd($users[1], $users[1]->Optin[1]);
+  // return view('test');
 
 })->name('test');

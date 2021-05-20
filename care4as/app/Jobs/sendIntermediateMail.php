@@ -43,9 +43,19 @@ class sendIntermediateMail implements ShouldQueue
 
       $currentSSCCR = 0;
       $dslcr = 0;
+      $bscr = 0;
+      $portalcr = 0;
+      $gevocrMOB = 0;
 
       $allSscCalls = 0;
       $allSscOrders = 0;
+
+      $allCallsMOB = 0;
+      $allOrdersMOB = 0;
+      $allBSCCalls = 0;
+      $allBSCOrders = 0;
+      $allPortalCalls = 0;
+      $allPortalOrders = 0;
 
       $allDSLCalls = 0;
       $allDLSOrders = 0;
@@ -61,13 +71,16 @@ class sendIntermediateMail implements ShouldQueue
           $emailarray[] = array(
           'name' => 0,
           'SSC-CR' => 0,
+          'GeVo-CR' => 0,
           'SSC-CR_diff' => 0,
           'Calls' => 0,
           'Calls_differ' =>0,
           'SSC_Calls' => 0,
           'SSC_Calls_differ' => 0,
+          'BSC-CR' => 0,
           'BSC_Calls' => 0,
           'BSC_Calls_differ' => 0,
+          'Portal-CR' => 0,
           'Portal_Calls' => 0,
           'Portal_Calls_differ' => 0,
           'PTB_Calls' => 0,
@@ -116,6 +129,24 @@ class sendIntermediateMail implements ShouldQueue
           else {
             $ssccr = round(($user->intermediatesLatest->SSC_Orders* 100 / $user->intermediatesLatest->SSC_Calls),2);
           }
+          if ($user->intermediatesLatest->Calls == 0) {
+            $ssccr = 0;
+          }
+          else {
+            $gevocr = round(($user->intermediatesLatest->Orders* 100 / $user->intermediatesLatest->Calls),2);
+          }
+          if ($user->intermediatesLatest->BSC_Calls == 0) {
+            $bsccr = 0;
+          }
+          else {
+            $bsccr = round(($user->intermediatesLatest->BSC_Orders* 100 / $user->intermediatesLatest->BSC_Calls),2);
+          }
+          if ($user->intermediatesLatest->Portal_Calls == 0) {
+            $portalcr = 0;
+          }
+          else {
+            $portalcr = round(($user->intermediatesLatest->Portal_Orders* 100 / $user->intermediatesLatest->Portal_Calls),2);
+          }
 
           if($formerValues)
           {
@@ -150,20 +181,11 @@ class sendIntermediateMail implements ShouldQueue
               'Calls_differ' => $CallsDiff,
               'SSC_Calls' => $user->intermediatesLatest->SSC_Calls,
               'SSC_Calls_differ' => $sscDiff,
-              'BSC_Calls' => $user->intermediatesLatest->BSC_Calls,
-              'BSC_Calls_differ' => $bscDiff,
-              'Portal_Calls' => $user->intermediatesLatest->Portal_Calls,
-              'Portal_Calls_differ' => $portalCallsDiffer,
-              'PTB_Calls' => $user->intermediatesLatest->BSC_Calls,
-              'KüRü' => $user->intermediatesLatest->KüRü,
-              'Orders' => $user->intermediatesLatest->Orders,
-              'Orders_diff' => $ordersDiff,
               'SSC-Orders' => $user->intermediatesLatest->SSC_Orders,
               'SSC-Orders_differ' => $sscSaveDiff,
-              'BSC-Orders' => $user->intermediatesLatest->BSC_Orders,
-              'BSC-Orders_differ' => $bscSaveDiff,
-              'Portal-Orders' => $user->intermediatesLatest->Portal_Orders,
-              'Portal-Orders_differ' => $portalSaveDiff,
+              'BSC_CR' => $bsccr,
+              'PortalCR' => $portalcr,
+
             );
             usort($emailarray, function($a, $b) {
                 return $b['SSC-CR'] <=> $a['SSC-CR'];
@@ -173,27 +195,18 @@ class sendIntermediateMail implements ShouldQueue
 
             $emailarray[] = array(
 
+              'name' => $user->surname.' '.$user->lastname,
               'SSC-CR' => $ssccr,
               'SSC-CR_diff' => 0,
-              'name' => $user->surname.' '.$user->lastname,
+
               'Calls' => $user->intermediatesLatest->Calls,
               'Calls_differ' => 0,
               'SSC_Calls' => $user->intermediatesLatest->SSC_Calls,
               'SSC_Calls_differ' => 0,
-              'BSC_Calls' => $user->intermediatesLatest->BSC_Calls,
-              'BSC_Calls_differ' => 0,
-              'Portal_Calls' => $user->intermediatesLatest->Portal_Calls,
-              'Portal_Calls_differ' => 0,
-              'PTB_Calls' => $user->intermediatesLatest->PTB_Calls,
-              'KüRü' => $user->intermediatesLatest->KüRü,
-              'Orders' => $user->intermediatesLatest->Orders,
-              'Orders_diff' => 0,
               'SSC-Orders' => $user->intermediatesLatest->SSC_Orders,
               'SSC-Orders_differ' => 0,
-              'BSC-Orders' => $user->intermediatesLatest->BSC_Orders,
-              'BSC-Orders_differ' => 0,
-              'Portal-Orders' => $user->intermediatesLatest->Portal_Orders,
-              'Portal-Orders_differ' => 0,
+              'BSC_CR' => $bsccr,
+              'PortalCR' => $portalcr,
           );
           usort($emailarray, function($a, $b) {
               return $b['SSC-CR'] - $a['SSC-CR'];
@@ -201,6 +214,14 @@ class sendIntermediateMail implements ShouldQueue
         }
         $allSscCalls += $user->intermediatesLatest->SSC_Calls;
         $allSscOrders += $user->intermediatesLatest->SSC_Orders;
+
+        $allCallsMOB += $user->intermediatesLatest->Calls;
+        $allOrdersMOB += $user->intermediatesLatest->Orders;
+
+        $allBSCCalls += $user->intermediatesLatest->BSC_Calls;
+        $allBSCOrders += $user->intermediatesLatest->BSC_Orders;
+        $allPortalCalls += $user->intermediatesLatest->Portal_Calls;
+        $allPortalOrders += $user->intermediatesLatest->Portal_Orders;
       }
 
       //if the agent is in the dsl department
@@ -218,18 +239,14 @@ class sendIntermediateMail implements ShouldQueue
 
           $dslcrcurrent = $user->intermediatesLatest->Orders*100 / $user->intermediatesLatest->Calls;
         }
-
         if($formerValues)
         {
             $callsDiff = $user->intermediatesLatest->Calls - $formerValues->Calls;
             $ordersDiff = $user->intermediatesLatest->Orders - $formerValues->Orders;
-
             if ($formerValues->Calls == 0) {
-
               $formerdslcr = 0;
             }
             else {
-
                 $formerdslcr = $formerValues->Orders *100 / $formerValues->Calls;
               }
 
@@ -239,9 +256,7 @@ class sendIntermediateMail implements ShouldQueue
             else {
               $dslcr_differ = 0;
             }
-
             $dslcrcurrent = round($dslcrcurrent,2);
-
             $emailarrayDSL[] = array(
               'dslcr' => $dslcrcurrent,
               'dslcr_differ' => $dslcr_differ,
@@ -267,7 +282,6 @@ class sendIntermediateMail implements ShouldQueue
               'KüRü' => $user->intermediatesLatest->KüRü
             );
         }
-
         $allDSLCalls += $user->intermediatesLatest->Calls;
         $allDLSOrders += $user->intermediatesLatest->Orders;
 
@@ -281,8 +295,33 @@ class sendIntermediateMail implements ShouldQueue
 
         $currentSSCCR =  round($allSscOrders * 100 / $allSscCalls,2);
       }
+
       else {
         $currentSSCCR = 0;
+      }
+      if ($allCallsMOB != 0) {
+
+        $currentGeVoCCR =  round($allOrdersMOB * 100 / $allCallsMOB,2);
+      }
+
+      else {
+        $currentGeVoCCR = 0;
+      }
+      if ($allBSCCalls != 0) {
+
+        $currentBSCCCR =  round($allBSCOrders * 100 / $allBSCCalls,2);
+      }
+
+      else {
+        $currentBSCCCR = 0;
+      }
+      if ($allPortalCalls != 0) {
+
+        $currentPortalCCR =  round($allPortalCalls * 100 / $allPortalCalls,2);
+      }
+
+      else {
+        $currentPortalCCR = 0;
       }
 
       if ($allDSLCalls != 0) {
@@ -313,13 +352,11 @@ class sendIntermediateMail implements ShouldQueue
 
       if($this->isMobile)
       {
-        $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'mobile' => $emailarray, 'isMobile' => 1);
+        $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'bsccr' => $currentBSCCCR, 'portalcr' => $currentPortalCCR, 'gevocr'=> $currentGeVoCCR, 'mobile' => $emailarray, 'isMobile' => 1);
         $email = new IntermediateMail($data);
 
         $mailinglist = $this->email;
-
         Mail::to($mailinglist)->send($email);
-
         if (Mail::failures()) {
           foreach(Mail::failures() as $email_address) {
                 $logentry = new App\Log;
@@ -327,7 +364,6 @@ class sendIntermediateMail implements ShouldQueue
              }
            }
            if ($this->sync != 1) {
-
              $this::dispatch($this->email,2,true)->delay(now()->add($asString))->onConnection('database')->onQueue('MailMobile');
              // $this::dispatch($this->email,,false)->delay(now()->add($asString))->onConnection('database')->onQueue('MailDSL');
            }

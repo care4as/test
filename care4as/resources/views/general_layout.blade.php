@@ -249,8 +249,13 @@
       <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <i class="fas fa-bars" onclick="toggleSidebar()"></i>
-          </div>
+            <input type="checkbox" id="hamburg" onclick="showSidebar()">
+              <label for="hamburg" class="hamburg">
+                  <span class="line"></span>
+                  <span class="line"></span>
+                  <span class="line"></span>
+              </label>
+            </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -372,6 +377,7 @@
       </div>
     </div>
   </div>
+
   <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content bg-success text-white" >
@@ -384,6 +390,16 @@
       </div>
     </div>
   </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+</div>
+</div>
+
   <!--   Core JS Files   -->
   <script src="{{asset('css/now-ui-dashboard-master/assets/js/core/popper.min.js')}}"></script>
   <script src="{{asset('js/main.js')}}"></script>

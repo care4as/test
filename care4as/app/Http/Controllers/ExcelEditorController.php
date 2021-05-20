@@ -66,10 +66,11 @@ class ExcelEditorController extends Controller
 
         $cell = $data2[$i];
 
-        $date = \Carbon\Carbon::parse($cell[3]);
-
+        $UNIX_DATE2 = ($cell[3] - 25569) * 86400;
+        $date = gmdate("Y-m-d",$UNIX_DATE2);
+        // dd();
         $insertData[$i] = [
-          'date' => $date->format('Y-m-d'),
+          'date' => gmdate($date),
           'department' => $cell[5],
           'person_id' => $cell[6],
           'Anzahl_Handled_Calls' => $cell[7],
@@ -84,8 +85,9 @@ class ExcelEditorController extends Controller
           'Anzahl_SMS_OptIn' => $cell[16],
           'Anzahl_Nutzungsdaten_OptIn' => $cell[17],
           'Anzahl_Verkehrsdaten_OptIn' => $cell[18],
-          'Anzahl_Call_OptOut' => $cell[19],
-          'Anzahl_Email_OptOut' => $cell[20],
+          // 'Quote Opt-In Abfragen auf Handled Calls' =>  number_format(floatval(), 2, '.', ''),
+          'Quote Opt-In Abfragen auf Handled Calls' =>  $cell[19],
+          'Quote Opt-In Erfolg' => $cell[20],
         ];
       }
 

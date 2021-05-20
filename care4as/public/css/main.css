@@ -13,6 +13,42 @@ body
     .table-striped>tbody>tr:hover {
       opacity: 0.5;
     }
+    label.hamburg
+    {
+      display: block;
+      background: #f05454;
+      width: 55px;
+      height: 35px;
+      position: relative;
+    }
+    .line
+    {
+      position: relative;
+      /* left:1.25vmin; */
+      height: 3px;
+      width: 45px;
+      background: #dddddd; border-radius: 2px;
+      display: flex;
+      margin-top: 12%;
+      transition: 0.5s;
+      transform-origin: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #hamburg:checked + .hamburg .line:nth-child(1)
+    {
+      transform: translateY(0.8vmin) rotate(-45deg);
+    }
+    #hamburg:checked + .hamburg .line:nth-child(2)
+    {
+      opacity:0;
+    }
+    #hamburg:checked + .hamburg .line:nth-child(3)
+    {
+      transform: translateY(-1vmin) rotate(45deg);
+    }
+    input#hamburg {display:none}
+
     .lds-spinner-sm {
     color: official;
     align-self: center;
@@ -22,8 +58,7 @@ body
     align-self: center;
     display: block;
     justify-content: center;
-  }
-
+    }
     .lds-spinner {
     color: official;
     align-self: center;
