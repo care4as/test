@@ -218,8 +218,8 @@ $('#customSwitch1').click(function(){
   {
     var host = window.location.host;
     // console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMailMobile')
-    // axios.get('http://'+host+'/config/activateIntervallMailMobile')
-    axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMailMobile')
+    axios.get('http://'+host+'/config/activateIntervallMailMobile')
+    // axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMailMobile')
     .then(response => {
       console.log(response.data)
       alert('die Intervallmail Mobile wird automatisch versendet')
@@ -234,8 +234,8 @@ $('#customSwitch1').click(function(){
 
     var host = window.location.host;
 
-    // axios.get('http://'+host+'/config/deactivateIntervallMail')
-    axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMailMobile')
+    axios.get('http://'+host+'/config/deactivateIntervallMail')
+    // axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMailMobile')
 
     .then(response => {
       alert('automatische Email deaktiviert')
@@ -253,9 +253,9 @@ $('#customSwitch11').click(function(){
   if(this.checked == true)
   {
     var host = window.location.host;
-    // console.log('http://'+host+'/care4as/care4as/public/config/activateIntervallMailMobile')
-    // axios.get('http://'+host+'/config/activateIntervallMailMobile')
-    axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMailDSL')
+    
+    axios.get('http://'+host+'/config/activateIntervallMailDSL')
+    // axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMailDSL')
     .then(response => {
       console.log(response.data)
       alert('die Intervallmail DSL wird automatisch versendet')
@@ -294,8 +294,8 @@ $('#customSwitch2').click(function(){
 
     // console.log('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
 
-    // axios.get('http://'+host+'/config/activateAutomaticIntermediate')
-    axios.get('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
+    axios.get('http://'+host+'/config/activateAutomaticIntermediate')
+    // axios.get('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
     .then(response => {
       alert('Zwischenstand wird nun automatisch geladen')
 
