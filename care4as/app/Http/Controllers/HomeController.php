@@ -138,6 +138,26 @@ class HomeController extends Controller
               $q->where('trackingdate','<=',$end_date);
             }
           }])
+          ->with(['SAS' => function($q) use ($start_date,$end_date){
+            if($start_date != 1)
+            {
+              $q->where('date','>=',$start_date);
+            }
+            if($end_date != 1)
+            {
+              $q->where('date','<=',$end_date);
+            }
+          }])
+          ->with(['Optin' => function($q) use ($start_date,$end_date){
+            if($start_date != 1)
+            {
+              $q->where('date','>=',$start_date);
+            }
+            if($end_date != 1)
+            {
+              $q->where('date','<=',$end_date);
+            }
+          }])
         // ->limit(10)
         ->get();
       }
@@ -197,6 +217,26 @@ class HomeController extends Controller
             if($end_date != 1)
             {
               $q->where('trackingdate','<=',$end_date);
+            }
+          }])
+          ->with(['SAS' => function($q) use ($start_date,$end_date){
+            if($start_date != 1)
+            {
+              $q->where('date','>=',$start_date);
+            }
+            if($end_date != 1)
+            {
+              $q->where('date','<=',$end_date);
+            }
+          }])
+          ->with(['Optin' => function($q) use ($start_date,$end_date){
+            if($start_date != 1)
+            {
+              $q->where('date','>=',$start_date);
+            }
+            if($end_date != 1)
+            {
+              $q->where('date','<=',$end_date);
             }
           }])
         // ->limit(10)
@@ -264,9 +304,6 @@ class HomeController extends Controller
           $weekenddays[] = $day->format('Y-m-d');
         }
       }
-
-
-
       foreach ($users as $key => $user) {
 
         $reports = $user->retentionDetails;
@@ -393,6 +430,23 @@ class HomeController extends Controller
           'aht' => $AHT,
           'sickhours' => $sickHours,
         );
+        $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
+        $optinRequests = $user->Optin->sum('Anzahl_OptIn-Abfragen');
+
+        if ($optinCalls != 0) {
+          $user->optinQuota = round($optinRequests*100/$optinCalls,2);
+          }
+        else {
+            $user->optinQuota = 0;
+          }
+        $sas = $user->SAS->count();
+        $allCalls = $user->retentionDetails->sum('calls');
+        if (  $sas != 0) {
+             $user->sasquota = round($sas*100/$allCalls,2).'%';
+          }
+        else {
+            $user->sasquota = 0;
+          }
       }
       // dd($users->where('id',26));
       // return view('usersIndex', compact('users'));

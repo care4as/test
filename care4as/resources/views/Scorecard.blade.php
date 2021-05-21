@@ -84,7 +84,7 @@
   <div class="tab-content" id="myTabContent">
      <div class="tab-pane fade show active" id="days" role="tabpanel" aria-labelledby="home-tab">
        <div class="row bg-white m-0 mt-2">
-         <h5 class="text-center w-100"><u>Report Tagesbasis <span id="reportname">Sales</span></u>  </h5>
+         <h5 class="text-center w-100"><u>Report Tagesbasis <span id="reportname"></span></u>  </h5>
        </div>
        <div class="row m-0 mt-2 w-100 h-100 justify-content-center align-items-center">
          Von/bis:
@@ -96,6 +96,7 @@
        <div class="row m-0 mt-2 justify-content-center bg-white align-items-center">
          <div class="col p-2" id="chartcontainer">
             <canvas id="RDChart" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>
+            <canvas id="AHTChart" width="" height=""style="height: 60vh; max-width: 90%; display:none;"></canvas>
          </div>
        </div>
 
@@ -239,12 +240,12 @@
       </div>
       <div class="row justify-content-center">
 
-        <button type="button" class="btn btn-primary rounded-circle" name="button" id="dropdwnbtnRD" onclick="showReportDiv()">
+        <button type="button" class="btn btn-primary rounded-circle" name="button" id="dropdwnbtnRD" onclick="showReportDiv('Sales')">
           <i class="material-icons">
           sentiment_dissatisfied
           </i>
         </button>
-        <button type="button" class="btn btn-primary rounded-circle" name="button" id="dropdwnbtnRD" onclick="showReportDiv()">
+        <button type="button" class="btn btn-primary rounded-circle" name="button" id="dropdwnbtnRD" onclick="showReportDiv('AHT')">
           <i class="material-icons">
           schedule
           </i>
@@ -265,8 +266,9 @@
 
 <script type="text/javascript">
 
-function showReportDiv() {
+function showReportDiv(tab) {
   $('#reportdiv').toggle()
+  $('#reportname').html(tab)
   $('.backdrop').toggle()
 }
 function closeReportDiv(){
@@ -292,12 +294,6 @@ $(function() {
         params.append("end" , end);
         params.append("userid" , userid);
 
-        // let params = {
-        //   start: start,
-        //   end: end,
-        //   userid: userid
-        // }
-
         let chart = document.getElementById('RDChart');
 
         if (typeof chart != 'undefined' || chart != null )
@@ -306,8 +302,8 @@ $(function() {
           $('#chartcontainer').append('<canvas id="RDChart" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>')
           // console.log('test')
         }
-        // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-        axios.get('http://'+host+'/user/salesdataDates',
+        axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
+        // axios.get('http://'+host+'/user/salesdataDates',
         {
           params: {
             start: start.format('Y-MM-DD'),

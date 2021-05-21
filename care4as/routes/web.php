@@ -98,6 +98,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('reports/dailyAgentDataStatus', 'ReportController@dailyAgentDataStatus')->name('reports.dailyAgentDataStatus')->middleware('hasRight:sendReports');
   Route::get('reports/HRDataStatus', 'ReportController@HRDataStatus')->name('reports.HRDataStatus')->middleware('hasRight:sendReports');
   Route::get('reports/RDDataStatus', 'ReportController@RDDataStatus')->name('reports.RDDataStatus')->middleware('hasRight:sendReports');
+  Route::get('reports/SASStatus', 'ReportController@SASStatus')->name('reports.SASStatus')->middleware('hasRight:sendReports');
+  Route::get('reports/OptinStatus', 'ReportController@OptinStatus')->name('reports.OptinStatus')->middleware('hasRight:sendReports');
   //endreport
   Route::get('/retentiondetails/removeDuplicates', function(){
     DB::statement(
@@ -196,6 +198,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config');
   Route::get('/config/deactivateIntervallMailDSL', 'Configcontroller@deactivateIntermediateMailDSL')->name('config.deactivateIntermediateMail.dsl')->middleware('hasRight:config');
   Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
+  Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config');
 
   //endconfig
   //roles and rights
@@ -286,6 +289,34 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 Route::get('/test', function(){
 
-  return view('test');
+  $users = App\User::with('Optin','SAS','retentionDetails')->get();
+
+  foreach ($users as $key => $user) {
+    $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
+    $optinRequests = $user->Optin->sum('Anzahl_OptIn-Abfragen');
+
+    $sas = $user->SAS->count();
+    $allCalls = $user->retentionDetails->sum('calls');
+
+    if ($optinCalls != 0) {
+      $user->optinQuota = round($optinRequests*100/$optinCalls,2);
+      }
+    else {
+        $user->optinQuota = 0;
+      }
+    if (  $sas != 0) {
+         $user->sasquota = round($sas*100/$allCalls,2).'%';
+      }
+    else {
+        $user->sasquota = 0;
+      }
+
+    }
+
+  // dd($users[1], $users[1]->sasquota);
+  // dd($users[1]);
+
+
+  return view('test',compact('users'));
 
 })->name('test');

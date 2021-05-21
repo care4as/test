@@ -17,9 +17,6 @@ function toggleSidebar()
       table.style.width = '100%'
     }
 
-
-    // let logo = document.querySelector('.logo')
-    // logo.style.display = 'none'
     // console.log(logo)
   }
   else {
@@ -47,3 +44,27 @@ function printPage()
   container.style.width = '100%'
   window.print()
 }
+
+  /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+  function openNav() {
+      document.getElementById("sidebar").style.display = "none";
+      document.getElementById("main-panel").style.width = "100%";
+      // document.getElementById("sidebar-wrapper").style.display = "none";
+  }
+
+  /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+  function closeNav() {
+      document.getElementById("sidebar").style.display = "block";
+      document.getElementById("main-panel").style.width = "calc(100% - 260px)";
+        // document.getElementById("sidebar-wrapper").style.display = "block";
+  }
+
+  function showSidebar(){
+      var selection = document.getElementById("hamburg");
+      if (selection.checked) {
+          openNav()
+      }
+      else {
+          closeNav()
+      }
+  }

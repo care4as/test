@@ -31,24 +31,51 @@
         </div>
           <div class="form-row m-1  w-25">
             <label for="sickQ">Krankenquote</label>
-            <input type="text" class="form-control" name="sickQ" value="0.08" id="sickQ">
+            <div class="input-group">
+
+              <input type="text" class="form-control" name="sickQ" value="8" id="sickQ">
+              <div class="input-group-append">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
           </div>
           <div class="form-row m-1 w-25">
             <label for="vacQ">Urlaubsquote</label>
-            <input type="text"  class="form-control" name="vacQ" value="0.08"  id="vacQ">
-          </div>
-          <div class="form-row m-1 w-25">
-            <label for="trainQ">Trainingquote</label>
-            <input type="text" class="form-control"  name="trainQ" value="0.02" id="trainQ">
-          </div>
-          <div class="form-row m-1 w-25">
-            <label for="meetQ">Meetingquote</label>
-            <input type="text"  class="form-control" name="meetQ" value="0.01" id="meetQ">
+            <div class="input-group">
+              <input type="text"  class="form-control" name="vacQ" value="8"  id="vacQ">
+              <div class="input-group-append">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
           </div>
 
           <div class="form-row m-1 w-25">
+            <label for="trainQ">Trainingquote</label>
+            <div class="input-group">
+              <input type="text" class="form-control"  name="trainQ" value="2" id="trainQ">
+              <div class="input-group-append">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row m-1 w-25">
+            <label for="meetQ">Meetingquote</label>
+            <div class="input-group">
+              <input type="text"  class="form-control" name="meetQ" value="1" id="meetQ">
+              <div class="input-group-append">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row m-1 w-25">
             <label for="oAQ">Other Absence</label>
-            <input type="text"  class="form-control" name="oAQ" value="0.25" id="oAQ">
+            <div class="input-group">
+              <input type="text"  class="form-control" name="oAQ" value="25" id="oAQ">
+              <div class="input-group-append">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
+
           </div>
 
         <div class="form-row mt-2">

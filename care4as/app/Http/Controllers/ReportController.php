@@ -9,6 +9,7 @@ use App\Mail\FAMail;
 use App\User;
 use App\DailyAgent;
 use App\Hoursreport;
+use App\SAS;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
@@ -356,31 +357,31 @@ class ReportController extends Controller
       $sichknessquota = 0.08;
 
       if ($request->sickQ) {
-        $sichknessquota = $request->sickQ;
+        $sichknessquota = $request->sickQ/100;
       }
 
       $vacationquota = 0.08;
 
       if ($request->vacQ) {
-        $vacationquota = $request->vacQ;
+        $vacationquota = $request->vacQ/100;
       }
 
       $trainingquota = 0.02;
 
       if ($request->trainQ) {
-        $trainingquota = $request->trainQ;
+        $trainingquota = $request->trainQ/100;
       }
 
       $meetingquota = 0.01;
 
       if ($request->meetQ) {
-        $meetingquota = $request->meetQ;
+        $meetingquota = $request->meetQ/100;
       }
 
       $otherabsencequota = 0.25;
 
       if ($request->oAQ) {
-        $otherabsencequota = $request->oAQ;
+        $otherabsencequota = $request->oAQ/100;
       }
 
       $oparray = array();
@@ -545,5 +546,13 @@ class ReportController extends Controller
     public function RDDataStatus()
     {
       return array($min = Carbon::parse(RetentionDetail::min('call_date'))->format('d.m.Y'), $max= Carbon::parse(RetentionDetail::max('call_date'))->format('d.m.Y'));
+    }
+    public function SASStatus()
+    {
+      return array($min = Carbon::parse(SAS::min('date'))->format('d.m.Y'), $max= Carbon::parse(SAS::max('date'))->format('d.m.Y'));
+    }
+    public function OptinStatus()
+    {
+      return array($min = Carbon::parse(Optin::min('date'))->format('d.m.Y'), $max= Carbon::parse(Optin::max('date'))->format('d.m.Y'));
     }
 }

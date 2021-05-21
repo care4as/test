@@ -164,7 +164,7 @@ td{
                   <td>Zwischenstandsmail DSL versenden</td>
                 @endif
                 <td> {{$process->duedate}}</td>
-                <td><a href="{{$process->id}}" class="btn btn-danger rounded-circle">X</a></td>
+                <td><a href="{{route('config.deleteProcess', ['id' => $process->id])}}" class="btn btn-danger rounded-circle">X</a></td>
 
               </tr>
             @endforeach

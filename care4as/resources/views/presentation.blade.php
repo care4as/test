@@ -14,7 +14,6 @@
     white-space: nowrap;
 
   }
-
   div .dataTables_scrollFoot{
      /* display: none; */
    }
@@ -94,7 +93,6 @@
               <h5>keine Daten eingegeben</h5>
             @else
               <div class="loadingerHR">Lade Daten Stundenreport...</div>
-
               <span id="HoursreportData" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
             @endif
           </td>
@@ -108,6 +106,30 @@
             @else
               <div class="loadingerRD">Lade Daten Retention Details...</div>
               <span id="RDDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+            @endif
+          </td>
+          <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
+          <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+        </tr>
+        <tr>
+          <td>
+            @if(!App\SAS::min('date'))
+              <h5>keine Daten eingegeben</h5>
+            @else
+              <div class="loadingerSAS">Lade Daten SAS...</div>
+              <span id="SASDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+            @endif
+          </td>
+          <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
+          <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+        </tr>
+        <tr>
+          <td>
+            @if(!App\Optin::min('date'))
+              <h5>keine Daten eingegeben</h5>
+            @else
+              <div class="loadingerRD">Lade Daten Optin...</div>
+              <span id="OptinDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
             @endif
           </td>
           <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
@@ -291,8 +313,8 @@
             <td data-order="{{$user->salesdata['bscQuota']}}">{{$user->salesdata['bscQuota']}}%</td>
             <td data-order="{{$user->salesdata['portalQuota']}}">{{$user->salesdata['portalQuota']}}%</td>
             <td>50%</td>
-            <td>SaS</td>
-            <td>Optin</td>
+            <td>{{$user->sasquota}}</td>
+            <td>{{$user->optinQuota}}%</td>
             <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
             @if($user->salesdata['workedHours'] != 0)
               <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
@@ -474,8 +496,8 @@
 
         let host = window.location.host;
 
-        // axios.get('http://'+host+'/care4as/care4as/public/reports/dailyAgentDataStatus')
-        axios.get('http://'+host+'/reports/dailyAgentDataStatus')
+        axios.get('http://'+host+'/care4as/care4as/public/reports/dailyAgentDataStatus')
+        // axios.get('http://'+host+'/reports/dailyAgentDataStatus')
         .then(response => {
 
           // console.log(response)
@@ -494,16 +516,60 @@
           console.log(err.response);
         });
 
-        // axios.get('http://'+host+'/care4as/care4as/public/reports/HRDataStatus')
-        axios.get('http://'+host+'/reports/HRDataStatus')
+        axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
+        // axios.get('http://'+host+'/reports/SASStatus')
         .then(response => {
 
           // console.log(response)
           let min = response.data[0]
           let max = response.data[1]
 
-          let element = $('#HoursreportData')
+          let element = $('#SASDataStatus')
 
+          $('.loadingerSAS').toggle()
+
+          element.css( 'display','block')
+          element.html('SAS Daten im Zeitraum '+min+' bis: '+max)
+        })
+        .catch(function (err) {
+          console.log('error DataStatus SAS')
+          $('.loadingerSAS').toggle()
+          let element = $('#SASDataStatus')
+          element.css( 'display','block')
+          element.html('Fehler beim Laden der SAS Daten')
+          console.log(err.response);
+        });
+        axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
+        // axios.get('http://'+host+'/reports/SASStatus')
+        .then(response => {
+
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+
+          let element = $('#OptinDataStatus')
+
+          $('.loadingerOptin').toggle()
+
+          element.css( 'display','block')
+          element.html('Optin Daten im Zeitraum '+min+' bis: '+max)
+        })
+        .catch(function (err) {
+          console.log('error DataStatus Optin')
+          $('.loadingerSAS').toggle()
+          let element = $('#OptinDataStatus')
+          element.css( 'display','block')
+          element.html('Fehler beim Laden der SAS Daten')
+          console.log(err.response);
+        });
+
+        axios.get('http://'+host+'/care4as/care4as/public/reports/OptinDataStatus')
+        // axios.get('http://'+host+'/reports/HRDataStatus')
+        .then(response => {
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+          let element = $('#HoursreportData')
           $('.loadingerHR').toggle()
 
           element.css( 'display','block')
@@ -515,8 +581,8 @@
           console.log(err.response);
         });
 
-        // axios.get('http://'+host+'/care4as/care4as/public/reports/RDDataStatus')
-        axios.get('http://'+host+'/reports/RDDataStatus')
+        axios.get('http://'+host+'/care4as/care4as/public/reports/RDDataStatus')
+        // axios.get('http://'+host+'/reports/RDDataStatus')
         .then(response => {
 
           // console.log(response)
