@@ -1,7 +1,9 @@
 body
     {
-      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-      font-size: 1.1rem;
+      /* font-family: 'Arial Narrow', sans-serif; */
+      font-family: 'Brush Script MT', 'Brush Script Std', cursive;
+      font-family: 'Goudy Old Style', cursive;
+      font-size: 1.2rem;
     }
     .table-striped>tbody>tr:nth-child(even) {
         background-color: #ddf8e8;

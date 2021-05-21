@@ -102,10 +102,6 @@ class User extends Authenticatable
     {
       return $this->hasMany('\App\SSETracking','person_id','person_id');
     }
-    public function SAS()
-    {
-      return $this->hasMany('\App\SAS','person_id');
-    }
     public function getRights()
     {
       $roleid = Role::where('name',$this->role)->value('id');
@@ -144,6 +140,10 @@ class User extends Authenticatable
     public function intermediatesToday()
     {
       return $this->hasMany('\App\Intermediate','person_id','person_id')->whereDate('date', \Carbon\Carbon::today());
+    }
+    public function SAS()
+    {
+      return $this->hasMany('\App\SAS','person_id','person_id');
     }
     public function Optin()
     {

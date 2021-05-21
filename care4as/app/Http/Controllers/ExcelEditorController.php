@@ -98,6 +98,7 @@ class ExcelEditorController extends Controller
     {
       DB::table('optin')->insertOrIgnore($insertData[$i]);
     }
+    return redirect()->back();
   }
     public function SASupload(Request $request)
     {
@@ -140,38 +141,38 @@ class ExcelEditorController extends Controller
 
       // dd($data2);
 
-      for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
+        for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
 
-        $cell = $data2[$i];
-        // dd($cell);
-        $date = \Carbon\Carbon::parse(strval($cell[1]));
+          $cell = $data2[$i];
+          // dd($cell);
+          $date = \Carbon\Carbon::parse(strval($cell[1]));
 
-        // return $date;
-        if(!$cell[35])
-        {
-          $cell[35] = 0;
-        }
-        $insertData[$i] = [
-          'order_id' => $cell[0],
-          'date' => $date->format('Y-m-d'),
-          'topic' => $cell[6],
-          'serviceprovider_place' => $cell[7],
-          'person_id' => $cell[11],
-          'contract_id' => $cell[12],
-          'case' => $cell[13],
-          'productgroup' => $cell[17],
-          'productcluster' =>$cell[15] ,
-          'GO_Prov' => $cell[35],
-        ];
-    }
-    $insertData = array_chunk($insertData, 3500);
+          // return $date;
+          if(!$cell[35])
+          {
+            $cell[35] = 0;
+          }
+          $insertData[$i] = [
+            'order_id' => $cell[0],
+            'date' => $date->format('Y-m-d'),
+            'topic' => $cell[6],
+            'serviceprovider_place' => $cell[7],
+            'person_id' => $cell[11],
+            'contract_id' => $cell[12],
+            'case' => $cell[13],
+            'productgroup' => $cell[17],
+            'productcluster' =>$cell[15] ,
+            'GO_Prov' => $cell[35],
+          ];
+      }
+      $insertData = array_chunk($insertData, 3500);
 
-    // dd($insertData);
-    for($i=0; $i <= count($insertData)-1; $i++)
-    {
-      DB::table('sas')->insertOrIgnore($insertData[$i]);
-    }
-
+      // dd($insertData);
+      for($i=0; $i <= count($insertData)-1; $i++)
+      {
+        DB::table('sas')->insertOrIgnore($insertData[$i]);
+      }
+      return redirect()->back();
     }
     public function sseTrackingUpload(Request $request)
     {

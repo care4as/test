@@ -98,6 +98,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('reports/dailyAgentDataStatus', 'ReportController@dailyAgentDataStatus')->name('reports.dailyAgentDataStatus')->middleware('hasRight:sendReports');
   Route::get('reports/HRDataStatus', 'ReportController@HRDataStatus')->name('reports.HRDataStatus')->middleware('hasRight:sendReports');
   Route::get('reports/RDDataStatus', 'ReportController@RDDataStatus')->name('reports.RDDataStatus')->middleware('hasRight:sendReports');
+  Route::get('reports/SASStatus', 'ReportController@SASStatus')->name('reports.SASStatus')->middleware('hasRight:sendReports');
+  Route::get('reports/OptinStatus', 'ReportController@OptinStatus')->name('reports.OptinStatus')->middleware('hasRight:sendReports');
   //endreport
   Route::get('/retentiondetails/removeDuplicates', function(){
     DB::statement(
@@ -287,20 +289,34 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 Route::get('/test', function(){
 
-  $users = App\User::with('Optin')->get();
+  $users = App\User::with('Optin','SAS','retentionDetails')->get();
 
   foreach ($users as $key => $user) {
     $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
     $optinRequests = $user->Optin->sum('Anzahl_OptIn-Abfragen');
 
+    $sas = $user->SAS->count();
+    $allCalls = $user->retentionDetails->sum('calls');
+
     if ($optinCalls != 0) {
-      $optinQuota = round($optinRequests*100/$optinCalls,2);
-    }
+      $user->optinQuota = round($optinRequests*100/$optinCalls,2);
+      }
     else {
-        $optinQuota = 0;
+        $user->optinQuota = 0;
+      }
+    if (  $sas != 0) {
+         $user->sasquota = round($sas*100/$allCalls,2).'%';
+      }
+    else {
+        $user->sasquota = 0;
+      }
+
     }
-    }
-  dd($users[1], $users[1]->Optin[1]);
-  // return view('test');
+
+  // dd($users[1], $users[1]->sasquota);
+  // dd($users[1]);
+
+
+  return view('test',compact('users'));
 
 })->name('test');
