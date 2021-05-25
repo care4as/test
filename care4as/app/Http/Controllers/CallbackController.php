@@ -21,7 +21,6 @@ class CallbackController extends Controller
       $callback->cause = $request->cause;
       $callback->created_by = Auth()->user()->id;
       $callback->directed_to = null ;
-
       $callback->save();
 
       return redirect()->back();

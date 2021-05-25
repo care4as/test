@@ -104,6 +104,16 @@
             </div>
           </li>
           @endif
+          @if(in_array('indexUser',Auth()->user()->getRights()))
+          <li>
+            <div class="" style="margin-left:;">
+              <a class="" href="{{route('presentation')}}">
+                <i class="far fa-file-powerpoint"></i>
+                <p><b>DB1</b></p>
+              </a>
+            </div>
+          </li>
+          @endif
           @if(in_array('indexMabel',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseMable" role="button" aria-expanded="false" aria-controls="collapseUser">
