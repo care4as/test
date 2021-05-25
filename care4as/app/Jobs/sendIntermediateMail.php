@@ -43,7 +43,7 @@ class sendIntermediateMail implements ShouldQueue
 
       $currentSSCCR = 0;
       $dslcr = 0;
-      $bscr = 0;
+      $bsccr  = 0;
       $portalcr = 0;
       $gevocrMOB = 0;
 
@@ -59,6 +59,7 @@ class sendIntermediateMail implements ShouldQueue
 
       $allDSLCalls = 0;
       $allDLSOrders = 0;
+      $currentBSCCCR = 'keine Daten';
 
       $userids = DB::table('intermediate_status')->whereDate('date', Carbon::today())->pluck('person_id');
 
@@ -135,6 +136,7 @@ class sendIntermediateMail implements ShouldQueue
           else {
             $gevocr = round(($user->intermediatesLatest->Orders* 100 / $user->intermediatesLatest->Calls),2);
           }
+
           if ($user->intermediatesLatest->BSC_Calls == 0) {
             $bsccr = 0;
           }
@@ -352,7 +354,7 @@ class sendIntermediateMail implements ShouldQueue
 
       if($this->isMobile)
       {
-        $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'bsccr' => $currentBSCCCR, 'portalcr' => $currentPortalCCR, 'gevocr'=> $currentGeVoCCR, 'mobile' => $emailarray, 'isMobile' => 1);
+        $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'bsccr' => $currentBSCCCR, 'portalcr' => $currentPortalCCR, 'mobile' => $emailarray, 'isMobile' => 1);
         $email = new IntermediateMail($data);
 
         $mailinglist = $this->email;
