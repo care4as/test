@@ -4,7 +4,7 @@
 <style media="screen">
 body
 {
-  
+
 }
   @-webkit-keyframes image_blur {
     10% {
@@ -167,12 +167,28 @@ body
 
   <div class=""
     style="
-    background-color: white;
+    background: rgb(255,255,255);
+
     position: relative;
     height: 100%;
     padding: 15px;
+    text-shadow: 1px 0px 1px #CCCCCC, 0px 1px 1px #EEEEEE, 2px 1px 1px #CCCCCC, 1px 2px 1px #EEEEEE, 3px 2px 1px #CCCCCC, 2px 3px 1px #EEEEEE, 4px 3px 1px #CCCCCC, 3px 4px 1px #EEEEEE, 5px 4px 1px #CCCCCC, 4px 5px 1px #EEEEEE, 6px 5px 1px #CCCCCC, 5px 6px 1px #EEEEEE, 7px 6px 1px #CCCCCC;
     ">
-    <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+    <div class="container"
+    style="
+    background: rgb(244,238,238);
+    background: linear-gradient(90deg, rgba(244,238,238,0.1) 10%, rgba(240,231,220,0.1) 53%, rgba(251,240,225,0.1) 89%);
+    border-radius: 15px;
+    position: relative;
+    height: 100%;
+    padding: 15px;
+    text-shadow: 1px 0px 1px #CCCCCC, 0px 1px 1px #EEEEEE, 2px 1px 1px #CCCCCC, 1px 2px 1px #EEEEEE, 3px 2px 1px #CCCCCC, 2px 3px 1px #EEEEEE, 4px 3px 1px #CCCCCC, 3px 4px 1px #EEEEEE, 5px 4px 1px #CCCCCC, 4px 5px 1px #EEEEEE, 6px 5px 1px #CCCCCC, 5px 6px 1px #EEEEEE, 7px 6px 1px #CCCCCC;
+    ">
+      <p>"Die Firma TKA Software Systems will dir eine Webseite erstellen.
+        Eine einfache Seite mit tollem Design oder eine kompliziertere Anwendung, zB. mit einer Datenbank. Wenn du eine gute Idee hast schreib uns oder ruf uns an und wir gucken was für dich die beste Lösung ist.
+        Wir haben, wie die Seite vielleicht verraten lässt, ein lockeres Umfeld "</p>
+    </div>
+
   <!-- <div class="row" style="">
     <div class="col-12 p-0">
       <div class="row m-2">

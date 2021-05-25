@@ -59,7 +59,8 @@ class sendIntermediateMail implements ShouldQueue
 
       $allDSLCalls = 0;
       $allDLSOrders = 0;
-
+      $bsccr = 'keine Daten';
+      
       $userids = DB::table('intermediate_status')->whereDate('date', Carbon::today())->pluck('person_id');
 
       $users = User::whereIn('person_id',$userids)
