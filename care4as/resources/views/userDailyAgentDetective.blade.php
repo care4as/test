@@ -66,7 +66,7 @@
               <td>{{$user->screenbreak}}</td>
               <td>
 
-                <a href="{{route('user.daDetex.single', ['id' => $user->id])}}">
+                <a href="{{route('user.daDetex.single', ['id' => $user->id, 'start_date' => request('start_date'),'end_date' => request('end_date')])}}">
                 <button class="btn btn-success btn-fab btn-icon btn-round">
                   <i class="now-ui-icons ui-1_zoom-bold"></i>
                 </button>

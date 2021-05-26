@@ -159,6 +159,22 @@ body
     font-weight 500;
   transform: rotateY(180deg);
 }
+.bubble
+    {
+      position: absolute;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      text-align: center;
+      height: 150px;
+      width: 150px;
+      color: white;
+      font-weight: 900;
+      background: #00b4ff
+      background: radial-gradient(ellipse at center,  rgba(255,255,255,0.5) 0%,rgba(255,255,255,1) 70%);
+
+    }
 </style>
 
 @endsection
@@ -176,8 +192,9 @@ body
     ">
     <div class="container"
     style="
-    background: rgb(244,238,238);
-    background: linear-gradient(90deg, rgba(244,238,238,0.1) 10%, rgba(240,231,220,0.1) 53%, rgba(251,240,225,0.1) 89%);
+    background: rgb(0,0,0);
+    /* background: rgb(244,238,238); */
+    /* background: linear-gradient(90deg, rgba(244,238,238,0.1) 10%, rgba(240,231,220,0.1) 53%, rgba(251,240,225,0.1) 89%); */
     border-radius: 15px;
     position: relative;
     height: 100%;
@@ -188,7 +205,9 @@ body
         Eine einfache Seite mit tollem Design oder eine kompliziertere Anwendung, zB. mit einer Datenbank. Wenn du eine gute Idee hast schreib uns oder ruf uns an und wir gucken was für dich die beste Lösung ist.
         Wir haben, wie die Seite vielleicht verraten lässt, ein lockeres Umfeld "</p>
     </div>
+    <div class="bubble" style="top: 55%; left: 43%;">
 
+    </div>
   <!-- <div class="row" style="">
     <div class="col-12 p-0">
       <div class="row m-2">

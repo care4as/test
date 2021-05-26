@@ -93,6 +93,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::view('/report/Optin/', 'reports.OptInReport')->name('reports.OptIn')->middleware('hasRight:importReports');
   Route::post('/report/Optin/', 'ExcelEditorController@OptInupload')->name('reports.OptIn.upload')->middleware('hasRight:importReports');
 
+  Route::view('/report/gevo/', 'reports.GeVoTracking')->name('reports.gevotracking')->middleware('hasRight:importReports');
+  Route::post('/report/gevo/', 'ExcelEditorController@OptInupload')->name('reports.gevotracking.upload')->middleware('hasRight:importReports');
+
   //AHTReport
   Route::get('/report/AHTdaily', 'ReportController@AHTdaily')->name('reports.AHTdaily')->middleware('hasRight:sendReports');
   Route::get('reports/dailyAgentDataStatus', 'ReportController@dailyAgentDataStatus')->name('reports.dailyAgentDataStatus')->middleware('hasRight:sendReports');
