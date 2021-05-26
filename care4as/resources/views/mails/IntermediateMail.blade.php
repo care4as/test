@@ -15,7 +15,6 @@
           <p style="text-align:center;"><b>DSL-CR: {{$data['dslcr']}}%</b></p>
         @endif
         </div>
-
         <div class="">
           @if($data['isMobile'])
             <h4><p><b>Mobile</b> </p> </h4>

@@ -234,7 +234,7 @@ $('#customSwitch1').click(function(){
 
     var host = window.location.host;
 
-    axios.get('http://'+host+'/config/deactivateIntervallMail')
+    axios.get('http://'+host+'/config/deactivateIntervallMailMobile')
     // axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMailMobile')
 
     .then(response => {
@@ -253,7 +253,7 @@ $('#customSwitch11').click(function(){
   if(this.checked == true)
   {
     var host = window.location.host;
-    
+
     axios.get('http://'+host+'/config/activateIntervallMailDSL')
     // axios.get('http://'+host+'/care4as/care4as/public/config/activateIntervallMailDSL')
     .then(response => {
@@ -270,8 +270,8 @@ $('#customSwitch11').click(function(){
 
     var host = window.location.host;
 
-    // axios.get('http://'+host+'/config/deactivateIntervallMail')
-    axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMailDSL')
+    axios.get('http://'+host+'/config/deactivateIntervallMailDSL')
+    // axios.get('http://'+host+'/care4as/care4as/public/config/deactivateIntervallMailDSL')
 
     .then(response => {
       alert('automatische Email deaktiviert')
