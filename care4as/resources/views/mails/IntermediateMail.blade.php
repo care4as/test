@@ -32,7 +32,7 @@
                 <th>Calls</th>
                 <th>+-</th>
               </tr>
-              @for($i = 0; $i < count($data['mobile'])-1; $i++)
+              @for($i = 0; $i < count($data['mobile']); $i++)
               <tr style="background-color: @if($i % 2 == 0) #ddf8e8 @else #fefdfa @endif; ">
                 <td>{{$data['mobile'][$i]['name']}}</td>
                 <td>{{$data['mobile'][$i]['SSC-CR']}}%</td>

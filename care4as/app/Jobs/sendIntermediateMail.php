@@ -67,6 +67,8 @@ class sendIntermediateMail implements ShouldQueue
       ->with('intermediatesLatest')
       ->get();
 
+
+
       if(!$users->first())
       {
           $emailarray[] = array(
@@ -319,7 +321,8 @@ class sendIntermediateMail implements ShouldQueue
       }
       if ($allPortalCalls != 0) {
 
-        $currentPortalCCR =  round($allPortalCalls * 100 / $allPortalCalls,2);
+        $currentPortalCCR =  round($allPortalOrders * 100 / $allPortalCalls,2);
+        // dd($currentPortalCCR) ;
       }
 
       else {
@@ -354,6 +357,7 @@ class sendIntermediateMail implements ShouldQueue
 
       if($this->isMobile)
       {
+        // dd($emailarray);
         $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'bsccr' => $currentBSCCCR, 'portalcr' => $currentPortalCCR, 'mobile' => $emailarray, 'isMobile' => 1);
         $email = new IntermediateMail($data);
 

@@ -87,7 +87,7 @@ td{
               </div>
             </td>
             <td>
-              <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMailMobile')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMailMobile')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
+              <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMailDSL')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMailDSL')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
             </td>
             <td rowspan="1" class="">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailProvidersModal">
