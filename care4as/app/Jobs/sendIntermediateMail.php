@@ -216,6 +216,7 @@ class sendIntermediateMail implements ShouldQueue
               return $b['SSC-CR'] - $a['SSC-CR'];
           });
         }
+
         $allSscCalls += $user->intermediatesLatest->SSC_Calls;
         $allSscOrders += $user->intermediatesLatest->SSC_Orders;
 
