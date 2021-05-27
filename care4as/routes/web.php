@@ -58,6 +58,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save')->middleware('hasRight:createCancels');
     Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post')->middleware('hasRight:analyzeCancels');
   //endcancels
+  //offlineTracking
+  Route::get('/offlineTracking', 'OfflineCancelController@create')->name('offlinetracking.view.agent')->middleware('hasRight:createCancels');
+  Route::get('/offlineTracking/index', 'OfflineCancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
+  Route::post('/offlineTracking/save', 'OfflineCancelController@store')->name('offlineTracking.save')->middleware('hasRight:analyzeCancels');
+  //end offlinetracking
 
   //dashboard
   Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard')->middleware('hasRight:dashboard');
@@ -92,6 +97,9 @@ Route::group(['middleware' => ['auth']], function () {
   //OptIn Import
   Route::view('/report/Optin/', 'reports.OptInReport')->name('reports.OptIn')->middleware('hasRight:importReports');
   Route::post('/report/Optin/', 'ExcelEditorController@OptInupload')->name('reports.OptIn.upload')->middleware('hasRight:importReports');
+
+  Route::view('/report/gevo/', 'reports.GeVoTracking')->name('reports.gevotracking')->middleware('hasRight:importReports');
+  Route::post('/report/gevo/', 'ExcelEditorController@OptInupload')->name('reports.gevotracking.upload')->middleware('hasRight:importReports');
 
   //AHTReport
   Route::get('/report/AHTdaily', 'ReportController@AHTdaily')->name('reports.AHTdaily')->middleware('hasRight:sendReports');

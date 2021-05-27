@@ -260,19 +260,34 @@ class UserTrackingController extends Controller
         abort(403, 'keine Daten in diesem Zeitraum im DA');
       }
     }
-    
+
     public function dailyAgentDetectiveSingle($id)
     {
+      if (request('start_date')) {
+
+        $start_date = Carbon::parse(request('start_date'));
+      }
+      else {
+        $start_date = Carbon::today();
+      }
+      if (request('end_date')) {
+            $end_date = Carbon::parse(request('end_date'));
+      }
+      else {
+        $end_date = Carbon::today();
+      }
+
+      // return $start_date;
       $user = User::where('id',$id)
-      ->with(['dailyAgent' => function($q) {
+      ->with(['dailyAgent' => function($q) use($start_date, $end_date) {
         // $q->select(['id','person_id','calls','call_date']);
-        if(request('start_date') == request('end_date'))
+        if($start_date == $end_date)
         {
-          $q->whereDate('date', request('start_date'));
+          $q->whereDate('date', $start_date);
         }
         else {
-          $q->where('date','>=', request('start_date'));
-          $q->where('date','<=', request('end_date'));
+          $q->where('date','>=', $start_date);
+          $q->where('date','<=',$end_date);
         }
       }])
       ->first();

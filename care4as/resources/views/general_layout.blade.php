@@ -66,7 +66,7 @@
               </a>
               <div class="collapse" id="collapseCancel" style="margin-left:50px;">
                 <ul class="list-group list-group-flush" style="list-style-type: none;">
-                <li><a href="{{route('cancelcauses')}}">Cancelgründe</a></li>
+                <li><a href="{{route('offlinetracking.view.agent')}}">Cancelgründe</a></li>
                 <li><a href="{{route('agent.cancels', ['id' => Auth()->user()->id])}}">meine Cancels</a></li>
                 @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
                 <li><a href="{{route('cancels.index')}}">Cancelgründe auswerten</a></li>
@@ -106,12 +106,10 @@
           @endif
           @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
-            <div class="" style="margin-left:;">
-              <a class="" href="{{route('presentation')}}">
-                <i class="far fa-file-powerpoint"></i>
-                <p><b>DB1</b></p>
-              </a>
-            </div>
+            <a class="" href="{{route('presentation')}}">
+              <i class="far fa-file-powerpoint"></i>
+              <p><b>DB1</b></p>
+            </a>
           </li>
           @endif
           @if(in_array('indexMabel',Auth()->user()->getRights()))

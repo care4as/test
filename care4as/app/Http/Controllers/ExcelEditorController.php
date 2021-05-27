@@ -295,8 +295,9 @@ class ExcelEditorController extends Controller
       $input['row'] = $fromRow;
       $input['sheet'] = $sheet;
 
-      if(in_array($filename2Check,$possibleFilenames))
+      if(str_contains($filename2Check, 'daImp'))
       {
+        // dd($data);
         $this->dailyAgentUpload($data);
       }
       else {
