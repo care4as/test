@@ -319,7 +319,7 @@ class sendIntermediateMail implements ShouldQueue
       }
       if ($allPortalCalls != 0) {
 
-        $currentPortalCCR =  round($allPortalCalls * 100 / $allPortalCalls,2);
+        $currentPortalCCR =  round($allPortalOrders * 100 / $allPortalCalls,2);
       }
 
       else {
