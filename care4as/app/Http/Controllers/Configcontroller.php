@@ -72,7 +72,7 @@ class Configcontroller extends Controller
       $timediff = intval($inTowHours)-$time;
 
       $asString = ($timediff/60) + 1 .' Minutes';
-      // $asString = 0.2.' Minutes';
+      $asString = 0.2.' Minutes';
 
       // $email = array('andreas.robrahn@care4as.de','maximilian.steinberg@care4as.de','andreas.nissen@care4as.de','aysun.yildiz@care4as.de');
 
@@ -88,7 +88,7 @@ class Configcontroller extends Controller
       $emails = array_filter($trimmed_array);
 
       // return $email;
-      sendIntermediateMail::dispatch($emails,2,true)->delay(now()->add($asString))->onConnection('database')->onQueue('MailMobile');
+      sendIntermediateMail::dispatch($emails,2,1)->delay(now()->add($asString))->onConnection('database')->onQueue('MailMobile');
 
       // sendIntermediateMail::dispatch($email,2)->delay(now()->add('5 Seconds'))->onConnection('database');
 

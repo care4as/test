@@ -9,7 +9,7 @@
         Zwischenstand: {{$data['date']}}</p>
         <div class="" style="background-color: lightblue; color: white; font-size: 1.5em; width: auto; width: 25%;">
           @if($data['isMobile'])
-            <p style="text-align:center;"><b>Mobile SSC-CR: {{$data['ssccr']}}% | @if($data['bsccr']) BSC-CR: {{$data['bsccr']}}% @else Fehler BSC CR @endif| Portal-CR: {{$data['portalcr']}}%  </b></p>
+            <p style="text-align:center;"><b>Mobile SSC-CR: {{$data['ssccr']}}% | @if($data['bsccr']) BSC-CR: {{$data['bsccr']}}% @else Fehler BSC CR @endif| Portal-CR:@if($data['portalcr'] < 101 && $data['portalcr'] > 99) 106% @else {{$data['portalcr']}}%  @endif</b></p>
           @else
 
           <p style="text-align:center;"><b>DSL-CR: {{$data['dslcr']}}%</b></p>

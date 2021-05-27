@@ -214,6 +214,7 @@ class sendIntermediateMail implements ShouldQueue
               return $b['SSC-CR'] - $a['SSC-CR'];
           });
         }
+
         $allSscCalls += $user->intermediatesLatest->SSC_Calls;
         $allSscOrders += $user->intermediatesLatest->SSC_Orders;
 
@@ -354,7 +355,7 @@ class sendIntermediateMail implements ShouldQueue
 
       if($this->isMobile)
       {
-        // dd($emailarray);
+        // dd($currentPortalCCR);
         $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'bsccr' => $currentBSCCCR, 'portalcr' => $currentPortalCCR, 'mobile' => $emailarray, 'isMobile' => 1);
         $email = new IntermediateMail($data);
 
