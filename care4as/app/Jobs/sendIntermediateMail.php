@@ -357,7 +357,7 @@ class sendIntermediateMail implements ShouldQueue
 
       if($this->isMobile)
       {
-        // dd($emailarray);
+        dd($currentPortalCCR);
         $data = array('date'=> Carbon::now()->format('Y-m-d H:i:s'),'ssccr' => $currentSSCCR,'bsccr' => $currentBSCCCR, 'portalcr' => $currentPortalCCR, 'mobile' => $emailarray, 'isMobile' => 1);
         $email = new IntermediateMail($data);
 
