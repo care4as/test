@@ -135,7 +135,14 @@ class User extends Authenticatable
     }
     public function wholeName()
     {
-      return $this->surname.' '.$this->lastname;
+      if($this->surname && $this->lastname)
+      {
+          return $this->surname.' '.$this->lastname;
+      }
+      else {
+          return $this->name;
+      }
+
     }
     public function intermediatesToday()
     {

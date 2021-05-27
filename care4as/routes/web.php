@@ -58,6 +58,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save')->middleware('hasRight:createCancels');
     Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post')->middleware('hasRight:analyzeCancels');
   //endcancels
+  //offlineTracking
+  Route::get('/offlineTracking', 'OfflineCancelController@create')->name('offlinetracking.view.agent')->middleware('hasRight:createCancels');
+  Route::get('/offlineTracking/index', 'OfflineCancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
+  Route::post('/offlineTracking/save', 'OfflineCancelController@store')->name('offlineTracking.save')->middleware('hasRight:analyzeCancels');
+  //end offlinetracking
 
   //dashboard
   Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard')->middleware('hasRight:dashboard');

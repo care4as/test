@@ -16,18 +16,21 @@ class CreateGevotrackingTable extends Migration
         Schema::create('gevotracking', function (Blueprint $table) {
             $table->id();
             $table->text('department_desc');
+            $table->integer('order_id');
+            $table->date('date');
             $table->text('change_cluster');
-            $table->integer('contract_id';
+            $table->integer('contract_id');
             $table->text('business_transaction_desc');
             $table->integer('person_id');
             $table->text('Ziel_LZV');
-            $table->id('has_cancellation_ind';
-            $table->id('contract_period_impact';
-            $table->id('Order_Retention';
-            $table->id('Order_Prevention';
-            $table->id('Ziel_Welt_Bezeichnung';
+            $table->integer('has_cancellation_index');
+            $table->text('contract_period_impact');
+            $table->integer('Order_Retention');
+            $table->integer('Order_Prevention');
+            $table->text('Ziel_Welt_Bezeichnung');
 
             $table->timestamps();
+            $table->unique(['date','person_id']);
         });
     }
 
