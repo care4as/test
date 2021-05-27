@@ -67,8 +67,6 @@ class sendIntermediateMail implements ShouldQueue
       ->with('intermediatesLatest')
       ->get();
 
-
-
       if(!$users->first())
       {
           $emailarray[] = array(

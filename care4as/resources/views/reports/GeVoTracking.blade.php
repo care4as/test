@@ -19,10 +19,10 @@
       <h4 class="text-center">Aktueller Datenstand:</h4>
     </div>
     <div class="col-8">
-      @if(!App\OptIn::min('date'))
+      @if(!App\GeVoTracking::min('date'))
         <h5>keine Daten eingegeben</h5>
       @else
-        <h5>OptIn Daten im Zeitraum vom <u>{{Carbon\Carbon::parse(App\OptIn::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\OptIn::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
+        <h5>OptIn Daten im Zeitraum vom <u>{{Carbon\Carbon::parse(App\GeVoTracking::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\GeVoTracking::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
       @endif
     </div>
 
