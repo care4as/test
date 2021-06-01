@@ -30,6 +30,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/create/user', 'UserController@create')->name('user.create')->middleware('hasRight:createUser');
   Route::post('/create/user', 'UserController@store')->name('create.user.post')->middleware('hasRight:createUser');
   Route::get('/user/index', 'UserController@index')->name('user.index')->middleware('hasRight:indexUser');
+  Route::get('/user/deactivate/{id}', 'UserController@deactivate')->name('user.deactivate')->middleware('hasRight:indexUser');
+  Route::get('/user/activate/{id}', 'UserController@activate')->name('user.activate')->middleware('hasRight:indexUser');
+
   // Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
   Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post')->middleware('hasRight:updateUser');
   Route::get('/user/analytics/{id}', 'UserController@Scorecard')->name('user.stats')->middleware('hasRight:updateUser');
