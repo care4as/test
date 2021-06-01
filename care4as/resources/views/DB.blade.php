@@ -567,8 +567,8 @@
         }
         let host = window.location.host;
 
-        axios.get('http://'+host+'/care4as/care4as/public/reports/dailyAgentDataStatus')
-        // axios.get('http://'+host+'/reports/dailyAgentDataStatus')
+        // axios.get('http://'+host+'/care4as/care4as/public/reports/dailyAgentDataStatus')
+        axios.get('http://'+host+'/reports/dailyAgentDataStatus')
         .then(response => {
 
           // console.log(response)
@@ -589,8 +589,8 @@
           console.log(err.response);
         });
 
-        axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
-        // axios.get('http://'+host+'/reports/SASStatus')
+        // axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
+        axios.get('http://'+host+'/reports/SASStatus')
         .then(response => {
 
           // console.log(response)
@@ -612,8 +612,8 @@
           element.html('Fehler beim Laden der SAS Daten')
           console.log(err.response);
         });
-        axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
-        // axios.get('http://'+host+'/reports/SASStatus')
+        // axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
+        axios.get('http://'+host+'/reports/SASStatus')
         .then(response => {
 
           // console.log(response)
@@ -636,8 +636,8 @@
           console.log(err.response);
         });
 
-        axios.get('http://'+host+'/care4as/care4as/public/reports/HRDataStatus')
-        // axios.get('http://'+host+'/reports/HRDataStatus')
+        // axios.get('http://'+host+'/care4as/care4as/public/reports/HRDataStatus')
+        axios.get('http://'+host+'/reports/HRDataStatus')
         .then(response => {
           // console.log(response)
           let min = response.data[0]
@@ -654,8 +654,8 @@
           console.log(err.response);
         });
 
-        axios.get('http://'+host+'/care4as/care4as/public/reports/RDDataStatus')
-        // axios.get('http://'+host+'/reports/RDDataStatus')
+        // axios.get('http://'+host+'/care4as/care4as/public/reports/RDDataStatus')
+        axios.get('http://'+host+'/reports/RDDataStatus')
         .then(response => {
 
           // console.log(response)
@@ -683,8 +683,8 @@
 
           // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
 
-          // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
-          axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
+          axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+          // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
           .then(response => {
             // console.log(response)
             let users = response.data
