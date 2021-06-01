@@ -511,14 +511,14 @@
               event.target.className = 'subauswahl aktiv';
               switch(event.target.id) {
                 case 'allData':
-                    // table.colReorder.reset();
+                    table.colReorder.reset();
                     table.columns().visible( false );
                     table.columns().visible( true );
                     // table.draw()
 
                   break;
                 case 'teamleiterview':
-                  // table.colReorder.reset();
+                  table.colReorder.reset();
                   table.columns().visible( false );
 
                   table.columns([0,1,2,3,4,31,32,7,18,19,22,23,28,33]).visible( true );
