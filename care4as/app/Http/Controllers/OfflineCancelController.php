@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\OfflineTracking;
+use App\User;
+use Illuminate\Support\Facades\DB;
 
 class OfflineCancelController extends Controller
 {
@@ -14,17 +16,25 @@ class OfflineCancelController extends Controller
      */
     public function index()
     {
-        $offlinetracks = OfflineTracking::with('user')->get();
+        $users = User::with('offlineTracking')->get();
 
-        $usersdouble = $offlinetracks->map(function($element, $value){
-            return $element->user;
+        date_default_timezone_set('Europe/Berlin');
 
-        });
+        $date = \Carbon\Carbon::parse(date(now()));
+        // $date->diffForHumans($cbv);
 
-        $users = ($usersdouble->unique());
+        //
+        $date->setTime(0,0,0);
+        //
+        // $date->format('Y-m-d H:i:s');
+        $trackings = OfflineTracking::whereDate('created_at',$date->format('Y-m-d'))
+        ->get();
 
-        // dd($users);
-        return view('test', compact('offlinetracks','users'));
+        // dd($trackings);
+        // dd($trackings->where('timespan','8 - 9')->where('category',''));
+
+        return view('overhead.userOfflineTrackingAnalysis', compact('users','trackings'));
+
     }
 
     /**

@@ -138,22 +138,22 @@
           $pricepersave = 15;
         }
       @endphp
-      <div class="row m-0 justify-content-center">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="view" id="allData" value="option1" checked>
-          <label class="form-check-label" for="allData">alle Daten</label>
+
+      <div class="auswahl">
+        <div class="subauswahl aktiv" id="allData">
+          Alle Daten
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="view" id="teamleiterview" value="option1">
-          <label class="form-check-label" for="teamleiterview">Teamleiter Daten</label>
+        <div class="subauswahl" id="teamleiterview" >
+          Teamleiterdaten
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="view" id="crview" value="option2">
-          <label class="form-check-label" for="crview">Cr bezogene Daten</label>
+        <div class="subauswahl"  id="crview" >
+          CR Daten
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="view" id="timesview" value="option3" >
-          <label class="form-check-label" for="timesview">Zeit bezogene Daten</label>
+        <div class="subauswahl"  id="timesview">
+          Zeit Daten
+        </div>
+        <div class="subauswahl" id="revenueview" >
+          Umsatz/SAS/Optin
         </div>
       </div>
       <table class="table table-hover table-striped table-bordered" id="tableoverview">
@@ -181,9 +181,12 @@
             <th>SSC CR</th>
             <th>BSC CR</th>
             <th>Portal CR</th>
-            <th>KüRü CR</th>
             <th>SaS</th>
             <th>OptIn</th>
+            <th>Saves(Gevo)</th>
+            <th>Upgrades</th>
+            <th>Sidegrades</th>
+            <th>Downgrades</th>
             <th>Umsatz</th>
             <th>Umsatz/h bez</th>
             <th>Umsatz/h prod</th>
@@ -225,11 +228,9 @@
               @else
               <td>0</td>
             @endif
-
             <td>{{$user->salesdata['sscOrders']}}</td>
             <td>{{$user->salesdata['bscOrders']}}</td>
             <td>{{$user->salesdata['portalOrders']}}</td>
-
               <td>{{$user->salesdata['ssesaves']}}</td>
             @if($user->salesdata['workedHours'] != 0)
               @if($user->department == '1&1 DSL Retention')
@@ -246,9 +247,12 @@
             <td data-order="{{$user->salesdata['sscQuota']}}">{{$user->salesdata['sscQuota']}}%</td>
             <td data-order="{{$user->salesdata['bscQuota']}}">{{$user->salesdata['bscQuota']}}%</td>
             <td data-order="{{$user->salesdata['portalQuota']}}">{{$user->salesdata['portalQuota']}}%</td>
-            <td>50%</td>
-            <td>SaS</td>
-            <td>Optin</td>
+            <td>{{$user->sasquota}}</td>
+            <td>{{$user->optinQuota}}%</td>
+            <td>{{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}</td>
+            <td>{{$user->gevo->where('change_cluster','Upgrade')->count()}}</td>
+            <td>{{$user->gevo->where('change_cluster','Sidegrade')->count()}}</td>
+            <td>{{$user->gevo->where('change_cluster','Downgrade')->count()}}</td>
             <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
             @if($user->salesdata['workedHours'] != 0)
               <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
@@ -295,14 +299,17 @@
           <td id="sscCrAVG">19</td>
           <td id="bscCrAVG">20</td>
           <td id="portalCrAVG">21</td>
-          <td id="kürücr">22</td>
-          <td id="sas">23</td>
-          <td id="optin">24</td>
-          <td id="revenue">25</td>
-          <td id="revenuePerHourPayedAVG">26</td>
-          <td id="revenuePerHourProductiveAVG">27</td>
-          <td id="sick hours">28</td>
-          <td id="sicknessquotaAVG">29</td>
+          <td id="sas">22</td>
+          <td id="optin">23</td>
+          <td id="gevo">24</td>
+          <td id="upgrade">25</td>
+          <td id="downgrade">26</td>
+          <td id="sidegrade">27</td>
+          <td id="revenue">28</td>
+          <td id="revenuePerHourPayedAVG">29</td>
+          <td id="revenuePerHourProductiveAVG">30</td>
+          <td id="sick hours">31</td>
+          <td id="sicknessquotaAVG">32</td>
           <td>total</td>
         </tr>
       </tfoot>
@@ -329,10 +336,7 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-
-
     let table = $('#tableoverview').DataTable({
-
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
             // Remove the formatting to get integer data for summation
@@ -372,6 +376,7 @@
             $(api.column( 5 ).footer() ).html('<b>'+Math.round(api.column(5).data().sum()) +'h</b>')
             $(api.column( 6 ).footer() ).html('<b>'+getQuota(6).toFixed(2)+'%</b>')
             $(api.column( 7 ).footer() ).html('<b>'+getQuota(7).toFixed(2)+'%</b>')
+            //savescolumn
             $(api.column( 8 ).footer() ).html('<b>'+Math.round(api.column(8).data().sum()) +'</b>')
             $(api.column( 9 ).footer() ).html('<b>'+Math.round(api.column(9).data().sum()) +'</b>')
             $(api.column( 10 ).footer() ).html('<b>'+Math.round(api.column(10).data().average()) +'</b>')
@@ -391,7 +396,7 @@
             $(api.column( 24 ).footer() ).html('<b>'+Math.round(api.column(24).data().average()) +'€</b>')
             $(api.column( 25 ).footer() ).html('<b>'+Math.round(api.column(25).data().average()) +'€</b>')
             $(api.column( 26 ).footer() ).html('<b>'+Math.round(api.column(26).data().average()) +'h</b>')
-            $(api.column( 27 ).footer() ).html('<b>test</b>')
+            $(api.column( 27 ).footer() ).html('<b>'+Math.round(api.column(27).data().sum()) +'</b>')
             $(api.column( 28 ).footer() ).html('<b>'+Math.round(api.column(28).data().sum()) +'</b>')
             $(api.column( 29 ).footer() ).html('<b>'+getQuota(29).toFixed(2)+'%</b>')
             $(api.column( 30 ).footer() ).html('<b> Total</b>')
@@ -429,9 +434,15 @@
           ],
         });
 
-        if (document.querySelector('input[name="view"]')) {
-          document.querySelectorAll('input[name="view"]').forEach((elem) => {
+        if (document.querySelector('.subauswahl')) {
+          document.querySelectorAll('.subauswahl').forEach((elem) => {
             elem.addEventListener("click", function(event) {
+
+              $('.subauswahl').each(function(){
+                  this.className=''
+                  this.className='subauswahl'
+              });
+              event.target.className = 'subauswahl aktiv';
               switch(event.target.id) {
                 case 'allData':
                     table.colReorder.reset();
@@ -443,25 +454,43 @@
                 case 'teamleiterview':
                   // table.colReorder.reset();
                   table.columns().visible( false );
-                  table.columns([0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30]).visible( true );
+
+                  table.columns([0,1,2,3,4,31,32,7,18,19,22,23,28,33]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-                  table.colReorder.order( [0,1,3,4,28,29,5,7,9,10,8,17,18,23,24,25,27,30],true);
-                  console.log($(table.columns().footer()))
-
-                  console.log('erfolg')
-                  // table.colReorder.order( [1,3,4,26,27,5,7,9,10,8,17,18,24,25,28]);
+                  table.colReorder.order( [0,1,2,3,4,31,32,7,18,19,22,23,28,33]);
+                  // table.colReorder.order( [0,1,3,4,31,32,5,7,9,10,8,17,18,23,24,25,27],true);
                   break;
                 case 'crview':
-                table.colReorder.reset();
-                table.columns().visible( false );
-                table.columns([0,1,8,9,11,12,13,14,17,18,19,20,21,22,30]).visible( true );
-                $('.DTFC_LeftBodyWrapper').hide()
-                $('.DTFC_RightWrapper').hide()
-                $('#tableoverview').css('margin','0px');
-                table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30]);
-                // table.columns.adjust().draw();
+                  table.colReorder.reset();
+                  table.columns().visible( false );
+                  table.columns([0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,33]).visible( true );
+                  $('.DTFC_LeftBodyWrapper').hide()
+                  $('.DTFC_RightWrapper').hide()
+                  $('#tableoverview').css('margin','0px');
+                  table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,33]);
+                  // table.columns.adjust().draw();
+                break;
+                case 'timesview':
+                  table.colReorder.reset();
+                  table.columns().visible( false );
+                  table.columns([0,1,2,3,4,5,6,7,10,29,30,33]).visible( true );
+                  $('.DTFC_LeftBodyWrapper').hide()
+                  $('.DTFC_RightWrapper').hide()
+                  $('#tableoverview').css('margin','0px');
+                  table.colReorder.order( [0,1,2,3,4,5,6,7,10,29,30,33]);
+                  // table.columns.adjust().draw();
+                break;
+                case 'revenueview':
+                  table.colReorder.reset();
+                  table.columns().visible( false );
+                  table.columns([0,1,22,23,24,25,26,27,28,29,30,33]).visible( true );
+                  $('.DTFC_LeftBodyWrapper').hide()
+                  $('.DTFC_RightWrapper').hide()
+                  $('#tableoverview').css('margin','0px');
+                  table.colReorder.order( [0,1,28,29,30,27,26,25,24,22,23,33]);
+                  // table.columns.adjust().draw();
                 break;
               }
 
@@ -470,6 +499,7 @@
             });
           });
         }
+
 
       });
 </script>

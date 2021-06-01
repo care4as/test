@@ -160,4 +160,12 @@ class User extends Authenticatable
     {
       return $this->hasOne('\App\Intermediate','person_id','person_id')->latest('date');
     }
+    public function gevo()
+    {
+      return $this->hasMany('\App\GeVoTracking','person_id','person_id');
+    }
+    public function offlineTracking()
+    {
+      return $this->hasMany('\App\OfflineTracking','created_by','id');
+    }
 }

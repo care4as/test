@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\User;
+use App\Log;
 use App\Mail\IntermediateMail;
 use Mail;
 
@@ -66,8 +67,6 @@ class sendIntermediateMail implements ShouldQueue
       $users = User::whereIn('person_id',$userids)
       ->with('intermediatesLatest')
       ->get();
-
-
 
       if(!$users->first())
       {
@@ -365,7 +364,7 @@ class sendIntermediateMail implements ShouldQueue
         Mail::to($mailinglist)->send($email);
         if (Mail::failures()) {
           foreach(Mail::failures() as $email_address) {
-                $logentry = new App\Log;
+                $logentry = new Log;
                 $logentry->logEntry("Fehler Email - $email_address <br />");
              }
            }
@@ -383,7 +382,7 @@ class sendIntermediateMail implements ShouldQueue
 
         if (Mail::failures()) {
           foreach(Mail::failures() as $email_address) {
-                $logentry = new App\Log;
+                $logentry = new Log;
                 $logentry->logEntry("Fehler Email - $email_address <br />");
              }
            }

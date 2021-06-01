@@ -198,6 +198,17 @@ class HomeController extends Controller
             $q->where('call_date','<=',$end_date);
           }
           }])
+        ->with(['gevo' => function($q) use ($start_date,$end_date){
+          // $q->select(['id','person_id','calls','time_in_state','call_date']);
+          if($start_date !== 1)
+          {
+            $q->where('date','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('date','<=',$end_date);
+          }
+          }])
           ->with(['hoursReport' => function($q) use ($start_date,$end_date){
 
             if($start_date !== 1)
@@ -450,7 +461,7 @@ class HomeController extends Controller
       }
       // dd($users->where('id',26));
       // return view('usersIndex', compact('users'));
-      return view('presentation', compact('modul', 'users'));
+      return view('DB', compact('modul', 'users'));
     }
     public function test($value='')
     {

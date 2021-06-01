@@ -1,8 +1,12 @@
 body
     {
       /* font-family: 'Arial Narrow', sans-serif; */
-      font-family: 'Brush Script MT', 'Brush Script Std', cursive;
-      font-family: 'Goudy Old Style', cursive;
+      /* font-family: 'Brush Script MT', 'Brush Script Std', cursive; */
+      /* font-family: 'Goudy Old Style', cursive; */
+      font-family: 'Merienda' !important;
+      /* font-family: 'Dekko'; */
+      /* font-family: 'Alegreya Sans SC'; */
+      /* font-family: 'Actor'; */
       font-size: 1.2rem;
     }
     .table-striped>tbody>tr:nth-child(even) {

@@ -30,7 +30,7 @@ class CreateGevotrackingTable extends Migration
             $table->text('Ziel_Welt_Bezeichnung');
 
             $table->timestamps();
-            $table->unique(['date','person_id']);
+            $table->unique(['order_id','person_id']);
         });
     }
 

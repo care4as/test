@@ -21,6 +21,62 @@ class ExcelEditorController extends Controller
       return view('reports/dailyAgent');
     }
 
+    public function GeVoUpload(Request $request)
+    {
+      $fromRow = 1;
+      $insertData = array();
+
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+
+      $request->validate([
+        'file' => 'required',
+        // 'name' => 'required',
+      ]);
+
+      $file = request()->file('file');
+
+      $data = Excel::ToArray(new DataImport, $file);
+
+      for ($i=$fromRow-1; $i <= count($data[0])-1; $i++) {
+
+      // dd($data[0][0],$data[0][1]);
+      $cell = $data[0][$i];
+
+      if ($cell[12] && is_numeric($cell[1])) {
+
+      $UNIX_DATE2 = ($cell[1] - 25569) * 86400;
+      $date = gmdate("Y-m-d",$UNIX_DATE2);
+
+        $insertData[$i] = array(
+
+          "order_id" => $cell[0],
+          "date" => $date,
+          "department_desc" => $cell[6],
+          "change_cluster" => $cell[8],
+          "contract_id" => $cell[9],
+          "business_transaction_desc" => $cell[11],
+          "person_id" => $cell[12],
+          "Ziel_LZV" => $cell[14],
+          "Ziel_LZV" => $cell[17],
+          "has_cancellation_index" => $cell[18],
+          "contract_period_impact" => $cell[19],
+          "Order_Retention" => $cell[20],
+          "Order_Prevention" => $cell[21],
+          "Ziel_Welt_Bezeichnung" => $cell[22],
+        );
+      }}
+
+      $insertData = array_chunk($insertData, 3500);
+
+      // dd($insertData);
+      for($i=0; $i <= count($insertData)-1; $i++)
+      {
+        DB::table('gevotracking')->insertOrIgnore($insertData[$i]);
+      }
+      return redirect()->back();
+    }
     public function Optinupload(Request $request)
     {
       DB::disableQueryLog();
@@ -100,7 +156,8 @@ class ExcelEditorController extends Controller
     }
     return redirect()->back();
   }
-    public function SASupload(Request $request)
+
+  public function SASupload(Request $request)
     {
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
