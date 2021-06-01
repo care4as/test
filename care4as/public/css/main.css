@@ -359,7 +359,9 @@ body
       font-size: 1rem;
       cursor: pointer;
     }
-
+    .subauswahl:hover{
+      color: rgba(124, 124, 124, 0.5);
+    }
     .aktiv
     {
       border-bottom: 2px solid darkblue;
