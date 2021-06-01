@@ -511,7 +511,7 @@
               event.target.className = 'subauswahl aktiv';
               switch(event.target.id) {
                 case 'allData':
-                    table.colReorder.reset();
+                    // table.colReorder.reset();
                     table.columns().visible( false );
                     table.columns().visible( true );
                     // table.draw()
@@ -668,7 +668,6 @@
 
           element.css( 'display','block')
           element.html('RetentionDetail Daten im Zeitraum '+min+' bis: '+max)
-
         })
         .catch(function (err) {
           console.log('error DataStatus RetentionDetail')

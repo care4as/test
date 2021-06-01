@@ -685,4 +685,22 @@ class UserController extends Controller
 
       return redirect()->back();
     }
+    public function deactivate($id)
+    {
+      User::where('id',$id)
+      ->update([
+        'status' => 0,
+      ]);
+
+      return redirect()->back();
+    }
+    public function activate($id)
+    {
+      User::where('id',$id)
+      ->update([
+        'status' => 1,
+      ]);
+
+      return redirect()->back();
+    }
 }

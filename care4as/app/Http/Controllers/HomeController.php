@@ -91,6 +91,7 @@ class HomeController extends Controller
       {
 
         $users = User::where('role','agent')
+        ->where('status',1)
         ->whereIn('id', $request->employees)
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
@@ -171,6 +172,7 @@ class HomeController extends Controller
         }
         // return \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
         $users = User::where('role','agent')
+        ->where('status',1)
         ->where('department', $department)
         ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
         ->where('agent_id','!=',null)

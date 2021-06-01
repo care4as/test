@@ -33,6 +33,7 @@
                     <th>username</th>
                     <th>Name</th>
                     <th>team</th>
+                    <th>status</th>
                     <th>Abteilung</th>
                     <th>Rolle</th>
                     <th>Person-ID</th>
@@ -49,6 +50,7 @@
                       <td>{{$user->name}}</td>
                       <td>{{$user->surname}} {{$user->lastname}} </td>
                       <td>{{$user->team}} </td>
+                      <td>@if($user->status == 1) aktiv @else inaktiv @endif</td>
                       <td>{{$user->department}} </td>
                       <td>{{$user->role}}</td>
                       <td>{{$user->person_id}}</td>
@@ -68,9 +70,14 @@
                           <i class="now-ui-icons ui-1_zoom-bold"></i>
                         </button>
                         </a>
-                        <a href="">
+                        <a href="{{route('user.deactivate', ['id'=> $user->id])}}">
                         <button class="btn btn-primary btn-fab btn-icon btn-round">
-                          <i class="now-ui-icons ui-1_settings-gear-63"></i>
+                          <i class="fas fa-pause"></i>
+                        </button>
+                        </a>
+                        <a href="{{route('user.activate', ['id'=> $user->id])}}">
+                        <button class="btn btn-primary btn-fab btn-icon btn-round">
+                          <i class="far fa-play-circle"></i>
                         </button>
                         </a>
                       </td>
@@ -124,16 +131,14 @@
                 </table>
               </div>
             </div>
-
-            <div class="tab-pane" id="history">
-            </div>
-          </div>
+          <div class="tab-pane" id="history">
+        </div>
       </div>
-    </div>
     </div>
   </div>
 </div>
-
+</div>
+</div>
 @endsection
 
 @section('additional_js')
@@ -141,11 +146,9 @@
 <script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
 <script type="text/javascript">
 $(document).ready(function(){
-
   let table = $('#userdata').DataTable({
     ordering: true,
   });
-
 });
 </script>
 
