@@ -7,9 +7,18 @@
     <body>
       <p>Sehr geehrte Damen und Herren, <br>
         Zwischenstand: {{$data['date']}}</p>
-        <div class="" style="background-color: lightblue; color: white; font-size: 1.5em; width: auto; width: 25%;">
+        <div class=""
+        style="
+          background: rgb(246,93,117);
+          background: radial-gradient(circle, rgba(246,93,117,0.8211485277704832) 25%, rgba(188,36,60,0.75672275746236) 76%, rgba(204,24,52,1) 95%);
+          color: white;
+          font-size: 1.5em;
+          width: auto;
+          width: 25%;"
+          >
+
           @if($data['isMobile'])
-            <p style="text-align:center;"><b>Mobile SSC-CR: {{$data['ssccr']}}% | @if($data['bsccr']) BSC-CR: {{$data['bsccr']}}% @else Fehler BSC CR @endif| Portal-CR:@if($data['portalcr'] < 101 && $data['portalcr'] > 99) 106% @else {{$data['portalcr']}}%  @endif</b></p>
+            <p style="text-align:center;"><b>Mobile SSC-CR: {{$data['ssccr']}}% | @if($data['bsccr']) BSC-CR: {{$data['bsccr']}}% @else Fehler BSC CR @endif| Portal-CR: @if($data['portalcr']) {{$data['portalcr']}}% @else Fehler Portal-CR @endif</b></p>
           @else
 
           <p style="text-align:center;"><b>DSL-CR: {{$data['dslcr']}}%</b></p>
@@ -36,11 +45,11 @@
               <tr style="background-color: @if($i % 2 == 0) #ddf8e8 @else #fefdfa @endif; ">
                 <td>{{$data['mobile'][$i]['name']}}</td>
                 <td>{{$data['mobile'][$i]['SSC-CR']}}%</td>
-                <td style="@if($data['mobile'][$i]['SSC-CR_diff'] > 0)color: green; font-weight: 900;@elseif($data['mobile'][$i]['SSC-CR_diff'] < 0)color: red;font-weight: 900; @endif">{{$data['mobile'][$i]['SSC-CR_diff']}}</td>
+                <td style="@if($data['mobile'][$i]['SSC-CR_diff'] > 0)color: grey; font-weight: 900;@elseif($data['mobile'][$i]['SSC-CR_diff'] < 0)color: red;font-weight: 900; @endif">{{$data['mobile'][$i]['SSC-CR_diff']}}</td>
                 <td>{{$data['mobile'][$i]['SSC_Calls']}}</td>
-                <td style="@if($data['mobile'][$i]['SSC_Calls_differ'] > 0)color: green; font-weight: 900; @elseif($data['mobile'][$i]['SSC_Calls_differ'] < 0)color: red;font-weight: 900; @endif" >{{$data['mobile'][$i]['SSC_Calls_differ']}}</td>
+                <td style="@if($data['mobile'][$i]['SSC_Calls_differ'] > 0)color: grey; font-weight: 900; @elseif($data['mobile'][$i]['SSC_Calls_differ'] < 0)color: red;font-weight: 900; @endif" >{{$data['mobile'][$i]['SSC_Calls_differ']}}</td>
                 <td>{{$data['mobile'][$i]['SSC-Orders']}}</td>
-                <td style="@if($data['mobile'][$i]['SSC-Orders_differ'] > 0) color: green; font-weight: 900; @elseif($data['mobile'][$i]['SSC-Orders_differ'] < 0)color: red;font-weight: 900; @endif">{{$data['mobile'][$i]['SSC-Orders_differ']}}</td>
+                <td style="@if($data['mobile'][$i]['SSC-Orders_differ'] > 0) color: grey; font-weight: 900; @elseif($data['mobile'][$i]['SSC-Orders_differ'] < 0)color: red;font-weight: 900; @endif">{{$data['mobile'][$i]['SSC-Orders_differ']}}</td>
                 <td>{{$data['mobile'][$i]['BSC_CR']}}%</td>
                 <td>{{$data['mobile'][$i]['PortalCR']}}%</td>
                 <td>{{$data['mobile'][$i]['Calls']}}</td>

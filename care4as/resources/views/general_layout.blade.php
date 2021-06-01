@@ -135,7 +135,7 @@
             <div class="collapse" id="collapseReport" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
               <li><a href="{{route('reports.report')}}">Retention Details Report</a></li>
-              <li><a href="{{route('reports.capacitysuitreport')}}">Capacity Suit Report</a></li>
+              <li><a href="{{route('reports.gevotracking')}}">GeVo Tracking Import</a></li>
               <li><a href="{{route('excel.dailyAgent.import')}}">Daily Agent Import</a></li>
               <li><a href="{{route('reports.provision.view')}}">Provision</a></li>
               <li><a href="{{route('reports.reportHours.view')}}">Stundenreport</a></li>

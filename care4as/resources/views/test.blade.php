@@ -2,10 +2,7 @@
 
 @section('additional_css')
 <style media="screen">
-body
-{
 
-}
   @-webkit-keyframes image_blur {
     10% {
       /* -webkit-filter: blur(0px); */
@@ -175,158 +172,236 @@ body
       background: radial-gradient(ellipse at center,  rgba(255,255,255,0.5) 0%,rgba(255,255,255,1) 70%);
 
     }
+    .popupmenu
+    {
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      min-width: 125px;
+      max-width: 200px;
+      height: content;
+      /* max-width: 350px; */
+      animation: fadeInTop 2s ease-out forwards;
+    }
+    .subissues li p{
+
+      width: 100px;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 30px;
+      word-break:break-all; /* wrap extended text*/
+      /* animation: dissolve 3s forward;*/
+      animation: type 4s steps(10, end);
+
+    }
+
+
+    .subissues{
+      display: block;
+      width: 100px;
+      word-break:break-all; /* wrap extended text*/
+
+    }
+    a{
+       text-decoration: none;
+    }
+    @keyframes fadeInTop
+    {
+      from {
+        max-height:0px; opacity: 0;
+      }
+      to {
+        max-height:350px; opacity: 1
+      }
+    }
+    @keyframes type{
+    from {
+         width: 0;
+         }
+     }
+
 </style>
 
 @endsection
 
 @section('content')
 
-<div class="container bg-light">
-  <table>
+<div class="container" style="background-image: url('https://capsicummediaworks.com/wp-content/themes/capsicum/images/bg.jpg')">
+  <table class="table table-hover">
     <tr>
-      <td>#</td>
-      <td>Vertragsnummer</td>
-      <td>Zeitraum</td>
-      <td>Kategorie</td>
-      <td>erstellt von</td>
-      <td>Kommentar</td>
-      <td>erstellt</td>
+      <td>Agent</td>
+      <td>GeVo Saves</td>
+      <td>Upgrades</td>
+      <td>Sidegrades</td>
+      <td>Downgrades</td>
     </tr>
-    @foreach($offlinetracks as $tracking)
+    @foreach($users as $user)
     <tr>
-      <td>{{$tracking->id}}</td>
-      <td>{{$tracking->contract_number}}</td>
-      <td>{{$tracking->timespan}}</td>
-      <td>{{$tracking->category}}</td>
-      <td>{{$tracking->user->name}}</td>
-      <td>{{$tracking->comment}}</td>
-      <td>{{$tracking->created_at}}</td>
+      <td>{{$user->wholeName()}}</td>
+      <td>{{$user->gevo->upgrades + $user->gevo->sidegrades + $user->gevo->downgrades}}</td>
+      <td>{{$user->gevo->upgrades}}</td>
+      <td>{{$user->gevo->sidegrades}}</td>
+      <td>{{$user->gevo->downgrades}}</td>
     </tr>
+
     @endforeach
   </table>
   <hr>
 
   @foreach($users as $user)
-  <table class="table table-striped">
+    @if($user->offlineTracking->first())
+      <table class="table table-striped">
 
-    <thead class="thead-dark">
-      <tr>
-        <td>Agent {{$user->wholeName()}}</td>
-        <td>Gevo</td>
-        <td>KüRü</td>
-        <td>Negativ/Cancel</td>
-        <td>Nicht erreicht</td>
-        <td>Nicht erreicht --> Retention Offline</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>8 - 9</td>
-        <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>9 - 10</td>
-        <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>10 - 11</td>
-        <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>11 - 12</td>
-        <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>12 - 13</td>
-        <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>13 - 14</td>
-        <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>14 - 15</td>
-        <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>15 - 16</td>
-        <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>16 - 17</td>
-        <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>17 - 18</td>
-        <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>18 - 19</td>
-        <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-      <tr>
-        <td>19 - 20</td>
-        <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','GeVo')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','KüRü')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','Negativ/Cancel')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','Nicht erreicht')->count()}}</td>
-        <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
-      </tr>
-
-    </tbody>
-  </table>
+        <thead class="thead-dark">
+          <tr>
+            <td><button class="btn btn-link" onclick="hideTable('{{$user->name}}')">Agent {{$user->wholeName()}}</button></td>
+            <td>Gevo</td>
+            <td>KüRü</td>
+            <td>Negativ/Cancel</td>
+            <td>Nicht erreicht</td>
+            <td>Nicht erreicht --> Retention Offline</td>
+          </tr>
+        </thead>
+          <tbody id="{{$user->name}}" style="display:none;">
+            <tr>
+              <td>8 - 9</td>
+              <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','8 - 9')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>9 - 10</td>
+              <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','9 - 10')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>10 - 11</td>
+              <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','10 - 11')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>11 - 12</td>
+              <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','11 - 12')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>12 - 13</td>
+              <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','12 - 13')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>13 - 14</td>
+              <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','13 - 14')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>14 - 15</td>
+              <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','14 - 15')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>15 - 16</td>
+              <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','15 - 16')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>16 - 17</td>
+              <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','16 - 17')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>17 - 18</td>
+              <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','17 - 18')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>18 - 19</td>
+              <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','18 - 19')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+            <tr>
+              <td>19 - 20</td>
+              <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','GeVo')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','KüRü')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','Negativ/Cancel')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','Nicht erreicht')->count()}}</td>
+              <td>{{$offlinetracks->where('timespan','19 - 20')->where('category','Nicht erreicht --> Retention Offline')->count()}}</td>
+            </tr>
+          </tbody>
+      </table>
+      @endif
   @endforeach
 </div>
 
+<div class="">
+  <button type="button" name="button" onclick="showSidebar()">Menu</button>
+  <div class="popupmenu bg-light" style='position:relative; display:none;'>
+    <ul class="subissues" id='targetlist'>
+      <li><p><a href="#"><span class="material-icons">
+      chat_bubble
+      </span>
+      </a></p>  </li>
+      <li><p><a href="#">link</a></p>  </li>
+      <li><p><a href="#">link</a></p>  </li>
+      <li><p><a href="#">link</a></p>  </li>
+
+    </ul>
+  </div>
+</div>
 
 
 @endsection
 
 @section('additional_js')
 
+<script type="text/javascript">
+function hideTable(tableid) {
+  $('#' + tableid).toggle()
+}
 
+function  showSidebar()
+{
+  $('.popupmenu').toggle()
+
+}
+</script>
+
+<script>
+  $(document).ready(function() {
+
+});
+
+</script>
 @endsection

@@ -295,4 +295,5 @@ class UserTrackingController extends Controller
       // dd(  $user->dailyAgent);
       return view('userDailyAgentSingle', compact('user'));
     }
+  
 }

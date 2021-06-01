@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth']], function () {
   //offlineTracking
   Route::get('/offlineTracking', 'OfflineCancelController@create')->name('offlinetracking.view.agent')->middleware('hasRight:createCancels');
   Route::get('/offlineTracking/index', 'OfflineCancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
-  Route::post('/offlineTracking/save', 'OfflineCancelController@store')->name('offlineTracking.save')->middleware('hasRight:analyzeCancels');
+  Route::post('/offlineTracking/save', 'OfflineCancelController@store')->name('offlineTracking.save')->middleware('hasRight:createCancels');
   //end offlinetracking
 
   //dashboard
@@ -99,7 +99,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/report/Optin/', 'ExcelEditorController@OptInupload')->name('reports.OptIn.upload')->middleware('hasRight:importReports');
 
   Route::view('/report/gevo/', 'reports.GeVoTracking')->name('reports.gevotracking')->middleware('hasRight:importReports');
-  Route::post('/report/gevo/', 'ExcelEditorController@OptInupload')->name('reports.gevotracking.upload')->middleware('hasRight:importReports');
+  Route::post('/report/gevo/', 'ExcelEditorController@GeVoUpload')->name('reports.gevotracking.upload')->middleware('hasRight:importReports');
 
   //AHTReport
   Route::get('/report/AHTdaily', 'ReportController@AHTdaily')->name('reports.AHTdaily')->middleware('hasRight:sendReports');
@@ -296,34 +296,23 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 Route::get('/test', function(){
 
-  $users = App\User::with('Optin','SAS','retentionDetails')->get();
+  $users = App\User::with('gevo','offlineTracking')->get();
+  $offlinetracks= collect();
 
-  foreach ($users as $key => $user) {
-    $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
-    $optinRequests = $user->Optin->sum('Anzahl_OptIn-Abfragen');
+  foreach ($users as $user) {
 
-    $sas = $user->SAS->count();
-    $allCalls = $user->retentionDetails->sum('calls');
+    $user->gevo->upgrades = $user->gevo->where('change_cluster','Upgrade')->count();
+    $user->gevo->sidegrades = $user->gevo->where('change_cluster','Sidegrade')->count();
+    $user->gevo->downgrades = $user->gevo->where('change_cluster','Downgrade')->count();
 
-    if ($optinCalls != 0) {
-      $user->optinQuota = round($optinRequests*100/$optinCalls,2);
+    if($user->offlineTracking->first())
+    {
+      foreach ($user->offlineTracking as $tracking) {
+        $offlinetracks->add($tracking);
       }
-    else {
-        $user->optinQuota = 0;
-      }
-    if (  $sas != 0) {
-         $user->sasquota = round($sas*100/$allCalls,2).'%';
-      }
-    else {
-        $user->sasquota = 0;
-      }
-
     }
-
-  // dd($users[1], $users[1]->sasquota);
-  // dd($users[1]);
-
-
-  return view('test',compact('users'));
+  }
+  // dd($users[1]->gevo);
+  return view('test',compact('users','offlinetracks'));
 
 })->name('test');
