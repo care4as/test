@@ -4,13 +4,6 @@
 
 <style media="screen">
 
-.table-striped>tbody>tr:nth-child(even) {
-    background-color: #ddf8e8;
-}
-.table-striped>tbody>tr:nth-child(odd) {
-    background-color: #fefdfa;
-}
-
   th, td
   {
     font-size: 1.4em !important;
@@ -20,10 +13,6 @@
     color: #746e58;
     white-space: nowrap;
 
-  }
-  .table-hover tbody td:hover {
-    background-color: black;
-    color:white;
   }
   div .dataTables_scrollFoot{
      /* display: none; */
@@ -60,6 +49,16 @@
     display: hidden;
   }
 
+  .loadingerDA, .loadingerHR, .loadingerRD
+  {
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+  from {color: black;}
+  to {color: white;}
+  }
+
 </style>
 
 @endsection
@@ -70,60 +69,127 @@
   <div class="row justify-content-center align-self-center m-1">
       <h4 >Präsentation des aktuellen Moduls: {{$modul ?? ''}}</h4>
   </div>
+  <div class="row bg-white shadow  m-1 mt-4">
+    <div class="col-12">
+    </div>
+    <div class="col-12 text-left">
+      <table class="table table-hover table-light ">
+        <caption class="text-center">Aktueller Datenstand</caption>
+        <tr>
+          <td>
+            @if(!App\DailyAgent::min('date'))
+              <h5>keine Daten eingegeben</h5>
+            @else
+              <div class="loadingerDA">Lade Daten DailyAgent...</div>
+              <span id="dailyagentData" style="display: none;">  </span>
+            @endif
+          </td>
+          <td>  <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
+          <td>  <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+        </tr>
+        <tr>
+          <td>
+            @if(!App\Hoursreport::min('work_date'))
+              <h5>keine Daten eingegeben</h5>
+            @else
+              <div class="loadingerHR">Lade Daten Stundenreport...</div>
+              <span id="HoursreportData" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+            @endif
+          </td>
+          <td><a href="{{route('reports.reportHours.update')}}"><button type="button" class="btn btn-sm border-round" name="button">Stundenreport Updaten</button></a></td>
+          <td><a href="{{route('user.connectUsersToKDW')}}"><button type="button" class="btn btn-sm btn-success border-round" name="button">Userdaten verknüpfen</button></a></td>
+        </tr>
+        <tr>
+          <td>
+            @if(!App\RetentionDetail::min('call_date'))
+              <h5>keine Daten eingegeben</h5>
+            @else
+              <div class="loadingerRD">Lade Daten Retention Details...</div>
+              <span id="RDDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+            @endif
+          </td>
+          <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
+          <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+        </tr>
+        <tr>
+          <td>
+            @if(!App\SAS::min('date'))
+              <h5>keine Daten eingegeben</h5>
+            @else
+              <div class="loadingerSAS">Lade Daten SAS...</div>
+              <span id="SASDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+            @endif
+          </td>
+          <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
+          <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+        </tr>
+        <tr>
+          <td>
+            @if(!App\Optin::min('date'))
+              <h5>keine Daten eingegeben</h5>
+            @else
+              <div class="loadingerRD">Lade Daten Optin...</div>
+              <span id="OptinDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+            @endif
+          </td>
+          <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
+          <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+  </div>
 
   <div class="row bg-white shadow  m-1 mt-4" id="filtermenu">
     <div class="col-12 d-flex justify-content-center align-self-center">
-      <h5>Filtermenü</h5>
+      <a class="" data-toggle="collapse" href="#collapseFiltermenu" role="button" aria-expanded="false" aria-controls="collapseFiltermenu">
+        <h5>Filtermenü &#128269;</h5>
+      </a>
     </div>
     <div class="col-12">
-      <form class="mt-2 w-100" action="{{route('presentation')}}" method="get">
-        <div class="row m-0 justify-content-center">
-          <div class="col-6 p-0" style="border-right: 2px solid black;">
-            <div class="row m-2 justify-content-end">
-              <div class="col-4 ml-1 p-0">
-                <label for="department">Abteilung:</label>
-                <select class="form-control" name="department" id="department" style="width:218px;">
-                  <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
-                  <option value="1&1 DSL Retention" @if(request('department') == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
-                  <option value="1&1 Mobile Retention" @if(request('department') == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
-                </select>
+      <div class="collapse" id="collapseFiltermenu">
+        <form class="mt-2 w-100" action="{{route('presentation')}}" method="get">
+          <div class="row m-0 justify-content-center">
+            <div class="col-6 p-0" style="border-right: 2px solid black;">
+              <div class="row m-2 justify-content-end">
+                <div class="col-4 ml-1 p-0">
+                  <label for="department">Abteilung:</label>
+                  <select class="form-control" name="department" id="department" style="width:218px;">
+                    <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
+                    <option value="1&1 DSL Retention" @if(request('department') == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
+                    <option value="1&1 Mobile Retention" @if(request('department') == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
+                  </select>
+                </div>
+                <div class="col-3 p-0 mr-2">
+                  <label for="department">Welche MA:</label>
+                  <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 150px; overflow:scroll;">
+
+                  </select>
+                </div>
               </div>
-              <div class="col-3 p-0 mr-2">
-                <label for="department">Welche MA:</label>
-                <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 150px; overflow:scroll;">
-                  @if(request('department'))
-                    @foreach($users1 = App\User::where('department',request('department'))->where('role','agent')->get() as $user)
-                      <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
-                    @endforeach
-                  @else
-                    @foreach($users1 = App\User::where('role','agent')->where('department','1&1 Mobile Retention')->get() as $user)
-                      <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
-                    @endforeach
-                  @endif
-                </select>
+            </div>
+            <div class="col-6 p-0">
+              <div class="row m-2 justify-content-start">
+                <div class="col-sm-3">
+                  <label for="datefrom">Von:</label>
+                   <input type="date" id="start_date" name="start_date" class="form-control" placeholder="" value="{{request('start_date')}}">
+                 </div>
+                 <div class="col-sm-3">
+                   <label for="dateTo">Bis:</label>
+                   <input type="date" id="end_date" name="end_date" class="form-control" placeholder="" value="{{request('end_date')}}">
+                 </div>
               </div>
             </div>
           </div>
-          <div class="col-6 p-0">
-            <div class="row m-2 justify-content-start">
-              <div class="col-sm-3">
-                <label for="datefrom">Von:</label>
-                 <input type="date" id="start_date" name="start_date" class="form-control" placeholder="" value="{{request('start_date')}}">
-               </div>
-               <div class="col-sm-3">
-                 <label for="dateTo">Bis:</label>
-                 <input type="date" id="end_date" name="end_date" class="form-control" placeholder="" value="{{request('end_date')}}">
-               </div>
+          <div class="col-12 p-0">
+            <div class="row m-2 justify-content-center">
+              <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
             </div>
           </div>
-        </div>
-    </div>
-    <div class="col-12 p-0">
-      <div class="row m-2 justify-content-center">
-        <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
+          </form>
       </div>
     </div>
-    </form>
+
   </div>
   <div class="row m-2 mt-4 bg-white shadow justify-content-center align-self-center" >
     <div class="col-12">
@@ -499,8 +565,151 @@
             });
           });
         }
+        let host = window.location.host;
 
+        axios.get('http://'+host+'/care4as/care4as/public/reports/dailyAgentDataStatus')
+        // axios.get('http://'+host+'/reports/dailyAgentDataStatus')
+        .then(response => {
 
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+
+          let element = $('#dailyagentData')
+
+          $('.loadingerDA').toggle()
+
+          element.css( 'display','block')
+          element.html('DailyAgent Daten im Zeitraum '+min+' bis: '+max)
+        })
+        .catch(function (err) {
+          let element = $('#dailyagentData')
+          element.css( 'display','block')
+          element.html('Fehler beim Laden der DA Daten')
+          console.log(err.response);
+        });
+
+        axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
+        // axios.get('http://'+host+'/reports/SASStatus')
+        .then(response => {
+
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+
+          let element = $('#SASDataStatus')
+
+          $('.loadingerSAS').toggle()
+
+          element.css( 'display','block')
+          element.html('SAS Daten im Zeitraum '+min+' bis: '+max)
+        })
+        .catch(function (err) {
+          console.log('error DataStatus SAS')
+          $('.loadingerSAS').toggle()
+          let element = $('#SASDataStatus')
+          element.css( 'display','block')
+          element.html('Fehler beim Laden der SAS Daten')
+          console.log(err.response);
+        });
+        axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
+        // axios.get('http://'+host+'/reports/SASStatus')
+        .then(response => {
+
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+
+          let element = $('#OptinDataStatus')
+
+          $('.loadingerOptin').toggle()
+
+          element.css( 'display','block')
+          element.html('Optin Daten im Zeitraum '+min+' bis: '+max)
+        })
+        .catch(function (err) {
+          console.log('error DataStatus Optin')
+          $('.loadingerSAS').toggle()
+          let element = $('#OptinDataStatus')
+          element.css( 'display','block')
+          element.html('Fehler beim Laden der SAS Daten')
+          console.log(err.response);
+        });
+
+        axios.get('http://'+host+'/care4as/care4as/public/reports/HRDataStatus')
+        // axios.get('http://'+host+'/reports/HRDataStatus')
+        .then(response => {
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+          let element = $('#HoursreportData')
+          $('.loadingerHR').toggle()
+
+          element.css( 'display','block')
+          element.html('Stundenreport Daten im Zeitraum '+min+' bis: '+max)
+
+        })
+        .catch(function (err) {
+          console.log('error DataStatus Hoursreport')
+          console.log(err.response);
+        });
+
+        axios.get('http://'+host+'/care4as/care4as/public/reports/RDDataStatus')
+        // axios.get('http://'+host+'/reports/RDDataStatus')
+        .then(response => {
+
+          // console.log(response)
+          let min = response.data[0]
+          let max = response.data[1]
+
+          let element = $('#RDDataStatus')
+
+          $('.loadingerRD').toggle()
+
+          element.css( 'display','block')
+          element.html('RetentionDetail Daten im Zeitraum '+min+' bis: '+max)
+
+        })
+        .catch(function (err) {
+          console.log('error DataStatus RetentionDetail')
+          console.log(err.response);
+        });
+        $('#department').change(function() {
+
+          $('#exampleFormControlSelect2').empty()
+          let dep = this.value
+
+          var host = window.location.host;
+
+          // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+
+          // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+          axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
+          .then(response => {
+            // console.log(response)
+            let users = response.data
+
+            users.forEach(function(user){
+              let option = document.createElement("option");
+              let name = user.surname + ' ' + user.lastname;
+
+              option.value = user.id;
+              option.innerHTML = name;
+
+              $('#exampleFormControlSelect2').append(option);
+              // console.log(option)
+              })
+
+            })
+          .catch(function (err) {
+
+            $('#failContent').html('Fehler: '+ err.response.data.message)
+            $('#failFile').html('Datei: '+ err.response.data.file)
+            $('#failLine').html('Line: '+ err.response.data.line)
+            $('#failModal').modal('show')
+            console.log(err.response);
+          })
+        })
       });
 </script>
 @endsection
