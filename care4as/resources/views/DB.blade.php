@@ -644,7 +644,6 @@
           let max = response.data[1]
           let element = $('#HoursreportData')
           $('.loadingerHR').toggle()
-
           element.css( 'display','block')
           element.html('Stundenreport Daten im Zeitraum '+min+' bis: '+max)
 
