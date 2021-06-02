@@ -9,11 +9,11 @@
     opacity: 1;
   }
 th{
-  width: 10em;
+  width: 22%;
   text-align: center;
 }
 td{
-  width: 10em;
+  width: 22%;
   text-align: center;
 }
 .bordered

@@ -204,7 +204,7 @@ function printPage()
              let data = response.data
 
              var ctx = document.getElementById('Chart').getContext('2d')
-             
+
              var myChart = new Chart(ctx, {
               type: 'bar',
               data: {
