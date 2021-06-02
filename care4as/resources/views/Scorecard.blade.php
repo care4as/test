@@ -302,8 +302,8 @@ $(function() {
           $('#chartcontainer').append('<canvas id="RDChart" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>')
           // console.log('test')
         }
-        axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-        // axios.get('http://'+host+'/user/salesdataDates',
+        // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
+        axios.get('http://'+host+'/user/salesdataDates',
         {
           params: {
             start: start.format('Y-MM-DD'),
@@ -395,7 +395,6 @@ $(function() {
           // $('#loaderDiv').css('display','none');
         })
     }
-
 
     $('#reportrange').daterangepicker({
         startDate: start,
