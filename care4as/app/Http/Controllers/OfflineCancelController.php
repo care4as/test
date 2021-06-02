@@ -16,16 +16,15 @@ class OfflineCancelController extends Controller
      */
     public function index()
     {
-        $users = User::with('offlineTracking')->get();
+      date_default_timezone_set('Europe/Berlin');
+      $date = \Carbon\Carbon::parse(date(now()));
+      $date->setTime(0,0,0);
 
-        date_default_timezone_set('Europe/Berlin');
+        $users = User::with(['offlineTracking' => function($q) use ($date){
+          $q->whereDate('created_at',$date->format('Y-m-d'));
+        }])
+        ->get();
 
-        $date = \Carbon\Carbon::parse(date(now()));
-        // $date->diffForHumans($cbv);
-
-        //
-        $date->setTime(0,0,0);
-        //
         // $date->format('Y-m-d H:i:s');
         $trackings = OfflineTracking::whereDate('created_at',$date->format('Y-m-d'))
         ->get();
