@@ -96,8 +96,8 @@ function printPage()
 
           if(type== 'sales')
           {
-            axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-           // axios.get('http://'+host+'/user/salesdataDates',
+            // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
+           axios.get('http://'+host+'/user/salesdataDates',
            {
              params: {
                start: start.format('Y-MM-DD'),
@@ -106,13 +106,10 @@ function printPage()
              }
              })
            .then(response => {
-
              let chartData = response.data
-
              var ctx = document.getElementById('Chart').getContext('2d')
                const myChart = new Chart(ctx, {
                type: 'bar',
-
                data: {
                    datasets: [{
                     type: 'line',
@@ -190,8 +187,8 @@ function printPage()
           }
           else if(type== 'aht')
           {
-            axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-           // axios.get('http://'+host+'/user/salesdataDates',
+            // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
+           axios.get('http://'+host+'/user/salesdataDates',
            {
              params: {
                start: start.format('Y-MM-DD'),
@@ -204,7 +201,7 @@ function printPage()
              let data = response.data
 
              var ctx = document.getElementById('Chart').getContext('2d')
-             
+
              var myChart = new Chart(ctx, {
               type: 'bar',
               data: {

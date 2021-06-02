@@ -1,4 +1,4 @@
-﻿@extends('general_layout')
+@extends('general_layout')
 
 @section('additional_css')
 <style media="screen">
@@ -9,12 +9,14 @@
     opacity: 1;
   }
 th{
-  width: 10em;
+
+  max-width: 250px;
   text-align: center;
 }
 td{
-  width: 10em;
+  max-width: 250px;
   text-align: center;
+  word-wrap: break-word;
 }
 .bordered
 {
@@ -29,7 +31,7 @@ td{
 
 @section('content')
 
-<div class="container-fluid bg-light" style="width: 75vw; border-radius: 15px;">
+<div class="container-fluid bg-light" style="width: 75vw; border-radius: 15px; overflow:scroll;">
 
 <div class="row">
   <div class="nav-tabs-navigation">
@@ -50,7 +52,7 @@ td{
 </div>
   <div class="tab-content">
       <div id="settings" class="tab-pane fade in show active">
-        <div class="row justify-content-center" id="mainrow" style="table-layout: fixed">
+        <div class="row justify-content-center" id="mainrow" style="">
       <div class="col-12" id="maincol">
         <table class="table table-striped">
           <thead class="thead-dark">
@@ -72,7 +74,7 @@ td{
             <td>
               <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMailMobile')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMailMobile')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
             </td>
-            <td rowspan="1" class="">
+            <td class="">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailProvidersModal">
               Verteiler
             </button>
@@ -89,7 +91,7 @@ td{
             <td>
               <p>Eine automatisierte Mail der Zwischenstände (aktuell: alle 2 Stunden an folgende Adressen:@if(DB::table('email_providers')->where('name','intermediateMailDSL')->first()) @foreach(DB::table('email_providers')->where('name','intermediateMailDSL')->first('adresses')  as $adress) {{$adress}} @endforeach) @endif</p></td>
             </td>
-            <td rowspan="1" class="">
+            <td class="">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailProvidersModal">
               Verteiler
             </button>
