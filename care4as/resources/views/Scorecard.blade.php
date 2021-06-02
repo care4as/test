@@ -95,8 +95,8 @@
        </div>
        <div class="row m-0 mt-2 justify-content-center bg-white align-items-center">
          <div class="col p-2" id="chartcontainer">
-            <canvas id="RDChart" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>
-            <canvas id="AHTChart" width="" height=""style="height: 60vh; max-width: 90%; display:none;"></canvas>
+            <canvas id="Chart" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>
+            <!-- <canvas id="AHTChart" width="" height=""style="height: 60vh; max-width: 90%; display:none;"></canvas> -->
          </div>
        </div>
 
@@ -253,7 +253,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 @endsection
@@ -267,149 +266,28 @@
 <script type="text/javascript">
 
 function showReportDiv(tab) {
+
+  let type = ''
+
   $('#reportdiv').toggle()
   $('#reportname').html(tab)
   $('.backdrop').toggle()
+
+  if(tab == 'Sales')
+  {
+    type = 'sales'
+  }
+  else if(tab == 'AHT')
+  {
+    type = 'aht'
+  }
+  showChart(type, {!! json_encode($user->id) !!})
 }
 function closeReportDiv(){
   $('#reportdiv').toggle()
   $('.backdrop').toggle()
 }
 $( document ).ready(function() {
-
-$(function() {
-
-    var start = moment().subtract(29, 'days');
-    var end = moment();
-    var host = window.location.host;
-    var userid = {!! json_encode($user->id) !!};
-
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-
-        // console.log(start.format('YY-MM-DD') + '/' +end.format('YY-MM-DD') )
-        let params = new URLSearchParams();
-
-        params.append("start", start);
-        params.append("end" , end);
-        params.append("userid" , userid);
-
-        let chart = document.getElementById('RDChart');
-
-        if (typeof chart != 'undefined' || chart != null )
-        {
-          document.getElementById('RDChart').remove()
-          $('#chartcontainer').append('<canvas id="RDChart" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>')
-          // console.log('test')
-        }
-        // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-        axios.get('http://'+host+'/user/salesdataDates',
-        {
-          params: {
-            start: start.format('Y-MM-DD'),
-            end: end.format('Y-MM-DD'),
-            userid: userid
-          }
-          })
-        .then(response => {
-
-          let chartData = response.data
-          var ctx = document.getElementById('RDChart').getContext('2d')
-
-            const myChart = new Chart(ctx, {
-            type: 'bar',
-
-            data: {
-                datasets: [{
-                 type: 'line',
-                 label: 'CR',
-                 data: chartData[1],
-                 fill: false,
-                 backgroundColor: 'rgba(41, 241, 195, 1)',
-                 borderColor: 'rgba(41, 241, 195, 1)',
-                 borderWidth: 1
-             },
-             {
-                label: 'durschnittliche CR',
-                type: 'line',
-                label: 'CR durschn.',
-                data: chartData[2],
-                fill: false,
-                backgroundColor: 'rgba(255, 99, 132)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-          },
-             {
-                label: 'durschnittliche SSC-CR',
-                type: 'line',
-                label: 'SSC-CR durschn.',
-                data: chartData[3],
-                fill: false,
-                backgroundColor: 'rgba(0, 155, 119)',
-                borderColor: 'rgba(0, 155, 119, 1)',
-                borderWidth: 1
-          },
-             {
-                label: 'SSC-CR',
-                type: 'line',
-                label: 'SSC-CR',
-                data: chartData[4],
-                fill: false,
-                backgroundColor: 'rgba(136, 176, 75)',
-                borderColor: 'rgba(136, 176, 75, 1)',
-                borderWidth: 1
-          }
-        ],
-          labels:chartData[0],
-           },
-           options: {
-               scales: {
-                 yAxes: [{
-                   id: 'A',
-                   type:'linear',
-                   position: 'left',
-                   ticks: {
-                     beginAtZero: true,
-                     min: 0,
-                     max: 100,
-                 }
-               },
-               {
-                 id: 'B',
-                 type:'linear',
-                 position: 'right',
-                 ticks: {
-                   max: 10,
-                   min: 0,
-                 }
-               }]}
-             }});
-          })
-        .catch(function (err) {
-
-          console.log(err.response);
-          $('#failContent').html('Fehler: '+ err.response.data.message)
-          $('#failFile').html('Datei: '+ err.response.data.file)
-          $('#failLine').html('Line: '+ err.response.data.line)
-          $('#failModal').modal('show')
-          // $('#loaderDiv').css('display','none');
-        })
-    }
-
-    $('#reportrange').daterangepicker({
-        startDate: start,
-        endDate: end,
-        ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
-
-});
 
 function dropDownRD() {
   let element = document.getElementById("dropdwnRD");
