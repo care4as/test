@@ -309,7 +309,11 @@
             @endif
             <td data-order="{{$user->salesdata['RLZ24Qouta']}}">{{$user->salesdata['RLZ24Qouta']}}%</td>
             <td>50</td>
-            <td data-order="{{$user->salesdata['GeVo-Cr']}}"> {{$user->salesdata['GeVo-Cr']}}%</td>
+            @if($user->department == '1&1 Mobile Retention')
+              <td data-order="{{$user->salesdata['GeVo-Cr']}}" > {{$user->salesdata['GeVo-Cr']}}%</td>
+            @else
+              <td data-order="{{$user->salesdata['GeVo-Cr']}}" style= "font-size: 900; color: @if($user->salesdata['GeVo-Cr'] > 40) green @elseif ($user->salesdata['GeVo-Cr'] > 35) #ffc107 @else red @endif;"> {{$user->salesdata['GeVo-Cr']}}%</td>
+            @endif
             <td data-order="{{$user->salesdata['sscQuota']}}">{{$user->salesdata['sscQuota']}}%</td>
             <td data-order="{{$user->salesdata['bscQuota']}}">{{$user->salesdata['bscQuota']}}%</td>
             <td data-order="{{$user->salesdata['portalQuota']}}">{{$user->salesdata['portalQuota']}}%</td>
@@ -515,17 +519,16 @@
                     table.columns().visible( false );
                     table.columns().visible( true );
                     // table.draw()
-
                   break;
                 case 'teamleiterview':
-                  table.colReorder.reset();
+                  // table.colReorder.reset();
                   table.columns().visible( false );
 
-                  table.columns([0,1,2,3,4,31,32,7,18,19,22,23,28,33]).visible( true );
+                  table.columns([0,1,3,31,32,4,6,7,9,10,8,24,18,22,23,29,30,33]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-                  table.colReorder.order( [0,1,2,3,4,31,32,7,18,19,22,23,28,33]);
+                  table.colReorder.order([0,1,3,31,32,4,6,7,9,10,8,24,18,22,23,29,30,33]);
                   // table.colReorder.order( [0,1,3,4,31,32,5,7,9,10,8,17,18,23,24,25,27],true);
                   break;
                 case 'crview':

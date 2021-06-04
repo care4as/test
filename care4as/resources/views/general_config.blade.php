@@ -9,20 +9,12 @@
     opacity: 1;
   }
 th{
-<<<<<<< HEAD
-  width: 22%;
-  text-align: center;
-}
-td{
-  width: 22%;
-=======
 
   max-width: 250px;
   text-align: center;
 }
 td{
   max-width: 250px;
->>>>>>> 02fa34e093807e46c91f4110544e4c920ec5f4e8
   text-align: center;
   word-wrap: break-word;
 }
@@ -167,7 +159,6 @@ td{
               <tr>
                 @if($process->queue == 'intermediate')
                   <td>Zwischenstand laden</td>
-
                 @elseif($process->queue == 'MailMobile')
                   <td>Zwischenstandsmail Mobile versenden</td>
                 @elseif($process->queue == 'MailDSL')

@@ -395,6 +395,13 @@ class HomeController extends Controller
         //der Teil zum Stundenreport
 
         $workedHours = $user->hoursReport->sum('work_hours');
+
+        //the vacation hours
+        $vacationHours = $user->hoursReport->where('state_id',2)->sum('work_hours');
+        $pauseHours = $user->hoursReport->sum('pause_hours');
+        $paybreakHours = $user->hoursReport->sum('pause_hours');
+        $meetingHours = $user->hoursReport->sum('meeting_hours');
+
         $contracthours = $days * $user->dailyhours;
         $sickHours = $user->hoursReport->whereIn('state_id',array(1,7))->whereNotIn('work_date',$weekenddays)->sum('work_hours');
 
