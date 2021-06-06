@@ -96,8 +96,10 @@ function printPage()
 
           if(type== 'sales')
           {
-            // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-           axios.get('http://'+host+'/user/salesdataDates',
+            $('#loaderDiv').css('display','block')
+            console.log($('#loaderDiv'));
+            axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
+           // axios.get('http://'+host+'/user/salesdataDates',
            {
              params: {
                start: start.format('Y-MM-DD'),
@@ -106,7 +108,10 @@ function printPage()
              }
              })
            .then(response => {
+
+             console.log(response)
              let chartData = response.data
+
              var ctx = document.getElementById('Chart').getContext('2d')
                const myChart = new Chart(ctx, {
                type: 'bar',
@@ -175,8 +180,10 @@ function printPage()
                     }
                   }]}
                 }});
+                $('#loaderDiv').css('display','none')
              })
            .catch(function (err) {
+             $('#loaderDiv').css('display','none')
              console.log(err.response);
              $('#failContent').html('Fehler: '+ err.response.data.message)
              $('#failFile').html('Datei: '+ err.response.data.file)
@@ -185,10 +192,12 @@ function printPage()
              // $('#loaderDiv').css('display','none');
            })
           }
+
           else if(type== 'aht')
           {
-            // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-           axios.get('http://'+host+'/user/salesdataDates',
+           $('#loaderDiv').css('display','block')
+           // axios.get('http://'+host+'/test',
+           axios.get('http://'+host+'/care4as/care4as/public/test',
            {
              params: {
                start: start.format('Y-MM-DD'),
@@ -198,55 +207,81 @@ function printPage()
              })
 
            .then(response => {
-             let data = response.data
-
+             let chartData = response.data
+             console.log(chartData[3])
              var ctx = document.getElementById('Chart').getContext('2d')
-
-             var myChart = new Chart(ctx, {
-              type: 'bar',
-              data: {
-                  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                  datasets: [{
-                      label: '# of Votes',
-                      data: [12, 19, 3, 5, 2, 3],
-                      backgroundColor: [
-                          'rgba(255, 99, 132, 0.2)',
-                          'rgba(54, 162, 235, 0.2)',
-                          'rgba(255, 206, 86, 0.2)',
-                          'rgba(75, 192, 192, 0.2)',
-                          'rgba(153, 102, 255, 0.2)',
-                          'rgba(255, 159, 64, 0.2)'
-                      ],
-                      borderColor: [
-                          'rgba(255, 99, 132, 1)',
-                          'rgba(54, 162, 235, 1)',
-                          'rgba(255, 206, 86, 1)',
-                          'rgba(75, 192, 192, 1)',
-                          'rgba(153, 102, 255, 1)',
-                          'rgba(255, 159, 64, 1)'
-                      ],
+               const myChart = new Chart(ctx, {
+                 type: 'bar',
+                 data: {
+                     datasets: [{
+                      type: 'line',
+                      label: 'AHT',
+                      data: chartData[1],
+                      fill: false,
+                      backgroundColor: 'rgba(41, 241, 195, 1)',
+                      borderColor: 'rgba(41, 241, 195, 1)',
                       borderWidth: 1
-                  }]
-              },
-              options: {
-                  scales: {
-                      y: {
-                          beginAtZero: true
-                      }
+                  },
+                  {
+                    type: 'line',
+                    label: 'on Hold',
+                    data: chartData[2],
+                     yAxisID: 'B',
+                    fill: false,
+                    backgroundColor: 'rgba(255, 10, 10, 1)',
+                    borderColor: 'rgba(255, 10, 10, 1)',
+                    borderWidth: 1
+                  },
+                  {
+                    type: 'line',
+                    label: 'Occupied',
+                    data: chartData[3],
+                    yAxisID: 'B',
+                    fill: false,
+                    backgroundColor: 'rgba(10, 255, 10, 1)',
+                    borderColor: 'rgba(10, 255, 10, 1)',
+                    borderWidth: 1
                   }
-              }
-          });
+                ],
+                   labels:chartData[0],
+                  },
+                  options: {
+                      scales: {
+                        yAxes: [{
+                          id: 'A',
+                          type:'linear',
+                          position: 'left',
+                          ticks: {
+                            beginAtZero: true,
+                            suggestedMin: 300,
+                            suggestedMin: 1200,
+                            stepSize: 200,
+                        }
+                      },
+                      {
+                        id: 'B',
+                        type:'linear',
+                        position: 'right',
+                        ticks: {
+                          suggestedMin: 120,
+                          suggestedMin: 0,
+                          stepSize: 20,
+                        }
+                      }]}
+                    }});
+                    $('#loaderDiv').css('display','none')
+               })
+             .catch(function (err) {
 
-           })
-           .catch(function (err) {
-             console.log(err.response);
-             $('#failContent').html('Fehler: '+ err.response.data.message)
-             $('#failFile').html('Datei: '+ err.response.data.file)
-             $('#failLine').html('Line: '+ err.response.data.line)
-             $('#failModal').modal('show')
-             // $('#loaderDiv').css('display','none');
-           })
-            console.log('test')
+               console.log(err);
+               $('#failContent').html('Fehler: '+ err.response.data.message)
+               $('#failFile').html('Datei: '+ err.response.data.file)
+               $('#failLine').html('Line: '+ err.response.data.line)
+               $('#failModal').modal('show')
+               $('#loaderDiv').css('display','none');
+             })
+
+            console.log()
           }
         }
 

@@ -340,6 +340,102 @@ class UserController extends Controller
       }
       return response()->json(array($timestamparray,$performanceArray,$avgCRArray,$averageSSCCArray,$sscArray));
     }
+    public function getTimesData($value='')
+    {
+
+      $userid = request('userid');
+      // $userid = 7;
+      $productiveStates = array('Wrap Up','Ringing', 'In Call','On Hold','Available','Released (05_occupied)','Released (06_practice)','Released (09_outbound)');
+      $performanceArray = array();
+      $datesarray = array();
+      $ahtarray = array();
+      $onholdArray = array();
+      $occuArray = array();
+
+      if (request('start')) {
+          $start_date = Carbon::createFromFormat('Y-m-d', request('start'))->format('Y-m-d');
+      }
+      else {
+        $start_date = '2021-05-01';
+      }
+      if (request('end')) {
+
+        $end_date = Carbon::createFromFormat('Y-m-d', request('end'));
+      }
+      else {
+        $end_date = '2021-05-31';
+      }
+      $days = $this->getDays($start_date,$end_date);
+      $user = User::where('id',$userid)
+      ->where('role','agent')
+      ->with(['dailyAgent' => function($q) use ($start_date,$end_date){
+        // $q->select(['id','person_id','calls','call_date']);
+        if($start_date !== 1)
+        {
+          $q->where('date','>=', $start_date);
+            // return response()->json($start_date);
+        }
+        if($end_date !== 1)
+        {
+          $q->where('date','<=',$end_date);
+        }
+      }])
+      ->first();
+      // dd($user);
+      foreach($days as $day)
+      {
+        $endofday = $day->copy()->setTime(23,59,59);
+        $daysarray[$day->format('d.m')] = $user->dailyAgent
+        ->where('date','>=',$day)
+        ->where('date','<=',$endofday);
+      }
+      foreach($daysarray as $key => $data)
+      {
+        if(!$data->first())
+        {
+          unset($daysarray[$key]);
+        }
+        else {
+          $dayperformance = $data;
+          // dd($dayperformance);
+          $datesarray[] = $key;
+          $productive = $dayperformance->whereIn('status',$productiveStates)->sum('time_in_state');
+          $calls = $dayperformance->where('status','Ringing')->count();
+          $onhold = $dayperformance->where('status','On Hold')->sum('time_in_state');
+          $occu = $dayperformance->where('status','Released (05_occupied)')->sum('time_in_state');
+
+          if($calls != 0)
+          {
+            $aht = round(($productive)/$calls,0);
+            $onhold = round($onhold/60,0);
+            $occu = round($occu/60,0);
+          }
+          else {
+            $aht = 0;
+          }
+          // dd($productive, $key);
+
+          $ahtarray[] = $aht;
+          $onholdArray[] = $onhold;
+          $occuArray[] = $occu;
+        }
+      }
+      $chartdata = array($datesarray, $ahtarray, $onholdArray,$occuArray);
+
+      if(!$chartdata[0])
+      {
+        return abort(403,'keine Daten im Zeitraum');
+      }
+      // dd($datesarray, $performanceArray);
+      return response()->json($chartdata);
+    }
+    public function getDays($start, $end)
+    {
+      $period = \Carbon\CarbonPeriod::create($start, $end);
+      // Convert the period to an array of dates
+      $dates = $period->toArray();
+      return $dates;
+    }
 
     public function AgentAnalytica($id='', Request $request=null)
     {

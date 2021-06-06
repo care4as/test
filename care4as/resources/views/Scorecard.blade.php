@@ -26,7 +26,7 @@
   }
   .backdrop
   {
-    display: none;
+   display: none;
    position: fixed;
    top: 0;
    left: 0;
@@ -35,12 +35,11 @@
    background-color: black;
    background-size: cover;
    z-index: 20;
-    animation-name: fadeIn;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in-out;
-    animation-duration: 1s;
-    animation-fill-mode:forwards;
-
+   animation-name: fadeIn;
+   animation-iteration-count: 1;
+   animation-timing-function: ease-in-out;
+   animation-duration: 1s;
+   animation-fill-mode:forwards;
   }
   @keyframes fadeIn {
     0% {
@@ -83,6 +82,7 @@
     </div>
   <div class="tab-content" id="myTabContent">
      <div class="tab-pane fade show active" id="days" role="tabpanel" aria-labelledby="home-tab">
+
        <div class="row bg-white m-0 mt-2">
          <h5 class="text-center w-100"><u>Report Tagesbasis <span id="reportname"></span></u>  </h5>
        </div>
@@ -94,9 +94,11 @@
          </div>
        </div>
        <div class="row m-0 mt-2 justify-content-center bg-white align-items-center">
-         <div class="col p-2" id="chartcontainer">
-            <canvas id="Chart" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>
-            <!-- <canvas id="AHTChart" width="" height=""style="height: 60vh; max-width: 90%; display:none;"></canvas> -->
+         <div class="col p-2" id="chartcontainer" style="position:relative;height: 70vh; width: 75vw;">
+            <canvas id="Chart" width="" height=""style="position: absolute; height: 85%; max-width: 90%;"></canvas>
+            <div class="loaderDiv p-2" id="loaderDiv" style="height: 90%; width: 95%;">
+              <div class="lds-spinner" style="top:50%; left: 50%; transform: translate(-50%,-50%);"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            </div>
          </div>
        </div>
 
@@ -241,14 +243,10 @@
       <div class="row justify-content-center">
 
         <button type="button" class="btn btn-primary rounded-circle" name="button" id="dropdwnbtnRD" onclick="showReportDiv('Sales')">
-          <i class="material-icons">
-          sentiment_dissatisfied
-          </i>
+          <i class="fas fa-euro-sign"></i>
         </button>
         <button type="button" class="btn btn-primary rounded-circle" name="button" id="dropdwnbtnRD" onclick="showReportDiv('AHT')">
-          <i class="material-icons">
-          schedule
-          </i>
+        <i class="far fa-clock"></i>
         </button>
       </div>
     </div>

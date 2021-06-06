@@ -297,25 +297,4 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 
 
-Route::get('/test', function(){
-
-  $users = App\User::with('gevo','offlineTracking')->get();
-  $offlinetracks= collect();
-
-  foreach ($users as $user) {
-
-    $user->gevo->upgrades = $user->gevo->where('change_cluster','Upgrade')->count();
-    $user->gevo->sidegrades = $user->gevo->where('change_cluster','Sidegrade')->count();
-    $user->gevo->downgrades = $user->gevo->where('change_cluster','Downgrade')->count();
-
-    if($user->offlineTracking->first())
-    {
-      foreach ($user->offlineTracking as $tracking) {
-        $offlinetracks->add($tracking);
-      }
-    }
-  }
-  // dd($users[1]->gevo);
-  return view('test',compact('users','offlinetracks'));
-
-})->name('test');
+Route::get('/test', 'UserController@getTimesData')->name('test');
