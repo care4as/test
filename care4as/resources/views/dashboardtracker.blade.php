@@ -1,6 +1,8 @@
-﻿@extends('general_layout')
+@extends('general_layout')
 
 @section('additional_css')
+<link rel="stylesheet" type="text/css" href="{{asset('slick/slick/slick.css')}}"/>
+
 <style>
     .header{
         position:sticky;
@@ -65,7 +67,6 @@
                   <div class="col-4 p-0 mr-2">
                     <label for="department">Welche MA:</label>
                     <select multiple class="form-control" name="employees[]" id="employees" style="height: 150px; overflow:scroll;">
-
                     </select>
                   </div>
                 </div>
@@ -79,13 +80,57 @@
     </form>
   </div>
 
-  <div class="row bg-care4as-light p-2 justify-content-center  w-100">
-      @foreach($users as $user)
-      <div class="col-designed m-3 p-1 border bg-white rounded shadow">
-        <h5>{{$user->wholeName()}}</h5>
-      <trackchart :userid="{{$user->id}}"> </trackchart>
+  <div class="row bg-care4as p-2 justify-content-center w-100" style="font-size: 1.5em; font-weight: 700;">
+    <div class="w-100" id="accordion2">
+      <div class="col-12" >
+        <h5>
+          <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
+          <span style="">Teamübersicht</span>
+          <span class="material-icons">
+            expand_more
+            </span>
+        </a></h5>
       </div>
-  @endforeach
+      <div id="collapseTeamDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion2">
+      <div class="col-12">
+        <div class="row">
+          <p>Verlauf der letzten 5 Tage</p>
+        </div>
+        <div class="row justify-content-center repeater" >
+          @for($i = 0; $i<=4; $i++)
+            <div class="col-designed-carousel m-2 bg-light" style="height: 500px;">
+              test
+            </div>
+          @endfor
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  <div class="row bg-care4as-light p-2 justify-content-center w-100">
+    <div class="w-100" id="accordion1">
+      <div class="col-12">
+        <h5><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
+          Userdashboard
+          <span class="material-icons">
+            expand_more
+            </span>
+        </a></h5>
+      </div>
+      <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
+      <div class="col-12">
+        <div class="row">
+          @foreach($users as $user)
+            <div class="col-designed m-3 p-1 border bg-white rounded shadow">
+              <h5>{{$user->wholeName()}}</h5>
+              <!-- <trackchart :userid="{{$user->id}}"> </trackchart> -->
+            </div>
+          @endforeach
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -103,18 +148,20 @@
 @endsection
 
 @section('additional_js')
+<script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
-  $('#department').change(function() {
+$(document).ready(function(){
+  $('.repeater').slick({
 
+  });
+});
+
+  $('#department').change(function() {
     $('#employees').empty()
     let dep = this.value
-
     // console.log(dep)
-
     var host = window.location.host;
-
     // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
-
     axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
     // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
     .then(response => {

@@ -439,7 +439,6 @@ class UserController extends Controller
 
     public function AgentAnalytica($id='', Request $request=null)
     {
-
       // sum of all orders during the timespan
       $sumorders = 0;
       // sum of all calls during the timespan
@@ -493,7 +492,6 @@ class UserController extends Controller
       $holidays = [
           //new years day
           Carbon::createFromDate($year, 1, 1)->toDateString(),
-
           $eastersunday = Carbon::createFromDate($year,3,21)->addDays(easter_days($year))->toDateString(),
           $easterfriday = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)-2)->toDateString(),
           $ascchrist = Carbon::createFromDate($year,3,21)->addDays(easter_days($year)+39)->toDateString(),
@@ -505,7 +503,6 @@ class UserController extends Controller
           Carbon::create($year, 12, 25)->toDateString(),
           //zweiter Weihnachstag
           Carbon::create($year, 12, 26)->toDateString(),
-
           //Tag der deutschen Einheit
           Carbon::create($year, 10, 3)->toDateString(),
       ];
@@ -513,31 +510,23 @@ class UserController extends Controller
       // dd($begin);
 
       $days = $begin->diffInDaysFiltered(function (Carbon $date) use($holidays){
-
         return $date->isWeekday() && !in_array($date->toDateString(),$holidays);
-
       }, $end);
 
       $dayscount = $begin->diffInDays($end);
-
       $weekenddays = array();
-
       for ($i=1; $i <= $dayscount; $i++) {
-
         $day = $begin->copy()->addDays($i);
-
         if($day->isWeekend())
         {
           $weekenddays[] = $day->format('Y-m-d');
         }
       }
-
       $user = User::where('id',$id)
       ->with(['dailyagent' => function($q) use ($start_date,$end_date){
         $q->select(['id','agent_id','status','time_in_state','date']);
         if($start_date !== 1)
         {
-
           $datemod = Carbon::parse($start_date)->setTime(2,0,0);
           $q->where('date','>=',$datemod);
         }
