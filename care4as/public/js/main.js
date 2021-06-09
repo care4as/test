@@ -97,9 +97,10 @@ function printPage()
           if(type== 'sales')
           {
             $('#loaderDiv').css('display','block')
-            console.log($('#loaderDiv'));
-            axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-           // axios.get('http://'+host+'/user/salesdataDates',
+
+            // console.log($('#loaderDiv'));
+            // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
+           axios.get('http://'+host+'/user/salesdataDates',
            {
              params: {
                start: start.format('Y-MM-DD'),
@@ -108,10 +109,8 @@ function printPage()
              }
              })
            .then(response => {
-
-             console.log(response)
+             // console.log(response)
              let chartData = response.data
-
              var ctx = document.getElementById('Chart').getContext('2d')
                const myChart = new Chart(ctx, {
                type: 'bar',
@@ -183,6 +182,7 @@ function printPage()
                 $('#loaderDiv').css('display','none')
              })
            .catch(function (err) {
+
              $('#loaderDiv').css('display','none')
              console.log(err.response);
              $('#failContent').html('Fehler: '+ err.response.data.message)
@@ -192,12 +192,12 @@ function printPage()
              // $('#loaderDiv').css('display','none');
            })
           }
-
           else if(type== 'aht')
           {
            $('#loaderDiv').css('display','block')
-           // axios.get('http://'+host+'/test',
-           axios.get('http://'+host+'/care4as/care4as/public/test',
+
+           axios.get('http://'+host+'/test',
+           // axios.get('http://'+host+'/care4as/care4as/public/test',
            {
              params: {
                start: start.format('Y-MM-DD'),
@@ -205,7 +205,6 @@ function printPage()
                userid: userid
              }
              })
-
            .then(response => {
              let chartData = response.data
              console.log(chartData[3])
@@ -272,7 +271,8 @@ function printPage()
                     $('#loaderDiv').css('display','none')
                })
              .catch(function (err) {
-
+               
+               $('#loaderDiv').css('display','none')
                console.log(err);
                $('#failContent').html('Fehler: '+ err.response.data.message)
                $('#failFile').html('Datei: '+ err.response.data.file)
@@ -280,8 +280,6 @@ function printPage()
                $('#failModal').modal('show')
                $('#loaderDiv').css('display','none');
              })
-
-            console.log()
           }
         }
 
