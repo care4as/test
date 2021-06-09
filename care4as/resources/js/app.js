@@ -23,6 +23,7 @@ window.Dropzone = require('dropzone');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('simulator', require('./components/TrainingsSimulator.vue').default);
 Vue.component('trackchart', require('./components/Tracker.vue').default);
+Vue.component('ptable', require('./components/performanceTable.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

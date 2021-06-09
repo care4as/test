@@ -7,8 +7,6 @@
             *{
                 font-family: Calibri, sans-serif;
             }
-
-
         </style>
     </head>
     <body>

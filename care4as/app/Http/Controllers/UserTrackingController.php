@@ -57,6 +57,68 @@ class UserTrackingController extends Controller
 
       return redirect()->route('dashboard');
     }
+    public function getCurrentTracking()
+    {
+      $mobileSalesSata = DB::connection('mysqlkdwtracking')
+      ->table('1und1_mr_tracking_inb_new_ebk')
+      // ->whereIn('MA_id', $userids)
+      ->whereDate('date', '=', Carbon::today())
+      ->get();
+
+      $trackingidsMobile = $mobileSalesSata->pluck('agent_ds_id')->toArray();
+
+      $users = User::whereIn('tracking_id',$trackingidsMobile)
+      ->where('role','Agent')
+      ->get();
+
+      foreach($users as $user)
+      {
+        $user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->tracking_id)->first();
+        $user->ssc_calls = $user->salesdata->calls_ssc;
+        $user->ssc_orders = $user->salesdata->ret_ssc_contract_save;
+        $user->calls = $user->salesdata->calls;
+        $user->bsc_calls = $user->salesdata->calls_bsc;
+        $user->bsc_orders = $user->salesdata->ret_bsc_contract_save;
+        $user->portal_calls = $user->salesdata->calls_portal;
+        $user->portal_orders = $user->salesdata->ret_portal_save;
+
+        if($user->ssc_calls != 0)
+        {
+          $user->ssc_quota = round(($user->ssc_orders*100/$user->ssc_calls),2);
+        }
+        else {
+          $user->ssc_quota = 0;
+        }
+        // dd($user);
+      }
+      $data[] = $users;
+
+      $allSSCCalls = $users->sum('ssc_calls');
+      $allSSCOrders = $users->sum('ssc_orders');
+      $allBSCCalls = $users->sum('bsc_calls');
+      $allBSCOrders = $users->sum('bsc_orders');
+      $allPortalCalls = $users->sum('portal_calls');
+      $allPortalOrders = $users->sum('portal_orders');
+      $allOrders = $allSSCOrders + $allBSCOrders + $allPortalOrders ;
+      $allCalls = $users->sum('calls');
+
+      $data[] = array(
+        'ssc_calls'=>$allSSCCalls,
+        'ssc_saves'=>$allSSCOrders,
+        'bsc_calls'=>$allBSCCalls,
+        'bsc_saves'=>$allBSCOrders,
+        'portal_calls'=>$allPortalCalls,
+        'portal_saves'=>$allPortalOrders,
+        'calls'=>$allCalls,
+        'orders'=>$allOrders,
+      );
+      // $sorted = $users->sortByDesc('ssc_quota');
+      // $sorted->values()->all();
+
+      // dd($sorted);
+      return response()->json($data);
+
+    }
     public function getTracking($id='')
     {
       $timestamparray = array();
@@ -295,5 +357,5 @@ class UserTrackingController extends Controller
       // dd(  $user->dailyAgent);
       return view('userDailyAgentSingle', compact('user'));
     }
-  
+
 }
