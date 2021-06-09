@@ -12,9 +12,25 @@ body
     .table-striped>tbody>tr:nth-child(even) {
         background-color: #ddf8e8;
     }
+
+    .readabilitysuperior
+    {
+      font-size: 1.3em;
+      font-weight: 700;
+    }
     .col-designed-carousel
     {
       height: 300px;
+    }
+    .bg-care4as2
+    {
+      height: 100%;
+      background-image: url("../images/background2.svg");
+      background-size:100% 100%;
+      -o-background-size: 100% 100%;
+      -webkit-background-size: 100% 100%;
+      background-size:cover;
+      opacity: 0.8;
     }
     .bg-care4as
     {

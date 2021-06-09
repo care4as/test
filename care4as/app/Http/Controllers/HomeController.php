@@ -35,6 +35,9 @@ class HomeController extends Controller
     }
     public function dashboardAdmin()
     {
+      $teamquotas = array();
+      $trend = '';
+
       if(request('employees'))
       {
         // dd(request('employees'));
@@ -52,13 +55,67 @@ class HomeController extends Controller
         ->whereDate('date', Carbon::today())
         ->pluck('person_id')
         ->toArray();
-
-      $users = User::whereIn('person_id', $userids)->get();
       }
 
+      $users = User::whereIn('person_id', $userids)->get();
 
-      // dd($users);
-      return view('dashboardtracker',compact('users'));
+      $teamids = DB::table('users')
+      ->where('department', '1&1 Mobile Retention')
+      ->pluck('person_id')
+      ->toArray();
+
+      for($i = 1; $i<=5; $i++)
+      {
+        $day = Carbon::today()->subdays($i);
+        $intermediates[$day->format('d.m.Y')] = \App\Intermediate::whereDate('date',$day)->whereIn('person_id',$teamids)->get();
+      }
+
+      foreach($intermediates as $key => $data)
+      {
+        // dd($intermediates);
+
+        $time = new Carbon($key);
+        $time->setTime(8,30,0);
+
+        for($i = 1; $i <= 28; $i++)
+        {
+          $times[$key][] = $time->copy()->addMinutes(($i-1) * 30);
+        }
+        foreach($times[$key] as $timestamp)
+        {
+          $spectrumend = $timestamp->copy()->addMinutes(5)->format('Y-m-d H:i:s');
+          $spectrumstart = $timestamp->copy()->subMinutes(5)->format('Y-m-d H:i:s');
+
+          // return $spectrumstart;
+          $ivdata = $data->where('date','>', $spectrumstart)->where('date','<',$spectrumend);
+
+          $orders = $ivdata->sum('Orders');
+          $calls = $ivdata->sum('Calls');
+
+          if($ivdata)
+          {
+              // dd($ivdata);
+            if ($calls != 0) {
+              $quotas[$timestamp->format('Y-m-d')][$timestamp->format('H:i')]['cr'] = round($orders/$calls,2);
+              $quotas[$timestamp->format('Y-m-d')][$timestamp->format('H:i')]['calls'] = $calls;
+              $quotas[$timestamp->format('Y-m-d')][$timestamp->format('H:i')]['orders'] = $orders;
+            }
+            else {
+              // dd($ivdata);
+                $quotas[$timestamp->format('Y-m-d')][$timestamp->format('H:i')]['cr'] = 0;
+                $quotas[$timestamp->format('Y-m-d')][$timestamp->format('H:i')]['calls'] = 0;
+                $quotas[$timestamp->format('Y-m-d')][$timestamp->format('H:i')]['orders'] = 0;
+            }
+
+            // $quotas[$timestamp->format('Y-m-d H:i:s')] = $calls;
+          }
+          else {
+            $quotas[$timestamp->format('Y-m-d')][$timestamp->format('H:i:s')]['cr'] = 0;
+          }
+        }
+      }
+      // dd($quotas);
+      return view('dashboardtracker',compact('users', 'times','quotas'));
     }
 
     public function presentation(Request $request)

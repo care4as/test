@@ -22,18 +22,18 @@ export default {
       timer: '',
     }
   },
-    mounted() {
+  mounted() {
 
-        var self = this;
-        console.log('Tracker Component mounted.')
+      var self = this;
+      console.log('Tracker Component mounted.')
 
-        this.getUserData(this.userid)
+      this.getUserData(this.userid)
 
-        setInterval(function()
-        {
-          self.getUserData(self.userid)
-        }, 600000);
-    },
+      setInterval(function()
+      {
+        self.getUserData(self.userid)
+      }, 600000);
+  },
   methods:{
     createChart(chartId, chartData) {
 

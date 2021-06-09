@@ -18,10 +18,10 @@
           >
 
           @if($data['isMobile'])
-            <p style="text-align:center;"><b>Mobile SSC-CR: {{$data['ssccr']}}% | @if($data['bsccr']) BSC-CR: {{$data['bsccr']}}% @else Fehler BSC CR @endif| Portal-CR: @if($data['portalcr']) {{$data['portalcr']}}% @else Fehler Portal-CR @endif</b></p>
+            <p style="text-align:left;"><b>Mobile SSC-CR: {{$data['ssccr']}}% | @if($data['bsccr']) BSC-CR: {{$data['bsccr']}}% @else Fehler BSC CR @endif| Portal-CR: @if($data['portalcr']) {{$data['portalcr']}}% @else Fehler Portal-CR @endif</b></p>
           @else
 
-          <p style="text-align:center;"><b>DSL-CR: {{$data['dslcr']}}%</b></p>
+          <p style="text-align:left;"><b>DSL-CR: {{$data['dslcr']}}%</b></p>
         @endif
         </div>
         <div class="">
@@ -42,7 +42,7 @@
                 <th>+-</th>
               </tr>
               @for($i = 0; $i < count($data['mobile']); $i++)
-              <tr style="background-color: @if($i % 2 == 0) #ddf8e8 @else #fefdfa @endif; ">
+              <tr style="background-color: @if($i % 2 == 0) #D3D3D3 @else #fefdfa @endif; ">
                 <td>{{$data['mobile'][$i]['name']}}</td>
                 <td>{{$data['mobile'][$i]['SSC-CR']}}%</td>
                 <td style="@if($data['mobile'][$i]['SSC-CR_diff'] > 0)color: grey; font-weight: 900;@elseif($data['mobile'][$i]['SSC-CR_diff'] < 0)color: red;font-weight: 900; @endif">{{$data['mobile'][$i]['SSC-CR_diff']}}</td>
