@@ -2563,6 +2563,48 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2651,7 +2693,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
+    return _defineProperty({
       users: [1, 2, 3],
       timer: '',
       currentSort: 'ssc_quota',
@@ -2664,15 +2706,16 @@ __webpack_require__.r(__webpack_exports__);
       portalSaves: 0,
       sscSaves: 0,
       calls: 0,
-      saves: 0
-    };
+      saves: 0,
+      department: 'Mobile'
+    }, "timer", null);
   },
   mounted: function mounted() {
     var self = this;
     console.log('ptable Component mounted.');
-    this.getUserData();
-    setInterval(function () {
-      self.getUserData();
+    self.getUserData('Mobile');
+    this.timer = setInterval(function () {
+      self.getUserData('Mobile');
     }, 60000);
   },
   computed: {
@@ -2726,26 +2769,35 @@ __webpack_require__.r(__webpack_exports__);
 
       this.currentSort = s;
     },
-    getUserData: function getUserData() {
+    getUserData: function getUserData(dep) {
       var _this2 = this;
 
       var host = window.location.host;
+      var department = dep;
       var currentdate = new Date();
       var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds(); // axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
 
-      axios.get('http://' + host + '/users/getTracking').then(function (response) {
+      axios.get('http://' + host + '/users/getTracking' + department).then(function (response) {
         if (response.data) {
+          console.log(response.data);
           var currentdate = new Date();
           console.log('update: ' + timestamp);
-          _this2.users = response.data[0];
-          _this2.sscCalls = response.data[1]['ssc_calls'];
-          _this2.sscSaves = response.data[1]['ssc_saves'];
-          _this2.bscSaves = response.data[1]['bsc_saves'];
-          _this2.bscCalls = response.data[1]['bsc_calls'];
-          _this2.portalCalls = response.data[1]['portal_calls'];
-          _this2.portalSaves = response.data[1]['portal_saves'];
-          _this2.calls = response.data[1]['calls'];
-          _this2.saves = response.data[1]['orders'];
+
+          if (_this2.department == 'Mobile') {
+            _this2.users = response.data[0];
+            _this2.sscCalls = response.data[1]['ssc_calls'];
+            _this2.sscSaves = response.data[1]['ssc_saves'];
+            _this2.bscSaves = response.data[1]['bsc_saves'];
+            _this2.bscCalls = response.data[1]['bsc_calls'];
+            _this2.portalCalls = response.data[1]['portal_calls'];
+            _this2.portalSaves = response.data[1]['portal_saves'];
+            _this2.calls = response.data[1]['calls'];
+            _this2.saves = response.data[1]['orders'];
+          } else {
+            _this2.users = response.data[0];
+            _this2.calls = response.data[1]['calls'];
+            _this2.saves = response.data[1]['orders'];
+          }
         } else {
           console.log('No Data avaiable');
         }
@@ -2753,6 +2805,14 @@ __webpack_require__.r(__webpack_exports__);
         console.log('error');
         console.log(err);
       });
+    },
+    changeDepartment: function changeDepartment(dep) {
+      this.department = dep;
+      this.getUserData(dep);
+      clearInterval(this.timer);
+      this.timer = setInterval(function () {
+        this.getUserData(dep);
+      }.bind(this), 60000);
     }
   }
 });
@@ -23381,7 +23441,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.table-striped>tbody>tr:nth-child(even) {\r\n    background-color: #ddf8e8;\n}\r\n", ""]);
+exports.push([module.i, "\n.table-striped>tbody>tr:nth-child(even) {\r\n    background-color: #ddf8e8;\n}\n.department{\r\n  cursor: pointer;\n}\n.department:hover{\r\n  opacity: 0.5;\n}\n.table1\r\n{\r\n  background-color: rgba(255,255,255,0.5);\r\n  border-radius: 15px;\r\n  font-size: 0.6em;\n}\r\n", ""]);
 
 // exports
 
@@ -81296,159 +81356,306 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid bg-light" }, [
-    _c("div", { staticClass: "bg-care4as2 p-0 readabilitysuperior" }, [
-      _vm._m(0),
+    _c("div", { staticClass: "p-0 readabilitysuperior" }, [
+      _c("div", { staticClass: "row " }, [
+        _c("div", { staticClass: "col" }, [
+          _c("h4", { staticClass: "text-center text-black" }, [
+            _c("u", [
+              _vm._v("Aktuelle Trackingdaten " + _vm._s(_vm.department))
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row justify-content-center m-1" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "col-4 mr-3 d-flex justify-content-center department align-items-center",
+            staticStyle: { "background-color": "rgba(0,0,0,0.2)" },
+            on: {
+              click: function($event) {
+                return _vm.changeDepartment("Mobile")
+              }
+            }
+          },
+          [
+            _c(
+              "p",
+              {
+                staticClass: "m-0",
+                style: [
+                  _vm.department == "Mobile"
+                    ? { color: "white" }
+                    : { color: "black" }
+                ]
+              },
+              [_vm._v("Mobile")]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "col-4 ml-3 d-flex justify-content-center department align-items-center",
+            staticStyle: { "background-color": "rgba(0,0,0,0.2)" },
+            on: {
+              click: function($event) {
+                return _vm.changeDepartment("DSL")
+              }
+            }
+          },
+          [
+            _c(
+              "p",
+              {
+                staticClass: "m-0",
+                style: [
+                  _vm.department == "DSL"
+                    ? { color: "white" }
+                    : { color: "black" }
+                ]
+              },
+              [_vm._v("DSL")]
+            )
+          ]
+        )
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-6 p-1" }, [
-          _vm._m(1),
+          _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "table-responsive" }, [
-            _c(
-              "table",
-              {
-                staticClass: "table table-hover table-striped table-bordered",
-                staticStyle: { "font-size": "0.6em" },
-                attrs: { id: "ptable" }
-              },
-              [
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticStyle: { cursor: "pointer" },
-                      on: {
-                        click: function($event) {
-                          return _vm.sorted("name")
-                        }
-                      }
-                    },
-                    [_vm._v("User ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "th",
-                    {
-                      staticStyle: { cursor: "pointer" },
-                      on: {
-                        click: function($event) {
-                          return _vm.sorted("ssc_quota")
-                        }
-                      }
-                    },
-                    [_vm._v("SSC-CR")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "th",
-                    {
-                      staticStyle: { cursor: "pointer" },
-                      on: {
-                        click: function($event) {
-                          return _vm.sorted("ssc_calls")
-                        }
-                      }
-                    },
-                    [_vm._v("Calls")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "th",
-                    {
-                      staticStyle: { cursor: "pointer" },
-                      on: {
-                        click: function($event) {
-                          return _vm.sorted("ssc_orders")
-                        }
-                      }
-                    },
-                    [_vm._v("Saves")]
-                  )
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.sortedUsers, function(user) {
-                  return _c("tr", [
-                    _c("td", [
-                      _vm._v(_vm._s(user.surname) + " " + _vm._s(user.lastname))
+            this.department == "Mobile"
+              ? _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-hover table-striped table-bordered table1",
+                    attrs: { id: "ptable" }
+                  },
+                  [
+                    _c("tr", [
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("name")
+                            }
+                          }
+                        },
+                        [_vm._v("User ")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("ssc_quota")
+                            }
+                          }
+                        },
+                        [_vm._v("SSC-CR")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("ssc_calls")
+                            }
+                          }
+                        },
+                        [_vm._v("Calls")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("ssc_orders")
+                            }
+                          }
+                        },
+                        [_vm._v("Saves")]
+                      )
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(user.ssc_quota) + "%")]),
+                    _vm._l(_vm.sortedUsers, function(user) {
+                      return _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(user.surname) + " " + _vm._s(user.lastname)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(user.ssc_quota) + "%")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(user.ssc_calls))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(user.ssc_orders))])
+                      ])
+                    })
+                  ],
+                  2
+                )
+              : _c(
+                  "table",
+                  { staticClass: "table table-striped table1" },
+                  [
+                    _c("tr", [
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("name")
+                            }
+                          }
+                        },
+                        [_vm._v("User ")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("dslqouta")
+                            }
+                          }
+                        },
+                        [_vm._v("CR")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("calls")
+                            }
+                          }
+                        },
+                        [_vm._v("Calls")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("orders")
+                            }
+                          }
+                        },
+                        [_vm._v("Saves")]
+                      )
+                    ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(user.ssc_calls))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(user.ssc_orders))])
-                  ])
-                })
-              ],
-              2
-            )
+                    _vm._l(_vm.sortedUsers, function(user) {
+                      return _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(user.surname) + " " + _vm._s(user.lastname)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(user.dslqouta) + "%")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(user.calls))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(user.orders))])
+                      ])
+                    })
+                  ],
+                  2
+                )
           ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-6 p-1" }, [
-          _vm._m(2),
+          _vm._m(1),
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
-            _c("table", { staticClass: "table table-striped" }, [
-              _vm._m(3),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v(_vm._s(_vm.GeVoCr) + "%")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.calls))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.saves))])
-              ]),
-              _vm._v(" "),
-              _vm._m(4),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v(_vm._s(_vm.sscCR) + "%")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.sscCalls))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.sscSaves))])
-              ]),
-              _vm._v(" "),
-              _vm._m(5),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v(_vm._s(_vm.bscCR) + "%")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.bscCalls))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.bscSaves))])
-              ]),
-              _vm._v(" "),
-              _vm._m(6),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v(_vm._s(_vm.portalCR) + "%")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.portalCalls))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.portalSaves))])
-              ])
-            ])
-          ])
+            this.department == "Mobile"
+              ? _c("table", { staticClass: "table table-striped " }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _c("td", [_vm._v(_vm._s(_vm.GeVoCr) + "%")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.calls))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.saves))])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _c("td", [_vm._v(_vm._s(_vm.sscCR) + "%")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.sscCalls))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.sscSaves))])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _c("td", [_vm._v(_vm._s(_vm.bscCR) + "%")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.bscCalls))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.bscSaves))])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _c("td", [_vm._v(_vm._s(_vm.portalCR) + "%")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.portalCalls))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.portalSaves))])
+                  ])
+                ])
+              : _c("table", { staticClass: "table table-striped" }, [
+                  _vm._m(6),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _c("td", [_vm._v(_vm._s(_vm.GeVoCr) + "%")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.calls))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.saves))])
+                  ])
+                ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" })
         ])
       ])
     ])
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row " }, [
-      _c("div", { staticClass: "col" }, [
-        _c("h4", { staticClass: "text-center text-white" }, [
-          _c("u", [_vm._v("Aktuelle Trackingdaten Mobile")])
-        ])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -81511,6 +81718,18 @@ var staticRenderFns = [
       _c("th", [_vm._v("Portal-Calls")]),
       _vm._v(" "),
       _c("th", [_vm._v("Portal-Saves")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("GeVo-CR")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Calls")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Saves")])
     ])
   }
 ]

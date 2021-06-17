@@ -57,61 +57,121 @@ class UserTrackingController extends Controller
 
       return redirect()->route('dashboard');
     }
-    public function getCurrentTracking()
+    public function getCurrentTracking($dep= 'Mobile')
     {
-      $mobileSalesSata = DB::connection('mysqlkdwtracking')
-      ->table('1und1_mr_tracking_inb_new_ebk')
-      // ->whereIn('MA_id', $userids)
-      ->whereDate('date', '=', Carbon::today())
-      ->get();
+      // return $dep;
+      $dslSalesSata = '';
+      $mobileSalesSata = '';
 
-      $trackingidsMobile = $mobileSalesSata->pluck('agent_ds_id')->toArray();
+      if($dep == 'Mobile')
+      {
+        $department = '1&1 Mobile Retention';
+        $mobileSalesSata = DB::connection('mysqlkdwtracking')
+        ->table('1und1_mr_tracking_inb_new_ebk')
+        // ->whereIn('MA_id', $userids)
+        ->whereDate('date', '=', Carbon::today())
+        ->get();
+
+        $SalesSata = $mobileSalesSata;
+      }
+
+      else {
+        $department = '1&1 DSL Retention';
+
+        $dslSalesSata = DB::connection('mysqlkdwtracking')
+        ->table('1und1_dslr_tracking_inb_new_ebk')
+        // ->whereIn('MA_id', $userids)
+        ->whereDate('date', '=', Carbon::today())
+        ->get();
+
+        $SalesSata = $dslSalesSata;
+      }
+
+      $trackingidsMobile = $SalesSata->pluck('agent_ds_id')->toArray();
 
       $users = User::whereIn('tracking_id',$trackingidsMobile)
       ->where('role','Agent')
+      ->where('department',$department)
       ->get();
 
-      foreach($users as $user)
+      foreach($users as $key => $user)
       {
-        $user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->tracking_id)->first();
-        $user->ssc_calls = $user->salesdata->calls_ssc;
-        $user->ssc_orders = $user->salesdata->ret_ssc_contract_save;
-        $user->calls = $user->salesdata->calls;
-        $user->bsc_calls = $user->salesdata->calls_bsc;
-        $user->bsc_orders = $user->salesdata->ret_bsc_contract_save;
-        $user->portal_calls = $user->salesdata->calls_portal;
-        $user->portal_orders = $user->salesdata->ret_portal_save;
+        if ($user->department == '1&1 Mobile Retention') {
 
-        if($user->ssc_calls != 0)
-        {
-          $user->ssc_quota = round(($user->ssc_orders*100/$user->ssc_calls),2);
+          $user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->tracking_id)->first();
+          $user->ssc_calls = $user->salesdata->calls_ssc;
+          $user->ssc_orders = $user->salesdata->ret_ssc_contract_save;
+          $user->calls = $user->salesdata->calls;
+          $user->bsc_calls = $user->salesdata->calls_bsc;
+          $user->bsc_orders = $user->salesdata->ret_bsc_contract_save;
+          $user->portal_calls = $user->salesdata->calls_portal;
+          $user->portal_orders = $user->salesdata->ret_portal_save;
+
+          if($user->ssc_calls != 0)
+          {
+            $user->ssc_quota = round(($user->ssc_orders*100/$user->ssc_calls),2);
+          }
+          else {
+            $user->ssc_quota = 0;
+          }
         }
+        //the users in the dsl department
         else {
-          $user->ssc_quota = 0;
+            if ($user->salesdata = $dslSalesSata->where('agent_ds_id', $user->tracking_id)->first()) {
+              $user->calls = $user->salesdata->calls;
+              // dd($user);
+              $user->orders = $user->salesdata->ret_de_1u1_rt_save;
+
+              if ($user->calls !=0 ) {
+
+                  $user->dslqouta = round(($user->orders*100/$user->calls),2);
+              }
+              else {
+                $user->dslqouta = 0;
+              }
+
+            }
+            else {
+              abort(403,'test Fehlercode noch nicht eindeutig');
+            }
         }
-        // dd($user);
       }
+
       $data[] = $users;
 
-      $allSSCCalls = $users->sum('ssc_calls');
-      $allSSCOrders = $users->sum('ssc_orders');
-      $allBSCCalls = $users->sum('bsc_calls');
-      $allBSCOrders = $users->sum('bsc_orders');
-      $allPortalCalls = $users->sum('portal_calls');
-      $allPortalOrders = $users->sum('portal_orders');
-      $allOrders = $allSSCOrders + $allBSCOrders + $allPortalOrders ;
-      $allCalls = $users->sum('calls');
+      // dd($users);
+      if($dep == 'Mobile')
+      {
+        $allSSCCalls = $users->sum('ssc_calls');
+        $allSSCOrders = $users->sum('ssc_orders');
+        $allBSCCalls = $users->sum('bsc_calls');
+        $allBSCOrders = $users->sum('bsc_orders');
+        $allPortalCalls = $users->sum('portal_calls');
+        $allPortalOrders = $users->sum('portal_orders');
+        $allOrders = $allSSCOrders + $allBSCOrders + $allPortalOrders ;
+        $allCalls = $users->sum('calls');
 
-      $data[] = array(
-        'ssc_calls'=>$allSSCCalls,
-        'ssc_saves'=>$allSSCOrders,
-        'bsc_calls'=>$allBSCCalls,
-        'bsc_saves'=>$allBSCOrders,
-        'portal_calls'=>$allPortalCalls,
-        'portal_saves'=>$allPortalOrders,
-        'calls'=>$allCalls,
-        'orders'=>$allOrders,
-      );
+        $data[] = array(
+          'ssc_calls'=>$allSSCCalls,
+          'ssc_saves'=>$allSSCOrders,
+          'bsc_calls'=>$allBSCCalls,
+          'bsc_saves'=>$allBSCOrders,
+          'portal_calls'=>$allPortalCalls,
+          'portal_saves'=>$allPortalOrders,
+          'calls'=>$allCalls,
+          'orders'=>$allOrders,
+        );
+      }
+      else {
+
+        $allCalls = $users->sum('calls');
+        $allOrders = $users->sum('orders');
+
+        $data[] = array(
+          'calls'=>$allCalls,
+          'orders'=>$allOrders,
+        );
+      }
       // $sorted = $users->sortByDesc('ssc_quota');
       // $sorted->values()->all();
 
@@ -181,8 +241,7 @@ class UserTrackingController extends Controller
             $quotaarray[] = 0;
             $callarray[] = 0;
           }
-
-          }
+        }
       }
 
       $timestamparray = $intermediates->pluck('date2')->toArray();

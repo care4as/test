@@ -295,7 +295,7 @@ Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post'
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
 
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
-Route::get('/users/getTracking', 'UserTrackingController@getCurrentTracking');
+Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking');
 
 
 Route::get('/test', 'UserController@getTimesData')->name('test');
