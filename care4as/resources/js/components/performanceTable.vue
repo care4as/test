@@ -183,8 +183,9 @@
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
-          axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
-          // axios.get('http://'+host+'users/getTracking/')
+          // axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
+          axios.get('http://'+host+'/users/getTracking')
+
           .then(response => {
 
             if(response.data)
@@ -209,7 +210,7 @@
             })
           .catch(function (err) {
             console.log('error')
-            console.log(err.response);
+            console.log(err);
           })
         }
       }

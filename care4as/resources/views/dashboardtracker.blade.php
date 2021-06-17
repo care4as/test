@@ -168,7 +168,7 @@
           @foreach($users as $user)
             <div class="col-designed m-3 p-1 border bg-white rounded shadow">
               <h5>{{$user->wholeName()}}</h5>
-              <!-- <trackchart :userid="{{$user->id}}"> </trackchart> -->
+              <trackchart :userid="{{$user->id}}"> </trackchart>
             </div>
           @endforeach
         </div>
