@@ -216,33 +216,7 @@
   </form>
 </div>
 </div>
-  <div class="row bg-care4as-light p-2 justify-content-center w-100">
-    <div class="w-100" id="accordion1">
-      <div class="col-12">
-        <h5><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
-          Userdashboard
-          <span class="material-icons">
-            expand_more
-            </span>
-        </a></h5>
-      </div>
-      <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
-      <div class="col-12">
-        <div class="row">
-          @foreach($users as $user)
-            <div class="col-designed m-3 p-1 border bg-white rounded shadow">
-              <h5>{{$user->wholeName()}}</h5>
-              <trackchart :userid="{{$user->id}}"> </trackchart>
-            </div>
-          @endforeach
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-=======
-
->>>>>>> 29bd3ae6422a6cb90cfabc2d181ef5d314de7815
+  
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bg-danger text-white" >
