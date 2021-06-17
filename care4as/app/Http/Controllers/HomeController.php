@@ -48,6 +48,7 @@ class HomeController extends Controller
 
         $users = User::whereIN('id',request('employees'))
         ->whereIN('person_id', $userids)
+        ->orderBy('lastname')
         ->get();
       }
       else {
@@ -55,9 +56,9 @@ class HomeController extends Controller
         ->whereDate('date', Carbon::today())
         ->pluck('person_id')
         ->toArray();
-      }
 
-      $users = User::whereIn('person_id', $userids)->get();
+        $users = User::whereIn('person_id', $userids)->orderBy('lastname')->get();
+      }
 
       $teamids = DB::table('users')
       ->where('department', '1&1 Mobile Retention')
