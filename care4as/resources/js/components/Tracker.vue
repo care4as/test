@@ -25,9 +25,7 @@ export default {
 
       var self = this;
       console.log('Tracker Component mounted.')
-
       this.getUserData(this.userid)
-
       setInterval(function()
       {
         self.getUserData(self.userid)
@@ -91,7 +89,6 @@ export default {
     })
 
     var host = window.location.host;
-
     //axios.get('http://'+host+'/care4as/care4as/public/user/getTracking/'+this.userid)
     axios.get('http://'+host+'/user/getTracking/'+this.userid)
     .then(response => {
@@ -113,10 +110,8 @@ export default {
   },
   closeElement()
   {
-
     $(this.$el).parent()[0].remove()
       // remove the element from the DOM
-
   }
 },
 
