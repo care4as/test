@@ -12,6 +12,23 @@ body
     .table-striped>tbody>tr:nth-child(even) {
         background-color: #ddf8e8;
     }
+    :checked + label[for="mobile"] {
+      color:white;
+    }
+    :checked + label[for="dsl"] {
+      color:white;
+    }
+
+    label[for="mobile"] {
+    cursor: pointer;
+    color: black;
+    position: relative;
+    }
+    label[for="dsl"] {
+    cursor: pointer;
+    color: black;
+    position: relative;
+    }
 
     .readabilitysuperior
     {
@@ -26,10 +43,10 @@ body
     {
       height: 100%;
       background-image: url("../images/background2.svg");
-      background-size:100% 100%;
-      -o-background-size: 100% 100%;
-      -webkit-background-size: 100% 100%;
-      background-size:cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: center top;
+      background-size: 100% 50%;
       opacity: 0.8;
     }
     .bg-care4as

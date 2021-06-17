@@ -13,7 +13,6 @@ import Chart from 'chart.js';
 
 export default {
   props: ['userid'],
-
   data(){
     return{
       testusers: [1,2,3],
