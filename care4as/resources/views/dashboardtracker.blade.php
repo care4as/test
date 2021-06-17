@@ -175,7 +175,7 @@
     </div>
   </div>
 </div>
-<<<<<<< HEAD
+
 <div class="row bg-white shadow m-1" id="filtermenu">
   <div class="w-100" id="accordion">
     <div class="col-12 d-flex justify-content-center align-self-center">
@@ -216,7 +216,7 @@
   </form>
 </div>
 </div>
-  
+
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bg-danger text-white" >
