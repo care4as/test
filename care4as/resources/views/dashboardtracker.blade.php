@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
 
 <style>
+.borders-roundedlight
+{
+  border-radius: 15px;
+}
     .header{
         position:sticky;
         top: 0 ;
@@ -57,15 +61,15 @@
 
 @section('content')
 
-<div class="container-fluid m-1" id="app">
-  <div class="row">
+<div class="container-fluid m-1 " id="app">
+  <div class="row  m-1 bg-light borders-roundedlight">
     <div class="col">
       <div class="row">
           <ptable> </ptable>
           </div>
         </div>
       </div>
-      <div class="row bg-white shadow m-1" id="filtermenu">
+      <div class="row bg-white shadow m-1 borders-roundedlight" id="filtermenu">
         <div class="w-100" id="accordion">
           <div class="col-12 d-flex justify-content-center align-self-center">
             <h5><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor:pointer;">
@@ -105,7 +109,7 @@
         </form>
       </div>
       </div>
-        <div class="row bg-light p-2 justify-content-center w-100">
+        <div class="row bg-light p-2 justify-content-center w-100 borders-roundedlight">
           <div class="w-100" id="accordion1">
             <div class="col-12">
               <h5><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
@@ -129,12 +133,12 @@
           </div>
         </div>
       </div>
-  <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3" style="font-size: 1.5em; font-weight: 700;">
+  <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
     <div class="w-100" id="accordion2">
       <div class="col-12" >
         <h5>
           <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
-          <span style="">Teamübersicht</span>
+          <span style="">Teamübersicht 1&1 Retention Mobile</span>
           <span class="material-icons">
             expand_more
             </span>
@@ -148,7 +152,7 @@
         <div class="row justify-content-center repeater" >
           @for($i = 1; $i<=5; $i++)
             <div class="col-designed-carousel m-2" style="height: 500px; opacity: 0.4;">
-            <span style="font-size: 1.3em;"></span>Verlauf Teamquote {{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
+            <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
             <div class="d-flex mt-4">
               <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
                 <caption> Axes Example #5 </caption>
@@ -175,46 +179,51 @@
     </div>
   </div>
 </div>
-
-<div class="row bg-white shadow m-1" id="filtermenu">
-  <div class="w-100" id="accordion">
-    <div class="col-12 d-flex justify-content-center align-self-center">
-      <h5><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor:pointer;">
-        Filtermenü
-        <span class="material-icons">
-          expand_more
-          </span>
-      </a></h5>
-    </div>
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+  <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
+    <div class="w-100" id="accordion2">
+      <div class="col-12" >
+        <h5>
+          <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
+          <span style="">Teamübersicht 1&1 Retention DSL</span>
+          <span class="material-icons">
+            expand_more
+            </span>
+        </a></h5>
+      </div>
+      <div id="collapseTeamDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion2">
       <div class="col-12">
-        <form class="mt-2 w-100" action="{{route('dashboard.admin')}}" method="get">
-          <div class="row m-0 justify-content-center">
-            <div class="col-6 p-0" style="">
-              <div class="row m-2 justify-content-center">
-                <div class="col-4 ml-1 p-0">
-                  <label for="department">Abteilung:</label>
-                  <select class="form-control" name="department" id="department" style="width:218px;">
-                    <option value="" selected disabled>Wähle die Abteilung</option>
-                    <option value="1&1 DSL Retention">1&1 DSL Retention</option>
-                    <option value="1&1 Mobile Retention" >1&1 Mobile Retention</option>
-                  </select>
-                </div>
-                <div class="col-4 p-0 mr-2">
-                  <label for="department">Welche MA:</label>
-                  <select multiple class="form-control" name="employees[]" id="employees" style="height: 150px; overflow:scroll;">
-                  </select>
-                </div>
-              </div>
-              <div class="row m-2 justify-content-center">
-                <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
+        <div class="row">
+          <p>Verlauf der letzten 5 Tage</p>
+        </div>
+        <div class="row justify-content-center repeater1" >
+          @for($i = 1; $i<=5; $i++)
+            <div class="col-designed-carousel m-2" style="height: 500px; opacity: 0.4;">
+            <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
+            <div class="d-flex mt-4">
+              <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
+                <caption> Axes Example #5 </caption>
+                <thead>
+                  <tr>
+                    <th scope="col"> Year </th>
+                    <th scope="col"> Progress </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($quotas[Carbon\Carbon::today()->subdays($i)->Format('Y-m-d')] as $key => $data)
+                    <tr><th scope="row"> {{$key}} </th> <td style="--size:{{$data['cr']}};--color: blue; color:white;">{{$data['cr']*100}}%</td></tr>
+                  @endforeach
+                </tbody>
+              </table>
               </div>
             </div>
-          </div>
+          @endfor
+        </div>
+        <div class="row justify-content-center">
+          <button type="button" name="button" id="nextButton" class="btn-primary">Vorheriger Tag</button>
+        </div>
       </div>
+    </div>
   </div>
-  </form>
-</div>
 </div>
 
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

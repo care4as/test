@@ -2690,7 +2690,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return _defineProperty({
@@ -81355,7 +81354,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid bg-light" }, [
+  return _c("div", { staticClass: "container-fluid " }, [
     _c("div", { staticClass: "p-0 readabilitysuperior" }, [
       _c("div", { staticClass: "row " }, [
         _c("div", { staticClass: "col" }, [

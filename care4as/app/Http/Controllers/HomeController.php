@@ -55,22 +55,23 @@ class HomeController extends Controller
         ->whereDate('date', Carbon::today())
         ->pluck('person_id')
         ->toArray();
+
+        $users = User::whereIn('person_id', $userids)->orderBy('lastname')->get();
       }
 
-      $users = User::whereIn('person_id', $userids)->get();
-
-      $teamids = DB::table('users')
+      $mobileTeamids = DB::table('users')
       ->where('department', '1&1 Mobile Retention')
+      ->where('status',1)
       ->pluck('person_id')
       ->toArray();
 
       for($i = 1; $i<=5; $i++)
       {
         $day = Carbon::today()->subdays($i);
-        $intermediates[$day->format('d.m.Y')] = \App\Intermediate::whereDate('date',$day)->whereIn('person_id',$teamids)->get();
+        $intermediatesMobile[$day->format('d.m.Y')] = \App\Intermediate::whereDate('date',$day)->whereIn('person_id',$mobileTeamids)->get();
       }
 
-      foreach($intermediates as $key => $data)
+      foreach($intermediatesMobile as $key => $data)
       {
         // dd($intermediates);
 
