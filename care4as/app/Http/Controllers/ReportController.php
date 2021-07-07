@@ -10,6 +10,7 @@ use App\User;
 use App\DailyAgent;
 use App\Hoursreport;
 use App\SAS;
+use App\OptIn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
@@ -548,6 +549,6 @@ class ReportController extends Controller
     }
     public function OptinStatus()
     {
-      return array($min = Carbon::parse(Optin::min('date'))->format('d.m.Y'), $max= Carbon::parse(Optin::max('date'))->format('d.m.Y'));
+      return array($min = Carbon::parse(OptIn::min('date'))->format('d.m.Y'), $max= Carbon::parse(OptIn::max('date'))->format('d.m.Y'));
     }
 }

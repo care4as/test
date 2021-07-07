@@ -299,7 +299,6 @@ class ExcelEditorController extends Controller
         }}
       $insertData = array_chunk($insertData, 3500);
 
-      // dd($insertData);
       for($i=0; $i <= count($insertData)-1; $i++)
       {
         DB::table('sse_tracking')->insert($insertData[$i]);

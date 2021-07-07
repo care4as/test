@@ -28,7 +28,6 @@
   .DTFC_LeftBodyLiner
   {
     overflow: hidden !important;;
-
   }
 
   .DTFC_RightBodyLiner
@@ -53,7 +52,31 @@
   {
     animation: blink 2s infinite;
   }
+  .fixedright
+  {
 
+    position: fixed;
+    right: 15px;
+    z-index: 200;
+    cursor: pointer;
+  }
+  .LexikaButton
+  {
+    height: 75px;
+    width: 75px;
+    top: 40%;
+  }
+  .Lexika
+  {
+    height: 10em;
+    width: 82%;
+    padding: 5px;
+    bottom: 0em;
+    left: 15%;
+    overflow: scroll;
+    display: none;
+
+  }
   @keyframes blink {
   from {color: black;}
   to {color: white;}
@@ -64,6 +87,226 @@
 @endsection
 
 @section('content')
+<div class="fixedright LexikaButton " id="LexikaButton">
+  <button type="button" class="" name="button" onclick="rotateButton()">
+    <span class="material-icons" style="font-size: 3em;">
+      autorenew
+    </span>
+  </button>
+</div>
+<div class="fixedright Lexika" style="" id="Lexika">
+  <div class="row gradientColor text-white ">
+    <div class="col-1 ">
+      Spalte
+    </div>
+    <div class="col-2">
+      Name
+    </div>
+    <div class="col">
+      Beschreibung
+    </div>
+  </div>
+
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+      3
+    </div>
+    <div class="col-2">
+      AHT
+    </div>
+    <div class="col">
+      die AHT gibt die durschnittliche Bearbeitungszeit eines Telefonats + Nacharbeit an.
+      Der Wert muss mit dem Wert aus dem DailyAgent für den entsprechenden Zeitraum übereinstimmen.
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+      4
+    </div>
+    <div class="col-2">
+      KDW Stunden bezahlt
+    </div>
+    <div class="col">
+      die Stunden die der MA im KDW Tool eingetragen hat
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+      5
+    </div>
+    <div class="col-2">
+      h anwesend
+    </div>
+    <div class="col">
+        die Stunden die der MA in der <b>CCU</b> eingeloggt war. Es zählen dabei alle Status der CCU
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+      6
+    </div>
+    <div class="col-2">
+        h produktiv
+    </div>
+    <div class="col">
+        die Stunden die der MA in der <b>CCU</b> eingeloggt war. Es zählen dabei nur die produktiven Status der CCU
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+      7
+    </div>
+    <div class="col-2">
+      PQ (Produktivquote)
+    </div>
+    <div class="col">
+      der prozentuale Anteil der produktiven CCU-Status gegenüber der anwesenden Stunden aus dem KDW Tool. Vereinfacht: der Wert aus Spalte 6 durch dem Wert aus Spalte 4
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+      8
+    </div>
+    <div class="col-2">
+      1&1 PQ
+    </div>
+    <div class="col">
+      der prozentuale Anteil der produktiven CCU-Status gegenüber der anwesenden Stunden aus der.Spalte 5 durch Spalte 6
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+      9
+    </div>
+    <div class="col-2">
+      Saves
+    </div>
+    <div class="col">
+      die Gesamtzahl der Saves ohne KüRüs aus dem Retention Details Report
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+      10
+    </div>
+    <div class="col-2">
+      GeVo Saves
+    </div>
+    <div class="col">
+      die Gesamtzahl der Saves ohne KüRüs aus dem GeVo Rohdatenexport, teilweise gibt es Abweichungen zum Retention Detailsreport daher als KPI mit aufgenommen
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+      10
+    </div>
+    <div class="col-2">
+      Calls
+    </div>
+    <div class="col">
+      -
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+    11
+    </div>
+    <div class="col-2">
+      Calls/h
+    </div>
+    <div class="col">
+      die Calls durch den Wert der anwesenden Stunden im KDW Tool
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+    12
+    </div>
+    <div class="col-2">
+      SSC
+    </div>
+    <div class="col">
+      SSC Saves (nur Mobile) gemaß den Retention Details
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+    13
+    </div>
+    <div class="col-2">
+      BSC
+    </div>
+    <div class="col">
+
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+    14
+    </div>
+    <div class="col-2">
+      Portale
+    </div>
+    <div class="col">
+
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+    15
+    </div>
+    <div class="col-2">
+      SSE
+    </div>
+    <div class="col">
+      Die Saves aus der SSE bzw. dem Retention Tracking Rohdatenexport
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+    16
+    </div>
+    <div class="col-2">
+      Saves/h
+    </div>
+    <div class="col">
+      Die Saves aus der SSE durch die KDW anwesend Zeit
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+    17
+    </div>
+    <div class="col-2">
+      RLZ +24%
+    </div>
+    <div class="col">
+      Der Anteil von neuen VLZ gegenüber Verlängerungen mit zusätzlicher Vertragslaufzeit. ACHTUNG: Diese Quote weicht von der 1&1 Quote ab da seitens 1&1 nicht die einfachste Mathematik verwendet wird
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+    18
+    </div>
+    <div class="col-2">
+      RET GeVo CR
+    </div>
+    <div class="col">
+      Alle Calls durch alle Sales ohne die KÜRÜS aus dem Retention Details Report. Dieser Wert soll mittelfristig die GeVo CR aus den DB Dateien ablösen. Da dies einer der wichtigsten KPI's ist, sollte der Wert öfters mal gegengeprüft werden um Fehler möglichst früh zu vermeiden.
+    </div>
+  </div>
+  <div class="row gradientColor text-white borderwhite">
+    <div class="col-1">
+    19
+    </div>
+    <div class="col-2">
+      SSC CR
+    </div>
+    <div class="col">
+      Alle SSC Calls durch alle SSC Sales ohne die KÜRÜS aus dem Retention Details Report.
+    </div>
+  </div>
+</div>
 
 <div class="container-fluid bg-light m-1">
   <div class="row justify-content-center align-self-center m-1">
@@ -128,7 +371,7 @@
             @if(!App\Optin::min('date'))
               <h5>keine Daten eingegeben</h5>
             @else
-              <div class="loadingerRD">Lade Daten Optin...</div>
+              <div class="loadingerOptin">Lade Daten Optin...</div>
               <span id="OptinDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
             @endif
           </td>
@@ -234,6 +477,7 @@
             <th>PQ</th>
             <th>1&1 PQ</th>
             <th>Saves</th>
+            <th>GeVo Saves</th>
             <th>Calls</th>
             <th>Calls/h</th>
             <th>SSC</th>
@@ -244,15 +488,16 @@
             <th>RLZ+24 %</th>
             <th>GO CR</th>
             <th>RET GeVo CR</th>
+            <th>RET GeVo CR 2</th>
             <th>SSC CR</th>
             <th>BSC CR</th>
             <th>Portal CR</th>
             <th>SaS</th>
             <th>OptIn</th>
-            <th>Saves(Gevo)</th>
-            <th>Upgrades</th>
+
+            <!-- <th>Upgrades</th>
             <th>Sidegrades</th>
-            <th>Downgrades</th>
+            <th>Downgrades</th> -->
             <th>Umsatz</th>
             <th>Umsatz/h bez</th>
             <th>Umsatz/h prod</th>
@@ -288,6 +533,24 @@
             @else
               <td>{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
             @endif
+            <td>
+              <div class="center_items" style="position: relative; height: 65px; width: 100%;">
+                <div class="" style="position: absolute; display:block;">
+                  <a onclick="showDetails({{$user->id}})" style="cursor:pointer;">  {{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}</a>
+                </div>
+                <div class="bg-white" style="position: absolute; display:none; z-index: 200;" id="details{{$user->id}}" onclick="hide(this)">
+                  <div class="">
+                    Upgrades: {{$user->gevo->where('change_cluster','Upgrade')->count()}}
+                  </div>
+                  <div class="">
+                    Sidegrades: {{$user->gevo->where('change_cluster','Sidegrade')->count()}}
+                  </div>
+                  <div class="">
+                    Downgrades: {{$user->gevo->where('change_cluster','Downgrade')->count()}}
+                  </div>
+                </div>
+              </div>
+            </td>
             <td>{{$user->salesdata['calls']}}</td>
             @if($user->salesdata['workedHours'] != 0)
               <td>{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}</td>
@@ -314,15 +577,16 @@
             @else
               <td data-order="{{$user->salesdata['GeVo-Cr']}}" style= "font-size: 900; color: @if($user->salesdata['GeVo-Cr'] > 40) green @elseif ($user->salesdata['GeVo-Cr'] > 35) #ffc107 @else red @endif;"> {{$user->salesdata['GeVo-Cr']}}%</td>
             @endif
+            <td data-order="{{$user->salesdata['gevocr2']}}">{{$user->salesdata['gevocr2']}}%</td>
             <td data-order="{{$user->salesdata['sscQuota']}}">{{$user->salesdata['sscQuota']}}%</td>
             <td data-order="{{$user->salesdata['bscQuota']}}">{{$user->salesdata['bscQuota']}}%</td>
             <td data-order="{{$user->salesdata['portalQuota']}}">{{$user->salesdata['portalQuota']}}%</td>
             <td>{{$user->sasquota}}</td>
             <td>{{$user->optinQuota}}%</td>
-            <td>{{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}</td>
-            <td>{{$user->gevo->where('change_cluster','Upgrade')->count()}}</td>
+
+            <!-- <td>{{$user->gevo->where('change_cluster','Upgrade')->count()}}</td>
             <td>{{$user->gevo->where('change_cluster','Sidegrade')->count()}}</td>
-            <td>{{$user->gevo->where('change_cluster','Downgrade')->count()}}</td>
+            <td>{{$user->gevo->where('change_cluster','Downgrade')->count()}}</td> -->
             <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
             @if($user->salesdata['workedHours'] != 0)
               <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
@@ -356,7 +620,7 @@
           <td id="produktivequote">6</td>
           <td id="savessum">7</td>
           <td id="savessum">8</td>
-          <td id="callssum">9</td>
+          <td id="gevo">9</td>
           <td id="callsPerHourAVG">10</td>
           <td id="sscSum">11</td>
           <td id="bscSum">12</td>
@@ -366,15 +630,16 @@
           <td id="rlz">16</td>
           <td id="gocr">17</td>
           <td id="gevoCrAVG">18</td>
+          <td id="gevocr2">18</td>
           <td id="sscCrAVG">19</td>
           <td id="bscCrAVG">20</td>
           <td id="portalCrAVG">21</td>
           <td id="sas">22</td>
           <td id="optin">23</td>
-          <td id="gevo">24</td>
-          <td id="upgrade">25</td>
+
+          <!-- <td id="upgrade">25</td>
           <td id="downgrade">26</td>
-          <td id="sidegrade">27</td>
+          <td id="sidegrade">27</td> -->
           <td id="revenue">28</td>
           <td id="revenuePerHourPayedAVG">29</td>
           <td id="revenuePerHourProductiveAVG">30</td>
@@ -568,113 +833,17 @@
             });
           });
         }
-        let host = window.location.host;
 
-        // axios.get('http://'+host+'/care4as/care4as/public/reports/dailyAgentDataStatus')
-        axios.get('http://'+host+'/reports/dailyAgentDataStatus')
-        .then(response => {
+        loadData('dailyAgentDataStatus','#dailyagentData','.loadingerDA')
 
-          // console.log(response)
-          let min = response.data[0]
-          let max = response.data[1]
+        loadData('SASStatus','#SASDataStatus','.loadingerSAS')
 
-          let element = $('#dailyagentData')
+        loadData('OptinStatus','#OptinDataStatus','.loadingerOptin')
 
-          $('.loadingerDA').toggle()
+        loadData('HRDataStatus','#HoursreportData', '.loadingerHR')
 
-          element.css( 'display','block')
-          element.html('DailyAgent Daten im Zeitraum '+min+' bis: '+max)
-        })
-        .catch(function (err) {
-          let element = $('#dailyagentData')
-          element.css( 'display','block')
-          element.html('Fehler beim Laden der DA Daten')
-          console.log(err.response);
-        });
+        loadData('RDDataStatus','#RDDataStatus', '.loadingerRD')
 
-        // axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
-        axios.get('http://'+host+'/reports/SASStatus')
-        .then(response => {
-
-          // console.log(response)
-          let min = response.data[0]
-          let max = response.data[1]
-
-          let element = $('#SASDataStatus')
-
-          $('.loadingerSAS').toggle()
-
-          element.css( 'display','block')
-          element.html('SAS Daten im Zeitraum '+min+' bis: '+max)
-        })
-        .catch(function (err) {
-          console.log('error DataStatus SAS')
-          $('.loadingerSAS').toggle()
-          let element = $('#SASDataStatus')
-          element.css( 'display','block')
-          element.html('Fehler beim Laden der SAS Daten')
-          console.log(err.response);
-        });
-        // axios.get('http://'+host+'/care4as/care4as/public/reports/SASStatus')
-        axios.get('http://'+host+'/reports/SASStatus')
-        .then(response => {
-
-          // console.log(response)
-          let min = response.data[0]
-          let max = response.data[1]
-
-          let element = $('#OptinDataStatus')
-
-          $('.loadingerOptin').toggle()
-
-          element.css( 'display','block')
-          element.html('Optin Daten im Zeitraum '+min+' bis: '+max)
-        })
-        .catch(function (err) {
-          console.log('error DataStatus Optin')
-          $('.loadingerSAS').toggle()
-          let element = $('#OptinDataStatus')
-          element.css( 'display','block')
-          element.html('Fehler beim Laden der SAS Daten')
-          console.log(err.response);
-        });
-
-        // axios.get('http://'+host+'/care4as/care4as/public/reports/HRDataStatus')
-        axios.get('http://'+host+'/reports/HRDataStatus')
-        .then(response => {
-          // console.log(response)
-          let min = response.data[0]
-          let max = response.data[1]
-          let element = $('#HoursreportData')
-          $('.loadingerHR').toggle()
-          element.css( 'display','block')
-          element.html('Stundenreport Daten im Zeitraum '+min+' bis: '+max)
-
-        })
-        .catch(function (err) {
-          console.log('error DataStatus Hoursreport')
-          console.log(err.response);
-        });
-
-        // axios.get('http://'+host+'/care4as/care4as/public/reports/RDDataStatus')
-        axios.get('http://'+host+'/reports/RDDataStatus')
-        .then(response => {
-
-          // console.log(response)
-          let min = response.data[0]
-          let max = response.data[1]
-
-          let element = $('#RDDataStatus')
-
-          $('.loadingerRD').toggle()
-
-          element.css( 'display','block')
-          element.html('RetentionDetail Daten im Zeitraum '+min+' bis: '+max)
-        })
-        .catch(function (err) {
-          console.log('error DataStatus RetentionDetail')
-          console.log(err.response);
-        });
         $('#department').change(function() {
 
           $('#exampleFormControlSelect2').empty()

@@ -65,10 +65,30 @@ class HomeController extends Controller
       ->pluck('person_id')
       ->toArray();
 
-      for($i = 1; $i<=5; $i++)
+      $DSLTeamids = DB::table('users')
+      ->where('department', '1&1 DSL Retention')
+      ->where('status',1)
+      ->pluck('person_id')
+      ->toArray();
+
+
+      $dataMobile= $this->getIVDataPerDay(5,$mobileTeamids);
+      $dataDSL= $this->getIVDataPerDay(5,$DSLTeamids);
+
+      $quotas = $dataMobile[0];
+      $times= $dataMobile[1];
+
+      $quotasDSL = $this->getIVDataPerDay(5,$DSLTeamids)[0];
+
+      return view('dashboardtracker',compact('users', 'times','quotas','quotasDSL'));
+    }
+
+    public function getIVDataPerDay($days=5, $employeeIDs)
+    {
+      for($i = 1; $i<=$days; $i++)
       {
         $day = Carbon::today()->subdays($i);
-        $intermediatesMobile[$day->format('d.m.Y')] = \App\Intermediate::whereDate('date',$day)->whereIn('person_id',$mobileTeamids)->get();
+        $intermediatesMobile[$day->format('d.m.Y')] = \App\Intermediate::whereDate('date',$day)->whereIn('person_id',$employeeIDs)->get();
       }
 
       foreach($intermediatesMobile as $key => $data)
@@ -115,10 +135,8 @@ class HomeController extends Controller
           }
         }
       }
-      // dd($quotas);
-      return view('dashboardtracker',compact('users', 'times','quotas'));
+      return $data= array($quotas, $times);
     }
-
     public function presentation(Request $request)
     {
       DB::disableQueryLog();
@@ -377,6 +395,7 @@ class HomeController extends Controller
       }
       foreach ($users as $key => $user) {
 
+        // dd($user);
         $reports = $user->retentionDetails;
         $sumorders = $reports->sum('orders');
         // sum of all calls during the timespan
@@ -476,7 +495,14 @@ class HomeController extends Controller
             $sicknessquota =  round(($sickHours/($contracthours))*100,2);
           }
         }
+        if ($calls != 0) {
 
+            $gevocr2 = round($user->gevo->count()*100 / $calls,2);
+        }
+        else {
+
+          $gevocr2 = 0;
+        }
         $payed11 = round(($user->dailyagent->sum('time_in_state')/3600),2);
 
         $productiveStates = array('Wrap Up','Ringing', 'In Call','On Hold','Available','Released (05_occupied)','Released (06_practice)','Released (09_outbound)');
@@ -500,6 +526,7 @@ class HomeController extends Controller
           'portalOrders' => $sumPortalOrders,
           'RLZ24Qouta' => $RLZQouta,
           'GeVo-Cr' => $gevocr,
+          'gevocr2' => $gevocr2,
           'workedHours' => $workedHours,
           // 'sickHours' => $sickHours,
           'sicknessquota' => $sicknessquota,
@@ -508,6 +535,7 @@ class HomeController extends Controller
           'aht' => $AHT,
           'sickhours' => $sickHours,
         );
+
         $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
         $optinRequests = $user->Optin->sum('Anzahl_OptIn-Abfragen');
 
@@ -519,6 +547,7 @@ class HomeController extends Controller
           }
         $sas = $user->SAS->count();
         $allCalls = $user->retentionDetails->sum('calls');
+
         if (  $sas != 0) {
              $user->sasquota = round($sas*100/$allCalls,2).'%';
           }
@@ -526,15 +555,12 @@ class HomeController extends Controller
             $user->sasquota = 0;
           }
       }
-      // dd($users->where('id',26));
-      // return view('usersIndex', compact('users'));
       return view('DB', compact('modul', 'users'));
     }
     public function test($value='')
     {
       $start_date = '2021-02-01';
       $end_date = '2021-02-28';
-
       $users = User::where('role','agent')
       ->with(['SSETracking' => function($q) use ($start_date,$end_date){
         if($start_date != 1)

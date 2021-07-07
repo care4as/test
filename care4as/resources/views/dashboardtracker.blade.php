@@ -109,82 +109,42 @@
         </form>
       </div>
       </div>
-        <div class="row bg-light p-2 justify-content-center w-100 borders-roundedlight">
-          <div class="w-100" id="accordion1">
-            <div class="col-12">
-              <h5><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
-                Userdashboard
-                <span class="material-icons">
-                  expand_more
-                  </span>
-              </a></h5>
-            </div>
-            <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
-            <div class="col-12">
-              <div class="row">
-                @foreach($users as $user)
-                  <div class="col-designed m-3 p-1 border bg-white rounded shadow">
-                    <h5>{{$user->wholeName()}}</h5>
-                    <!-- <trackchart :userid="{{$user->id}}"> </trackchart> -->
-                  </div>
-                @endforeach
-              </div>
+      <div class="row bg-light p-2 justify-content-center w-100 borders-roundedlight">
+        <div class="w-100" id="accordion1">
+          <div class="col-12">
+            <h5><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
+              Userdashboard
+              <span class="material-icons">
+                expand_more
+                </span>
+            </a></h5>
+          </div>
+          <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
+          <div class="col-12">
+            <div class="row">
+              @foreach($users as $user)
+                <div class="col-designed m-3 p-1 border bg-white rounded shadow">
+                  <h5>{{$user->wholeName()}}
+                      <a class="align-items-center" href="{{route('user.stats',['id' => $user->id])}}">
+                        <span class="material-icons">
+                        preview
+                        </span>
+                      </a>
+                    </h5>
+                  <!-- <trackchart :userid="{{$user->id}}"> </trackchart> -->
+                </div>
+              @endforeach
             </div>
           </div>
         </div>
       </div>
+    </div>
   <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
     <div class="w-100" id="accordion2">
       <div class="col-12" >
         <h5>
           <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
           <span style="">Teamübersicht 1&1 Retention Mobile</span>
-          <span class="material-icons">
-            expand_more
-            </span>
-        </a></h5>
-      </div>
-      <div id="collapseTeamDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion2">
-      <div class="col-12">
-        <div class="row">
-          <p>Verlauf der letzten 5 Tage</p>
-        </div>
-        <div class="row justify-content-center repeater" >
-          @for($i = 1; $i<=5; $i++)
-            <div class="col-designed-carousel m-2" style="height: 500px; opacity: 0.4;">
-            <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
-            <div class="d-flex mt-4">
-              <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
-                <caption> Axes Example #5 </caption>
-                <thead>
-                  <tr>
-                    <th scope="col"> Year </th>
-                    <th scope="col"> Progress </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($quotas[Carbon\Carbon::today()->subdays($i)->Format('Y-m-d')] as $key => $data)
-                    <tr><th scope="row"> {{$key}} </th> <td style="--size:{{$data['cr']}};--color: blue; color:white;">{{$data['cr']*100}}%</td></tr>
-                  @endforeach
-                </tbody>
-              </table>
-              </div>
-            </div>
-          @endfor
-        </div>
-        <div class="row justify-content-center">
-          <button type="button" name="button" id="nextButton" class="btn-primary">Vorheriger Tag</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
-    <div class="w-100" id="accordion2">
-      <div class="col-12" >
-        <h5>
-          <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
-          <span style="">Teamübersicht 1&1 Retention DSL</span>
           <span class="material-icons">
             expand_more
             </span>
@@ -219,7 +179,64 @@
           @endfor
         </div>
         <div class="row justify-content-center">
-          <button type="button" name="button" id="nextButton" class="btn-primary">Vorheriger Tag</button>
+          <div class="col-6 center_items">
+            <button type="button" name="button" id="nextButton" class="btn-primary">Vorheriger Tag</button>
+          </div>
+          <div class="col-6 center_items">
+            <button type="button" name="button" id="prevButton" class="btn-primary">Nächster Tag</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
+    <div class="w-100" id="accordion2">
+      <div class="col-12" >
+        <h5>
+          <a data-toggle="collapse" data-target="#collapseTeamDash1" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
+          <span style="">Teamübersicht 1&1 Retention DSL</span>
+          <span class="material-icons">
+            expand_more
+            </span>
+        </a></h5>
+      </div>
+      <div id="collapseTeamDash1" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion2">
+      <div class="col-12">
+        <div class="row">
+          <p>Verlauf der letzten 5 Tage</p>
+        </div>
+        <div class="row justify-content-center repeater2" >
+          @for($i = 1; $i<=5; $i++)
+            <div class="col-designed-carousel m-2" style="height: 500px; opacity: 0.4;">
+            <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
+            <div class="d-flex mt-4">
+              <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
+                <caption> Axes Example #5 </caption>
+                <thead>
+                  <tr>
+                    <th scope="col"> Year </th>
+                    <th scope="col"> Progress </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($quotasDSL[Carbon\Carbon::today()->subdays($i)->Format('Y-m-d')] as $key => $data)
+                    <tr><th scope="row"> {{$key}} </th> <td style="--size:{{$data['cr']}};--color: blue; color:white;">{{$data['cr']*100}}%</td></tr>
+                  @endforeach
+                </tbody>
+              </table>
+              </div>
+            </div>
+          @endfor
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-6 center_items">
+            <button type="button" name="button" id="nextButton2" class="btn-primary">Vorheriger Tag</button>
+          </div>
+          <div class="col-6 center_items">
+            <button type="button" name="button" id="prevButton2" class="btn-primary">Nächster Tag</button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -245,10 +262,17 @@
 <script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  $('.repeater').slick({
+  $('.repeater1').slick({
     fade: true,
     prevArrow: false,
-    nextArrow: $('#nextButton')
+    nextArrow: $('#nextButton'),
+    prevArrow: $('#prevButton')
+  });
+  $('.repeater2').slick({
+    fade: true,
+    prevArrow: false,
+    nextArrow: $('#nextButton2'),
+    prevArrow: $('#prevButton2')
   });
 });
 
