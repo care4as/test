@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
   //endcancels
   //offlineTracking
   Route::get('/offlineTracking', 'OfflineCancelController@create')->name('offlinetracking.view.agent')->middleware('hasRight:createCancels');
-  Route::get('/offlineTracking/index', 'OfflineCancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
+  Route::get('/offlineTracking/index', 'CancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
   Route::post('/offlineTracking/save', 'OfflineCancelController@store')->name('offlineTracking.save')->middleware('hasRight:createCancels');
   //end offlinetracking
 
