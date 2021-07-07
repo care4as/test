@@ -48,6 +48,7 @@ class HomeController extends Controller
 
         $users = User::whereIN('id',request('employees'))
         ->whereIN('person_id', $userids)
+        ->orderBy('lastname')
         ->get();
       }
       else {

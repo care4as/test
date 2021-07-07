@@ -83,7 +83,7 @@
             <div class="col-12">
               <form class="mt-2 w-100" action="{{route('dashboard.admin')}}" method="get">
                 <div class="row m-0 justify-content-center">
-                  <div class="col-6 p-0" style="">
+                  <div class="col-8 p-0" style="">
                     <div class="row m-2 justify-content-center">
                       <div class="col-4 ml-1 p-0">
                         <label for="department">Abteilung:</label>
@@ -109,6 +109,7 @@
         </form>
       </div>
       </div>
+<<<<<<< HEAD
       <div class="row bg-light p-2 justify-content-center w-100 borders-roundedlight">
         <div class="w-100" id="accordion1">
           <div class="col-12">
@@ -134,14 +135,40 @@
                   <!-- <trackchart :userid="{{$user->id}}"> </trackchart> -->
                 </div>
               @endforeach
+=======
+        <div class="row bg-light p-2 justify-content-center w-100">
+          <div class="w-100" id="accordion1">
+            <div class="col-12 d-flex justify-content-center">
+              <h5><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
+                Userdashboard
+                <span class="material-icons">
+                  expand_more
+                  </span>
+              </a></h5>
+            </div>
+            <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
+            <div class="col-12">
+              <div class="row">
+                @foreach($users as $user)
+                  <div class="col-designed m-3 p-1 border bg-white rounded shadow">
+                    <h5>{{$user->wholeName()}}</h5>
+                    <trackchart :userid="{{$user->id}}"> </trackchart>
+                  </div>
+                @endforeach
+              </div>
+>>>>>>> fedc34ff3788ef3e79c0df4e316cab25188e7712
             </div>
           </div>
         </div>
       </div>
+<<<<<<< HEAD
     </div>
   <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
+=======
+  <div class="row p-2 justify-content-center w-100 bg-white mt-3" style="font-size: 1.5em; font-weight: 700;">
+>>>>>>> fedc34ff3788ef3e79c0df4e316cab25188e7712
     <div class="w-100" id="accordion2">
-      <div class="col-12" >
+      <div class="col-12 d-flex justify-content-center" >
         <h5>
           <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
           <span style="">Teamübersicht 1&1 Retention Mobile</span>
@@ -190,6 +217,7 @@
     </div>
   </div>
 </div>
+<<<<<<< HEAD
   <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
     <div class="w-100" id="accordion2">
       <div class="col-12" >
@@ -243,6 +271,8 @@
   </div>
 </div>
 
+=======
+>>>>>>> fedc34ff3788ef3e79c0df4e316cab25188e7712
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bg-danger text-white" >

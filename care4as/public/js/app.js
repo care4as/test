@@ -2776,7 +2776,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var currentdate = new Date();
       var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds(); // axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
 
-      axios.get('http://' + host + '/users/getTracking' + department).then(function (response) {
+      axios.get('http://' + host + '/users/getTracking/' + department).then(function (response) {
         if (response.data) {
           console.log(response.data);
           var currentdate = new Date();
