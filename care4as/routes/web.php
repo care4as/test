@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
+
+
 Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
 Route::get('/messageOfTheDay', function()
 {
   return view('messageOfTheDay');
 })->name('dailyMessage');
-
 
 Route::group(['middleware' => ['auth']], function () {
 
@@ -62,7 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
   //endcancels
   //offlineTracking
   Route::get('/offlineTracking', 'OfflineCancelController@create')->name('offlinetracking.view.agent')->middleware('hasRight:createCancels');
-  Route::get('/offlineTracking/index', 'CancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
+  Route::get('/offlineTracking/index', 'OfflineCancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
   Route::post('/offlineTracking/save', 'OfflineCancelController@store')->name('offlineTracking.save')->middleware('hasRight:createCancels');
   //end offlinetracking
 
@@ -177,11 +178,11 @@ Route::group(['middleware' => ['auth']], function () {
           'user_id' => $user->id,
         ]);
     }
-    return redirect()->route('reports.reportHours.view')>middleware('hasRight:importReports');
+    return redirect()->route('reports.reportHours.view');
 
   })->name('hoursreport.sync')->middleware('hasRight:importReports');
 
-  Route::view('/reports', 'reports')->name('reports.choose')->middleware('hasRight:importReports');
+  Route::view('/reports', 'reports')->name('reports.choose');
   //ssetracking
   Route::view('/report/ssetracking','reports.sseTracking')->name('ssetracking.view')->middleware('hasRight:importReports');
 
@@ -189,33 +190,36 @@ Route::group(['middleware' => ['auth']], function () {
   Route::view('/report/capacitysuite','reports.CapacityReport')->name('reports.capacitysuite')->middleware('hasRight:importReports');
   Route::post('/report/capacitysuite/post','ReportController@capacitysuiteReport')->name('reports.capacitysuite.post')->middleware('hasRight:importReports');
   // end capacity suite report
+
   Route::post('/report/ssetracking/post','ExcelEditorController@sseTrackingUpload')->name('reports.ssetracking.upload')->middleware('hasRight:importReports');
   Route::get('/report/intermediate/sync','ReportController@getIntermediate')->name('reports.intermediate.sync')->middleware('hasRight:importReports');
-  //end ssetracking
+
+    //end ssetracking
 
   //end Report Routes
 
   //config routes
-    Route::get('/config/app', 'Configcontroller@index')->name('config.view')->middleware('hasRight:config');
-    Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config');
-    Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config');
-    Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
-    Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
-    Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config');
-    Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config');
-    Route::get('/config/deactivateIntervallMailDSL', 'Configcontroller@deactivateIntermediateMailDSL')->name('config.deactivateIntermediateMail.dsl')->middleware('hasRight:config');
-    Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
-    Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config');
-  //endconfig
+  Route::get('/config/app', 'Configcontroller@index')->name('config.view')->middleware('hasRight:config');
+  Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config');
+  Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config');
+  Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
+  Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
+  Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config');
+  Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config');
+  Route::get('/config/deactivateIntervallMailDSL', 'Configcontroller@deactivateIntermediateMailDSL')->name('config.deactivateIntermediateMail.dsl')->middleware('hasRight:config');
+  Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
+  Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config');
 
+  //endconfig
   //roles and rights
     Route::get('/roles/index', 'RolesController@index')->name('roles.index')->middleware('hasRight:createRole');
     Route::get('/role/show/{id}', 'RolesController@show')->name('role.show')->middleware('hasRight:changeRole');
     Route::post('/roles/save', 'RolesController@store')->name('role.save')->middleware('hasRight:createRole');
     Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete')->middleware('hasRight:createRole');
-    Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update')->middleware('hasRight:changeRole');
-  //end Roles & Rights
 
+    Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update')->middleware('hasRight:changeRole');
+
+  //end Roles & Rights
   //start Mabelgründe
   Route::get('/mabel/Form', 'MabelController@create')->name('mabelcause.create')->middleware('hasRight:createMabel');
   Route::post('/mabel/index/filtered', 'MabelController@showThemAllFiltered')->name('mabelcause.index.filtered')->middleware('hasRight:indexMabel');
@@ -236,21 +240,20 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/survey/attend', 'SurveyController@attend')->name('survey.user.post')->middleware('hasRight:attendSurvey');
   Route::get('/survey/deleteQuestion/{surveyid}/{questionid}', 'SurveyController@deleteQuestionFromSurvey')->name('survey.delete.question')->middleware('hasRight:createSurvey');
   Route::get('/survey/changeStatus/{action}/{id}', 'SurveyController@changeStatus')->name('survey.changeStatus')->middleware('hasRight:createSurvey');
-  //end q&s
+  //
 
   // tracking routes
   Route::get('/trackEvent/{action}/{division}/{type}/{operator}', 'UserTrackingController@trackEvent')->name('user.trackEvent')->middleware('hasRight:dashboard');
   //end tracking routes
 
-//feedback
+  //feedback
   Route::get('/feedback/print', 'FeedbackController@print')->name('feedback.print');
   Route::get('/feedback/view', 'FeedbackController@create11')->name('feedback.view');
   Route::get('/feedback/index', 'FeedbackController@index')->name('feedback.myIndex');
   Route::post('/feedback/update', 'FeedbackController@update')->name('feedback.update');
   Route::get('/feedback/show/{id}', 'FeedbackController@show')->name('feedback.show');
   Route::post('/feedback/fill', 'FeedbackController@store')->name('feedback.store');
-  //endfeedback
-
+  //
   Route::post('/callbackcauses', 'CallbackController@store')->name('callback.save');
   //trainings
   Route::get('/trainings/offers', function(){
@@ -258,15 +261,17 @@ Route::group(['middleware' => ['auth']], function () {
   }
   )->name('trainings');
 
-//endtrainings
+  //endtrainings
 
-//eobmail
+  //eobmail
   Route::get('/eobmail', 'MailController@eobmail')->name('eobmail');
+
   Route::post('/eobmail/send', 'MailController@eobMailSend')->name('eobmail.send');
   Route::post('/eobmail/comment', 'MailController@storeComment')->name('eobmail.note.store');
   Route::post('/eobmail/FaMailStoreKPIs', 'MailController@FaMailStoreKPIs')->name('eobmail.kpi.store');
   Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
-//endeobmail
+
+  //endeobmail
 
   //Presentation
     Route::get('/presentation', 'HomeController@presentation')->name('presentation');
@@ -283,21 +288,14 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/offers/JSON', 'OfferController@OffersInJSON')->name('offers.inJSON');
   Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');
   Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');
+
 //endoffers
+
 Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
+
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking');
 
-Route::get('/test', function(){
 
-  $server='';
-  $username ='';
-  $password ='';
-
-  imap_open( "{server.example.com:143}INBOX" , 'login' , 'password' );
-
-  $headers = imap_headers($mbox);
-  $text = imap_fetchbody($mbox, $no, 1);
-
-})->name('test');
+Route::get('/test', 'UserController@getTimesData')->name('test');
