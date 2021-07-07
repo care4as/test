@@ -24,9 +24,15 @@ function toggleSidebar()
     newOldWidth = 'calc(100% - 260px)';
     content.style.width = newOldWidth
   }
-
 }
-
+function showDetails(id)
+{
+  $("#details"+id).css('display','block')
+}
+function hide(el)
+{
+  el.style.display = 'none'
+}
 function getAHT(date1,date2)
 {
   let loader = document.querySelector('.loader')
@@ -68,6 +74,81 @@ function printPage()
           closeNav()
       }
   }
+  function rotateButton(){
+
+    var button = $("#LexikaButton");
+
+    if(button.hasClass('rotateButton'))
+    {
+      button.addClass('rotateBack')
+      button.removeClass('rotateButton')
+    }
+    else {
+      button.addClass("rotateButton");
+      button.removeClass('rotateBack')
+    }
+
+    $('.Lexika').toggle()
+
+  }
+  function loadData(path,el, elpop){
+
+    let host = window.location.host;
+
+    axios.get('http://'+host+'/care4as/care4as/public/reports/'+path)
+
+    // axios.get('http://'+host+'/reports/' + path)
+    .then(response => {
+
+      // console.log(response)
+      let min = response.data[0]
+      let max = response.data[1]
+
+      // let element = $('#RDDataStatus')
+      let element = $(el)
+
+      // $('.loadingerRD').toggle()
+      $(elpop).toggle()
+
+      element.css( 'display','block')
+
+      if (elpop == '.loadingerRD') {
+        element.html('Retention-Details von '+min+' bis: '+max)
+      }
+      else if (elpop == '.loadingerHR') {
+          element.html('Stundenreport von '+min+' bis: '+max)
+      }
+      else if (elpop == '.loadingerOptin') {
+        element.html('Optin von '+min+' bis: '+max)
+      }
+      else if (elpop == '.loadingerSAS') {
+        element.html('SAS von '+min+' bis: '+max)
+      }
+      else if(elpop == '.loadingerDA') {
+        element.html('Daily Agent von '+min+' bis: '+max)
+      }
+
+    })
+    .catch(function (err) {
+      if (elpop == '.loadingerRD') {
+        console.log('error DataStatus RetentionDetail')
+      }
+      else if (elpop == '.loadingerHR') {
+        console.log('error DataStatus Stundenreport')
+      }
+      else if (elpop == '.loadingerOptin') {
+        console.log('error DataStatus Optin')
+      }
+      else if (elpop == '.loadingerSAS') {
+        console.log('error DataStatus SAS')
+      }
+      else if(elpop == '.loadingerDA') {
+        console.log('error DataStatus Daily Agent')
+      }
+
+      console.log(err.response);
+    });
+  }
   function showChart(type,userid) {
 
       var start = moment().subtract(29, 'days');
@@ -99,8 +180,8 @@ function printPage()
             $('#loaderDiv').css('display','block')
 
             // console.log($('#loaderDiv'));
-            // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-           axios.get('http://'+host+'/user/salesdataDates',
+            axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
+           // axios.get('http://'+host+'/user/salesdataDates',
            {
              params: {
                start: start.format('Y-MM-DD'),
@@ -271,7 +352,7 @@ function printPage()
                     $('#loaderDiv').css('display','none')
                })
              .catch(function (err) {
-               
+
                $('#loaderDiv').css('display','none')
                console.log(err);
                $('#failContent').html('Fehler: '+ err.response.data.message)
@@ -282,8 +363,7 @@ function printPage()
              })
           }
         }
-
-      $('#reportrange').daterangepicker({
+        $('#reportrange').daterangepicker({
           startDate: start,
           endDate: end,
           ranges: {
@@ -295,4 +375,5 @@ function printPage()
              'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
           }
       }, cb);
+
   };

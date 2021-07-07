@@ -10,6 +10,7 @@ use App\User;
 use App\DailyAgent;
 use App\Hoursreport;
 use App\SAS;
+use App\OptIn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
@@ -383,15 +384,12 @@ class ReportController extends Controller
       if ($request->oAQ) {
         $otherabsencequota = $request->oAQ/100;
       }
-
       $oparray = array();
-
       $headarray = array(
         'target_date',
         'duration_days',
         'workgroup_name',
         'agent_id',
-        'agent_login_name',
         'contract_leaving_date',
         'heads',
         'new_in_contract_heads',
@@ -424,19 +422,19 @@ class ReportController extends Controller
       $users = DB::connection('mysqlkdw')
       ->table('MA')
       ->where('projekt_id', $department)
-      ->whereNull('austritt')
+      ->where(function ($query) {
+        $query->where('austritt','>',Carbon::today())
+        ->orWhere('austritt', null);
+      })
       ->whereNotNull('ext_reference_1')
       ->orderBy('familienname','ASC')
       ->get();
 
-
       // $users = App\User::all();
-      // dd($users);
+      dd($users->where('vorname','Jessica'));
 
       $oparray[] = $headarray;
-
       for ($i=0; $i <= $diff_in_days + 1; $i++) {
-
         if ($i == 0) {
           $day = $from->copy()->subDays(1)->format('d.m.Y');
         }
@@ -446,17 +444,13 @@ class ReportController extends Controller
         else {
           $day = $from->copy()->addDays($i-1)->format('d.m.Y');
         }
-
         foreach($users as $user)
         {
           if($user->soll_h_day)
           {
-
             $valuearray = array();
-
             $valuearray[] = $day;
             $valuearray[] = 1;
-
             if ($user->projekt_id == 7) {
 
               $valuearray[] = 'WG_CARE4AS_SL_RETENTIONMOBILE_I';
@@ -465,18 +459,20 @@ class ReportController extends Controller
 
               $valuearray[] = 'WG_CARE4AS_FL_RETENTIONDSL_I';
             }
-
             $valuearray[] = $user->ds_id;
+            // this is the field for the username,
             $valuearray[] = $user->ext_reference_1;
-            $valuearray[] = null;
+            // $valuearray[] = null;
+            // this is the field for the
+            $valuearray[] = $user->austritt;
             $valuearray[] = 1;
             $valuearray[] = 0;
             $valuearray[] = 0;
             $valuearray[] = 0;
-            $valuearray[] = 0;
-            $valuearray[] = $user->soll_h_day*5;
-            $valuearray[] = $user->soll_h_day*4;
-            $valuearray[] = $user->soll_h_day*6;
+            //
+            $valuearray[] = $user->soll_h_day;
+            $valuearray[] = $user->soll_h_day-2;
+            $valuearray[] = $user->soll_h_day+1;
 
             //staffed_hours
             $valuearray[] = $user->soll_h_day;
@@ -553,6 +549,6 @@ class ReportController extends Controller
     }
     public function OptinStatus()
     {
-      return array($min = Carbon::parse(Optin::min('date'))->format('d.m.Y'), $max= Carbon::parse(Optin::max('date'))->format('d.m.Y'));
+      return array($min = Carbon::parse(OptIn::min('date'))->format('d.m.Y'), $max= Carbon::parse(OptIn::max('date'))->format('d.m.Y'));
     }
 }

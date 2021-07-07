@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
 
 <style>
+.borders-roundedlight
+{
+  border-radius: 15px;
+}
     .header{
         position:sticky;
         top: 0 ;
@@ -57,15 +61,15 @@
 
 @section('content')
 
-<div class="container-fluid m-1" id="app">
-  <div class="row">
+<div class="container-fluid m-1 " id="app">
+  <div class="row  m-1 bg-light borders-roundedlight">
     <div class="col">
       <div class="row">
           <ptable> </ptable>
           </div>
         </div>
       </div>
-      <div class="row bg-white shadow m-1" id="filtermenu">
+      <div class="row bg-white shadow m-1 borders-roundedlight" id="filtermenu">
         <div class="w-100" id="accordion">
           <div class="col-12 d-flex justify-content-center align-self-center">
             <h5><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor:pointer;">
@@ -105,6 +109,33 @@
         </form>
       </div>
       </div>
+<<<<<<< HEAD
+      <div class="row bg-light p-2 justify-content-center w-100 borders-roundedlight">
+        <div class="w-100" id="accordion1">
+          <div class="col-12">
+            <h5><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
+              Userdashboard
+              <span class="material-icons">
+                expand_more
+                </span>
+            </a></h5>
+          </div>
+          <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
+          <div class="col-12">
+            <div class="row">
+              @foreach($users as $user)
+                <div class="col-designed m-3 p-1 border bg-white rounded shadow">
+                  <h5>{{$user->wholeName()}}
+                      <a class="align-items-center" href="{{route('user.stats',['id' => $user->id])}}">
+                        <span class="material-icons">
+                        preview
+                        </span>
+                      </a>
+                    </h5>
+                  <!-- <trackchart :userid="{{$user->id}}"> </trackchart> -->
+                </div>
+              @endforeach
+=======
         <div class="row bg-light p-2 justify-content-center w-100">
           <div class="w-100" id="accordion1">
             <div class="col-12 d-flex justify-content-center">
@@ -125,16 +156,22 @@
                   </div>
                 @endforeach
               </div>
+>>>>>>> fedc34ff3788ef3e79c0df4e316cab25188e7712
             </div>
           </div>
         </div>
       </div>
+<<<<<<< HEAD
+    </div>
+  <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
+=======
   <div class="row p-2 justify-content-center w-100 bg-white mt-3" style="font-size: 1.5em; font-weight: 700;">
+>>>>>>> fedc34ff3788ef3e79c0df4e316cab25188e7712
     <div class="w-100" id="accordion2">
       <div class="col-12 d-flex justify-content-center" >
         <h5>
           <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
-          <span style="">Teamübersicht</span>
+          <span style="">Teamübersicht 1&1 Retention Mobile</span>
           <span class="material-icons">
             expand_more
             </span>
@@ -145,10 +182,10 @@
         <div class="row">
           <p>Verlauf der letzten 5 Tage</p>
         </div>
-        <div class="row justify-content-center repeater" >
+        <div class="row justify-content-center repeater1" >
           @for($i = 1; $i<=5; $i++)
             <div class="col-designed-carousel m-2" style="height: 500px; opacity: 0.4;">
-            <span style="font-size: 1.3em;"></span>Verlauf Teamquote {{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
+            <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
             <div class="d-flex mt-4">
               <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
                 <caption> Axes Example #5 </caption>
@@ -169,12 +206,73 @@
           @endfor
         </div>
         <div class="row justify-content-center">
-          <button type="button" name="button" id="nextButton" class="btn-primary">Vorheriger Tag</button>
+          <div class="col-6 center_items">
+            <button type="button" name="button" id="nextButton" class="btn-primary">Vorheriger Tag</button>
+          </div>
+          <div class="col-6 center_items">
+            <button type="button" name="button" id="prevButton" class="btn-primary">Nächster Tag</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<<<<<<< HEAD
+  <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
+    <div class="w-100" id="accordion2">
+      <div class="col-12" >
+        <h5>
+          <a data-toggle="collapse" data-target="#collapseTeamDash1" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
+          <span style="">Teamübersicht 1&1 Retention DSL</span>
+          <span class="material-icons">
+            expand_more
+            </span>
+        </a></h5>
+      </div>
+      <div id="collapseTeamDash1" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion2">
+      <div class="col-12">
+        <div class="row">
+          <p>Verlauf der letzten 5 Tage</p>
+        </div>
+        <div class="row justify-content-center repeater2" >
+          @for($i = 1; $i<=5; $i++)
+            <div class="col-designed-carousel m-2" style="height: 500px; opacity: 0.4;">
+            <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
+            <div class="d-flex mt-4">
+              <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
+                <caption> Axes Example #5 </caption>
+                <thead>
+                  <tr>
+                    <th scope="col"> Year </th>
+                    <th scope="col"> Progress </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($quotasDSL[Carbon\Carbon::today()->subdays($i)->Format('Y-m-d')] as $key => $data)
+                    <tr><th scope="row"> {{$key}} </th> <td style="--size:{{$data['cr']}};--color: blue; color:white;">{{$data['cr']*100}}%</td></tr>
+                  @endforeach
+                </tbody>
+              </table>
+              </div>
+            </div>
+          @endfor
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-6 center_items">
+            <button type="button" name="button" id="nextButton2" class="btn-primary">Vorheriger Tag</button>
+          </div>
+          <div class="col-6 center_items">
+            <button type="button" name="button" id="prevButton2" class="btn-primary">Nächster Tag</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+=======
+>>>>>>> fedc34ff3788ef3e79c0df4e316cab25188e7712
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bg-danger text-white" >
@@ -194,10 +292,17 @@
 <script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  $('.repeater').slick({
+  $('.repeater1').slick({
     fade: true,
     prevArrow: false,
-    nextArrow: $('#nextButton')
+    nextArrow: $('#nextButton'),
+    prevArrow: $('#prevButton')
+  });
+  $('.repeater2').slick({
+    fade: true,
+    prevArrow: false,
+    nextArrow: $('#nextButton2'),
+    prevArrow: $('#prevButton2')
   });
 });
 

@@ -19,6 +19,13 @@ body
       color:white;
     }
 
+    .center_items
+    {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     label[for="mobile"] {
     cursor: pointer;
     color: black;
@@ -509,6 +516,46 @@ body
 {
   width: 90%;
   height:auto
+}
+.rotateButton
+{
+  /* height: 500px; */
+  animation: rotate-button 3s forwards;
+}
+.rotateBack
+{
+  animation: rotate-reverse-button 3s forwards;
+}
+ @keyframes rotate-button {
+
+  100%
+  {
+    transform: rotate(90deg);
+  }
+}
+ @keyframes rotate-reverse-button {
+
+  0%
+  {
+    transform: rotate(90deg);
+  }
+  100%
+  {
+    transform: rotate(0deg);
+  }
+}
+
+
+.borderwhite
+{
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+.gradientColor
+{
+  background: rgb(250,117,73);
+  background: linear-gradient(144deg, rgba(250,117,73,1) 0%, rgba(250,133,94,0.9864146342130602) 30%, rgba(238,151,123,0.9303922252494747) 75%);
+  color:white !important;
 }
 #previewContainer
 {

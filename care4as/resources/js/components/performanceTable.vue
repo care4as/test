@@ -1,6 +1,5 @@
 <template>
-    <div class="container-fluid bg-light">
-
+    <div class="container-fluid ">
       <div class="p-0 readabilitysuperior">
       <div class="row ">
         <div class="col">
