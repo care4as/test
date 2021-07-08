@@ -494,10 +494,6 @@
             <th>Portal CR</th>
             <th>SaS</th>
             <th>OptIn</th>
-
-            <!-- <th>Upgrades</th>
-            <th>Sidegrades</th>
-            <th>Downgrades</th> -->
             <th>Umsatz</th>
             <th>Umsatz/h bez</th>
             <th>Umsatz/h prod</th>
@@ -511,7 +507,6 @@
           <tr>
             <td class="bg-dark text-white" style="width: auto; ">{{$user->id}}</td>
             <td class="bg-dark text-white" style="text-align: left;">{{$user->surname}} {{$user->lastname}}</td>
-            <!-- <td>{{$user->name}}</td> -->
             <td>
               {{$user->salesdata['aht']}}
             </td>
@@ -557,10 +552,10 @@
               @else
               <td>0</td>
             @endif
-            <td>{{$user->salesdata['sscOrders']}}</td>
-            <td>{{$user->salesdata['bscOrders']}}</td>
-            <td>{{$user->salesdata['portalOrders']}}</td>
-              <td>{{$user->salesdata['ssesaves']}}</td>
+            <td data-order="{{$user->salesdata['sscOrders']}}">{{$user->salesdata['sscOrders']}}</td>
+            <td data-order="{{$user->salesdata['bscOrders']}}">{{$user->salesdata['bscOrders']}}</td>
+            <td data-order="{{$user->salesdata['portalOrders']}}">{{$user->salesdata['portalOrders']}}</td>
+            <td data-order="{{$user->salesdata['ssesaves']}}">{{$user->salesdata['ssesaves']}}</td>
             @if($user->salesdata['workedHours'] != 0)
               @if($user->department == '1&1 DSL Retention')
                 <td>{{round($user->salesdata['ssesaves']/($user->salesdata['workedHours']),2)}}</td>
@@ -581,12 +576,8 @@
             <td data-order="{{$user->salesdata['sscQuota']}}">{{$user->salesdata['sscQuota']}}%</td>
             <td data-order="{{$user->salesdata['bscQuota']}}">{{$user->salesdata['bscQuota']}}%</td>
             <td data-order="{{$user->salesdata['portalQuota']}}">{{$user->salesdata['portalQuota']}}%</td>
-            <td>{{$user->sasquota}}</td>
-            <td>{{$user->optinQuota}}%</td>
-
-            <!-- <td>{{$user->gevo->where('change_cluster','Upgrade')->count()}}</td>
-            <td>{{$user->gevo->where('change_cluster','Sidegrade')->count()}}</td>
-            <td>{{$user->gevo->where('change_cluster','Downgrade')->count()}}</td> -->
+            <td data-order="{{$user->sasquota}}">{{$user->sasquota}}</td>
+            <td data-order="{{$user->optinQuota}}">{{$user->optinQuota}}%</td>
             <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
             @if($user->salesdata['workedHours'] != 0)
               <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
@@ -636,10 +627,6 @@
           <td id="portalCrAVG">21</td>
           <td id="sas">22</td>
           <td id="optin">23</td>
-
-          <!-- <td id="upgrade">25</td>
-          <td id="downgrade">26</td>
-          <td id="sidegrade">27</td> -->
           <td id="revenue">28</td>
           <td id="revenuePerHourPayedAVG">29</td>
           <td id="revenuePerHourProductiveAVG">30</td>
@@ -671,6 +658,18 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
+
+    loadData('dailyAgentDataStatus','#dailyagentData','.loadingerDA')
+
+    loadData('SASStatus','#SASDataStatus','.loadingerSAS')
+
+    loadData('OptinStatus','#OptinDataStatus','.loadingerOptin')
+
+    loadData('HRDataStatus','#HoursreportData', '.loadingerHR')
+
+    loadData('RDDataStatus','#RDDataStatus', '.loadingerRD')
+
+
     let table = $('#tableoverview').DataTable({
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -711,7 +710,6 @@
             $(api.column( 5 ).footer() ).html('<b>'+Math.round(api.column(5).data().sum()) +'h</b>')
             $(api.column( 6 ).footer() ).html('<b>'+getQuota(6).toFixed(2)+'%</b>')
             $(api.column( 7 ).footer() ).html('<b>'+getQuota(7).toFixed(2)+'%</b>')
-            //savescolumn
             $(api.column( 8 ).footer() ).html('<b>'+Math.round(api.column(8).data().sum()) +'</b>')
             $(api.column( 9 ).footer() ).html('<b>'+Math.round(api.column(9).data().sum()) +'</b>')
             $(api.column( 10 ).footer() ).html('<b>'+Math.round(api.column(10).data().average()) +'</b>')
@@ -734,7 +732,8 @@
             $(api.column( 27 ).footer() ).html('<b>'+Math.round(api.column(27).data().sum()) +'</b>')
             $(api.column( 28 ).footer() ).html('<b>'+Math.round(api.column(28).data().sum()) +'</b>')
             $(api.column( 29 ).footer() ).html('<b>'+getQuota(29).toFixed(2)+'%</b>')
-            $(api.column( 30 ).footer() ).html('<b> Total</b>')
+            $(api.column( 30 ).footer() ).html('<b> test</b>')
+            $(api.column( 31 ).footer() ).html('<b> Total</b>')
           },
           select: true,
           dom: 'Blfrtip',
@@ -743,11 +742,9 @@
               ['10', '25', '50 ', '100']
           ],
           buttons: [
-
                   { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' },
                   { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' },
                   // 'excel',
-
               ],
       rowReorder: true,
       colReorder: true,
@@ -756,7 +753,7 @@
       scrollCollapse: true,
       fixedColumns:   {
             leftColumns: 2,
-            rightColumns: 1,
+            // rightColumns: 1,
         },
 
         fnInitComplete: function(){
@@ -789,41 +786,43 @@
                   // table.colReorder.reset();
                   table.columns().visible( false );
 
-                  table.columns([0,1,3,31,32,4,6,7,9,10,8,24,18,22,23,29,30,33]).visible( true );
+                  table.columns([0,1,3,4,30,29,6,7,8,9,15,16,17,24,25,27,31]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-                  table.colReorder.order([0,1,3,31,32,4,6,7,9,10,8,24,18,22,23,29,30,33]);
+
+                  table.colReorder.order([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,27,31]);
+                  // table.colReorder.order([0,1,3,31,32,4,6,7,9,10,8,24,18,22,23,29,30]);
                   // table.colReorder.order( [0,1,3,4,31,32,5,7,9,10,8,17,18,23,24,25,27],true);
                   break;
                 case 'crview':
                   table.colReorder.reset();
                   table.columns().visible( false );
-                  table.columns([0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,33]).visible( true );
+                  table.columns([0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-                  table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,33]);
+                  table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]);
                   // table.columns.adjust().draw();
                 break;
                 case 'timesview':
                   table.colReorder.reset();
                   table.columns().visible( false );
-                  table.columns([0,1,2,3,4,5,6,7,10,29,30,33]).visible( true );
+                  table.columns([0,1,2,3,4,5,6,7,10,29,30]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-                  table.colReorder.order( [0,1,2,3,4,5,6,7,10,29,30,33]);
+                  table.colReorder.order( [0,1,2,3,4,5,6,7,10,29,30]);
                   // table.columns.adjust().draw();
                 break;
                 case 'revenueview':
                   table.colReorder.reset();
                   table.columns().visible( false );
-                  table.columns([0,1,22,23,24,25,26,27,28,29,30,33]).visible( true );
+                  table.columns([0,1,22,23,24,25,26,27,28,29,30]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-                  table.colReorder.order( [0,1,28,29,30,27,26,25,24,22,23,33]);
+                  table.colReorder.order( [0,1,28,29,30,27,26,25,24,22,23]);
                   // table.columns.adjust().draw();
                 break;
               }
@@ -833,17 +832,6 @@
             });
           });
         }
-
-        loadData('dailyAgentDataStatus','#dailyagentData','.loadingerDA')
-
-        loadData('SASStatus','#SASDataStatus','.loadingerSAS')
-
-        loadData('OptinStatus','#OptinDataStatus','.loadingerOptin')
-
-        loadData('HRDataStatus','#HoursreportData', '.loadingerHR')
-
-        loadData('RDDataStatus','#RDDataStatus', '.loadingerRD')
-
         $('#department').change(function() {
 
           $('#exampleFormControlSelect2').empty()

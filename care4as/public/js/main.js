@@ -91,8 +91,10 @@ function printPage()
     $('.Lexika').toggle()
 
   }
-  function loadData(path,el, elpop){
+  function loadData(path,el, elpop)
+  {
 
+    console.log(path)
     let host = window.location.host;
 
     axios.get('http://'+host+'/care4as/care4as/public/reports/'+path)
@@ -149,6 +151,7 @@ function printPage()
       console.log(err.response);
     });
   }
+
   function showChart(type,userid) {
 
       var start = moment().subtract(29, 'days');
