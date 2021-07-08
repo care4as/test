@@ -22,7 +22,6 @@ export default {
     }
   },
   mounted() {
-
       var self = this;
       console.log('Tracker Component mounted.')
       this.getUserData(this.userid)
@@ -33,7 +32,7 @@ export default {
   },
   methods:{
     createChart(chartId, chartData) {
-
+    console.log('test')
     const ctx = document.getElementById(chartId);
     const myChart = new Chart(ctx, {
       type: 'bar',

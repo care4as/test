@@ -97,9 +97,10 @@ function printPage()
     console.log(path)
     let host = window.location.host;
 
-    axios.get('http://'+host+'/care4as/care4as/public/reports/'+path)
+    // axios.get('http://'+host+'/care4as/care4as/public/reports/'+path)
 
-    // axios.get('http://'+host+'/reports/' + path)
+    console.log(path)
+    axios.get('http://'+host+'/reports/'+path)
     .then(response => {
 
       // console.log(response)
