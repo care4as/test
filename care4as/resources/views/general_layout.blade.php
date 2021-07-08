@@ -67,7 +67,7 @@
               </a>
               <div class="collapse" id="collapseCancel" style="margin-left:50px;">
                 <ul class="list-group list-group-flush" style="list-style-type: none;">
-                <li><a href="{{route('offlinetracking.view.agent')}}">Cancelgründe</a></li>
+                <li><a href="{{route('cancelcauses')}}">Cancelgründe</a></li>
                 <li><a href="{{route('agent.cancels', ['id' => Auth()->user()->id])}}">meine Cancels</a></li>
                 @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
                 <li><a href="{{route('cancels.index')}}">Cancelgründe auswerten</a></li>
