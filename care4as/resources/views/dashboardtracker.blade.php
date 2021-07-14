@@ -131,7 +131,7 @@
                         </span>
                       </a>
                     </h5>
-                  <!-- <trackchart :userid="{{$user->id}}"> </trackchart> -->
+                  <trackchart :userid="{{$user->id}}"> </trackchart>
                 </div>
               @endforeach
             </div>

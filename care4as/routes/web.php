@@ -298,4 +298,7 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking');
 
 
-Route::get('/test', 'UserController@getTimesData')->name('test');
+Route::get('/test', function(){
+
+  $test = App\Intermediate::whereDate('date', Carbon\Carbon::today()->subDays(1))->get();
+})->name('test');
