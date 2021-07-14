@@ -270,9 +270,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/eobmail/comment', 'MailController@storeComment')->name('eobmail.note.store');
   Route::post('/eobmail/FaMailStoreKPIs', 'MailController@FaMailStoreKPIs')->name('eobmail.kpi.store');
   Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
-
   //endeobmail
-
   //Presentation
     Route::get('/presentation', 'HomeController@presentation')->name('presentation');
   //endpresentation
@@ -298,4 +296,6 @@ Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking');
 
 
-Route::get('/test', 'UserController@getTimesData')->name('test');
+Route::get('/test', function(){
+  return 1;
+})->name('test');

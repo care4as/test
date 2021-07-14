@@ -226,6 +226,17 @@ class HomeController extends Controller
               $q->where('date','<=',$end_date);
             }
           }])
+          ->with(['gevo' => function($q) use ($start_date,$end_date){
+            // $q->select(['id','person_id','calls','time_in_state','call_date']);
+            if($start_date !== 1)
+            {
+              $q->where('date','>=',$start_date);
+            }
+            if($end_date !== 1)
+            {
+              $q->where('date','<=',$end_date);
+            }
+            }])
           ->with(['Optin' => function($q) use ($start_date,$end_date){
             if($start_date != 1)
             {
@@ -368,7 +379,6 @@ class HomeController extends Controller
           Carbon::create($year, 12, 25)->toDateString(),
           //zweiter Weihnachstag
           Carbon::create($year, 12, 26)->toDateString(),
-
           //Tag der deutschen Einheit
           Carbon::create($year, 10, 3)->toDateString(),
       ];
@@ -426,7 +436,6 @@ class HomeController extends Controller
         else {
           $AHT =  round(($casetime/ $calls),0);
         }
-
         // $workdays = $reports->count();
         $workedHours = 0;
         $sickHours = 0;
@@ -471,9 +480,7 @@ class HomeController extends Controller
         }
 
         //der Teil zum Stundenreport
-
         $workedHours = $user->hoursReport->sum('work_hours');
-
         //the vacation hours
         $vacationHours = $user->hoursReport->where('state_id',2)->sum('work_hours');
         $pauseHours = $user->hoursReport->sum('pause_hours');
