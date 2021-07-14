@@ -69,50 +69,53 @@
           </div>
         </div>
       </div>
-      <div class="row bg-white shadow m-1 borders-roundedlight" id="filtermenu">
-        <div class="w-100" id="accordion">
-          <div class="col-12 d-flex justify-content-center align-self-center">
-            <h5><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor:pointer;">
-              Filtermenü
-              <span class="material-icons">
-                expand_more
-                </span>
-            </a></h5>
-          </div>
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-            <div class="col-12">
-              <form class="mt-2 w-100" action="{{route('dashboard.admin')}}" method="get">
-                <div class="row m-0 justify-content-center">
-                  <div class="col-8 p-0" style="">
-                    <div class="row m-2 justify-content-center">
-                      <div class="col-4 ml-1 p-0">
-                        <label for="department">Abteilung:</label>
-                        <select class="form-control" name="department" id="department" style="width:218px;">
-                          <option value="" selected disabled>Wähle die Abteilung</option>
-                          <option value="1&1 DSL Retention">1&1 DSL Retention</option>
-                          <option value="1&1 Mobile Retention" >1&1 Mobile Retention</option>
-                        </select>
-                      </div>
-                      <div class="col-4 p-0 mr-2">
-                        <label for="department">Welche MA:</label>
-                        <select multiple class="form-control" name="employees[]" id="employees" style="height: 150px; overflow:scroll;">
-                        </select>
-                      </div>
-                    </div>
-                    <div class="row m-2 justify-content-center">
-                      <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-        </form>
-      </div>
-      </div>
+
       <div class="row bg-light p-2 justify-content-center w-100 borders-roundedlight">
         <div class="w-100" id="accordion1">
           <div class="col-12">
-            <h5><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
+            <div class="row bg-white shadow m-1 borders-roundedlight" id="filtermenu">
+              <div class="w-100" id="accordion">
+                <div class="col-12 d-flex justify-content-center align-self-center">
+                  <h5><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor:pointer;">
+                    Filtermenü
+                    <span class="material-icons">
+                      expand_more
+                      </span>
+                  </a></h5>
+                </div>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div class="col-12">
+                    <form class="mt-2 w-100" action="{{route('dashboard.admin')}}" method="get">
+                      <div class="row m-0 justify-content-center">
+                        <div class="col-8 p-0" style="">
+                          <div class="row m-2 justify-content-center">
+                            <div class="col-4 ml-1 p-0">
+                              <label for="department">Abteilung:</label>
+                              <select class="form-control" name="department" id="department" style="width:218px;">
+                                <option value="" selected disabled>Wähle die Abteilung</option>
+                                <option value="1&1 DSL Retention">1&1 DSL Retention</option>
+                                <option value="1&1 Mobile Retention" >1&1 Mobile Retention</option>
+                              </select>
+                            </div>
+                            <div class="col-4 p-0 mr-2">
+                              <label for="department">Welche MA:</label>
+                              <select multiple class="form-control" name="employees[]" id="employees" style="height: 150px; overflow:scroll;">
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row m-2 justify-content-center">
+                            <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              </form>
+            </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <h5 class="text-center"><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
               Userdashboard
               <span class="material-icons">
                 expand_more
