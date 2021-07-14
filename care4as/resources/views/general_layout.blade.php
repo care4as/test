@@ -97,7 +97,9 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 @if(in_array('createUser',Auth()->user()->getRights()))
                   <li><a href="{{route('user.create')}}">User anlegen</a></li>
-                  <li><a href="{{route('user.startEnd')}}">MA Eintritt/Austritt</a></li>
+                  @if(Auth()->user()->role == "superadmin"))
+                    <li><a href="{{route('user.startEnd')}}">MA Daten</a></li>
+                  @endif
                 @endif
                   <li><a href="{{route('user.index')}}">User Index</a></li>
 
