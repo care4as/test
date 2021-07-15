@@ -236,16 +236,11 @@ class UserController extends Controller
     {
       $user = Auth()->user();
       $user->load('TrackingToday');
-      // dd();
-      // if($tracking = Tracking::where('user_id', $user->id)->whereDate('updated_at', '=', Support\Carbon::today())->first())
-      // {
-      //
-      // }
-      // else
-      // {
-      //   $tracking = new Tracking;
-      // }
-      return view('dashboard',compact('user'));
+      $user->load('retentionDetails');
+
+      // $retentionDetails = $user->retentionDetails;
+      $retentionDetails = (new Collection($user->retentionDetails->sortByDesc('call_date')));
+      return view('dashboard',compact('user','retentionDetails'));
     }
 
     public function Scorecard($id)
@@ -309,7 +304,6 @@ class UserController extends Controller
       if ($user->retentionDetails->sum('calls_smallscreen') != 0) {
 
         $averageSSCCR = round($user->retentionDetails->sum('orders_smallscreen') *100 / $user->retentionDetails->sum('calls_smallscreen'),2);
-
       }
       else {
         $averageSSCCR = 0;

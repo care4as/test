@@ -729,10 +729,52 @@
     </div>
   </div>
 </div>
+<div class="container bg-white" style="width: 75vw; font-size: 0.9em;">
+  <h2>Meine Saves</h2>
+
+  <table class="table table-striped" id="retentiontable">
+    <thead>
+      <tr>
+        <th>Datum</th>
+        <th>Calls</th>
+        <th>SSC Calls</th>
+        <th>BSC Calls</th>
+        <th>Portal Calls</th>
+        <th>Saves</th>
+        <th>SSC Saves</th>
+        <th>BSC Saves</th>
+        <th>Portal Saves</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($retentionDetails as $save)
+      <tr>
+        <td>{{$save->call_date->format('d.m.Y')}}</td>
+        <td>{{$save->calls}}</td>
+        <td>{{$save->calls_smallscreen}}</td>
+        <td>{{$save->calls_bigscreen}}</td>
+        <td>{{$save->calls_portale}}</td>
+        <td>{{$save->orders}}</td>
+        <td>{{$save->orders_smallscreen}}</td>
+        <td>{{$save->orders_bigscreen}}</td>
+        <td>{{$save->orders_portale}}</td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+
+</div>
 @endsection
 @section('additional_js')
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
 <script>
   $(document).ready(function() {
+
+    let table = $('#retentiontable').DataTable({
+      ordering: true,
+      "columnDefs" : [{"targets": 1, "type":"date-eu"}],
+    })
 
     $(function () {
     $('[data-toggle="popover"]').popover()
@@ -771,6 +813,7 @@
     var data = data_division+'/'+data_type
     $('#type_division').val(data);
   })
+
   });
 </script>
 @endsection
