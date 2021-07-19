@@ -24,7 +24,14 @@ Route::get('/messageOfTheDay', function()
 
 Route::group(['middleware' => ['auth']], function () {
 
+  Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool')->middleware('hasRight:importReports');
+  Route::get('/telefonica/getIntoPause', 'PauseController@getIntoPause')->name('getIntoPause')->middleware('hasRight:importReports');
+  Route::get('/telefonica/getOutOfPause', 'PauseController@getOutOfPause')->name('getOutOfPause')->middleware('hasRight:importReports');
+  Route::get('/telefonica/getUsersInPause', 'PauseController@getUsers')->name('getUsersInPause')->middleware('hasRight:importReports');
+
+
   Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
+
   Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin');
   //users
   Route::get('/create/user', 'UserController@create')->name('user.create')->middleware('hasRight:createUser');
@@ -272,7 +279,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
   //endeobmail
   //Presentation
-    Route::get('/presentation', 'HomeController@presentation')->name('presentation');
+    Route::get('/presentation', 'HomeController@presentation')->name('presentation')->middleware('hasRight:importReports');;
   //endpresentation
 });
 

@@ -2555,6 +2555,107 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pausetracker.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pausetracker.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      users: [1, 2, 3]
+    };
+  },
+  mounted: function mounted() {
+    console.log('PauseTool mounted.');
+    var self = this;
+    console.log('ptable Component mounted.');
+    self.getUsers();
+    this.timer = setInterval(function () {
+      self.getUsers();
+    }, 1000);
+  },
+  methods: {
+    getUsers: function getUsers() {
+      var _this = this;
+
+      var host = window.location.host;
+      axios.get('http://' + host + '/care4as/care4as/public/telefonica/getUsersInPause') // axios.get('http://'+host+'/telefonica/getIntoPause')
+      .then(function (response) {
+        console.log(response.data);
+        _this.users = response.data;
+      })["catch"](function (err) {
+        console.log('error');
+        console.log(err);
+      });
+    },
+    goIntoPause: function goIntoPause() {
+      var host = window.location.host;
+      axios.get('http://' + host + '/care4as/care4as/public/telefonica/getIntoPause') // axios.get('http://'+host+'/telefonica/getIntoPause')
+      .then(function (response) {
+        console.log(response.data);
+
+        if (response.data == "du bist schon in Pause") {
+          $('#failContent').text(response.data);
+          $('#failModal').modal('show');
+        } else if (response.data.includes("angenehme Pause")) {
+          $('#smodaltext').text(response.data);
+          $('#successModal').modal('show');
+        } else {
+          $('#failContent').text('zuviele Leute in Pause');
+          $('#failModal').modal('show');
+        }
+      })["catch"](function (err) {
+        console.log('error');
+        console.log(err.response);
+      });
+    },
+    getOutOfPause: function getOutOfPause() {
+      var host = window.location.host;
+      axios.get('http://' + host + '/care4as/care4as/public/telefonica/getOutOfPause') // axios.get('http://'+host+'/telefonica/getOutOfPause')
+      .then(function (response) {
+        console.log('test');
+      })["catch"](function (err) {
+        console.log('error');
+        console.log(err.response);
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/performanceTable.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/performanceTable.vue?vue&type=script&lang=js& ***!
@@ -81340,6 +81441,81 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pausetracker.vue?vue&type=template&id=2aa54f4d&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pausetracker.vue?vue&type=template&id=2aa54f4d& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("h2", [_vm._v("Wer ist in Pause?")]),
+        _vm._v(" "),
+        _c(
+          "table",
+          { staticClass: "table" },
+          _vm._l(_vm.users, function(user) {
+            return _c("tr", [
+              _c("td", [_vm._v(_vm._s(user.surname))]),
+              _vm._v(" "),
+              _c("td", [_vm._v("Zeit")])
+            ])
+          }),
+          0
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row center_items" }, [
+      _c("div", { staticClass: "col-6 center_items" }, [
+        _c(
+          "button",
+          {
+            attrs: { type: "button", name: "button" },
+            on: {
+              click: function($event) {
+                return _vm.goIntoPause()
+              }
+            }
+          },
+          [_vm._v("In Pause gehen!")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-6 center_items" }, [
+        _c(
+          "button",
+          {
+            attrs: { type: "button", name: "button" },
+            on: {
+              click: function($event) {
+                return _vm.getOutOfPause()
+              }
+            }
+          },
+          [_vm._v("Pause beendet")]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/performanceTable.vue?vue&type=template&id=02a16e6e&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/performanceTable.vue?vue&type=template&id=02a16e6e& ***!
@@ -93931,6 +94107,7 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 Vue.component('simulator', __webpack_require__(/*! ./components/TrainingsSimulator.vue */ "./resources/js/components/TrainingsSimulator.vue")["default"]);
 Vue.component('trackchart', __webpack_require__(/*! ./components/Tracker.vue */ "./resources/js/components/Tracker.vue")["default"]);
 Vue.component('ptable', __webpack_require__(/*! ./components/performanceTable.vue */ "./resources/js/components/performanceTable.vue")["default"]);
+Vue.component('ptool', __webpack_require__(/*! ./components/pausetracker.vue */ "./resources/js/components/pausetracker.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -94213,6 +94390,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/pausetracker.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/pausetracker.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _pausetracker_vue_vue_type_template_id_2aa54f4d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pausetracker.vue?vue&type=template&id=2aa54f4d& */ "./resources/js/components/pausetracker.vue?vue&type=template&id=2aa54f4d&");
+/* harmony import */ var _pausetracker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pausetracker.vue?vue&type=script&lang=js& */ "./resources/js/components/pausetracker.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _pausetracker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _pausetracker_vue_vue_type_template_id_2aa54f4d___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _pausetracker_vue_vue_type_template_id_2aa54f4d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/pausetracker.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/pausetracker.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/pausetracker.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_pausetracker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./pausetracker.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pausetracker.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_pausetracker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/pausetracker.vue?vue&type=template&id=2aa54f4d&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/pausetracker.vue?vue&type=template&id=2aa54f4d& ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pausetracker_vue_vue_type_template_id_2aa54f4d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./pausetracker.vue?vue&type=template&id=2aa54f4d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pausetracker.vue?vue&type=template&id=2aa54f4d&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pausetracker_vue_vue_type_template_id_2aa54f4d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pausetracker_vue_vue_type_template_id_2aa54f4d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/performanceTable.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/performanceTable.vue ***!
@@ -94318,8 +94564,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\care4as\care4as\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\care4as\care4as\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Program Files\XAMPP\htdocs\care4as\care4as\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Program Files\XAMPP\htdocs\care4as\care4as\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

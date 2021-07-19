@@ -395,7 +395,8 @@
 
         <div class="modal-body">
           <h5>Triumph!</h5>
-          <p>Die Datei wurde erfolgreich hochgeladen &#129321;&#129321;&#129321;</p>
+          <p id="smodaltext">Die Datei wurde erfolgreich hochgeladen &#129321;&#129321;&#129321;</p>
+          <!-- <p id="smodaltext"></p> -->
         </div>
 
       </div>

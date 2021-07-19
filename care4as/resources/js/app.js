@@ -25,6 +25,8 @@ Vue.component('simulator', require('./components/TrainingsSimulator.vue').defaul
 Vue.component('trackchart', require('./components/Tracker.vue').default);
 Vue.component('ptable', require('./components/performanceTable.vue').default);
 
+Vue.component('ptool', require('./components/pausetracker.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

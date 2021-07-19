@@ -2,7 +2,35 @@
 
 @section('content')
 <div class="container bg-white" style="width: 75vw; font-size: 0.9em;">
-  <h2>Meine Saves</h2>
+  <h2>Provisionsschätzer</h2>
+  <p><small>die Zahlen sind lediglich geschätzt und können von den finalen Zahlen abweichen</small> </p>
+
+  <table class="table table-striped">
+    <tr>
+      <td>Upgrades</td>
+
+      <td>100</td>
+      <td><input type="text" name="" value=""> </td>
+    </tr>
+    <tr>
+      <td>Sidegrades</td>
+
+      <td>50</td>
+      <td><input type="text" name="" value=""> </td>
+    </tr>
+    <tr>
+      <td>Downgrades</td>
+
+      <td>25</td>
+      <td><input type="text" name="" value=""> </td>
+    </tr>
+    <tr>
+      <td>Calls</td>
+      <td>25</td>
+      <td><input type="text" name="" value=""> </td>
+    </tr>
+  </table>
+  <h2 class="text-center">Meine Saves</h2>
 
   <table class="table table-striped" id="retentiontable">
     <thead>
