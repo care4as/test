@@ -61,6 +61,9 @@ class LoginController extends Controller
         {
           return Redirect()->route('dashboard');
         }
+        elseif (Auth::User()->role == 'TelefonicaAgent') {
+          return Redirect()->route('pausetool');
+        }
         else {
           return Redirect()->route('dashboard.admin');
         }

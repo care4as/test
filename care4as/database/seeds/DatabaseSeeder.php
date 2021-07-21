@@ -83,6 +83,7 @@ class RightsSeeder extends Seeder
       'attendSurvey',
       'config',
       'deleteUser',
+      'telefonicapause',
     );
     $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
 

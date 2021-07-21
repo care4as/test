@@ -60,6 +60,7 @@
             </a>
           </li>
           @endif
+          @if(in_array('dashboard',Auth()->user()->getRights()))
             <li>
               <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
                 <i class="fas fa-skull-crossbones"></i>
@@ -75,6 +76,7 @@
                 @endif
               </ul>
             </li>
+            @endif
             @if(in_array('importReports',Auth()->user()->getRights()))
               <li>
                 <a class="" data-toggle="collapse" href="#collapseProvision" role="button" aria-expanded="false" aria-controls="collapseCancel">
@@ -225,6 +227,16 @@
               @endif
               <!-- <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li> -->
             </ul>
+          </li>
+          @endif
+          @if(in_array('telefonicapause',Auth()->user()->getRights()))
+          <li>
+            <!-- <a class="" data-toggle="collapse" href="#collapseTelefonicaPause" role="button" aria-expanded="false" aria-controls="collapseFeedback"> -->
+            <a href="{{route('pausetool')}}">
+              <i class="fas fa-running"></i>
+              <p><b>Pausentool <br>Telefonica</b></p>
+            </a>
+
           </li>
           @endif
           @if(in_array('sendReports',Auth()->user()->getRights()))

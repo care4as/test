@@ -15,15 +15,19 @@ class PauseController extends Controller
     {
       $users = $this->getUsers();
 
+
       if ($users->count() < 3) {
 
-        if(DB::table('pause')->where('name', Auth()->user()->name)->exists())
+      $username = Auth()->user()->surname.' '.Auth()->user()->lastname;
+
+      if(DB::table('pause')->where('name', $username)->exists())
         {
+
           return response()->json('du bist schon in Pause');
         }
         else {
-          DB::table('pause')->insert(['name' => Auth()->user()->name]);
-          return response()->json('angenehme Pause'.Auth()->user()->surname.' '.Auth()->user()->lastname);
+          DB::table('pause')->insert(['name' => $username]);
+          return response()->json('angenehme Pause '.$username);
         }
       }
       else {
@@ -33,12 +37,13 @@ class PauseController extends Controller
     }
     public function getOutOfPause($value='')
     {
-      if(DB::table('pause')->where('name', Auth()->user()->name)->delete())
+      $username = Auth()->user()->surname.' '.Auth()->user()->lastname;
+      if(DB::table('pause')->where('name', $username)->delete())
       {
-        return response()->json(1);
+        return response()->json('Pause beendet');
       }
       else {
-        return response()->json(2);
+        return response()->json('Fehler');
       }
     }
     public function getUsers()

@@ -24,10 +24,10 @@ Route::get('/messageOfTheDay', function()
 
 Route::group(['middleware' => ['auth']], function () {
 
-  Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool')->middleware('hasRight:importReports');
-  Route::get('/telefonica/getIntoPause', 'PauseController@getIntoPause')->name('getIntoPause')->middleware('hasRight:importReports');
-  Route::get('/telefonica/getOutOfPause', 'PauseController@getOutOfPause')->name('getOutOfPause')->middleware('hasRight:importReports');
-  Route::get('/telefonica/getUsersInPause', 'PauseController@getUsers')->name('getUsersInPause')->middleware('hasRight:importReports');
+  Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool');
+  Route::get('/telefonica/getIntoPause', 'PauseController@getIntoPause')->name('getIntoPause');
+  Route::get('/telefonica/getOutOfPause', 'PauseController@getOutOfPause')->name('getOutOfPause');
+  Route::get('/telefonica/getUsersInPause', 'PauseController@getUsers')->name('getUsersInPause');
 
 
   Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
