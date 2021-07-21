@@ -2651,7 +2651,7 @@ __webpack_require__.r(__webpack_exports__);
     self.getUsers();
     this.timer = setInterval(function () {
       self.getUsers();
-    }, 1000);
+    }, 5000);
   },
   methods: {
     getUsers: function getUsers() {
@@ -2692,7 +2692,7 @@ __webpack_require__.r(__webpack_exports__);
       var host = window.location.host; //axios.get('http://'+host+'/care4as/care4as/public/telefonica/getOutOfPause')
 
       axios.get('http://' + host + '/telefonica/getOutOfPause').then(function (response) {
-        console.log('test');
+        console.log(response.data);
       })["catch"](function (err) {
         console.log('error');
         console.log(err.response);
@@ -81579,10 +81579,10 @@ var render = function() {
         _vm._v(" "),
         _c(
           "table",
-          { staticClass: "table" },
+          { staticClass: "table table-striped text-black" },
           _vm._l(_vm.users, function(user) {
             return _c("tr", [
-              _c("td", [_vm._v(_vm._s(user.surname))]),
+              _c("td", [_vm._v(_vm._s(user.name))]),
               _vm._v(" "),
               _c("td", [_vm._v("Zeit")])
             ])

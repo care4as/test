@@ -4,9 +4,9 @@
           <div class="col">
             <h2>Wer ist in Pause?</h2>
 
-            <table class="table">
+            <table class="table table-striped text-black">
               <tr  v-for="user in users">
-                <td>{{user.surname}}</td>
+                <td>{{user.name}}</td>
                 <td>Zeit</td>
               </tr>
 
@@ -42,7 +42,7 @@
             setInterval(function()
             {
               self.getUsers()
-            }, 1000);
+            }, 5000);
         },
         methods:{
 
@@ -93,7 +93,7 @@
             //axios.get('http://'+host+'/care4as/care4as/public/telefonica/getOutOfPause')
             axios.get('http://'+host+'/telefonica/getOutOfPause')
             .then(response => {
-              console.log('test')
+                console.log(response.data)
             })
             .catch(function (err) {
               console.log('error')
