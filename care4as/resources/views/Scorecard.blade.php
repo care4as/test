@@ -165,6 +165,7 @@
                           <option value="" @if(!$user->department)  selected @endif disabled>Wähle die Abteilung</option>
                           <option value="1&1 DSL Retention" @if($user->department == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
                           <option value="1&1 Mobile Retention" @if($user->department == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
+                          <option value="Telefonica" @if($user->department == 'Telefonica') selected @endif>Telefonica</option>
                         </select>
                       </td>
                     </tr>
