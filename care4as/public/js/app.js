@@ -2638,6 +2638,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2697,6 +2702,13 @@ __webpack_require__.r(__webpack_exports__);
         console.log('error');
         console.log(err.response);
       });
+    },
+    calcTimeDifference: function calcTimeDifference(since) {
+      var start = new Date(since);
+      var end = new Date(Date.now());
+      var Difference_In_Time = (end.getTime() - start.getTime()) / 1000;
+      var result = new Date(Difference_In_Time * 1000).toISOString().substr(14, 5);
+      return result;
     }
   }
 });
@@ -81580,14 +81592,22 @@ var render = function() {
         _c(
           "table",
           { staticClass: "table table-striped text-black" },
-          _vm._l(_vm.users, function(user) {
-            return _c("tr", [
-              _c("td", [_vm._v(_vm._s(user.name))]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Zeit")])
-            ])
-          }),
-          0
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._l(_vm.users, function(user) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(user.name))]),
+                _vm._v(" "),
+                user.created_at
+                  ? _c("td", [
+                      _vm._v(_vm._s(_vm.calcTimeDifference(user.created_at)))
+                    ])
+                  : _c("td", [_vm._v("keine Angabe")])
+              ])
+            })
+          ],
+          2
         )
       ])
     ]),
@@ -81625,7 +81645,18 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("seit")])
+    ])
+  }
+]
 render._withStripped = true
 
 

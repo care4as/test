@@ -5,9 +5,14 @@
             <h2>Wer ist in Pause?</h2>
 
             <table class="table table-striped text-black">
+              <tr>
+                <th>Name</th>
+                <th>seit</th>
+              </tr>
               <tr  v-for="user in users">
                 <td>{{user.name}}</td>
-                <td>Zeit</td>
+                <td v-if="user.created_at">{{calcTimeDifference(user.created_at)}}</td>
+                <td v-else>keine Angabe</td>
               </tr>
 
             </table>
@@ -99,6 +104,16 @@
               console.log('error')
               console.log(err.response);
             })
+          },
+          calcTimeDifference(since)
+          {
+            var start = new Date(since);
+            var end = new Date(Date.now());
+            var Difference_In_Time = (end.getTime() - start.getTime())/1000 ;
+
+            var result = new Date(Difference_In_Time * 1000).toISOString().substr(14,5);
+
+            return result
           }
         }
     }

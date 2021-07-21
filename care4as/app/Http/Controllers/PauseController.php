@@ -26,7 +26,10 @@ class PauseController extends Controller
           return response()->json('du bist schon in Pause');
         }
         else {
-          DB::table('pause')->insert(['name' => $username]);
+          DB::table('pause')->insert([
+            'name' => $username,
+            'created_at' => now(),
+          ]);
           return response()->json('angenehme Pause '.$username);
         }
       }
