@@ -3,7 +3,6 @@
         <div class="row justify-content-center">
           <div class="col">
             <h2>Wer ist in Pause?</h2>
-
             <table class="table table-striped text-black">
               <tr>
                 <th>Name</th>
@@ -14,18 +13,16 @@
                 <td v-if="user.created_at">{{calcTimeDifference(user.created_at)}}</td>
                 <td v-else>keine Angabe</td>
               </tr>
-
             </table>
           </div>
         </div>
         <div class="row center_items">
           <div class="col-6 center_items">
-              <button type="button" name="button" @click="goIntoPause()">In Pause gehen!</button>
+              <button type="button" class="btn-primary rounded-circle" name="button" @click="goIntoPause()">In Pause gehen!</button>
           </div>
           <div class="col-6 center_items">
               <button type="button" name="button" @click="getOutOfPause()">Pause beendet</button>
           </div>
-
         </div>
     </div>
 </template>
@@ -112,7 +109,6 @@
             var Difference_In_Time = (end.getTime() - start.getTime())/1000 ;
 
             var result = new Date(Difference_In_Time * 1000).toISOString().substr(14,5);
-
             return result
           }
         }

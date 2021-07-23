@@ -326,6 +326,173 @@ class ReportController extends Controller
       Intermediate::dispatch('nonsync')->onQueue('intermediate')->onConnection('sync');
       return redirect()->back();
     }
+    public function ExcelOrDisplay()
+    {
+      if(request('startdate'))
+      {
+        $startdate =  Carbon::parse(request('startdate'));
+      }
+      else {
+        $startdate = Carbon::today()->subDays(28);
+      }
+      if (request('enddate')) {
+        $enddate =  Carbon::parse(request('enddate'));
+
+      }
+      else {
+        $enddate = Carbon::today()->subDays(1);
+      }
+
+
+
+      // dd(request());
+      if(request('button2'))
+      {
+        $this->categoriesCR4Weeks($startdate, $enddate);
+      }
+      else {
+
+        $this->categoriesDisplay($startdate, $enddate);
+
+      }
+    }
+    public function categoriesDisplay($startdate,$enddate)
+    {
+      $department = '1&1 Mobile Retention';
+
+      if ($startdate or $enddate) {
+        // code...
+      $sellers = User::where('department',$department)
+      ->where('role','Agent')
+      ->where('status',1)
+      ->with(['retentionDetails' => function($q) use ($startdate,$enddate){
+        // $q->select(['id','person_id','calls','time_in_state','call_date']);
+        if($startdate !== 1)
+        {
+          $q->where('call_date','>=',$startdate->format('Y-m-d'));
+        }
+        if($enddate !== 1)
+        {
+          $q->where('call_date','<=',$enddate->format('Y-m-d'));
+        }
+        }])
+      ->get();
+
+      foreach ($sellers as $key => $seller) {
+
+          // dd($seller, $seller->retentionDetails[1]);
+          $ssccalls = $seller->retentionDetails->sum('calls_smallscreen');
+          $sscorders = $seller->retentionDetails->sum('orders_smallscreen');
+
+          $seller->quota = $this->getquota($ssccalls,$sscorders);
+      }
+
+      $sellers = $sellers->sortByDesc('quota')->values();
+
+      $highperformers = $sellers->where('quota','>', 60);
+      $midperformers = $sellers->where('quota','<=', 59)->where('quota','>',50);
+      $lowperformers = $sellers->where('quota','<', 50);
+
+      }
+      else {
+        $highperformers = array();
+        $midperformers = array();
+        $lowperformers = array();
+      }
+      if($startdate && $enddate)
+      {
+        // return $startdate;
+        $timespan = array('Zeitraum von '. $startdate->format('d.m.Y').' bis '. $enddate->format('d.m.Y'));
+      }
+      else {
+        $timespan = array('keine Angabe');
+      }
+      echo view('categories', compact('highperformers','midperformers','lowperformers','timespan'));
+
+    }
+    public function categoriesCR4Weeks($startdate,$enddate)
+    {
+      // dd(request());
+
+      $department = '1&1 Mobile Retention';
+
+      if ($startdate or $enddate) {
+        // code...
+      $sellers = User::where('department',$department)
+      ->where('role','Agent')
+      ->where('status',1)
+      ->with(['retentionDetails' => function($q) use ($startdate,$enddate){
+        // $q->select(['id','person_id','calls','time_in_state','call_date']);
+        if($startdate !== 1)
+        {
+          $q->where('call_date','>=',$startdate->format('Y-m-d'));
+        }
+        if($enddate !== 1)
+        {
+          $q->where('call_date','<=',$enddate->format('Y-m-d'));
+        }
+        }])
+      ->get();
+
+      foreach ($sellers as $key => $seller) {
+
+          // dd($seller, $seller->retentionDetails[1]);
+          $ssccalls = $seller->retentionDetails->sum('calls_smallscreen');
+          $sscorders = $seller->retentionDetails->sum('orders_smallscreen');
+
+          $seller->quota = $this->getquota($ssccalls,$sscorders);
+      }
+      $sellers = $sellers->sortByDesc('quota')->values();
+
+      $highperformers = $sellers->where('quota','>', 60);
+      $midperformers = $sellers->where('quota','<=', 59)->where('quota','>',50);
+      $lowperformers = $sellers->where('quota','<', 50);
+
+      // dd($lowperformers->toArray());
+      $headline = array('Performance Report nach den Retention Details');
+      $timespan = array('Zeitraum von '. $startdate.' bis '.$enddate);
+
+      $oparray[0] = $headline;
+      $oparray[2] = $timespan;
+      $oparray[4] = array('PID','Name','SSC Quote');
+
+      // dd($highperformers->toArray());
+      $oparray[] = array('Highperformer');
+      foreach ($highperformers as $key => $performer) {
+        $oparray[] = array($performer->person_id, $performer->surname.' '.$performer->lastname, $performer->quota);
+      }
+      $oparray[] = array('Midperformer');
+      foreach ($midperformers as $key => $performer) {
+        $oparray[] = array($performer->person_id, $performer->surname.' '.$performer->lastname, $performer->quota);
+      }
+      $oparray[] = array('Lowperformer');
+      foreach ($lowperformers as $key => $performer) {
+        $oparray[] = array($performer->person_id, $performer->surname.' '.$performer->lastname, $performer->quota);
+      }
+      // $oparray[2] = $highperformers->toArray();
+      // $oparray[3] = $midperformers->toArray();
+      // $oparray[4] = $lowperformers->toArray();
+
+      header('Content-Type: application/csv');
+      header("Content-Transfer-Encoding: UTF-8");;
+      header('Content-Disposition: attachment; filename="performancereport.csv"');
+      header('Pragma: no-cache');
+
+      $fp = fopen('php://output', 'wb');
+
+      fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
+
+      foreach ( $oparray as $line ) {
+
+        fputcsv($fp, $line);
+      }
+
+      fclose($fp);
+
+      // return view('categories', compact('highperformers','midperformers','lowperformers'));
+
+      }
+    }
     public function capacitysuiteReport(Request $request)
     {
       // dd($request);
@@ -431,7 +598,7 @@ class ReportController extends Controller
       ->get();
 
       // $users = App\User::all();
-      dd($users->where('vorname','Jessica'));
+      // dd($users->where('vorname','Jessica'));
 
       $oparray[] = $headarray;
       for ($i=0; $i <= $diff_in_days + 1; $i++) {
@@ -530,6 +697,17 @@ class ReportController extends Controller
       }
 
       fclose($fp);
+    }
+    public function getQuota($calls, $orders)
+    {
+      if($calls == 0)
+      {
+        $quota = 0;
+      }
+      else {
+        $quota = round(($orders/$calls)*100,2);
+      }
+      return $quota;
     }
     public function dailyAgentDataStatus()
     {
