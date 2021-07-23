@@ -2593,9 +2593,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -81501,6 +81498,7 @@ var render = function() {
         _c(
           "button",
           {
+            staticClass: "btn-primary rounded-circle",
             attrs: { type: "button", name: "button" },
             on: {
               click: function($event) {

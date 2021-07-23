@@ -250,6 +250,7 @@
             <div class="collapse" id="collapseReports" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
               <li><a href="{{route('reports.choose')}}">Top/Worst Report</a> </li>
+              <li><a href="{{route('report.joyce')}}">Joyce Report</a> </li>
               <li><a href="{{route('reports.AHTdaily')}}">AHT Report</a> </li>
               <li><a href="{{route('reports.capacitysuite')}}">Capacity Report </a> </li>
               <li><a href="{{route('user.daDetex.index')}}">Nachverfolgung Dailyagent gestern </a> </li>

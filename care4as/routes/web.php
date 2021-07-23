@@ -100,6 +100,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/report/provi', 'ExcelEditorController@provisionView')->name('reports.provision.view')->middleware('hasRight:importReports');
   Route::post('/report/provi/upload', 'ExcelEditorController@provisionUpload')->name('excel.provision.upload')->middleware('hasRight:importReports');
   Route::post('/report/bestworst', 'ReportController@bestWorstReport')->name('report.bestworst')->middleware('hasRight:sendReports');
+  Route::get('/report/joyce', 'ReportController@ExcelOrDisplay')->name('report.joyce')->middleware('hasRight:sendReports');
+  Route::get('/report/joyce_excel', 'ReportController@categoriesDisplay')->name('report.joyce_excel')->middleware('hasRight:sendReports');
 
   //SAS Import
   Route::view('/report/SAS/', 'reports.SASReport')->name('reports.SAS')->middleware('hasRight:importReports');
