@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\UserTracking;
 use App\User;
+use App\Intermediate;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -51,8 +52,7 @@ class UserTrackingController extends Controller
             $tracking->division = $division;
             // dd($action);
             $tracking->save();
-
-              break;
+            break;
       }
 
       return redirect()->route('dashboard');
@@ -222,13 +222,11 @@ class UserTrackingController extends Controller
               // dd($formerValues,$intervall);
               $callarray[] = $intervall->Calls - $formerValues->Calls;
             }
-
           }
           else {
             $quotaarray[] = 0;
             $callarray[] = 0;
           }
-
         }
         else {
           if ($intervall->Calls != 0) {
@@ -243,7 +241,6 @@ class UserTrackingController extends Controller
           }
         }
       }
-
       $timestamparray = $intermediates->pluck('date2')->toArray();
 
       $dataarray = array($timestamparray, $quotaarray, $callarray);
@@ -317,6 +314,17 @@ class UserTrackingController extends Controller
 
       DB::table('intermediate_status')->insert($insertarray);
     }
+    public function getQuota($calls, $orders)
+    {
+      if($calls == 0)
+      {
+        $quota = 0;
+      }
+      else {
+        $quota = round(($orders/$calls)*100,2);
+      }
+      return $quota;
+    }
     public function dailyAgentDetectiveIndex(Request $request)
     {
       // dd($request);
@@ -335,12 +343,9 @@ class UserTrackingController extends Controller
 
       }])
       ->get();
-
       // dd( $users[0]->dailyAgent->first());
-
       $productivestates = array('Available','In Call','On Hold','Wrap Up');
       $lazystates = array('Released (03_away)','Released (05_occupied)');
-
       foreach ($users as $key => $user) {
 
         if($user->dailyAgent->first())
@@ -415,6 +420,41 @@ class UserTrackingController extends Controller
 
       // dd(  $user->dailyAgent);
       return view('userDailyAgentSingle', compact('user'));
+    }
+    public function getDailyQuotas($dep)
+    {
+      // return 1;
+      $intermediates = Intermediate::whereDate('date', Carbon::today())
+      ->get();
+
+      $times = $intermediates->unique('date')->pluck('date');
+      // dd($times);
+
+      foreach ($times as $key => $timestamp) {
+
+        $intervall = $intermediates->where('date',$timestamp);
+
+        $sscCalls = $intervall->sum('SSC_Calls');
+        $sscOrders = $intervall->sum('SSC_Orders');
+        $orders = $intervall->sum('Orders');
+        $calls = $intervall->sum('Calls');
+
+        $cr = $this->getQuota($calls, $orders);
+        $sscCR = $this->getQuota($sscCalls, $sscOrders);
+
+        $timestamp = Carbon::parse($timestamp)->format('H:i');
+
+        // dd($timestamp);
+        $ssccrarray[] = $sscCR;
+        $crarray[] = $cr;
+        $timesarray[] = $timestamp;
+
+        }
+
+      // $timesarray = $intermediates->pluck('date2')->toArray();
+      $dataarray = array($crarray,$ssccrarray, $timesarray);
+
+      return response()->json($dataarray);
     }
 
 }

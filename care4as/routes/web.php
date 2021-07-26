@@ -303,6 +303,7 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('
 
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking');
+Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas');
 
 
 Route::get('/test', function(){

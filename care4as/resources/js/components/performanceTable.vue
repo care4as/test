@@ -114,8 +114,11 @@
             </tr>
           </table>
           </div>
-          <div class="row">
-
+          <div class="row bg-dark text-white center_items">
+            <h5>Liveticker Tagesquote</h5>
+            <div>
+              <canvas id="dailyQuota" style="height: 300px; width: 90%;"></canvas>
+            </div>
           </div>
         </div>
       </div>
@@ -148,12 +151,15 @@
         var self = this;
         console.log('ptable Component mounted.')
 
-        self.getUserData('Mobile')
+        // self.getUserData('Mobile')
+        self.getDailyQouta('Mobile')
         this.timer =
         setInterval(function()
         {
-          self.getUserData('Mobile')
+          // self.getUserData('Mobile')
+          self.getDailyQouta('Mobile')
         }, 60000);
+
       },
       computed:{
         sortedUsers:function() {
@@ -199,9 +205,7 @@
           else {
             return 0
           }
-
         },
-
       },
       methods:{
         sorted(s) {
@@ -223,14 +227,13 @@
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
-          // axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
-          axios.get('http://'+host+'/users/getTracking/'+department)
+          axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
+          // axios.get('http://'+host+'/users/getTracking/'+department)
 
           .then(response => {
             if(response.data)
             {
-              console.log(response.data)
-
+              // console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
 
@@ -273,9 +276,80 @@
           setInterval(function()
           {
             this.getUserData(dep)
+            this.getDailyQouta(dep)
           }.bind(this), 60000);
 
-        }
+        },
+        getDailyQouta(dep){
+          var host = window.location.host;
+
+          let department = 'Mobile'
+
+          axios.get
+          ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          .then(response =>
+          {
+            console.log('dailyQoutas')
+            console.log(response.data)
+            this.createChart('dailyQuota', response.data)
+          })
+          .catch(
+            function (err) {
+              console.log('error DQ')
+              console.log(err.response);
+            })
+          },
+        createChart(chartId, chartData) {
+        // console.log('test')
+        const ctx = document.getElementById(chartId);
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+
+          data: {
+              datasets: [{
+               type: 'line',
+               label: 'CR',
+               data: chartData[0],
+               fill: false,
+               backgroundColor: 'rgba(41, 241, 195, 1)',
+               borderColor: 'rgba(41, 241, 195, 1)',
+               borderWidth: 2
+           },
+           {
+              label: 'SSC-CR',
+              type: 'line',
+              fill: false,
+              data: chartData[1],
+              backgroundColor: 'rgba(255, 99, 132)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 2
+        }],
+        labels:chartData[2],
+         },
+         options: {
+             scales: {
+               yAxes: [{
+                 id: 'A',
+                 type:'linear',
+                 position: 'left',
+                 ticks: {
+                   beginAtZero: true,
+                   min: 30,
+                   max: 75,
+               }
+             },
+             {
+               id: 'B',
+               type:'linear',
+               position: 'right',
+               ticks: {
+                 max: 10,
+                 min: 0,
+               }
+             }]}
+           }
+        });
+      }
       }
     }
 </script>

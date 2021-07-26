@@ -413,7 +413,6 @@ class ReportController extends Controller
     public function categoriesCR4Weeks($startdate,$enddate)
     {
       // dd(request());
-
       $department = '1&1 Mobile Retention';
 
       if ($startdate or $enddate) {
