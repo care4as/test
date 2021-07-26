@@ -16,7 +16,7 @@ class PauseController extends Controller
       $users = $this->getUsers();
 
 
-      if ($users->count() < 3) {
+      if ($users->count() < 2) {
 
       $username = Auth()->user()->surname.' '.Auth()->user()->lastname;
 
