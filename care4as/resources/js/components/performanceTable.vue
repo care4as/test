@@ -127,6 +127,7 @@
 </template>
 
 <script>
+import axios from 'axios'
     export default {
       data(){
         return{
@@ -227,8 +228,8 @@
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
-          axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
-          // axios.get('http://'+host+'/users/getTracking/'+department)
+          //axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
+          axios.get('http://'+host+'/users/getTracking/'+department)
 
           .then(response => {
             if(response.data)
@@ -287,6 +288,7 @@
 
           axios.get
           ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          ('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             console.log('dailyQoutas')
