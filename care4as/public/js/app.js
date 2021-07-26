@@ -2021,7 +2021,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     createChart: function createChart(chartId, chartData) {
-      console.log('test');
+      // console.log('test')
       var ctx = document.getElementById(chartId);
       var myChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(ctx, {
         type: 'bar',
@@ -2848,6 +2848,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return _defineProperty({
@@ -2869,10 +2872,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     var self = this;
-    console.log('ptable Component mounted.');
-    self.getUserData('Mobile');
+    console.log('ptable Component mounted.'); // self.getUserData('Mobile')
+
+    self.getDailyQouta('Mobile');
     this.timer = setInterval(function () {
-      self.getUserData('Mobile');
+      // self.getUserData('Mobile')
+      self.getDailyQouta('Mobile');
     }, 60000);
   },
   computed: {
@@ -2932,11 +2937,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var host = window.location.host;
       var department = dep;
       var currentdate = new Date();
-      var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds(); // axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
-
-      axios.get('http://' + host + '/users/getTracking/' + department).then(function (response) {
+      var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+      axios.get('http://' + host + '/care4as/care4as/public/users/getTracking/') // axios.get('http://'+host+'/users/getTracking/'+department)
+      .then(function (response) {
         if (response.data) {
-          console.log(response.data);
+          // console.log(response.data)
           var currentdate = new Date();
           console.log('update: ' + timestamp);
 
@@ -2969,7 +2974,72 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       clearInterval(this.timer);
       this.timer = setInterval(function () {
         this.getUserData(dep);
+        this.getDailyQouta(dep);
       }.bind(this), 60000);
+    },
+    getDailyQouta: function getDailyQouta(dep) {
+      var _this3 = this;
+
+      var host = window.location.host;
+      var department = 'Mobile';
+      axios.get('http://' + host + '/care4as/care4as/public/kdw/getQuotas/' + department).then(function (response) {
+        console.log('dailyQoutas');
+        console.log(response.data);
+
+        _this3.createChart('dailyQuota', response.data);
+      })["catch"](function (err) {
+        console.log('error DQ');
+        console.log(err.response);
+      });
+    },
+    createChart: function createChart(chartId, chartData) {
+      // console.log('test')
+      var ctx = document.getElementById(chartId);
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          datasets: [{
+            type: 'line',
+            label: 'CR',
+            data: chartData[0],
+            fill: false,
+            backgroundColor: 'rgba(41, 241, 195, 1)',
+            borderColor: 'rgba(41, 241, 195, 1)',
+            borderWidth: 2
+          }, {
+            label: 'SSC-CR',
+            type: 'line',
+            fill: false,
+            data: chartData[1],
+            backgroundColor: 'rgba(255, 99, 132)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 2
+          }],
+          labels: chartData[2]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              id: 'A',
+              type: 'linear',
+              position: 'left',
+              ticks: {
+                beginAtZero: true,
+                min: 30,
+                max: 75
+              }
+            }, {
+              id: 'B',
+              type: 'linear',
+              position: 'right',
+              ticks: {
+                max: 10,
+                min: 0
+              }
+            }]
+          }
+        }
+      });
     }
   }
 });
@@ -81970,7 +82040,7 @@ var render = function() {
                 ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "row" })
+          _vm._m(7)
         ])
       ])
     ])
@@ -82051,6 +82121,21 @@ var staticRenderFns = [
       _c("th", [_vm._v("Calls")]),
       _vm._v(" "),
       _c("th", [_vm._v("Saves")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row bg-dark text-white center_items" }, [
+      _c("h5", [_vm._v("Liveticker Tagesquote")]),
+      _vm._v(" "),
+      _c("div", [
+        _c("canvas", {
+          staticStyle: { height: "300px", width: "90%" },
+          attrs: { id: "dailyQuota" }
+        })
+      ])
     ])
   }
 ]

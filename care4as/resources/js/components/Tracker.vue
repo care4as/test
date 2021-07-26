@@ -29,10 +29,10 @@ export default {
       {
         self.getUserData(self.userid)
       }, 600000);
-  },
+    },
   methods:{
     createChart(chartId, chartData) {
-    console.log('test')
+    // console.log('test')
     const ctx = document.getElementById(chartId);
     const myChart = new Chart(ctx, {
       type: 'bar',
