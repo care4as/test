@@ -185,4 +185,19 @@ class Configcontroller extends Controller
       DB::table('jobs')->where('id',$id)->delete();
       return redirect()->back();
     }
+    public function changePIPTelefonica(Request $request)
+    {
+      $request->validate(
+        [
+          'pip' => 'required | numeric'
+        ]);
+
+      DB::table('config')
+      ->updateOrInsert(
+        ['name' => 'peopleInPauseTelefonica'],
+        ['value' => $request->pip]
+      );
+
+      return redirect()->back();
+    }
 }

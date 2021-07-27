@@ -84,6 +84,7 @@ class RightsSeeder extends Seeder
       'config',
       'deleteUser',
       'telefonicapause',
+      'telefonica_config',
     );
     $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
 

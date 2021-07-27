@@ -9,14 +9,20 @@ class PauseController extends Controller
 {
     public function show()
     {
-      return view('telefonica.pause');
+      $pip = DB::table('config')
+      ->where('name','peopleInPauseTelefonica')
+      ->value('value');
+
+      return view('telefonica.pause', compact('pip'));
     }
     public function getIntoPause()
     {
       $users = $this->getUsers();
+      $pip = DB::table('config')
+      ->where('name','peopleInPauseTelefonica')
+      ->value('value');
 
-
-      if ($users->count() < 3) {
+      if ($users->count() < $pip) {
 
       $username = Auth()->user()->surname.' '.Auth()->user()->lastname;
 

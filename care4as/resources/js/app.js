@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+import axios from 'axios'
 
 window.Vue = require('vue');
 window.Dropzone = require('dropzone');
