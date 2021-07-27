@@ -127,7 +127,6 @@
 </template>
 
 <script>
-import axios from 'axios'
     export default {
       data(){
         return{
@@ -152,12 +151,12 @@ import axios from 'axios'
         var self = this;
         console.log('ptable Component mounted.')
 
-        // self.getUserData('Mobile')
+        self.getUserData('Mobile')
         self.getDailyQouta('Mobile')
         this.timer =
         setInterval(function()
         {
-          // self.getUserData('Mobile')
+          self.getUserData('Mobile')
           self.getDailyQouta('Mobile')
         }, 60000);
 
@@ -287,7 +286,7 @@ import axios from 'axios'
           let department = 'Mobile'
 
           axios.get
-          ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          //('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
           ('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {

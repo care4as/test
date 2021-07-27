@@ -2721,8 +2721,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -2853,7 +2851,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return _defineProperty({
@@ -2875,11 +2872,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     var self = this;
-    console.log('ptable Component mounted.'); // self.getUserData('Mobile')
-
+    console.log('ptable Component mounted.');
+    self.getUserData('Mobile');
     self.getDailyQouta('Mobile');
     this.timer = setInterval(function () {
-      // self.getUserData('Mobile')
+      self.getUserData('Mobile');
       self.getDailyQouta('Mobile');
     }, 60000);
   },
@@ -2942,7 +2939,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var currentdate = new Date();
       var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds(); //axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('http://' + host + '/users/getTracking/' + department).then(function (response) {
+      axios.get('http://' + host + '/users/getTracking/' + department).then(function (response) {
         if (response.data) {
           // console.log(response.data)
           var currentdate = new Date();
@@ -2985,7 +2982,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var host = window.location.host;
       var department = 'Mobile';
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('http://' + host + '/care4as/care4as/public/kdw/getQuotas/' + department)('http://' + host + '/kdw/getQuotas/' + department).then(function (response) {
+      axios.get //('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+      ('http://' + host + '/kdw/getQuotas/' + department).then(function (response) {
         console.log('dailyQoutas');
         console.log(response.data);
 

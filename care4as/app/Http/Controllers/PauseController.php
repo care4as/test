@@ -15,14 +15,12 @@ class PauseController extends Controller
     {
       $users = $this->getUsers();
 
-
-      if ($users->count() < 2) {
+      if ($users->count() < 3) {
 
       $username = Auth()->user()->surname.' '.Auth()->user()->lastname;
 
       if(DB::table('pause')->where('name', $username)->exists())
         {
-
           return response()->json('du bist schon in Pause');
         }
         else {
