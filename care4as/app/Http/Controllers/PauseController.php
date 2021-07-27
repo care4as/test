@@ -28,7 +28,6 @@ class PauseController extends Controller
 
       if(DB::table('pause')->where('name', $username)->exists())
         {
-
           return response()->json('du bist schon in Pause');
         }
         else {

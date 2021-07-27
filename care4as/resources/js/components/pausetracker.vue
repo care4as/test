@@ -52,8 +52,8 @@
           {
             var host = window.location.host;
 
-            axios.get('http://'+host+'/care4as/care4as/public/telefonica/getUsersInPause')
-            // axios.get('http://'+host+'/telefonica/getIntoPause')
+            //axios.get('http://'+host+'/care4as/care4as/public/telefonica/getUsersInPause')
+            axios.get('http://'+host+'/telefonica/getUsersInPause')
             .then(response => {
               console.log(response.data)
               this.users = response.data
@@ -66,8 +66,8 @@
           goIntoPause(){
 
             var host = window.location.host;
-            axios.get('http://'+host+'/care4as/care4as/public/telefonica/getIntoPause')
-            // axios.get('http://'+host+'/telefonica/getIntoPause')
+            //axios.get('http://'+host+'/care4as/care4as/public/telefonica/getIntoPause')
+            axios.get('http://'+host+'/telefonica/getIntoPause')
             .then(response => {
               console.log(response.data)
               if (response.data =="du bist schon in Pause") {
@@ -92,8 +92,8 @@
           getOutOfPause(){
 
             var host = window.location.host;
-            axios.get('http://'+host+'/care4as/care4as/public/telefonica/getOutOfPause')
-            // axios.get('http://'+host+'/telefonica/getOutOfPause')
+            //axios.get('http://'+host+'/care4as/care4as/public/telefonica/getOutOfPause')
+            axios.get('http://'+host+'/telefonica/getOutOfPause')
             .then(response => {
                 console.log(response.data)
             })

@@ -547,6 +547,8 @@ class HomeController extends Controller
         $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
         $optinRequests = $user->Optin->sum('Anzahl_OptIn-Abfragen');
 
+        // dd($user, $user->Optin);
+
         if ($optinCalls != 0) {
           $user->optinQuota = round($optinRequests*100/$optinCalls,2);
           }

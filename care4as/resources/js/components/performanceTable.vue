@@ -151,12 +151,12 @@
         var self = this;
         console.log('ptable Component mounted.')
 
-        // self.getUserData('Mobile')
+        self.getUserData('Mobile')
         self.getDailyQouta('Mobile')
         this.timer =
         setInterval(function()
         {
-          // self.getUserData('Mobile')
+          self.getUserData('Mobile')
           self.getDailyQouta('Mobile')
         }, 60000);
 
@@ -227,8 +227,8 @@
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
-          axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
-          // axios.get('http://'+host+'/users/getTracking/'+department)
+          //axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
+          axios.get('http://'+host+'/users/getTracking/'+department)
 
           .then(response => {
             if(response.data)
@@ -286,7 +286,8 @@
           let department = 'Mobile'
 
           axios.get
-          ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          //('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          ('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             console.log('dailyQoutas')

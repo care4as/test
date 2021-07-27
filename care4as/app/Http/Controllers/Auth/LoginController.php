@@ -38,7 +38,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+      $this->middleware('guest')->except('logout');
     }
     public function loginview()
     {
@@ -61,7 +61,7 @@ class LoginController extends Controller
         {
           return Redirect()->route('dashboard');
         }
-        elseif (Auth::User()->role == 'TelefonicaAgent') {
+        elseif (Auth::User()->role == 'AgentTelefonica') {
           return Redirect()->route('pausetool');
         }
         else {
