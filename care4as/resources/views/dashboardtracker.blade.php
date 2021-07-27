@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
 
 <style>
+
 .borders-roundedlight
 {
   border-radius: 15px;
@@ -62,7 +63,7 @@
 @section('content')
 
 <div class="container-fluid m-1 " id="app">
-  <div class="row  m-1 bg-light borders-roundedlight">
+  <div class="row  m-1 bg-cool borders-roundedlight">
     <div class="col">
       <div class="row">
           <ptable> </ptable>
