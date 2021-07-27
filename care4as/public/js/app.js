@@ -2935,9 +2935,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this2 = this;
 
       var host = window.location.host;
-      var department = dep;
+      var department = this.department;
       var currentdate = new Date();
-      var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds(); //axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
+      var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds(); // axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
 
       axios.get('http://' + host + '/users/getTracking/' + department).then(function (response) {
         if (response.data) {
@@ -2964,8 +2964,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           console.log('No Data avaiable');
         }
       })["catch"](function (err) {
-        console.log('error');
-        console.log(err);
+        console.log('error Userdata');
+        console.log(err.response);
       });
     },
     changeDepartment: function changeDepartment(dep) {
@@ -2982,7 +2982,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var host = window.location.host;
       var department = 'Mobile';
-      axios.get //('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+      axios.get // ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
       ('http://' + host + '/kdw/getQuotas/' + department).then(function (response) {
         console.log('dailyQoutas');
         console.log(response.data);
@@ -23690,7 +23690,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.table-striped>tbody>tr:nth-child(even) {\r\n    background-color: #ddf8e8;\n}\n.department{\r\n  cursor: pointer;\n}\n.department:hover{\r\n  opacity: 0.5;\n}\n.table1\r\n{\r\n  background-color: rgba(255,255,255,0.5);\r\n  border-radius: 15px;\r\n  font-size: 0.6em;\n}\r\n", ""]);
+exports.push([module.i, "\ntd,tr,table\r\n{\r\n  border-radius: 15px;\n}\n.table-striped>tbody>tr:nth-child(even) {\r\n    background-color: #ddf8e8;\n}\n.department{\r\n  cursor: pointer;\n}\n.department:hover{\r\n  opacity: 0.5;\n}\n.tablespacing\r\n{\r\n  border-collapse: separate;\r\n  border-spacing: 10px;\n}\r\n", ""]);
 
 // exports
 
@@ -81764,7 +81764,7 @@ var render = function() {
           "div",
           {
             staticClass:
-              "col-4 mr-3 d-flex justify-content-center department align-items-center",
+              "col-4 mr-3 d-flex justify-content-center department align-items-center unit-translucent",
             staticStyle: { "background-color": "rgba(0,0,0,0.2)" },
             on: {
               click: function($event) {
@@ -81792,7 +81792,7 @@ var render = function() {
           "div",
           {
             staticClass:
-              "col-4 ml-3 d-flex justify-content-center department align-items-center",
+              "col-4 ml-3 d-flex justify-content-center department align-items-center unit-translucent",
             staticStyle: { "background-color": "rgba(0,0,0,0.2)" },
             on: {
               click: function($event) {
@@ -81821,17 +81821,17 @@ var render = function() {
         _c("div", { staticClass: "col-6 p-1" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c("div", { staticClass: "table-responsive" }, [
+          _c("div", { staticClass: "table-responsive " }, [
             this.department == "Mobile"
               ? _c(
                   "table",
                   {
                     staticClass:
-                      "table table-hover table-striped table-bordered table1",
+                      "table table-borderless text-white tablespacing",
                     attrs: { id: "ptable" }
                   },
                   [
-                    _c("tr", [
+                    _c("tr", { staticClass: "unit-translucent" }, [
                       _c(
                         "th",
                         {
@@ -81886,7 +81886,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _vm._l(_vm.sortedUsers, function(user) {
-                      return _c("tr", [
+                      return _c("tr", { staticClass: "unit-translucent" }, [
                         _c("td", [
                           _vm._v(
                             _vm._s(user.surname) + " " + _vm._s(user.lastname)
@@ -81905,9 +81905,12 @@ var render = function() {
                 )
               : _c(
                   "table",
-                  { staticClass: "table table-striped table1" },
+                  {
+                    staticClass:
+                      "table table-borderless text-white tablespacing"
+                  },
                   [
-                    _c("tr", [
+                    _c("tr", { staticClass: "unit-translucent" }, [
                       _c(
                         "th",
                         {
@@ -81962,7 +81965,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _vm._l(_vm.sortedUsers, function(user) {
-                      return _c("tr", [
+                      return _c("tr", { staticClass: "unit-translucent" }, [
                         _c("td", [
                           _vm._v(
                             _vm._s(user.surname) + " " + _vm._s(user.lastname)
@@ -81985,60 +81988,68 @@ var render = function() {
         _c("div", { staticClass: "col-6 p-1" }, [
           _vm._m(1),
           _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "row h-50" }, [
             this.department == "Mobile"
-              ? _c("table", { staticClass: "table table-striped " }, [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v(_vm._s(_vm.GeVoCr) + "%")]),
+              ? _c(
+                  "table",
+                  { staticClass: "table table-borderless tablespacing " },
+                  [
+                    _vm._m(2),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.calls))]),
+                    _c("tr", { staticClass: "unit-translucent" }, [
+                      _c("td", [_vm._v(_vm._s(_vm.GeVoCr) + "%")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.calls))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.saves))])
+                    ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.saves))])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v(_vm._s(_vm.sscCR) + "%")]),
+                    _vm._m(3),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.sscCalls))]),
+                    _c("tr", { staticClass: "unit-translucent" }, [
+                      _c("td", [_vm._v(_vm._s(_vm.sscCR) + "%")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.sscCalls))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.sscSaves))])
+                    ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.sscSaves))])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(4),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v(_vm._s(_vm.bscCR) + "%")]),
+                    _vm._m(4),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.bscCalls))]),
+                    _c("tr", { staticClass: "unit-translucent" }, [
+                      _c("td", [_vm._v(_vm._s(_vm.bscCR) + "%")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.bscCalls))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.bscSaves))])
+                    ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.bscSaves))])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(5),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v(_vm._s(_vm.portalCR) + "%")]),
+                    _vm._m(5),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.portalCalls))]),
+                    _c("tr", { staticClass: "unit-translucent" }, [
+                      _c("td", [_vm._v(_vm._s(_vm.portalCR) + "%")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.portalCalls))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.portalSaves))])
+                    ])
+                  ]
+                )
+              : _c(
+                  "table",
+                  { staticClass: "table table-borderless tablespacing" },
+                  [
+                    _vm._m(6),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.portalSaves))])
-                  ])
-                ])
-              : _c("table", { staticClass: "table table-striped" }, [
-                  _vm._m(6),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v(_vm._s(_vm.GeVoCr) + "%")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.calls))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.saves))])
-                  ])
-                ])
+                    _c("tr", { staticClass: "unit-translucent" }, [
+                      _c("td", [_vm._v(_vm._s(_vm.GeVoCr) + "%")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.calls))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(_vm.saves))])
+                    ])
+                  ]
+                )
           ]),
           _vm._v(" "),
           _vm._m(7)
@@ -82068,7 +82079,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
+    return _c("tr", { staticClass: "unit-translucent" }, [
       _c("th", [_vm._v("GeVo-CR")]),
       _vm._v(" "),
       _c("th", [_vm._v("Calls")]),
@@ -82080,7 +82091,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
+    return _c("tr", { staticClass: "unit-translucent" }, [
       _c("th", [_vm._v("SSC-GeVo-CR")]),
       _vm._v(" "),
       _c("th", [_vm._v("SSC-Calls")]),
@@ -82092,7 +82103,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
+    return _c("tr", { staticClass: "unit-translucent" }, [
       _c("th", [_vm._v("BSC-CR")]),
       _vm._v(" "),
       _c("th", [_vm._v("BSC-Calls")]),
@@ -82104,7 +82115,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
+    return _c("tr", { staticClass: "unit-translucent" }, [
       _c("th", [_vm._v("Portal-CR")]),
       _vm._v(" "),
       _c("th", [_vm._v("Portal-Calls")]),
@@ -82116,7 +82127,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
+    return _c("tr", { staticClass: "unit-translucent" }, [
       _c("th", [_vm._v("GeVo-CR")]),
       _vm._v(" "),
       _c("th", [_vm._v("Calls")]),
@@ -82128,16 +82139,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row bg-dark text-white center_items" }, [
-      _c("h5", [_vm._v("Liveticker Tagesquote")]),
-      _vm._v(" "),
-      _c("div", [
-        _c("canvas", {
-          staticStyle: { height: "300px", width: "90%" },
-          attrs: { id: "dailyQuota" }
-        })
-      ])
-    ])
+    return _c(
+      "div",
+      {
+        staticClass: "row unit-translucent text-white center_items mb-0",
+        staticStyle: { height: "40%" }
+      },
+      [
+        _c("h5", [_vm._v("Liveticker Tagesquote")]),
+        _vm._v(" "),
+        _c("div", [
+          _c("canvas", {
+            staticStyle: { height: "300px", width: "90%" },
+            attrs: { id: "dailyQuota" }
+          })
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true

@@ -7,10 +7,10 @@
         </div>
       </div>
       <div class="row justify-content-center m-1" >
-        <div class="col-4 mr-3 d-flex justify-content-center department align-items-center" @click="changeDepartment('Mobile')" style="background-color: rgba(0,0,0,0.2);">
+        <div class="col-4 mr-3 d-flex justify-content-center department align-items-center unit-translucent" @click="changeDepartment('Mobile')" style="background-color: rgba(0,0,0,0.2);">
           <p class="m-0" v-bind:style="[department == 'Mobile' ? {'color': 'white'} : {'color':'black'}]">Mobile</p>
         </div>
-        <div class="col-4 ml-3 d-flex justify-content-center department align-items-center" @click="changeDepartment('DSL')" style="background-color: rgba(0,0,0,0.2);">
+        <div class="col-4 ml-3 d-flex justify-content-center department align-items-center unit-translucent" @click="changeDepartment('DSL')" style="background-color: rgba(0,0,0,0.2);">
           <p class="m-0" v-bind:style="[department == 'DSL' ? {'color': 'white'} : {'color':'black'}]">DSL</p>
         </div>
       </div>
@@ -20,30 +20,30 @@
             <h5>Liveticker Agents</h5>
           </div>
 
-          <div class="table-responsive">
-            <table class="table table-hover table-striped table-bordered table1" id="ptable" v-if="this.department == 'Mobile'">
-              <tr>
+          <div class="table-responsive ">
+            <table class="table table-borderless text-white tablespacing" id="ptable" v-if="this.department == 'Mobile'">
+              <tr class="unit-translucent">
                 <th @click="sorted('name')" style="cursor:pointer" >User </th>
                 <th @click="sorted('ssc_quota')" style="cursor:pointer">SSC-CR</th>
                 <th @click="sorted('ssc_calls')" style="cursor:pointer">Calls</th>
                 <th @click="sorted('ssc_orders')" style="cursor:pointer">Saves</th>
               </tr>
-              <tr v-for="user in sortedUsers">
-                <td>{{user.surname}} {{user.lastname}}</td>
+              <tr class="unit-translucent" v-for="user in sortedUsers">
+                <td >{{user.surname}} {{user.lastname}}</td>
                 <td>{{user.ssc_quota}}%</td>
-                <td>{{user.ssc_calls}}</td>
+                <td >{{user.ssc_calls}}</td>
                 <td>{{user.ssc_orders}}</td>
               </tr>
 
             </table>
-            <table class="table table-striped table1" v-else>
-              <tr>
+            <table class="table table-borderless text-white tablespacing" v-else>
+              <tr class="unit-translucent">
                 <th @click="sorted('name')" style="cursor:pointer" >User </th>
                 <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
                 <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
                 <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
-              </tr>
-              <tr v-for="user in sortedUsers">
+              </tr >
+              <tr class="unit-translucent" v-for="user in sortedUsers">
                 <td>{{user.surname}} {{user.lastname}}</td>
                 <td>{{user.dslqouta}}%</td>
                 <td>{{user.calls}}</td>
@@ -57,64 +57,64 @@
           <div class="row">
             <h5>Liveticker Team</h5>
           </div>
-          <div class="row">
-            <table class="table table-striped " v-if="this.department == 'Mobile'">
-              <tr>
+          <div class="row h-50">
+            <table class="table table-borderless tablespacing " v-if="this.department == 'Mobile'">
+              <tr class="unit-translucent">
                 <th>GeVo-CR</th>
                 <th>Calls</th>
                 <th>Saves</th>
               </tr>
-              <tr>
+              <tr class="unit-translucent">
                 <td>{{GeVoCr}}%</td>
                 <td>{{calls}}</td>
                 <td>{{saves}}</td>
               </tr>
-              <tr>
+              <tr class="unit-translucent">
                 <th>SSC-GeVo-CR</th>
                 <th>SSC-Calls</th>
                 <th>SSC-Saves</th>
               </tr>
-              <tr>
+              <tr class="unit-translucent">
                 <td>{{sscCR}}%</td>
                 <td>{{sscCalls}}</td>
                 <td>{{sscSaves}}</td>
               </tr>
-              <tr>
+              <tr class="unit-translucent">
                 <th>BSC-CR</th>
                 <th>BSC-Calls</th>
                 <th>BSC-Saves</th>
               </tr>
-              <tr>
+              <tr class="unit-translucent">
                 <td>{{bscCR}}%</td>
                 <td>{{bscCalls}}</td>
                 <td>{{bscSaves}}</td>
               </tr>
-              <tr>
+              <tr class="unit-translucent">
                 <th>Portal-CR</th>
                 <th>Portal-Calls</th>
                 <th>Portal-Saves</th>
               </tr>
-              <tr>
+              <tr class="unit-translucent">
                 <td>{{portalCR}}%</td>
                 <td>{{portalCalls}}</td>
                 <td>{{portalSaves}}</td>
               </tr>
             </table>
 
-          <table class="table table-striped" v-else>
-            <tr>
+          <table class="table table-borderless tablespacing" v-else>
+            <tr class="unit-translucent">
               <th>GeVo-CR</th>
               <th>Calls</th>
               <th>Saves</th>
             </tr>
-            <tr>
+            <tr class="unit-translucent">
               <td>{{GeVoCr}}%</td>
               <td>{{calls}}</td>
               <td>{{saves}}</td>
             </tr>
           </table>
           </div>
-          <div class="row bg-dark text-white center_items">
+          <div class="row unit-translucent text-white center_items mb-0" style="height:40%;">
             <h5>Liveticker Tagesquote</h5>
             <div>
               <canvas id="dailyQuota" style="height: 300px; width: 90%;"></canvas>
@@ -218,7 +218,7 @@
         getUserData(dep){
 
           var host = window.location.host;
-          var department = dep
+          var department = this.department
           var currentdate = new Date();
           let timestamp = "Last Sync: " + currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/"
@@ -227,7 +227,7 @@
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
-          //axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/')
+          // axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
           axios.get('http://'+host+'/users/getTracking/'+department)
 
           .then(response => {
@@ -261,8 +261,8 @@
             }
             })
           .catch(function (err) {
-            console.log('error')
-            console.log(err);
+            console.log('error Userdata')
+            console.log(err.response);
           })
         },
         changeDepartment(dep)
@@ -286,7 +286,7 @@
           let department = 'Mobile'
 
           axios.get
-          //('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          // ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
           ('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
@@ -356,7 +356,10 @@
 </script>
 
 <style media="screen">
-
+td,tr,table
+{
+  border-radius: 15px;
+}
 .table-striped>tbody>tr:nth-child(even) {
     background-color: #ddf8e8;
 }
@@ -366,10 +369,9 @@
 .department:hover{
   opacity: 0.5;
 }
-.table1
+.tablespacing
 {
-  background-color: rgba(255,255,255,0.5);
-  border-radius: 15px;
-  font-size: 0.6em;
+  border-collapse: separate;
+  border-spacing: 10px;
 }
 </style>

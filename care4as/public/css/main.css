@@ -3,11 +3,24 @@ body
       /* font-family: 'Arial Narrow', sans-serif; */
       /* font-family: 'Brush Script MT', 'Brush Script Std', cursive; */
       /* font-family: 'Goudy Old Style', cursive; */
-      font-family: 'Merienda' !important;
+      font-family: 'Lato' sans serif !important;
       /* font-family: 'Dekko'; */
       /* font-family: 'Alegreya Sans SC'; */
       /* font-family: 'Actor'; */
       font-size: 1.2rem;
+    }
+    .bg-cool
+    {
+      background: #2c3e50; /* fallback for old browsers */
+      background: -webkit-linear-gradient(to top, #2c3e50, #4ca1af); /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to top, #2c3e50, #4ca1af);
+    }
+    .unit-translucent
+    {
+      box-shadow: 0 0 10px;
+      background-color: rgba(0,0,0,0.4);
+      color: white !important;
+      border-radius: 15px;
     }
     .table-striped>tbody>tr:nth-child(even) {
         background-color: #ddf8e8;
@@ -39,7 +52,7 @@ body
 
     .readabilitysuperior
     {
-      font-size: 1.3em;
+      font-size: 1.1em;
       font-weight: 700;
     }
     .col-designed-carousel
