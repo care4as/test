@@ -110,40 +110,37 @@ class ExcelEditorController extends Controller
       $data = Excel::ToArray(new DataImport, $file);
       // $data = Excel::ToArray(new DataImport, $file );
 
+      // dd($data);
       $insertData=array();
 
       $data2 = $data[$sheet-1];
 
       $insertData=array();
-
       // dd($data2);
-
+      
       for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
-
         $cell = $data2[$i];
-
         $UNIX_DATE2 = ($cell[3] - 25569) * 86400;
         $date = gmdate("Y-m-d",$UNIX_DATE2);
         // dd();
         $insertData[$i] = [
           'date' => gmdate($date),
           'department' => $cell[5],
-          'person_id' => $cell[6],
+          'person_id' => $cell[7],
           'Anzahl_Handled_Calls' => $cell[8],
           'Anzahl_Handled_Calls_ohne_Call-OptIn' => $cell[9],
           'Anzahl_Handled_Calls_ohne_Daten-OptIn' => $cell[10],
           'Anzahl_OptIn-Abfragen' =>$cell[11] ,
           'Anzahl_OptIn-Erfolg' => $cell[12],
-          'Anzahl_Global_OptIn' => $cell[13],
-          'Anzahl_Call_OptIn' => $cell[14],
-          'Anzahl_Email_OptIn' => $cell[15],
-          'Anzahl_Print_OptIn' => $cell[16],
-          'Anzahl_SMS_OptIn' => $cell[17],
-          'Anzahl_Nutzungsdaten_OptIn' => $cell[18],
-          'Anzahl_Verkehrsdaten_OptIn' => $cell[19],
+          'Anzahl_Call_OptIn' => $cell[13],
+          'Anzahl_Email_OptIn' => $cell[14],
+          'Anzahl_Print_OptIn' => $cell[15],
+          'Anzahl_SMS_OptIn' => $cell[16],
+          'Anzahl_Nutzungsdaten_OptIn' => $cell[17],
+          'Anzahl_Verkehrsdaten_OptIn' => $cell[18],
           // 'Quote Opt-In Abfragen auf Handled Calls' =>  number_format(floatval(), 2, '.', ''),
-          'Quote Opt-In Abfragen auf Handled Calls' =>  $cell[20],
-          'Quote Opt-In Erfolg' => $cell[21],
+          'Quote Opt-In Abfragen auf Handled Calls' =>  $cell[19],
+          'Quote Opt-In Erfolg' => $cell[20],
         ];
       }
 
