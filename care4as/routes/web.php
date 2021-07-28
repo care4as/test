@@ -282,7 +282,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
   //endeobmail
   //Presentation
-    Route::get('/presentation', 'HomeController@presentation')->name('presentation')->middleware('hasRight:importReports');;
+  Route::get('/presentation', 'HomeController@presentation')->name('presentation')->middleware('hasRight:importReports');
   //endpresentation
 });
 
@@ -296,12 +296,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/offers/JSON', 'OfferController@OffersInJSON')->name('offers.inJSON');
   Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');
   Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');
-
 //endoffers
-
 Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
-
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
 Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking');
 Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas');
