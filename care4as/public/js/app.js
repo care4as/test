@@ -2851,6 +2851,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return _defineProperty({
@@ -2937,9 +2939,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var host = window.location.host;
       var department = this.department;
       var currentdate = new Date();
-      var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds(); // axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
-
-      axios.get('http://' + host + '/users/getTracking/' + department).then(function (response) {
+      var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+      axios.get('http://' + host + '/care4as/care4as/public/users/getTracking/' + department) // axios.get('http://'+host+'/users/getTracking/'+department)
+      .then(function (response) {
         if (response.data) {
           // console.log(response.data)
           var currentdate = new Date();
@@ -2982,8 +2984,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var host = window.location.host;
       var department = 'Mobile';
-      axios.get // ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
-      ('http://' + host + '/kdw/getQuotas/' + department).then(function (response) {
+      axios.get('http://' + host + '/care4as/care4as/public/kdw/getQuotas/' + department) // ('http://'+host+'/kdw/getQuotas/'+department)
+      .then(function (response) {
         console.log('dailyQoutas');
         console.log(response.data);
 
@@ -81940,7 +81942,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Calls")]
+                        [_vm._v("SSC_Calls")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -81953,7 +81955,33 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Saves")]
+                        [_vm._v("SSC_Saves")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("orders")
+                            }
+                          }
+                        },
+                        [_vm._v("Gesamt_Calls")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("orders")
+                            }
+                          }
+                        },
+                        [_vm._v("Gesamt_Orders")]
                       )
                     ]),
                     _vm._v(" "),
@@ -94812,8 +94840,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\care4as\care4as\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\care4as\care4as\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Program Files\XAMPP\htdocs\care4as\care4as\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Program Files\XAMPP\htdocs\care4as\care4as\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

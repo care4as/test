@@ -40,8 +40,10 @@
               <tr class="unit-translucent">
                 <th @click="sorted('name')" style="cursor:pointer" >User </th>
                 <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
-                <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
-                <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
+                <th @click="sorted('calls')" style="cursor:pointer">SSC_Calls</th>
+                <th @click="sorted('orders')" style="cursor:pointer">SSC_Saves</th>
+                <th @click="sorted('orders')" style="cursor:pointer">Gesamt_Calls</th>
+                <th @click="sorted('orders')" style="cursor:pointer">Gesamt_Orders</th>
               </tr >
               <tr class="unit-translucent" v-for="user in sortedUsers">
                 <td>{{user.surname}} {{user.lastname}}</td>
@@ -227,9 +229,8 @@
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
-          // axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
-          axios.get('http://'+host+'/users/getTracking/'+department)
-
+          axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
+          // axios.get('http://'+host+'/users/getTracking/'+department)
           .then(response => {
             if(response.data)
             {
@@ -286,8 +287,8 @@
           let department = 'Mobile'
 
           axios.get
-          // ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
-          ('http://'+host+'/kdw/getQuotas/'+department)
+          ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          // ('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             console.log('dailyQoutas')

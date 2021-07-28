@@ -71,7 +71,7 @@
         </div>
       </div>
 
-      <div class="row bg-light p-2 justify-content-center w-100 borders-roundedlight">
+      <div class="row bg-cool p-2 justify-content-center w-100 borders-roundedlight">
         <div class="w-100" id="accordion1">
           <div class="col-12">
             <div class="row bg-white shadow m-1 borders-roundedlight" id="filtermenu">
