@@ -102,10 +102,12 @@ class UserTrackingController extends Controller
           $user->ssc_calls = $user->salesdata->calls_ssc;
           $user->ssc_orders = $user->salesdata->ret_ssc_contract_save;
           $user->calls = $user->salesdata->calls;
+
           $user->bsc_calls = $user->salesdata->calls_bsc;
           $user->bsc_orders = $user->salesdata->ret_bsc_contract_save;
           $user->portal_calls = $user->salesdata->calls_portal;
           $user->portal_orders = $user->salesdata->ret_portal_save;
+          $user->orders = $user->ssc_orders + $user->bsc_orders + $user->portal_orders;
 
           if($user->ssc_calls != 0)
           {
@@ -114,6 +116,8 @@ class UserTrackingController extends Controller
           else {
             $user->ssc_quota = 0;
           }
+
+          $user->cr = $this->getQuota($user->calls, $user->orders);
         }
         //the users in the dsl department
         else {

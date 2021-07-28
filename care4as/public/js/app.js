@@ -3024,18 +3024,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               id: 'A',
               type: 'linear',
               position: 'left',
+              color: 'rgb(255,255,255)',
               ticks: {
                 beginAtZero: true,
                 min: 30,
                 max: 75
-              }
-            }, {
-              id: 'B',
-              type: 'linear',
-              position: 'right',
-              ticks: {
-                max: 10,
-                min: 0
               }
             }]
           }
@@ -23690,7 +23683,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\ntd,tr,table\r\n{\r\n  border-radius: 15px;\n}\n.table-striped>tbody>tr:nth-child(even) {\r\n    background-color: #ddf8e8;\n}\n.department{\r\n  cursor: pointer;\n}\n.department:hover{\r\n  opacity: 0.5;\n}\n.tablespacing\r\n{\r\n  border-collapse: separate;\r\n  border-spacing: 10px;\n}\r\n", ""]);
+exports.push([module.i, "\ntd,tr,table\r\n{\r\n  border-radius: 15px;\n}\n.table-striped>tbody>tr:nth-child(even) {\r\n    background-color: #ddf8e8;\n}\n.department{\r\n  cursor: pointer;\n}\n.department:hover{\r\n  opacity: 0.5;\n}\n.tablespacing\r\n{\r\n  border-collapse: separate;\r\n  border-spacing: 10px;\n}\n#dailyQuota\r\n{\r\n  height: 300px !important;\r\n  color:white !important;\n}\r\n", ""]);
 
 // exports
 
@@ -81751,7 +81744,7 @@ var render = function() {
     _c("div", { staticClass: "p-0 readabilitysuperior" }, [
       _c("div", { staticClass: "row " }, [
         _c("div", { staticClass: "col" }, [
-          _c("h4", { staticClass: "text-center text-black" }, [
+          _c("h4", { staticClass: "text-center text-white " }, [
             _c("u", [
               _vm._v("Aktuelle Trackingdaten " + _vm._s(_vm.department))
             ])
@@ -81988,7 +81981,7 @@ var render = function() {
         _c("div", { staticClass: "col-6 p-1" }, [
           _vm._m(1),
           _vm._v(" "),
-          _c("div", { staticClass: "row h-50" }, [
+          _c("div", { staticClass: "row" }, [
             this.department == "Mobile"
               ? _c(
                   "table",
@@ -82063,16 +82056,20 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("h5", [_vm._v("Liveticker Agents")])
+    return _c("div", { staticClass: "row center_items" }, [
+      _c("h5", { staticClass: "text-center text-white" }, [
+        _vm._v("Liveticker Agents")
+      ])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("h5", [_vm._v("Liveticker Team")])
+    return _c("div", { staticClass: "row center_items" }, [
+      _c("h5", { staticClass: "text-center text-white" }, [
+        _vm._v("Liveticker Team")
+      ])
     ])
   },
   function() {
@@ -82141,10 +82138,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      {
-        staticClass: "row unit-translucent text-white center_items mb-0",
-        staticStyle: { height: "40%" }
-      },
+      { staticClass: "row unit-translucent text-white center_items mb-0" },
       [
         _c("h5", [_vm._v("Liveticker Tagesquote")]),
         _vm._v(" "),

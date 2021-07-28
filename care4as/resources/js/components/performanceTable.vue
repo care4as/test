@@ -3,7 +3,7 @@
       <div class="p-0 readabilitysuperior">
       <div class="row ">
         <div class="col">
-          <h4 class="text-center text-black"><u>Aktuelle Trackingdaten {{department}}</u></h4>
+          <h4 class="text-center text-white "><u>Aktuelle Trackingdaten {{department}}</u></h4>
         </div>
       </div>
       <div class="row justify-content-center m-1" >
@@ -16,8 +16,8 @@
       </div>
       <div class="row">
         <div class="col-6 p-1">
-          <div class="row">
-            <h5>Liveticker Agents</h5>
+          <div class="row center_items">
+            <h5 class="text-center text-white">Liveticker Agents</h5>
           </div>
 
           <div class="table-responsive ">
@@ -54,10 +54,10 @@
           </div>
         </div>
         <div class="col-6 p-1">
-          <div class="row">
-            <h5>Liveticker Team</h5>
+          <div class="row center_items">
+            <h5 class="text-center text-white">Liveticker Team</h5>
           </div>
-          <div class="row h-50">
+          <div class="row">
             <table class="table table-borderless tablespacing " v-if="this.department == 'Mobile'">
               <tr class="unit-translucent">
                 <th>GeVo-CR</th>
@@ -114,7 +114,7 @@
             </tr>
           </table>
           </div>
-          <div class="row unit-translucent text-white center_items mb-0" style="height:40%;">
+          <div class="row unit-translucent text-white center_items mb-0">
             <h5>Liveticker Tagesquote</h5>
             <div>
               <canvas id="dailyQuota" style="height: 300px; width: 90%;"></canvas>
@@ -333,21 +333,14 @@
                  id: 'A',
                  type:'linear',
                  position: 'left',
+                 color: 'rgb(255,255,255)',
                  ticks: {
                    beginAtZero: true,
                    min: 30,
                    max: 75,
                }
-             },
-             {
-               id: 'B',
-               type:'linear',
-               position: 'right',
-               ticks: {
-                 max: 10,
-                 min: 0,
-               }
-             }]}
+             }
+            ]}
            }
         });
       }
@@ -373,5 +366,10 @@ td,tr,table
 {
   border-collapse: separate;
   border-spacing: 10px;
+}
+#dailyQuota
+{
+  height: 300px !important;
+  color:white !important;
 }
 </style>
