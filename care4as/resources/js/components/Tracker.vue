@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="row justify-content-center w-100" v-if="this.isHidden == false">
     <button type="button" name="button" id="closebutton" style="position:absolute; top: 5px; right: 5px" @click='closeElement()'>X</button>
-    <div class="col-12 bg-light">
+    <div class="col-12">
       <canvas v-bind:id ="'myChart' + this.userid"></canvas>
     </div>
   </div>
@@ -23,8 +23,10 @@ export default {
   },
   mounted() {
       var self = this;
+
       console.log('Tracker Component mounted.')
       this.getUserData(this.userid)
+
       setInterval(function()
       {
         self.getUserData(self.userid)
