@@ -234,8 +234,8 @@
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
-          axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
-          // axios.get('http://'+host+'/users/getTracking/'+department)
+          //axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
+          axios.get('http://'+host+'/users/getTracking/'+department)
           .then(response => {
             if(response.data)
             {
@@ -283,7 +283,7 @@
           {
             this.getUserData(dep)
             this.getDailyQouta(dep)
-          }.bind(this), 60000);
+          }.bind(this), 300000);
 
         },
         getDailyQouta(dep){
@@ -291,8 +291,8 @@
           let department = 'Mobile'
 
           axios.get
-          ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
-          // ('http://'+host+'/kdw/getQuotas/'+department)
+          //('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          ('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             // console.log('dailyQoutas')

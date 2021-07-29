@@ -2944,9 +2944,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var host = window.location.host;
       var department = this.department;
       var currentdate = new Date();
-      var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
-      axios.get('http://' + host + '/care4as/care4as/public/users/getTracking/' + department) // axios.get('http://'+host+'/users/getTracking/'+department)
-      .then(function (response) {
+      var timestamp = "Last Sync: " + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + " @ " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds(); //axios.get('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
+
+      axios.get('http://' + host + '/users/getTracking/' + department).then(function (response) {
         if (response.data) {
           // console.log(response.data)
           var currentdate = new Date();
@@ -2982,15 +2982,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.timer = setInterval(function () {
         this.getUserData(dep);
         this.getDailyQouta(dep);
-      }.bind(this), 60000);
+      }.bind(this), 300000);
     },
     getDailyQouta: function getDailyQouta(dep) {
       var _this3 = this;
 
       var host = window.location.host;
       var department = 'Mobile';
-      axios.get('http://' + host + '/care4as/care4as/public/kdw/getQuotas/' + department) // ('http://'+host+'/kdw/getQuotas/'+department)
-      .then(function (response) {
+      axios.get //('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+      ('http://' + host + '/kdw/getQuotas/' + department).then(function (response) {
         // console.log('dailyQoutas')
         console.log(response.data);
 
@@ -80717,7 +80717,7 @@ var render = function() {
           [_vm._v("X")]
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "col-12 bg-light" }, [
+        _c("div", { staticClass: "col-12" }, [
           _c("canvas", { attrs: { id: "myChart" + this.userid } })
         ])
       ])
