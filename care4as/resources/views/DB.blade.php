@@ -6,12 +6,13 @@
 
   th, td
   {
-    font-size: 1.4em !important;
+    /* font-size: 1.4em !important; */
     text-align: center;
     margin: 0;
     border: 0;
-    color: #746e58;
+    /* color: #746e58; */
     white-space: nowrap;
+    border-radius: 15px;
 
   }
   div .dataTables_scrollFoot{
@@ -52,6 +53,7 @@
   {
     animation: blink 2s infinite;
   }
+
   .fixedright
   {
 
@@ -308,17 +310,17 @@
   </div>
 </div>
 
-<div class="container-fluid bg-light m-1">
-  <div class="row justify-content-center align-self-center m-1">
-      <h4 >Präsentation des aktuellen Moduls: {{$modul ?? ''}}</h4>
+<div class="container-fluid bg-cool m-1">
+  <div class="row m-1 justify-content-center align-self-center m-1">
+      <h4 class="unit-translucent p-1">Präsentation des aktuellen Moduls: {{$modul ?? ''}}</h4>
   </div>
-  <div class="row bg-white shadow  m-1 mt-4">
+  <div class="row m-1 mt-4">
     <div class="col-12">
     </div>
     <div class="col-12 text-left">
-      <table class="table table-hover table-light ">
-        <caption class="text-center">Aktueller Datenstand</caption>
-        <tr>
+      <table class="table table-borderless tablespacing">
+        <caption class="text-center unit-translucent m-2">Aktueller Datenstand</caption>
+        <tr class="unit-translucent">
           <td>
             @if(!App\DailyAgent::min('date'))
               <h5>keine Daten eingegeben</h5>
@@ -330,7 +332,7 @@
           <td>  <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
           <td>  <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
         </tr>
-        <tr>
+        <tr class="unit-translucent">
           <td>
             @if(!App\Hoursreport::min('work_date'))
               <h5>keine Daten eingegeben</h5>
@@ -342,7 +344,7 @@
           <td><a href="{{route('reports.reportHours.update')}}"><button type="button" class="btn btn-sm border-round" name="button">Stundenreport Updaten</button></a></td>
           <td><a href="{{route('user.connectUsersToKDW')}}"><button type="button" class="btn btn-sm btn-success border-round" name="button">Userdaten verknüpfen</button></a></td>
         </tr>
-        <tr>
+        <tr class="unit-translucent">
           <td>
             @if(!App\RetentionDetail::min('call_date'))
               <h5>keine Daten eingegeben</h5>
@@ -354,7 +356,7 @@
           <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
           <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
         </tr>
-        <tr>
+        <tr class="unit-translucent">
           <td>
             @if(!App\SAS::min('date'))
               <h5>keine Daten eingegeben</h5>
@@ -366,7 +368,7 @@
           <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
           <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
         </tr>
-        <tr>
+        <tr class="unit-translucent">
           <td>
             @if(!App\Optin::min('date'))
               <h5>keine Daten eingegeben</h5>
@@ -383,7 +385,7 @@
     <hr>
   </div>
 
-  <div class="row bg-white shadow  m-1 mt-4" id="filtermenu">
+  <div class="row unit-translucent  m-2 mt-2" id="filtermenu">
     <div class="col-12 d-flex justify-content-center align-self-center">
       <a class="" data-toggle="collapse" href="#collapseFiltermenu" role="button" aria-expanded="false" aria-controls="collapseFiltermenu">
         <h5>Filtermenü &#128269;</h5>
@@ -434,7 +436,7 @@
     </div>
 
   </div>
-  <div class="row m-2 mt-4 bg-white shadow justify-content-center align-self-center" >
+  <div class="row m-2 mt-4 justify-content-center align-self-center" >
     <div class="col-12">
     <div class="col p-1">
       @php
@@ -465,9 +467,9 @@
           Umsatz/SAS/Optin
         </div>
       </div>
-      <table class="table table-hover table-striped table-bordered" id="tableoverview">
-        <thead class="thead-dark">
-          <tr>
+      <table class="table table-borderless tablespacing text-white" id="tableoverview">
+        <thead class="thead">
+          <tr class="unit-translucent">
             <th>#</th>
             <th>Name</th>
             <th>AHT</th>
@@ -504,9 +506,9 @@
       </thead>
       <tbody>
         @foreach($users as $user)
-          <tr>
-            <td class="bg-dark text-white" style="width: auto; ">{{$user->id}}</td>
-            <td class="bg-dark text-white" style="text-align: left;">{{$user->surname}} {{$user->lastname}}</td>
+          <tr class="unit-translucent">
+            <td  style="width: auto; ">{{$user->id}}</td>
+            <td  style="text-align: left;">{{$user->surname}} {{$user->lastname}}</td>
             <td>
               {{$user->salesdata['aht']}}
             </td>
@@ -592,7 +594,7 @@
             <td>{{$user->salesdata['sickhours']}}</td>
             <td data-order="{{$user->salesdata['sicknessquota']}}">{{$user->salesdata['sicknessquota']}}%</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
-            <td class="bg-dark" style="text-align:center; font-size: 1.4em;">
+            <td class="" style="text-align:center; font-size: 1.4em;">
               <a class="text-muted" href="{{route('user.stats', ['id' => $user->id])}}">
                 <span class="material-icons text-white">preview</span>
               </a>
@@ -601,7 +603,7 @@
         @endforeach
       </tbody>
       <tfoot class="">
-        <tr class="bg-dark text-white" id='footerdata'>
+        <tr class="unit-translucent" id='footerdata'>
           <td>Total:</td>
           <td>1</td>
           <td id="aht">2</td>
@@ -671,7 +673,7 @@
 
 
     let table = $('#tableoverview').DataTable({
-      
+
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
             // Remove the formatting to get integer data for summation
@@ -704,7 +706,6 @@
               let Quota = sumPQ/counter
               return Quota
             }
-
             $(api.column( 2 ).footer() ).html('<b>'+Math.round(api.column(2).data().average()*100)/100 +'s</b>');
             $(api.column( 3 ).footer() ).html('<b>'+Math.round(api.column(3).data().sum()) +'h</b>');
             $(api.column( 4 ).footer() ).html('<b>'+Math.round(api.column(4).data().sum()) +'h</b>')

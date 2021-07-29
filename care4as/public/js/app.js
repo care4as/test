@@ -2853,6 +2853,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return _defineProperty({
@@ -2986,7 +2991,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var department = 'Mobile';
       axios.get('http://' + host + '/care4as/care4as/public/kdw/getQuotas/' + department) // ('http://'+host+'/kdw/getQuotas/'+department)
       .then(function (response) {
-        console.log('dailyQoutas');
+        // console.log('dailyQoutas')
         console.log(response.data);
 
         _this3.createChart('dailyQuota', response.data);
@@ -23685,7 +23690,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\ntd,tr,table\r\n{\r\n  border-radius: 15px;\n}\n.table-striped>tbody>tr:nth-child(even) {\r\n    background-color: #ddf8e8;\n}\n.department{\r\n  cursor: pointer;\n}\n.department:hover{\r\n  opacity: 0.5;\n}\n.tablespacing\r\n{\r\n  border-collapse: separate;\r\n  border-spacing: 10px;\n}\n#dailyQuota\r\n{\r\n  height: 300px !important;\r\n  color:white !important;\n}\r\n", ""]);
+exports.push([module.i, "\ntd,tr,table\r\n{\r\n  border-radius: 15px;\n}\n.table-striped>tbody>tr:nth-child(even) {\r\n    background-color: #ddf8e8;\n}\n.department{\r\n  cursor: pointer;\n}\n.department:hover{\r\n  opacity: 0.5;\n}\n#dailyQuota\r\n{\r\n  height: 300px !important;\r\n  color:white !important;\n}\r\n", ""]);
 
 // exports
 
@@ -81863,7 +81868,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Calls")]
+                        [_vm._v("SSC-Calls")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -81876,7 +81881,46 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Saves")]
+                        [_vm._v("SSC-Saves")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("cr")
+                            }
+                          }
+                        },
+                        [_vm._v("CR")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("calls")
+                            }
+                          }
+                        },
+                        [_vm._v("Calls")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "th",
+                        {
+                          staticStyle: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sorted("orders")
+                            }
+                          }
+                        },
+                        [_vm._v("Orders")]
                       )
                     ]),
                     _vm._v(" "),
@@ -81892,7 +81936,13 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(user.ssc_calls))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(user.ssc_orders))])
+                        _c("td", [_vm._v(_vm._s(user.ssc_orders))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(user.cr) + "%")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(user.calls))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(user.orders))])
                       ])
                     })
                   ],
@@ -81956,32 +82006,6 @@ var render = function() {
                           }
                         },
                         [_vm._v("SSC_Saves")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticStyle: { cursor: "pointer" },
-                          on: {
-                            click: function($event) {
-                              return _vm.sorted("orders")
-                            }
-                          }
-                        },
-                        [_vm._v("Gesamt_Calls")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticStyle: { cursor: "pointer" },
-                          on: {
-                            click: function($event) {
-                              return _vm.sorted("orders")
-                            }
-                          }
-                        },
-                        [_vm._v("Gesamt_Orders")]
                       )
                     ]),
                     _vm._v(" "),

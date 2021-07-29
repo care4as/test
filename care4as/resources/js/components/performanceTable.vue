@@ -25,14 +25,20 @@
               <tr class="unit-translucent">
                 <th @click="sorted('name')" style="cursor:pointer" >User </th>
                 <th @click="sorted('ssc_quota')" style="cursor:pointer">SSC-CR</th>
-                <th @click="sorted('ssc_calls')" style="cursor:pointer">Calls</th>
-                <th @click="sorted('ssc_orders')" style="cursor:pointer">Saves</th>
+                <th @click="sorted('ssc_calls')" style="cursor:pointer">SSC-Calls</th>
+                <th @click="sorted('ssc_orders')" style="cursor:pointer">SSC-Saves</th>
+                <th @click="sorted('cr')" style="cursor:pointer">CR</th>
+                <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
+                <th @click="sorted('orders')" style="cursor:pointer">Orders</th>
               </tr>
               <tr class="unit-translucent" v-for="user in sortedUsers">
                 <td >{{user.surname}} {{user.lastname}}</td>
                 <td>{{user.ssc_quota}}%</td>
                 <td >{{user.ssc_calls}}</td>
                 <td>{{user.ssc_orders}}</td>
+                <td>{{user.cr}}%</td>
+                <td>{{user.calls}}</td>
+                <td>{{user.orders}}</td>
               </tr>
 
             </table>
@@ -42,8 +48,7 @@
                 <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
                 <th @click="sorted('calls')" style="cursor:pointer">SSC_Calls</th>
                 <th @click="sorted('orders')" style="cursor:pointer">SSC_Saves</th>
-                <th @click="sorted('orders')" style="cursor:pointer">Gesamt_Calls</th>
-                <th @click="sorted('orders')" style="cursor:pointer">Gesamt_Orders</th>
+
               </tr >
               <tr class="unit-translucent" v-for="user in sortedUsers">
                 <td>{{user.surname}} {{user.lastname}}</td>
@@ -283,7 +288,6 @@
         },
         getDailyQouta(dep){
           var host = window.location.host;
-
           let department = 'Mobile'
 
           axios.get
@@ -291,7 +295,7 @@
           // ('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
-            console.log('dailyQoutas')
+            // console.log('dailyQoutas')
             console.log(response.data)
             this.createChart('dailyQuota', response.data)
           })
@@ -350,6 +354,7 @@
 </script>
 
 <style media="screen">
+
 td,tr,table
 {
   border-radius: 15px;
@@ -363,11 +368,7 @@ td,tr,table
 .department:hover{
   opacity: 0.5;
 }
-.tablespacing
-{
-  border-collapse: separate;
-  border-spacing: 10px;
-}
+
 #dailyQuota
 {
   height: 300px !important;

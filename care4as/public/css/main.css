@@ -9,6 +9,11 @@ body
       /* font-family: 'Actor'; */
       font-size: 1.2rem;
     }
+    .tablespacing
+    {
+      border-collapse: separate;
+      border-spacing: 10px;
+    }
     .bg-cool
     {
       background: #2c3e50; /* fallback for old browsers */
@@ -18,7 +23,7 @@ body
     .unit-translucent
     {
       box-shadow: 0 0 10px;
-      background-color: rgba(0,0,0,0.4);
+      background-color: rgba(0,0,0,0.4) !important;
       color: white !important;
       border-radius: 15px;
     }

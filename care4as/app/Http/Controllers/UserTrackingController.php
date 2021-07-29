@@ -430,10 +430,8 @@ class UserTrackingController extends Controller
       // return 1;
       $intermediates = Intermediate::whereDate('date', Carbon::today())
       ->get();
-
       $times = $intermediates->unique('date')->pluck('date');
       // dd($times);
-
       foreach ($times as $key => $timestamp) {
 
         $intervall = $intermediates->where('date',$timestamp);
