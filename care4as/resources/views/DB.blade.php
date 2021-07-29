@@ -535,15 +535,15 @@
                 <div class="" style="position: absolute; display:block;">
                   <a onclick="showDetails({{$user->id}})" style="cursor:pointer;">  {{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}</a>
                 </div>
-                <div class="bg-white" style="position: absolute; display:none; z-index: 200;" id="details{{$user->id}}" onclick="hide(this)">
+                <div class="bg-light text-dark" style="position: absolute; display:none; z-index: 200;" id="details{{$user->id}}" onclick="hide(this)">
                   <div class="">
-                    Upgrades: {{$user->gevo->where('change_cluster','Upgrade')->count()}}
+                    Upgrades:{{$user->gevo->where('change_cluster','Upgrade')->count()}}
                   </div>
                   <div class="">
-                    Sidegrades: {{$user->gevo->where('change_cluster','Sidegrade')->count()}}
+                    Sidegrades:{{$user->gevo->where('change_cluster','Sidegrade')->count()}}
                   </div>
                   <div class="">
-                    Downgrades: {{$user->gevo->where('change_cluster','Downgrade')->count()}}
+                    Downgrades:{{$user->gevo->where('change_cluster','Downgrade')->count()}}
                   </div>
                 </div>
               </div>
@@ -792,7 +792,6 @@
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-
                   table.colReorder.order([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,27,31]);
                   // table.colReorder.order([0,1,3,31,32,4,6,7,9,10,8,24,18,22,23,29,30]);
                   // table.colReorder.order( [0,1,3,4,31,32,5,7,9,10,8,17,18,23,24,25,27],true);
@@ -838,9 +837,7 @@
 
           $('#exampleFormControlSelect2').empty()
           let dep = this.value
-
           var host = window.location.host;
-
           // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
 
           axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
