@@ -507,14 +507,14 @@
       <tbody>
         @foreach($users as $user)
           <tr class="unit-translucent">
-            <td  style="width: auto; ">{{$user->id}}</td>
-            <td  style="text-align: left;">{{$user->surname}} {{$user->lastname}}</td>
-            <td>
+            <td style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
+            <td data-order="{{$user->lastname}}" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->surname}} {{$user->lastname}}</span></td>
+            <td data-order="{{$user->salesdata['aht']}}">
               {{$user->salesdata['aht']}}
             </td>
-            <td>{{$user->salesdata['workedHours']}}</td>
-            <td>{{$user->salesdata['payedtime11']}}</td>
-            <td>{{$user->salesdata['productive']}}</td>
+            <td data-order="{{$user->salesdata['workedHours']}}">{{$user->salesdata['workedHours']}}</td>
+            <td data-order="{{$user->salesdata['payedtime11']}}">{{$user->salesdata['payedtime11']}}</td>
+            <td data-order="{{$user->salesdata['productive']}}">{{$user->salesdata['productive']}}</td>
             @if($user->salesdata['workedHours'] != 0)
               <td data-order="{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}">{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}%</td>
             @else
@@ -526,11 +526,11 @@
               <td data-order="0">0%</td>
             @endif
             @if($user->department == '1&1 DSL Retention')
-              <td>{{$user->salesdata['orders']}}</td>
+              <td data-order="{{$user->salesdata['orders']}}">{{$user->salesdata['orders']}}</td>
             @else
-              <td>{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
+              <td data-order="{{$user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
             @endif
-            <td>
+            <td data-order="{{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}">
               <div class="center_items" style="position: relative; height: 65px; width: 100%;">
                 <div class="" style="position: absolute; display:block;">
                   <a onclick="showDetails({{$user->id}})" style="cursor:pointer;">  {{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}</a>
@@ -548,11 +548,11 @@
                 </div>
               </div>
             </td>
-            <td>{{$user->salesdata['calls']}}</td>
+            <td data-order="{{$user->salesdata['calls']}}">{{$user->salesdata['calls']}}</td>
             @if($user->salesdata['workedHours'] != 0)
-              <td>{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}</td>
+              <td data-order="{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}">{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}</td>
               @else
-              <td>0</td>
+              <td data-order="0">0</td>
             @endif
             <td data-order="{{$user->salesdata['sscOrders']}}">{{$user->salesdata['sscOrders']}}</td>
             <td data-order="{{$user->salesdata['bscOrders']}}">{{$user->salesdata['bscOrders']}}</td>
@@ -582,16 +582,16 @@
             <td data-order="{{$user->optinQuota}}">{{$user->optinQuota}}%</td>
             <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
             @if($user->salesdata['workedHours'] != 0)
-              <td>{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
+              <td data-order="{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}">{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
             @else
-              <td>0</td>
+              <td data-order="0">0</td>
             @endif
             @if($user->salesdata['productive'] != 0)
-              <td>{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}</td>
+              <td data-order="{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}">{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}</td>
             @else
-                <td>0</td>
+                <td data-order="0">0</td>
             @endif
-            <td>{{$user->salesdata['sickhours']}}</td>
+            <td data-order="{{$user->salesdata['sickhours']}}">{{$user->salesdata['sickhours']}}</td>
             <td data-order="{{$user->salesdata['sicknessquota']}}">{{$user->salesdata['sicknessquota']}}%</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td class="" style="text-align:center; font-size: 1.4em;">
@@ -670,8 +670,6 @@
     loadData('HRDataStatus','#HoursreportData', '.loadingerHR')
 
     loadData('RDDataStatus','#RDDataStatus', '.loadingerRD')
-
-
     let table = $('#tableoverview').DataTable({
 
       "footerCallback": function ( row, data, start, end, display ) {
@@ -748,23 +746,20 @@
                   { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' },
                   // 'excel',
               ],
-      rowReorder: true,
-      colReorder: true,
-      scrollX: true,
-      scrollY: "600px",
-      scrollCollapse: true,
-      fixedColumns:   {
-            leftColumns: 2,
-            // rightColumns: 1,
+        rowReorder: true,
+        colReorder: true,
+        scrollX: true,
+        scrollY: "600px",
+        scrollCollapse: true,
+        fixedColumns:   {
+          leftColumns: 2,
+          // rightColumns: 1,
         },
-
         fnInitComplete: function(){
            // $('#footerdata').style.display = 'hidden';
        },
-
-      "columnDefs": [
+       "columnDefs": [
             { "width": "60px", "targets": "_all" },
-
           ],
         });
 
@@ -785,14 +780,14 @@
                     // table.draw()
                   break;
                 case 'teamleiterview':
-                  // table.colReorder.reset();
+                  table.colReorder.reset();
                   table.columns().visible( false );
 
-                  table.columns([0,1,3,4,30,29,6,7,8,9,15,16,17,24,25,27,31]).visible( true );
+                  table.columns([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,27,31]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-                  table.colReorder.order([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,27,31]);
+                  table.colReorder.order([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,17,31]);
                   // table.colReorder.order([0,1,3,31,32,4,6,7,9,10,8,24,18,22,23,29,30]);
                   // table.colReorder.order( [0,1,3,4,31,32,5,7,9,10,8,17,18,23,24,25,27],true);
                   break;

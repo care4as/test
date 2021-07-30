@@ -305,5 +305,7 @@ Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas');
 
 
 Route::get('/test', function(){
-  return 1;
+
+  return view('test');
+  
 })->name('test');
