@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Monitor extends Model
 {
-    use HasFactory;
+    // use HasFactory;
 
     protected $table = 'monitor_info';
 

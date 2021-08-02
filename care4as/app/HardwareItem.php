@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class HardwareItem extends Model
 {
-    use HasFactory;
+    // use HasFactory;
 
     protected $table = 'hardware_inventory';
 

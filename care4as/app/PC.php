@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PC extends Model
 {
-    use HasFactory;
+    // use HasFactory;
 
     protected $table = 'pc_info';
 
@@ -18,7 +18,7 @@ class PC extends Model
       $this->port = $displayports;
       $this->speed = $speed;
       $this->brand = $brandpc;
-      
+
       $this->save();
     }
 }
