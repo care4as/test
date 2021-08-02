@@ -40,6 +40,15 @@
   @yield('additional_css')
 </head>
 <body class="">
+  <div class="toggler">
+    <button type="button" name="button" onclick="toggleMobileMenu()" style="position: fixed; top: 5px; left: 125px;z-index: 20000; height: 50px; width: 50px; border-radius: 50%;"></button>
+  </div>
+  <div class="mobilemenu center_items" id="mobilemenu" style="position: fixed;z-index: 10000; height: 100vh; width: 100vw; display: none;background-color: rgba(0,0,0,1);">
+    <div class="" style="height: 75px; width: 75px; background-color: green;">
+      <a href="{{route('inventory.add')}}">HW hinzufügen</a>
+    </div>
+
+  </div>
   <div class="wrapper ">
     <div class="sidebar" data-color="orange" id='sidebar'>
       <div class="logo bg-white m-2 rounded-pill">

@@ -587,3 +587,9 @@ body
   border: 2px solid black;
   box-shadow:10px 10px 5px grey;
 }
+@media only screen and (min-width: 416px) {
+  .toggler
+  {
+    display: none;
+  }
+}

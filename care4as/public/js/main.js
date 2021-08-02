@@ -25,6 +25,10 @@ function toggleSidebar()
     content.style.width = newOldWidth
   }
 }
+function toggleMobileMenu() {
+  console.log('test')
+  $('#mobilemenu').toggle()
+}
 function showDetails(id)
 {
   $("#details"+id).css('display','block')
