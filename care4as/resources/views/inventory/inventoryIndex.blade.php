@@ -12,8 +12,8 @@
     <div class="row">
       <h3>Hardware Liste</h3>
     </div>
-      <table class="table table-borderless w-100">
-        <tr>
+      <table class="table table-borderless w-100 text-white">
+        <tr class="unit-translucent">
           <th>id</th>
           <th>Art</th>
           <th>Ort</th>
@@ -23,7 +23,7 @@
           <th>erfasst_am</th>
         </tr>
         @foreach($hardware as $item)
-        <tr>
+        <tr class="unit-translucent">
           <td>{{$item->id}}</td>
           <td>@if($item->type_id == 1) PC @elseif($item->type_id == 2) Monitor @endif</td>
           <td>{{$item->place}}</td>
