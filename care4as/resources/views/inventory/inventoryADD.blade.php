@@ -60,13 +60,40 @@
               <input type="text" name="cpu" id="cpu" value="" class="form-control">
             </div>
             <div class="form-group col-md-6">
-              <label for="displayports">Display Connections</label>
-              <input type="text" name="displayports" id="displayports" value="" class="form-control">
-            </div>
-            <div class="form-group col-md-6">
               <label for="speed">Geschwindigkeit</label>
               <input type="text" name="speed" id="speed" value="" class="form-control">
             </div>
+            <div class="form-group col-md-6">
+              <div class="m-1">
+                Display Connections
+              </div>
+              <div class="m-4">
+                <input class="form-check-input" name="portspc[]" type="checkbox" value="VGA" id="vga">
+                <label class="form-check-label" for="vga">
+                  VGA
+                </label>
+              </div>
+              <div class="m-4">
+                <input class="form-check-input" name="portspc[]" type="checkbox" value="dvi" id="dvi">
+                <label class="form-check-label" for="dvi">
+                  DVI
+                </label>
+              </div>
+              <div class="m-4">
+                <input class="form-check-input" name="portspc[]" type="checkbox" value="hdmi" id="hdmi">
+                <label class="form-check-label" for="hdmi">
+                  HDMI
+                </label>
+              </div>
+              <div class="m-4">
+                <input class="form-check-input" name="portspc[]" type="checkbox" value="displayport" id="displayport">
+                <label class="form-check-label" for="displayport">
+                  Display Port
+                </label>
+              </div>
+
+            </div>
+
           </div>
         </div>
         <div class="container p-0" id="monitormenu">
@@ -83,8 +110,34 @@
               <input type="text" name="size" id="size" value="" class="form-control">
             </div>
             <div class="form-group col-md-6">
-              <label for="displayportsmonitor">Connections</label>
-              <input type="text" name="displayportsmonitor" id="displayportsmonitor" value="" class="form-control">
+              <div class="m-1">
+                Display Connections
+              </div>
+              <div class="m-4">
+                <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="VGA" id="vga">
+                <label class="form-check-label" for="vga">
+                  VGA
+                </label>
+              </div>
+              <div class="m-4">
+                <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="dvi" id="dvi">
+                <label class="form-check-label" for="dvi">
+                  DVI
+                </label>
+              </div>
+              <div class="m-4">
+                <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="hdmi" id="hdmi">
+                <label class="form-check-label" for="hdmi">
+                  HDMI
+                </label>
+              </div>
+              <div class="m-4">
+                <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="displayport" id="displayport">
+                <label class="form-check-label" for="displayport">
+                  Display Port
+                </label>
+              </div>
+
             </div>
           </div>
         </div>

@@ -13,10 +13,8 @@ class HardwareController extends Controller
     {
       $hardwarePCs = Hardwareitem::where('type_id',1)->with('devicePC')->get();
       $hardwareMO = Hardwareitem::where('type_id',2)->with('deviceMO')->get();
-
       $hardware = $hardwarePCs->merge($hardwareMO);
       // dd($hardware);
-
       return view('inventory.inventoryIndex', compact('hardware'));
     }
 
@@ -45,7 +43,7 @@ class HardwareController extends Controller
       switch ($device) {
         case 1:
             $pc = new PC;
-            $pc->storePC($request->brandpc,$request->cpufamily,$request->cpu,$request->displayports,$request->speed);
+            $pc->storePC($request->brandpc,$request->cpufamily,$request->cpu,json_encode($request->portspc),$request->speed);
 
             $device_id = $pc->id;
             $typeid = 1;
@@ -53,7 +51,7 @@ class HardwareController extends Controller
         case 2:
             $monitor = new Monitor;
             // storeMonitor($brandmonitor,$size,$ports)
-            $monitor->storeMonitor($request->brandmonitor,$request->size,$request->displayportsmonitor);
+            $monitor->storeMonitor($request->brandmonitor,$request->size,json_encode($request->portsmonitor));
 
             $device_id = $monitor->id;
             $typeid = 2;
@@ -67,7 +65,6 @@ class HardwareController extends Controller
       $hwitem = new Hardwareitem;
       // saveHWitem($deviceid, $type_id, $place, $name, $comment, $description)
       $hwitem->saveHWitem($device_id, $typeid, $request->place,$request->name, $request->comment, $request->description);
-
       // dd($request);
       return redirect()->back();
 
