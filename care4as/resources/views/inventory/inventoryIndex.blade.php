@@ -7,12 +7,12 @@
 @endsection
 
 @section('content')
-<div class="container bg-cool text-white center_items">
-  <div class="col-md-8">
+<div class="container-fluid bg-cool text-white center_items">
+  <div class="col-md-12">
     <div class="row">
       <h3>Hardware Liste</h3>
     </div>
-      <table class="table table-borderless">
+      <table class="table table-borderless w-100">
         <tr>
           <th>id</th>
           <th>Art</th>

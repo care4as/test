@@ -15,7 +15,7 @@ class CreatePcInfoTable extends Migration
     {
         Schema::create('pc_info', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
+            // $table->text('name');
             $table->text('cpu_family')->nullable();
             $table->text('cpu')->nullable();
             $table->text('port')->nullable();

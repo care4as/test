@@ -15,7 +15,6 @@ class CreateMonitorInfoTable extends Migration
     {
         Schema::create('monitor_info', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
             $table->text('size')->nullable();
             $table->text('brand')->nullable();
             $table->text('modellnumber')->nullable();

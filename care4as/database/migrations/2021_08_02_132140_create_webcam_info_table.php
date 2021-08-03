@@ -15,7 +15,6 @@ class CreateWebcamInfoTable extends Migration
     {
         Schema::create('webcam_info', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
             $table->text('brand')->nullable();
             $table->timestamps();
         });

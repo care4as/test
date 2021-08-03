@@ -15,7 +15,6 @@ class CreatePrinterInfoTable extends Migration
     {
         Schema::create('printer_info', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
             $table->text('brand')->nullable();
             $table->boolean('colorable')->nullable();
             $table->timestamps();
