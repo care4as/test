@@ -2440,7 +2440,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 
 .navbar .navbar-nav .nav-link i.now-ui-icons {
   top: 4px;
-  font-size: 16px;
+  font-size: 22px;
 }
 
 .navbar .navbar-nav .nav-link.profile-photo .profile-photo-small {
@@ -3819,7 +3819,7 @@ Created using IcoMoon - icomoon.io
 .sidebar .sidebar-wrapper,
 .off-canvas-sidebar .sidebar-wrapper {
   position: relative;
-  height: calc(100vh - 75px);
+  height: 100vh;
   overflow: auto;
   width: 260px;
   z-index: 4;
@@ -3882,7 +3882,7 @@ Created using IcoMoon - icomoon.io
 .sidebar .nav li>a,
 .off-canvas-sidebar .nav li>a {
   margin: 10px 15px 0;
-  border-radius: 30px;
+  border-radius: 2px;
   color: #FFFFFF;
   display: block;
   text-decoration: none;
@@ -4173,6 +4173,7 @@ Created using IcoMoon - icomoon.io
   -o-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -ms-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+  z-index: 5000;
 }
 
 .main-panel>.content {
@@ -4204,7 +4205,6 @@ Created using IcoMoon - icomoon.io
 
 .panel-header {
   height: 260px;
-  padding-top: 80px;
   padding-bottom: 45px;
   background: #141E30;
   /* fallback for old browsers */
@@ -4238,7 +4238,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .footer {
-  padding: 24px 0;
+  /*padding: 24px 0;*/
 }
 
 .footer.footer-default {
