@@ -302,6 +302,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/inventory/add', 'HardwareController@store')->name('inventory.store');
   Route::get('/inventory', 'HardwareController@index')->name('inventory.list');
   Route::get('/inventory/item/show/{id}', 'HardwareController@show')->name('inventory.item.show');
+  Route::post('/inventory/item/update/{id}', 'HardwareController@update')->name('inventory.item.update');
   Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');
 
 //endinventory

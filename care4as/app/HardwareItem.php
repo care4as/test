@@ -20,7 +20,6 @@ class HardwareItem extends Model
       $this->comment = $comment;
       $this->description = $description;
 
-
       $this->save();
     }
     public function devicePC()

@@ -41,7 +41,6 @@
           <td><a href="{{route('inventory.item.show',['id' => $item->id])}}">HW anzeigen</a> <a href="{{route('inventory.item.delete',['id' => $item->id])}}">HW löschen</a> </td>
         @endforeach
         </tr>
-
       </table>
       </div>
     </div>
