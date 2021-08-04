@@ -16,7 +16,7 @@ class HardwareController extends Controller
       $hardwareMO = Hardwareitem::where('type_id',2)->with('deviceMO')->get();
       $hardware = $hardwarePCs->merge($hardwareMO);
 
-      $hardware = (new Collection($hardware))->paginate(2);
+      $hardware = (new Collection($hardware))->paginate(20);
       // dd($hardware);
       return view('inventory.inventoryIndex', compact('hardware'));
     }
@@ -71,5 +71,28 @@ class HardwareController extends Controller
       // dd($request);
       return redirect()->back();
 
+    }
+    public function show($id)
+    {
+      $item = Hardwareitem::find($id);
+
+      switch ($item->type_id) {
+        case '1':
+          $item->load('devicePC');
+          break;
+        case '2':
+          $item->load('deviceMO');
+          break;
+
+      }
+      return view('inventory.HWItemShow', compact('item'));
+      // dd($item);
+    }
+    public function delete($id)
+    {
+        $item = Hardwareitem::find($id);
+        $item->delete();
+
+        return redirect()->back();
     }
 }

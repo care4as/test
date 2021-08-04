@@ -27,6 +27,7 @@
           <th>Kommentar</th>
           <th>Beschreibung</th>
           <th>erfasst_am</th>
+          <th>Optionen</th>
         </tr>
         @foreach($hardware as $item)
         <tr class="unit-translucent">
@@ -37,8 +38,10 @@
           <td>{{$item->comment}}</td>
           <td>{{$item->description}}</td>
           <td>{{$item->created_at}}</td>
+          <td><a href="{{route('inventory.item.show',['id' => $item->id])}}">HW anzeigen</a> <a href="{{route('inventory.item.delete',['id' => $item->id])}}">HW löschen</a> </td>
         @endforeach
         </tr>
+
       </table>
       </div>
     </div>

@@ -31,4 +31,15 @@ class HardwareItem extends Model
     {
       return $this->belongsTo('App\Monitor','device_id');
     }
+
+    public static function boot() {
+       parent::boot();
+
+       static::deleting(function($user) { // before delete() method call this
+
+            $user->devicePC()->delete();
+            $user->deviceMO()->delete();
+            // do the rest of the cleanup...
+       });
+   }
 }
