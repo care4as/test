@@ -12,6 +12,12 @@
     <div class="row">
       <h3>Hardware Liste</h3>
     </div>
+    <div class="row ">
+      <div class="col">
+          {{$hardware->links("pagination::bootstrap-4")}}
+      </div>
+    </div>
+    <div class="row">
       <table class="table table-borderless w-100 text-white">
         <tr class="unit-translucent">
           <th>id</th>
@@ -34,9 +40,9 @@
         @endforeach
         </tr>
       </table>
+      </div>
     </div>
   </div>
-
 @endsection
 
 @section('additional_js')

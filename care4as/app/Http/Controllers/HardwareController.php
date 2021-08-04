@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\PC;
 use App\Hardwareitem;
 use App\Monitor;
+use App\Support\Collection;
 
 class HardwareController extends Controller
 {
@@ -14,6 +15,8 @@ class HardwareController extends Controller
       $hardwarePCs = Hardwareitem::where('type_id',1)->with('devicePC')->get();
       $hardwareMO = Hardwareitem::where('type_id',2)->with('deviceMO')->get();
       $hardware = $hardwarePCs->merge($hardwareMO);
+
+      $hardware = (new Collection($hardware))->paginate(2);
       // dd($hardware);
       return view('inventory.inventoryIndex', compact('hardware'));
     }
