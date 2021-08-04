@@ -14,7 +14,7 @@ class AddDescriptionToRights extends Migration
     public function up()
     {
         Schema::table('rights', function (Blueprint $table) {
-            $table->text('description')->nullable();
+            //$table->text('description')->nullable();
         });
     }
 
