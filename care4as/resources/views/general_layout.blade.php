@@ -16,6 +16,13 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
+<style>
+  /** Scrollbar-Einstellungen */
+  * {
+  scrollbar-width: thin;
+  scrollbar-color: gray white;
+}
+</style>
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -42,12 +49,12 @@
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="orange" id='sidebar'>
-      <div class="logo bg-white m-2 rounded-pill">
+      <div class="logo bg-white m-2" style="border-radius: 2px;">
         <a href="text-muted" class="simple-text logo-normal">
-          <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 190px; margin: 25px; margin-bottom: 0px; margin-top: 10px;">
+          <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 100%; margin-top: 10px; height: 12%">
         </a>
       </div>
-      <div class="sidebar-wrapper " id="sidebar-wrapper" style="overflow:scroll; margin-bottom: 15px;">
+      <div class="sidebar-wrapper " id="sidebar-wrapper" style="overflow-y: scroll; height: 88%">
         @php
           Auth()->user()->getRights();
         @endphp
@@ -109,6 +116,21 @@
             </div>
           </li>
           @endif
+
+          <li>
+            <a class="" data-toggle="collapse" href="#collapseControlling" role="button" aria-expanded="false" aria-controls="collapseControlling">
+              <i class="fas fa-users"></i>
+              <p><b>Controlling</b></p>
+            </a>
+            <div class="collapse" id="collapseControlling" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+                  <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
+                  <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
+
+              </ul>
+            </div>
+          </li>
+
           @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
             <a class="" href="{{route('presentation')}}">
@@ -268,12 +290,23 @@
         </ul>
       </div>
     </div>
-    <div class="main-panel" id="main-panel">
+    <div class="main-panel" id="main-panel" style="z-index: 50000;">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
+      <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <input type="checkbox" id="hamburg" onclick="showSidebar()">
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+              <ul class="navbar-nav">  
+                <li class="nav-item" onclick="toggleNewSidebar()" onmouseover="mouseoverNewSidebar()" onmouseout="mouseoutNewSidebar()" id="newSidebarToggler">
+                  <a class="nav-link" href="#pablo" id="linkNewSidebar">
+                  <i class="now-ui-icons design_bullet-list-67" id="hoverNewSidebarToggler"></i>
+                </a>
+              </ul> 
+            </div>
+          </div>
+          <div style="font-size: 1.2em; font-weight: bold; color: white;">@yield("pagetitle")</div>
+          <div class="navbar-wrapper">  
+          <!--<input type="checkbox" id="hamburg" onclick="showSidebar()">
               <label for="hamburg" class="hamburg">
                   <span class="line"></span>
                   <span class="line"></span>
@@ -284,9 +317,9 @@
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
             <span class="navbar-toggler-bar navbar-kebab"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <form>
+          </button> -->
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <!--<form>
               <div class="input-group no-border">
                 <input type="text" value="" class="form-control" placeholder="">
                 <div class="input-group-append">
@@ -295,16 +328,16 @@
                   </div>
                 </div>
               </div>
-            </form>
+            </form> -->
             <ul class="navbar-nav">
-              <li class="nav-item">
+              <!--<li class="nav-item">
                 <a class="nav-link" href="#pablo">
                   <i class="now-ui-icons media-2_sound-wave"></i>
                   <p>
                     <span class="d-lg-none d-md-block">Stats</span>
                   </p>
                 </a>
-              </li>
+              </li> 
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons location_world"></i>
@@ -317,7 +350,7 @@
                   <a class="dropdown-item" href="#">test2</a>
                   <a class="dropdown-item" href="#">test3</a>
                 </div>
-              </li>
+              </li> -->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="userDropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons users_single-02"></i>
@@ -340,12 +373,12 @@
         </div>
       </nav>
       <!-- End Navbar -->
-      <div class="panel-header panel-header-lg" style="height: 200em; overflow: scroll;">
+      <div class="panel-header panel-header-lg" style="min-height: 100vh;">
         <div class="backdrop">
 
         </div>
         <!-- <canvas id="bigDashboardChart"></canvas> -->
-        <div class="content" style="height: 60vh;">
+        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto">
           @yield('content')
         </div>
         <!-- <div class="container bg-white">
