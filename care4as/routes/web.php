@@ -15,6 +15,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
 
+Route::get('/umsatzmeldung', function(){
+
+  //return 1 ;
+  return view('umsatzmeldung');
+})->name('umsatzmeldung');
+
+Route::get('/projekt_kpi', function(){
+
+  //return 1 ;
+  return view('projekt_kpi');
+})->name('projekt_kpi');
 
 Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
 Route::get('/messageOfTheDay', function()

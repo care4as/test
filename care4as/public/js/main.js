@@ -1,3 +1,16 @@
+var newSidebar = "active";
+
+//function für controlling: Umsatzmeldung
+function controlling_umsatzmeldung_zielwerte_toggle(){
+  if (document.getElementById('controlling_umsatzmeldung_zielwerte_toggle').style.visibility == "hidden") {
+    document.getElementById('controlling_umsatzmeldung_zielwerte_toggle').style.visibility = "visible"
+  } else {
+    document.getElementById('controlling_umsatzmeldung_zielwerte_toggle').style.visibility = "hidden";
+  }
+  
+}
+
+
 function toggleSidebar()
 {
   // console.log('test')
@@ -25,18 +38,24 @@ function toggleSidebar()
     content.style.width = newOldWidth
   }
 }
+<<<<<<< HEAD
 function toggleMobileMenu() {
   console.log('test')
   $('#mobilemenu').toggle()
 }
+=======
+
+>>>>>>> 8462a33028426bcd5244fd33ac7928fc056fdbe6
 function showDetails(id)
 {
   $("#details"+id).css('display','block')
 }
+
 function hide(el)
 {
   el.style.display = 'none'
 }
+
 function getAHT(date1,date2)
 {
   let loader = document.querySelector('.loader')
@@ -44,6 +63,7 @@ function getAHT(date1,date2)
   let button = document.querySelector('.aht')
   button.style.display = 'none'
 }
+
 function printPage()
 {
   // console.log('test')
@@ -55,29 +75,66 @@ function printPage()
   window.print()
 }
 
-  /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
-  function openNav() {
-      document.getElementById("sidebar").style.display = "none";
-      document.getElementById("main-panel").style.width = "100%";
-      // document.getElementById("sidebar-wrapper").style.display = "none";
-  }
+/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+function openNav() {
+  document.getElementById("sidebar").style.display = "none";
+  document.getElementById("main-panel").style.width = "100%";
+    // document.getElementById("sidebar-wrapper").style.display = "none";
+}
 
-  /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
-  function closeNav() {
-      document.getElementById("sidebar").style.display = "block";
-      document.getElementById("main-panel").style.width = "calc(100% - 260px)";
-        // document.getElementById("sidebar-wrapper").style.display = "block";
-  }
+/* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+function closeNav() {
+    document.getElementById("sidebar").style.display = "block";
+    document.getElementById("main-panel").style.width = "calc(100% - 260px)";
+      // document.getElementById("sidebar-wrapper").style.display = "block";
+}
 
-  function showSidebar(){
-      var selection = document.getElementById("hamburg");
-      if (selection.checked) {
-          openNav()
-      }
-      else {
-          closeNav()
-      }
+function showSidebar(){
+    var selection = document.getElementById("hamburg");
+    if (selection.checked) {
+        openNav()
+    }
+    else {
+        closeNav()
+    }
+}
+
+// Sidebar Toggler
+function toggleNewSidebar(){
+  if (window.newSidebar == "active") {
+    document.getElementById("main-panel").style.width = "100%";
+    window.newSidebar = "transition";
+    setTimeout(function(){
+      document.getElementById("navbar_max").style.boxShadow = "none"
+      window.newSidebar = "inactive";
+    }, 150);
+  } else if (window.newSidebar == "inactive") {
+    window.newSidebar = "transition";
+    document.getElementById("main-panel").style.width = "calc(100% - 260px)";
+    document.getElementById("navbar_max").style.boxShadow = "black 1em 0px 1em -1em inset"
+    setTimeout(function(){
+      window.newSidebar = "active";
+    }, 150)
   }
+  document.getElementById("linkNewSidebar").style.backgroundColor = "transparent";
+}
+
+function mouseoverNewSidebar(){
+  if (window.newSidebar == "active") {
+    document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons arrows-1_minimal-left";
+  } else if (window.newSidebar == "inactive") {
+    document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons arrows-1_minimal-right";
+  }
+  document.getElementById("linkNewSidebar").style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+}
+
+function mouseoutNewSidebar(){
+  document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons design_bullet-list-67";
+  document.getElementById("linkNewSidebar").style.backgroundColor = "transparent";
+  
+}
+
+
   function rotateButton(){
 
     var button = $("#LexikaButton");

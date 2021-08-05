@@ -587,9 +587,56 @@ body
   border: 2px solid black;
   box-shadow:10px 10px 5px grey;
 }
+<<<<<<< HEAD
 @media only screen and (min-width: 416px) {
   .toggler
   {
     display: none;
   }
 }
+=======
+
+/* Container */
+.max-main-container{
+  margin: 20px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  background-color: white;
+}
+
+/* Panel */
+.max-panel{
+  margin: 20px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.max-panel-title{
+  background-color: #ddd;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px solid grey;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.max-panel-content{
+  background-color: white;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 5px;
+  font-size: 14px;
+}
+
+#testdropdown{
+  margin-top: 50px;
+  margin-right: 50px;
+  transform: translate3d(0px, 0px, 0px) !important;
+  top: 0px;
+  right: 0px;
+  left: 0px !important;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+>>>>>>> 8462a33028426bcd5244fd33ac7928fc056fdbe6

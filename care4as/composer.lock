@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "414198a03e0fa19e02d23f1453c2f82d",
+=======
+    "content-hash": "e8aca7ba53832fa370e63fa3b8c392c9",
+>>>>>>> 8462a33028426bcd5244fd33ac7928fc056fdbe6
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6138,6 +6142,7 @@
         },
         {
             "name": "fzaninotto/faker",
+<<<<<<< HEAD
             "version": "v1.9.2",
             "source": {
                 "type": "git",
@@ -6148,16 +6153,29 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/848d8125239d7dbf8ab25cb7f054f1a630e68c2e",
                 "reference": "848d8125239d7dbf8ab25cb7f054f1a630e68c2e",
+=======
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "5ffe7db6c80f441f150fc88008d64e64af66634b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/5ffe7db6c80f441f150fc88008d64e64af66634b",
+                "reference": "5ffe7db6c80f441f150fc88008d64e64af66634b",
+>>>>>>> 8462a33028426bcd5244fd33ac7928fc056fdbe6
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0"
+                "php": "^5.3.3 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "ext-intl": "*",
                 "phpunit/phpunit": "^4.8.35 || ^5.7",
                 "squizlabs/php_codesniffer": "^2.9.2"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -6186,10 +6204,17 @@
             ],
             "support": {
                 "issues": "https://github.com/fzaninotto/Faker/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/fzaninotto/Faker/tree/v1.9.2"
             },
             "abandoned": true,
             "time": "2020-12-11T09:56:16+00:00"
+=======
+                "source": "https://github.com/fzaninotto/Faker/tree/master"
+            },
+            "abandoned": true,
+            "time": "2020-12-11T09:59:14+00:00"
+>>>>>>> 8462a33028426bcd5244fd33ac7928fc056fdbe6
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -8239,7 +8264,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.2.5"
+        "php": "^8.0",
+        "ext-gd": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
