@@ -302,7 +302,7 @@
       </div>
     </div>
     <div class="main-panel" id="main-panel">
-      <!-- Navbar -->
+      <!-- Navbar
       <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
         <div class="container-fluid">
           <div class="navbar-wrapper">
@@ -373,6 +373,7 @@
         </div>
       </nav>
       <!-- End Navbar -->
+
       <div class="panel-header panel-header-lg" style="height: 200em; overflow: scroll;">
         <div class="backdrop">
 
