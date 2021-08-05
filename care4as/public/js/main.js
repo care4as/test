@@ -7,7 +7,7 @@ function controlling_umsatzmeldung_zielwerte_toggle(){
   } else {
     document.getElementById('controlling_umsatzmeldung_zielwerte_toggle').style.visibility = "hidden";
   }
-  
+
 }
 
 
@@ -38,14 +38,10 @@ function toggleSidebar()
     content.style.width = newOldWidth
   }
 }
-<<<<<<< HEAD
 function toggleMobileMenu() {
   console.log('test')
   $('#mobilemenu').toggle()
 }
-=======
-
->>>>>>> 8462a33028426bcd5244fd33ac7928fc056fdbe6
 function showDetails(id)
 {
   $("#details"+id).css('display','block')
@@ -131,7 +127,7 @@ function mouseoverNewSidebar(){
 function mouseoutNewSidebar(){
   document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons design_bullet-list-67";
   document.getElementById("linkNewSidebar").style.backgroundColor = "transparent";
-  
+
 }
 
 

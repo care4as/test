@@ -58,7 +58,7 @@
   </div>
   <div class="wrapper ">
     <div class="sidebar" data-color="orange" id='sidebar'>
-      <div class="logo bg-white m-2" style="border-radius: 2px;">
+      <div class="logo bg-white m-2" style="border-radius: 20px;">
         <a href="text-muted" class="simple-text logo-normal">
           <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 100%; margin-top: 10px; height: 12%">
         </a>
@@ -323,28 +323,22 @@
         </ul>
       </div>
     </div>
-<<<<<<< HEAD
-    <div class="main-panel" id="main-panel">
-      <!-- Navbar
-      <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
-=======
     <div class="main-panel" id="main-panel" style="z-index: 50000;">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset">
->>>>>>> 8462a33028426bcd5244fd33ac7928fc056fdbe6
         <div class="container-fluid">
           <div class="navbar-wrapper">
             <div class="collapse navbar-collapse justify-content-end" id="navigation">
-              <ul class="navbar-nav">  
+              <ul class="navbar-nav">
                 <li class="nav-item" onclick="toggleNewSidebar()" onmouseover="mouseoverNewSidebar()" onmouseout="mouseoutNewSidebar()" id="newSidebarToggler">
                   <a class="nav-link" href="#pablo" id="linkNewSidebar">
                   <i class="now-ui-icons design_bullet-list-67" id="hoverNewSidebarToggler"></i>
                 </a>
-              </ul> 
+              </ul>
             </div>
           </div>
           <div style="font-size: 1.2em; font-weight: bold; color: white;">@yield("pagetitle")</div>
-          <div class="navbar-wrapper">  
+          <div class="navbar-wrapper">
           <!--<input type="checkbox" id="hamburg" onclick="showSidebar()">
               <label for="hamburg" class="hamburg">
                   <span class="line"></span>
@@ -376,7 +370,7 @@
                     <span class="d-lg-none d-md-block">Stats</span>
                   </p>
                 </a>
-              </li> 
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons location_world"></i>
@@ -412,12 +406,7 @@
         </div>
       </nav>
       <!-- End Navbar -->
-<<<<<<< HEAD
-
-      <div class="panel-header panel-header-lg" style="height: 200em; overflow: scroll;">
-=======
       <div class="panel-header panel-header-lg" style="min-height: 100vh;">
->>>>>>> 8462a33028426bcd5244fd33ac7928fc056fdbe6
         <div class="backdrop">
 
         </div>

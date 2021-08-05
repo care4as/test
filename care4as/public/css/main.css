@@ -27,6 +27,9 @@ body
       color: white !important;
       border-radius: 15px;
     }
+    .logo{
+      border-radius: 15px !important;
+    }
     .table-striped>tbody>tr:nth-child(even) {
         background-color: #ddf8e8;
     }
@@ -587,14 +590,6 @@ body
   border: 2px solid black;
   box-shadow:10px 10px 5px grey;
 }
-<<<<<<< HEAD
-@media only screen and (min-width: 416px) {
-  .toggler
-  {
-    display: none;
-  }
-}
-=======
 
 /* Container */
 .max-main-container{
@@ -638,5 +633,3 @@ body
   padding: 4px;
   border-radius: 5px;
 }
-
->>>>>>> 8462a33028426bcd5244fd33ac7928fc056fdbe6
