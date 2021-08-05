@@ -20,6 +20,17 @@ body
       background: -webkit-linear-gradient(to top, #2c3e50, #4ca1af); /* Chrome 10-25, Safari 5.1-6 */
       background: linear-gradient(to top, #2c3e50, #4ca1af);
     }
+    .toggler
+    {
+      position: fixed;
+      top: 5px;
+      left: 5px;
+      border-radius: 50%;
+      display:none;
+      z-index: 50010;
+      height: auto;
+      width: auto;
+    }
     .unit-translucent
     {
       box-shadow: 0 0 10px;
@@ -632,4 +643,10 @@ body
   left: 0px !important;
   padding: 4px;
   border-radius: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+  .toggler {
+    display: block;
+  }
 }
