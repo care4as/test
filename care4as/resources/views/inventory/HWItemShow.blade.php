@@ -172,7 +172,7 @@
               </td>
               @endif
             </tr>
-            
+
           @endif
           <tr>
             <th>Beschreibung </th> <td>{{$item->description}} </td> <td><input type="text" class="form-control" name="description" value="{{$item->description}}"></td>
@@ -189,6 +189,8 @@
     </div>
   </div>
 @endsection
+
+
 
 @section('additional_js')
 <script type="text/javascript">

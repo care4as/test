@@ -47,10 +47,11 @@
   @yield('additional_css')
 </head>
 <body class="">
+
   <div class="toggler">
     <button type="button" name="button" class="unit-translucent" onclick="toggleMobileMenu()" style="">Menu</button>
   </div>
-  <div class="mobilemenu center_items" id="mobilemenu" style="position: fixed;z-index: 10000; height: 100vh; width: 100vw; display: none;background-color: rgba(0,0,0,1);">
+  <div class="mobilemenu center_items" id="mobilemenu" style="position: fixed;z-index: 1400; height: 100vh; width: 100vw; display: none;background-color: rgba(0,0,0,1);">
     <div class="" style="height: 75px; width: 75px; background-color: green;">
       <a href="{{route('inventory.add')}}">HW hinzufügen</a>
     </div>
@@ -323,7 +324,7 @@
         </ul>
       </div>
     </div>
-    <div class="main-panel" id="main-panel" style="z-index: 50000;">
+    <div class="main-panel" id="main-panel" style="z-index: 1000;">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset">
         <div class="container-fluid">
@@ -407,9 +408,7 @@
       </nav>
       <!-- End Navbar -->
       <div class="panel-header panel-header-lg" style="min-height: 100vh;">
-        <div class="backdrop">
 
-        </div>
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto">
           @yield('content')
@@ -424,6 +423,7 @@
       </footer>
     </div>
   </div>
+  @yield('additional_modal')
   <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content bg-danger text-white">

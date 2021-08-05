@@ -20,6 +20,20 @@ body
       background: -webkit-linear-gradient(to top, #2c3e50, #4ca1af); /* Chrome 10-25, Safari 5.1-6 */
       background: linear-gradient(to top, #2c3e50, #4ca1af);
     }
+    .HWModal
+    {
+      position: fixed;
+      z-index: 1500;
+    }
+    .backdrop
+    {
+      display:none;
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      /* z-index: 51000; */
+      background-color: rgba(0,0,0,0.5);
+    }
     .toggler
     {
       position: fixed;

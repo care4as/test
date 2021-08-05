@@ -85,6 +85,7 @@ class HardwareController extends Controller
           break;
 
       }
+      return response()->json($item);
       return view('inventory.HWItemShow', compact('item'));
       // dd($item);
     }
