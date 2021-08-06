@@ -32,12 +32,13 @@
       <h5>Hardware Liste</h5>
     </div>
     <div class="row ">
-      <div class="col">
-          {{$hardware->links("pagination::bootstrap-4")}}
-      </div>
+
     </div>
     <div class="row">
-      <table class="table table-borderless w-100 text-white">
+      <table class="table table-borderless w-100 text-white" id="hwtable">
+        <thead>
+
+
         <tr class="unit-translucent">
           <th>id</th>
           <th>Art</th>
@@ -48,18 +49,22 @@
           <th>erfasst_am</th>
           <th>Optionen</th>
         </tr>
-        @foreach($hardware as $item)
-        <tr class="unit-translucent">
-          <td>{{$item->id}}</td>
-          <td>@if($item->type_id == 1) PC @elseif($item->type_id == 2) Monitor @endif</td>
-          <td>{{$item->place}}</td>
-          <td>{{$item->name}}</td>
-          <td>{{$item->comment}}</td>
-          <td>{{$item->description}}</td>
-          <td>{{$item->created_at}}</td>
-          <td><a onclick="showHWModal({{$item->id}})">HW anzeigen</a> <a href="{{route('inventory.item.delete',['id' => $item->id])}}">HW löschen</a> </td>
-        @endforeach
-        </tr>
+        </thead>
+        <tbody>
+
+          @foreach($hardware as $item)
+          <tr class="unit-translucent">
+            <td>{{$item->id}}</td>
+            <td>@if($item->type_id == 1) PC @elseif($item->type_id == 2) Monitor @endif</td>
+            <td>{{$item->place}}</td>
+            <td>{{$item->name}}</td>
+            <td>{{$item->comment}}</td>
+            <td>{{$item->description}}</td>
+            <td>{{$item->created_at}}</td>
+            <td><a onclick="showHWModal({{$item->id}})">HW anzeigen</a> <a href="{{route('inventory.item.delete',['id' => $item->id])}}">HW löschen</a> </td>
+          @endforeach
+          </tr>
+        </tbody>
       </table>
       </div>
     </div>
@@ -238,7 +243,6 @@
                     </td>
                     @endif
                   </tr>
-
                 @endif
                 <tr>
                   <th>Beschreibung </th> <td>{{ $item->description}} </td> <td><input type="text" class="form-control" name="description" value="{{ $item->description}}"></td>
@@ -261,7 +265,13 @@
 @endsection
 
 @section('additional_js')
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
+
 <script type="text/javascript">
+let table = $('#hwtable').DataTable()
+
 $('#devicetype').on('change', function() {
 
   let devicetype = this.value

@@ -18,7 +18,7 @@ class CreateHardwareInventoryTable extends Migration
             $table->text('device_id');
             $table->text('type_id');
             $table->text('place')->nullable();
-            $table->text('name')->nullable();
+            $table->text('name')->unique();
             $table->text('floor')->nullable();
             $table->text('comment')->nullable();
             $table->text('description')->nullable();

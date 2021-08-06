@@ -20,7 +20,6 @@ class HardwareController extends Controller
       $hardwareMO = Hardwareitem::where('type_id',2)->with('deviceMO')->get();
       $hardware = $hardwarePCs->merge($hardwareMO);
 
-      $hardware = (new Collection($hardware))->paginate(20);
       // dd($hardware);
       return view('inventory.inventoryIndex', compact('hardware'));
     }
