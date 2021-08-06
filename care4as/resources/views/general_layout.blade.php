@@ -136,11 +136,9 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                   <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
                   <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
-
               </ul>
             </div>
           </li>
-
           @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
             <a class="" href="{{route('presentation')}}">
@@ -245,12 +243,10 @@
               <li><a href="{{route('roles.index')}}">Rollen</a> </li>
               <li><a href="{{route('feedback.view')}}">Rollen und Rechte</a> </li>
               <li><a href="{{route('config.view')}}">allgemeine Einstellungen</a> </li>
-
             </ul>
             </div>
           </li>
           @endif
-
           @if(in_array('trainings',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
@@ -274,7 +270,6 @@
               <i class="fas fa-running"></i>
               <p><b>Pausentool <br>Telefonica</b></p>
             </a>
-
           </li>
           @endif
           @if(in_array('sendReports',Auth()->user()->getRights()))
@@ -338,7 +333,7 @@
               </ul>
             </div>
           </div>
-          <div style="font-size: 1.2em; font-weight: bold; color: white;">@yield("pagetitle")</div>
+          <div style="font-weight: bold; color: white;">@yield("pagetitle")</div>
           <div class="navbar-wrapper">
           <!--<input type="checkbox" id="hamburg" onclick="showSidebar()">
               <label for="hamburg" class="hamburg">

@@ -9,7 +9,11 @@ use App\Monitor;
 use App\Support\Collection;
 
 class HardwareController extends Controller
-{
+  {
+    public function __contruct()
+    {
+      $this->middleware('auth');
+    }
     public function index()
     {
       $hardwarePCs = Hardwareitem::where('type_id',1)->with('devicePC')->get();

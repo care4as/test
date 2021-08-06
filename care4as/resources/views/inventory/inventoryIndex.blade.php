@@ -6,11 +6,30 @@
 </style>
 @endsection
 
+@section('pagetitle')
+  <h4>Hardwareindex</h4>
+@endsection
+
 @section('content')
-<div class="container-fluid bg-cool text-white center_items">
+<div class="container-fluid bg-cool text-white center_items" style="margin-top: 50px;">
   <div class="col-md-12">
     <div class="row">
-      <h3>Hardware Liste</h3>
+      <h4>Kapazitäten</h4>
+    </div>
+    <div class="row">
+      <table class="table table-borderless unit-translucent">
+        <tr>
+          <td>Flensburg OG</td>
+          <td>einsatzbereite erfasste Rechner: {{DB::table('hardware_inventory')->where('type_id', 1)->where('place','Flensburg-Weiche OG')->count()}}</td>
+        </tr>
+        <tr>
+          <td>Flensburg EG</td>
+          <td>einsatzbereite erfasste Rechner: {{DB::table('hardware_inventory')->where('type_id', 1)->where('place','Flensburg-Weiche EG')->count()}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="row">
+      <h5>Hardware Liste</h5>
     </div>
     <div class="row ">
       <div class="col">
