@@ -319,7 +319,7 @@
         </ul>
       </div>
     </div>
-    <div class="main-panel" id="main-panel" style="z-index: 1000;">
+    <div class="main-panel" id="main-panel" style="z-index: 1500;">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset">
         <div class="container-fluid">
