@@ -15,7 +15,7 @@
                                     <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px;">
                                         <label for="inputState" style="margin: auto;">Auswahl:</label>
                                         <select id="inputState" class="form-control">
-                                            <option selected>Alle</option>
+                                            <option selected>Projektübergreifend</option>
                                             <option>1u1 DSL Retention</option>
                                             <option>1u1 Mobile Retention</option>
                                             <option>1u1 Kündigungsadministration</option>
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         -->
-                        <div class="col-md-3" style="display:flex; margin-top: 20px; margin-bottom: 20px;">
+                        <div class="col-md-4" style="display:flex; margin-top: 20px; margin-bottom: 20px;">
                             <button class="btn btn-primary" style="margin: auto;">Bericht erzeugen</button>
                         </div>
                     </div>
@@ -93,13 +93,13 @@
             <div class="col-md-12">
                 <div class="max-main-container">
                     <div class="max-panel">
-                        <div class="max-panel-title" style="display: grid; grid-template-columns: 1fr 1fr 1fr">
-                            <p style="margin: 0">Umsatzmeldung</p>
-                            <p style="margin: 0; margin-left: auto; margin-right: auto;">1u1 Mobile Retention</p>
+                        <div class="max-panel-title" style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 15px; white-space: nowrap; overflow-x: auto;">
+                            <p style="margin: 0; margin-right: auto">Umsatzmeldung</p>
+                            <p style="margin: 0; text-align: center">Projektübergreifend</p>
                             <p style="margin: 0; margin-left: auto;">01.07.2021 - 05.07.2021</p>
                         </div>
-                        <div class="max-panel-content" style="overflow-x: scroll;">
-                            <table style="width: 100%; white-space: nowrap;">
+                        <div class="max-panel-content" style="overflow-x: auto;">
+                            <table class="max-table" style="width: 100%; white-space: nowrap;">
                                 <thead>
                                     <tr style="width: 100%">
                                         <th>Datum</th>
@@ -131,69 +131,209 @@
                                         <td>923,66€</td>
                                         <td>136,0%</td>
                                     </tr>
-                                    <tr>
-                                        <td>So, 02.07.2021</td>
-                                        <td>72,59</td>
-                                        <td>0,0%</td>
-                                        <td>89,0%</td>
-                                        <td>56,0%</td>
-                                        <td>18,4%</td>
-                                        <td>118,8%</td>
-                                        <td>3.464,31€</td>
-                                        <td>47,72€</td>
-                                        <td>2540,65€</td>
-                                        <td>923,66€</td>
-                                        <td>136,0%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mo, 03.07.2021</td>
-                                        <td>72,59</td>
-                                        <td>0,0%</td>
-                                        <td>89,0%</td>
-                                        <td>56,0%</td>
-                                        <td>18,4%</td>
-                                        <td>118,8%</td>
-                                        <td>3.464,31€</td>
-                                        <td>47,72€</td>
-                                        <td>2540,65€</td>
-                                        <td>923,66€</td>
-                                        <td>136,0%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Di, 04.07.2021</td>
-                                        <td>72,59</td>
-                                        <td>0,0%</td>
-                                        <td>89,0%</td>
-                                        <td>56,0%</td>
-                                        <td>18,4%</td>
-                                        <td>118,8%</td>
-                                        <td>3.464,31€</td>
-                                        <td>47,72€</td>
-                                        <td>2540,65€</td>
-                                        <td>923,66€</td>
-                                        <td>136,0%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mi, 05.07.2021</td>
-                                        <td>72,59</td>
-                                        <td>0,0%</td>
-                                        <td>89,0%</td>
-                                        <td>56,0%</td>
-                                        <td>18,4%</td>
-                                        <td>118,8%</td>
-                                        <td>3.464,31€</td>
-                                        <td>47,72€</td>
-                                        <td>2540,65€</td>
-                                        <td>923,66€</td>
-                                        <td>136,0%</td>
-                                    </tr>
-                                    
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>   
+        </div>
+        <div class="row">  
+            <div class="col-md-12">
+                <div class="max-main-container">
+                    <div class="max-panel">
+                        <div class="max-panel-title" style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 15px; white-space: nowrap; overflow-x: auto;">
+                            <p style="margin: 0; margin-right: auto">Umsatzmeldung</p>
+                            <p style="margin: 0; text-align: center">1u1 DSL Retention</p>
+                            <p style="margin: 0; margin-left: auto;">01.07.2021 - 05.07.2021</p>
+                        </div>
+                        <div class="max-panel-content" style="overflow-x: auto;">
+                            <table class="max-table" style="width: 100%; white-space: nowrap;">
+                                <thead>
+                                    <tr style="width: 100%">
+                                        <th>Datum</th>
+                                        <th>Std. bezahlt</th>
+                                        <th>KQ (netto)</th>
+                                        <th>Prod. in %</th>
+                                        <th>CR SSC</th>
+                                        <th>CR BSC</th>
+                                        <th>CR Portal</th>
+                                        <th>Umsatz IST</th>
+                                        <th>Umsatz / bez. Std.</th>
+                                        <th>Umsatz SOLL</th>
+                                        <th>Deckung</th>
+                                        <th>Zielerreichung</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Sa, 01.07.2021</td>
+                                        <td>72,59</td>
+                                        <td>0,0%</td>
+                                        <td>89,0%</td>
+                                        <td>56,0%</td>
+                                        <td>18,4%</td>
+                                        <td>118,8%</td>
+                                        <td>3.464,31€</td>
+                                        <td>47,72€</td>
+                                        <td>2540,65€</td>
+                                        <td>923,66€</td>
+                                        <td>136,0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">  
+            <div class="col-md-12">
+                <div class="max-main-container">
+                    <div class="max-panel">
+                        <div class="max-panel-title" style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 15px; white-space: nowrap; overflow-x: auto;">
+                            <p style="margin: 0; margin-right: auto">Umsatzmeldung</p>
+                            <p style="margin: 0; text-align: center">1u1 Mobile Retention</p>
+                            <p style="margin: 0; margin-left: auto;">01.07.2021 - 05.07.2021</p>
+                        </div>
+                        <div class="max-panel-content" style="overflow-x: auto;">
+                            <table class="max-table" style="width: 100%; white-space: nowrap;">
+                                <thead>
+                                    <tr style="width: 100%">
+                                        <th>Datum</th>
+                                        <th>Std. bezahlt</th>
+                                        <th>KQ (netto)</th>
+                                        <th>Prod. in %</th>
+                                        <th>CR SSC</th>
+                                        <th>CR BSC</th>
+                                        <th>CR Portal</th>
+                                        <th>Umsatz IST</th>
+                                        <th>Umsatz / bez. Std.</th>
+                                        <th>Umsatz SOLL</th>
+                                        <th>Deckung</th>
+                                        <th>Zielerreichung</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Sa, 01.07.2021</td>
+                                        <td>72,59</td>
+                                        <td>0,0%</td>
+                                        <td>89,0%</td>
+                                        <td>56,0%</td>
+                                        <td>18,4%</td>
+                                        <td>118,8%</td>
+                                        <td>3.464,31€</td>
+                                        <td>47,72€</td>
+                                        <td>2540,65€</td>
+                                        <td>923,66€</td>
+                                        <td>136,0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">  
+            <div class="col-md-12">
+                <div class="max-main-container">
+                    <div class="max-panel">
+                        <div class="max-panel-title" style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 15px; white-space: nowrap; overflow-x: auto;">
+                            <p style="margin: 0; margin-right: auto">Umsatzmeldung</p>
+                            <p style="margin: 0; text-align: center">1u1 Kündigungsadministration</p>
+                            <p style="margin: 0; margin-left: auto;">01.07.2021 - 05.07.2021</p>
+                        </div>
+                        <div class="max-panel-content" style="overflow-x: auto;">
+                            <table class="max-table" style="width: 100%; white-space: nowrap;">
+                                <thead>
+                                    <tr style="width: 100%">
+                                        <th>Datum</th>
+                                        <th>Std. bezahlt</th>
+                                        <th>KQ (netto)</th>
+                                        <th>Prod. in %</th>
+                                        <th>CR SSC</th>
+                                        <th>CR BSC</th>
+                                        <th>CR Portal</th>
+                                        <th>Umsatz IST</th>
+                                        <th>Umsatz / bez. Std.</th>
+                                        <th>Umsatz SOLL</th>
+                                        <th>Deckung</th>
+                                        <th>Zielerreichung</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Sa, 01.07.2021</td>
+                                        <td>72,59</td>
+                                        <td>0,0%</td>
+                                        <td>89,0%</td>
+                                        <td>56,0%</td>
+                                        <td>18,4%</td>
+                                        <td>118,8%</td>
+                                        <td>3.464,31€</td>
+                                        <td>47,72€</td>
+                                        <td>2540,65€</td>
+                                        <td>923,66€</td>
+                                        <td>136,0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="row">  
+            <div class="col-md-12">
+                <div class="max-main-container">
+                    <div class="max-panel">
+                        <div class="max-panel-title" style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 15px; white-space: nowrap; overflow-x: auto;">
+                            <p style="margin: 0; margin-right: auto">Umsatzmeldung</p>
+                            <p style="margin: 0; text-align: center">Telefonica Outbound</p>
+                            <p style="margin: 0; margin-left: auto;">01.07.2021 - 05.07.2021</p>
+                        </div>
+                        <div class="max-panel-content" style="overflow-x: auto;">
+                            <table class="max-table" style="width: 100%; white-space: nowrap;">
+                                <thead>
+                                    <tr style="width: 100%">
+                                        <th>Datum</th>
+                                        <th>Std. bezahlt</th>
+                                        <th>KQ (netto)</th>
+                                        <th>Prod. in %</th>
+                                        <th>CR SSC</th>
+                                        <th>CR BSC</th>
+                                        <th>CR Portal</th>
+                                        <th>Umsatz IST</th>
+                                        <th>Umsatz / bez. Std.</th>
+                                        <th>Umsatz SOLL</th>
+                                        <th>Deckung</th>
+                                        <th>Zielerreichung</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Sa, 01.07.2021</td>
+                                        <td>72,59</td>
+                                        <td>0,0%</td>
+                                        <td>89,0%</td>
+                                        <td>56,0%</td>
+                                        <td>18,4%</td>
+                                        <td>118,8%</td>
+                                        <td>3.464,31€</td>
+                                        <td>47,72€</td>
+                                        <td>2540,65€</td>
+                                        <td>923,66€</td>
+                                        <td>136,0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>     
+        
     </div>
 @endsection

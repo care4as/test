@@ -325,7 +325,7 @@
     </div>
     <div class="main-panel" id="main-panel" style="z-index: 1500;">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset; height: 66.5px">
+      <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset; height: 66.5px;">
         <div class="container-fluid">
           <div class="navbar-wrapper">
             <div class="navbar-collapse justify-content-end" id="navigation">
@@ -412,7 +412,7 @@
         </div>
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
-        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset;"> 
+        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto; overflow-x: hidden;"> 
           @yield('content')
         </div>
         <!-- <div class="container bg-white">
