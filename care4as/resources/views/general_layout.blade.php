@@ -47,6 +47,15 @@
   @yield('additional_css')
 </head>
 <body class="">
+  <div class="toggler">
+    <button type="button" name="button" class="unit-translucent" onclick="toggleMobileMenu()" style="position: fixed; top: 5px; left: 125px;z-index: 20000; height: 50px; width: 50px; border-radius: 50%;">Menu</button>
+  </div>
+  <div class="mobilemenu center_items" id="mobilemenu" style="position: fixed;z-index: 10000; height: 100vh; width: 100vw; display: none;background-color: rgba(0,0,0,1);">
+    <div class="" style="height: 75px; width: 75px; background-color: green;">
+      <a href="{{route('inventory.add')}}">HW hinzufügen</a>
+    </div>
+
+  </div>
   <div class="wrapper ">
     <div class="sidebar" data-color="orange" id='sidebar'>
       <div class="logo bg-white m-2" style="border-radius: 2px;">
@@ -161,15 +170,16 @@
             </a>
             <div class="collapse" id="collapseReport" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-              <li><a href="{{route('reports.report')}}">Retention Details Report</a></li>
-              <li><a href="{{route('reports.gevotracking')}}">GeVo Tracking Import</a></li>
-              <li><a href="{{route('excel.dailyAgent.import')}}">Daily Agent Import</a></li>
-              <li><a href="{{route('reports.provision.view')}}">Provision</a></li>
-              <li><a href="{{route('reports.reportHours.view')}}">Stundenreport</a></li>
-              <li><a href="{{route('ssetracking.view')}}">SSE Tracking Import</a></li>
-              <li><a href="{{route('reports.SAS')}}">SAS Import</a></li>
-              <li><a href="{{route('reports.OptIn')}}">OptIn Import</a></li>
-            </ul>
+                <li><a href="{{route('reports.report')}}">Retention Details Report</a></li>
+                <li><a href="{{route('reports.gevotracking')}}">GeVo Tracking Import</a></li>
+                <li><a href="{{route('excel.dailyAgent.import')}}">Daily Agent Import</a></li>
+                <li><a href="{{route('reports.provision.view')}}">Provision</a></li>
+                <li><a href="{{route('reports.reportHours.view')}}">Stundenreport</a></li>
+                <li><a href="{{route('ssetracking.view')}}">SSE Tracking Import</a></li>
+                <li><a href="{{route('reports.SAS')}}">SAS Import</a></li>
+                <li><a href="{{route('reports.OptIn')}}">OptIn Import</a></li>
+              </ul>
+            </div>
           </li>
           @endif
           @if(in_array('importReports',Auth()->user()->getRights()))
@@ -180,9 +190,10 @@
             </a>
             <div class="collapse" id="collapseEmail" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-              <li><a href="{{route('eobmail')}}">Feierabendmail </a></li>
+                <li><a href="{{route('eobmail')}}">Feierabendmail </a></li>
               <!-- <li><a href="">Top/Worst Report</a></li> -->
-            </ul>
+              </ul>
+            </div>
           </li>
           @endif
           @if(in_array('indexSurvey',Auth()->user()->getRights()))
@@ -193,15 +204,16 @@
             </a>
             <div class="collapse" id="collapseSurvey" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-              @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
-              <li><a href="{{route('question.create')}}">Frage erstellen</a></li>
-              <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
-              <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
-              <li><a href="{{route('reports.report')}}">Mitarbeiterumfrage auswerten</a></li>
-              @else
-                <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
-              @endif
-            </ul>
+                @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
+                <li><a href="{{route('question.create')}}">Frage erstellen</a></li>
+                <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
+                <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
+                <li><a href="{{route('reports.report')}}">Mitarbeiterumfrage auswerten</a></li>
+                @else
+                  <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
+                @endif
+              </ul>
+            </div>
           </li>
           @endif
           @if(in_array('indexFeedback',Auth()->user()->getRights()))
@@ -216,6 +228,7 @@
               <li><a href="{{route('feedback.view')}}">Feedbackgespräche zum Speichern</a> </li>
               <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li>
             </ul>
+            </div>
           </li>
           @endif
           @if(in_array('changeConfig',Auth()->user()->getRights()))
@@ -231,7 +244,9 @@
               <li><a href="{{route('roles.index')}}">Rollen</a> </li>
               <li><a href="{{route('feedback.view')}}">Rollen und Rechte</a> </li>
               <li><a href="{{route('config.view')}}">allgemeine Einstellungen</a> </li>
+
             </ul>
+            </div>
           </li>
           @endif
 
@@ -271,12 +286,13 @@
             </a>
             <div class="collapse" id="collapseReports" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-              <li><a href="{{route('reports.choose')}}">Top/Worst Report</a> </li>
-              <li><a href="{{route('report.joyce')}}">Joyce Report</a> </li>
-              <li><a href="{{route('reports.AHTdaily')}}">AHT Report</a> </li>
-              <li><a href="{{route('reports.capacitysuite')}}">Capacity Report </a> </li>
-              <li><a href="{{route('user.daDetex.index')}}">Nachverfolgung Dailyagent gestern </a> </li>
-            </ul>
+                <li><a href="{{route('reports.choose')}}">Top/Worst Report</a> </li>
+                <li><a href="{{route('report.joyce')}}">Joyce Report</a> </li>
+                <li><a href="{{route('reports.AHTdaily')}}">AHT Report</a> </li>
+                <li><a href="{{route('reports.capacitysuite')}}">Capacity Report </a> </li>
+                <li><a href="{{route('user.daDetex.index')}}">Nachverfolgung Dailyagent gestern </a> </li>
+              </ul>
+            </div>
           </li>
           @endif
           @if(in_array('presentation',Auth()->user()->getRights()))
@@ -285,6 +301,23 @@
               <i class="far fa-file-powerpoint"></i>
               <p><b>Präsentation</b></p>
             </a>
+          </li>
+          @endif
+          @if(in_array('inventory',Auth()->user()->getRights()))
+          <li>
+            <a class="" data-toggle="collapse" href="#collapseInventory" role="button" aria-expanded="false" aria-controls="collapseInventory">
+              <i class="material-icons">
+                assessment
+              </i>
+              <b>HW Inventar</b>
+            </a>
+            <div class="collapse" id="collapseInventory" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('inventory.list')}}">HW Liste</a> </li>
+                <li><a href="{{route('inventory.add')}}">HW hinzufügen</a> </li>
+
+              </ul>
+            </div>
           </li>
           @endif
         </ul>

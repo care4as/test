@@ -38,7 +38,14 @@ function toggleSidebar()
     content.style.width = newOldWidth
   }
 }
+<<<<<<< HEAD
 
+=======
+function toggleMobileMenu() {
+  console.log('test')
+  $('#mobilemenu').toggle()
+}
+>>>>>>> master
 function showDetails(id)
 {
   $("#details"+id).css('display','block')

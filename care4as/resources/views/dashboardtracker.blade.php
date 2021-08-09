@@ -127,7 +127,7 @@
           <div class="col-12">
             <div class="row">
               @foreach($users as $user)
-                <div class="col-designed m-3 p-1 border bg-white rounded shadow">
+                <div class="col-designed m-3 p-1 border unit-translucent rounded shadow">
                   <h5>{{$user->wholeName()}}
                       <a class="align-items-center" href="{{route('user.stats',['id' => $user->id])}}">
                         <span class="material-icons">

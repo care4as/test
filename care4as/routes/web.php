@@ -40,7 +40,6 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/telefonica/getOutOfPause', 'PauseController@getOutOfPause')->name('getOutOfPause');
   Route::get('/telefonica/getUsersInPause', 'PauseController@getUsers')->name('getUsersInPause');
 
-
   Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
 
   Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin');
@@ -308,6 +307,16 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');
   Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');
 //endoffers
+
+//inventory
+  Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');
+  Route::post('/inventory/add', 'HardwareController@store')->name('inventory.store');
+  Route::get('/inventory', 'HardwareController@index')->name('inventory.list');
+  Route::get('/inventory/item/show/{id}', 'HardwareController@show')->name('inventory.item.show');
+  Route::post('/inventory/item/update/{id}', 'HardwareController@update')->name('inventory.item.update');
+  Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');
+
+//endinventory
 Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
 Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
@@ -316,5 +325,7 @@ Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas');
 
 
 Route::get('/test', function(){
-  return 1;
+
+  return view('test');
+
 })->name('test');
