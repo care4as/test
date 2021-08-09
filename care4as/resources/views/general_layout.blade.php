@@ -55,7 +55,6 @@
     <div class="" style="height: 75px; width: 75px; background-color: green;">
       <a href="{{route('inventory.add')}}">HW hinzufügen</a>
     </div>
-
   </div>
   <div class="wrapper ">
     <div class="sidebar" data-color="orange" id='sidebar'>
@@ -121,12 +120,10 @@
                   @endif
                 @endif
                   <li><a href="{{route('user.index')}}">User Index</a></li>
-
               </ul>
             </div>
           </li>
           @endif
-
           <li>
             <a class="" data-toggle="collapse" href="#collapseControlling" role="button" aria-expanded="false" aria-controls="collapseControlling">
               <i class="fas fa-users"></i>
@@ -134,8 +131,8 @@
             </a>
             <div class="collapse" id="collapseControlling" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-                  <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
-                  <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
+                <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
+                <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
               </ul>
             </div>
           </li>
@@ -321,10 +318,10 @@
     </div>
     <div class="main-panel" id="main-panel" style="z-index: 1500;">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset">
+      <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset; height: 66.5px">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <div class="navbar-collapse justify-content-end" id="navigation">
               <ul class="navbar-nav">
                 <li class="nav-item" onclick="toggleNewSidebar()" onmouseover="mouseoverNewSidebar()" onmouseout="mouseoutNewSidebar()" id="newSidebarToggler">
                   <a class="nav-link" href="#pablo" id="linkNewSidebar">
@@ -333,7 +330,7 @@
               </ul>
             </div>
           </div>
-          <div style="font-weight: bold; color: white;">@yield("pagetitle")</div>
+          <div id="pagetitle" style="font-weight: bold; color: white;">@yield("pagetitle")</div>
           <div class="navbar-wrapper">
           <!--<input type="checkbox" id="hamburg" onclick="showSidebar()">
               <label for="hamburg" class="hamburg">
@@ -405,7 +402,8 @@
       <div class="panel-header panel-header-lg" style="min-height: 100vh;">
 
         <!-- <canvas id="bigDashboardChart"></canvas> -->
-        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto">
+        <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
+        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset;">
           @yield('content')
         </div>
         <!-- <div class="container bg-white">
@@ -462,27 +460,19 @@
       </div>
     </div>
   </div>
-
   <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content bg-success text-white" >
-
         <div class="modal-body">
           <h5>Triumph!</h5>
           <p id="smodaltext">Die Datei wurde erfolgreich hochgeladen &#129321;&#129321;&#129321;</p>
           <!-- <p id="smodaltext"></p> -->
         </div>
-
       </div>
     </div>
   </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
+</div>
+</div>
 </div>
 </div>
 

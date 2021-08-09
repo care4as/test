@@ -616,6 +616,7 @@ body
   box-shadow:10px 10px 5px grey;
 }
 
+/* Zeile 597 -> 639: Wichtig für Layout!*/
 /* Container */
 .max-main-container{
   margin: 20px;

@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="max-main-container">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="max-panel">
                                 <div class="max-panel-title">Projektauswahl</div>
                                 <div class="max-panel-content">
@@ -25,7 +25,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="max-panel">
                                 <div class="max-panel-title">Datumsauswahl</div>
                                 <div class="max-panel-content">
@@ -38,6 +38,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!--
                         <div class="col-md-3">
                             <div class="max-panel">
                                 <div class="max-panel-title" style="display: flex">
@@ -54,7 +55,7 @@
                                         <i class="now-ui-icons ui-1_settings-gear-63" style="margin: auto; padding-left: 4px; padding-right: 4px;"></i>
                                     </div>
                                     
-                                    <!-- //Informationsbutton
+                                    //Informationsbutton
                                     <div style="margin-left: auto">
                                         <div>
                                             <a class="nav-link dropdown-toggle" id="controlling_zielwert_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding:0;">
@@ -65,7 +66,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    -->
+
                                 </div>
                                 <div class="max-panel-content">
                                     <div>
@@ -80,6 +81,7 @@
                                 </div>
                             </div>
                         </div>
+                        -->
                         <div class="col-md-3" style="display:flex; margin-top: 20px; margin-bottom: 20px;">
                             <button class="btn btn-primary" style="margin: auto;">Bericht erzeugen</button>
                         </div>
