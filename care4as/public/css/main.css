@@ -587,8 +587,14 @@ body
   border: 2px solid black;
   box-shadow:10px 10px 5px grey;
 }
-<<<<<<< HEAD
+@media only screen and (min-width: 416px) {
+  .toggler
+  {
+    display: none;
+  }
+}
 
+/* Zeile 597 -> 639: Wichtig für Layout!*/ 
 /* Container */
 .max-main-container{
   margin: 20px;
@@ -631,12 +637,3 @@ body
   padding: 4px;
   border-radius: 5px;
 }
-
-=======
-@media only screen and (min-width: 416px) {
-  .toggler
-  {
-    display: none;
-  }
-}
->>>>>>> master

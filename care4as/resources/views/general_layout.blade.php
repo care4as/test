@@ -323,12 +323,12 @@
         </ul>
       </div>
     </div>
-    <div class="main-panel" id="main-panel" style="z-index: 50000;">
+    <div class="main-panel" id="main-panel" style="z-index: 1500;">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset">
+      <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset; height: 66.5px">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <div class="navbar-collapse justify-content-end" id="navigation">
               <ul class="navbar-nav">  
                 <li class="nav-item" onclick="toggleNewSidebar()" onmouseover="mouseoverNewSidebar()" onmouseout="mouseoutNewSidebar()" id="newSidebarToggler">
                   <a class="nav-link" href="#pablo" id="linkNewSidebar">
@@ -337,7 +337,7 @@
               </ul> 
             </div>
           </div>
-          <div style="font-size: 1.2em; font-weight: bold; color: white;">@yield("pagetitle")</div>
+          <div id="pagetitle" style="font-weight: bold; color: white;">@yield("pagetitle")</div>
           <div class="navbar-wrapper">  
           <!--<input type="checkbox" id="hamburg" onclick="showSidebar()">
               <label for="hamburg" class="hamburg">
@@ -411,7 +411,8 @@
 
         </div>
         <!-- <canvas id="bigDashboardChart"></canvas> -->
-        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto">
+        <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
+        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset;"> 
           @yield('content')
         </div>
         <!-- <div class="container bg-white">

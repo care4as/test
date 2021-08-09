@@ -1,4 +1,5 @@
 var newSidebar = "active";
+var newSidebarSM = "inactive";
 
 //function für controlling: Umsatzmeldung
 function controlling_umsatzmeldung_zielwerte_toggle(){
@@ -38,14 +39,10 @@ function toggleSidebar()
     content.style.width = newOldWidth
   }
 }
-<<<<<<< HEAD
-
-=======
 function toggleMobileMenu() {
   console.log('test')
   $('#mobilemenu').toggle()
 }
->>>>>>> master
 function showDetails(id)
 {
   $("#details"+id).css('display','block')
@@ -101,37 +98,50 @@ function showSidebar(){
 
 // Sidebar Toggler
 function toggleNewSidebar(){
-  if (window.newSidebar == "active") {
-    document.getElementById("main-panel").style.width = "100%";
-    window.newSidebar = "transition";
-    setTimeout(function(){
-      document.getElementById("navbar_max").style.boxShadow = "none"
-      window.newSidebar = "inactive";
-    }, 150);
-  } else if (window.newSidebar == "inactive") {
-    window.newSidebar = "transition";
-    document.getElementById("main-panel").style.width = "calc(100% - 260px)";
-    document.getElementById("navbar_max").style.boxShadow = "black 1em 0px 1em -1em inset"
-    setTimeout(function(){
-      window.newSidebar = "active";
-    }, 150)
+  if (window.innerWidth >= 990) {
+    if (window.newSidebar == "active") {
+      document.getElementById("main-panel").style.width = "100%";
+      window.newSidebar = "transition";
+      setTimeout(function(){
+        document.getElementById("navbar_max").style.boxShadow = "none"
+        window.newSidebar = "inactive";
+      }, 150);
+    } else if (window.newSidebar == "inactive") {
+      window.newSidebar = "transition";
+      document.getElementById("main-panel").style.width = "calc(100% - 260px)";
+      document.getElementById("navbar_max").style.boxShadow = "black 1em 0px 1em -1em inset"
+      setTimeout(function(){
+        window.newSidebar = "active";
+      }, 150)
+    }
+    document.getElementById("linkNewSidebar").style.backgroundColor = "transparent";
+  } else {
+    if (window.newSidebarSM == "active") {
+      document.getElementById('sidebar').style.transform = "translate3d(-260px, 0, 0)";
+      window.newSidebarSM = "inactive"
+    } else if (window.newSidebarSM == "inactive") {
+      document.getElementById('sidebar').style.transform = "translateZ(0)";
+      window.newSidebarSM = "active"
+    }
   }
-  document.getElementById("linkNewSidebar").style.backgroundColor = "transparent";
 }
 
 function mouseoverNewSidebar(){
-  if (window.newSidebar == "active") {
-    document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons arrows-1_minimal-left";
-  } else if (window.newSidebar == "inactive") {
-    document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons arrows-1_minimal-right";
+  if (window.innerWidth >= 990) {
+    if (window.newSidebar == "active") {
+      document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons arrows-1_minimal-left";
+    } else if (window.newSidebar == "inactive") {
+      document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons arrows-1_minimal-right";
+    }
+    document.getElementById("linkNewSidebar").style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+  } else {
+    document.getElementById("linkNewSidebar").style.backgroundColor = "rgba(255, 255, 255, 0.2)";
   }
-  document.getElementById("linkNewSidebar").style.backgroundColor = "rgba(255, 255, 255, 0.2)";
 }
 
 function mouseoutNewSidebar(){
   document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons design_bullet-list-67";
   document.getElementById("linkNewSidebar").style.backgroundColor = "transparent";
-  
 }
 
 
