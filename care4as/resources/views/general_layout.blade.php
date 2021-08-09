@@ -48,9 +48,9 @@
 </head>
 <body class="">
 
-  <div class="toggler">
+  <!-- <div class="toggler">
     <button type="button" name="button" class="unit-translucent" onclick="toggleMobileMenu()" style="">Menu</button>
-  </div>
+  </div> -->
   <div class="mobilemenu center_items" id="mobilemenu" style="position: fixed;z-index: 1400; height: 100vh; width: 100vw; display: none;background-color: rgba(0,0,0,1);">
     <div class="" style="height: 75px; width: 75px; background-color: green;">
       <a href="{{route('inventory.add')}}">HW hinzufügen</a>
@@ -63,7 +63,7 @@
           <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 100%; margin-top: 10px; height: 12%">
         </a>
       </div>
-      <div class="sidebar-wrapper " id="sidebar-wrapper" style="overflow-y: scroll; height: 88%">
+      <div class="sidebar-wrapper" id="sidebar-wrapper" style="overflow-y: scroll; height: 88%">
         @php
           Auth()->user()->getRights();
         @endphp
@@ -403,7 +403,7 @@
 
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
-        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset;">
+        <div class="content" style="">
           @yield('content')
         </div>
         <!-- <div class="container bg-white">
@@ -493,7 +493,6 @@
   <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/plugins/bootstrap-notify.js')}}"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript')}}"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-
   <script src="{{asset('js/app.js')}}"></script>
 
   @if($errors->any())
@@ -510,10 +509,6 @@
   @endif
 
   @yield('additional_js')
-
-
-
-
 </body>
 
 </html>

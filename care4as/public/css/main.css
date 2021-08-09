@@ -288,6 +288,13 @@ body
     left: 0;
     content: '';
   }
+  .content
+  {
+    height: calc(100vh - 66.5px);
+    margin-top: 66.5px;
+    box-shadow: black 0em 1em 1em -1em inset;
+    overflow-y: auto;
+  }
   .loader:after {
     background: #ffffff;
     width: 75%;

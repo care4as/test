@@ -1,5 +1,9 @@
 @extends('general_layout')
 
+@section('pagetitle')
+  Hardware hinzufügen
+@endsection
+
 @section('additional_css')
 <style media="screen">
   #pcmenu, #monitormenu

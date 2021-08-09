@@ -7,7 +7,7 @@
 @endsection
 
 @section('pagetitle')
-  <h4>Hardwareindex</h4>
+  Hardwareindex
 @endsection
 
 @section('content')
@@ -35,37 +35,36 @@
 
     </div>
     <div class="row">
-      <table class="table table-borderless w-100 text-white" id="hwtable">
-        <thead>
-
-
-        <tr class="unit-translucent">
-          <th>id</th>
-          <th>Art</th>
-          <th>Ort</th>
-          <th>Name</th>
-          <th>Kommentar</th>
-          <th>Beschreibung</th>
-          <th>erfasst_am</th>
-          <th>Optionen</th>
-        </tr>
-        </thead>
-        <tbody>
-
-          @foreach($hardware as $item)
+      <div class="table-responsive">
+        <table class="table table-borderless w-100 text-white" id="hwtable">
+          <thead>
           <tr class="unit-translucent">
-            <td>{{$item->id}}</td>
-            <td>@if($item->type_id == 1) PC @elseif($item->type_id == 2) Monitor @endif</td>
-            <td>{{$item->place}}</td>
-            <td>{{$item->name}}</td>
-            <td>{{$item->comment}}</td>
-            <td>{{$item->description}}</td>
-            <td>{{$item->created_at}}</td>
-            <td><a onclick="showHWModal({{$item->id}})">HW anzeigen</a> <a href="{{route('inventory.item.delete',['id' => $item->id])}}">HW löschen</a> </td>
-          @endforeach
+            <th>id</th>
+            <th>Art</th>
+            <th>Ort</th>
+            <th>Name</th>
+            <th>Kommentar</th>
+            <th>Beschreibung</th>
+            <th>erfasst_am</th>
+            <th>Optionen</th>
           </tr>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            @foreach($hardware as $item)
+            <tr class="unit-translucent">
+              <td>{{$item->id}}</td>
+              <td>@if($item->type_id == 1) PC @elseif($item->type_id == 2) Monitor @endif</td>
+              <td>{{$item->place}}</td>
+              <td>{{$item->name}}</td>
+              <td>{{$item->comment}}</td>
+              <td>{{$item->description}}</td>
+              <td>{{$item->created_at}}</td>
+              <td><a onclick="showHWModal({{$item->id}})">HW anzeigen</a> <a href="{{route('inventory.item.delete',['id' => $item->id])}}">HW löschen</a> </td>
+            @endforeach
+            </tr>
+          </tbody>
+        </table>
+        </div>
       </div>
     </div>
   </div>
