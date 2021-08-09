@@ -54,7 +54,6 @@
     <div class="" style="height: 75px; width: 75px; background-color: green;">
       <a href="{{route('inventory.add')}}">HW hinzufügen</a>
     </div>
-
   </div>
   <div class="wrapper ">
     <div class="sidebar" data-color="orange" id='sidebar'>
@@ -120,12 +119,10 @@
                   @endif
                 @endif
                   <li><a href="{{route('user.index')}}">User Index</a></li>
-
               </ul>
             </div>
           </li>
           @endif
-
           <li>
             <a class="" data-toggle="collapse" href="#collapseControlling" role="button" aria-expanded="false" aria-controls="collapseControlling">
               <i class="fas fa-users"></i>
@@ -133,13 +130,11 @@
             </a>
             <div class="collapse" id="collapseControlling" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-                  <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
-                  <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
-
+                <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
+                <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
               </ul>
             </div>
           </li>
-
           @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
             <a class="" href="{{route('presentation')}}">
@@ -249,7 +244,6 @@
             </div>
           </li>
           @endif
-
           @if(in_array('trainings',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
@@ -273,7 +267,6 @@
               <i class="fas fa-running"></i>
               <p><b>Pausentool <br>Telefonica</b></p>
             </a>
-
           </li>
           @endif
           @if(in_array('sendReports',Auth()->user()->getRights()))
@@ -329,16 +322,16 @@
         <div class="container-fluid">
           <div class="navbar-wrapper">
             <div class="navbar-collapse justify-content-end" id="navigation">
-              <ul class="navbar-nav">  
+              <ul class="navbar-nav">
                 <li class="nav-item" onclick="toggleNewSidebar()" onmouseover="mouseoverNewSidebar()" onmouseout="mouseoutNewSidebar()" id="newSidebarToggler">
                   <a class="nav-link" href="#pablo" id="linkNewSidebar">
                   <i class="now-ui-icons design_bullet-list-67" id="hoverNewSidebarToggler"></i>
                 </a>
-              </ul> 
+              </ul>
             </div>
           </div>
           <div id="pagetitle" style="font-weight: bold; color: white;">@yield("pagetitle")</div>
-          <div class="navbar-wrapper">  
+          <div class="navbar-wrapper">
           <!--<input type="checkbox" id="hamburg" onclick="showSidebar()">
               <label for="hamburg" class="hamburg">
                   <span class="line"></span>
@@ -370,7 +363,7 @@
                     <span class="d-lg-none d-md-block">Stats</span>
                   </p>
                 </a>
-              </li> 
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons location_world"></i>
@@ -412,7 +405,7 @@
         </div>
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
-        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset;"> 
+        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset;">
           @yield('content')
         </div>
         <!-- <div class="container bg-white">
@@ -468,27 +461,19 @@
       </div>
     </div>
   </div>
-
   <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content bg-success text-white" >
-
         <div class="modal-body">
           <h5>Triumph!</h5>
           <p id="smodaltext">Die Datei wurde erfolgreich hochgeladen &#129321;&#129321;&#129321;</p>
           <!-- <p id="smodaltext"></p> -->
         </div>
-
       </div>
     </div>
   </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
+</div>
+</div>
 </div>
 </div>
 
