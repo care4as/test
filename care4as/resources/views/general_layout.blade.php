@@ -124,6 +124,7 @@
             </div>
           </li>
           @endif
+          @if(in_array('controlling',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseControlling" role="button" aria-expanded="false" aria-controls="collapseControlling">
               <i class="fas fa-users"></i>
@@ -136,6 +137,7 @@
               </ul>
             </div>
           </li>
+          @endif
           @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
             <a class="" href="{{route('presentation')}}">

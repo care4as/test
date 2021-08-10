@@ -86,6 +86,7 @@ class RightsSeeder extends Seeder
       'telefonicapause',
       'telefonica_config',
       'inventory',
+      'controlling',
     );
     $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
 
