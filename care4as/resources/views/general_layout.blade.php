@@ -291,7 +291,7 @@
           </li>
           @endif
           @if(in_array('presentation',Auth()->user()->getRights()))
-          <li>
+            <li>
             <a class="" href="{{route('presentation')}}">
               <i class="far fa-file-powerpoint"></i>
               <p><b>Präsentation</b></p>
@@ -310,7 +310,6 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 <li><a href="{{route('inventory.list')}}">HW Liste</a> </li>
                 <li><a href="{{route('inventory.add')}}">HW hinzufügen</a> </li>
-
               </ul>
             </div>
           </li>
@@ -318,7 +317,7 @@
         </ul>
       </div>
     </div>
-    <div class="main-panel" id="main-panel" style="z-index: 1500;">
+    <div class="main-panel" id="main-panel" style="z-index: 300;">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset; height: 66.5px">
         <div class="container-fluid">

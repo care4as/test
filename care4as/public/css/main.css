@@ -41,7 +41,7 @@ body
       left: 5px;
       border-radius: 50%;
       display:none;
-      z-index: 50010;
+      /* z-index: 50010; */
       height: auto;
       width: auto;
     }

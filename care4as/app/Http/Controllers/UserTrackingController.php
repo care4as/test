@@ -66,6 +66,7 @@ class UserTrackingController extends Controller
       if($dep == 'Mobile')
       {
         $department = '1&1 Mobile Retention';
+
         $mobileSalesSata = DB::connection('mysqlkdwtracking')
         ->table('1und1_mr_tracking_inb_new_ebk')
         // ->whereIn('MA_id', $userids)
