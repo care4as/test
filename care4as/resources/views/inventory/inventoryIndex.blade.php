@@ -64,7 +64,7 @@
                     <label for="inputState" style="margin: auto;">Auswahl:</label>
                     <select id="inputState" class="form-control" name="place">
                         <option selected>Alle</option>
-                        @foreach(DB::table('hardware_inventory')->pluck('place') as $place)
+                        @foreach(DB::table('hardware_inventory')->pluck('place')->unique() as $place)
                         <option value="{{$place}}">{{$place}}</option>
                         @endforeach
                     </select>
