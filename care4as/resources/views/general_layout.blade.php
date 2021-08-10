@@ -46,28 +46,27 @@
   <link href="{{asset('css/main.css')}}" rel="stylesheet" />
   @yield('additional_css')
 </head>
-<body class="">
+<body class="bg-primary">
 
   <!-- <div class="toggler">
     <button type="button" name="button" class="unit-translucent" onclick="toggleMobileMenu()" style="">Menu</button>
   </div> -->
-  <div class="mobilemenu center_items" id="mobilemenu" style="position: fixed;z-index: 1400; height: 100vh; width: 100vw; display: none;background-color: rgba(0,0,0,1);">
-    <div class="" style="height: 75px; width: 75px; background-color: green;">
-      <a href="{{route('inventory.add')}}">HW hinzufügen</a>
-    </div>
-  </div>
+
   <div class="wrapper ">
-    <div class="sidebar" data-color="orange" id='sidebar'>
-      <div class="logo bg-white m-2" style="border-radius: 20px;">
-        <a href="text-muted" class="simple-text logo-normal">
-          <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 100%; margin-top: 10px; height: 12%">
-        </a>
-      </div>
-      <div class="sidebar-wrapper" id="sidebar-wrapper" style="overflow-y: scroll; height: 88%">
+    <div class="sidebar" id='sidebar'>
+
+      <div class="sidebar-wrapper" id="sidebar-wrapper" style="overflow-y: scroll; height: 100%">
+
         @php
           Auth()->user()->getRights();
         @endphp
         <ul class="nav" style="margin-bottom: 15px;">
+          <li><div class="logo bg-white m-2" style="border-radius: 20px;">
+            <a href="text-muted" class="simple-text logo-normal">
+              <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 100%; margin-top: 10px; height: 12%">
+            </a>
+          </div>
+        </li>
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
             <a @if(Auth::User()->role == 'Agent') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
@@ -317,9 +316,9 @@
         </ul>
       </div>
     </div>
-    <div class="main-panel" id="main-panel" style="z-index: 300;">
+    <div class="main-panel" id="main-panel" style="z-index: 500;">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset; height: 66.5px">
+      <nav class="navbar navbar-expand-lg navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset; height: 66.5px; z-index: 500;">
         <div class="container-fluid">
           <div class="navbar-wrapper">
             <div class="navbar-collapse justify-content-end" id="navigation">
@@ -404,7 +403,7 @@
 
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
-        <div class="content" style="">
+        <div class="content bg-cool" style="Overflow-x: hidden;">
           @yield('content')
         </div>
         <!-- <div class="container bg-white">

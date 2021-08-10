@@ -11,12 +11,15 @@
 @endsection
 
 @section('content')
-<div class="container-fluid bg-cool text-white center_items" style="margin-top: 50px;">
-  <div class="col-md-12">
+<div class="container-fluid text-white center_items" style="margin-top: 50px;">
+  <div class="col-md-10">
     <div class="row">
       <h4>Kapazitäten</h4>
     </div>
     <div class="row">
+      <div class="col p-0 m-2">
+
+
       <table class="table table-borderless unit-translucent">
         <tr>
           <td>Flensburg OG</td>
@@ -27,43 +30,85 @@
           <td>einsatzbereite erfasste Rechner: {{DB::table('hardware_inventory')->where('type_id', 1)->where('place','Flensburg-Weiche EG')->count()}}</td>
         </tr>
       </table>
+      </div>
     </div>
     <div class="row">
       <h5>Hardware Liste</h5>
     </div>
-    <div class="row ">
-
-    </div>
+    <form class="w-100" action="{{route('inventory.list')}}" method="get">
     <div class="row">
-      <div class="table-responsive">
-        <table class="table table-borderless w-100 text-white" id="hwtable">
-          <thead>
-          <tr class="unit-translucent">
-            <th>id</th>
-            <th>Art</th>
-            <th>Ort</th>
-            <th>Name</th>
-            <th>Kommentar</th>
-            <th>Beschreibung</th>
-            <th>erfasst_am</th>
-            <th>Optionen</th>
-          </tr>
-          </thead>
-          <tbody>
-            @foreach($hardware as $item)
+      <div class="col-md-4 p-0 m-2">
+        <div class="unit-translucent p-2 ">
+          <div class="">Geräteauswahl</div>
+          <hr>
+            <div class="">
+                <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px;">
+                    <label for="inputState" style="margin: auto;">Art:</label>
+                    <select id="inputState" class="form-control" name="device_type">
+                        <option selected>Alle</option>
+                        <option value="1">PC</option>
+                        <option value="2">Monitor</option>
+                        <option value="3">Drucker</option>
+                        <option value="4">Telefone</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-md-4 p-0 m-2">
+        <div class="unit-translucent p-2">
+          <div class="">Ort</div>
+          <hr>
+            <div class="">
+                <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px;">
+                    <label for="inputState" style="margin: auto;">Auswahl:</label>
+                    <select id="inputState" class="form-control" name="place">
+                        <option selected>Alle</option>
+                        @foreach(DB::table('hardware_inventory')->pluck('place') as $place)
+                        <option value="{{$place}}">{{$place}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-2 p-0 m-2 d-flex align-items-bottom">
+        <button type="submit" class="unit-translucent" name="button">Absenden</button>
+      </div>
+    </div>
+  </form>
+    <div class="row">
+      <div class="col p-0 m-2">
+        <div class="table-responsive">
+          <table class="table table-borderless w-100 text-white table-spacing" id="hwtable">
+            <thead>
             <tr class="unit-translucent">
-              <td>{{$item->id}}</td>
-              <td>@if($item->type_id == 1) PC @elseif($item->type_id == 2) Monitor @endif</td>
-              <td>{{$item->place}}</td>
-              <td>{{$item->name}}</td>
-              <td>{{$item->comment}}</td>
-              <td>{{$item->description}}</td>
-              <td>{{$item->created_at}}</td>
-              <td><a onclick="showHWModal({{$item->id}})">HW anzeigen</a> <a href="{{route('inventory.item.delete',['id' => $item->id])}}">HW löschen</a> </td>
-            @endforeach
+              <th>id</th>
+              <th>Art</th>
+              <th>Ort</th>
+              <th>Name</th>
+              <th>Kommentar</th>
+              <th>Beschreibung</th>
+              <th>erfasst_am</th>
+              <th>Optionen</th>
             </tr>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              @foreach($hardware as $item)
+              <tr class="unit-translucent">
+                <td>{{$item->id}}</td>
+                <td>@if($item->type_id == 1) PC @elseif($item->type_id == 2) Monitor @endif</td>
+                <td>{{$item->place}}</td>
+                <td>{{$item->name}}</td>
+                <td>{{$item->comment}}</td>
+                <td>{{$item->description}}</td>
+                <td>{{$item->created_at}}</td>
+                <td><a onclick="showHWModal({{$item->id}})">HW anzeigen</a> <a href="{{route('inventory.item.delete',['id' => $item->id])}}">HW löschen</a> </td>
+              @endforeach
+              </tr>
+            </tbody>
+          </table>
+          </div>
         </div>
       </div>
     </div>

@@ -16,12 +16,27 @@ class HardwareController extends Controller
     }
     public function index()
     {
+
       $hardwarePCs = Hardwareitem::where('type_id',1)->with('devicePC')->get();
       $hardwareMO = Hardwareitem::where('type_id',2)->with('deviceMO')->get();
+
       $hardware = $hardwarePCs->merge($hardwareMO);
 
-      // dd($hardware);
-      return view('inventory.inventoryIndex', compact('hardware'));
+      if(request('device_type') && request('device_type') != 'Alle')
+      {
+        $device = request('device_type');
+        $hardware = $hardware->where('type_id', $device);
+        // dd($hardware);
+      }
+      if(request('place') && request('place') != 'Alle')
+      {
+        $place = request('place');
+        $hardware= $hardware->where('place',$place);
+      }
+        // dd($device);
+
+        return view('inventory.inventoryIndex', compact('hardware'));
+
     }
 
     public function add()
