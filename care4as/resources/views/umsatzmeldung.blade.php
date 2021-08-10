@@ -103,14 +103,7 @@
                                 <thead>
                                     <tr style="width: 100%">
                                         <th>Datum</th>
-                                        <th>Std. bezahlt</th>
-                                        <th>KQ (netto)</th>
-                                        <th>Prod. in %</th>
-                                        <th>CR SSC</th>
-                                        <th>CR BSC</th>
-                                        <th>CR Portal</th>
                                         <th>Umsatz IST</th>
-                                        <th>Umsatz / bez. Std.</th>
                                         <th>Umsatz SOLL</th>
                                         <th>Deckung</th>
                                         <th>Zielerreichung</th>
@@ -119,17 +112,10 @@
                                 <tbody>
                                     <tr>
                                         <td>Sa, 01.07.2021</td>
-                                        <td>72,59</td>
-                                        <td>0,0%</td>
-                                        <td>89,0%</td>
-                                        <td>56,0%</td>
-                                        <td>18,4%</td>
-                                        <td>118,8%</td>
-                                        <td>3.464,31€</td>
-                                        <td>47,72€</td>
-                                        <td>2540,65€</td>
-                                        <td>923,66€</td>
-                                        <td>136,0%</td>
+                                        <td>22.697,40€</td>
+                                        <td>23.424,31€</td>
+                                        <td>-726,91€</td>
+                                        <td>97,05%</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -155,9 +141,7 @@
                                         <th>Std. bezahlt</th>
                                         <th>KQ (netto)</th>
                                         <th>Prod. in %</th>
-                                        <th>CR SSC</th>
-                                        <th>CR BSC</th>
-                                        <th>CR Portal</th>
+                                        <th>CR DSL</th>
                                         <th>Umsatz IST</th>
                                         <th>Umsatz / bez. Std.</th>
                                         <th>Umsatz SOLL</th>
@@ -172,8 +156,6 @@
                                         <td>0,0%</td>
                                         <td>89,0%</td>
                                         <td>56,0%</td>
-                                        <td>18,4%</td>
-                                        <td>118,8%</td>
                                         <td>3.464,31€</td>
                                         <td>47,72€</td>
                                         <td>2540,65€</td>
