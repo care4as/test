@@ -81652,19 +81652,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "container bg-none mt-4" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col" }, [
         _c("h2", [_vm._v("Wer ist in Pause?")]),
         _vm._v(" "),
         _c(
           "table",
-          { staticClass: "table table-striped text-black" },
+          {
+            staticClass:
+              "table table-borderless text-white text-center tablespacing"
+          },
           [
             _vm._m(0),
             _vm._v(" "),
             _vm._l(_vm.users, function(user) {
-              return _c("tr", [
+              return _c("tr", { staticClass: "unit-translucent" }, [
                 _c("td", [_vm._v(_vm._s(user.name))]),
                 _vm._v(" "),
                 user.created_at
@@ -81685,7 +81688,8 @@ var render = function() {
         _c(
           "button",
           {
-            staticClass: "btn-primary rounded-circle",
+            staticClass: "btn-success",
+            staticStyle: { "border-radius": "15px" },
             attrs: { type: "button", name: "button" },
             on: {
               click: function($event) {
@@ -81701,6 +81705,8 @@ var render = function() {
         _c(
           "button",
           {
+            staticClass: "btn-danger",
+            staticStyle: { "border-radius": "15px" },
             attrs: { type: "button", name: "button" },
             on: {
               click: function($event) {
@@ -81719,7 +81725,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("tr", [
+    return _c("tr", { staticClass: "unit-translucent" }, [
       _c("th", [_vm._v("Name")]),
       _vm._v(" "),
       _c("th", [_vm._v("seit")])

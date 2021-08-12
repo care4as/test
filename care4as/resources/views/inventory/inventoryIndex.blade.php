@@ -45,11 +45,11 @@
                 <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px;">
                     <label for="inputState" style="margin: auto;">Art:</label>
                     <select id="inputState" class="form-control" name="device_type">
-                        <option selected>Alle</option>
-                        <option value="1">PC</option>
-                        <option value="2">Monitor</option>
-                        <option value="3">Drucker</option>
-                        <option value="4">Telefone</option>
+                      <option selected>Alle</option>
+                      <option value="1">PC</option>
+                      <option value="2">Monitor</option>
+                      <option value="3">Drucker</option>
+                      <option value="4">Telefone</option>
                     </select>
                 </div>
             </div>
@@ -311,7 +311,6 @@
 <script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
 <script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
@@ -327,7 +326,6 @@ let table = $('#hwtable').DataTable({
           // 'excel',
       ]
 })
-
 $('#devicetype').on('change', function() {
 
   let devicetype = this.value
