@@ -1,12 +1,10 @@
 @extends('./general_layout')
 
 @section('content')
-<div class="container" id="app">
+<div class="container unit-translucent mt-4" id="app">
   <div class="row">
     <ptool> </ptool>
   </div>
-
-
   @if(in_array('telefonica_config',Auth()->user()->getRights()))
   <div class="row m-1 mt-4  center_items">
     <div class="col-md-10 p-0 m-2 center_items">
@@ -21,13 +19,10 @@
           <div class="form-col-6">
             <button type="submit" class="unit-translucent " name="button">Absenden</button>
           </div>
-
         </div>
-
       </form>
     </div>
   </div>
-
   @endif
 </div>
 @endsection

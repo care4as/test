@@ -74,7 +74,7 @@ class HomeController extends Controller
 
 
       $dataMobile= $this->getIVDataPerDay(5,$mobileTeamids);
-      $dataDSL= $this->getIVDataPerDay(5,$DSLTeamids);
+      // $dataDSL= $this->getIVDataPerDay(5,$DSLTeamids);
 
       $quotas = $dataMobile[0];
       $times= $dataMobile[1];
@@ -110,6 +110,7 @@ class HomeController extends Controller
 
           // return $spectrumstart;
           $ivdata = $data->where('date','>', $spectrumstart)->where('date','<',$spectrumend);
+
 
           $orders = $ivdata->sum('Orders');
           $calls = $ivdata->sum('Calls');
