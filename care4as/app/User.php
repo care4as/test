@@ -57,8 +57,11 @@ class User extends Authenticatable
 
         $calls = $salesdata->sum('calls');
         $savesssc = $salesdata->sum('orders_smallscreen');
+        $calls_ssc = $salesdata->sum('calls_smallscreen');
         $savesbsc = $salesdata->sum('orders_bigscreen');
+        $calls_bsc = $salesdata->sum('calls_bigscreen');
         $savesportal = $salesdata->sum('orders_portale');
+        $calls_portal = $salesdata->sum('calls_portale');
         $mvlzneu = $salesdata->sum('mvlzNeu');
         $rlzPlus = $salesdata->sum('rlzPlus');
       }
@@ -78,8 +81,11 @@ class User extends Authenticatable
       $salesdataFinal = array(
         'calls' => $calls,
         'savesssc' => $savesssc,
+        'calls_ssc' => $calls_ssc,
         'savesbsc' => $savesbsc,
+        'calls_bsc' => $calls_bsc,
         'savesportal' => $savesportal,
+        'calls_portal' => $calls_portal,
         'mvlzneu' => $mvlzneu,
         'rlzPlus' => $rlzPlus,
       );

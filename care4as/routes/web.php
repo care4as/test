@@ -325,10 +325,23 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/test', function(){
 
-  
-  // dd($test1);
+    $startDate = '2021-08-01';
+    $endDate = '2021-08-15';
 
-  return view('test', compact('test1'));
+    $users = App\User::where('department','1&1 Mobile Retention')
+    ->where('status',1)
+    ->where('role','agent')
+    ->get();
+
+    foreach ($users as $key => $user) {
+      $user->salesdata = $user->getSalesDataInTimespan($startDate,$endDate);
+
+
+    }
+
+    dd($users[1]);
+
+    // return view('test', compact('test1'));
 
 
 

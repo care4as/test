@@ -463,8 +463,8 @@
         <div class="subauswahl"  id="timesview">
           Zeit Daten
         </div>
-        <div class="subauswahl" id="revenueview" >
-          Umsatz/SAS/Optin
+        <div class="subauswahl" id="performanceShort" >
+          KPI´s übersichtlich
         </div>
       </div>
       <table class="table table-borderless tablespacing text-white" id="tableoverview">
@@ -811,14 +811,15 @@
                   table.colReorder.order( [0,1,2,3,4,5,6,7,10,29,30]);
                   // table.columns.adjust().draw();
                 break;
-                case 'revenueview':
+                case 'performanceShort':
                   table.colReorder.reset();
                   table.columns().visible( false );
-                  table.columns([0,1,22,23,24,25,26,27,28,29,30]).visible( true );
+                  table.columns([0,1,2,17,21,22,23,24,25,30,31]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('#tableoverview').css('margin','0px');
-                  table.colReorder.order( [0,1,28,29,30,27,26,25,24,22,23]);
+                  // $('#tableoverview').css('width','100%');
+                  table.colReorder.order( [0,1,21,22,23,24,17,25,2,30,31]);
                   // table.columns.adjust().draw();
                 break;
               }
