@@ -175,7 +175,7 @@
                         <select class="form-control" name="team" id="Team" style="width:218px;">
                           <option value="" @if(!$user->team)  selected @endif disabled>Wähle dein Team</option>
                           <option value="Liesa" @if($user->team == 'Liesa') selected @endif>Liesa</option>
-                          <option value="Jacha" @if($user->team == 'Jacha') selected @endif>Jacha</option>
+                          <option value="Jacha" @if($user->team == 'Jacha') selected @endif>XYZ</option>
                         </select>
                       </td>
                     </tr>
