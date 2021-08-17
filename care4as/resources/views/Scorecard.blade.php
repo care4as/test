@@ -63,7 +63,7 @@
 @endsection
 
 @section('content')
-<div class="container-fluid mt-2 unit-translucent" style="border-radius: 15px;width: 75vw;">
+<div class="container-fluid mt-2 " style="border-radius: 15px;width: 75vw; color: white !important;">
   <div class="" id="reportdiv">
     <div class="nav-tabs-navigation">
       <div class="nav-tabs-wrapper">
@@ -111,7 +111,7 @@
       Schließen
     </button>
 </div>
-  <div class="row">
+  <div class="row ">
     <div class="col d-flex justify-content-start">
       @if(App\User::where('id', '<', $user->id)->max('id'))
         <a href="{{route('user.stats', ['id' => App\User::where('id', '<', $user->id)->max('id') ])}}" class="btn btn-rounded btn-primary btn-outline">vorheriger Agent</a>
@@ -152,12 +152,12 @@
       <hr>
       <hr>
       <div class="row justify-content-center">
-        <form class="" action="{{route('user.update', ['id' => $user->id])}}" method="post">
+        <form class="text-white" action="{{route('user.update', ['id' => $user->id])}}" method="post">
             @csrf
-            <table class="table table-bordered w-50">
+            <table class="table table-borderless w-50 text-white">
               <tr>
                 <td>
-                  <table class="" style="">
+                  <table class="text-white" style="">
                     <tr>
                       <th>Abteilung</th>
                       <td>
@@ -172,7 +172,7 @@
                     <tr>
                       <th>Team</th>
                       <td>
-                        <select class="form-control" name="team" id="Team" style="width:218px;">
+                        <select class="form-control text-white" name="team" id="Team" style="width:218px;">
                           <option value="" @if(!$user->team)  selected @endif disabled>Wähle dein Team</option>
                           <option value="Liesa" @if($user->team == 'Liesa') selected @endif>Liesa</option>
                           <option value="XYZ" @if($user->team == 'XYZ') selected @endif>XYZ</option>
