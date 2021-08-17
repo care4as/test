@@ -63,9 +63,9 @@
 @endsection
 
 @section('content')
-<div class="container-fluid mt-2" style="border-radius: 15px;width: 75vw;">
+<div class="container-fluid mt-2 unit-translucent" style="border-radius: 15px;width: 75vw;">
   <div class="" id="reportdiv">
-    <div class="nav-tabs-navigation bg-light">
+    <div class="nav-tabs-navigation">
       <div class="nav-tabs-wrapper">
         <ul class="nav nav-tabs" data-tabs="tabs">
             <li class="nav-item">
@@ -127,7 +127,7 @@
       @endif
     </div>
   </div>
-  <div class="row bg-light" id="mainrow"  style="border-radius: 35px;">
+  <div class="row unit-translucent" id="mainrow"  style="border-radius: 35px;">
     <div class="col p-0" id="maincol">
       <div class="row m-0">
         <div class="col">
@@ -175,7 +175,7 @@
                         <select class="form-control" name="team" id="Team" style="width:218px;">
                           <option value="" @if(!$user->team)  selected @endif disabled>Wähle dein Team</option>
                           <option value="Liesa" @if($user->team == 'Liesa') selected @endif>Liesa</option>
-                          <option value="Jacha" @if($user->team == 'Jacha') selected @endif>XYZ</option>
+                          <option value="XYZ" @if($user->team == 'XYZ') selected @endif>XYZ</option>
                         </select>
                       </td>
                     </tr>
