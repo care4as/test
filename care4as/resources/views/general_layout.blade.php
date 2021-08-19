@@ -403,7 +403,7 @@
 
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
-        <div class="content bg-cool" style="Overflow-x: hidden;">
+        <div class="content bg-cool" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto; overflow-x: hidden;"> 
           @yield('content')
         </div>
         <!-- <div class="container bg-white">
