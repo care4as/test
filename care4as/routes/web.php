@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ControllingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
 
-Route::get('/umsatzmeldung', function(){
 
-  //return 1 ;
-  return view('umsatzmeldung');
-})->name('umsatzmeldung');
 
 Route::get('/projekt_kpi', function(){
 
@@ -304,6 +301,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');
 
   //endinventory
+  //Controlling Routes
+  Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
+  //End Controlling Routes
 });
 
 //Provision
