@@ -292,6 +292,15 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/presentation', 'HomeController@presentation')->name('presentation')->middleware('hasRight:importReports');
   //endpresentation
 
+  //inventory
+    Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');
+    Route::post('/inventory/add', 'HardwareController@store')->name('inventory.store');
+    Route::get('/inventory', 'HardwareController@index')->name('inventory.list');
+    Route::get('/inventory/item/show/{id}', 'HardwareController@show')->name('inventory.item.show');
+    Route::post('/inventory/item/update/{id}', 'HardwareController@update')->name('inventory.item.update');
+    Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');
+
+  //endinventory
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
   //End Controlling Routes
@@ -308,25 +317,32 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');
   Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');
 //endoffers
+  Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
+  Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
+  Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
+  Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking');
+  Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas');
 
-//inventory
-  Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');
-  Route::post('/inventory/add', 'HardwareController@store')->name('inventory.store');
-  Route::get('/inventory', 'HardwareController@index')->name('inventory.list');
-  Route::get('/inventory/item/show/{id}', 'HardwareController@show')->name('inventory.item.show');
-  Route::post('/inventory/item/update/{id}', 'HardwareController@update')->name('inventory.item.update');
-  Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');
+  Route::get('/test', function(){
 
-//endinventory
-Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
-Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
-Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
-Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking');
-Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas');
+    $startDate = '2021-08-01';
+    $endDate = '2021-08-15';
+
+    $users = App\User::where('department','1&1 Mobile Retention')
+    ->where('status',1)
+    ->where('role','agent')
+    ->get();
+
+    foreach ($users as $key => $user) {
+      $user->salesdata = $user->getSalesDataInTimespan($startDate,$endDate);
 
 
-Route::get('/test', function(){
+    }
 
-  return view('test');
+    dd($users[1]);
+
+    // return view('test', compact('test1'));
+
+
 
 })->name('test');

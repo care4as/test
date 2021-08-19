@@ -1,14 +1,14 @@
 <template>
-    <div class="container">
+    <div class="container bg-none mt-4">
         <div class="row justify-content-center">
           <div class="col">
             <h2>Wer ist in Pause?</h2>
-            <table class="table table-striped text-black">
-              <tr>
+            <table class="table table-borderless text-white text-center tablespacing">
+              <tr class="unit-translucent">
                 <th>Name</th>
                 <th>seit</th>
               </tr>
-              <tr  v-for="user in users">
+              <tr  v-for="user in users" class="unit-translucent">
                 <td>{{user.name}}</td>
                 <td v-if="user.created_at">{{calcTimeDifference(user.created_at)}}</td>
                 <td v-else>keine Angabe</td>
@@ -18,10 +18,10 @@
         </div>
         <div class="row center_items">
           <div class="col-6 center_items">
-              <button type="button" class="btn-primary rounded-circle" name="button" @click="goIntoPause()">In Pause gehen!</button>
+              <button type="button" class="btn-success" name="button" @click="goIntoPause()" style="border-radius: 15px;">In Pause gehen!</button>
           </div>
           <div class="col-6 center_items">
-              <button type="button" name="button" @click="getOutOfPause()">Pause beendet</button>
+              <button type="button" class="btn-danger" name="button" @click="getOutOfPause()" style="border-radius: 15px;">Pause beendet</button>
           </div>
         </div>
     </div>

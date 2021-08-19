@@ -8,7 +8,7 @@ function controlling_umsatzmeldung_zielwerte_toggle(){
   } else {
     document.getElementById('controlling_umsatzmeldung_zielwerte_toggle').style.visibility = "hidden";
   }
-  
+
 }
 
 
@@ -17,6 +17,7 @@ function toggleSidebar()
   // console.log('test')
   let sidebar = document.querySelector('#sidebar');
   let content = document.querySelector('#main-panel');
+  let navbar = $('#navbar_max')
   let width = sidebar.getBoundingClientRect().width
 
   // console.log(width)
@@ -30,8 +31,8 @@ function toggleSidebar()
     {
       table.style.width = '100%'
     }
-
-    // console.log(logo)
+    // navbar.addClass('bg-primary')
+    console.log(navbar)
   }
   else {
     sidebar.style.display = 'block'
@@ -40,7 +41,7 @@ function toggleSidebar()
   }
 }
 function toggleMobileMenu() {
-  console.log('test')
+  // console.log('test')
   $('#mobilemenu').toggle()
 }
 function showDetails(id)
@@ -103,16 +104,18 @@ function toggleNewSidebar(){
       document.getElementById("main-panel").style.width = "100%";
       window.newSidebar = "transition";
       setTimeout(function(){
-        document.getElementById("navbar_max").style.boxShadow = "none"
+        let navbar = document.getElementById("navbar_max")
+        navbar.style.boxShadow = "none"
+        navbar.classList.add('bg-primary')
         window.newSidebar = "inactive";
-      }, 150);
+      }, 0);
     } else if (window.newSidebar == "inactive") {
       window.newSidebar = "transition";
       document.getElementById("main-panel").style.width = "calc(100% - 260px)";
       document.getElementById("navbar_max").style.boxShadow = "black 1em 0px 1em -1em inset"
       setTimeout(function(){
         window.newSidebar = "active";
-      }, 150)
+      }, 0)
     }
     document.getElementById("linkNewSidebar").style.backgroundColor = "transparent";
   } else {
@@ -142,6 +145,7 @@ function mouseoverNewSidebar(){
 function mouseoutNewSidebar(){
   document.getElementById("hoverNewSidebarToggler").className = "now-ui-icons design_bullet-list-67";
   document.getElementById("linkNewSidebar").style.backgroundColor = "transparent";
+
 }
 
 

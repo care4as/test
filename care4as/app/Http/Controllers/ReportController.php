@@ -342,18 +342,13 @@ class ReportController extends Controller
       else {
         $enddate = Carbon::today()->subDays(1);
       }
-
-
-
       // dd(request());
       if(request('button2'))
       {
         $this->categoriesCR4Weeks($startdate, $enddate);
       }
       else {
-
         $this->categoriesDisplay($startdate, $enddate);
-
       }
     }
     public function categoriesDisplay($startdate,$enddate)
@@ -387,6 +382,7 @@ class ReportController extends Controller
           $seller->quota = $this->getquota($ssccalls,$sscorders);
       }
 
+      dd($sellers);
       $sellers = $sellers->sortByDesc('quota')->values();
 
       $highperformers = $sellers->where('quota','>', 60);
@@ -407,7 +403,52 @@ class ReportController extends Controller
       else {
         $timespan = array('keine Angabe');
       }
-      echo view('categories', compact('highperformers','midperformers','lowperformers','timespan'));
+      $ma = DB::connection('mysqlkdw')
+      ->table('MA')
+      ->where('projekt_id',7)
+      ->whereNull('austritt')
+      ->select('ds_id','vorname','familienname')
+      ->get();
+
+      $maIDs = $ma->pluck('ds_id');
+
+      $fu = DB::connection('mysqlkdw')
+      ->table('chronology_book')
+      ->where('acd_state_id',36)
+      ->whereIn('MA_id', $maIDs)
+      ->get();
+
+
+      foreach($fu as $test)
+      {
+        // if($test == $fu->last())
+        // {
+        //   $nextentry = DB::connection('mysqlkdw')
+        //   ->table('chronology_book')
+        //   // ->where('acd_state_id',36)
+        //   ->where('MA_id', $test->MA_id)
+        //   ->where('ds_id','>',$test->ds_id)
+        //   ->first();
+        //
+        //   $data = $ma->where('ds_id', $test->MA_id)->values();
+        //   // dd($ma->where('ds_id', $test->MA_id)->values());
+        //   $surname =  $data[0]->vorname;
+        //   $lastname =  $data[0]->familienname;
+        //   // $test1[$surname.' '.$lastname]['date'][] = $test->book_date;
+        //
+        //   dd($nextentry);
+        // }
+
+
+        $data = $ma->where('ds_id', $test->MA_id)->values();
+        // dd($ma->where('ds_id', $test->MA_id)->values());
+        $surname =  $data[0]->vorname;
+        $lastname =  $data[0]->familienname;
+        $dataarray[$surname.' '.$lastname]['date'][] = $test->book_date;
+
+        // dd($test1);
+      }
+      echo view('categories', compact('highperformers','midperformers','lowperformers','timespan','dataarray'));
 
     }
     public function categoriesCR4Weeks($startdate,$enddate)
@@ -485,11 +526,8 @@ class ReportController extends Controller
 
         fputcsv($fp, $line);
       }
-
       fclose($fp);
-
       // return view('categories', compact('highperformers','midperformers','lowperformers'));
-
       }
     }
     public function capacitysuiteReport(Request $request)

@@ -20,12 +20,40 @@ body
       background: -webkit-linear-gradient(to top, #2c3e50, #4ca1af); /* Chrome 10-25, Safari 5.1-6 */
       background: linear-gradient(to top, #2c3e50, #4ca1af);
     }
+    .HWModal
+    {
+      position: fixed;
+      z-index: 1500;
+    }
+    .backdrop
+    {
+      display:none;
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      /* z-index: 51000; */
+      background-color: rgba(0,0,0,0.5);
+    }
+    .toggler
+    {
+      position: fixed;
+      top: 5px;
+      left: 5px;
+      border-radius: 50%;
+      display:none;
+      /* z-index: 50010; */
+      height: auto;
+      width: auto;
+    }
     .unit-translucent
     {
       box-shadow: 0 0 10px;
       background-color: rgba(0,0,0,0.4) !important;
       color: white !important;
       border-radius: 15px;
+    }
+    .logo{
+      border-radius: 15px !important;
     }
     .table-striped>tbody>tr:nth-child(even) {
         background-color: #ddf8e8;
@@ -259,6 +287,13 @@ body
     top: 0;
     left: 0;
     content: '';
+  }
+  .content
+  {
+    height: calc(100vh - 66.5px);
+    margin-top: 66.5px;
+    box-shadow: black 0em 1em 1em -1em inset;
+    overflow-y: auto;
   }
   .loader:after {
     background: #ffffff;
@@ -587,14 +622,8 @@ body
   border: 2px solid black;
   box-shadow:10px 10px 5px grey;
 }
-@media only screen and (min-width: 416px) {
-  .toggler
-  {
-    display: none;
-  }
-}
 
-/* Zeile 597 -> 639: Wichtig für Layout!*/ 
+/* Zeile 597 -> 639: Wichtig für Layout!*/
 /* Container */
 .max-main-container{
   margin: 20px;
@@ -666,4 +695,10 @@ body
   left: 0px !important;
   padding: 4px;
   border-radius: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+  .toggler {
+    display: block;
+  }
 }

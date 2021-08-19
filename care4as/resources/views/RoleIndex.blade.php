@@ -28,6 +28,10 @@
     <button type="button" class="btn-primary" data-toggle="modal" data-target="#RoleRightsModal">Neue Rolle erstellen</button>
   </div>
 </div>
+
+@endsection
+
+@section('additional_modal')
 <div class="modal fade" id="RoleRightsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog ">
     <div class="modal-content">
@@ -65,5 +69,4 @@
     </div>
   </div>
 </div>
-
 @endsection

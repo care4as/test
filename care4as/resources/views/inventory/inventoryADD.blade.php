@@ -1,5 +1,9 @@
 @extends('general_layout')
 
+@section('pagetitle')
+  Hardware hinzufügen
+@endsection
+
 @section('additional_css')
 <style media="screen">
   #pcmenu, #monitormenu
@@ -68,7 +72,7 @@
                 Display Connections
               </div>
               <div class="m-4">
-                <input class="form-check-input" name="portspc[]" type="checkbox" value="VGA" id="vga">
+                <input class="form-check-input" name="portspc[]" type="checkbox" value="vga" id="vga">
                 <label class="form-check-label" for="vga">
                   VGA
                 </label>
@@ -114,7 +118,7 @@
                 Display Connections
               </div>
               <div class="m-4">
-                <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="VGA" id="vga">
+                <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="vga" id="vga">
                 <label class="form-check-label" for="vga">
                   VGA
                 </label>

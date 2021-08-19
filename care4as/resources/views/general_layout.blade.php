@@ -46,28 +46,27 @@
   <link href="{{asset('css/main.css')}}" rel="stylesheet" />
   @yield('additional_css')
 </head>
-<body class="">
-  <div class="toggler">
-    <button type="button" name="button" class="unit-translucent" onclick="toggleMobileMenu()" style="position: fixed; top: 5px; left: 125px;z-index: 20000; height: 50px; width: 50px; border-radius: 50%;">Menu</button>
-  </div>
-  <div class="mobilemenu center_items" id="mobilemenu" style="position: fixed;z-index: 10000; height: 100vh; width: 100vw; display: none;background-color: rgba(0,0,0,1);">
-    <div class="" style="height: 75px; width: 75px; background-color: green;">
-      <a href="{{route('inventory.add')}}">HW hinzufügen</a>
-    </div>
+<body class="bg-primary">
 
-  </div>
+  <!-- <div class="toggler">
+    <button type="button" name="button" class="unit-translucent" onclick="toggleMobileMenu()" style="">Menu</button>
+  </div> -->
+
   <div class="wrapper ">
-    <div class="sidebar" data-color="orange" id='sidebar'>
-      <div class="logo bg-white m-2" style="border-radius: 2px;">
-        <a href="text-muted" class="simple-text logo-normal">
-          <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 100%; margin-top: 10px; height: 12%">
-        </a>
-      </div>
-      <div class="sidebar-wrapper " id="sidebar-wrapper" style="overflow-y: scroll; height: 88%">
+    <div class="sidebar" id='sidebar'>
+
+      <div class="sidebar-wrapper" id="sidebar-wrapper" style="overflow-y: scroll; height: 100%">
+
         @php
           Auth()->user()->getRights();
         @endphp
         <ul class="nav" style="margin-bottom: 15px;">
+          <li><div class="logo bg-white m-2" style="border-radius: 20px;">
+            <a href="text-muted" class="simple-text logo-normal">
+              <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 100%; margin-top: 10px; height: 12%">
+            </a>
+          </div>
+        </li>
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
             <a @if(Auth::User()->role == 'Agent') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
@@ -120,12 +119,11 @@
                   @endif
                 @endif
                   <li><a href="{{route('user.index')}}">User Index</a></li>
-
               </ul>
             </div>
           </li>
           @endif
-
+          @if(in_array('controlling',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseControlling" role="button" aria-expanded="false" aria-controls="collapseControlling">
               <i class="fas fa-users"></i>
@@ -133,13 +131,12 @@
             </a>
             <div class="collapse" id="collapseControlling" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-                  <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
-                  <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
-
+                <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
+                <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
               </ul>
             </div>
           </li>
-
+          @endif
           @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
             <a class="" href="{{route('presentation')}}">
@@ -244,12 +241,10 @@
               <li><a href="{{route('roles.index')}}">Rollen</a> </li>
               <li><a href="{{route('feedback.view')}}">Rollen und Rechte</a> </li>
               <li><a href="{{route('config.view')}}">allgemeine Einstellungen</a> </li>
-
             </ul>
             </div>
           </li>
           @endif
-
           @if(in_array('trainings',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
@@ -273,7 +268,6 @@
               <i class="fas fa-running"></i>
               <p><b>Pausentool <br>Telefonica</b></p>
             </a>
-
           </li>
           @endif
           @if(in_array('sendReports',Auth()->user()->getRights()))
@@ -296,7 +290,7 @@
           </li>
           @endif
           @if(in_array('presentation',Auth()->user()->getRights()))
-          <li>
+            <li>
             <a class="" href="{{route('presentation')}}">
               <i class="far fa-file-powerpoint"></i>
               <p><b>Präsentation</b></p>
@@ -315,7 +309,6 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 <li><a href="{{route('inventory.list')}}">HW Liste</a> </li>
                 <li><a href="{{route('inventory.add')}}">HW hinzufügen</a> </li>
-
               </ul>
             </div>
           </li>
@@ -323,22 +316,22 @@
         </ul>
       </div>
     </div>
-    <div class="main-panel" id="main-panel" style="z-index: 1500;">
+    <div class="main-panel" id="main-panel" style="z-index: 500;">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg  bg-primary  navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset; height: 66.5px;">
+      <nav class="navbar navbar-expand-lg navbar-absolute" id="navbar_max" style="box-shadow: black 1em 0px 1em -1em inset; height: 66.5px; z-index: 500;">
         <div class="container-fluid">
           <div class="navbar-wrapper">
             <div class="navbar-collapse justify-content-end" id="navigation">
-              <ul class="navbar-nav">  
+              <ul class="navbar-nav">
                 <li class="nav-item" onclick="toggleNewSidebar()" onmouseover="mouseoverNewSidebar()" onmouseout="mouseoutNewSidebar()" id="newSidebarToggler">
                   <a class="nav-link" href="#pablo" id="linkNewSidebar">
                   <i class="now-ui-icons design_bullet-list-67" id="hoverNewSidebarToggler"></i>
                 </a>
-              </ul> 
+              </ul>
             </div>
           </div>
           <div id="pagetitle" style="font-weight: bold; color: white;">@yield("pagetitle")</div>
-          <div class="navbar-wrapper">  
+          <div class="navbar-wrapper">
           <!--<input type="checkbox" id="hamburg" onclick="showSidebar()">
               <label for="hamburg" class="hamburg">
                   <span class="line"></span>
@@ -370,7 +363,7 @@
                     <span class="d-lg-none d-md-block">Stats</span>
                   </p>
                 </a>
-              </li> 
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons location_world"></i>
@@ -407,12 +400,10 @@
       </nav>
       <!-- End Navbar -->
       <div class="panel-header panel-header-lg" style="min-height: 100vh;">
-        <div class="backdrop">
 
-        </div>
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
-        <div class="content" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto; overflow-x: hidden;"> 
+        <div class="content bg-cool" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto; overflow-x: hidden;"> 
           @yield('content')
         </div>
         <!-- <div class="container bg-white">
@@ -425,6 +416,7 @@
       </footer>
     </div>
   </div>
+  @yield('additional_modal')
   <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content bg-danger text-white">
@@ -468,27 +460,19 @@
       </div>
     </div>
   </div>
-
   <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content bg-success text-white" >
-
         <div class="modal-body">
           <h5>Triumph!</h5>
           <p id="smodaltext">Die Datei wurde erfolgreich hochgeladen &#129321;&#129321;&#129321;</p>
           <!-- <p id="smodaltext"></p> -->
         </div>
-
       </div>
     </div>
   </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
+</div>
+</div>
 </div>
 </div>
 
@@ -509,7 +493,6 @@
   <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/plugins/bootstrap-notify.js')}}"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript')}}"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-
   <script src="{{asset('js/app.js')}}"></script>
 
   @if($errors->any())
@@ -526,10 +509,6 @@
   @endif
 
   @yield('additional_js')
-
-
-
-
 </body>
 
 </html>

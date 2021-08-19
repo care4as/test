@@ -3,8 +3,8 @@
 
 @section('content')
 
-<div class="container-fluid bg-light" style="width: 75vw;">
-  <div class="row">
+<div class="container-fluid unit-translucent mt-4" style="width: 75vw;">
+  <div class="row ">
     <form class="mt-2 w-100" action="{{route('report.joyce')}}" method="get">
       @csrf
       <div class="row m-0">
@@ -44,8 +44,8 @@
         </tr>
       <tr>
         <td class="" style="vertical-align: top;">
-          <h3 class="text-dark">Highperformer</h3>
-          <table class="table table-striped m-3">
+          <h3 class="text-white">Highperformer</h3>
+          <table class="table m-3 text-white">
             <tr>
               <th>PID</th>
               <th>Name</th>
@@ -63,8 +63,8 @@
 
         </td>
         <td style="vertical-align: top;">
-          <h3 class="text-dark">Midperformer</h3>
-          <table class="table table-striped m-3">
+          <h3 class="text-white">Midperformer</h3>
+          <table class="table text-white m-3">
             <tr>
               <th>PID</th>
               <th>Name</th>
@@ -81,8 +81,8 @@
           </table>
         </td>
         <td style="vertical-align: top;">
-          <h3 class="text-dark">Lowperformer</h3>
-          <table class="table table-striped m-3">
+          <h3 class="text-white">Lowperformer</h3>
+          <table class="table text-white m-3">
             <tr>
               <th>PID</th>
               <th>Name</th>
@@ -93,20 +93,35 @@
                 <td>{{$performer->person_id}}</td>
                 <td>{{$performer->surname}} {{$performer->lastname}}</td>
                 <td>{{$performer->quota}}</td>
-
               </tr>
               @endforeach
           </table>
-
         </td>
       </tr>
-
-
-
     </tr>
     </table>
     </div>
   </div>
 </div>
+<div class="container-fluid mt-4" style="width: 75vw; border-radius: 25px;">
+  <table class="table text-white">
+    @foreach($dataarray as $key => $data)
+    <tr class="unit-translucent">
+      <td>{{$key}}</td>
+      <td>insgesamt: {{count($data['date'])}}</td>
+      <td>
+        <table class="table table-borderless text-white">
+          @foreach($data['date'] as $date)
+          <tr>
+            <td>{{$date}}</td>
+          </tr>
+          @endforeach
+        </table>
 
+      </td>
+
+    </tr>
+    @endforeach
+  </table>
+</div>
 @endsection
