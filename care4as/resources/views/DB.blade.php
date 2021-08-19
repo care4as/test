@@ -814,12 +814,19 @@
                 case 'performanceShort':
                   table.colReorder.reset();
                   table.columns().visible( false );
-                  table.columns([0,1,2,17,21,22,23,24,25,30,31]).visible( true );
+                  table.columns([1,2,17,21,22,23,24,25,30,31]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
-                  $('#tableoverview').css('margin','0px');
-                  // $('#tableoverview').css('width','100%');
-                  table.colReorder.order( [0,1,21,22,23,24,17,25,2,30,31]);
+                  $('.dataTable tr').css('height','1em');
+                  $('.dataTable tr').css('padding','0px');
+                  $('.dataTable').css('margin','0px');
+                  $('.dataTable tbody').css('height','20em');
+                  $('.dataTable tr').css('overflow','hidden');
+                  $('.dataTable').css('font-size','0.6em');
+                  $('.dataTable td').css('padding','0');
+                  $('.dataTable td').css('vertical-align','top');
+                    // $('#tableoverview').css('width','100%');
+                  table.colReorder.order( [1,21,22,23,24,17,25,2,30,31]);
                   // table.columns.adjust().draw();
                 break;
               }
