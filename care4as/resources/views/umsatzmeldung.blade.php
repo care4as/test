@@ -16,7 +16,7 @@
                                     <div class="max-panel-content">
                                         <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px;">
                                             <label for="inputState" style="margin: auto;">Auswahl:</label>
-                                            <select id="inputState" class="form-control" name="project">
+                                            <select id="inputState" class="form-control" name="project" style="color:black;">
                                                 @if($defaultVariablesArray['project'] == 'all')
                                                     <option selected value="all">Projektübergreifend</option>
                                                     @else
@@ -53,9 +53,9 @@
                                     <div class="max-panel-content">
                                         <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 5px;">
                                             <p style="margin: auto;">Von:</p>
-                                            <input type="date" id="dateFrom" name="startDate" class="form-control" placeholder="" value="{{$defaultVariablesArray['startdate']}}">
+                                            <input type="date" id="dateFrom" name="startDate" class="form-control" placeholder="" value="{{$defaultVariablesArray['startdate']}}" style="color: black;">
                                             <p style="margin: auto;">Bis:</p>
-                                            <input type="date" id="dateTo" name="endDate" class="form-control" placeholder="" value="{{$defaultVariablesArray['enddate']}}">
+                                            <input type="date" id="dateTo" name="endDate" class="form-control" placeholder="" value="{{$defaultVariablesArray['enddate']}}" style="color: black;">
                                         </div>
                                     </div>
                                 </div>

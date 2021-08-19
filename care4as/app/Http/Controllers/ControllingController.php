@@ -186,6 +186,8 @@ class ControllingController extends Controller
             ->whereNotIn('ds_id', $unproductiveEmployees)
             ->get();
 
+            //dd($mobileFTEData);
+
             $mobileWorktimeSumData[$currentDate]['contract_hours'] = $mobileFTEData->sum('soll_h_day');
  
             $mobileWorktimeSumData[$currentDate]['heads'] = $mobileFTEData->count('soll_h_day');
