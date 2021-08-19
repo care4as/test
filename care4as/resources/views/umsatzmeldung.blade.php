@@ -119,12 +119,6 @@
                                         <th>FTE Bestand</th>
                                         <th>Umsatz IST</th>
                                         <th>Umsatz SOLL</th>
-                                        <th>Ø€ / Sale</th>
-                                        <th>Umsatz Sales</th>
-                                        <th>Umsatz Availbench</th>
-                                        <th>Umsatz IST</th>
-                                        <th>Umsatz / bez. Std.</th>
-                                        <th>Umsatz SOLL</th>
                                         <th>Deckung</th>
                                         <th>Zielerreichung</th>
                                     </tr>
@@ -138,22 +132,10 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                     @endforeach
                                     <tr style="font-weight: bold; background-color: #ddd;">
                                         <td>Summe</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
