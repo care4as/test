@@ -312,7 +312,7 @@
 
 <div class="container-fluid bg-cool m-1">
   <div class="row m-1 justify-content-center align-self-center m-1">
-      <h4 class="unit-translucent p-1">Präsentation des aktuellen Moduls: {{$modul ?? ''}}</h4>
+      <h4 class="unit-translucent p-1">DB1 Alternative</h4>
   </div>
   <div class="row m-1 mt-4">
     <div class="col-12">
@@ -398,12 +398,27 @@
             <div class="col-6 p-0" style="border-right: 2px solid black;">
               <div class="row m-2 justify-content-end">
                 <div class="col-4 ml-1 p-0">
-                  <label for="department">Abteilung:</label>
-                  <select class="form-control" name="department" id="department" style="width:218px;">
-                    <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
-                    <option value="1&1 DSL Retention" @if(request('department') == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
-                    <option value="1&1 Mobile Retention" @if(request('department') == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
-                  </select>
+                  <div class="row">
+                      <label for="department">Abteilung:</label>
+                  </div>
+                  <div class="row">
+                    <select class="form-control" name="department" id="department" style="width:218px;">
+                      <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
+                      <option value="1&1 DSL Retention" @if(request('department') == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
+                      <option value="1&1 Mobile Retention" @if(request('department') == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
+                    </select>
+                  </div>
+                  <div class="row">
+                    <label for="team">Team:</label>
+                  </div>
+                  <div class="row">
+                    <select class="form-control" name="team" id="team" style="width:218px;">
+                      <option value="" @if(!request('department')) selected @endif disabled>Wähle das Team</option>
+                      <option value="Liesa" @if(request('team') == 'Liesa') selected @endif>Liesa</option>
+                      <option value="XYZ" @if(request('team') == 'XYZ') selected @endif>XYZ</option>
+                    </select>
+                  </div>
+
                 </div>
                 <div class="col-3 p-0 mr-2">
                   <label for="department">Welche MA:</label>
@@ -823,8 +838,8 @@
                   $('.dataTable tbody').css('height','20em');
                   $('.dataTable tr').css('overflow','hidden');
                   $('.dataTable').css('font-size','0.6em');
-                  $('.dataTable td').css('padding','0');
-                  $('.dataTable td').css('vertical-align','top');
+                  // $('.dataTable td').css('padding','0');
+                  // $('.dataTable td').css('vertical-align','top');
                     // $('#tableoverview').css('width','100%');
                   table.colReorder.order( [1,21,22,23,24,17,25,2,30,31]);
                   // table.columns.adjust().draw();
