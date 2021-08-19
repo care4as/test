@@ -413,9 +413,9 @@
                   </div>
                   <div class="row">
                     <select class="form-control" name="team" id="team" style="width:218px;">
-                      <option value="" @if(!request('department')) selected @endif disabled>Wähle das Team</option>
-                      <option value="Liesa" @if(request('team') == 'Liesa') selected @endif>Liesa</option>
-                      <option value="XYZ" @if(request('team') == 'XYZ') selected @endif>XYZ</option>
+                      <option value="" selected>Wähle das Team</option>
+                      <option value="Liesa" >Liesa</option>
+                      <option value="XYZ" >XYZ</option>
                     </select>
                   </div>
 
@@ -522,7 +522,7 @@
       <tbody>
         @foreach($users as $user)
           <tr class="unit-translucent">
-            <td style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
+            <td data-order="{{$user->id}}" style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
             <td data-order="{{$user->lastname}}" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->surname}} {{$user->lastname}}</span></td>
             <td data-order="{{$user->salesdata['aht']}}">
               {{$user->salesdata['aht']}}
@@ -575,15 +575,15 @@
             <td data-order="{{$user->salesdata['ssesaves']}}">{{$user->salesdata['ssesaves']}}</td>
             @if($user->salesdata['workedHours'] != 0)
               @if($user->department == '1&1 DSL Retention')
-                <td>{{round($user->salesdata['ssesaves']/($user->salesdata['workedHours']),2)}}</td>
+                <td data-order="{{$user->salesdata['ssesaves']/$user->salesdata['workedHours']}}">{{round($user->salesdata['ssesaves']/($user->salesdata['workedHours']),2)}}</td>
               @else
-                <td>{{round($sumSaves/($user->salesdata['workedHours']),2)}}</td>
+                <td data-order="{{$sumSaves/$user->salesdata['workedHours']}}">{{round($sumSaves/($user->salesdata['workedHours']),2)}}</td>
               @endif
             @else
-              <td>0</td>
+              <td data-order="0">0</td>
             @endif
             <td data-order="{{$user->salesdata['RLZ24Qouta']}}">{{$user->salesdata['RLZ24Qouta']}}%</td>
-            <td>50</td>
+            <td data-order="50">50</td>
             @if($user->department == '1&1 Mobile Retention')
               <td data-order="{{$user->salesdata['GeVo-Cr']}}" > {{$user->salesdata['GeVo-Cr']}}%</td>
             @else
@@ -609,7 +609,7 @@
             <td data-order="{{$user->salesdata['sickhours']}}">{{$user->salesdata['sickhours']}}</td>
             <td data-order="{{$user->salesdata['sicknessquota']}}">{{$user->salesdata['sicknessquota']}}%</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
-            <td class="" style="text-align:center; font-size: 1.4em;">
+            <td data-order="{{$user->id}}" class="" style="text-align:center; font-size: 1.4em;">
               <a class="text-muted" href="{{route('user.stats', ['id' => $user->id])}}">
                 <span class="material-icons text-white">preview</span>
               </a>
@@ -617,7 +617,7 @@
           </tr>
         @endforeach
       </tbody>
-      <tfoot class="">
+      <!-- <tfoot class="">
         <tr class="unit-translucent" id='footerdata'>
           <td>Total:</td>
           <td>1</td>
@@ -651,7 +651,7 @@
           <td id="sicknessquotaAVG">32</td>
           <td>total</td>
         </tr>
-      </tfoot>
+      </tfoot> -->
     </table>
     </div>
   </div>
@@ -764,9 +764,9 @@
         rowReorder: true,
         colReorder: true,
         scrollX: true,
-        scrollY: "600px",
+        scrollY: "800px",
         scrollCollapse: true,
-        fixedColumns:   {
+        fixedColumns: {
           leftColumns: 2,
           // rightColumns: 1,
         },
@@ -797,7 +797,6 @@
                 case 'teamleiterview':
                   table.colReorder.reset();
                   table.columns().visible( false );
-
                   table.columns([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,27,31]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
@@ -829,20 +828,24 @@
                 case 'performanceShort':
                   table.colReorder.reset();
                   table.columns().visible( false );
-                  table.columns([1,2,17,21,22,23,24,25,30,31]).visible( true );
+                  table.columns([0,1,2,17,21,22,23,24,25,30,31]).visible( true );
+
                   $('.DTFC_LeftBodyWrapper').hide()
                   $('.DTFC_RightWrapper').hide()
                   $('.dataTable tr').css('height','1em');
                   $('.dataTable tr').css('padding','0px');
                   $('.dataTable').css('margin','0px');
-                  $('.dataTable tbody').css('height','20em');
+                  // $('.dataTable tbody').css('height','20em');
                   $('.dataTable tr').css('overflow','hidden');
                   $('.dataTable').css('font-size','0.6em');
-                  // $('.dataTable td').css('padding','0');
+                  // $('.dataTable td').css('padding','10px');
                   // $('.dataTable td').css('vertical-align','top');
-                    // $('#tableoverview').css('width','100%');
-                  table.colReorder.order( [1,21,22,23,24,17,25,2,30,31]);
-                  // table.columns.adjust().draw();
+                    // $('.dataTable').css('width','100%');
+
+                  table.colReorder.order( [0,1,21,22,23,24,17,25,2,30,31]).draw();
+                  // table.order [[17, 'desc']]
+                  // table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]);
+
                 break;
               }
 
