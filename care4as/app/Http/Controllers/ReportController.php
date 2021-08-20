@@ -378,7 +378,6 @@ class ReportController extends Controller
           // dd($seller, $seller->retentionDetails[1]);
           $ssccalls = $seller->retentionDetails->sum('calls_smallscreen');
           $sscorders = $seller->retentionDetails->sum('orders_smallscreen');
-
           $seller->quota = $this->getquota($ssccalls,$sscorders);
       }
 

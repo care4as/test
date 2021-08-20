@@ -524,7 +524,7 @@
           <tr class="unit-translucent">
             <td data-order="{{$user->id}}" style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
             <td data-order="{{$user->lastname}}" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->surname}} {{$user->lastname}}</span></td>
-            <td data-order="{{$user->salesdata['aht']}}">
+            <td data-order="{{$user->salesdata['aht']}}" style= "font-size: 900; color: @if($user->salesdata['aht'] < 750 && $user->salesdata['aht'] != 0) green @else red @endif;">
               {{$user->salesdata['aht']}}
             </td>
             <td data-order="{{$user->salesdata['workedHours']}}">{{$user->salesdata['workedHours']}}</td>
@@ -582,7 +582,7 @@
             @else
               <td data-order="0">0</td>
             @endif
-            <td data-order="{{$user->salesdata['RLZ24Qouta']}}">{{$user->salesdata['RLZ24Qouta']}}%</td>
+            <td data-order="{{$user->salesdata['RLZ24Qouta']}}" style=" color: @if($user->salesdata['RLZ24Qouta'] > 70) green @else red @endif;">{{$user->salesdata['RLZ24Qouta']}}%</td>
             <td data-order="50">50</td>
             @if($user->department == '1&1 Mobile Retention')
               <td data-order="{{$user->salesdata['GeVo-Cr']}}" > {{$user->salesdata['GeVo-Cr']}}%</td>
@@ -594,7 +594,7 @@
             <td data-order="{{$user->salesdata['bscQuota']}}" style= "font-size: 900; color: @if($user->salesdata['bscQuota'] > 18) green @else red @endif;">{{$user->salesdata['bscQuota']}}% </td>
             <td data-order="{{$user->salesdata['portalQuota']}}" style= "font-size: 900; color: @if($user->salesdata['portalQuota'] > 65) green @else red @endif;">{{$user->salesdata['portalQuota']}}%</td>
             <td data-order="{{$user->sasquota}}">{{$user->sasquota}}</td>
-            <td data-order="{{$user->optinQuota}}">{{$user->optinQuota}}%</td>
+            <td data-order="{{$user->optinQuota}}" style= "font-size: 900; color: @if($user->optinQuota > 16) green @else red @endif;">{{$user->optinQuota}}%</td>
             <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
             @if($user->salesdata['workedHours'] != 0)
               <td data-order="{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}">{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
@@ -607,7 +607,7 @@
                 <td data-order="0">0</td>
             @endif
             <td data-order="{{$user->salesdata['sickhours']}}">{{$user->salesdata['sickhours']}}</td>
-            <td data-order="{{$user->salesdata['sicknessquota']}}">{{$user->salesdata['sicknessquota']}}%</td>
+            <td data-order="{{$user->salesdata['sicknessquota']}}" style=" color: @if($user->salesdata['sicknessquota'] < 9) green @else red @endif;">{{$user->salesdata['sicknessquota']}}%</td>
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td data-order="{{$user->id}}" class="" style="text-align:center; font-size: 1.4em;">
               <a class="text-muted" href="{{route('user.stats', ['id' => $user->id])}}">
@@ -786,7 +786,7 @@
                   this.className='subauswahl'
               });
               event.target.className = 'subauswahl aktiv';
-              
+
               switch(event.target.id) {
                 case 'allData':
                     table.colReorder.reset();
