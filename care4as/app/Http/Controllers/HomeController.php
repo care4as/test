@@ -527,7 +527,7 @@ class HomeController extends Controller
         $allBSCCalls += $sumBSCCalls;
         $allBSCSaves += $sumBSCOrders;
         $allPortalCalls += $sumPortalCalls;
-        $allPortalSaves = $sumPortalOrders;
+        $allPortalSaves += $sumPortalOrders;
 
         if($calls == 0)
         {
