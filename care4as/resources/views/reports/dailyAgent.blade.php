@@ -120,6 +120,10 @@
     </div>
   </div>
 </div>
+
+@endsection
+
+@section('additional_modal')
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-success text-white" >
@@ -132,8 +136,8 @@
     </div>
   </div>
 </div>
-@endsection
 
+@endsection
 @section('additional_js')
 <script type="text/javascript">
 

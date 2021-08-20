@@ -382,7 +382,7 @@ class ReportController extends Controller
           $seller->quota = $this->getquota($ssccalls,$sscorders);
       }
 
-      dd($sellers);
+      // dd($sellers);
       $sellers = $sellers->sortByDesc('quota')->values();
 
       $highperformers = $sellers->where('quota','>', 60);
