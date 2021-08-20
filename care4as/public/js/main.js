@@ -11,7 +11,19 @@ function controlling_umsatzmeldung_zielwerte_toggle(){
 
 }
 
+function getQuota(calls,saves)
+{
+  let quota;
 
+  if(calls > 0 )
+  {
+    quota = Math.round((saves*100/calls)*100)/100
+  }
+  else {
+    quota = 0
+  }
+  return quota
+}
 function toggleSidebar()
 {
   // console.log('test')

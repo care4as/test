@@ -590,9 +590,9 @@
               <td data-order="{{$user->salesdata['GeVo-Cr']}}" style= "font-size: 900; color: @if($user->salesdata['GeVo-Cr'] > 40) green @elseif ($user->salesdata['GeVo-Cr'] > 35) #ffc107 @else red @endif;"> {{$user->salesdata['GeVo-Cr']}}%</td>
             @endif
             <td data-order="{{$user->salesdata['gevocr2']}}">{{$user->salesdata['gevocr2']}}%</td>
-            <td data-order="{{$user->salesdata['sscQuota']}}">{{$user->salesdata['sscQuota']}}%</td>
-            <td data-order="{{$user->salesdata['bscQuota']}}">{{$user->salesdata['bscQuota']}}%</td>
-            <td data-order="{{$user->salesdata['portalQuota']}}">{{$user->salesdata['portalQuota']}}%</td>
+            <td data-order="{{$user->salesdata['sscQuota']}}" style= "font-size: 900; color: @if($user->salesdata['sscQuota'] > 60) green @elseif ($user->salesdata['sscQuota'] > 51) #ffc107 @else red @endif;"> {{$user->salesdata['sscQuota']}}%</td>
+            <td data-order="{{$user->salesdata['bscQuota']}}" style= "font-size: 900; color: @if($user->salesdata['bscQuota'] > 18) green @else red @endif;">{{$user->salesdata['bscQuota']}}% </td>
+            <td data-order="{{$user->salesdata['portalQuota']}}" style= "font-size: 900; color: @if($user->salesdata['portalQuota'] > 65) green @else red @endif;">{{$user->salesdata['portalQuota']}}%</td>
             <td data-order="{{$user->sasquota}}">{{$user->sasquota}}</td>
             <td data-order="{{$user->optinQuota}}">{{$user->optinQuota}}%</td>
             <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
@@ -617,8 +617,8 @@
           </tr>
         @endforeach
       </tbody>
-      <!-- <tfoot class="">
-        <tr class="unit-translucent" id='footerdata'>
+      <tfoot class="tfoot1">
+        <!-- <tr class="unit-translucent" id='footerdata'>
           <td>Total:</td>
           <td>1</td>
           <td id="aht">2</td>
@@ -650,8 +650,8 @@
           <td id="sick hours">31</td>
           <td id="sicknessquotaAVG">32</td>
           <td>total</td>
-        </tr>
-      </tfoot> -->
+        </tr> -->
+      </tfoot>
     </table>
     </div>
   </div>
@@ -781,12 +781,12 @@
         if (document.querySelector('.subauswahl')) {
           document.querySelectorAll('.subauswahl').forEach((elem) => {
             elem.addEventListener("click", function(event) {
-
               $('.subauswahl').each(function(){
                   this.className=''
                   this.className='subauswahl'
               });
               event.target.className = 'subauswahl aktiv';
+              
               switch(event.target.id) {
                 case 'allData':
                     table.colReorder.reset();
@@ -827,6 +827,19 @@
                 break;
                 case 'performanceShort':
                   table.colReorder.reset();
+                  // table.column(  ).data().sum();
+
+                  // var calls = table.column(10).data().sum();
+                  // var calls = table.column(10).data().sum();
+                  let allssccalls = {{$overalldata['allSSCCalls']}}
+                  let allsscsaves = {{$overalldata['allSSCSaves']}}
+                  let allbsccalls = {{$overalldata['allBSCCalls']}}
+                  let allbscsaves = {{$overalldata['allBSCSaves']}}
+                  let allportalsaves = {{$overalldata['allPortaleSaves']}}
+                  let allportalcalls = {{$overalldata['allPortaleCalls']}}
+
+                  console.log(allssccalls)
+
                   table.columns().visible( false );
                   table.columns([0,1,2,17,21,22,23,24,25,30,31]).visible( true );
 
@@ -840,9 +853,21 @@
                   $('.dataTable').css('font-size','0.6em');
                   // $('.dataTable td').css('padding','10px');
                   // $('.dataTable td').css('vertical-align','top');
-                    // $('.dataTable').css('width','100%');
+                  $('.dataTable').css('width','100%');
 
-                  table.colReorder.order( [0,1,21,22,23,24,17,25,2,30,31]).draw();
+                  table.colReorder.order( [0,1,21,22,23,24,17,25,2,30,31]);
+
+                  $('#tableoverview_info').css('margin-top','2em')
+                  $('#tableoverview_paginate').css('margin-top','2em')
+
+                  console.log($('.tfoot1'))
+
+                  if($('.tfoot1').children('tr').length < 1)
+                  {
+                    $('.tfoot1').append('<tr><td> gesamt: </td><td> SSC-CR: '+getQuota(allssccalls,allsscsaves)+'% </td><td>BSC-CR: '+getQuota(allbsccalls,allbscsaves)+'%</td><td>Portal-CR: '+getQuota(allportalcalls,allportalsaves)+'%</td><td>SAS</td><td>Optin</td><td>AHT</td><td>total</td></tr>')
+                  }
+
+
                   // table.order [[17, 'desc']]
                   // table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]);
 
@@ -877,7 +902,6 @@
               $('#exampleFormControlSelect2').append(option);
               // console.log(option)
               })
-
             })
           .catch(function (err) {
 

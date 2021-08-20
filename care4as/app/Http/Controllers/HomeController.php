@@ -141,6 +141,7 @@ class HomeController extends Controller
     }
     public function presentation(Request $request)
     {
+
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
@@ -148,6 +149,13 @@ class HomeController extends Controller
       date_default_timezone_set('Europe/Berlin');
 
       $modul = 'Userübersicht';
+
+      $allSSCCalls = 0;
+      $allSSCSaves = 0;
+      $allBSCCalls = 0;
+      $allBSCSaves = 0;
+      $allPortalCalls = 0;
+      $allPortalSaves = 0;
 
       $year = Carbon::now()->year;
       $start_date = 1;
@@ -509,13 +517,17 @@ class HomeController extends Controller
         $sumBSCOrders = $reports->sum('orders_bigscreen');
         $sumPortalOrders = $reports->sum('orders_portale');
         $ssesaves = $user->SSETracking->where('Tracking_Item1','Save')->count();
-
         $ahtStates = array('On Hold','Wrap Up','In Call');
-
         $casetime = $user->dailyagent->whereIn('status', $ahtStates)->sum('time_in_state');
-
         $calls = $user->dailyagent->where('status', 'Ringing')
         ->count();
+
+        $allSSCCalls += $sumSSCCalls;
+        $allSSCSaves += $sumSSCOrders;
+        $allBSCCalls += $sumBSCCalls;
+        $allBSCSaves += $sumBSCOrders;
+        $allPortalCalls += $sumPortalCalls;
+        $allPortalSaves = $sumPortalOrders;
 
         if($calls == 0)
         {
@@ -653,7 +665,17 @@ class HomeController extends Controller
             $user->sasquota = 0;
           }
       }
-      return view('DB', compact('modul', 'users'));
+
+      $overalldata = array(
+        'allSSCCalls' => $allSSCCalls,
+        'allSSCSaves' => $allSSCSaves,
+        'allBSCCalls' => $allBSCCalls,
+        'allBSCSaves' => $allBSCSaves,
+        'allPortaleCalls' => $allPortalCalls,
+        'allPortaleSaves' => $allPortalSaves,
+      );
+
+      return view('DB', compact('overalldata', 'users'));
     }
     public function test($value='')
     {
