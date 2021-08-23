@@ -15,9 +15,6 @@ use App\Http\Controllers\ControllingController;
 */
 
 Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
-
-
-
 Route::get('/projekt_kpi', function(){
 
   //return 1 ;

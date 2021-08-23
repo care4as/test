@@ -2,7 +2,13 @@
 
 @section('additional_css')
 <style media="screen">
-
+    a{
+      cursor: pointer;
+    }
+    textarea
+     {
+       height: auto;
+     }
 </style>
 @endsection
 
@@ -18,8 +24,6 @@
     </div>
     <div class="row">
       <div class="col p-0 m-2">
-
-
       <table class="table table-borderless unit-translucent">
         <tr>
           <td>Flensburg OG</td>
@@ -288,7 +292,7 @@
                   </tr>
                 @endif
                 <tr>
-                  <th>Beschreibung </th> <td>{{ $item->description}} </td> <td><input type="text" class="form-control" name="description" value="{{ $item->description}}"></td>
+                  <th>Beschreibung </th> <td>{{ $item->description}} </td> <td><textarea class="form-control" rows="10" name="description">{{ $item->description}}</textarea></td>
                 </tr>
                 <tr>
                   <th>Kommentar</th> <td>{{ $item->comment}} </td> <td><input type="text" class="form-control" name="comment" value="{{ $item->comment}}"></td>

@@ -58,15 +58,16 @@
   {
 
     position: fixed;
-    right: 15px;
+    right: 25px;
     z-index: 200;
     cursor: pointer;
   }
   .LexikaButton
   {
     height: 75px;
-    width: 75px;
+    width: 65px;
     top: 40%;
+    border-radius: 	50%;
   }
   .Lexika
   {
@@ -90,14 +91,14 @@
 
 @section('content')
 <div class="fixedright LexikaButton " id="LexikaButton">
-  <button type="button" class="" name="button" onclick="rotateButton()">
+  <button type="button" class="bg-primary rounded-circle" name="button" onclick="rotateButton()" style="border: 3px solid white;">
     <span class="material-icons" style="font-size: 3em;">
       autorenew
     </span>
   </button>
 </div>
-<div class="fixedright Lexika" style="" id="Lexika">
-  <div class="row gradientColor text-white ">
+<div class="fixedright Lexika bg-primary" style="" id="Lexika">
+  <div class="row text-white ">
     <div class="col-1 ">
       Spalte
     </div>
@@ -109,7 +110,7 @@
     </div>
   </div>
 
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row text-white borderwhite">
     <div class="col-1">
       3
     </div>
@@ -121,7 +122,7 @@
       Der Wert muss mit dem Wert aus dem DailyAgent für den entsprechenden Zeitraum übereinstimmen.
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
       4
     </div>
@@ -132,7 +133,7 @@
       die Stunden die der MA im KDW Tool eingetragen hat
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
       5
     </div>
@@ -143,7 +144,7 @@
         die Stunden die der MA in der <b>CCU</b> eingeloggt war. Es zählen dabei alle Status der CCU
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
       6
     </div>
@@ -154,7 +155,7 @@
         die Stunden die der MA in der <b>CCU</b> eingeloggt war. Es zählen dabei nur die produktiven Status der CCU
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
       7
     </div>
@@ -165,7 +166,7 @@
       der prozentuale Anteil der produktiven CCU-Status gegenüber der anwesenden Stunden aus dem KDW Tool. Vereinfacht: der Wert aus Spalte 6 durch dem Wert aus Spalte 4
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
       8
     </div>
@@ -176,7 +177,7 @@
       der prozentuale Anteil der produktiven CCU-Status gegenüber der anwesenden Stunden aus der.Spalte 5 durch Spalte 6
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
       9
     </div>
@@ -187,7 +188,7 @@
       die Gesamtzahl der Saves ohne KüRüs aus dem Retention Details Report
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
       10
     </div>
@@ -198,7 +199,7 @@
       die Gesamtzahl der Saves ohne KüRüs aus dem GeVo Rohdatenexport, teilweise gibt es Abweichungen zum Retention Detailsreport daher als KPI mit aufgenommen
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
       10
     </div>
@@ -209,7 +210,7 @@
       -
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
     11
     </div>
@@ -220,7 +221,7 @@
       die Calls durch den Wert der anwesenden Stunden im KDW Tool
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
     12
     </div>
@@ -242,7 +243,7 @@
 
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
     14
     </div>
@@ -253,7 +254,7 @@
 
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
     15
     </div>
@@ -264,7 +265,7 @@
       Die Saves aus der SSE bzw. dem Retention Tracking Rohdatenexport
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
     16
     </div>
@@ -275,7 +276,7 @@
       Die Saves aus der SSE durch die KDW anwesend Zeit
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
     17
     </div>
@@ -286,7 +287,7 @@
       Der Anteil von neuen VLZ gegenüber Verlängerungen mit zusätzlicher Vertragslaufzeit. ACHTUNG: Diese Quote weicht von der 1&1 Quote ab da seitens 1&1 nicht die einfachste Mathematik verwendet wird
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
+  <div class="row  text-white borderwhite">
     <div class="col-1">
     18
     </div>
@@ -297,16 +298,16 @@
       Alle Calls durch alle Sales ohne die KÜRÜS aus dem Retention Details Report. Dieser Wert soll mittelfristig die GeVo CR aus den DB Dateien ablösen. Da dies einer der wichtigsten KPI's ist, sollte der Wert öfters mal gegengeprüft werden um Fehler möglichst früh zu vermeiden.
     </div>
   </div>
-  <div class="row gradientColor text-white borderwhite">
-    <div class="col-1">
-    19
-    </div>
-    <div class="col-2">
-      SSC CR
-    </div>
-    <div class="col">
-      Alle SSC Calls durch alle SSC Sales ohne die KÜRÜS aus dem Retention Details Report.
-    </div>
+  <div class="row  text-white borderwhite">
+  <div class="col-1">
+  19
+  </div>
+  <div class="col-2">
+    SSC CR
+  </div>
+  <div class="col">
+    Alle SSC Calls durch alle SSC Sales ohne die KÜRÜS aus dem Retention Details Report.
+  </div>
   </div>
 </div>
 
@@ -314,12 +315,15 @@
   <div class="row m-1 justify-content-center align-self-center m-1">
       <h4 class="unit-translucent p-1">DB1 Alternative</h4>
   </div>
-  <div class="row m-1 mt-4">
-    <div class="col-12">
-    </div>
-    <div class="col-12 text-left">
+  <div class="row m-1 mt-4" id="dataState">
+
+    <div class="col-12 text-left" >
+      <a class="" data-toggle="collapse" href="#collapseDataState" role="button" aria-expanded="false" aria-controls="collapseDataState">
+        <caption class="text-center unit-translucent m-2">Aktueller Datenstand <small>(Klicken für weitere Informationen)</small></caption>
+      </a>
+      <div class="collapse" id="collapseDataState">
       <table class="table table-borderless tablespacing">
-        <caption class="text-center unit-translucent m-2">Aktueller Datenstand</caption>
+
         <tr class="unit-translucent">
           <td>
             @if(!App\DailyAgent::min('date'))
@@ -329,8 +333,7 @@
               <span id="dailyagentData" style="display: none;">  </span>
             @endif
           </td>
-          <td>  <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
-          <td>  <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+          <td><a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
         </tr>
         <tr class="unit-translucent">
           <td>
@@ -338,11 +341,10 @@
               <h5>keine Daten eingegeben</h5>
             @else
               <div class="loadingerHR">Lade Daten Stundenreport...</div>
-              <span id="HoursreportData" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+              <span id="HoursreportData" style="display: none;">Daily Agent im Zeitraum vom Test</span>
             @endif
           </td>
-          <td><a href="{{route('reports.reportHours.update')}}"><button type="button" class="btn btn-sm border-round" name="button">Stundenreport Updaten</button></a></td>
-          <td><a href="{{route('user.connectUsersToKDW')}}"><button type="button" class="btn btn-sm btn-success border-round" name="button">Userdaten verknüpfen</button></a></td>
+          <td><a href="{{route('reports.reportHours.update')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Aktualisieren</button></a></td>
         </tr>
         <tr class="unit-translucent">
           <td>
@@ -353,7 +355,6 @@
               <span id="RDDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
             @endif
           </td>
-          <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
           <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
         </tr>
         <tr class="unit-translucent">
@@ -365,8 +366,7 @@
               <span id="SASDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
             @endif
           </td>
-          <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
-          <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+          <td><a href="{{route('reports.SAS')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
         </tr>
         <tr class="unit-translucent">
           <td>
@@ -377,10 +377,10 @@
               <span id="OptinDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
             @endif
           </td>
-          <td>  <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a></td>
-          <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+          <td><a href="{{route('reports.OptIn')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
         </tr>
       </table>
+    </div>
     </div>
     <hr>
   </div>
