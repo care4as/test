@@ -428,32 +428,54 @@ class UserTrackingController extends Controller
     }
     public function getDailyQuotas($dep)
     {
+      $ssccrarray = array();
       // return 1;
+      if ($dep == 'Mobile') {
+        $department = '1&1 Mobile Retention';
+      }
+      elseif($dep == 'DSL') {
+        $department = '1&1 DSL Retention';
+
+      }
+      $IDs = User::where('department',$department)
+      ->where('status',1)
+      ->pluck('person_id');
+
       $intermediates = Intermediate::whereDate('date', Carbon::today())
+      ->whereIn('person_id',$IDs)
       ->get();
+
       $times = $intermediates->unique('date')->pluck('date');
       // dd($times);
-      foreach ($times as $key => $timestamp) {
+      if($times)
+      {
+        foreach ($times as $key => $timestamp) {
 
-        $intervall = $intermediates->where('date',$timestamp);
+          $intervall = $intermediates->where('date',$timestamp);
 
-        $sscCalls = $intervall->sum('SSC_Calls');
-        $sscOrders = $intervall->sum('SSC_Orders');
-        $orders = $intervall->sum('Orders');
-        $calls = $intervall->sum('Calls');
+          if($dep =='Mobile')
+          {
+            $sscCalls = $intervall->sum('SSC_Calls');
+            $sscOrders = $intervall->sum('SSC_Orders');
 
-        $cr = $this->getQuota($calls, $orders);
-        $sscCR = $this->getQuota($sscCalls, $sscOrders);
+            $sscCR = $this->getQuota($sscCalls, $sscOrders);
+            $ssccrarray[] = $sscCR;
+          }
 
-        $timestamp = Carbon::parse($timestamp)->format('H:i');
+          $orders = $intervall->sum('Orders');
+          $calls = $intervall->sum('Calls');
 
-        // dd($timestamp);
-        $ssccrarray[] = $sscCR;
-        $crarray[] = $cr;
-        $timesarray[] = $timestamp;
+          $cr = $this->getQuota($calls, $orders);
+          $timestamp = Carbon::parse($timestamp)->format('H:i');
+          // dd($timestamp);
+          $crarray[] = $cr;
+          $timesarray[] = $timestamp;
 
+          }
         }
-
+        else {
+          abort(403,'keine Werte');
+        }
       // $timesarray = $intermediates->pluck('date2')->toArray();
       $dataarray = array($crarray,$ssccrarray, $timesarray);
 
