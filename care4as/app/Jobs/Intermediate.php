@@ -116,21 +116,24 @@ class Intermediate implements ShouldQueue
 
             $user->salesdata = $dslSalesData->where('agent_ds_id', $user->tracking_id)->first();
             // dd($user);
+            if($user->person_id)
+            {
+              $insertarray[] = array(
+                'person_id' => $user->person_id,
+                'date' => Carbon::now()->format('Y-m-d H:i:s'),
+                'Calls' => $user->salesdata->calls,
+                'KüRü' => $user->salesdata->kuerue,
+                'Orders' => $user->salesdata->ret_de_1u1_rt_save,
+                'SSC_Calls' => 0,
+                'BSC_Calls' => 0,
+                'Portal_Calls' => 0,
+                'PTB_Calls' => 0,
+                'SSC_Orders' => 0,
+                'BSC_Orders' => 0,
+                'Portal_Orders' => 0,
+              );
+            }
 
-            $insertarray[] = array(
-              'person_id' => $user->person_id,
-              'date' => Carbon::now()->format('Y-m-d H:i:s'),
-              'Calls' => $user->salesdata->calls,
-              'KüRü' => $user->salesdata->kuerue,
-              'Orders' => $user->salesdata->ret_de_1u1_rt_save,
-              'SSC_Calls' => 0,
-              'BSC_Calls' => 0,
-              'Portal_Calls' => 0,
-              'PTB_Calls' => 0,
-              'SSC_Orders' => 0,
-              'BSC_Orders' => 0,
-              'Portal_Orders' => 0,
-            );
           }
       }
 
