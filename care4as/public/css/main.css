@@ -14,6 +14,10 @@ body
       border-collapse: separate;
       border-spacing: 10px;
     }
+    .dropzone{
+      background: none !important;
+      border: none !important;
+    }
     .bg-cool
     {
       background: #2c3e50; /* fallback for old browsers */
@@ -613,8 +617,8 @@ body
 }
 #previewContainer
 {
-  background: rgb(203,200,244);
-  background: linear-gradient(90deg, rgba(203,200,244,1) 0%, rgba(159,231,208,1) 0%, rgba(223,249,241,1) 0%, rgba(178,238,233,0.8827731776304272) 100%);
+  /* background: rgb(203,200,244);
+  background: linear-gradient(90deg, rgba(203,200,244,1) 0%, rgba(159,231,208,1) 0%, rgba(223,249,241,1) 0%, rgba(178,238,233,0.8827731776304272) 100%); */
   width: 100%;
   height: auto;
   min-height: 15vh;

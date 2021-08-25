@@ -9,58 +9,58 @@
 @endsection
 
 @section('content')
-<div class="container p-0 text-center bg-light" style="position:relative;">
+<div class="container p-0 text-center unit-translucent mt-4" style="position:relative;">
   <div class="loaderDiv" id="loaderDiv">
     <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
   </div>
-  <h2>Daily Agent Import </h2>
-  <div id="accordion">
-    <div class="card m-1">
-      <div class="card-header" id="headingOne">
+  <div class="row center_items">
+    <h2>Daily Agent Import </h2>
+  </div>
+  <div class="row center_items">
+    <div id="accordion">
         <h5 class="mb-0">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Anleitung (klick mich)
-          </button>
-        </h5>
-      </div>
-
-      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-        <div class="card-body">
-          <p>
-          <b>Ziehe die Datei in die Dropzone (türkiser Bereich) und lege die DailyAgent Datei ab. <br>Sollte die Datei aus dem Download der 1&1 stammen, bitte achte darauf, dass sie exakt "dailyagent" oder "Daily_Agent" heißt. Benenne Sie ggf. um.
-          Bitte achte in jedem Fall darauf, dass du die richtige Zeile, in dem die Werte Zeilen im Excel Sheet anfangen, angibst.</b><br>
-          <hr>
-          Sollte die Datei aus den Agentenreporten ("Z:\WFM\1und1\Agentenreporte") kommen bitte achte darauf, dass die Datei
-          nicht exakt "dailyagent" benannt wird. Dadurch wird sie in der Verarbeitung zugewiesen und unterscheidet den Prozess.<br>
-          </p>
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Anleitung (klick mich)
+            </button>
+          </h5>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <p>
+            <b>Ziehe die Datei in die Dropzone (türkiser Bereich) und lege die DailyAgent Datei ab. <br>Sollte die Datei aus dem Download der 1&1 stammen, bitte achte darauf, dass sie exakt "dailyagent" oder "Daily_Agent" heißt. Benenne Sie ggf. um.
+            Bitte achte in jedem Fall darauf, dass du die richtige Zeile, in dem die Werte Zeilen im Excel Sheet anfangen, angibst.</b><br>
+            <hr>
+            Sollte die Datei aus den Agentenreporten ("Z:\WFM\1und1\Agentenreporte") kommen bitte achte darauf, dass die Datei
+            nicht exakt "dailyagent" benannt wird. Dadurch wird sie in der Verarbeitung zugewiesen und unterscheidet den Prozess.<br>
+            </p>
+          </div>
         </div>
       </div>
+  </div>
+  <div class="row shadow m-2 mt-2">
+    <div class="col-3">
+      <span>
+      Aktueller Datenstand:
+      </span>
     </div>
-</div>
-  <div class="row bg-white shadow m-2 mt-2">
-    <div class="col-12">
-      <h4 class="text-center">Aktueller Datenstand:</h4>
-    </div>
-    <div class="col-8">
+    <div class="col-7 text-left">
+      <span>
       @if(!App\DailyAgent::min('date'))
-        <h5>keine Daten eingegeben</h5>
+        keine Daten eingegeben
       @else
-        <h5>Daily Agent im Zeitraum vom <u>{{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
+        {{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y H:i:s')}}</u> - <u>{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y H:i:s')}}</u>
       @endif
-    </div>
-    <div class="col-2">
-      <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
+      </span>
     </div>
     <div class="col-2">
       <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
     </div>
 
   </div>
-  <div class="row m-2 mt-2 bg-white shadow" id="app">
-    <div class="col text-center bg-light p-2">
+  <div class="row m-2 mt-2 shadow" id="app">
+    <div class="col text-center p-2">
       <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="exceldropzone" enctype="multipart/form-data">
         @csrf
-        <div class="form-row dropzone-previews dz-default dz-message" id="previewContainer">
+        <div class="form-row dropzone-previews dz-default dz-message unit-translucent" id="previewContainer">
           <p class=" w-100 text-center">Ziehe die Dateien hier rein oder klick mich!</p>
           </div>
           <div class="form-row">
@@ -78,12 +78,11 @@
     </div>
   </div>
   <div class="row justify-content-center">
+
+    @if(Auth()->user()->role == "superadmin")
     <div class="col-12">
       <h5> Daily Agent Datei aus dem Reporting der 1&1</h5>
     </div>
-    <div class="col-12">
-
-    <hr>
     <div class="col-12">
       <form class="" action="{{route('excel.dailyAgent.upload')}}" method="post" enctype="multipart/form-data">
         @csrf
@@ -104,8 +103,7 @@
         </div>
       </form>
     </div>
-
-  </div>
+    @endif
 </div>
 
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

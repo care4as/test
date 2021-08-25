@@ -1,9 +1,9 @@
 @extends('general_layout')
 
 @section('content')
-<div class="container-fluid" style="width: 75vw;">
-  <div class="row ">
-    <div class="col text-center text-white bg-light" style="border-radius: 15px;">
+<div class="container-fluid" style="width: 75vw; margin-top: 2em;">
+  <div class="row unit-translucent">
+    <div class="col text-center text-white" style="border-radius: 15px;">
       <div class="card card-nav-tabs card-plain">
       <div class="card-header card-header-danger">
           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
@@ -23,12 +23,12 @@
             </div>
           </div>
       </div>
-      <div class="card-body ">
+      <div class="card-body">
           <div class="tab-content text-center">
               <div class="tab-pane active" id="userinfo">
-                <table class="table table-striped" id="userdata">
+                <table class="table tablespacing" id="userdata">
                 <thead class="thead-dark">
-                  <tr>
+                  <tr class="unit-translucent">
                     <th class="">#</th>
                     <th>username</th>
                     <th>Name</th>
@@ -45,7 +45,7 @@
                 </thead>
                 <tbody>
                   @foreach($users as $user)
-                    <tr>
+                    <tr class="unit-translucent">
                       <td>{{$user->id}}</td>
                       <td>{{$user->name}}</td>
                       <td>{{$user->surname}} {{$user->lastname}} </td>

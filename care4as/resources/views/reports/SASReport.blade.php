@@ -9,28 +9,23 @@
 @endsection
 
 @section('content')
-<div class="container p-0 text-center bg-light" style="position:relative;">
+<div class="container p-0 text-center unit-translucent mt-4" style="position:relative;">
   <div class="loaderDiv" id="loaderDiv">
     <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
   </div>
   <h2>SAS Import </h2>
-  <div class="row bg-white shadow m-2 mt-2">
+  <div class="row shadow m-2 mt-2">
     <div class="col-12">
       <h4 class="text-center">Aktueller Datenstand:</h4>
     </div>
-    <div class="col-8">
+    <div class="col-12">
       @if(!App\SAS::min('date'))
         <h5>keine Daten eingegeben</h5>
       @else
         <h5>SAS Daten im Zeitraum vom <u>{{Carbon\Carbon::parse(App\SAS::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\SAS::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
       @endif
     </div>
-    <div class="col-2">
-      <a href="{{route('dailyagent.removeDuplicates')}}"><button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
-    </div>
-    <div class="col-2">
-      <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
-    </div>
+
 
   </div>
   <!-- <div class="row m-2 mt-2 bg-white shadow" id="app">

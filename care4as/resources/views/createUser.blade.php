@@ -1,8 +1,8 @@
 @extends('general_layout')
 
 @section('content')
-<div class="container-fluid" style="width: 75vw;">
-  <div class="row bg-light align-items-center"  style="border-radius: 15px;">
+<div class="container-fluid" style="width: 75vw; margin-top: 5%;">
+  <div class="row unit-translucent align-items-center p-1"  style="border-radius: 15px;">
     <div class="col">
       <form action="{{route('create.user.post')}}" method="post">
         @csrf

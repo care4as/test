@@ -1,35 +1,38 @@
 @extends('general_layout')
 
 @section('additional_css')
+<style media="screen">
+  .dropzone{
+    background: none !important;
+    border: none !important;
+  }
+</style>
   <link href="{{asset('css/dropzone.min.css')}}" rel="stylesheet" />
 @endsection
 
 @section('content')
-<div class="container p-0 text-center bg-light" style="position:relative;">
+<div class="container p-0 text-center unit-translucent mt-4" style="position:relative;">
   <div class="loaderDiv" id="loaderDiv">
     <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
   </div>
   <h2>Retention Details Import</h2>
-  <div class="row bg-white m-2 shadow">
+  <div class="row m-2 shadow">
     <div class="col-8">
       <h5>Retention Details vom <u>{{Carbon\Carbon::parse(App\RetentionDetail::min('call_date'))->format('d.m.Y')}}</u> bis zum <u>{{Carbon\Carbon::parse(App\RetentionDetail::max('call_date'))->format('d.m.Y')}}</u></h5>
-    </div>
-    <div class="col-2">
-      <a href="{{route('retentiondetails.removeDuplicates')}}">  <button type="button" class="btn btn-sm border-round" name="button">Duplikate entfernen</button></a>
     </div>
     <div class="col-2">
       <a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
     </div>
   </div>
-  <div class="row bg-white m-2 mt-2 shadow" id="app">
+  <div class="row m-2 mt-2 shadow" id="app">
 
     <div class="col-12">
       <h5>Wähle die Datei</h5>
     </div>
-    <div class="col text-center bg-light p-1">
+    <div class="col text-center p-1">
       <form action="{{route('excel.test')}}" class="dropzone" id="exceldropzone" method="post" enctype="multipart/form-data">
         @csrf
-        <div class="form-row dropzone-previews dz-default dz-message" id="previewContainer">
+        <div class="form-row dropzone-previews dz-default dz-message unit-translucent" id="previewContainer">
           <p class="w-100 text-center">Ziehe die Dateien hier rein oder klick mich!</p>
           </div>
           <div class="form-row">
@@ -44,7 +47,8 @@
           <button type="button" id="dropZoneSubmitter" class="btn btn-sm btn-block" name="button">Absenden</button>
         </div>
       </form>
-
+      <!-- For Debuggin purposes -->
+      @if(Auth()->user()->role == "superadmin")
       <form class="" action="{{route('excel.test')}}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="file" name="file" value="">
@@ -59,6 +63,7 @@
 
         <button type="submit" name="button">Absenden</button>
       </form>
+      @endif
     </div>
   </div>
 </div>

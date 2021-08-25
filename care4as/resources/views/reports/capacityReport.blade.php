@@ -1,7 +1,7 @@
 @extends('general_layout')
 
 @section('content')
-<div class="container bg-light">
+<div class="container unit-translucent mt-4">
   <div class="row">
     <div class="col">
       <form class="" action="{{route('reports.capacitysuite.post')}}" method="post">

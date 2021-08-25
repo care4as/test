@@ -9,21 +9,20 @@
 @endsection
 
 @section('content')
-<div class="container p-0 text-center bg-light" style="position:relative;">
+<div class="container p-0 text-center unit-translucent mt-4" style="position:relative;">
   <div class="loaderDiv" id="loaderDiv">
     <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
   </div>
   <h2>OpIn Import </h2>
-  <div class="row bg-white shadow m-2 mt-2">
+  <div class="row shadow m-2 mt-2">
     <div class="col-12">
-      <h4 class="text-center">Aktueller Datenstand:</h4>
-    </div>
-    <div class="col-8">
+    <span class="text-left">Aktueller Datenstand:
       @if(!App\OptIn::min('date'))
-        <h5>keine Daten eingegeben</h5>
+        keine Daten eingegeben
       @else
-        <h5>OptIn Daten im Zeitraum vom <u>{{Carbon\Carbon::parse(App\OptIn::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\OptIn::max('date'))->format('d.m.Y H:i:s')}}</u> </h5>
+        OptIn Daten im Zeitraum vom <u>{{Carbon\Carbon::parse(App\OptIn::min('date'))->format('d.m.Y H:i:s')}}</u>  bis zum <u>{{Carbon\Carbon::parse(App\OptIn::max('date'))->format('d.m.Y H:i:s')}}</u>
       @endif
+      </span>
     </div>
 
 

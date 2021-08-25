@@ -9,16 +9,16 @@
 @endsection
 
 @section('content')
-<div class="container p-0 text-center bg-light" style="position:relative;">
+<div class="container p-0 text-center unit-translucent" style="position:relative; top: 2em;">
   <div class="loaderDiv" id="loaderDiv">
     <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
   </div>
   <h2>SSE GeVo Tracking Import </h2>
-  <div class="row bg-white shadow m-2 mt-2">
+  <div class="row shadow m-2 mt-2">
     <div class="col-12">
-      <h4 class="text-center">Aktueller Datenstand:</h4>
+      <h4 class="">Aktueller Datenstand:</h4>
     </div>
-    <div class="col-8">
+    <div class="col-12">
       @if(!App\GeVoTracking::min('date'))
         <h5>keine Daten eingegeben</h5>
       @else
@@ -50,7 +50,7 @@
     </div>
   </div> -->
   <div class="row justify-content-center">
-    <form class="" action="{{route('reports.gevotracking.upload')}}" method="post" enctype="multipart/form-data">
+    <form class="mt-22" action="{{route('reports.gevotracking.upload')}}" method="post" enctype="multipart/form-data">
       @csrf
       <input type="file" name="file" value="">
 
