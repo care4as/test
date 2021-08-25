@@ -234,8 +234,9 @@
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
-          axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
-          // axios.get('http://'+host+'/kdw/getQuotas'+department)
+          axios.get
+          //('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
+          ('http://'+host+'/users/getTracking/'+department)
           .then(response => {
             if(response.data)
             {
@@ -292,9 +293,8 @@
           var host = window.location.host;
           let department = dep
 
-          axios.get
-          // ('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
-          ('http://'+host+'/kdw/getQuotas/'+department)
+          //axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          axios.get('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             console.log('dailyQoutas')
