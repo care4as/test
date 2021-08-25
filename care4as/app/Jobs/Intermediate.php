@@ -93,20 +93,24 @@ class Intermediate implements ShouldQueue
 
         if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->tracking_id)->first())
         {
-          $insertarray[] = array(
-            'person_id' => $user->person_id,
-            'date' => Carbon::now()->format('Y-m-d H:i:s'),
-            'Calls' => $user->salesdata->calls,
-            'SSC_Calls' => $user->salesdata->calls_ssc,
-            'BSC_Calls' => $user->salesdata->calls_bsc,
-            'Portal_Calls' => $user->salesdata->calls_portal,
-            'PTB_Calls' => $user->salesdata->calls_ptb,
-            'KüRü' => $user->salesdata->kuerue_ssc_contract_save + $user->salesdata->kuerue_bsc_contract_save + $user->salesdata->kuerue_portal_save,
-            'Orders' => $user->salesdata->ret_ssc_contract_save + $user->salesdata->ret_bsc_contract_save + $user->salesdata->ret_portal_save,
-            'SSC_Orders' => $user->salesdata->ret_ssc_contract_save,
-            'BSC_Orders' => $user->salesdata->ret_bsc_contract_save,
-            'Portal_Orders' => $user->salesdata->ret_portal_save,
-          );
+          if($user->person_id)
+          {
+              $insertarray[] = array(
+              'person_id' => $user->person_id,
+              'date' => Carbon::now()->format('Y-m-d H:i:s'),
+              'Calls' => $user->salesdata->calls,
+              'SSC_Calls' => $user->salesdata->calls_ssc,
+              'BSC_Calls' => $user->salesdata->calls_bsc,
+              'Portal_Calls' => $user->salesdata->calls_portal,
+              'PTB_Calls' => $user->salesdata->calls_ptb,
+              'KüRü' => $user->salesdata->kuerue_ssc_contract_save + $user->salesdata->kuerue_bsc_contract_save + $user->salesdata->kuerue_portal_save,
+              'Orders' => $user->salesdata->ret_ssc_contract_save + $user->salesdata->ret_bsc_contract_save + $user->salesdata->ret_portal_save,
+              'SSC_Orders' => $user->salesdata->ret_ssc_contract_save,
+              'BSC_Orders' => $user->salesdata->ret_bsc_contract_save,
+              'Portal_Orders' => $user->salesdata->ret_portal_save,
+            );
+          }
+
         }
         else {
 

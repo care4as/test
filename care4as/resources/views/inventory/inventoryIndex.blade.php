@@ -7,7 +7,9 @@
     }
     textarea
      {
-       height: auto;
+       max-height: none !important;
+       height: 10em !important;
+       border-radius: 15px;
      }
 </style>
 @endsection
@@ -186,32 +188,32 @@
                   <tr>
                     <th>Anschlüsse Video</th>
                     <td>@foreach(json_decode( $item->devicePC->port) as $port) {{$port}} @endforeach</td>
-                    <td><div class="form-group col-md-6">
-                      <div class="m-4">
+                    <td>
+                      <div class="form-check-inline">
                         <input class="form-check-input" name="portspc[]" type="checkbox" value="vga" id="vga" @if(in_array('vga',json_decode( $item->devicePC->port))) checked @endif>
                         <label class="form-check-label" for="vga">
                           VGA
                         </label>
                       </div>
-                      <div class="m-4">
+                      <div class="form-check-inline">
                         <input class="form-check-input" name="portspc[]" type="checkbox" value="dvi" id="dvi" @if(in_array('dvi',json_decode( $item->devicePC->port))) checked @endif>
                         <label class="form-check-label" for="dvi">
                           DVI
                         </label>
                       </div>
-                      <div class="m-4">
+                      <div class="form-check-inline">
                         <input class="form-check-input" name="portspc[]" type="checkbox" value="hdmi" id="hdmi" @if(in_array('hdmi',json_decode( $item->devicePC->port))) checked @endif>
                         <label class="form-check-label" for="hdmi">
                           HDMI
                         </label>
                       </div>
-                      <div class="m-4">
+                      <div class=" form-check-inline">
                         <input class="form-check-input" name="portspc[]" type="checkbox" value="displayport" id="displayport" @if(in_array('displayport',json_decode( $item->devicePC->port))) checked @endif>
                         <label class="form-check-label" for="displayport">
                           Display Port
                         </label>
                       </div>
-                    </div>
+
                     </td>
                   </tr>
                   <tr>
@@ -229,33 +231,32 @@
                     @if(is_array(json_decode( $item->deviceMO->ports)))
                     <th>Anschlüsse Video</th>
                     <td>@foreach(json_decode( $item->deviceMO->ports) as $port) {{$port}} @endforeach</td>
-                    <td><div class="form-group col-md-6">
-                      <div class="m-4">
+                    <td>
+                      <div class="form-check-inline">
                         <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="vga" id="vga" @if(in_array('vga',json_decode( $item->deviceMO->ports))) checked @endif>
                         <label class="form-check-label" for="vga">
                           VGA
                         </label>
                       </div>
-                      <div class="m-4">
+                      <div class="form-check-inline">
                         <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="dvi" id="dvi" @if(in_array('dvi',json_decode( $item->deviceMO->ports))) checked @endif>
                         <label class="form-check-label" for="dvi">
                           DVI
                         </label>
                       </div>
-                      <div class="m-4">
+                      <div class="form-check-inline">
                         <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="hdmi" id="hdmi" @if(in_array('hdmi',json_decode( $item->deviceMO->ports))) checked @endif>
                         <label class="form-check-label" for="hdmi">
                           HDMI
                         </label>
                       </div>
-                      <div class="m-4">
+                      <div class="form-check-inline">
                         <input class="form-check-input" name="portsmonitor[]" type="checkbox" value="displayport" id="displayport" @if(in_array('displayport',json_decode( $item->deviceMO->ports))) checked @endif>
                         <label class="form-check-label" for="displayport">
                           Display Port
                         </label>
                       </div>
 
-                    </div>
                     </td>
                     @else
                     <th>Videoanschlüsse</th>

@@ -156,6 +156,8 @@ class HomeController extends Controller
       $allBSCSaves = 0;
       $allPortalCalls = 0;
       $allPortalSaves = 0;
+      $allRLZ24= 0;
+      $allMLZV= 0;
 
       $year = Carbon::now()->year;
       $start_date = 1;
@@ -528,6 +530,8 @@ class HomeController extends Controller
         $allBSCSaves += $sumBSCOrders;
         $allPortalCalls += $sumPortalCalls;
         $allPortalSaves += $sumPortalOrders;
+        $allRLZ24 += $sumrlz24;
+        $allMLZV += $sumNMlz;
 
         if($calls == 0)
         {
@@ -673,6 +677,8 @@ class HomeController extends Controller
         'allBSCSaves' => $allBSCSaves,
         'allPortaleCalls' => $allPortalCalls,
         'allPortaleSaves' => $allPortalSaves,
+        'allRLZ24' => $allRLZ24,
+        'allMVLZ' => $allMLZV
       );
 
       return view('DB', compact('overalldata', 'users'));
