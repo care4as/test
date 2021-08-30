@@ -181,7 +181,7 @@ Dropzone.options.exceldropzone = {
       });
       this.on("success", function(file, response) {
         console.log(response)
-        this.removeAllFiles()
+        // this.removeAllFiles()
         $('#failContent').html('Die Datei wurde hochgeladen')
         $('#successModal').modal('show')
         $('#loaderDiv').css('display','none');

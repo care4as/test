@@ -1,71 +1,93 @@
 @extends('general_layout')
 
 @section('content')
-<div class="container bg-white" style="width: 75vw; font-size: 0.9em;">
-  <h2>Provisionsschätzer</h2>
-  <p><small>die Zahlen sind lediglich geschätzt und können von den finalen Zahlen abweichen</small> </p>
+<div class="container unit-translucent mt-4" style="width: 75vw; font-size: 0.9em;">
+  <div class="row p-2">
+    <h2>Provisionsschätzer</h2>
+    <p><small>die Zahlen sind lediglich geschätzt und können von den finalen Zahlen abweichen</small> </p>
+  </div>
 
-  <table class="table table-striped">
-    <tr>
-      <td>Upgrades</td>
+  <div class="row p-2">
+    <table class="table table-striped">
 
-      <td>100</td>
-      <td><input type="text" name="" value=""> </td>
-    </tr>
-    <tr>
-      <td>Sidegrades</td>
+        <td>SSC CR</td>
+        <td> {{$quotas['ssc_quota']}}%</td>
+        <td>Provifaktor: @if($quotas['ssc_quota'] > 60) {{$provifactor_ssc = 3.5}}€ @else {{$provifactor_ssc = 1.5}}€ @endif</td>
+      </tr>
+      <tr>
+        <td>BSC CR</td>
+        <td> {{$quotas['bsc_quota']}}%</td>
+        <td>Provifaktor: @if($quotas['bsc_quota'] > 17) {{$provifactor_bsc =3.5}}€ @else {{$provifactor_bsc = 1.5}}€ @endif </td>
+      </tr>
+      <tr>
+        <td>Portal CR</td>
+        <td> {{$quotas['portal_quota']}}%</td>
+        <td>Provifaktor: @if($quotas['portal_quota'] > 64) {{$provifactor_portal = 3.5}}€ @else {{$provifactor_portal = 1.5}}€ @endif</td>
+      </tr>
+      <tr>
+        <td>Carecoins: </td>
+        <td>{{$quotas['carecoins']}} </td>
+        <td> Provifaktor: @if($quotas['carecoinsquota'] > 100) {{$provifactor_carecoins = 1.5}}€ @else {{$provifactor_carecoins = 0}} @endif</td>
 
-      <td>50</td>
-      <td><input type="text" name="" value=""> </td>
-    </tr>
-    <tr>
-      <td>Downgrades</td>
+      </tr>
+      <tr>
+        <td>SSC_Saves Gesamt</td>
+        <td><input type="text" name="" value="{{$quotas['ssc_saves']}}"></td>
+        <td> Provi: {{$quotas['ssc_saves'] * ($provifactor_ssc + $provifactor_carecoins)}}€</td>
+      </tr>
+      <tr>
+        <td>BSC_Saves Gesamt</td>
+        <td><input type="text" name="" value="{{$quotas['bsc_saves']}}"></td>
+        <td>Provi: {{$quotas['bsc_saves'] * ($provifactor_bsc + $provifactor_carecoins)}}€</td>
+      </tr>
+      <tr>
+        <td>Portal Saves Gesamt</td>
 
-      <td>25</td>
-      <td><input type="text" name="" value=""> </td>
-    </tr>
-    <tr>
-      <td>Calls</td>
-      <td>25</td>
-      <td><input type="text" name="" value=""> </td>
-    </tr>
-  </table>
+        <td><input type="text" name="" value="{{$quotas['portal_saves']}}"></td>
+        <td>Provi:{{$quotas['portal_saves'] * ($provifactor_portal + $provifactor_carecoins)}}€ </td>
+      </tr>
+      <tr>
+    </table>
+  </div>
+
+<div class="row p-2">
   <h2 class="text-center">Meine Saves</h2>
-
-  <table class="table table-striped" id="retentiontable">
-    <thead>
-      <tr>
-        <th>Datum</th>
-        <th>Calls</th>
-        <th>SSC Calls</th>
-        <th>BSC Calls</th>
-        <th>Portal Calls</th>
-        <th>Saves</th>
-        <th>SSC Saves</th>
-        <th>BSC Saves</th>
-        <th>Portal Saves</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach($retentionDetails as $save)
-      <tr>
-        <td data-sort="{{$save->call_date}}">{{$save->call_date->format('d.m.Y')}}</td>
-        <td>{{$save->calls}}</td>
-        <td>{{$save->calls_smallscreen}}</td>
-        <td>{{$save->calls_bigscreen}}</td>
-        <td>{{$save->calls_portale}}</td>
-        <td>{{$save->orders}}</td>
-        <td>{{$save->orders_smallscreen}}</td>
-        <td>{{$save->orders_bigscreen}}</td>
-        <td>{{$save->orders_portale}}</td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-
 </div>
-<div class="container-fluid mt-4" style="width: 75vw; font-size: 0.9em;">
-  <div class="row bg-light align-items-center"  style="border-radius: 15px;">
+  <div class="row p-2">
+    <table class="table table-striped" id="retentiontable">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Calls</th>
+          <th>SSC Calls</th>
+          <th>BSC Calls</th>
+          <th>Portal Calls</th>
+          <th>Saves</th>
+          <th>SSC Saves</th>
+          <th>BSC Saves</th>
+          <th>Portal Saves</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($trackings as $tracking)
+        <tr>
+          <td data-sort="{{$tracking->date}}">{{$tracking->date}}</td>
+          <td>{{$tracking->calls}}</td>
+          <td>{{$tracking->calls_ssc}}</td>
+          <td>{{$tracking->calls_bsc}}</td>
+          <td>{{$tracking->calls_portal}}</td>
+          <td>{{$tracking->ret_ssc_contract_save + $tracking->ret_bsc_contract_save + $tracking->ret_portal_save}}</td>
+          <td>{{$tracking->ret_ssc_contract_save}}</td>
+          <td>{{$tracking->ret_bsc_contract_save}}</td>
+          <td>{{$tracking->ret_portal_save}}</td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="container-fluid  unit-translucent mt-4" style="width: 75vw; font-size: 0.9em;">
+  <!-- <div class="row bg-light align-items-center"  style="border-radius: 15px;">
     <div class="col">
         <div class="row">
           <span style="font-size: 20px; margin-top: 9px">  Calls:</span>
@@ -74,7 +96,6 @@
             </a>
                <button class="btn btn-primary btn-outline-primary m-1">@if($user->TrackingToday){{$user->TrackingToday->sum('calls')}} @else 0 @endif</button>
             <a class="btn btn-primary btn-fab btn-icon btn-round m-1" href="{{route('user.trackEvent', ['action' => 'sub', 'division' => 'call', 'type' => 0, 'operator' => 0])}}">
-              <!-- -->
                 <i class="now-ui-icons ui-1_simple-delete text-white"></i>
               </a>
         </div>
@@ -107,8 +128,9 @@
         data-html="true">
         CR einblenden</button>
       </div>
-  </div>
-  <div class="row text-dark">
+  </div> -->
+
+  <!-- <div class="row text-dark">
     <div class="col text-center bg-light mr-1 mt-1 align-items-center" style="border-radius: 15px;">
       <h5 class="m-1"> Retention</h5>
       <div class="row">
@@ -142,9 +164,9 @@
               <a class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm" href="{{route('user.trackEvent', ['action' => 'save', 'division' => 'Retention', 'type' => 'SSC','operator' => 1])}}">
                 <i class="now-ui-icons ui-1_simple-add"></i>
               </a>
-              <!-- <button class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm">
+              <button class="btn btn-primary btn-fab btn-icon btn-outline-primary btn-round btn-sm">
                   <i class="now-ui-icons ui-1_simple-add"></i>
-              </button> -->
+              </button>
             </div>
             <div class="col-1 p-0">
               @if($user->TrackingToday){{$user->TrackingToday->where('type','SSC')->where('division','Retention')->sum('save')}} @else 0 @endif
@@ -518,8 +540,8 @@
         </div>
     </div>
 
-  </div>
-  <div class="row mt-2 text-dark">
+  </div> -->
+  <!-- <div class="row mt-2 text-dark">
     <div class="col-2 text-center  bg-light  ml-1 mt-1" style="border-radius: 15px;">
       <h5 class="m-1">Neuverträge</h5>
       <div class="row justify-content-center">
@@ -652,8 +674,8 @@
           </button>
       </div>
     </div>
-  </div>
-  <div class="row d-flex justify-content-center mt-3">
+  </div> -->
+  <!-- <div class="row d-flex justify-content-center mt-3">
     <div class="col text-center  bg-light m-1">
       <div class="row d-flex justify-content-center">
         <a href="{{route('user.trackEvent', ['action' => '30', 'division' => 'CareCoin', 'type' => 'CareCoin','operator' => 1])}}">
@@ -703,7 +725,8 @@
           </button>
       </div>
     </div>
-  </div>
+  </div> -->
+  test
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
