@@ -30,7 +30,8 @@ class ControllingController extends Controller
         $defaultVariablesArray = array(
             'project' => $project,
             'startdate' => $startDateString,
-            'enddate' => $endDateString
+            'enddate' => $endDateString,
+            'difference_date' =>$differenceDate
         );
 
         for($i=0; $i <= $differenceDate; $i++){
@@ -89,12 +90,25 @@ class ControllingController extends Controller
                                                             + ($spanMonths - 2);
         }
 
+        //default project variables
+            //revenue should per hour
+            $defaultVariablesArray['revenue_hour_should']['1u1_dsl_retention'] = 36;
+            $defaultVariablesArray['revenue_hour_should']['1u1_mobile_retention'] = 35;
+            $defaultVariablesArray['revenue_hour_should']['1u1_terminationadministration'] = 24.5;
+            $defaultVariablesArray['revenue_hour_should']['telefonica_outbound'] = 35;
+
+            //project id
+            $defaultVariablesArray['project_id']['1u1_dsl_retention'] = 10;
+            $defaultVariablesArray['project_id']['1u1_mobile_retention'] = 7;
+            $defaultVariablesArray['project_id']['1u1_terminationadministration'] = 6;
+            $defaultVariablesArray['project_id']['telefonica_outbound'] = 14;
+
         //retrive data depending on choosen project
         if ($project == '1u1_mobile_retention') {
             //$mobileSalesDataArray = $this->mobileSalesReportKDW($startDate, $endDate, $differenceDate);
-            $mobileSalesDataArray = $this->mobileSalesReportKDW($startDate, $endDate, $differenceDate);
-            $mobileWorktimeArray = $this->worktimeReport($startDate, $endDate, $differenceDate, 35.00, 7); //(x, y, z, revenue/hour, project id)
-            $mobileCoreDataArray = $this->mobileCoreData($startDate, $endDate, $differenceDate, $mobileSalesDataArray, $mobileWorktimeArray, $defaultVariablesArray);
+            $mobileSalesDataArray = $this->mobileSalesReportKDW($defaultVariablesArray);
+            $mobileWorktimeArray = $this->worktimeReport($defaultVariablesArray, $defaultVariablesArray['revenue_hour_should']['1u1_mobile_retention'], $defaultVariablesArray['project_id']['1u1_mobile_retention']); //(x, y, z, revenue/hour, project id)
+            $mobileCoreDataArray = $this->mobileCoreData($mobileSalesDataArray, $mobileWorktimeArray, $defaultVariablesArray);
         } else {
             $mobileSalesDataArray = 0;
             $mobileWorktimeArray = 0;
@@ -103,16 +117,20 @@ class ControllingController extends Controller
 
         if ($project == '1u1_terminationadministration') {
             $terminationSalesDataArray = 0;
-            $terminationWorktimeArray = $this->worktimeReport($startDate, $endDate, $differenceDate, 24.50, 6); //(x, y, z, revenue/hour, project id)
+            $terminationWorktimeArray = $this->worktimeReport($defaultVariablesArray, $defaultVariablesArray['revenue_hour_should']['1u1_terminationadministration'], $defaultVariablesArray['project_id']['1u1_terminationadministration']); //(x, y, z, revenue/hour, project id)
             $terminationCoreDataArray = 0;
         } else {
             $terminationSalesDataArray = 0;
             $terminationWorktimeArray = 0;
             $terminationCoreDataArray = 0;
         }
-
+        //dd($defaultVariablesArray);
         return view('umsatzmeldung', compact('defaultVariablesArray', 'mobileSalesDataArray', 'mobileWorktimeArray', 'mobileCoreDataArray', 'terminationSalesDataArray', 'terminationWorktimeArray', 'terminationCoreDataArray'));
+        
     }
+
+
+    
 //TERMINATION START
 //TERMINATION END
 
@@ -127,8 +145,8 @@ class ControllingController extends Controller
             'sum_work_hours_string' => number_format(array_sum(array_column($mobileWorktimeArray, 'work_hours')), 2,",","."),
             'sum_revenue_should_int' => array_sum(array_column($mobileWorktimeArray, 'revenue_should_int')),
             'sum_revenue_should_string' => number_format(array_sum(array_column($mobileWorktimeArray, 'revenue_should_int')), 2,",","."),
-            'revenue_should_int' => $medianFTE * 173 * 35 * $defaultVariablesArray['industrial_months'],
-            'revenue_should_string' => number_format($medianFTE * 173 * 35 * $defaultVariablesArray['industrial_months'], 2,",",".")
+            'revenue_should_int' => $medianFTE * 173 * $defaultVariablesArray['revenue_hour_should']['1u1_mobile_retention'] * $defaultVariablesArray['industrial_months'],
+            'revenue_should_string' => number_format($medianFTE * 173 * $defaultVariablesArray['revenue_hour_should']['1u1_mobile_retention'] * $defaultVariablesArray['industrial_months'], 2,",",".")
         );
 
 
@@ -140,8 +158,8 @@ class ControllingController extends Controller
         $mobileCoreDataArray['attainment_int'] = $mobileSalesDataArray['total_performance']['sum_revenue_int'] / $mobileCoreDataArray['revenue_should_int'] * 100;
         $mobileCoreDataArray['attainment_string'] = number_format($mobileCoreDataArray['attainment_int'], 2,",",".");
 
-        for($i=0; $i <= $differenceDate; $i++){
-            $currentDate = date('Y-m-d', strtotime($startDate. '+ '.$i.' days'));
+        for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
+            $currentDate = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
             if($mobileWorktimeArray[$currentDate]['revenue_should_int'] == 0){
                 $mobileCoreDataArray['daily_performance'][$currentDate]['attainment_int'] = 0;
             }
@@ -163,12 +181,6 @@ class ControllingController extends Controller
 
         }
 
-        // $mobileSalesDataArray[0]['total_performance']['sum_total_revenue_int'] <-- Umsatz IST
-        // $mobileCoreDataArray['sum_revenue_should_int']  <-- Umsatz SOLL
-        // $mobileCoreDataArray['sum_work_hours_int'] <-- Std. bezahlt
-
-
-
         $mobileCoreDataArray['duration_revenue_payed_hour_int'] = $mobileSalesDataArray['total_performance']['sum_revenue_int'] / $mobileCoreDataArray['sum_work_hours_int'];
         $mobileCoreDataArray['duration_revenue_payed_hour_string'] = number_format($mobileCoreDataArray['duration_revenue_payed_hour_int'], 2,",",".");
         $mobileCoreDataArray['duration_attainment_int'] = ($mobileSalesDataArray['total_performance']['sum_revenue_int'] / $mobileCoreDataArray['sum_revenue_should_int']) * 100;
@@ -176,13 +188,12 @@ class ControllingController extends Controller
         $mobileCoreDataArray['duration_revenue_delta_int'] = $mobileSalesDataArray['total_performance']['sum_revenue_int'] - $mobileCoreDataArray['sum_revenue_should_int'];
         $mobileCoreDataArray['duration_revenue_delta_string'] = number_format($mobileCoreDataArray['duration_revenue_delta_int'], 2,",",".");
 
-        
         //dd($mobileWorktimeArray);
         //dd($mobileCoreDataArray);
         return $mobileCoreDataArray;
     }
 
-    public function mobileSalesReportKDW($startDate, $endDate, $differenceDate){
+    public function mobileSalesReportKDW($defaultVariablesArray){
         //initialize data array
         $salesReportDataKDW = array();
         //initialize core variables
@@ -206,8 +217,8 @@ class ControllingController extends Controller
         $salesReportDataKDW['total_performance']['sum_sales_revenue_int'] = 0;
 
         //loop timespan
-        for($i=0; $i <= $differenceDate; $i++){
-            $currentDate = date('Y-m-d', strtotime($startDate. '+ '.$i.' days'));
+        for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
+            $currentDate = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
 
             //initialize datatable connection
             $salesData = DB::connection('mysqlkdwtracking')
@@ -283,7 +294,7 @@ class ControllingController extends Controller
 //MOBILE END
 
 //GENERAL FUNCTIONS START
-    public function worktimeReport($startDate, $endDate, $differenceDate, $revenueShouldHour, $projectID){
+    public function worktimeReport($defaultVariablesArray, $revenueShouldHour, $projectID){
         //get all employee id's from project
         $projectMA = DB::connection('mysqlkdw')
         ->table('MA')
@@ -295,10 +306,10 @@ class ControllingController extends Controller
         $worktimeArray = array(); 
 
         //loop full timespan
-        for($i=0; $i <= $differenceDate; $i++){
+        for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
 
             //set $currentDate according to loop
-            $currentDate = date('Y-m-d', strtotime($startDate. '+ '.$i.' days'));
+            $currentDate = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
 
             //get worktime
             $worktimeData = DB::connection('mysqlkdw')
