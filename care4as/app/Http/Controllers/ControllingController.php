@@ -117,7 +117,7 @@ class ControllingController extends Controller
 //TERMINATION END
 
 //MOBILE START
-    public function mobileCoreData($startDate, $endDate, $differenceDate, $mobileSalesDataArray, $mobileWorktimeArray, $defaultVariablesArray){
+    public function mobileCoreData($mobileSalesDataArray, $mobileWorktimeArray, $defaultVariablesArray){
         $medianFTE = array_sum(array_column($mobileWorktimeArray, 'FTE_int')) / count($mobileWorktimeArray);
 
         $mobileCoreDataArray = array(
