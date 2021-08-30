@@ -236,6 +236,8 @@ class UserController extends Controller
 
     public function dashboard()
     {
+      $needCareCoins = 0;
+      $carecoins = 0;
       $user = Auth()->user();
       $user->load('TrackingToday');
       // $user->load('retentionDetails');
@@ -252,10 +254,6 @@ class UserController extends Controller
         )
       ->get();
 
-      // dd($trackings);
-
-      // $retentionDetails = $user->retentionDetails;
-      // $retentionDetails = (new Collection($user->retentionDetails->sortByDesc('call_date')));
       $retentionDetails = array();
       $totalsaves_ssc = $trackings->sum('ret_ssc_contract_save');
       $totalsaves_bsc = $trackings->sum('ret_bsc_contract_save');
@@ -269,7 +267,7 @@ class UserController extends Controller
       $portalQuota = Helper::instance()->getQuota($totalsaves_portal, $totalcalls_portal);
 
       $carecoins = ($totalsaves_ssc + $totalsaves_bsc + $totalsaves_portal) *20;
-
+      
       if($user->dailyhours == 4)
       {
         $needCareCoins = 2000;
@@ -282,9 +280,8 @@ class UserController extends Controller
       {
         $needCareCoins = 5000;
       }
-
+      // dd($needCareCoins);
       $CCCompletion = Helper::instance()->getQuota($carecoins,$needCareCoins);
-
       $quotas = array(
 
         'ssc_quota' => $sscQuota,
@@ -296,8 +293,6 @@ class UserController extends Controller
         'carecoinsquota' => $CCCompletion,
         'carecoins' => $carecoins,
       );
-
-
       // dd($CCCompletion);
       return view('dashboard',compact('user','trackings','quotas'));
     }

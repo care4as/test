@@ -1,14 +1,28 @@
 @extends('general_layout')
 
+@section('additional_css')
+<style media="screen">
+  table.dataTable tbody tr
+  {
+    background-color: transparent !important;
+  }
+</style>
+@endsection
 @section('content')
 <div class="container unit-translucent mt-4" style="width: 75vw; font-size: 0.9em;">
   <div class="row p-2">
-    <h2>Provisionsschätzer</h2>
-    <p><small>die Zahlen sind lediglich geschätzt und können von den finalen Zahlen abweichen</small> </p>
+    <div class="col-12">
+      <p class="w-100">  <h2>Provisionsschätzer</h2></p>
+    </div>
+    <div class="col-12">
+      <p><small>die Zahlen sind lediglich geschätzt und können von den finalen Zahlen abweichen</small> </p>
+    </div>
+
+
   </div>
 
   <div class="row p-2">
-    <table class="table table-striped">
+    <table class="table table-borderless unit-translucent">
 
         <td>SSC CR</td>
         <td> {{$quotas['ssc_quota']}}%</td>
@@ -28,33 +42,36 @@
         <td>Carecoins: </td>
         <td>{{$quotas['carecoins']}} </td>
         <td> Provifaktor: @if($quotas['carecoinsquota'] > 100) {{$provifactor_carecoins = 1.5}}€ @else {{$provifactor_carecoins = 0}} @endif</td>
-
       </tr>
       <tr>
         <td>SSC_Saves Gesamt</td>
-        <td><input type="text" name="" value="{{$quotas['ssc_saves']}}"></td>
-        <td> Provi: {{$quotas['ssc_saves'] * ($provifactor_ssc + $provifactor_carecoins)}}€</td>
+        <td><input type="text"  name="" value="{{$quotas['ssc_saves']}}" onchange="changeProvi({{$provifactor_ssc}}, {{$provifactor_carecoins}},'ssc_provi',this.value)"></td>
+        <td> Provi: <span id="ssc_provi">{{$provissc = $quotas['ssc_saves'] * ($provifactor_ssc + $provifactor_carecoins)}}</span>€</td>
       </tr>
       <tr>
         <td>BSC_Saves Gesamt</td>
-        <td><input type="text" name="" value="{{$quotas['bsc_saves']}}"></td>
-        <td>Provi: {{$quotas['bsc_saves'] * ($provifactor_bsc + $provifactor_carecoins)}}€</td>
+        <td><input type="text"  name="" value="{{$quotas['bsc_saves']}}" onchange="changeProvi({{$provifactor_bsc}}, {{$provifactor_carecoins}},'bsc_provi',this.value)"></td>
+        <td>Provi: <span id="bsc_provi">{{$provibsc =$quotas['bsc_saves'] * ($provifactor_bsc + $provifactor_carecoins)}}</span>€</td>
       </tr>
       <tr>
         <td>Portal Saves Gesamt</td>
 
-        <td><input type="text" name="" value="{{$quotas['portal_saves']}}"></td>
-        <td>Provi:{{$quotas['portal_saves'] * ($provifactor_portal + $provifactor_carecoins)}}€ </td>
+        <td><input type="text"  name="" value="{{$quotas['portal_saves']}}" onchange="changeProvi({{$provifactor_portal}}, {{$provifactor_carecoins}},'portal_provi',this.value)"></td>
+        <td>Provi:<span id="portal_provi">{{$proviportal = $quotas['portal_saves'] * ($provifactor_portal + $provifactor_carecoins)}}</span>€ </td>
       </tr>
       <tr>
+        <tr>
+          <td>Gesamt:</td>
+          <td></td>
+          <td><span id="total_provision">{{$provissc + $provibsc + $proviportal }} </span>€</td>
+        </tr>
     </table>
   </div>
-
 <div class="row p-2">
   <h2 class="text-center">Meine Saves</h2>
 </div>
   <div class="row p-2">
-    <table class="table table-striped" id="retentiontable">
+    <table class="table table-borderless unit-translucent" id="retentiontable">
       <thead>
         <tr>
           <th>Datum</th>
@@ -867,5 +884,31 @@
   })
 
   });
+  function changeProvi(factor1,factor2,target,value)
+  {
+    // alert(factor1 + ' ' + factor2 +' '+ value)
+    let newTotalProvi = 0
+    let old_sscprovi = parseInt($('#ssc_provi').text())
+    let old_bscprovi = parseInt($('#bsc_provi').text())
+    let old_portalprovi =  parseInt($('#portal_provi').text())
+
+    let provi = value * (factor1 +factor2)
+
+    if(target == "ssc_provi")
+    {
+       newTotalProvi = provi + old_bscprovi + old_portalprovi
+    }
+    if(target == "bsc_provi")
+    {
+       newTotalProvi = old_sscprovi + provi + old_portalprovi
+    }
+    if(target == "portal_provi")
+    {
+       newTotalProvi = old_sscprovi + old_bscprovi + provi
+    }
+
+    $('#'+target).html(provi)
+    $('#total_provision').html(newTotalProvi)
+  }
 </script>
 @endsection
