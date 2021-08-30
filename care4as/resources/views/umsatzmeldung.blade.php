@@ -111,12 +111,12 @@
                                     @endif
                                 </div>
                             </div>
+                            
                             <div style="width: 100%; overflow-x: auto;">
                             <table class="max-table">
                                 <thead>
                                     <tr style="width: 100%">
                                         <th>Datum</th>
-                                        <th>FTE Bestand</th>
                                         <th>Umsatz IST</th>
                                         <th>Umsatz SOLL</th>
                                         <th>Deckung</th>
@@ -126,8 +126,7 @@
                                 <tbody>
                                     @foreach($defaultVariablesArray['days'] as $key => $day)
                                     <tr>
-                                        <td>{{$day}}</td>
-                                        <td></td>
+                                        <td>{{$defaultVariablesArray['app_data'][$day]['date_european']}} - {{$defaultVariablesArray['app_data'][$day]['weekday']}}</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -140,7 +139,6 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -149,7 +147,7 @@
                     </div>
                 </div>
             </div>
-        </div>>
+        </div>
         @endif
 
         @if($defaultVariablesArray['project'] == '1u1_dsl_retention')
@@ -215,7 +213,7 @@
                                 <tbody>
                                     @foreach($defaultVariablesArray['days'] as $key => $day)
                                     <tr>
-                                        <td>{{$day}}</td>
+                                        <td>{{$defaultVariablesArray['app_data'][$day]['date_european']}} - {{$defaultVariablesArray['app_data'][$day]['weekday']}}</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -250,7 +248,7 @@
                     </div>
                 </div>
             </div>
-        </div>>
+        </div>
         @endif
         
         @if($defaultVariablesArray['project'] == '1u1_mobile_retention')
@@ -295,6 +293,7 @@
                                     @endif
                                 </div>
                             </div>
+                            <div style="font-style: italic">Development Information: Umsatz um OptIn, SAS und Speedretention erweitern. Sales aus CPO und Availbench hinzufügen.</div>
                             <div style="width: 100%; overflow-x: auto;">
                             <table class="max-table">
                                 <thead>
@@ -316,18 +315,18 @@
                                 <tbody>
                                     @foreach($defaultVariablesArray['days'] as $key => $day)
                                     <tr>
-                                        <td>{{$day}}</td>
+                                        <td>{{$defaultVariablesArray['app_data'][$day]['date_european']}} - {{$defaultVariablesArray['app_data'][$day]['weekday']}}</td>
                                         @if(isset($mobileWorktimeArray[$day]['unemployment']) or isset($mobileWorktimeArray[$day]['employment']))
-                                            <td style="text-align: center;"><abbr title="@if(isset($mobileWorktimeArray[$day]['unemployment']))@foreach($mobileWorktimeArray[$day]['unemployment'] as $user )Austritt: {{$user}}. @endforeach @endif @if(isset($mobileWorktimeArray[$day]['employment']))@foreach($mobileWorktimeArray[$day]['employment'] as $user )Einritt: {{$user}}. @endforeach @endif">{{$mobileWorktimeArray[$day]['FTE_string']}}</abbr></td>
+                                            <td style="text-align: center;"><abbr title="@if(isset($mobileWorktimeArray[$day]['unemployment']))@foreach($mobileWorktimeArray[$day]['unemployment'] as $user )Austritt: {{$user}}.@endforeach @endif @if(isset($mobileWorktimeArray[$day]['employment']))@foreach($mobileWorktimeArray[$day]['employment'] as $user )Einritt: {{$user}}. @endforeach @endif">{{$mobileWorktimeArray[$day]['FTE_string']}}</abbr></td>
                                             @else
                                             <td style="text-align: center;">{{$mobileWorktimeArray[$day]['FTE_string']}}</td>
                                         @endif
                                         <td style="text-align: center;">{{$mobileWorktimeArray[$day]['work_hours_string']}}</td>
-                                        <td style="text-align: center; font-style: italic;"><abbr title="SSC RET: {{$mobileSalesDataArray[0]['daily_performance'][$day]['SSC_RET_Saves']}}&#010;SSC PRE: {{$mobileSalesDataArray[0]['daily_performance'][$day]['SSC_PRE_Saves']}}&#010;BSC RET: {{$mobileSalesDataArray[0]['daily_performance'][$day]['BSC_RET_Saves']}}&#010;BSC PRE: {{$mobileSalesDataArray[0]['daily_performance'][$day]['BSC_PRE_Saves']}}&#010;Portal RET: {{$mobileSalesDataArray[0]['daily_performance'][$day]['Portal_RET_Saves']}}&#010;Portal PRE: {{$mobileSalesDataArray[0]['daily_performance'][$day]['Portal_PRE_Saves']}}&#010;KüRü: {{$mobileSalesDataArray[0]['daily_performance'][$day]['Kuerue_Saves']}}">{{$mobileSalesDataArray[0]['daily_performance'][$day]['Sum_Sales']}}</abbr></td>
-                                        <td style="text-align: right; font-style: italic;">{{$mobileSalesDataArray[0]['daily_performance'][$day]['Median_Revenue_Sum']}} €</td>
-                                        <td style="text-align: right; font-style: italic;">{{$mobileSalesDataArray[0]['daily_performance'][$day]['Revenue_Sales_Sum']}} €</td>
-                                        <td style="text-align: right; font-style: italic;">{{$mobileSalesDataArray[0]['daily_performance'][$day]['Availbench_KDW_string']}} €</td>
-                                        <td style="text-align: right; font-style: italic;">{{$mobileSalesDataArray[0]['daily_performance'][$day]['total_revenue_string']}} €</td>
+                                        <td style="text-align: center; font-style: italic;"><abbr title="SSC RET: {{$mobileSalesDataArray['daily_performance'][$day]['SSC_RET_Saves']}}&#010;SSC PRE: {{$mobileSalesDataArray['daily_performance'][$day]['SSC_PRE_Saves']}}&#010;BSC RET: {{$mobileSalesDataArray['daily_performance'][$day]['BSC_RET_Saves']}}&#010;BSC PRE: {{$mobileSalesDataArray['daily_performance'][$day]['BSC_PRE_Saves']}}&#010;Portal RET: {{$mobileSalesDataArray['daily_performance'][$day]['Portal_RET_Saves']}}&#010;Portal PRE: {{$mobileSalesDataArray['daily_performance'][$day]['Portal_PRE_Saves']}}&#010;KüRü: {{$mobileSalesDataArray['daily_performance'][$day]['Kuerue_Saves']}}">{{$mobileSalesDataArray['daily_performance'][$day]['Sum_Sales']}}</abbr></td>
+                                        <td style="text-align: right; font-style: italic;">{{$mobileSalesDataArray['daily_performance'][$day]['Median_Revenue_Sum']}} €</td>
+                                        <td style="text-align: right; font-style: italic;">{{$mobileSalesDataArray['daily_performance'][$day]['Revenue_Sales_Sum_string']}} €</td>
+                                        <td style="text-align: right; font-style: italic;">{{$mobileSalesDataArray['daily_performance'][$day]['Availbench_KDW_string']}} €</td>
+                                        <td style="text-align: right; font-style: italic;">{{$mobileSalesDataArray['daily_performance'][$day]['total_revenue_string']}} €</td>
                                         @if($mobileCoreDataArray['daily_performance'][$day]['revenue_payed_hour_int'] >= 35)
                                             <td style="text-align: right; color: rgb(0,97,0); background-color: rgb(132,220,149,0.5);">{{$mobileCoreDataArray['daily_performance'][$day]['revenue_payed_hour_string']}} €</td>
                                             @else
@@ -346,11 +345,11 @@
                                         <td style="text-align: center;">Summe</td>
                                         <td style="text-align: center;">{{$mobileCoreDataArray['median_FTE_string']}}</td>
                                         <td style="text-align: center;">{{$mobileCoreDataArray['sum_work_hours_string']}}</td>
-                                        <td style="text-align: center;">{{$mobileSalesDataArray[0]['total_performance']['total_mobile_sum_sales']}}</td>
-                                        <td style="text-align: right;">{{$mobileSalesDataArray[0]['total_performance']['total_mobile_median_revenue']}} €</td>
-                                        <td style="text-align: right;">{{$mobileSalesDataArray[0]['total_performance']['total_mobile_sum_revenue']}} €</td>
-                                        <td style="text-align: right;">{{$mobileSalesDataArray[0]['total_performance']['sum_availbench_kdw_string']}} €</td>
-                                        <td style="text-align: right;">{{$mobileSalesDataArray[0]['total_performance']['sum_total_revenue_string']}} €</td>
+                                        <td style="text-align: center;">{{$mobileSalesDataArray['total_performance']['total_mobile_sum_sales']}}</td>
+                                        <td style="text-align: right;">{{$mobileSalesDataArray['total_performance']['median_revenue_string']}} €</td>
+                                        <td style="text-align: right;">{{$mobileSalesDataArray['total_performance']['sum_sales_revenue_string']}} €</td>
+                                        <td style="text-align: right;">{{$mobileSalesDataArray['total_performance']['sum_availbench_kdw_string']}} €</td>
+                                        <td style="text-align: right;">{{$mobileSalesDataArray['total_performance']['sum_revenue_string']}} €</td>
                                         @if($mobileCoreDataArray['duration_revenue_payed_hour_int'] >= 35)
                                             <td style="color: rgb(0,97,0); background-color: rgb(132,220,149,0.5); text-align: right;">{{$mobileCoreDataArray['duration_revenue_payed_hour_string']}} €</td>
                                             @else
@@ -426,7 +425,6 @@
                                         <th>Sales</th>
                                         <th>Ø€ / Sale</th>
                                         <th>Umsatz Sales</th>
-                                        <th>Umsatz Availbench</th>
                                         <th>Umsatz IST</th>
                                         <th>Umsatz / bez. Std.</th>
                                         <th>Umsatz SOLL</th>
@@ -437,23 +435,25 @@
                                 <tbody>
                                     @foreach($defaultVariablesArray['days'] as $key => $day)
                                     <tr>
-                                        <td>{{$day}}</td>
+                                        <td>{{$defaultVariablesArray['app_data'][$day]['date_european']}} - {{$defaultVariablesArray['app_data'][$day]['weekday']}}</td>
+                                        @if(isset($terminationWorktimeArray[$day]['unemployment']) or isset($terminationWorktimeArray[$day]['employment']))
+                                            <td style="text-align: center;"><abbr title="@if(isset($terminationWorktimeArray[$day]['unemployment']))@foreach($terminationWorktimeArray[$day]['unemployment'] as $user )Austritt: {{$user}}.@endforeach @endif @if(isset($terminationWorktimeArray[$day]['employment']))@foreach($terminationWorktimeArray[$day]['employment'] as $user )Einritt: {{$user}}.@endforeach @endif">{{$mobileWorktimeArray[$day]['FTE_string']}}</abbr></td>
+                                            @else
+                                            <td style="text-align: center;">{{$terminationWorktimeArray[$day]['FTE_string']}}</td>
+                                        @endif
+                                        <td style="text-align: center;">{{$terminationWorktimeArray[$day]['work_hours_string']}}</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td style="text-align: right;">{{$terminationWorktimeArray[$day]['revenue_should_string']}} €</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
                                     @endforeach
                                     <tr style="font-weight: bold; background-color: #ddd;">
                                         <td>Summe</td>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -472,7 +472,7 @@
                     </div>
                 </div>
             </div>
-        </div>>
+        </div>
         @endif
 
         @if($defaultVariablesArray['project'] == 'telefonica_outbound')
@@ -527,7 +527,7 @@
                                         <th>Sales</th>
                                         <th>Ø€ / Sale</th>
                                         <th>Umsatz Sales</th>
-                                        <th>Umsatz Availbench</th>
+                                        <th>Umsatz Qualitätsbonus</th>
                                         <th>Umsatz IST</th>
                                         <th>Umsatz / bez. Std.</th>
                                         <th>Umsatz SOLL</th>
@@ -538,7 +538,7 @@
                                 <tbody>
                                     @foreach($defaultVariablesArray['days'] as $key => $day)
                                     <tr>
-                                        <td>{{$day}}</td>
+                                        <td>{{$defaultVariablesArray['app_data'][$day]['date_european']}} - {{$defaultVariablesArray['app_data'][$day]['weekday']}}</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -573,7 +573,7 @@
                     </div>
                 </div>
             </div>
-        </div>>
+        </div>
         @endif   
         
         @if($defaultVariablesArray['project'] != null)
