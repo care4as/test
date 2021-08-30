@@ -59,6 +59,9 @@ class LoginController extends Controller
       {
         if(Auth::User()->role == 'Agent')
         {
+          $user = Auth::User();
+          // $user->load('retentiondetails');
+
           return Redirect()->route('dashboard');
         }
         elseif (Auth::User()->role == 'AgentTelefonica') {

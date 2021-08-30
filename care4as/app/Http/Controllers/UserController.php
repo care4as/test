@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 use App\Support\Collection;
+use App\Helper\Helper;
+
 use Carbon\Carbon;
 
 class UserController extends Controller
@@ -236,11 +238,68 @@ class UserController extends Controller
     {
       $user = Auth()->user();
       $user->load('TrackingToday');
-      $user->load('retentionDetails');
+      // $user->load('retentionDetails');
+
+      $trackings = DB::connection('mysqlkdwtracking')
+      ->table('1und1_mr_tracking_inb_new_ebk')
+      ->where('agent_ds_id', $user->tracking_id)
+      // ->whereDate('date', '=', Carbon::today())
+      ->whereMonth(
+          'date', '=', Carbon::now()->month
+      )
+      ->whereYear(
+        'date',  Carbon::now()->year
+        )
+      ->get();
+
+      // dd($trackings);
 
       // $retentionDetails = $user->retentionDetails;
-      $retentionDetails = (new Collection($user->retentionDetails->sortByDesc('call_date')));
-      return view('dashboard',compact('user','retentionDetails'));
+      // $retentionDetails = (new Collection($user->retentionDetails->sortByDesc('call_date')));
+      $retentionDetails = array();
+      $totalsaves_ssc = $trackings->sum('ret_ssc_contract_save');
+      $totalsaves_bsc = $trackings->sum('ret_bsc_contract_save');
+      $totalsaves_portal = $trackings->sum('ret_portal_save');
+      $totalcalls_ssc = $trackings->sum('calls_ssc');
+      $totalcalls_bsc = $trackings->sum('calls_bsc');
+      $totalcalls_portal = $trackings->sum('calls_portal');
+
+      $sscQuota = Helper::instance()->getQuota($totalsaves_ssc, $totalcalls_ssc);
+      $bscQuota = Helper::instance()->getQuota($totalsaves_bsc, $totalcalls_bsc);
+      $portalQuota = Helper::instance()->getQuota($totalsaves_portal, $totalcalls_portal);
+
+      $carecoins = ($totalsaves_ssc + $totalsaves_bsc + $totalsaves_portal) *20;
+
+      if($user->dailyhours == 4)
+      {
+        $needCareCoins = 2000;
+      }
+      elseif($user->dailyhours == 6)
+      {
+        $needCareCoins = 3500;
+      }
+      if($user->dailyhours == 8)
+      {
+        $needCareCoins = 5000;
+      }
+
+      $CCCompletion = Helper::instance()->getQuota($carecoins,$needCareCoins);
+
+      $quotas = array(
+
+        'ssc_quota' => $sscQuota,
+        'bsc_quota' => $bscQuota,
+        'portal_quota' => $portalQuota,
+        'ssc_saves' => $totalsaves_ssc,
+        'bsc_saves' => $totalsaves_bsc,
+        'portal_saves' => $totalsaves_portal,
+        'carecoinsquota' => $CCCompletion,
+        'carecoins' => $carecoins,
+      );
+
+
+      // dd($CCCompletion);
+      return view('dashboard',compact('user','trackings','quotas'));
     }
 
     public function Scorecard($id)

@@ -22,4 +22,6 @@ class Collection extends BaseCollection
         );
     }
 }
+
+
  ?>
