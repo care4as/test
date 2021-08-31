@@ -13,7 +13,7 @@
   <div class="loaderDiv" id="loaderDiv">
     <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
   </div>
-  <h2>SSE GeVo Tracking Import </h2>
+  <h2>GeVo Tracking Import </h2>
   <div class="row shadow m-2 mt-2">
     <div class="col-12">
       <h4 class="">Aktueller Datenstand:</h4>

@@ -73,8 +73,8 @@
 
       <div class="row bg-cool p-2 justify-content-center w-100 borders-roundedlight">
         <div class="w-100" id="accordion1">
-          <div class="col-12">
-            <div class="row bg-white shadow m-1 borders-roundedlight" id="filtermenu">
+          <div class="col-12 unit-translucent">
+            <div class="row shadow m-1 borders-roundedlight" id="filtermenu">
               <div class="w-100" id="accordion">
                 <div class="col-12 d-flex justify-content-center align-self-center">
                   <h5><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor:pointer;">
@@ -115,7 +115,7 @@
             </div>
             </div>
           </div>
-          <div class="col-12">
+          <div class="col-12 unit-translucent">
             <h5 class="text-center"><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
               Userdashboard
               <span class="material-icons">
@@ -143,9 +143,9 @@
         </div>
       </div>
     </div>
-  <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
+  <div class="row unit-translucent p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
     <div class="w-100" id="accordion2">
-      <div class="col-12 d-flex justify-content-center" >
+      <div class="col-12" >
         <h5>
           <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
           <span style="">Teamübersicht 1&1 Retention Mobile</span>
@@ -194,7 +194,7 @@
     </div>
   </div>
 </div>
-  <div class="row bg-care4as p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
+  <div class="row unit-translucent p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
     <div class="w-100" id="accordion2">
       <div class="col-12" >
         <h5>
@@ -246,7 +246,10 @@
     </div>
   </div>
 </div>
+</div>
+@endsection
 
+@section('additional_modal')
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bg-danger text-white" >
@@ -259,9 +262,7 @@
     </div>
   </div>
 </div>
-</div>
 @endsection
-
 @section('additional_js')
 <script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
@@ -281,11 +282,13 @@ $(document).ready(function(){
 });
 
   $('#department').change(function() {
+
     $('#employees').empty()
+
     let dep = this.value
     // console.log(dep)
     var host = window.location.host;
-    // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+
     axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
     // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
     .then(response => {

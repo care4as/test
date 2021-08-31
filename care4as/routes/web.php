@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
 
-  Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin');
+  Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin')->middleware('hasRight:dashboardAdmin');
   //users
   Route::get('/create/user', 'UserController@create')->name('user.create')->middleware('hasRight:createUser');
   Route::post('/create/user', 'UserController@store')->name('create.user.post')->middleware('hasRight:createUser');
@@ -57,7 +57,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/user/getAht', 'UserController@getAHTbetweenDates');
   Route::get('/user/salesdataDates', 'UserController@getSalesperformanceBetweenDates');
   Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
-  Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:indexUser');
+
   Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:indexUser');
   Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:indexUser');
   //endusers
@@ -316,10 +316,13 @@ Route::group(['middleware' => ['auth']], function () {
 //endoffers
   Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
   Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
-  Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking');
-  Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking');
-  Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas');
 
+
+  Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');
+  Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');
+  Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas')->middleware('hasRight:dashboardAdmin');
+  Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
+  
   Route::get('/test', function(){
 
     $startDate = '2021-08-01';

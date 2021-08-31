@@ -436,6 +436,8 @@ class UserTrackingController extends Controller
     public function getDailyQuotas($dep)
     {
       $ssccrarray = array();
+      $crarray = array();
+      $timesarray = array();
       // return 1;
       if ($dep == 'Mobile') {
         $department = '1&1 Mobile Retention';

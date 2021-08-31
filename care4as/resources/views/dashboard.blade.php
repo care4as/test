@@ -23,7 +23,6 @@
 
   <div class="row p-2">
     <table class="table table-borderless unit-translucent">
-
         <td>SSC CR</td>
         <td> {{$quotas['ssc_quota']}}%</td>
         <td>Provifaktor: @if($quotas['ssc_quota'] > 60) {{$provifactor_ssc = 3.5}}€ @else {{$provifactor_ssc = 1.5}}€ @endif</td>

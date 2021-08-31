@@ -669,7 +669,7 @@ body
   white-space: nowrap;
 }
 
-.max-table td, th{
+.max-table td, .max-table th{
   border: 1px solid grey;
   padding-left: 5px;
   padding-right: 5px;

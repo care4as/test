@@ -58,6 +58,7 @@ class RightsSeeder extends Seeder
 
     $rightsarray = array(
       'dashboard',
+      'dashboardAdmin',
       'createUser',
       'updateUser',
       'indexUser',
