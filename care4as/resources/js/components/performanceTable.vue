@@ -122,8 +122,11 @@
           </table>
           </div>
           <div class="row unit-translucent text-white center_items mb-0">
-            <h5>Liveticker Tagesquote</h5>
-            <div>
+            <div class="col-12">
+              <h5>Liveticker Tagesquote</h5>
+            </div>
+
+            <div class="co-12 center_items" id="chartcontainer" style="width: 90%;">
               <canvas id="dailyQuota" style="height: 300px; width: 90%;"></canvas>
             </div>
           </div>
@@ -160,6 +163,7 @@
 
         self.getUserData('Mobile')
         self.getDailyQouta('Mobile')
+
         this.timer =
         setInterval(function()
         {
@@ -235,8 +239,8 @@
                 + currentdate.getSeconds();
 
           axios.get
-          // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
-          ('http://'+host+'/users/getTracking/'+department)
+          ('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
+          // ('http://'+host+'/users/getTracking/'+department)
           .then(response => {
             if(response.data)
             {
@@ -286,15 +290,15 @@
           {
             this.getUserData(dep)
             this.getDailyQouta(dep)
-          }.bind(this), 300000);
+          }.bind(this), 60000);
 
         },
         getDailyQouta(dep){
           var host = window.location.host;
           let department = dep
 
-          // axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
-          axios.get('http://'+host+'/kdw/getQuotas/'+department)
+          axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          // axios.get('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             // console.log('dailyQoutas')
@@ -304,11 +308,22 @@
           .catch(
             function (err) {
               console.log('error DQ')
-              console.log(err.response);
+              console.log(err);
             })
           },
         createChart(chartId, chartData) {
-        // console.log('test')
+
+        console.log(chartId)
+
+        let chart = document.getElementById(chartId);
+
+        if (typeof chart != 'undefined' || chart != null )
+        {
+          document.getElementById(chartId).remove()
+          $('#chartcontainer').append('<canvas id="'+chartId+'" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>')
+          // console.log('test')
+        }
+
         const ctx = document.getElementById(chartId);
         const myChart = new Chart(ctx, {
           type: 'bar',

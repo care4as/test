@@ -32,8 +32,6 @@ function toggleSidebar()
   let navbar = $('#navbar_max')
   let width = sidebar.getBoundingClientRect().width
 
-  // console.log(width)
-
   if(width > 0)
   {
     sidebar.style.display = 'none'

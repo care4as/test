@@ -322,27 +322,10 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');
   Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas')->middleware('hasRight:dashboardAdmin');
   Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
-  
+
   Route::get('/test', function(){
 
-    $startDate = '2021-08-01';
-    $endDate = '2021-08-15';
-
-    $users = App\User::where('department','1&1 Mobile Retention')
-    ->where('status',1)
-    ->where('role','agent')
-    ->get();
-
-    foreach ($users as $key => $user) {
-      $user->salesdata = $user->getSalesDataInTimespan($startDate,$endDate);
-
-
-    }
-
-    dd($users[1]);
-
-    // return view('test', compact('test1'));
-
+    DB::table('users')->get();
 
 
 })->name('test');

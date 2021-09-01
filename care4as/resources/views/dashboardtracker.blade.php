@@ -125,7 +125,7 @@
           </div>
           <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
           <div class="col-12">
-            <div class="row">
+            <!-- <div class="row">
               @foreach($users as $user)
                 <div class="col-designed m-3 p-1 border unit-translucent rounded shadow">
                   <h5>{{$user->wholeName()}}
@@ -138,7 +138,7 @@
                   <trackchart :userid="{{$user->id}}"> </trackchart>
                 </div>
               @endforeach
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
