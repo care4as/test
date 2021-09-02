@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="row justify-content-center w-100" id="chartcontainer" v-if="this.isHidden == false">
+  <div class="row justify-content-center w-100" v-if="this.isHidden == false">
     <button type="button" name="button" id="closebutton" style="position:absolute; top: 5px; right: 5px" @click='closeElement()'>X</button>
     <div class="col-12">
       <canvas v-bind:id ="'myChart' + this.userid"></canvas>
@@ -36,14 +36,14 @@ export default {
     createChart(chartId, chartData) {
     // console.log('test')
 
-    let chart = document.getElementById(chartId);
-
-    if (typeof chart != 'undefined' || chart != null )
-    {
-      document.getElementById(chartId).remove()
-      $('#chartcontainer').append('<canvas id="'+chartId+'"></canvas>')
-      // console.log('test')
-    }
+    // let chart = document.getElementById(chartId);
+    //
+    // if (typeof chart != 'undefined' || chart != null )
+    // {
+    //   document.getElementById(chartId).remove()
+    //   $('#chartcontainer').append('<canvas id="'+chartId+'"></canvas>')
+    //   // console.log('test')
+    // }
 
     const ctx = document.getElementById(chartId);
     const myChart = new Chart(ctx, {
