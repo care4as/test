@@ -313,8 +313,6 @@
           },
         createChart(chartId, chartData) {
 
-        console.log(chartId)
-
         let chart = document.getElementById(chartId);
 
         if (typeof chart != 'undefined' || chart != null )

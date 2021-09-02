@@ -117,6 +117,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::view('/report/gevo/', 'reports.GeVoTracking')->name('reports.gevotracking')->middleware('hasRight:importReports');
   Route::post('/report/gevo/', 'ExcelEditorController@GeVoUpload')->name('reports.gevotracking.upload')->middleware('hasRight:importReports');
 
+  Route::view('/report/nettozeitenreport/', 'reports.nettozeiten')->name('reports.nettozeiten')->middleware('hasRight:importReports');
+  Route::post('/report/nettozeitenreport/', 'ExcelEditorController@nettozeitenImport')->name('reports.nettozeiten.upload')->middleware('hasRight:importReports');
+
   //AHTReport
   Route::get('/report/AHTdaily', 'ReportController@AHTdaily')->name('reports.AHTdaily')->middleware('hasRight:sendReports');
   Route::get('reports/dailyAgentDataStatus', 'ReportController@dailyAgentDataStatus')->name('reports.dailyAgentDataStatus')->middleware('hasRight:sendReports');
@@ -298,6 +301,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');
 
   //endinventory
+
+  //nettozeitenreporte
+  Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');
+
+  //end nettozeitenreporte
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
   //End Controlling Routes

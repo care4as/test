@@ -21,6 +21,80 @@ class ExcelEditorController extends Controller
       return view('reports/dailyAgent');
     }
 
+    public function nettozeitenImport(Request $request)
+    {
+
+      $fromRow = 1;
+      $insertData = array();
+
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+
+      $request->validate([
+        'file' => 'required',
+        // 'name' => 'required',
+      ]);
+
+      $file = request()->file('file');
+
+      $data = Excel::ToArray(new DataImport, $file)[0];
+
+      // dd($data);
+      for ($i=$fromRow-1; $i <= count($data)-1; $i++) {
+      // for ($i=$fromRow-1; $i <= 10; $i++) {
+
+        $cell = $data[$i];
+
+        if(is_numeric($cell[0]))
+        {
+          $UNIX_DATE = ($cell[0] - 25569) * 86400;
+
+          $date = gmdate("Y-m-d",$UNIX_DATE);
+
+          // dd($data[5],$date);
+          $insertData[$i] = array(
+
+            "Case Reference Date" => $date,
+            "AH3: Department (Agent Hierarchy 3) (Hist)" => $cell[1],
+            "AH4: Team (Agent Hierarchy 4) (Hist)" => $cell[2],
+            "Source Forecast Issue" => $cell[3],
+            "Workpool" => $cell[4],
+            "Agent" => $cell[5],
+            "Case Medium" => $cell[6],
+            "Case ID" => $cell[7],
+            "Next Case Status" => $cell[8],
+            "Has Call" => $cell[9],
+            "CosmoCom Call Dnis Prefix" => $cell[10],
+            "Is Billing Relevant" => $cell[11],
+            "Is Case created by same Agent" => $cell[12],
+            "Is Nightshift" => $cell[13],
+            "Avg Case Editing Time sec (Limit 1h)" => $cell[14],
+            "Avg SAS Editing Time sec (Limit 1h)" => $cell[15],
+            "Sum Case Editing Time sec (Limit 1h)" => $cell[16],
+            "Sum SAS Editing Time sec (Limit 1h)" => $cell[17],
+            "Sum Case and SAS Editing Time (Limit 1h)" => $cell[18],
+            "Count SSE Case Measurements" => $cell[19],
+            "Count SAS Measurements" => $cell[20],
+            "Count Case and SAS Measurements" => $cell[21],
+          );
+        }
+        else {
+          // dd($cell);
+        }
+      }
+      $insertData = array_chunk($insertData, 3500);
+
+      // dd($insertData);
+      for($i=0; $i <= count($insertData)-1; $i++)
+      {
+        DB::table('nettozeitenimport')->insertOrIgnore($insertData[$i]);
+      }
+      // return redirect()->back();
+
+      dd(count($data)-1);
+    }
+
     public function GeVoUpload(Request $request)
     {
       $fromRow = 1;
@@ -117,7 +191,7 @@ class ExcelEditorController extends Controller
 
       $insertData=array();
       // dd($data2);
-      
+
       for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
         $cell = $data2[$i];
         $UNIX_DATE2 = ($cell[3] - 25569) * 86400;

@@ -175,6 +175,7 @@
                 <li><a href="{{route('ssetracking.view')}}">SSE Tracking Import</a></li>
                 <li><a href="{{route('reports.SAS')}}">SAS Import</a></li>
                 <li><a href="{{route('reports.OptIn')}}">OptIn Import</a></li>
+                <li><a href="{{route('reports.nettozeiten')}}">Nettozeiten Import</a></li>
               </ul>
             </div>
           </li>

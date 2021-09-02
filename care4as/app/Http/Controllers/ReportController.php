@@ -23,10 +23,6 @@ class ReportController extends Controller
       return view('reports');
     }
 
-    public function FaMail(Request $request)
-    {
-
-    }
     public function updateHoursReport($value='')
     {
       DB::disableQueryLog();
