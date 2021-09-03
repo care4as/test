@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="row justify-content-center w-100" v-if="this.isHidden == false">
     <button type="button" name="button" id="closebutton" style="position:absolute; top: 5px; right: 5px" @click='closeElement()'>X</button>
-    <div class="col-12">
+    <div class="col-12" v-bind:id ="'chartcontainer' + this.userid">
       <canvas v-bind:id ="'myChart' + this.userid"></canvas>
     </div>
   </div>
@@ -23,7 +23,6 @@ export default {
   },
   mounted() {
       var self = this;
-
       console.log('Tracker Component mounted.')
       this.getUserData(this.userid)
 
@@ -36,14 +35,14 @@ export default {
     createChart(chartId, chartData) {
     // console.log('test')
 
-    // let chart = document.getElementById(chartId);
-    //
-    // if (typeof chart != 'undefined' || chart != null )
-    // {
-    //   document.getElementById(chartId).remove()
-    //   $('#chartcontainer').append('<canvas id="'+chartId+'"></canvas>')
-    //   // console.log('test')
-    // }
+    let chart = document.getElementById(chartId);
+
+    if (typeof chart != 'undefined' || chart != null )
+    {
+      document.getElementById(chartId).remove()
+      $('#chartcontainer'+this.userid+'').append('<canvas id="'+chartId+'"></canvas>')
+      // console.log('test')
+    }
 
     const ctx = document.getElementById(chartId);
     const myChart = new Chart(ctx, {
@@ -100,8 +99,9 @@ export default {
     })
 
     var host = window.location.host;
-    //axios.get('http://'+host+'/care4as/care4as/public/user/getTracking/'+this.userid)
-    axios.get('http://'+host+'/user/getTracking/'+this.userid)
+
+    axios.get('http://'+host+'/care4as/care4as/public/user/getTracking/'+this.userid)
+    // axios.get('http://'+host+'/user/getTracking/'+this.userid)
     .then(response => {
       // console.log(response)
       if(response.data[0][0])
@@ -116,7 +116,7 @@ export default {
       })
     .catch(function (err) {
       console.log('error')
-      console.log(err.response);
+      console.log(err);
     })
   },
   closeElement()
