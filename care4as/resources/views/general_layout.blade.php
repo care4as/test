@@ -54,9 +54,7 @@
 
   <div class="wrapper ">
     <div class="sidebar" id='sidebar'>
-
       <div class="sidebar-wrapper" id="sidebar-wrapper" style="overflow-y: scroll; height: 100%">
-
         @php
           Auth()->user()->getRights();
         @endphp
@@ -75,7 +73,7 @@
             </a>
           </li>
           @endif
-          @if(in_array('dashboard',Auth()->user()->getRights()))
+          @if(in_array('indexCancels',Auth()->user()->getRights()))
             <li>
               <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
                 <i class="fas fa-skull-crossbones"></i>
