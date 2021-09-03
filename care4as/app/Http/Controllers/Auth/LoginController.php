@@ -57,18 +57,24 @@ class LoginController extends Controller
 
       if(Auth::attempt($credentials))
       {
-        if(Auth::User()->role == 'Agent')
-        {
-          $user = Auth::User();
-          // $user->load('retentiondetails');
+        // dd(Auth::User()->role);
+        switch (Auth::User()->role) {
+          case 'AgentTelefonica':
+          case 'TelefonicaTeamleiter':
 
-          return Redirect()->route('dashboard');
-        }
-        elseif (Auth::User()->role == 'AgentTelefonica') {
-          return Redirect()->route('pausetool');
-        }
-        else {
-          return Redirect()->route('dashboard.admin');
+            return Redirect()->route('pausetool');
+            break;
+
+          case 'superadmin':
+          case 'Admin':
+          case 'dashboard':
+          case 'Nacharbeit':
+          case 'Overhead':
+
+            return Redirect()->route('dashboard.admin');
+            break;
+          default:
+            return Redirect()->route('dashboard');
         }
       }
       else {
