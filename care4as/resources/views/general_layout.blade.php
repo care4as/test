@@ -137,7 +137,7 @@
             </div>
           </li>
           @endif
-          @if(in_array('indexUser',Auth()->user()->getRights()))
+          @if(in_array('statistics',Auth()->user()->getRights()))
           <li>
             <a class="" href="{{route('presentation')}}">
               <i class="far fa-file-powerpoint"></i>
