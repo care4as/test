@@ -24,6 +24,18 @@ Route::get('/projekt_kpi', function(){
   return view('projekt_kpi');
 })->name('projekt_kpi');
 
+Route::get('/attainment', function(){
+
+  //return 1 ;
+  return view('attainment');
+})->name('attainment');
+
+Route::get('/userlist', function(){
+
+  //return 1 ;
+  return view('userlist');
+})->name('userlist');
+
 Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
 Route::get('/messageOfTheDay', function()
 {
