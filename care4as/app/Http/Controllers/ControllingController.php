@@ -104,6 +104,16 @@ class ControllingController extends Controller
             $defaultVariablesArray['project_id']['telefonica_outbound'] = 14;
 
         //retrive data depending on choosen project
+        if($project == '1u1_dsl_retention') {
+            $dslSalesDataArray = $this->dslSalesData($defaultVariablesArray);
+            $dslWorktimeArray = $this->worktimeReport($defaultVariablesArray, $defaultVariablesArray['revenue_hour_should']['1u1_dsl_retention'], $defaultVariablesArray['project_id']['1u1_dsl_retention']); //(x, y, z, revenue/hour, project id)
+            $dslCoreDataArray = $this->dslCoreData($defaultVariablesArray, $dslSalesDataArray, $dslWorktimeArray);
+        } else {
+            $dslSalesDataArray = 0;
+            $dslWorktimeArray = 0;
+            $dslCoreDataArray = 0;
+        }
+
         if ($project == '1u1_mobile_retention') {
             //$mobileSalesDataArray = $this->mobileSalesReportKDW($startDate, $endDate, $differenceDate);
             $mobileSalesDataArray = $this->mobileSalesReportKDW($defaultVariablesArray);
@@ -116,35 +126,327 @@ class ControllingController extends Controller
         }
 
         if ($project == '1u1_terminationadministration') {
-            $terminationSalesDataArray = 0;
+            $terminationSalesDataArray = $this->terminationSalesData($defaultVariablesArray);
             $terminationWorktimeArray = $this->worktimeReport($defaultVariablesArray, $defaultVariablesArray['revenue_hour_should']['1u1_terminationadministration'], $defaultVariablesArray['project_id']['1u1_terminationadministration']); //(x, y, z, revenue/hour, project id)
-            $terminationCoreDataArray = 0;
+            $terminationCoreDataArray = $this->terminationCoreData($defaultVariablesArray, $terminationSalesDataArray, $terminationWorktimeArray);
         } else {
             $terminationSalesDataArray = 0;
             $terminationWorktimeArray = 0;
             $terminationCoreDataArray = 0;
         }
-        //dd($defaultVariablesArray);
-        return view('umsatzmeldung', compact('defaultVariablesArray', 'mobileSalesDataArray', 'mobileWorktimeArray', 'mobileCoreDataArray', 'terminationSalesDataArray', 'terminationWorktimeArray', 'terminationCoreDataArray'));
+
+        if($project == 'telefonica_outbound') {
+            $telefonicaSalesDataArray = 0;
+            $telefonicaWorktimeArray = $this->worktimeReport($defaultVariablesArray, $defaultVariablesArray['revenue_hour_should']['telefonica_outbound'], $defaultVariablesArray['project_id']['telefonica_outbound']); //(x, y, z, revenue/hour, project id)
+            $telefonicaCoreDataArray = 0;
+        } else {
+            $telefonicaSalesDataArray = 0;
+            $telefonicaWorktimeArray = 0;
+            $telefonicaCoreDataArray = 0;
+        }
+
+        return view('umsatzmeldung', compact('dslSalesDataArray', 'dslWorktimeArray', 'dslCoreDataArray', 'telefonicaSalesDataArray', 'telefonicaWorktimeArray', 'telefonicaCoreDataArray', 'defaultVariablesArray', 'mobileSalesDataArray', 'mobileWorktimeArray', 'mobileCoreDataArray', 'terminationSalesDataArray', 'terminationWorktimeArray', 'terminationCoreDataArray'));
         
     }
 
+//DSL START
+    public function dslSalesData($defaultVariablesArray){
+        //define sales parameters
+        $dslRetRevenue = 16.00; 
+        $dslPreRevenue = 17.00;
+        $dslKueRevenue = 5.00;
+        $availbenchApporxMinutePrice = 0.439;
+        $availbenchApproxAht = 550;
 
+        $dslSalesDataArray['information']['dslRetRebenue'] = $dslRetRevenue;
+        $dslSalesDataArray['information']['dslPreRebenue'] = $dslPreRevenue;
+        $dslSalesDataArray['information']['dslKueRebenue'] = $dslKueRevenue;
+        $dslSalesDataArray['information']['dslRetRebenueString'] = number_format($dslRetRevenue, 2,",",".");
+        $dslSalesDataArray['information']['dslPreRebenueString'] = number_format($dslPreRevenue, 2,",",".");
+        $dslSalesDataArray['information']['dslKueRebenueString'] = number_format($dslKueRevenue, 2,",",".");
+
+        //define cumulative variables
+        $dslSalesDataArray['kdwSalesData']['cumulative']['retSaves'] = 0;
+        $dslSalesDataArray['kdwSalesData']['cumulative']['preSaves'] = 0;
+        $dslSalesDataArray['kdwSalesData']['cumulative']['kueSaves'] = 0;
+        $dslSalesDataArray['kdwSalesData']['cumulative']['sumSaves'] = 0;
+        $dslSalesDataArray['kdwSalesData']['cumulative']['calls'] = 0;
+        $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSaveSum'] = 0;
+        $dslSalesDataArray['kdwSalesData']['cumulative']['revenueAvailbenchSum'] = 0;
+        $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] = 0;
+        
+        //loop time span
+        for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
+            $day = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
+
+            $salesData = DB::connection('mysqlkdwtracking')
+            ->table('1und1_dslr_tracking_inb_new_ebk')
+            // ->whereIn('MA_id', $userids)
+            ->whereDate('date', '=', $day)
+            ->get();
+
+            //dd($salesData)
+
+            //daily
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['retSaves'] = $salesData->sum('ret_de_1u1_rt_save');
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['preSaves'] = $salesData->sum('prev_save_queue_save');
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['kueSaves'] = $salesData->sum('kuerue');
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['sumSaves'] = $dslSalesDataArray['kdwSalesData']['daily'][$day]['retSaves']
+                                                                                        + $dslSalesDataArray['kdwSalesData']['daily'][$day]['preSaves']
+                                                                                        + $dslSalesDataArray['kdwSalesData']['daily'][$day]['kueSaves'];
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['calls'] = $salesData->sum('calls');
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSaveSum'] = $dslSalesDataArray['kdwSalesData']['daily'][$day]['retSaves'] * $dslRetRevenue
+                                                                                        + $dslSalesDataArray['kdwSalesData']['daily'][$day]['preSaves'] * $dslPreRevenue
+                                                                                        + $dslSalesDataArray['kdwSalesData']['daily'][$day]['kueSaves'] * $dslKueRevenue;
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSaveSumString'] = number_format($dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSaveSum'], 2,",",".");
+            if($dslSalesDataArray['kdwSalesData']['daily'][$day]['sumSaves'] == 0){
+                $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSave'] = 0;
+            }else{
+                $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSave'] = $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSaveSum'] / $dslSalesDataArray['kdwSalesData']['daily'][$day]['sumSaves'];
+            }
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSaveString'] = number_format($dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSave'], 2,",",".");
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueAvailbenchSum'] = $dslSalesDataArray['kdwSalesData']['daily'][$day]['calls']
+                                                                                                    * ($availbenchApproxAht / 60)
+                                                                                                    * $availbenchApporxMinutePrice;
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueAvailbenchSumString'] = number_format($dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueAvailbenchSum'], 2,",",".");
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'] = $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSaveSum']
+                                                                                        + $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueAvailbenchSum'];
+            $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSumString'] = number_format($dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'], 2,",",".");
+
+            //cumulative
+            $dslSalesDataArray['kdwSalesData']['cumulative']['retSaves'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['retSaves'];
+            $dslSalesDataArray['kdwSalesData']['cumulative']['preSaves'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['preSaves'];
+            $dslSalesDataArray['kdwSalesData']['cumulative']['kueSaves'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['kueSaves'];
+            $dslSalesDataArray['kdwSalesData']['cumulative']['sumSaves'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['sumSaves'];
+            $dslSalesDataArray['kdwSalesData']['cumulative']['calls'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['calls'];
+            $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSaveSum'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSaveSum'];
+            $dslSalesDataArray['kdwSalesData']['cumulative']['revenueAvailbenchSum'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueAvailbenchSum'];
+            $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'];
+        }
+        if($dslSalesDataArray['kdwSalesData']['cumulative']['calls'] == 0) {
+            $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSave'] = 0;
+        } else {
+            $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSave'] = $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSaveSum']
+                                                                                / $dslSalesDataArray['kdwSalesData']['cumulative']['sumSaves'];
+        }
+        $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSaveString'] = number_format($dslSalesDataArray['kdwSalesData']['cumulative']['revenueSave'], 2,",",".");
+        $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSaveSumString'] = number_format($dslSalesDataArray['kdwSalesData']['cumulative']['revenueSaveSum'], 2,",",".");
+        $dslSalesDataArray['kdwSalesData']['cumulative']['revenueAvailbenchSumString'] = number_format($dslSalesDataArray['kdwSalesData']['cumulative']['revenueAvailbenchSum'], 2,",",".");
+        $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSumString'] = number_format($dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'], 2,",",".");
+
+        //dd($dslSalesDataArray);
+        return $dslSalesDataArray;
+    }
+
+    public function dslCoreData($defaultVariablesArray, $dslSalesDataArray, $dslWorktimeArray){
+        if($dslWorktimeArray['cumulative']['paid_hours_int'] == 0) {
+            $dslCoreDataArray['cumulative']['revenuePaidHour'] = 0;
+        } else {
+            $dslCoreDataArray['cumulative']['revenuePaidHour'] = $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] / $dslWorktimeArray['cumulative']['paid_hours_int'];
+        }
+        $dslCoreDataArray['cumulative']['revenuePaidHourString'] = number_format($dslCoreDataArray['cumulative']['revenuePaidHour'], 2,",",".");
+        $dslCoreDataArray['cumulative']['revenueDelta'] = $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] - $dslWorktimeArray['cumulative']['revenue_should_int'];
+        $dslCoreDataArray['cumulative']['revenueDeltaString'] = number_format($dslCoreDataArray['cumulative']['revenueDelta'], 2,",",".");
+        if($dslWorktimeArray['cumulative']['revenue_should_int'] == 0) {
+            $dslCoreDataArray['cumulative']['attainmeint'] = 0;
+        } else {
+            $dslCoreDataArray['cumulative']['attainmeint'] = ($dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] / $dslWorktimeArray['cumulative']['revenue_should_int']) * 100;
+        }
+        $dslCoreDataArray['cumulative']['attainmeintString'] = number_format($dslCoreDataArray['cumulative']['attainmeint'], 2,",",".");
+
+        $dslCoreDataArray['overview']['revenueShould'] = $dslWorktimeArray['cumulative']['fte_medium_int'] * 173 * $defaultVariablesArray['revenue_hour_should']['1u1_dsl_retention'] * $defaultVariablesArray['industrial_months'];
+        $dslCoreDataArray['overview']['revenueShouldString'] = number_format($dslCoreDataArray['overview']['revenueShould'], 2,",",".");
+        $dslCoreDataArray['overview']['revenueDelta'] = $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] - $dslCoreDataArray['overview']['revenueShould'];
+        $dslCoreDataArray['overview']['revenueDeltaString'] = number_format($dslCoreDataArray['overview']['revenueDelta'], 2,",",".");
+        if($dslCoreDataArray['overview']['revenueShould'] == 0) {
+            $dslCoreDataArray['overview']['attainment'] = 0;
+        } else {
+            $dslCoreDataArray['overview']['attainment'] = ($dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] / $dslCoreDataArray['overview']['revenueShould']) * 100;
+        }
+        $dslCoreDataArray['overview']['attainmentString'] = number_format($dslCoreDataArray['overview']['attainment'], 2,",",".");
+        if ($dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] == 0){
+            $dslCoreDataArray['overview']['db2'] = 0;
+        } else {
+            $dslCoreDataArray['overview']['db2'] = (1 - ($dslCoreDataArray['overview']['revenueShould'] / $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'])) * 100;
+        }
+        $dslCoreDataArray['overview']['db2String'] = number_format($dslCoreDataArray['overview']['db2'], 2,",",".");
+
+        for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
+            $day = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
+
+            if($dslWorktimeArray[$day]['work_hours'] == 0){
+                $dslCoreDataArray['daily'][$day]['revenuePaidHour'] = 0;
+            } else {
+            $dslCoreDataArray['daily'][$day]['revenuePaidHour'] = ($dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'] / $dslWorktimeArray[$day]['work_hours']);
+            }
+            $dslCoreDataArray['daily'][$day]['revenuePaidHourString'] = number_format($dslCoreDataArray['daily'][$day]['revenuePaidHour'], 2,",",".");
+            $dslCoreDataArray['daily'][$day]['revenueDelta'] = $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'] - $dslWorktimeArray[$day]['revenue_should_int'];
+            $dslCoreDataArray['daily'][$day]['revenueDeltaString'] = number_format($dslCoreDataArray['daily'][$day]['revenueDelta'], 2,",",".");
+            if ($dslWorktimeArray[$day]['revenue_should_int'] == 0) {
+                $dslCoreDataArray['daily'][$day]['attainmeint'] = 0;
+            } else {
+            $dslCoreDataArray['daily'][$day]['attainmeint'] = ($dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'] / $dslWorktimeArray[$day]['revenue_should_int']) * 100;
+            }
+            $dslCoreDataArray['daily'][$day]['attainmeintString'] = number_format($dslCoreDataArray['daily'][$day]['attainmeint'], 2,",",".");
+        }
+
+        //dd($dslCoreDataArray);
+        return $dslCoreDataArray;
+    }
+
+
+//DSL END
     
 //TERMINATION START
+    public function terminationSalesData($defaultVariablesArray){
+        //dfefine sales parameters
+        $kueRevenue = 1.854;
+        $brlRevenue = 0.656;
+        
+        //define tracking to distinctcase ratio (tdr)
+        $kueTdr = 0.85;
+        $brlTdr = 0.75;
+        
+        //define salesdata array
+        $terminationSalesData['information']['kueRevenue'] = number_format($kueRevenue, 3,",",".");
+        $terminationSalesData['information']['brlRevenue'] = number_format($brlRevenue, 3,",",".");
+        $terminationSalesData['information']['kueTdr'] = number_format($kueTdr * 100, 2,",","."); 
+        $terminationSalesData['information']['brlTdr'] = number_format($brlTdr * 100, 2,",",".");
+        //$terminationSalesData['nzrSalesData']['cumulative'] = 'folgt...';
+        //$terminationSalesData['nzrSalesData']['daily'] = 'folgt...';
+
+        $terminationSalesData['kdwSalesData']['cumulative']['kueCases'] = 0;
+        $terminationSalesData['kdwSalesData']['cumulative']['brlCases'] = 0;
+        $terminationSalesData['kdwSalesData']['cumulative']['kueDistinctCases'] = 0;
+        $terminationSalesData['kdwSalesData']['cumulative']['brlDistinctCases'] = 0;
+        $terminationSalesData['kdwSalesData']['cumulative']['sumDistinctCases'] = 0;
+
+        //loop timespan
+        for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
+            $currentDate = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
+
+            $salesData = DB::connection('mysqlkdwtracking')
+            ->table('1und1_offline')
+            // ->whereIn('MA_id', $userids)
+            ->whereDate('date', '=', $currentDate)
+            ->get();
+
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['kueCases'] = $salesData->sum('fire_value');
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['brlCases'] = $salesData->sum('letterreturns_value');
+
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['kueDistinctCases'] = $terminationSalesData['kdwSalesData']['daily'][$currentDate]['kueCases'] * $kueTdr;
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['brlDistinctCases'] = $terminationSalesData['kdwSalesData']['daily'][$currentDate]['brlCases'] * $kueTdr;
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['sumDistinctCases'] = $terminationSalesData['kdwSalesData']['daily'][$currentDate]['kueDistinctCases']
+                                                                                                + $terminationSalesData['kdwSalesData']['daily'][$currentDate]['brlDistinctCases'];
+
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['revenueSum'] = $terminationSalesData['kdwSalesData']['daily'][$currentDate]['kueDistinctCases'] * $kueRevenue
+                                                                                            + $terminationSalesData['kdwSalesData']['daily'][$currentDate]['brlDistinctCases'] * $brlRevenue;
+            
+            if($terminationSalesData['kdwSalesData']['daily'][$currentDate]['sumDistinctCases'] == 0){
+                $terminationSalesData['kdwSalesData']['daily'][$currentDate]['revenueCase'] = 0;
+            } else {                                                                           
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['revenueCase'] = $terminationSalesData['kdwSalesData']['daily'][$currentDate]['revenueSum'] 
+                                                                                            / $terminationSalesData['kdwSalesData']['daily'][$currentDate]['sumDistinctCases'];
+            }
+        
+            $terminationSalesData['kdwSalesData']['cumulative']['kueCases'] += $terminationSalesData['kdwSalesData']['daily'][$currentDate]['kueCases'];
+            $terminationSalesData['kdwSalesData']['cumulative']['brlCases'] += $terminationSalesData['kdwSalesData']['daily'][$currentDate]['brlCases'];
+            $terminationSalesData['kdwSalesData']['cumulative']['kueDistinctCases'] += $terminationSalesData['kdwSalesData']['daily'][$currentDate]['kueDistinctCases'];
+            $terminationSalesData['kdwSalesData']['cumulative']['brlDistinctCases'] += $terminationSalesData['kdwSalesData']['daily'][$currentDate]['brlDistinctCases'];
+            $terminationSalesData['kdwSalesData']['cumulative']['sumDistinctCases'] += $terminationSalesData['kdwSalesData']['daily'][$currentDate]['sumDistinctCases'];
+
+            //convert int to string
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['sumDistinctCasesString'] = number_format($terminationSalesData['kdwSalesData']['daily'][$currentDate]['sumDistinctCases'], 0,",",".");
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['revenueSumString'] = number_format($terminationSalesData['kdwSalesData']['daily'][$currentDate]['revenueSum'], 2,",",".");
+            $terminationSalesData['kdwSalesData']['daily'][$currentDate]['revenueCaseString'] = number_format($terminationSalesData['kdwSalesData']['daily'][$currentDate]['revenueCase'], 3,",",".");
+        
+
+        }
+        $terminationSalesData['kdwSalesData']['cumulative']['revenueSum'] = $terminationSalesData['kdwSalesData']['cumulative']['kueDistinctCases'] * $kueRevenue
+                                                                            + $terminationSalesData['kdwSalesData']['cumulative']['brlDistinctCases'] * $brlRevenue;
+        if($terminationSalesData['kdwSalesData']['cumulative']['sumDistinctCases'] == 0) {
+            $terminationSalesData['kdwSalesData']['cumulative']['revenueCase'] = 0;
+        } else {
+        $terminationSalesData['kdwSalesData']['cumulative']['revenueCase'] = $terminationSalesData['kdwSalesData']['cumulative']['revenueSum'] 
+                                                                                / $terminationSalesData['kdwSalesData']['cumulative']['sumDistinctCases'];
+        }
+
+        //convert int to string
+        $terminationSalesData['kdwSalesData']['cumulative']['revenueSumString'] = number_format($terminationSalesData['kdwSalesData']['cumulative']['revenueSum'], 2,",",".");
+        $terminationSalesData['kdwSalesData']['cumulative']['revenueCaseString'] = number_format($terminationSalesData['kdwSalesData']['cumulative']['revenueCase'], 3,",",".");
+        $terminationSalesData['kdwSalesData']['cumulative']['sumDistinctCasesString'] = number_format($terminationSalesData['kdwSalesData']['cumulative']['sumDistinctCases'], 0,",",".");
+
+        return $terminationSalesData;
+    }
+
+    public function terminationCoreData($defaultVariablesArray, $terminationSalesDataArray, $terminationWorktimeArray) {
+        if($terminationWorktimeArray['cumulative']['paid_hours_int'] == 0) {
+            $terminationCoreData['cumulative']['revenuePaidHour'] = 0;
+        } else {
+            $terminationCoreData['cumulative']['revenuePaidHour'] = $terminationSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] / $terminationWorktimeArray['cumulative']['paid_hours_int'];
+        }
+        $terminationCoreData['cumulative']['revenuePaidHourString'] = number_format($terminationCoreData['cumulative']['revenuePaidHour'], 2,",",".");
+        $terminationCoreData['cumulative']['revenueDelta'] = $terminationSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] - $terminationWorktimeArray['cumulative']['revenue_should_int'];
+        $terminationCoreData['cumulative']['revenueDeltaString'] = number_format($terminationCoreData['cumulative']['revenueDelta'], 2,",",".");
+        if($terminationWorktimeArray['cumulative']['revenue_should_int'] == 0) {
+            $terminationCoreData['cumulative']['attainmeint'] = 0;
+        } else {
+            $terminationCoreData['cumulative']['attainmeint'] = ($terminationSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] / $terminationWorktimeArray['cumulative']['revenue_should_int']) * 100;
+        }
+        $terminationCoreData['cumulative']['attainmeintString'] = number_format($terminationCoreData['cumulative']['attainmeint'], 2,",",".");
+
+        $terminationCoreData['overview']['revenueShould'] = $terminationWorktimeArray['cumulative']['fte_medium_int'] * 173 * $defaultVariablesArray['revenue_hour_should']['1u1_terminationadministration'] * $defaultVariablesArray['industrial_months'];
+        $terminationCoreData['overview']['revenueShouldString'] = number_format($terminationCoreData['overview']['revenueShould'], 2,",",".");
+        $terminationCoreData['overview']['revenueDelta'] = $terminationSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] - $terminationCoreData['overview']['revenueShould'];
+        $terminationCoreData['overview']['revenueDeltaString'] = number_format($terminationCoreData['overview']['revenueDelta'], 2,",",".");
+        if($terminationCoreData['overview']['revenueShould'] == 0) {
+            $terminationCoreData['overview']['attainment'] = 0;
+        } else {
+            $terminationCoreData['overview']['attainment'] = ($terminationSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] / $terminationCoreData['overview']['revenueShould']) * 100;
+        }
+        $terminationCoreData['overview']['attainmentString'] = number_format($terminationCoreData['overview']['attainment'], 2,",",".");
+        if ($terminationSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] == 0){
+            $terminationCoreData['overview']['db2'] = 0;
+        } else {
+            $terminationCoreData['overview']['db2'] = (1 - ($terminationCoreData['overview']['revenueShould'] / $terminationSalesDataArray['kdwSalesData']['cumulative']['revenueSum'])) * 100;
+        }
+        $terminationCoreData['overview']['db2String'] = number_format($terminationCoreData['overview']['db2'], 2,",",".");
+
+        for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
+            $currentDate = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
+
+            if($terminationWorktimeArray[$currentDate]['work_hours'] == 0){
+                $terminationCoreData['daily'][$currentDate]['revenuePaidHour'] = 0;
+            } else {
+            $terminationCoreData['daily'][$currentDate]['revenuePaidHour'] = ($terminationSalesDataArray['kdwSalesData']['daily'][$currentDate]['revenueSum'] / $terminationWorktimeArray[$currentDate]['work_hours']);
+            }
+            $terminationCoreData['daily'][$currentDate]['revenuePaidHourString'] = number_format($terminationCoreData['daily'][$currentDate]['revenuePaidHour'], 2,",",".");
+            $terminationCoreData['daily'][$currentDate]['revenueDelta'] = $terminationSalesDataArray['kdwSalesData']['daily'][$currentDate]['revenueSum'] - $terminationWorktimeArray[$currentDate]['revenue_should_int'];
+            $terminationCoreData['daily'][$currentDate]['revenueDeltaString'] = number_format($terminationCoreData['daily'][$currentDate]['revenueDelta'], 2,",",".");
+            if ($terminationWorktimeArray[$currentDate]['revenue_should_int'] == 0) {
+                $terminationCoreData['daily'][$currentDate]['attainmeint'] = 0;
+            } else {
+            $terminationCoreData['daily'][$currentDate]['attainmeint'] = ($terminationSalesDataArray['kdwSalesData']['daily'][$currentDate]['revenueSum'] / $terminationWorktimeArray[$currentDate]['revenue_should_int']) * 100;
+            }
+            $terminationCoreData['daily'][$currentDate]['attainmeintString'] = number_format($terminationCoreData['daily'][$currentDate]['attainmeint'], 2,",",".");
+        }
+
+        //dd($terminationCoreData);
+        return $terminationCoreData;
+    }
 //TERMINATION END
 
 //MOBILE START
     public function mobileCoreData($mobileSalesDataArray, $mobileWorktimeArray, $defaultVariablesArray){
-        $medianFTE = array_sum(array_column($mobileWorktimeArray, 'FTE_int')) / count($mobileWorktimeArray);
+        $medianFTE = $mobileWorktimeArray['cumulative']['fte_medium_int'];
 
         $mobileCoreDataArray = array(
             'sum_FTE_int' => array_sum(array_column($mobileWorktimeArray, 'FTE_int')),
             'median_FTE_string' => number_format($medianFTE, 3,",","."),
             'sum_work_hours_int' => array_sum(array_column($mobileWorktimeArray, 'work_hours')),
             'sum_work_hours_string' => number_format(array_sum(array_column($mobileWorktimeArray, 'work_hours')), 2,",","."),
-            'sum_revenue_should_int' => array_sum(array_column($mobileWorktimeArray, 'revenue_should_int')),
-            'sum_revenue_should_string' => number_format(array_sum(array_column($mobileWorktimeArray, 'revenue_should_int')), 2,",","."),
+            'sum_revenue_should_int' => $mobileWorktimeArray['cumulative']['revenue_should_int'],
+            'sum_revenue_should_string' => number_format($mobileWorktimeArray['cumulative']['revenue_should_int'], 2,",","."),
             'revenue_should_int' => $medianFTE * 173 * $defaultVariablesArray['revenue_hour_should']['1u1_mobile_retention'] * $defaultVariablesArray['industrial_months'],
             'revenue_should_string' => number_format($medianFTE * 173 * $defaultVariablesArray['revenue_hour_should']['1u1_mobile_retention'] * $defaultVariablesArray['industrial_months'], 2,",",".")
         );
@@ -153,9 +455,17 @@ class ControllingController extends Controller
         //dd($mobileSalesDataArray);
         $mobileCoreDataArray['revenue_delta_int'] = $mobileSalesDataArray['total_performance']['sum_revenue_int'] - $mobileCoreDataArray['revenue_should_int']; 
         $mobileCoreDataArray['revenue_delta_string'] = number_format($mobileCoreDataArray['revenue_delta_int'], 2,",",".");
-        $mobileCoreDataArray['db2_int'] = (1 - ($mobileCoreDataArray['revenue_should_int'] / $mobileSalesDataArray['total_performance']['sum_revenue_int']))*100;
+        if($mobileSalesDataArray['total_performance']['sum_revenue_int'] == 0){
+            $mobileCoreDataArray['db2_int'] = 0;
+        } else {
+            $mobileCoreDataArray['db2_int'] = (1 - ($mobileCoreDataArray['revenue_should_int'] / $mobileSalesDataArray['total_performance']['sum_revenue_int']))*100;
+        }
         $mobileCoreDataArray['db2_string'] = number_format($mobileCoreDataArray['db2_int'], 2,",",".");
-        $mobileCoreDataArray['attainment_int'] = $mobileSalesDataArray['total_performance']['sum_revenue_int'] / $mobileCoreDataArray['revenue_should_int'] * 100;
+        if($mobileCoreDataArray['revenue_should_int'] == 0) {
+            $mobileCoreDataArray['attainment_int'] = 0;
+        } else {
+            $mobileCoreDataArray['attainment_int'] = $mobileSalesDataArray['total_performance']['sum_revenue_int'] / $mobileCoreDataArray['revenue_should_int'] * 100;
+        }
         $mobileCoreDataArray['attainment_string'] = number_format($mobileCoreDataArray['attainment_int'], 2,",",".");
 
         for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
@@ -304,6 +614,9 @@ class ControllingController extends Controller
 
         //initialize data containing array
         $worktimeArray = array(); 
+        $worktimeArray['cumulative']['fte_sum_int'] = 0;
+        $worktimeArray['cumulative']['paid_hours_int'] = 0;
+        $worktimeArray['cumulative']['revenue_should_int'] = 0;
 
         //loop full timespan
         for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
@@ -311,6 +624,8 @@ class ControllingController extends Controller
             //set $currentDate according to loop
             $currentDate = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
 
+            $s = $i -1;
+            $currentDateMinusOne = date('Y-m-d', strtotime($currentDate. '- 1 days'));
             //get worktime
             $worktimeData = DB::connection('mysqlkdw')
             ->table('chronology_work')
@@ -345,6 +660,7 @@ class ControllingController extends Controller
             ->whereIn('agent_ds_id', $projectMA)
             ->pluck('agent_ds_id');
 
+
             //Get FTE Data
             $FTEData = DB::connection('mysqlkdw')
             ->table('MA')
@@ -364,6 +680,9 @@ class ControllingController extends Controller
             $worktimeArray[$currentDate]['FTE_int'] = $worktimeArray[$currentDate]['contract_hours'] * 5 / 40;
             $worktimeArray[$currentDate]['FTE_string'] = number_format($worktimeArray[$currentDate]['contract_hours'] * 5 / 40, 3,",",".");
 
+            $worktimeArray['cumulative']['fte_sum_int'] += $worktimeArray[$currentDate]['FTE_int'];
+            $worktimeArray['cumulative']['paid_hours_int'] += $worktimeArray[$currentDate]['work_hours'];
+            $worktimeArray['cumulative']['revenue_should_int'] += $worktimeArray[$currentDate]['revenue_should_int'];
 
             //get employment
             $employmentData = DB::connection('mysqlkdw')
@@ -375,7 +694,7 @@ class ControllingController extends Controller
 
             foreach($employmentData as $user)
             {
-                $worktimeArray[$currentDate]['employment'][] = $user->vorname . ' ' . $user->familienname;
+                $worktimeArray[$currentDate]['employment'][] = $user->agent_id;
             }
 
             //unemployment
@@ -388,9 +707,67 @@ class ControllingController extends Controller
 
             foreach($unemploymentData as $user)
             {
-                $worktimeArray[$currentDate]['unemployment'][] = $user->vorname . ' ' . $user->familienname;
+                $worktimeArray[$currentDate]['unemployment'][] = $user->agent_id;
+            }
+
+            //get unproductive employees on given date
+            $unproductiveEmployeesExtended = DB::connection('mysqlkdw') 
+            ->table('history_state')
+            ->where(function($query) use($currentDate, $currentDateMinusOne){
+                $query
+                ->where('date_begin', '=', $currentDate)
+                ->orWhere('date_end', '=', $currentDateMinusOne);
+            })
+            ->where(function($query){
+                $query
+                ->where('state_id', '=', 13) //"Krank o.Lfz"
+                ->orWhere('state_id', '=', 15) //"Mutterschutz"
+                ->orWhere('state_id', '=', 16) //"Erziehungsurlaub"
+                ->orWhere('state_id', '=', 24); //"Beschäftigungsverbot"
+            })
+            ->whereIn('agent_ds_id', $projectMA)
+            ->get();
+
+            foreach($unproductiveEmployeesExtended as $user){
+                if($user->date_begin == $currentDate){
+                    if($user->state_id == 13){
+                        $worktimeArray[$currentDate]['unproductive'][] = 'Start Krank o. Lfz: ' . $user->agent_id;
+                    }
+                    if($user->state_id == 15){
+                        $worktimeArray[$currentDate]['unproductive'][] = 'Start Mutterschutz: ' . $user->agent_id;
+                    }
+                    if($user->state_id == 16){
+                        $worktimeArray[$currentDate]['unproductive'][] = 'Start Erziehungsurlaub: ' . $user->agent_id;
+                    }
+                    if($user->state_id == 24){
+                        $worktimeArray[$currentDate]['unproductive'][] = 'Start Beschäftigungsverbot: ' . $user->agent_id;
+                    }
+                }
+                if($user->date_end == $currentDateMinusOne){
+                    if($user->state_id == 13){
+                        $worktimeArray[$currentDate]['unproductive'][] = 'Ende Krank o. Lfz: ' . $user->agent_id;
+                    }
+                    if($user->state_id == 15){
+                        $worktimeArray[$currentDate]['unproductive'][] = 'Ende Mutterschutz: ' . $user->agent_id;
+                    }
+                    if($user->state_id == 16){
+                        $worktimeArray[$currentDate]['unproductive'][] = 'Ende Erziehungsurlaub: ' . $user->agent_id;
+                    }
+                    if($user->state_id == 24){
+                        $worktimeArray[$currentDate]['unproductive'][] = 'Ende Beschäftigungsverbot: ' . $user->agent_id;
+                    }
+                }
             }
         }
+        
+        $worktimeArray['cumulative']['paid_hours_string'] = number_format($worktimeArray['cumulative']['paid_hours_int'], 2,",",".");
+        $worktimeArray['cumulative']['revenue_should_string'] = number_format($worktimeArray['cumulative']['revenue_should_int'], 2,",",".");
+        $worktimeArray['cumulative']['fte_medium_int'] = $worktimeArray['cumulative']['fte_sum_int'] / ($defaultVariablesArray['difference_date'] + 1);
+        $worktimeArray['cumulative']['fte_medium_string'] = number_format($worktimeArray['cumulative']['fte_medium_int'], 3,",",".");
+
+
+        //dd($worktimeArray);
+
         return $worktimeArray;
     }
 //GENERAL FUNCTIONS END
