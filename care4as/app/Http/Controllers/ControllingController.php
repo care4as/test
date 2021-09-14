@@ -104,7 +104,7 @@ class ControllingController extends Controller
             $defaultVariablesArray['project_id']['telefonica_outbound'] = 14;
 
         //retrive data depending on choosen project
-        if($project == '1u1_dsl_retention') {
+        if($project == '1u1_dsl_retention' or $project == 'all') {
             $dslSalesDataArray = $this->dslSalesData($defaultVariablesArray);
             $dslWorktimeArray = $this->worktimeReport($defaultVariablesArray, $defaultVariablesArray['revenue_hour_should']['1u1_dsl_retention'], $defaultVariablesArray['project_id']['1u1_dsl_retention']); //(x, y, z, revenue/hour, project id)
             $dslCoreDataArray = $this->dslCoreData($defaultVariablesArray, $dslSalesDataArray, $dslWorktimeArray);
@@ -114,7 +114,7 @@ class ControllingController extends Controller
             $dslCoreDataArray = 0;
         }
 
-        if ($project == '1u1_mobile_retention') {
+        if ($project == '1u1_mobile_retention' or $project == 'all') {
             //$mobileSalesDataArray = $this->mobileSalesReportKDW($startDate, $endDate, $differenceDate);
             $mobileSalesDataArray = $this->mobileSalesReportKDW($defaultVariablesArray);
             $mobileWorktimeArray = $this->worktimeReport($defaultVariablesArray, $defaultVariablesArray['revenue_hour_should']['1u1_mobile_retention'], $defaultVariablesArray['project_id']['1u1_mobile_retention']); //(x, y, z, revenue/hour, project id)
@@ -125,7 +125,7 @@ class ControllingController extends Controller
             $mobileCoreDataArray = 0;
         }
 
-        if ($project == '1u1_terminationadministration') {
+        if ($project == '1u1_terminationadministration' or $project == 'all') {
             $terminationSalesDataArray = $this->terminationSalesData($defaultVariablesArray);
             $terminationWorktimeArray = $this->worktimeReport($defaultVariablesArray, $defaultVariablesArray['revenue_hour_should']['1u1_terminationadministration'], $defaultVariablesArray['project_id']['1u1_terminationadministration']); //(x, y, z, revenue/hour, project id)
             $terminationCoreDataArray = $this->terminationCoreData($defaultVariablesArray, $terminationSalesDataArray, $terminationWorktimeArray);
@@ -135,10 +135,10 @@ class ControllingController extends Controller
             $terminationCoreDataArray = 0;
         }
 
-        if($project == 'telefonica_outbound') {
-            $telefonicaSalesDataArray = 0;
+        if($project == 'telefonica_outbound' or $project == 'all') {
+            $telefonicaSalesDataArray = $this->telefonicaSalesData($defaultVariablesArray);
             $telefonicaWorktimeArray = $this->worktimeReport($defaultVariablesArray, $defaultVariablesArray['revenue_hour_should']['telefonica_outbound'], $defaultVariablesArray['project_id']['telefonica_outbound']); //(x, y, z, revenue/hour, project id)
-            $telefonicaCoreDataArray = 0;
+            $telefonicaCoreDataArray = $this->telefonicaCoreData($defaultVariablesArray, $telefonicaSalesDataArray, $telefonicaWorktimeArray);
         } else {
             $telefonicaSalesDataArray = 0;
             $telefonicaWorktimeArray = 0;
@@ -223,7 +223,7 @@ class ControllingController extends Controller
             $dslSalesDataArray['kdwSalesData']['cumulative']['revenueAvailbenchSum'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueAvailbenchSum'];
             $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] += $dslSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'];
         }
-        if($dslSalesDataArray['kdwSalesData']['cumulative']['calls'] == 0) {
+        if($dslSalesDataArray['kdwSalesData']['cumulative']['sumSaves'] == 0) {
             $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSave'] = 0;
         } else {
             $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSave'] = $dslSalesDataArray['kdwSalesData']['cumulative']['revenueSaveSum']
@@ -602,6 +602,127 @@ class ControllingController extends Controller
         return $salesReportDataKDW;
     }
 //MOBILE END
+
+//TELEFONIA START
+    public function telefonicaSalesData($defaultVariablesArray){
+        //define sales parameters
+        $takeRevenue = 90.00 ;
+
+        //define salesDataArray
+        $telefonicaSalesDataArray['information']['salesRevenue'] = number_format($takeRevenue, 2,",",".");
+
+        //define cumulative variables
+        $telefonicaSalesDataArray['kdwSalesData']['cumulative']['sumTakes'] = 0;
+        $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueTakes'] = 0;
+        $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenuePerTake'] = 0;
+        $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] = 0;
+
+        //loop time span
+        for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
+            $day = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
+
+            $salesData = DB::connection('mysqlkdwtracking')
+            ->table('telefonica')
+            // ->whereIn('MA_id', $userids)
+            ->whereDate('date', '=', $day)
+            ->get();
+
+            //daily variables
+            $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['sumTakes'] = $salesData->sum('positiv');
+            $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueTakes'] = $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['sumTakes'] * $takeRevenue;
+            $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueTakesString'] = number_format($telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueTakes'], 2,",",".");
+            if($telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['sumTakes'] == 0){
+                $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenuePerTake'] = 0;
+            } else {
+                $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenuePerTake'] = $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueTakes'] / $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['sumTakes'];
+            }
+            
+            $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenuePerTakeString'] = number_format($telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenuePerTake'], 2,",",".");
+            //CHANGE ACCORDING TO QUALITYBONUS
+            $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'] = $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueTakes'];
+            $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueSumString'] = number_format($telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'], 2,",",".");
+
+            //cumulative variables
+            $telefonicaSalesDataArray['kdwSalesData']['cumulative']['sumTakes'] += $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['sumTakes'];
+            $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueTakes'] += $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueTakes'];
+            $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] += $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'];
+        }
+
+        if($telefonicaSalesDataArray['kdwSalesData']['cumulative']['sumTakes'] == 0){
+            $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenuePerTake'] = 0;
+        } else {
+            $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenuePerTake'] = $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueTakes'] / $telefonicaSalesDataArray['kdwSalesData']['cumulative']['sumTakes'];
+        }
+
+        $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueTakesString'] = number_format($telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueTakes'], 2,",",".");
+        $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenuePerTakeString'] = number_format($telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenuePerTake'], 2,",",".");
+        $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSumString'] = number_format($telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'], 2,",",".");
+
+        return $telefonicaSalesDataArray;
+    }
+
+    public function telefonicaCoreData($defaultVariablesArray, $telefonicaSalesDataArray, $telefonicaWorktimeArray){
+        if($telefonicaWorktimeArray['cumulative']['paid_hours_int'] == 0) {
+            $telefonicaCoreDataArray['cumulative']['revenuePaidHour'] = 0;
+        } else {
+            $telefonicaCoreDataArray['cumulative']['revenuePaidHour'] = $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] / $telefonicaWorktimeArray['cumulative']['paid_hours_int'];
+        }
+        $telefonicaCoreDataArray['cumulative']['revenuePaidHourString'] = number_format($telefonicaCoreDataArray['cumulative']['revenuePaidHour'], 2,",",".");
+        $telefonicaCoreDataArray['cumulative']['revenueDelta'] = $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] - $telefonicaWorktimeArray['cumulative']['revenue_should_int'];
+        $telefonicaCoreDataArray['cumulative']['revenueDeltaString'] = number_format($telefonicaCoreDataArray['cumulative']['revenueDelta'], 2,",",".");
+        if($telefonicaWorktimeArray['cumulative']['revenue_should_int'] == 0) {
+            $telefonicaCoreDataArray['cumulative']['attainmeint'] = 0;
+        } else {
+            $telefonicaCoreDataArray['cumulative']['attainmeint'] = ($telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] / $telefonicaWorktimeArray['cumulative']['revenue_should_int']) * 100;
+        }
+        $telefonicaCoreDataArray['cumulative']['attainmeintString'] = number_format($telefonicaCoreDataArray['cumulative']['attainmeint'], 2,",",".");
+
+        $telefonicaCoreDataArray['overview']['revenueShould'] = $telefonicaWorktimeArray['cumulative']['fte_medium_int'] * 173 * $defaultVariablesArray['revenue_hour_should']['telefonica_outbound'] * $defaultVariablesArray['industrial_months'];
+        $telefonicaCoreDataArray['overview']['revenueShouldString'] = number_format($telefonicaCoreDataArray['overview']['revenueShould'], 2,",",".");
+        $telefonicaCoreDataArray['overview']['revenueDelta'] = $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] - $telefonicaCoreDataArray['overview']['revenueShould'];
+        $telefonicaCoreDataArray['overview']['revenueDeltaString'] = number_format($telefonicaCoreDataArray['overview']['revenueDelta'], 2,",",".");
+        if($telefonicaCoreDataArray['overview']['revenueShould'] == 0) {
+            $telefonicaCoreDataArray['overview']['attainment'] = 0;
+        } else {
+            $telefonicaCoreDataArray['overview']['attainment'] = ($telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] / $telefonicaCoreDataArray['overview']['revenueShould']) * 100;
+        }
+        $telefonicaCoreDataArray['overview']['attainmentString'] = number_format($telefonicaCoreDataArray['overview']['attainment'], 2,",",".");
+        if ($telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'] == 0){
+            $telefonicaCoreDataArray['overview']['db2'] = 0;
+        } else {
+            $telefonicaCoreDataArray['overview']['db2'] = (1 - ($telefonicaCoreDataArray['overview']['revenueShould'] / $telefonicaSalesDataArray['kdwSalesData']['cumulative']['revenueSum'])) * 100;
+        }
+        $telefonicaCoreDataArray['overview']['db2String'] = number_format($telefonicaCoreDataArray['overview']['db2'], 2,",",".");
+
+        for($i=0; $i <= $defaultVariablesArray['difference_date']; $i++){
+            $day = date('Y-m-d', strtotime($defaultVariablesArray['startdate']. '+ '.$i.' days'));
+
+            if($telefonicaWorktimeArray[$day]['work_hours'] == 0){
+                $telefonicaCoreDataArray['daily'][$day]['revenuePaidHour'] = 0;
+            } else {
+            $telefonicaCoreDataArray['daily'][$day]['revenuePaidHour'] = ($telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'] / $telefonicaWorktimeArray[$day]['work_hours']);
+            }
+            $telefonicaCoreDataArray['daily'][$day]['revenuePaidHourString'] = number_format($telefonicaCoreDataArray['daily'][$day]['revenuePaidHour'], 2,",",".");
+            $telefonicaCoreDataArray['daily'][$day]['revenueDelta'] = $telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'] - $telefonicaWorktimeArray[$day]['revenue_should_int'];
+            $telefonicaCoreDataArray['daily'][$day]['revenueDeltaString'] = number_format($telefonicaCoreDataArray['daily'][$day]['revenueDelta'], 2,",",".");
+            if ($telefonicaWorktimeArray[$day]['revenue_should_int'] == 0) {
+                $telefonicaCoreDataArray['daily'][$day]['attainmeint'] = 0;
+            } else {
+            $telefonicaCoreDataArray['daily'][$day]['attainmeint'] = ($telefonicaSalesDataArray['kdwSalesData']['daily'][$day]['revenueSum'] / $telefonicaWorktimeArray[$day]['revenue_should_int']) * 100;
+            }
+            $telefonicaCoreDataArray['daily'][$day]['attainmeintString'] = number_format($telefonicaCoreDataArray['daily'][$day]['attainmeint'], 2,",",".");
+        }
+
+        //dd($telefonicaCoreDataArray);
+        return $telefonicaCoreDataArray;
+    }
+//TELEFONIA END
+
+//ALL START
+    public function allCoreData(){
+
+    }
+//ALL END
 
 //GENERAL FUNCTIONS START
     public function worktimeReport($defaultVariablesArray, $revenueShouldHour, $projectID){
