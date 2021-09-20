@@ -141,13 +141,10 @@ class HomeController extends Controller
     }
     public function presentation(Request $request)
     {
-
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
-
       date_default_timezone_set('Europe/Berlin');
-
       $modul = 'Userübersicht';
 
       $allSSCCalls = 0;
@@ -158,6 +155,8 @@ class HomeController extends Controller
       $allPortalSaves = 0;
       $allRLZ24= 0;
       $allMLZV= 0;
+      $allOptinCalls =0;
+      $allOptinRequests =0;
 
       $year = Carbon::now()->year;
       $start_date = 1;
@@ -651,6 +650,9 @@ class HomeController extends Controller
         $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
         $optinRequests = $user->Optin->sum('Anzahl_OptIn-Erfolg');
 
+        $allOptinCalls += $optinCalls;
+        $allOptinRequests += $optinRequests;
+
         // dd($user, $user->Optin);
 
         if ($optinCalls != 0) {
@@ -678,9 +680,12 @@ class HomeController extends Controller
         'allPortaleCalls' => $allPortalCalls,
         'allPortaleSaves' => $allPortalSaves,
         'allRLZ24' => $allRLZ24,
-        'allMVLZ' => $allMLZV
+        'allMVLZ' => $allMLZV,
+        'allOptinCalls' => $allOptinCalls,
+        'allOptinRequests' => $allOptinRequests,
       );
 
+      // dd($overalldata);
       return view('DB', compact('overalldata', 'users'));
     }
     public function test($value='')

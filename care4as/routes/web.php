@@ -335,6 +335,8 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/test', function(){
 
+
+    // DB::connection('');
     return view('test');
 
 

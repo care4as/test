@@ -841,6 +841,8 @@
                   let allportalcalls = {{$overalldata['allPortaleCalls']}}
                   let rlz24 = {{$overalldata['allRLZ24']}}
                   let mvlz = {{$overalldata['allMVLZ']}}
+                  let optinCalls = {{$overalldata['allOptinCalls']}}
+                  let optinRequests = {{$overalldata['allOptinRequests']}}
 
                   table.columns().visible( false );
                   table.columns([0,1,2,17,21,22,23,24,25,30,31]).visible( true );
@@ -867,7 +869,7 @@
                   $(table.column( 4 ).footer() ).html('<b>'+getQuota(allportalcalls,allportalsaves)+'%</b>');
                   $(table.column( 5 ).footer() ).html('<b> sas</b>');
                   $(table.column( 6 ).footer() ).html('<b>'+getQuota(rlz24,mvlz)+'%</b>');
-                  $(table.column( 7 ).footer() ).html('<b>optin</b>');
+                  $(table.column( 7 ).footer() ).html('<b>'+getQuota(optinCalls,optinRequests)+'%</b>');
                   $(table.column( 8 ).footer() ).html('<b>aht</b>');
 
                   // table.draw()
