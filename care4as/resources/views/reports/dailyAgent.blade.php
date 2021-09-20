@@ -4,8 +4,118 @@
   <link href="{{asset('css/dropzone.min.css')}}" rel="stylesheet" />
 
   <style media="screen">
+  #debugroute
+  {
+    display: none;
+  }
+  .shiningeffect
+  {
+    animation: shine 4s ease-in-out infinite;
+    animation-fill-mode: none;
+    animation-fill-mode: forwards;
+    content: "";
+    position: absolute;
+    top: -200%;
+    left: -150%;
+    width: 60%;
+    height: 60%;
+    opacity: 0;
+    -webkit-transform: rotate(-40deg);
+    -moz-transform: rotate(-40deg);
+    -ms-transform: rotate(-40deg);
+    -o-transform: rotate(-40deg);
+    transform: rotate(-40deg);
+  }
+  @-webkit-keyframes shine {
+	0% {
+		opacity: 0.8;
+		top: -50%;
+		left: -50%;
+		transition-property: left, top, opacity;
+		transition-duration: 0.7s, 0.7s, 0.15s;
+		transition-timing-function: ease;
+	}
 
-  </style>
+	100% {
+		opacity: 0.0;
+		top: 80%;
+		left: 80%;
+		transition-property: left, top, opacity;
+	}
+}
+
+@-moz-keyframes shine {
+	0% {
+		opacity: 0.8;
+		top: -50%;
+		left: -50%;
+		transition-property: left, top, opacity;
+		transition-duration: 0.7s, 0.7s, 0.15s;
+		transition-timing-function: ease;
+	}
+
+	100% {
+		opacity: 0.0;
+		top: 80%;
+		left: 80%;
+		transition-property: left, top, opacity;
+	}
+}
+
+@-ms-keyframes shine {
+	0% {
+		opacity: 0.8;
+		top: -50%;
+		left: -50%;
+		transition-property: left, top, opacity;
+		transition-duration: 0.7s, 0.7s, 0.15s;
+		transition-timing-function: ease;
+	}
+
+	100% {
+		opacity: 0.0;
+		top: 80%;
+		left: 80%;
+		transition-property: left, top, opacity;
+	}
+}
+
+@-o-keyframes shine {
+	0% {
+		opacity: 0.8;
+		top: -50%;
+		left: -50%;
+		transition-property: left, top, opacity;
+		transition-duration: 0.7s, 0.7s, 0.15s;
+		transition-timing-function: ease;
+	}
+
+	100% {
+		opacity: 0.0;
+		top: 80%;
+		left: 80%;
+		transition-property: left, top, opacity;
+	}
+}
+
+@keyframes shine {
+	0% {
+		opacity: 0.8;
+		top: -50%;
+		left: -50%;
+		transition-property: left, top, opacity;
+		transition-duration: 0.5s, 0.7s, 0.15s;
+		transition-timing-function: ease;
+	}
+
+	100% {
+		opacity: 0.0;
+		top: 80%;
+		left: 80%;
+		transition-property: left, top, opacity;
+	}
+}
+</style>
 @endsection
 
 @section('content')
@@ -54,7 +164,6 @@
     <div class="col-2">
       <a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a>
     </div>
-
   </div>
   <div class="row m-2 mt-2 shadow" id="app">
     <div class="col text-center p-2">
@@ -71,25 +180,29 @@
               Ab Zeile: <input class="form-control" type="text" name="fromRow" value="2"/>
             </div>
           </div>
-        <div class="form-row">
-          <button type="button" id="dropZoneSubmitter" class="btn btn-sm btn-block" name="button">Absenden</button>
-        </div>
+        <div class="form-row mt-3 m-0 center_items" >
+          <div class="col-12 p-0" style="position:relative; overflow:hidden; height: auto; margin: 0px;">
+            <div class="shiningeffect" style="position: absolute; background-color: rgba(255,255,255,0.3); width: 50%;">
+
+            </div>
+            <button type="button " id="dropZoneSubmitter" class="btn btn-sm btn-block m-0 " name="button">Absenden</button>
+          </div>
+          </div>
+
       </form>
     </div>
   </div>
-  <div class="row justify-content-center">
-
+  <div class="row justify-content-center" id="debugroute">
     @if(Auth()->user()->role == "superadmin")
     <div class="col-12">
       <h5> Daily Agent Datei aus dem Reporting der 1&1</h5>
     </div>
     <div class="col-12">
-      <form class="" action="{{route('excel.dailyAgent.upload')}}" method="post" enctype="multipart/form-data">
+      <form class="" action="{{route('excel.upload.debug')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="form-row m-1 justify-content-center">
           <input type="file" name="file" value="">
         </div>
-
         <div class="form-row m-2 justify-content-center">
           <label for="sheet">Welches Sheet?</label> </br>
           <input class="form-control w-25" type="number" id="sheet" name="sheet" value="1">
@@ -98,13 +211,19 @@
           <label for="sheet">Ab welcher Zeile?</label></br>
           <input class="form-control w-25" type="number" name="fromRow" value="2">
         </div>
-        <div class="form-row m-1">
-          <button type="submit" class="btn btn-rounded btn-block" name="button">Test</button>
+        <div class="form-row m-1 ">
+
+          <button type="submit" class="btn btn-rounded btn-block " name="button">Test</button>
         </div>
       </form>
     </div>
     @endif
 </div>
+
+
+@endsection
+
+@section('additional_modal')
 
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -119,9 +238,6 @@
   </div>
 </div>
 
-@endsection
-
-@section('additional_modal')
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-success text-white" >
@@ -139,7 +255,6 @@
 @section('additional_js')
 <script type="text/javascript">
 
-
 Dropzone.options.exceldropzone = {
   previewsContainer: "#previewContainer",
   addRemoveLinks: true,
@@ -152,11 +267,11 @@ Dropzone.options.exceldropzone = {
   dictResponseError: null,
   autoProcessQueue: false,
   timeout: 1200000,
+  parallelUploads: 10,
 
   init: function () {
 
       var myDropzone = this;
-
       // Update selector to match your button
       document.querySelector("#dropZoneSubmitter").addEventListener("click", function(e) {
         if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
@@ -180,15 +295,14 @@ Dropzone.options.exceldropzone = {
           $('#loaderDiv').css('display','none');
       });
       this.on("success", function(file, response) {
-        console.log(response)
-        // this.removeAllFiles()
+        // console.log(response)
+        this.removeFile(file)
         $('#failContent').html('Die Datei wurde hochgeladen')
         $('#successModal').modal('show')
         $('#loaderDiv').css('display','none');
       });
       this.on("complete", function(file) {
-        this.removeAllFiles()
-
+        // this.removeAllFiles()
       });
     }
 };
@@ -199,11 +313,14 @@ Dropzone.options.exceldropzone = {
 <script type="text/javascript">
 
 $( document ).ready(function() {
-
   console.log('test')
-
-
 });
+$(function(){
 
+  document.addEventListener('keydown', function(event) {
+  if (event.ctrlKey && event.key === 'g') {
+    $('#debugroute').toggle()
+  }
+})})
 </script>
 @endsection

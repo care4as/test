@@ -51,8 +51,6 @@ class UserController extends Controller
           ->whereIn('person_id',$userids)
           ->get();
         }
-
-
         return response()->json($users);
       }
       if(request('employees'))
@@ -267,7 +265,7 @@ class UserController extends Controller
       $portalQuota = Helper::instance()->getQuota($totalsaves_portal, $totalcalls_portal);
 
       $carecoins = ($totalsaves_ssc + $totalsaves_bsc + $totalsaves_portal) *20;
-      
+
       if($user->dailyhours == 4)
       {
         $needCareCoins = 2000;

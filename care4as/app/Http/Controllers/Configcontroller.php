@@ -21,7 +21,8 @@ class Configcontroller extends Controller
        // dd($array);
        foreach($processes as $process)
        {
-         $datetime = \Carbon\Carbon::parse($process->available_at);
+         // dd((int)$process->available_at);
+         $datetime = \Carbon\Carbon::parse((int)$process->available_at);
          $datetime->setTimezone('Europe/Berlin');
          //
          $process->duedate = $datetime->format('Y-m-d H:i:s');

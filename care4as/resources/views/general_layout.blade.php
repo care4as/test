@@ -399,7 +399,6 @@
       </nav>
       <!-- End Navbar -->
       <div class="panel-header panel-header-lg" style="min-height: 100vh;">
-
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
         <div class="content bg-cool" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto; overflow-x: hidden;">
@@ -441,7 +440,6 @@
           </button>
         </div>
         <div class="modal-body">
-
           <a class="text-white" href="#">Es gibt Neuigkeiten</a>
         </div>
       </div>
@@ -474,16 +472,13 @@
 </div>
 </div>
 </div>
-
   <!--   Core JS Files   -->
   <script src="{{asset('css/now-ui-dashboard-master/assets/js/core/popper.min.js')}}"></script>
   <script src="{{asset('js/main.js')}}"></script>
-
   <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/js/core/bootstrap.min.js')}}"></script> -->
   <!--  Google Maps Plugin    -->
   <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
   <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script> -->
-
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script> -->
   <script src='bootstrap.bundle.min.js'></script>
   <!-- Chart JS -->
@@ -495,18 +490,16 @@
   <script src="{{asset('js/app.js')}}"></script>
 
   @if($errors->any())
-  <script>
-    $('#errorModal').modal('show');
-  </script>
+    <script>
+      $('#errorModal').modal('show');
+    </script>
 
   @endif
   @if($news = 0 == 1)
-  <script>
-    $('#newsModal').modal('show');
-  </script>
-
+    <script>
+      $('#newsModal').modal('show');
+    </script>
   @endif
-
   @yield('additional_js')
 </body>
 

@@ -376,6 +376,41 @@ class ExcelEditorController extends Controller
       }
       return redirect()->back();
     }
+
+    public function debug(Request $request)
+    {
+      // for infinite time of execution
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0');
+
+      if($request->sheet)
+      {
+        $sheet = $request->sheet;
+      }
+      else {
+        $sheet = 1;
+      }
+
+      if($request->fromRow)
+      {
+        $fromRow = $request->fromRow;
+      }
+      else
+      {
+        $fromRow = 2;
+      }
+
+      //determines from which row the the app starts editing the data
+      $request->validate([
+        'file' => 'required',
+        // 'name' => 'required',
+      ]);
+      $file = request()->file('file');
+
+      $data = Excel::ToArray(new DataImport, $file);
+      dd($data[0]);
+    }
     public function queueOrNot(Request $request)
     {
       DB::disableQueryLog();
@@ -408,21 +443,19 @@ class ExcelEditorController extends Controller
       ]);
 
       $file = request()->file('file');
-
       $filename2Check = request()->file('file')->getClientOriginalName();
-
       $data = Excel::ToArray(new DataImport, request()->file('file'));
-
       // dd($data);
-      $possibleFilenames = array(
-        'dailyagent.xlsx',
-        'Daily_Agent.xlsx',
-      );
+      // $possibleFilenames = array(
+      //   'dailyagent.xlsx',
+      //   'Daily_Agent.xlsx',
+      // );
 
       $input['row'] = $fromRow;
       $input['sheet'] = $sheet;
 
-      if(str_contains($filename2Check, 'daImp'))
+      $nameconvention = 'daImp';
+      if(str_contains($filename2Check, $nameconvention))
       {
         // dd($data);
         $this->dailyAgentUpload($data);
@@ -439,7 +472,6 @@ class ExcelEditorController extends Controller
 
       $sheet = $input['sheet'];
       $fromRow = $input['row'];
-
 
       if(!isset($data[$sheet-1]) && empty($data[$sheet-1]))
       {
@@ -464,12 +496,10 @@ class ExcelEditorController extends Controller
 
         }
       }
-
       // dd($data);
       // $data = Excel::ToArray(new DataImport, $file );
       $counter=0;
       $insertData=array();
-
       // dd($data2);
       for($i=$fromRow-1; $i <= count($data2)-1; $i++ )
       {
@@ -530,8 +560,7 @@ class ExcelEditorController extends Controller
               'status' => $cell[23],
               'time_in_state' => $cell[26],
               ];
-        }
-        }
+        }}
 
         $insertData = array_chunk($insertData, 3500);
 
@@ -857,10 +886,8 @@ class ExcelEditorController extends Controller
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0');
-
       $data = Excel::ToArray(new DataImport, $file)[0];
       // dd($data);
-
       for ($i=$fromRow; $i < count($data)-1; $i++) {
 
         $row = $data[$i];

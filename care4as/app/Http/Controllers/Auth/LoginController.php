@@ -59,6 +59,7 @@ class LoginController extends Controller
       {
         // dd(Auth::User()->role);
         switch (Auth::User()->role) {
+
           case 'AgentTelefonica':
           case 'TelefonicaTeamleiter':
 

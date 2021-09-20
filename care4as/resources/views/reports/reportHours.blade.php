@@ -47,7 +47,6 @@
     </div>
   </div> -->
 </div>
-
 <div class="container text-center bg-light p-2">
   <div class="row m-2 bg-white">
     <h5>Noch nicht zugewiesene User</h5>
@@ -78,7 +77,6 @@
           </tr>
         @endforeach
       </tbody>
-
     </table>
   </div>
 </div>
@@ -107,10 +105,7 @@ Dropzone.options.exceldropzone = {
 <script type="text/javascript">
 
 $( document ).ready(function() {
-
   $('#hourstable').DataTable()
-
-
 });
 
 </script>
