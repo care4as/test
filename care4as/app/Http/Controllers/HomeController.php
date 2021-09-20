@@ -649,7 +649,7 @@ class HomeController extends Controller
         );
 
         $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
-        $optinRequests = $user->Optin->sum('Anzahl_OptIn-Abfragen');
+        $optinRequests = $user->Optin->sum('Anzahl_OptIn-Erfolg');
 
         // dd($user, $user->Optin);
 
