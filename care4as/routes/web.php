@@ -14,27 +14,14 @@ use App\Http\Controllers\ControllingController;
 |
 */
 
+Route::get('/reportImport', function()
+{
+  return view('reportImport');
+})->name('reportImport');
+
+
 Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
 
-
-
-Route::get('/projekt_kpi', function(){
-
-  //return 1 ;
-  return view('projekt_kpi');
-})->name('projekt_kpi');
-
-Route::get('/attainment', function(){
-
-  //return 1 ;
-  return view('attainment');
-})->name('attainment');
-
-Route::get('/userlist', function(){
-
-  //return 1 ;
-  return view('userlist');
-})->name('userlist');
 
 Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
 Route::get('/messageOfTheDay', function()
@@ -315,6 +302,9 @@ Route::group(['middleware' => ['auth']], function () {
   //endinventory
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
+  Route::get('/userlist', 'UserListController@load')->name('userlist')->middleware('hasRight:controlling');
+  Route::get('/projekt_kpi', 'ProjectKpiController@load')->name('projekt_kpi')->middleware('hasRight:controlling');
+  Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
 });
 
