@@ -815,8 +815,21 @@ class ExcelEditorController extends Controller
     }
 
     public function availbenchReport(){
-      
+      $fromRow = 1;
+      $insertData = array();
 
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+
+      $request->validate([
+        'file' => 'required',
+        // 'name' => 'required',
+      ]);
+
+      $file = request()->file('file');
+
+      $data = Excel::ToArray(new DataImport, $file);
 
     }
 
