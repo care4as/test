@@ -814,5 +814,11 @@ class ExcelEditorController extends Controller
       return redirect()->route('hoursreport.sync');
     }
 
+    public function availbenchReport(){
+      
+
+
+    }
+
 
 }
