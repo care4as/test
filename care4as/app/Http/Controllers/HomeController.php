@@ -685,7 +685,7 @@ class HomeController extends Controller
         'allOptinRequests' => $allOptinRequests,
       );
 
-      // dd($overalldata);
+      //dd($overalldata);
       return view('DB', compact('overalldata', 'users'));
     }
     public function test($value='')
