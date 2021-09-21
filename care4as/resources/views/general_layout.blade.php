@@ -117,6 +117,7 @@
                   @endif
                 @endif
                   <li><a href="{{route('user.index')}}">User Index</a></li>
+                  <li><a href="{{route('userlist')}}">Mitarbeiterliste</a></li>
               </ul>
             </div>
           </li>
@@ -131,6 +132,7 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
                 <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
+                <li><a href="{{route('attainment')}}">Zielerreichung</a></li>
               </ul>
             </div>
           </li>
@@ -165,6 +167,7 @@
             </a>
             <div class="collapse" id="collapseReport" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('reportImport')}}">Report Übersicht</a></li>
                 <li><a href="{{route('reports.report')}}">Retention Details Report</a></li>
                 <li><a href="{{route('reports.gevotracking')}}">GeVo Tracking Import</a></li>
                 <li><a href="{{route('excel.dailyAgent.import')}}">Daily Agent Import</a></li>

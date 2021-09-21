@@ -14,12 +14,14 @@ use App\Http\Controllers\ControllingController;
 |
 */
 
-Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
-Route::get('/projekt_kpi', function(){
+Route::get('/reportImport', function()
+{
+  return view('reportImport');
+})->name('reportImport');
 
-  //return 1 ;
-  return view('projekt_kpi');
-})->name('projekt_kpi');
+
+Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
+
 
 Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
 Route::get('/messageOfTheDay', function()
@@ -311,6 +313,9 @@ Route::group(['middleware' => ['auth']], function () {
   //end nettozeitenreporte
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
+  Route::get('/userlist', 'UserListController@load')->name('userlist')->middleware('hasRight:controlling');
+  Route::get('/projekt_kpi', 'ProjectKpiController@load')->name('projekt_kpi')->middleware('hasRight:controlling');
+  Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
 });
 
