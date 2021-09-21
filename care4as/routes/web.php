@@ -341,6 +341,7 @@ Route::group(['middleware' => ['auth']], function () {
     $allRequests = 0;
 
     $users = App\User::where('department', '1&1 Mobile Retention')
+    ->where('role','agent')
     ->where('status',1)
     ->with(['Optin' => function($q) use ($start_date,$end_date){
       if($start_date != 1)
