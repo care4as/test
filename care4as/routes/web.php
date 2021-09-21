@@ -352,6 +352,7 @@ Route::group(['middleware' => ['auth']], function () {
         $q->where('date','<=',$end_date);
       }
     }])
+    ->orderBy('person_id')
     ->get();
 
     foreach($users as $user)
