@@ -337,6 +337,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     $start_date = '2021-09-01';
     $end_date = '2021-09-20';
+    $allCalls = 0;
+    $allRequests = 0;
 
     $users = App\User::where('department', '1&1 Mobile Retention')
     ->where('status',1)
@@ -357,9 +359,13 @@ Route::group(['middleware' => ['auth']], function () {
       $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
       $optinRequests = $user->Optin->sum('Anzahl_OptIn-Erfolg');
 
+      $allCalls += $optinCalls;
+      $allRequests += $optinRequests;
+
       echo $user->wholeName().'/'.$user->person_id.'/'.$optinCalls.'/'.$optinRequests.'<br>';
     }
 
+    echo '<hr>'.$allCalls.'/'.$allRequests;
     // dd($users[1]->Optin->sum());
     // DB::connection('');
     // return view('test');
