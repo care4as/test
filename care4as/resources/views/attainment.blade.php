@@ -16,7 +16,7 @@
                                     <div class="max-panel-content">
                                         <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px;">
                                             <label for="inputState" style="margin: auto;">Auswahl:</label>
-                                            <select id="inputState" class="form-control" name="project" style="color:black;">
+                                            <select id="inputState" class="form-control" name="attainment" style="color:black;";>
                                                 <option value="wfm_dsl_availbench">WFM DSL Availbench</option>
                                             </select>
                                         </div>
@@ -29,9 +29,9 @@
                                     <div class="max-panel-content">
                                         <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 5px;">
                                             <p style="margin: auto;">Von:</p>
-                                            <input type="date" id="dateFrom" name="startDate" class="form-control" placeholder="" value="" style="color: black;">
+                                            <input type="date" id="dateFrom" name="startDate" class="form-control" placeholder="" value="{{$defaultVariablesArray['startDate']}}" style="color: black;">
                                             <p style="margin: auto;">Bis:</p>
-                                            <input type="date" id="dateTo" name="endDate" class="form-control" placeholder="" value="" style="color: black;">
+                                            <input type="date" id="dateTo" name="endDate" class="form-control" placeholder="" value="{{$defaultVariablesArray['endDate']}}" style="color: black;">
                                         </div>
                                     </div>
                                 </div>
@@ -46,6 +46,7 @@
         </div>
 
         <!-- WFM DSL Availbench -->
+        @if($defaultVariablesArray['attainment'] == 'wfm_dsl_availbench')
         <div class="row">
             <div class="col-md-12">
                 <div class="max-main-container">
@@ -87,12 +88,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- For Each schleife! -->
+                                                <tr>
                                                     <td>%</td>
                                                     <td>%</td>
                                                     <td>%</td>
                                                     <td>%</td>
                                                     <td>%</td>
+                                                </tr>
                                                 <!-- Summe -->
                                                 <tr style="font-weight: bold; background-color: #ddd;">
                                                     <td>Gesamt</td>
@@ -109,7 +111,7 @@
 
                             <!-- Card: Data -->
                             <div class="tab-pane" id="data">
-                            <div class="max-panel-content">
+                                <div class="max-panel-content">
                                     <div style="width: 100%; overflow-x: auto;">
                                         <table class="max-table">
                                             <thead>
@@ -122,12 +124,14 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- For Each schleife! -->
-                                                    <td>%</td>
-                                                    <td>%</td>
-                                                    <td>%</td>
-                                                    <td>%</td>
-                                                    <td>%</td>
+                                                @foreach($attainmentArray as $key => $date)
+                                                    <tr>
+                                                        <td>{{$date['europeanDate']}}</td>
+                                                        <td>%</td>
+                                                        <td>%</td>
+                                                        <td>%</td>
+                                                    </tr>
+                                                @endforeach
                                                 <!-- Summe -->
                                                 <tr style="font-weight: bold; background-color: #ddd;">
                                                     <td>Gesamt</td>
@@ -169,7 +173,9 @@
                 </div>
             </div>
         </div>        
+        @endif
         <!-- END WFM DSL Availbench -->
+
 
     </div>
 @endsection
