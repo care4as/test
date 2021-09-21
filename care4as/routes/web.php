@@ -114,6 +114,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/report/SAS/', 'ExcelEditorController@SASupload')->name('reports.SAS.upload')->middleware('hasRight:importReports');
   //OptIn Import
   Route::view('/report/Optin/', 'reports.OptInReport')->name('reports.OptIn')->middleware('hasRight:importReports');
+  Route::get('/Optin/debug', 'ReportController@debugOptin')->name('optin.debug')->middleware('hasRight:importReports');
   Route::post('/report/Optin/', 'ExcelEditorController@OptInupload')->name('reports.OptIn.upload')->middleware('hasRight:importReports');
 
   Route::view('/report/gevo/', 'reports.GeVoTracking')->name('reports.gevotracking')->middleware('hasRight:importReports');
@@ -335,43 +336,20 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/test', function(){
 
-    $start_date = '2021-09-01';
-    $end_date = '2021-09-20';
-    $allCalls = 0;
-    $allRequests = 0;
+    //DSL project_id is 10
+    $projektid= 10;
+    $sickstates = array(1,8,13,14);
 
-    $users = App\User::where('department', '1&1 Mobile Retention')
-    ->where('role','agent')
-    ->where('status',1)
-    ->where('agent_id','!=',null)
-    ->with(['Optin' => function($q) use ($start_date,$end_date){
-      if($start_date != 1)
-      {
-        $q->where('date','>=',$start_date);
-      }
-      if($end_date != 1)
-      {
-        $q->where('date','<=',$end_date);
-      }
-    }])
-    ->orderBy('person_id')
+    $data = DB::connection('mysqlkdw')
+    ->table('history_state')
+    ->where('project_id', '=', $projektid)
+    ->whereIn('state_id',$sickstates)
+    ->where('date_end','>=', Carbon\Carbon::today())
     ->get();
 
-    foreach($users as $user)
-    {
-      $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
-      $optinRequests = $user->Optin->sum('Anzahl_OptIn-Erfolg');
+    // dd($data);
+    $mail = new App\Mail\SicknessMail($data);
 
-      $allCalls += $optinCalls;
-      $allRequests += $optinRequests;
-
-      echo $user->wholeName().'/'.$user->person_id.'/'.$optinCalls.'/'.$optinRequests.'<br>';
-    }
-
-    echo '<hr>'.$allCalls.'/'.$allRequests;
-    // dd($users[1]->Optin->sum());
-    // DB::connection('');
-    // return view('test');
-
-
-})->name('test');
+    return $mail;
+    // dd($employmentData);
+  })->name('test');

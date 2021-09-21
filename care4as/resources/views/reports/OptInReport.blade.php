@@ -66,6 +66,8 @@
       </div>
     </form>
   </div>
+
+  <a href="{{route('optin.debug')}}" class="btn btn-primary">Debug</a>
 </div>
 
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
