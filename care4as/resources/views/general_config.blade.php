@@ -138,6 +138,16 @@ td{
             </td>
             <td>Alle 30 Minuten wird nun ein Zwischenstand des KDW Tools gezogen</td>
           </tr>
+          <tr>
+            <td>Krankenstand automatisch senden</td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitchSiMa" @if(DB::table('jobs')->where('queue','SickMa')->exists()) checked @else unchecked @endif>
+                <label class="custom-control-label" for="customSwitchSiMa">Aktiv</label>
+              </div>
+            </td>
+            <td>jeden Tag wird eine Mail mit den Kranken zugesendet</td>
+          </tr>
         </table>
       </div>
     </div>
@@ -289,19 +299,17 @@ $('#customSwitch11').click(function(){
   }
 })
 
-$('#customSwitch2').click(function(){
+$('#customSwitchSiMa').click(function(){
 
   if(this.checked == true)
   {
 
     var host = window.location.host;
+    axios.get('http://'+host+'/care4as/care4as/public/config/activateSiMa')
 
-    // console.log('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
-
-    axios.get('http://'+host+'/config/activateAutomaticIntermediate')
-    // axios.get('http://'+host+'/care4as/care4as/public/config/activateAutomaticIntermediate')
+    // axios.get('http://'+host+'/config/activateSiMa')
     .then(response => {
-      alert('Zwischenstand wird nun automatisch geladen')
+      alert('Krankenstand wird automatisch gesendet')
 
       })
     .catch(function (err) {
@@ -313,20 +321,17 @@ $('#customSwitch2').click(function(){
 
     var host = window.location.host;
 
-    axios.get('http://'+host+'/config/deactivateAutomaticIntermediate')
-    // axios.get('http://'+host+'/care4as/care4as/pu7blic/config/deactivateAutomaticIntermediate')
+    // axios.get('http://'+host+'/config/deactivateSiMa')
+    axios.get('http://'+host+'/care4as/care4as/pu7blic/config/deactivateSiMa')
 
     .then(response => {
-      alert('automatische Zwischenstände deaktiviert')
+      alert('automatischer Krankenstand deaktiviert')
 
       })
     .catch(function (err) {
       console.log('error')
       console.log(err.response);
     })
-
-  }
-
-})
+  }})
 </script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\sendIntermediateMail;
+use App\Jobs\sendSichknessMail;
 use App\Jobs\Intermediate;
 
 class Configcontroller extends Controller
@@ -180,6 +181,23 @@ class Configcontroller extends Controller
       );
 
       return redirect()->back();
+    }
+    public function activateSicknessMail()
+    {
+      $time =  time();
+      $tommorrowMorning = Carbon::createFromTimeString('7:30')->addDay();
+
+      $timediff = intval($tommorrowMorning->timestamp) - $time;
+
+      $asString = ($timediff/60).' Minutes';
+
+      sendSichknessMail::dispatch()->delay(now()->add($asString))->onConnection('database')->onQueue('SickMa');
+    }
+    public function deactivateSicknessMail()
+    {
+      DB::table('jobs')->where('queue','SickMa')->delete();
+
+      return response()->json('success');
     }
     public function deleteProcess($id)
     {
