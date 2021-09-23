@@ -185,7 +185,7 @@ class Configcontroller extends Controller
     public function activateSicknessMail()
     {
       $time =  time();
-      $tommorrowMorning = Carbon::createFromTimeString('7:30')->addDay();
+      $tommorrowMorning = \Carbon\Carbon::createFromTimeString('7:30')->addDay();
 
       $timediff = intval($tommorrowMorning->timestamp) - $time;
 
