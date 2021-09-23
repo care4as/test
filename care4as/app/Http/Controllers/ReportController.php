@@ -761,4 +761,42 @@ class ReportController extends Controller
     {
       return array($min = Carbon::parse(OptIn::min('date'))->format('d.m.Y'), $max= Carbon::parse(OptIn::max('date'))->format('d.m.Y'));
     }
+
+    public function debugOptin()
+    {
+      $start_date = 1;
+      $end_date = 1;
+      $allCalls = 0;
+      $allRequests = 0;
+
+      $users = User::where('department', '1&1 Mobile Retention')
+      ->where('role','agent')
+      ->where('status',1)
+      // ->where('agent_id','!=',null)
+      ->with(['Optin' => function($q) use ($start_date,$end_date){
+        if($start_date != 1)
+        {
+          $q->where('date','>=',$start_date);
+        }
+        if($end_date != 1)
+        {
+          $q->where('date','<=',$end_date);
+        }
+      }])
+      ->orderBy('person_id')
+      ->get();
+
+      foreach($users as $user)
+      {
+        $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
+        $optinRequests = $user->Optin->sum('Anzahl_OptIn-Erfolg');
+
+        $allCalls += $optinCalls;
+        $allRequests += $optinRequests;
+
+        echo $user->wholeName().'/'.$user->person_id.'/'.$optinCalls.'/'.$optinRequests.'<br>';
+      }
+
+      echo '<hr>'.$allCalls.'/'.$allRequests;
+    }
 }

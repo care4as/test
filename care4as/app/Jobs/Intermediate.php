@@ -133,7 +133,6 @@ class Intermediate implements ShouldQueue
                 'Portal_Orders' => 0,
               );
             }
-
           }
       }
 

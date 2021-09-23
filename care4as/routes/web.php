@@ -14,12 +14,9 @@ use App\Http\Controllers\ControllingController;
 |
 */
 
-Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
-Route::get('/projekt_kpi', function(){
 
-  //return 1 ;
-  return view('projekt_kpi');
-})->name('projekt_kpi');
+Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
+
 
 Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
 Route::get('/messageOfTheDay', function()
@@ -99,6 +96,11 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@queueOrNot')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
   Route::post('/report/ReportUploadDebug', 'ExcelEditorController@Debug')->name('excel.upload.debug')->middleware('hasRight:importReports');
 
+  Route::get('/reportImport', function()
+  {
+    return view('reportImport');
+  })->name('reportImport')->middleware('hasRight:importReports');
+
   // Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
   Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');
   Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport')->middleware('hasRight:importReports');
@@ -114,6 +116,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/report/SAS/', 'ExcelEditorController@SASupload')->name('reports.SAS.upload')->middleware('hasRight:importReports');
   //OptIn Import
   Route::view('/report/Optin/', 'reports.OptInReport')->name('reports.OptIn')->middleware('hasRight:importReports');
+  Route::get('/Optin/debug', 'ReportController@debugOptin')->name('optin.debug')->middleware('hasRight:importReports');
   Route::post('/report/Optin/', 'ExcelEditorController@OptInupload')->name('reports.OptIn.upload')->middleware('hasRight:importReports');
 
   Route::view('/report/gevo/', 'reports.GeVoTracking')->name('reports.gevotracking')->middleware('hasRight:importReports');
@@ -310,6 +313,9 @@ Route::group(['middleware' => ['auth']], function () {
   //end nettozeitenreporte
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
+  Route::get('/userlist', 'UserListController@load')->name('userlist')->middleware('hasRight:controlling');
+  Route::get('/projekt_kpi', 'ProjectKpiController@load')->name('projekt_kpi')->middleware('hasRight:controlling');
+  Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
 });
 
@@ -335,43 +341,5 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/test', function(){
 
-    $start_date = '2021-09-01';
-    $end_date = '2021-09-20';
-    $allCalls = 0;
-    $allRequests = 0;
 
-    $users = App\User::where('department', '1&1 Mobile Retention')
-    ->where('role','agent')
-    ->where('status',1)
-    //->where('agent_id','!=',null)
-    ->with(['Optin' => function($q) use ($start_date,$end_date){
-      if($start_date != 1)
-      {
-        $q->where('date','>=',$start_date);
-      }
-      if($end_date != 1)
-      {
-        $q->where('date','<=',$end_date);
-      }
-    }])
-    ->orderBy('person_id')
-    ->get();
-
-    foreach($users as $user)
-    {
-      $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
-      $optinRequests = $user->Optin->sum('Anzahl_OptIn-Erfolg');
-
-      $allCalls += $optinCalls;
-      $allRequests += $optinRequests;
-
-      echo $user->wholeName().'/'.$user->person_id.'/'.$optinCalls.'/'.$optinRequests.'<br>';
-    }
-
-    echo '<hr>'.$allCalls.'/'.$allRequests;
-    // dd($users[1]->Optin->sum());
-    // DB::connection('');
-    // return view('test');
-
-
-})->name('test');
+  })->name('test');
