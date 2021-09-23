@@ -224,6 +224,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config');
   Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config');
   Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
+  Route::get('/config/activateSiMa', 'Configcontroller@activateSicknessMail')->name('config.activateSiMa')->middleware('hasRight:config');
+  Route::get('/config/deactivateSiMa', 'Configcontroller@deactivateSicknessMail')->name('config.deactivateSiMa')->middleware('hasRight:config');
   Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
   Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config');
   Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config');
@@ -340,6 +342,4 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
 
   Route::get('/test', function(){
-
-
   })->name('test');
