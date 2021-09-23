@@ -48,7 +48,7 @@ class sendSichknessMail implements ShouldQueue
       ->get();
 
       // dd($data);
-      $mailinglist = array('andreas.robrahn@care4as.de');
+      $mailinglist = array('rene.schmidt@care4as.de','andreas.robrahn@care4as.de');
       $mail = new SicknessMail($data);
       Mail::to($mailinglist)->send($mail);
 
