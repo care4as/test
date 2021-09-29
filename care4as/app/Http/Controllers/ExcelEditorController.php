@@ -915,24 +915,104 @@ class ExcelEditorController extends Controller
       return redirect()->route('hoursreport.sync');
     }
 
-    public function availbenchReport(){
-      $fromRow = 1;
-      $insertData = array();
-
+    public function availbenchReport(Request $request){
+      //configure DB import settings
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
 
+      //validate $request
       $request->validate([
         'file' => 'required',
-        // 'name' => 'required',
       ]);
 
-      $file = request()->file('file');
+      $file = request()->file('file');  //save $request in variable
+ 
+      //convert .txt file to array
+      $file = file_get_contents($file);                         // Get the whole file as string
+      $file = mb_convert_encoding($file, 'UTF8', 'UTF-16LE');   // Convert the file to UTF8
+      $file = preg_split("/\R/", $file);                        // Split it by line breaks
+      
+      $fileArray = array(); //initialize array
 
-      $data = Excel::ToArray(new DataImport, $file);
+      foreach ($file as $key => $line) {
+        $fileArray[$key] = str_getcsv($line, ";");
+      };
 
+      $header = array_shift($fileArray);
+      
+      $availbenchArray = array();
+      $i = 0;
+      foreach($fileArray as $row) {
+        if(count($header) == count($row)) {
+          $availbenchArray[$i]['date_key'] = intval($row[0]);
+          $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
+          $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y G:i:s', $row[2]); //timestamp
+          $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
+          $availbenchArray[$i]['call_forecast_issue'] = $row[4];
+          $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
+          $availbenchArray[$i]['call_forecast_owner'] = $row[6];
+          $availbenchArray[$i]['forecast'] = intval($row[7]);
+          $availbenchArray[$i]['handled'] = intval($row[8]);
+          $availbenchArray[$i]['availtime_summary'] = intval($row[9]);
+          $availbenchArray[$i]['availtime_sec'] = intval($row[10]);
+          $availbenchArray[$i]['handling_time_sec'] = intval($row[11]);
+          $availbenchArray[$i]['availtime_percent'] = doubleval($row[12]);
+          $availbenchArray[$i]['forecast_rate'] = doubleval($row[13]);
+          $availbenchArray[$i]['avail_bench'] = doubleval($row[14]);
+          $availbenchArray[$i]['idp_done'] = intval($row[15]);
+          $availbenchArray[$i]['number_payed_calls'] = doubleval($row[16]);
+          $availbenchArray[$i]['price'] = doubleval($row[17]);
+          $availbenchArray[$i]['aht'] = doubleval($row[18]);
+          $availbenchArray[$i]['productive_minutes'] = doubleval($row[19]);
+          $availbenchArray[$i]['malus_interval'] = doubleval($row[20]);
+          $availbenchArray[$i]['malus_percent'] = doubleval($row[21]);
+          $availbenchArray[$i]['acceptance_rate'] = doubleval($row[22]);
+          $availbenchArray[$i]['total_costs_per_interval'] = doubleval($row[23]);
+          $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
+          $i++;
+        }
+      }
+      //dd($availbenchArray);
+      
+      for ($i = 0; $i < count($availbenchArray); $i++){
+        //echo $availbenchArray[$i]['call_forecast_owner_key'].' - '.$availbenchArray[$i]['call_date_interval_start_time'].' - '.$i;
+        DB::table('availbench_report')->updateOrInsert(
+          [
+            'call_forecast_issue_key' => $availbenchArray[$i]['call_forecast_issue_key'],
+            'call_date_interval_start_time' => $availbenchArray[$i]['call_date_interval_start_time']
+          ],
+          [
+          'date_key' => $availbenchArray[$i]['date_key'],
+          'date_date' => $availbenchArray[$i]['date_date'],
+          'call_forecast_owner_key' => $availbenchArray[$i]['call_forecast_owner_key'],
+          'call_forecast_issue' => $availbenchArray[$i]['call_forecast_issue'],
+          'call_forecast_owner' => $availbenchArray[$i]['call_forecast_owner'],
+          'forecast' => $availbenchArray[$i]['forecast'],
+          'handled' => $availbenchArray[$i]['handled'],
+          'availtime_summary' => $availbenchArray[$i]['availtime_summary'],
+          'availtime_sec' => $availbenchArray[$i]['availtime_sec'],
+          'handling_time_sec' => $availbenchArray[$i]['handling_time_sec'],
+          'availtime_percent' => $availbenchArray[$i]['availtime_percent'],
+          'forecast_rate' => $availbenchArray[$i]['forecast_rate'],
+          'avail_bench' => $availbenchArray[$i]['avail_bench'],
+          'idp_done' => $availbenchArray[$i]['idp_done'],
+          'number_payed_calls' => $availbenchArray[$i]['number_payed_calls'],
+          'price' => $availbenchArray[$i]['price'],
+          'aht' => $availbenchArray[$i]['aht'],
+          'productive_minutes' => $availbenchArray[$i]['productive_minutes'],
+          'malus_interval' => $availbenchArray[$i]['malus_interval'],
+          'malus_percent' => $availbenchArray[$i]['malus_percent'],
+          'acceptance_rate' => $availbenchArray[$i]['acceptance_rate'],
+          'total_costs_per_interval' => $availbenchArray[$i]['total_costs_per_interval'],
+          'malus_approval_done' => $availbenchArray[$i]['malus_approval_done']
+          ]
+        );
+      }
+      return redirect()->back();
     }
+
+
 
 
 }

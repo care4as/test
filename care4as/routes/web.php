@@ -100,6 +100,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@queueOrNot')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
   Route::post('/report/ReportUploadDebug', 'ExcelEditorController@Debug')->name('excel.upload.debug')->middleware('hasRight:importReports');
+  Route::post('/report/availbench', 'ExcelEditorController@availbenchReport')->name('availbench.upload')->middleware('hasRight:importReports');
 
   // Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
   Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');
@@ -341,20 +342,9 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/test', function(){
 
-    //DSL project_id is 10
-    $projektid= 10;
-    $sickstates = array(1,8,13,14);
+    $test = DB::table('availbench_report')->get();
+    
+    dd($test);
 
-    $data = DB::connection('mysqlkdw')
-    ->table('history_state')
-    ->where('project_id', '=', $projektid)
-    ->whereIn('state_id',$sickstates)
-    ->where('date_end','>=', Carbon\Carbon::today())
-    ->get();
 
-    // dd($data);
-    $mail = new App\Mail\SicknessMail($data);
-
-    return $mail;
-    // dd($employmentData);
   })->name('test');
