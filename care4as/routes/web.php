@@ -102,6 +102,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@queueOrNot')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
   Route::post('/report/ReportUploadDebug', 'ExcelEditorController@Debug')->name('excel.upload.debug')->middleware('hasRight:importReports');
+  Route::post('/report/availbench', 'ExcelEditorController@availbenchReport')->name('availbench.upload')->middleware('hasRight:importReports');
 
   // Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
   Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');
@@ -345,5 +346,12 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/test', function(){
 
+<<<<<<< HEAD
+=======
+    $test = DB::table('availbench_report')->get();
+    
+    dd($test);
+
+>>>>>>> 44b52d5b68cca91c2ac4d9227d507180d4b61e1e
 
   })->name('test');
