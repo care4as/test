@@ -97,7 +97,7 @@ Route::group(['middleware' => ['auth']], function () {
   {
     return view('reports.reportImport');
   })->name('reportImport');
-  
+
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:importReports');
 
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@queueOrNot')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
@@ -346,12 +346,5 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/test', function(){
 
-<<<<<<< HEAD
-=======
-    $test = DB::table('availbench_report')->get();
-    
-    dd($test);
-
->>>>>>> 44b52d5b68cca91c2ac4d9227d507180d4b61e1e
 
   })->name('test');
