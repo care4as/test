@@ -194,6 +194,7 @@ class ExcelEditorController extends Controller
 
       for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
         $cell = $data2[$i];
+        
         $UNIX_DATE2 = ($cell[3] - 25569) * 86400;
         $date = gmdate("Y-m-d",$UNIX_DATE2);
         // dd();
@@ -409,7 +410,100 @@ class ExcelEditorController extends Controller
       $file = request()->file('file');
 
       $data = Excel::ToArray(new DataImport, $file);
-      dd($data[0]);
+
+      if(1)
+      {
+
+      $counter = 0;
+      foreach($data[0] as $cell)
+        {
+          $date = 0;
+
+          if($cell[4] == '')
+          {
+            $cell[4] = 0;
+          }
+          if($cell[13] == '')
+          {
+            $cell[13] = 0;
+          }
+          if($cell[15] == '')
+          {
+            $cell[15] = 0;
+          }
+
+          //convert all the excel dates to unix date
+          if(is_numeric($cell[0]))
+          {
+            $UNIX_DATE = ($cell[0] - 25569) * 86400;
+            if(!$date = gmdate("Y-m-d H:i:s", $UNIX_DATE))
+            {
+              return redirect()->back()->withErrors(['name' => 'Das Datumsfeld ist nicht vorhanden']);
+            };
+
+            // return $date;
+          }
+
+          if($date != 0 && $cell[6])
+          {
+            // if(is_numeric($cell[24]))
+            // {
+            //   $UNIX_DATE2 = ($cell[24] - 25569) * 86400;
+            //   $dailyAgent->start_time = gmdate("Y-m-d H:i:s",$UNIX_DATE2);
+            // }
+            // else {
+            //   return 'Datenfehler start_time in Zeile '.$counter.':'.json_encode($cell[23]);
+            // }
+
+            $UNIX_DATE3 = ($cell[24] - 25569) * 86400;
+
+            $insertarray[$counter]['date'] = $date;
+            $insertarray[$counter]['agent_id'] = $cell[6];
+
+            $UNIX_DATE2 = ($cell[23] - 25569) * 86400;
+            $insertarray[$counter]['start_time'] = gmdate("Y-m-d H:i:s",$UNIX_DATE2);
+            $insertarray[$counter]['end_time'] = gmdate("Y-m-d H:i:s", $UNIX_DATE3);
+            $insertarray[$counter]['kw'] = $cell[2];
+            $insertarray[$counter]['dialog_call_id']  = $cell[4];
+
+            $insertarray[$counter]['agent_login_name'] = $cell[7];
+            $insertarray[$counter]['agent_name'] = $cell[8];
+            $insertarray[$counter]['agent_group_id'] = $cell[9];
+            $insertarray[$counter]['agent_group_name'] = $cell[10];
+
+            if($cell[12])
+            {
+              $insertarray[$counter]['agent_team_id'] = $cell[12];
+            }
+            else {
+                $insertarray[$counter]['agent_team_id'] = 0;
+            }
+
+            $insertarray[$counter]['queue_id'] = $cell[17];
+            $insertarray[$counter]['queue_name'] = $cell[19];
+            $insertarray[$counter]['skill_id'] = $cell[20];
+            $insertarray[$counter]['skill_name'] = $cell[21];
+            $insertarray[$counter]['status'] = $cell[22];
+
+            if($cell[25] && is_numeric($cell[25]))
+            {
+              $insertarray[$counter]['time_in_state'] = $cell[25];
+            }
+            else {
+              $insertarray[$counter]['time_in_state'] = 0;
+            }
+
+          }
+          $counter = $counter +1;
+        }
+        // dd($insertarray);
+        $insertarray = array_chunk($insertarray, 3500);
+      }
+
+      ImportDailyAgentChunks::dispatch($insertarray[1])
+      ->onConnection('sync');
+
+      dd($insertarray[1], $insertarray, $data[0]);
     }
     public function queueOrNot(Request $request)
     {
@@ -454,7 +548,7 @@ class ExcelEditorController extends Controller
       $input['row'] = $fromRow;
       $input['sheet'] = $sheet;
 
-      $nameconvention = 'daImp';
+      $nameconvention = 'DAI';
       if(str_contains($filename2Check, $nameconvention))
       {
         // dd($data);
