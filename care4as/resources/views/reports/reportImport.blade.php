@@ -18,7 +18,7 @@
                             <table class="table" style="text-align: center;">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: left;">Report</th>
+                                        <th style="text-align: left;">Report Test</th>
                                         <th>Daten von</th>
                                         <th>Daten bis</th>
                                         <th>Import</th>
