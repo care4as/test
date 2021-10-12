@@ -101,8 +101,10 @@
                 <div style="width: 100%; font-size: 16px; font-weight: 600;">
                     Datei auswählen
                 </div>
-                <button type="button" class="btn btn-primary" style="margin-top: 0; margin-bottom: 20px;">Durchsuchen</button>
-                <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                <form action="{{route('availbench.upload')}}" method="post" enctype="multipart/form-data" style="width: 100%; overflow-x: auto; margin-bottom: 20px;">
+                    @csrf      
+                    <input type="file" name="file" value="">
+                    <div style="width: 100%; font-size: 16px; font-weight: 600;">
                     Import konfigurieren
                 </div>
                 <div style="display: grid; grid-template-columns: auto 1fr;">
@@ -114,8 +116,9 @@
             </div>
             <div class="modal-footer" style="font-size: 14px;">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
-                <button type="button" class="btn btn-primary">Speichern</button>
+                <button type="submit" class="btn btn-primary">Speichern</button>
             </div>
+                </form>
         </div>
     </div>
 </div>

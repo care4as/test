@@ -15,6 +15,7 @@ use App\Http\Controllers\ControllingController;
 */
 
 
+
 Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
 
 
@@ -91,10 +92,17 @@ Route::group(['middleware' => ['auth']], function () {
 
   })->name('reports.reportHours.view')->middleware('hasRight:importReports');
 
+  Route::get('/reportImport', function()
+  {
+    return view('reports.reportImport');
+    
+  })->name('reportImport');
+
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:importReports');
 
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@queueOrNot')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
   Route::post('/report/ReportUploadDebug', 'ExcelEditorController@Debug')->name('excel.upload.debug')->middleware('hasRight:importReports');
+  Route::post('/report/availbench', 'ExcelEditorController@availbenchReport')->name('availbench.upload')->middleware('hasRight:importReports');
 
   Route::get('/reportImport', function()
   {
@@ -317,7 +325,7 @@ Route::group(['middleware' => ['auth']], function () {
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
   Route::get('/userlist', 'UserListController@load')->name('userlist')->middleware('hasRight:controlling');
-  Route::get('/projekt_kpi', 'ProjectKpiController@load')->name('projekt_kpi')->middleware('hasRight:controlling');
+  Route::get('/projectReport', 'ProjectReportController@load')->name('projectReport')->middleware('hasRight:controlling');
   Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
 });
@@ -343,4 +351,5 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
 
   Route::get('/test', function(){
+
   })->name('test');

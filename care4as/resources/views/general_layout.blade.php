@@ -131,7 +131,7 @@
             <div class="collapse" id="collapseControlling" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
-                <li><a href="{{route('projekt_kpi')}}">Projekt KPI</a></li>
+                <li><a href="{{route('projectReport')}}">Projektmeldung</a></li>
                 <li><a href="{{route('attainment')}}">Zielerreichung</a></li>
               </ul>
             </div>
