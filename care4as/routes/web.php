@@ -98,8 +98,9 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/reportImport', function()
   {
-    return view('reportImport');
-  })->name('reportImport')->middleware('hasRight:importReports');
+    return view('reports.reportImport');
+    
+  })->name('reportImport');
 
   // Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
   Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');
