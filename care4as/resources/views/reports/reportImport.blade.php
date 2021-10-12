@@ -4,6 +4,9 @@
 @endsection
 @section('content')
 
+@section('additional_css')
+<link href="{{asset('css/dropzone.min.css')}}" rel="stylesheet" />
+@endsection
 <div class="row">
     <div class="col-md-12">
         <div class="max-main-container">
@@ -78,7 +81,7 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
                     <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -118,7 +121,7 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
                     <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="dailyAgentDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="dailyAgentContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -158,7 +161,7 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
                     <form action="{{route('reports.OptIn.upload')}}" class="dropzone" id="optinDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="optinContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -198,7 +201,7 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
                     <form action="{{route('excel.test')}}" class="dropzone" id="retDetailsDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="retDetailsContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -238,7 +241,7 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
                     <form action="{{route('reports.SAS.upload')}}" class="dropzone" id="sasDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="sasContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
