@@ -566,7 +566,7 @@ class HomeController extends Controller
           $portalQuota = round(($sumPortalOrders/$sumPortalCalls) *100,2);
         }
 
-        if($sumrlz24 == 0 or $sumNMlz == 0)
+        if($sumrlz24 + $sumNMlz == 0)
         {
           $RLZQouta = 0;
         }
