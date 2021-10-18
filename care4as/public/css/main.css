@@ -533,8 +533,8 @@ body
     }
 .page-link
 {
-  border-radius: 50% !important;
-  margin-left: 0.25em;
+  border-radius: 5px !important;
+  margin-left: 0;
   border-color: #f96332 ;
   color: #f96332 ;
   /* height: 33px; */
@@ -665,8 +665,8 @@ body
 
 /* Tabelle test*/
 .max-table{
-  width: 100%;
   white-space: nowrap;
+  border-radius: 0px;
 }
 
 .max-table td, .max-table th{
@@ -678,6 +678,8 @@ body
 
 .max-table th{
   text-align: center;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
   background-color: #ddd;
 }
 

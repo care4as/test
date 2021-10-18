@@ -37,7 +37,7 @@
                                     <tr>
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
                                         <td id="optinStart">{{Carbon\Carbon::parse(App\Optin::min('date'))->format('d.m.Y')}}</td>
-                                        <td id="optinEnd">{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y')}}</td>
+                                        <td id="optinEnd">{{Carbon\Carbon::parse(App\Optin::max('date'))->format('d.m.Y')}}</td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
                                     </tr>
                                     <tr>
