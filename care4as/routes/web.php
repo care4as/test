@@ -319,6 +319,8 @@ Route::group(['middleware' => ['auth']], function () {
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
   Route::get('/userlist', 'UserListController@load')->name('userlist')->middleware('hasRight:controlling');
+  Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync');
+  Route::get('/userlist/updateuser', 'UserListController@updateUser')->name('userlist.updateuser');
   Route::get('/projectReport', 'ProjectReportController@load')->name('projectReport')->middleware('hasRight:controlling');
   Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
