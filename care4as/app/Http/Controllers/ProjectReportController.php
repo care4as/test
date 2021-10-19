@@ -223,7 +223,7 @@ class ProjectReportController extends Controller
         ->toArray();
 
         //save 1u1 person_id in array
-        $personList = DB::table('users')
+        $personList = DB::table('userlist')
         ->get()
         ->toArray();
 
@@ -232,8 +232,8 @@ class ProjectReportController extends Controller
         foreach($personList as $key => $person){
             $personArray = (array) $person;
             $refinedPersonList[$personArray['ds_id']]['ds_id'] = $personArray['ds_id'];
-            $refinedPersonList[$personArray['ds_id']]['person_id'] = $personArray['person_id'];
-            $refinedPersonList[$personArray['ds_id']]['cosmocom_id'] = $personArray['agent_id'];
+            $refinedPersonList[$personArray['ds_id']]['person_id'] = $personArray['1u1_person_id'];
+            $refinedPersonList[$personArray['ds_id']]['cosmocom_id'] = $personArray['1u1_agent_id'];
         }
 
         //get kdw data
