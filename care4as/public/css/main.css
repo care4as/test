@@ -535,7 +535,7 @@ body
 {
   border-radius: 50% !important;
   margin-left: 0.25em;
-  border-color: #f96332 ;
+  border-color: red ;
   color: #f96332 ;
   /* height: 33px; */
   /* width: 35px; */
@@ -551,6 +551,11 @@ body
 {
   background-color: #f96332 ;
   color: white;
+}
+.paginate_button:hover
+{
+  background: none !important;
+  border: none !important;
 }
 .page-item a
 {

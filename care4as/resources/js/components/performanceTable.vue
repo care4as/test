@@ -308,7 +308,7 @@
           .catch(
             function (err) {
               console.log('error DQ')
-              console.log(err);
+              console.log(err.response);
             })
           },
         createChart(chartId, chartData) {

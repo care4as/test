@@ -53,6 +53,10 @@
   {
     animation: blink 2s infinite;
   }
+  @keyframes blink {
+  from {color: black;}
+  to {color: white;}
+  }
 
   .fixedright
   {
@@ -79,10 +83,6 @@
     overflow: scroll;
     display: none;
 
-  }
-  @keyframes blink {
-  from {color: black;}
-  to {color: white;}
   }
 
 </style>
@@ -686,6 +686,7 @@
     loadData('HRDataStatus','#HoursreportData', '.loadingerHR')
 
     loadData('RDDataStatus','#RDDataStatus', '.loadingerRD')
+
     let table = $('#tableoverview').DataTable({
 
       "footerCallback": function ( row, data, start, end, display ) {
@@ -771,6 +772,12 @@
         fixedColumns: {
           leftColumns: 2,
           // rightColumns: 1,
+        },
+        language: {
+          "paginate": {
+            "next": "Nächste Seite",
+            "previous": "Vorherige Seite",
+          }
         },
         fnInitComplete: function(){
            // $('#footerdata').style.display = 'hidden';

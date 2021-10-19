@@ -179,41 +179,43 @@ function mouseoutNewSidebar(){
   function loadData(path,el, elpop)
   {
 
-    console.log(path)
     let host = window.location.host;
 
-    // axios.get('http://'+host+'/care4as/care4as/public/reports/'+path)
+    axios.get('http://'+host+'/care4as/care4as/public/reports/'+path)
 
-    console.log(path)
-    axios.get('http://'+host+'/reports/'+path)
+    // console.log(path)
+    // axios.get('http://'+host+'/reports/'+path)
     .then(response => {
-
       // console.log(response)
       let min = response.data[0]
       let max = response.data[1]
-
       // let element = $('#RDDataStatus')
       let element = $(el)
 
       // $('.loadingerRD').toggle()
       $(elpop).toggle()
 
-      element.css( 'display','block')
+      element.css( 'display','')
 
       if (elpop == '.loadingerRD') {
-        element.html('Retention-Details von '+min+' bis: '+max)
+        $('#retDetailsStart').html(''+min)
+        $('#retDetailsEnd').html(''+max)
       }
       else if (elpop == '.loadingerHR') {
           element.html('Stundenreport von '+min+' bis: '+max)
       }
       else if (elpop == '.loadingerOptin') {
-        element.html('Optin von '+min+' bis: '+max)
+        $('#optinStart').html(''+min)
+        $('#optinEnd').html(''+max)
       }
       else if (elpop == '.loadingerSAS') {
-        element.html('SAS von '+min+' bis: '+max)
+        $('#sasStart').html(''+min)
+        $('#sasEnd').html(''+max)
       }
       else if(elpop == '.loadingerDA') {
-        element.html('Daily Agent von '+min+' bis: '+max)
+        $('#dailyAgentStart').html(''+min)
+        $('#dailyAgentEnd').html(max)
+        // element.html('Daily Agent von '+min+' bis: '+max)
       }
 
     })
