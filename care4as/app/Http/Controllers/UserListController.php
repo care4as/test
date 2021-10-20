@@ -5,94 +5,232 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserListController extends Controller
 {
     public function load(){
-        $userList = $this->getUserData();
-        $departmentList = $this->getDepartmentList();
-        $projectList = $this->getProjectList();
-        $refinedUserList = $this->refineUserList($userList, $departmentList, $projectList);
+        $project = request('project');
+        $employeeState = request('inputEmployee');
 
-        //dd($refinedUserList);
-        return view('userlist', compact('refinedUserList'));
+        $defaultVariables = array();
+        $defaultVariables['project'] = $project;
+        $defaultVariables['inputEmployee'] = $employeeState;
+
+        //dd($defaultVariables);
+                
+        $users = $this->getUnfilteredUsers();
+        //dd($users);
+        if($employeeState == 'active'){
+            $users = $this->refineUserlistActive($users);
+        }
+        if($employeeState == 'inactive'){
+            $users = $this->refineUserlistInactive($users);
+        }
+        if($project != null && $project != 'all'){
+            $users = $this->refineUserlistProject($users, $project);
+        }
+
+        //users erstellen und anschließend nach bedarf durch verschiedene filter laufen lassen, wodurch nutzer entfernt werden
+
+        //dd($users);
+
+        return view('usermanagement.userlist', compact('users', 'defaultVariables'));
     }
 
-    public function getUserData(){
+    public function syncUserlistKdw(){
+        DB::disableQueryLog();
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', '0'); // for infinite time of execution
+        
         $userData = DB::connection('mysqlkdw')
         ->table('MA')
-        ->get();
+        ->get()
+        ->toArray();
 
-        $userList = json_decode($userData, true);
-        return $userList;
-    }
+        $projectData = DB::connection('mysqlkdw')
+        ->table('projekte')
+        ->get()
+        ->toArray(); 
 
-    public function getDepartmentList(){
+        $projectDataArray = array();
+
+        foreach($projectData as $key => $entry){
+            $entry = (array) $entry;
+            $projectDataArray[$entry['ds_id']] = $entry['bezeichnung'];
+        }
+
         $departmentData = DB::connection('mysqlkdw')
         ->table('abteilungen')
-        ->get();
+        ->get()
+        ->toArray(); 
 
-        $departmentList = json_decode($departmentData, true);
-        $refinedDepartmentList = array();
-        foreach($departmentList as $key => $data){
-            $refinedDepartmentList['ds_id'][$data['ds_id']]['bezeichnung'] = $data['bezeichnung'];
+        $departmentDataArray = array();
+
+        foreach($departmentData as $key => $entry){
+            $entry = (array) $entry;
+            $departmentDataArray[$entry['ds_id']] = $entry['bezeichnung'];
         }
-        return $refinedDepartmentList;
-    }
 
-    public function getProjectList(){
-        $projektData = DB::connection('mysqlkdw')
-        ->table('projekte')
-        ->get();
+        $teamData = DB::connection('mysqlkdw')
+        ->table('teams')
+        ->get()
+        ->toArray(); 
 
-        $projectList = json_decode($projektData, true);
-        $refinedProjektList = array();
-        foreach($projectList as $key => $data){
-            $refinedProjektList['ds_id'][$data['ds_id']]['bezeichnung'] = $data['bezeichnung'];
+        $teamDataArray = array();
+
+        foreach($teamData as $key => $entry){
+            $entry = (array) $entry;
+            $teamDataArray[$entry['ds_id']] = $entry['bezeichnung'];
         }
-        return $refinedProjektList;
-    }
 
-    public function refineUserList($userList, $departmentList, $projectList){
-        for($i = 0; $i < count($userList); $i++){
-            $status;
-            $today = date("Y-m-d");
+        $teamEmployeeData = DB::connection('mysqlkdw')
+        ->table('teams_MA')
+        ->get()
+        ->toArray(); 
 
-            if(($userList[$i]['austritt'] > $today) || $userList[$i]['austritt'] == ''){
-                $status = 'active';
+        $teamEmployeeDataArray = array();
+
+        foreach($teamEmployeeData as $key => $entry){
+            $entry = (array) $entry;
+            $teamEmployeeDataArray[$entry['MA_id']] = $teamDataArray[$entry['team_id']];
+        }
+
+        foreach($userData as $key => $user) {
+            $user = (array) $user;
+
+            if($user['geburt'] == '0000-00-00'){
+                $user['geburt'] = null;
             } else {
-                $status = 'inactive';
+                $user['geburt'] = date_create_from_format('Y-m-d', $user['geburt']);
             }
-            
-            $refinedUserList[$status][$i]['ds_id'] = $userList[$i]['ds_id'];
-            $refinedUserList[$status][$i]['kdw_id'] = $userList[$i]['pers_nr'];
-            $refinedUserList[$status][$i]['kdw_kennung'] = $userList[$i]['agent_id'];
-            $refinedUserList[$status][$i]['vorname'] = $userList[$i]['vorname'];
-            $refinedUserList[$status][$i]['name'] = $userList[$i]['familienname'];
-            $refinedUserList[$status][$i]['projekt_id'] = $userList[$i]['projekt_id'];
-            if($refinedUserList[$status][$i]['projekt_id'] != 0){
-                $refinedUserList[$status][$i]['projekt_kennzeichnung'] = $projectList['ds_id'][$refinedUserList[$status][$i]['projekt_id']]['bezeichnung'];
+
+            if($user['austritt'] != null) {
+                $user['austritt'] = date_create_from_format('Y-m-d', $user['austritt']);
+            }
+
+            if($user['projekt_id'] != null && $user['projekt_id'] != 0){
+                $user['projekt_id'] = $projectDataArray[$user['projekt_id']];
             } else {
-                $refinedUserList[$status][$i]['projekt_kennzeichnung'] = '';
+                $user['projekt_id'] = null;
             }
-            $refinedUserList[$status][$i]['funktions_id'] = $userList[$i]['abteilung_id'];
-            $refinedUserList[$status][$i]['funktions_kennzeichnung'] = $departmentList['ds_id'][$refinedUserList[$status][$i]['funktions_id']]['bezeichnung'];
-            $refinedUserList[$status][$i]['plz'] = $userList[$i]['plz'];
-            $refinedUserList[$status][$i]['ort'] = $userList[$i]['ort'];
-            $refinedUserList[$status][$i]['strasse'] = $userList[$i]['strasse'];
-            $refinedUserList[$status][$i]['geburtstag'] = $userList[$i]['geburt'];
-            $refinedUserList[$status][$i]['geschlecht'] = $userList[$i]['geschlecht'];
-            $refinedUserList[$status][$i]['telefon'] = $userList[$i]['telefon'];
-            $refinedUserList[$status][$i]['handy'] = $userList[$i]['handy'];
-            $refinedUserList[$status][$i]['email'] = $userList[$i]['email'];
-            $refinedUserList[$status][$i]['eintritt'] = $userList[$i]['eintritt'];
-            $refinedUserList[$status][$i]['austritt'] = $userList[$i]['austritt'];
-            $refinedUserList[$status][$i]['soll_h_day'] = $userList[$i]['soll_h_day'];
-            $refinedUserList[$status][$i]['soll_h_woche'] = $refinedUserList[$status][$i]['soll_h_day'] * 5;
-            $refinedUserList[$status][$i]['fte'] = $refinedUserList[$status][$i]['soll_h_day'] * 5 / 40;
+
+            if($user['abteilung_id'] != null && $user['abteilung_id'] != 0){
+                $user['abteilung_id'] = $departmentDataArray[$user['abteilung_id']];
+            } else {
+                $user['abteilung_id'] = null;
+            }
+
+            if(isset($teamEmployeeDataArray[$user['ds_id']])){
+                $user['team'] = $teamEmployeeDataArray[$user['ds_id']];
+            } else {
+                $user['team'] = null;
+            }
+            if($user['geschlecht'] == 'M') {
+                $user['geschlecht'] = 'Männlich';
+            } else if($user['geschlecht'] == 'W'){
+                $user['geschlecht'] = 'Weiblich';
+            } else {
+                $user['geschlecht'] = 'Divers';
+            }
+  
+            //INSERT OR IGNORE
+            DB::table('userlist')->updateOrInsert(
+                [
+                  'ds_id' => $user['ds_id']
+                ],
+                [
+                'username' => $user['agent_id'],
+                'password' => Hash::make('care4as2021!'),
+                'lastname' => $user['familienname'],
+                'firstname' => $user['vorname'],
+                'full_name' => $user['familienname'] . ', ' . $user['vorname'],
+                'gender' => $user['geschlecht'],
+                'birthdate' => $user['geburt'],
+                'zipcode' => intval($user['plz']),
+                'location' => $user['ort'],
+                'street' => $user['strasse'],
+                'phone' => $user['telefon'],
+                'mobile' => $user['handy'],
+                'mail' => $user['email'],
+                'work_location' => $user['standort'],
+                'project' => $user['projekt_id'], 
+                'department' => $user['abteilung_id'],
+                'team' => $user['team'],
+                'entry_date' => date_create_from_format('Y-m-d', $user['eintritt']),
+                'leave_date' => $user['austritt'],
+                'work_hours' => intval($user['soll_h_day']),
+                ]
+              );
         }
-        //dd($refinedUserList);
-        return $refinedUserList;
+
+        //redirect back to userlist
+        return redirect()->back();  
     }
+
+    public function updateUser(){
+        $ds_id = request('ds_id');
+        $person_id = request('person_id');
+        $agent_id = request('agent_id');
+        $sse_id = request('sse_id');
+
+        DB::table('userlist')->updateOrInsert(
+            [
+              'ds_id' => $ds_id
+            ],
+            [
+            '1u1_person_id' => $person_id,
+            '1u1_agent_id' => $agent_id,
+            '1u1_sse_id' => $sse_id,
+            ]
+          );
+
+        return redirect()->back(); 
+    }
+
+    public function getUnfilteredUsers(){
+        $users = DB::table('userlist')
+        ->get()
+        ->toArray();
+
+        $userArray = array();
+
+        foreach($users as $key => $entry){
+            $entry = (array) $entry;
+            $userArray[] = $entry;
+        }
+
+        return $userArray;
+    }
+
+    public function refineUserlistActive($userlist){
+        foreach($userlist as $key => $entry) {
+            if (($entry['leave_date'] < today()) && $entry['leave_date'] != null) {
+                unset($userlist[$key]);
+            }
+
+        }
+        return $userlist;
+    }
+
+    public function refineUserlistInactive($userlist){
+        foreach($userlist as $key => $entry) {
+            if (($entry['leave_date'] > today()) || $entry['leave_date'] == null) {
+                unset($userlist[$key]);
+            }
+
+        }
+        return $userlist;
+    }
+
+    public function refineUserlistProject($userlist, $project){
+        foreach($userlist as $key => $entry) {
+            if ($entry['project'] != $project) {
+                unset($userlist[$key]);
+            }
+        }
+        return $userlist;
+    }
+
 }
 

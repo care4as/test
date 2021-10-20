@@ -3,6 +3,47 @@
     Controlling: Projektmeldung
 @endsection
 @section('content')
+@section('additional_css')
+<style>
+    table.dataTable {
+        border-collapse: collapse;
+    }
+    .form-control{
+        color:black;
+    }
+    table.dataTable tbody td, table.dataTable tfoot td, table.dataTable thead th {
+        padding: 0px 15px;
+    }
+    .sorting_desc, .sorting_asc {
+        background-blend-mode: luminosity;
+    }
+    .dataTables_wrapper .dataTables_length select{
+        width: 60px;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+    label{
+        display: flex;
+        align-items: center;
+    }
+    .DTFC_LeftBodyLiner {
+        overflow-x: hidden;
+    }
+    .hoverRow{
+        background-color: #ddd !important;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+        border: 1px solid transparent;
+        background: transparent;
+    }
+    .page-item.active .page-link{
+        background-color: #FA7A50;
+        border-color: #FA7A50;
+    }
+
+</style>
+@endsection
+
 <div>
     <div class="row">
         <div class="col-md-12">
@@ -294,109 +335,107 @@
                                 Wie Projekt nur mit dem Filter auf Team1, Team2, ...
                             </div>
                             <div class="tab-pane active" id="employee">
+                                <!--
                                 <div class="max-panel-content">
                                     <input type="text" id="tableFilter" onkeyup="masterSearch('dslMaTable')" placeholder="Mitarbeiter filtern..." style="padding-left: 5px; width: 100%; font-size: 16px;" autofocus>
                                 </div>
+                                -->
                                 <div class="max-panel-content">
-                                    <div style="width: 100%; overflow-x: auto;">
+                                    <div style="width: 100%;">
                                         <table class="max-table" id="dslMaTable">
                                             <thead>
                                                 <tr style="width: 100%">
-                                                    <th colspan="1">Mitarbeiter</th>
-                                                    <th colspan="7">Stunden</th>
-                                                    <th colspan="3">Calls</th>
-                                                    <th colspan="2">Sales</th>
-                                                    <th colspan="4">OptIn</th>
-                                                    <th colspan="2">SaS</th>
-                                                    <th>RLZ+24</th>
-                                                    <th colspan="5">Umsatz</th>
-                                                </tr>
-                                                <tr style="width: 100%">
                                                     <th>Name</th>
-                                                    <th>Bezahlt</th>
-                                                    <th>Produktiv</th>
+                                                    <th>Std. Bezahlt</th>
+                                                    <th>Std. Produktiv</th>
                                                     <th>← in %</th>
-                                                    <th>Pause</th>
+                                                    <th>Std. Pause</th>
                                                     <th>← in %</th>
-                                                    <th>Krank</th>
+                                                    <th>Std. Krank</th>
                                                     <th>← in %</th>
-                                                    <th>Summe</th>
-                                                    <th>Pro Stunde</th>
+                                                    <th>∑ Calls</th>
+                                                    <th>← / Stunde</th>
                                                     <th>AHT</th>
-                                                    <th>GeVo</th>
-                                                    <th>CR</th>
-                                                    <th>Summe</th>
+                                                    <th>∑ GeVo Saves</th>
+                                                    <th>← CR</th>
+                                                    <th>∑ OptIn</th>
                                                     <th>← in %</th>
-                                                    <th>Möglich</th>
+                                                    <th>∑ Mögliche OptIn</th>
                                                     <th>← in %</th>
-                                                    <th>SaS</th>
+                                                    <th>∑ SaS</th>
                                                     <th>← in ‰</th>
-                                                    <th>Quote</th>
-                                                    <th>Availbench</th>
-                                                    <th>Sales</th>
-                                                    <th>Gesamt</th>
-                                                    <th>Je Std. bez.</th>
-                                                    <th>Je Std. prod.</th>
+                                                    <th>RLZ+24 Quote</th>
+                                                    <th>€ Availbench</th>
+                                                    <th>€ Sales</th>
+                                                    <th>€ Gesamt</th>
+                                                    <th>€ / Std. bez.</th>
+                                                    <th>€ / Std. prod.</th>
+                                                    <th>€ MA Kosten</th>
+                                                    <th>€ Delta</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($dataArray['employees'] as $key => $employee)
                                                     <tr>
                                                     <!--Name-->         <td style="text-align: left;">{{$employee['full_name']}}</td>
-                                                    <!--Std. bez.-->    <td></td>
-                                                    <!--Std. prod.-->   <td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--Pause-->        <td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--Krank-->        <td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--Summe Calls-->  <td></td>
-                                                    <!--Pro Std.-->     <td></td>
-                                                    <!--AHT-->          <td></td>
-                                                    <!--GeVo Sales-->   <td></td>
-                                                    <!--GeVo CR-->      <td></td>
-                                                    <!--OptIn Summe-->  <td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--OptIn Möglich--><td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--SaS Summe-->    <td></td>
-                                                    <!--in ‰-->         <td></td>
-                                                    <!--RLZ Quote-->    <td></td>
-                                                    <!--U. Availbench--><td></td>
-                                                    <!--U. Sales-->     <td></td>
-                                                    <!--U. Gesamt-->    <td></td>
-                                                    <!--U. / bez.-->    <td></td>
-                                                    <!--U. / prod.-->   <td></td>
+                                                    <!--Std. bez.-->    <td>{{number_format($employee['work_hours'], 2,",",".")}}</td>
+                                                    <!--Std. prod.-->   <td>{{number_format($employee['productive_hours'], 2,",",".")}}</td>
+                                                    <!--in %-->         <td>{{number_format($employee['productive_percentage'], 2,",",".")}}%</td>
+                                                    <!--Pause-->        <td>{{number_format($employee['break_hours'], 2,",",".")}}</td>
+                                                    <!--in %-->         <td>{{number_format($employee['break_percentage'], 2,",",".")}}%</td>
+                                                    <!--Krank-->        <td>{{number_format($employee['sick_hours'], 2,",",".")}}</td>
+                                                    <!--in %-->         <td>{{number_format($employee['sick_percentage'], 2,",",".")}}%</td>
+                                                    <!--Summe Calls-->  <td>{{$employee['dsl_calls']}}</td>
+                                                    <!--Pro Std.-->     <td>{{number_format($employee['calls_per_hour'], 2,",",".")}}</td>
+                                                    <!--AHT-->          <td>{{number_format($employee['aht'], 0,",","")}}</td>
+                                                    <!--GeVo Sales-->   <td>{{$employee['dsl_saves']}}</td>
+                                                    <!--GeVo CR-->      <td>{{number_format($employee['dsl_cr'], 2,",",".")}}%</td>
+                                                    <!--OptIn Summe-->  <td>{{$employee['optin_calls_new']}}</td>
+                                                    <!--in %-->         <td>{{number_format($employee['optin_percentage'], 2,",",".")}}%</td>
+                                                    <!--OptIn Möglich--><td>{{$employee['optin_calls_possible']}}</td>
+                                                    <!--in %-->         <td>{{number_format($employee['optin_possible_percentage'], 2,",",".")}}%</td>
+                                                    <!--SaS Summe-->    <td>{{$employee['sas_orders']}}</td>
+                                                    <!--in ‰-->         <td>{{number_format($employee['sas_promille'], 2,",",".")}}‰</td>
+                                                    <!--RLZ Quote-->    <td>{{number_format($employee['rlz_plus_percentage'], 2,",",".")}}%</td>
+                                                    <!--U. Availbench--><td style="text-align: right;">{{number_format($employee['revenue_availbench'], 2,",","")}}€</td>
+                                                    <!--U. Sales-->     <td style="text-align: right;">{{number_format($employee['revenue_sales'], 2,",","")}}€</td>
+                                                    <!--U. Gesamt-->    <td style="text-align: right;">{{number_format($employee['revenue_sum'], 2,",","")}}€</td>
+                                                    <!--U. / bez.-->    <td style="text-align: right;">{{number_format($employee['revenue_per_hour_paid'], 2,",","")}}€</td>
+                                                    <!--U. / prod.-->   <td style="text-align: right;">{{number_format($employee['revenue_per_hour_productive'], 2,",","")}}€</td>
+                                                    <!--Kosten-->       <td style="text-align: right;">{{number_format($employee['pay_cost'], 2,",","")}}€</td>
+                                                    <!--U. Delta-->     <td style="text-align: right;">{{number_format($employee['revenue_delta'], 2,",","")}}€</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                             <tfoot>
                                                 <tr style="font-weight: bold; background-color: #ddd;">
                                                     <!--Name-->         <td>Summe</td>
-                                                    <!--Std. bez.-->    <td></td>
-                                                    <!--Std. prod.-->   <td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--Pause-->        <td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--Krank-->        <td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--Summe Calls-->  <td></td>
-                                                    <!--Pro Std.-->     <td></td>
-                                                    <!--AHT-->          <td></td>
-                                                    <!--GeVo Sales-->   <td></td>
-                                                    <!--GeVo CR-->      <td></td>
-                                                    <!--OptIn Summe-->  <td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--OptIn Möglich--><td></td>
-                                                    <!--in %-->         <td></td>
-                                                    <!--SaS Summe-->    <td></td>
-                                                    <!--in ‰-->         <td></td>
-                                                    <!--RLZ Quote-->    <td></td>
-                                                    <!--U. Availbench--><td></td>
-                                                    <!--U. Sales-->     <td></td>
-                                                    <!--U. Gesamt-->    <td></td>
-                                                    <!--U. / bez.-->    <td></td>
-                                                    <!--U. / prod.-->   <td></td>
+                                                    <!--Std. bez.-->    <td>{{number_format($dataArray['sum']['work_hours'], 2,",",".")}}</td>
+                                                    <!--Std. prod.-->   <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
+                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage'], 2,",",".")}}%</td>
+                                                    <!--Pause-->        <td>{{number_format($dataArray['sum']['break_hours'], 2,",",".")}}</td>
+                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['break_percentage'], 2,",",".")}}%</td>
+                                                    <!--Krank-->        <td>{{number_format($dataArray['sum']['sick_hours'], 2,",",".")}}</td>
+                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['sick_percentage'], 2,",",".")}}%</td>
+                                                    <!--Summe Calls-->  <td>{{$dataArray['sum']['dsl_calls']}}</td>
+                                                    <!--Pro Std.-->     <td>{{number_format($dataArray['sum']['calls_per_hour'], 2,",",".")}}</td>
+                                                    <!--AHT-->          <td>{{number_format($dataArray['sum']['aht'], 0,",",".")}}</td>
+                                                    <!--GeVo Sales-->   <td>{{$dataArray['sum']['dsl_saves']}}</td>
+                                                    <!--GeVo CR-->      <td>{{number_format($dataArray['sum']['dsl_cr'], 2,",",".")}}%</td>
+                                                    <!--OptIn Summe-->  <td>{{$dataArray['sum']['optin_calls_new']}}</td>
+                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['optin_percentage'], 2,",",".")}}%</td>
+                                                    <!--OptIn Möglich--><td>{{$dataArray['sum']['optin_calls_possible']}}</td>
+                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['optin_possible_percentage'], 2,",",".")}}%</td>
+                                                    <!--SaS Summe-->    <td>{{$dataArray['sum']['sas_orders']}}</td>
+                                                    <!--in ‰-->         <td>{{number_format($dataArray['sum']['sas_promille'], 2,",",".")}}‰</td>
+                                                    <!--RLZ Quote-->    <td>{{number_format($dataArray['sum']['rlz_plus_percentage'], 2,",",".")}}%</td>
+                                                    <!--U. Availbench--><td style="text-align: right;">{{number_format($dataArray['sum']['revenue_availbench'], 2,",",".")}}€</td>
+                                                    <!--U. Sales-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_sales'], 2,",",".")}}€</td>
+                                                    <!--U. Gesamt-->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_sum'], 2,",",".")}}€</td>
+                                                    <!--U. / bez.-->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_per_hour_paid'], 2,",",".")}}€</td>
+                                                    <!--U. / prod.-->   <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_per_hour_productive'], 2,",",".")}}€</td>
+                                                    <!--Kosten-->       <td style="text-align: right;">{{number_format($dataArray['sum']['pay_cost'], 2,",",".")}}€</td>
+                                                    <!--U. Delta-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_delta'], 2,",",".")}}€</td>
                                                     </tr>
                                             </tfoot>
                                         </table>    
@@ -414,52 +453,60 @@
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    
 @endsection
 
 @section('additional_js')
-    <script>
-        function masterSearch(id){
-            //Show all Cells
-            table = document.getElementById(id);
-            tr = table.getElementsByTagName("tr");
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
+<script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
+<script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 
-            for(i = 2; i < tr.length; i++){
-                //td = tr[i].getElementsByTagName("td")[1].innerText;
-                tr[i].style.display = "";
-            }
-
-            //Hide Search mismatch
-            searchTable(id);
-        }
-
-
-
-        /** Searches all table Cells and hides rows not matching search filter */
-        function searchTable(id){
-            // Declare variables
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("tableFilter");
-            filter = input.value.toUpperCase();
-            table = document.getElementById(id);
-            tr = table.getElementsByTagName("tr");
-
-            // Loop through all table rows, and hide those who don't match the search query
-            for (i = 2; i < tr.length - 1; i++) {
-                match = 0;
-                for(j = 0; j < 1; j++){
-                    td = tr[i].getElementsByTagName("td")[j];
-                    if (td){
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            match++;
-                        }
-                    }
-                }
-                if (match == 0){
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    </script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    let table = $('#dslMaTable').DataTable({
+        "language": {
+            "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+            "zeroRecords": "Keinen Eintrag gefunden",
+            "info": "Seite _PAGE_ von _PAGES_",
+            "infoEmpty": "Keinen Eintrag gefunden",
+            "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
+            "loadingRecords": "Lädt...",
+            "processing":     "Lädt...",
+            "search":         "Suche:",
+            "paginate": {
+                "first":      "Erste",
+                "last":       "Letzte",
+                "next":       "Nächste",
+                "previous":   "Zurück"
+            },
+        },
+        "lengthMenu": [ [-1, 3, 5, 10, 25, 50, 100], ["alle", 3, 5, 10, 25, 50, 100] ],
+        scrollX: true,
+        scrollCollapse: true,
+        fixedColumns: true,
+        select: true,
+    });
+    table.rows().every( function () {
+        var rowNode = this.node();
+        var rowIndex = this.index();
+        $(rowNode).attr( 'data-dt-row', rowIndex );
+        $('tr').hover(function () {
+            var thisNode = $( this );
+            var rowIdx = thisNode.attr( 'data-dt-row' );
+            $( "tr" ).removeClass("hoverRow"); // remove all shading
+            $( "tr[data-dt-row='" + rowIdx + "']" ).addClass("hoverRow"); // shade only the hovered row
+        });
+    });
+})
+</script>
 @endsection

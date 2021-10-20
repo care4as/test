@@ -533,9 +533,15 @@ body
     }
 .page-link
 {
+<<<<<<< HEAD
   border-radius: 50% !important;
   margin-left: 0.25em;
   border-color: red ;
+=======
+  border-radius: 5px !important;
+  margin-left: 0;
+  border-color: #f96332 ;
+>>>>>>> 35ed15b88e0f879c0336ef306b4b951cace1e18b
   color: #f96332 ;
   /* height: 33px; */
   /* width: 35px; */
@@ -670,8 +676,8 @@ body
 
 /* Tabelle test*/
 .max-table{
-  width: 100%;
   white-space: nowrap;
+  border-radius: 0px;
 }
 
 .max-table td, .max-table th{
@@ -683,6 +689,8 @@ body
 
 .max-table th{
   text-align: center;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
   background-color: #ddd;
 }
 
