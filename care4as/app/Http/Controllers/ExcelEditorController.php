@@ -151,6 +151,7 @@ class ExcelEditorController extends Controller
       }
       return redirect()->back();
     }
+    
     public function Optinupload(Request $request)
     {
       DB::disableQueryLog();
@@ -219,17 +220,17 @@ class ExcelEditorController extends Controller
         ];
       }
 
-    $insertData = array_chunk($insertData, 3500);
+      $insertData = array_chunk($insertData, 3500);
 
-    // dd($insertData);
-    for($i=0; $i <= count($insertData)-1; $i++)
-    {
-      DB::table('optin')->insertOrIgnore($insertData[$i]);
+      // dd($insertData);
+      for($i=0; $i <= count($insertData)-1; $i++)
+      {
+        DB::table('optin')->insertOrIgnore($insertData[$i]);
+      }
+      return redirect()->back();
     }
-    return redirect()->back();
-  }
 
-  public function SASupload(Request $request)
+    public function SASupload(Request $request)
     {
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
@@ -303,6 +304,7 @@ class ExcelEditorController extends Controller
       }
       return redirect()->back();
     }
+
     public function sseTrackingUpload(Request $request)
     {
       DB::disableQueryLog();
@@ -505,6 +507,7 @@ class ExcelEditorController extends Controller
 
       dd($insertarray[1], $insertarray, $data[0]);
     }
+
     public function queueOrNot(Request $request)
     {
       DB::disableQueryLog();
@@ -562,6 +565,7 @@ class ExcelEditorController extends Controller
 
         return response()->json('success');
     }
+
     public function dailyAgentUploadQueue($data,$input)
     {
 
@@ -668,6 +672,7 @@ class ExcelEditorController extends Controller
 
         // return redirect()->back();
     }
+
     public function dailyAgentUpload($data)
     {
         $counter = 0;
@@ -766,10 +771,12 @@ class ExcelEditorController extends Controller
           ->onConnection('sync');
         }
     }
+
     public function capacitysuitReport ()
     {
       return view('reports.capacityReport');
     }
+
     public function capacitysuitReportUpload(Request $request)
     {
       // the capacitysuitReport variable stores one entry for the capacityReport table
@@ -817,6 +824,7 @@ class ExcelEditorController extends Controller
       }
       return redirect()->back();
     }
+
     public function RetentionDetailsReport(Request $request)
     {
       if($request->sheet)
@@ -905,10 +913,12 @@ class ExcelEditorController extends Controller
       // dd($data);
 
     }
+
     public function provisionView()
     {
       return view('reports/provisionInput');
     }
+
     public function provisionUpload(Request $request)
     {
       $name ='Dirki';
@@ -953,6 +963,7 @@ class ExcelEditorController extends Controller
 
       // return redirect()->back();
     }
+
     public function reportHours(Request $request)
     {
       if($request->sheet)
@@ -1041,6 +1052,22 @@ class ExcelEditorController extends Controller
       $availbenchArray = array();
       $i = 0;
 
+      //get datatables timespan
+      $dataTables = DB::table('datatables_timespan')
+      ->get()
+      ->toArray();
+
+      $minDate = null;
+      $maxDate = null;
+
+      foreach($dataTables as $key => $entry){
+        $entry = (array) $entry;
+        if ($entry['data_table'] == 'availbench_report'){
+          $minDate = date_create_from_format('Y-m-d', $entry['min_date']);
+          $maxDate = date_create_from_format('Y-m-d',$entry['max_date']);
+        }
+      }
+
       foreach($fileArray as $row) {
         if(count($header) == count($row)) {
           $availbenchArray[$i]['date_key'] = intval($row[0]);
@@ -1069,19 +1096,21 @@ class ExcelEditorController extends Controller
           $availbenchArray[$i]['total_costs_per_interval'] = doubleval($row[23]);
           $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
 
-          if ($availbenchArray[$i]['date_date'] < $minDate){
-            $mindate = $availbenchArray[$i]['date_date'];
+          if ($minDate == null) {
+            $minDate = $availbenchArray[$i]['date_date'];
+          } else if ($availbenchArray[$i]['date_date'] < $minDate){
+            $minDate = $availbenchArray[$i]['date_date'];
           }
 
-          if ($availbenchArray[$i]['date_date'] > $maxDate){
-            $maxdate = $availbenchArray[$i]['date_date'];
+          if ($maxDate == null) {
+            $maxDate = $availbenchArray[$i]['date_date'];
+          } else if ($availbenchArray[$i]['date_date'] > $maxDate){
+            $maxDate = $availbenchArray[$i]['date_date'];
           } 
 
           $i++;
         }
       }
-
-      //dd($availbenchArray);
 
       for ($i = 0; $i < count($availbenchArray); $i++){
         //echo $availbenchArray[$i]['call_forecast_owner_key'].' - '.$availbenchArray[$i]['call_date_interval_start_time'].' - '.$i;
@@ -1116,11 +1145,18 @@ class ExcelEditorController extends Controller
           'malus_approval_done' => $availbenchArray[$i]['malus_approval_done']
           ]
         );
+
+        DB::table('datatables_timespan')->updateOrInsert(
+          [
+            'data_table' => 'availbench_report',
+          ],
+          [
+            'min_date' => $minDate,
+            'max_date' => $maxDate,
+          ]
+        );
       }
       return redirect()->back();
     }
-
-
-
 
 }

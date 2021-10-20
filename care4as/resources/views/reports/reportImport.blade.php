@@ -35,16 +35,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="loadingerAB">
+                                    <tr id="availbench">
                                         <td style="text-align: left; font-weight: 600;">1u1 Availbench</td>
-                                        <td id="" >Daten werden geladen</td>
-                                        <td id=""></td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
-                                    </tr>
-                                    <tr id="avData" style="display:none;">
-                                        <td style="text-align: left; font-weight: 600;">1u1 Availbench</td>
-                                        <td id="availbenchStart">xxx</td>
-                                        <td id="availbenchEnd">xxx</td>
+                                        @if(isset($refinedDataTables['availbench_report']['min_date']))
+                                            <td>{{$refinedDataTables['availbench_report']['min_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
+                                        @if(isset($refinedDataTables['availbench_report']['max_date']))
+                                            <td>{{$refinedDataTables['availbench_report']['max_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
                                     </tr>
                                     <tr class="loadingerDA">
@@ -113,7 +115,7 @@
         <div class="modal-content">
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Availbench</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -122,7 +124,14 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data">
+                    <!-- DEBUG
+                    <form action="{{route('availbench.upload')}}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                        <input type="file" name="file" id="file">
+                        <button type="submit">Test</button>
+                    </form>
+                    -->
+                    <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -138,7 +147,7 @@
                         </div>
                 </div>
                         <div class="modal-footer" style="font-size: 14px;">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
                             <button type="button" id="availbenchDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                         </div>
                     </form>
@@ -157,12 +166,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div id="app">b
+            <div id="app">
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="dailyAgentDropzone" enctype="multipart/form-data">
+                    <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="dailyAgentDropzone" enctype="multipart/form-data"  style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="dailyAgentContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -202,7 +211,7 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('reports.OptIn.upload')}}" class="dropzone" id="optinDropzone" enctype="multipart/form-data">
+                    <form action="{{route('reports.OptIn.upload')}}" class="dropzone" id="optinDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="optinContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -242,7 +251,7 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('excel.test')}}" class="dropzone" id="retDetailsDropzone" enctype="multipart/form-data">
+                    <form action="{{route('excel.test')}}" class="dropzone" id="retDetailsDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="retDetailsContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -282,7 +291,7 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('reports.SAS.upload')}}" class="dropzone" id="sasDropzone" enctype="multipart/form-data">
+                    <form action="{{route('reports.SAS.upload')}}" class="dropzone" id="sasDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="sasContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -358,7 +367,7 @@ Dropzone.options.availbenchDropzone = {
         $('#loaderDiv').css('display','none');
       });
       this.on("complete", function(file) {
-        // this.removeAllFiles()
+        
       });
     }
 };
