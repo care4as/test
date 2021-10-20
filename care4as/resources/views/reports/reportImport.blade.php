@@ -122,15 +122,6 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-<<<<<<< HEAD
-                    
-                    <form action="{{route('availbench.upload')}}" enctype="multipart/form-data" method="POST">
-                    @csrf
-                        <input type="file" name="file" id="" >
-                        <button type="submit" id="" class="btn btn-primary">Speichern</button>
-                    </form>    
-=======
->>>>>>> M+A
                     <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
