@@ -275,11 +275,11 @@
                                         <h5>1und1</h5>
                                         <div style="width: 100%; display: grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
                                             <div style="margin-top: auto; margin-bottom: auto">Personen ID:</div>
-                                            <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="person_id">{{$user['1u1_person_id']}}</div>
+                                            <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="person_id" value="{{$user['1u1_person_id']}}"></input></div>
                                             <div style="margin-top: auto; margin-bottom: auto">Agenten ID:</div>
-                                            <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="agent_id">{{$user['1u1_agent_id']}}</div>
+                                            <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="agent_id" value="{{$user['1u1_agent_id']}}"></div>
                                             <div style="margin-top: auto; margin-bottom: auto">SSE ID:</div>
-                                            <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="sse_id"></div>
+                                            <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="sse_id" value="{{$user['1u1_sse_id']}}"></div>
                                         </div>
                                     </div>    
                             </div>
