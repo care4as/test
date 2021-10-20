@@ -78,7 +78,13 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
+                    
+                    <form action="{{route('availbench.upload')}}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                        <input type="file" name="file" id="" >
+                        <button type="submit" id="" class="btn btn-primary">Speichern</button>
+                    </form>    
                     <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -93,7 +99,7 @@
                             <div style="padding-right: 5px; align-self: center;">Zeile:</div>
                             <div><input type="text" class="form-control" name="fromRow" placeholder="Wert..." style="color: black;"></div>
                         </div>
-                </div>
+                </div>b
                         <div class="modal-footer" style="font-size: 14px;">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
                             <button type="button" id="availbenchDropZoneSubmitter" class="btn btn-primary">Speichern</button>
@@ -114,7 +120,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div id="app">
+            <div id="app">b
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
