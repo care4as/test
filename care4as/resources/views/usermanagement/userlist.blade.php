@@ -335,6 +335,7 @@
         scrollCollapse: false,
         fixedColumns: false,
         select: true,
+        order: [[1, "asc"]],
     });
     document.getElementById('userListContainer').style.display = "block";
     $($.fn.dataTable.tables(true)).DataTable()
