@@ -1015,6 +1015,8 @@ class ExcelEditorController extends Controller
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
 
+      
+      
       //validate $request
       $request->validate([
         'file' => 'required',
@@ -1037,6 +1039,7 @@ class ExcelEditorController extends Controller
       
       $availbenchArray = array();
       $i = 0;
+
       foreach($fileArray as $row) {
         if(count($header) == count($row)) {
           $availbenchArray[$i]['date_key'] = intval($row[0]);
@@ -1064,9 +1067,19 @@ class ExcelEditorController extends Controller
           $availbenchArray[$i]['acceptance_rate'] = doubleval($row[22]);
           $availbenchArray[$i]['total_costs_per_interval'] = doubleval($row[23]);
           $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
+
+          if ($availbenchArray[$i]['date_date'] < $minDate){
+            $mindate = $availbenchArray[$i]['date_date'];
+          }
+
+          if ($availbenchArray[$i]['date_date'] > $maxDate){
+            $maxdate = $availbenchArray[$i]['date_date'];
+          } 
+
           $i++;
         }
       }
+
       //dd($availbenchArray);
       
       for ($i = 0; $i < count($availbenchArray); $i++){

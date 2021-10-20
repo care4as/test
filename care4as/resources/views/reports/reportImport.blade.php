@@ -99,7 +99,7 @@
                             <div style="padding-right: 5px; align-self: center;">Zeile:</div>
                             <div><input type="text" class="form-control" name="fromRow" placeholder="Wert..." style="color: black;"></div>
                         </div>
-                </div>b
+                </div>
                         <div class="modal-footer" style="font-size: 14px;">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
                             <button type="button" id="availbenchDropZoneSubmitter" class="btn btn-primary">Speichern</button>
