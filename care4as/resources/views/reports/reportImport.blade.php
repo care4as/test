@@ -61,13 +61,8 @@
                                     </tr>
                                     <tr class="loadingerOptin">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
-<<<<<<< HEAD
                                         <td id="">Daten werden geladen</td>
                                         <td id=""></td>
-=======
-                                        <td id="optinStart">{{Carbon\Carbon::parse(App\Optin::min('date'))->format('d.m.Y')}}</td>
-                                        <td id="optinEnd">{{Carbon\Carbon::parse(App\Optin::max('date'))->format('d.m.Y')}}</td>
->>>>>>> 35ed15b88e0f879c0336ef306b4b951cace1e18b
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
                                     </tr>
                                     <tr id="OptinDataStatus" style="display:none;">
