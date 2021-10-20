@@ -194,7 +194,7 @@ class ExcelEditorController extends Controller
 
       for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
         $cell = $data2[$i];
-        
+
         $UNIX_DATE2 = ($cell[3] - 25569) * 86400;
         $date = gmdate("Y-m-d",$UNIX_DATE2);
         // dd();
@@ -549,6 +549,7 @@ class ExcelEditorController extends Controller
       $input['sheet'] = $sheet;
 
       $nameconvention = 'DAI';
+      
       if(str_contains($filename2Check, $nameconvention))
       {
         // dd($data);
@@ -1023,12 +1024,12 @@ class ExcelEditorController extends Controller
       ]);
 
       $file = request()->file('file');  //save $request in variable
- 
+
       //convert .txt file to array
       $file = file_get_contents($file);                         // Get the whole file as string
       $file = mb_convert_encoding($file, 'UTF8', 'UTF-16LE');   // Convert the file to UTF8
       $file = preg_split("/\R/", $file);                        // Split it by line breaks
-      
+
       $fileArray = array(); //initialize array
 
       foreach ($file as $key => $line) {
@@ -1036,7 +1037,7 @@ class ExcelEditorController extends Controller
       };
 
       $header = array_shift($fileArray);
-      
+
       $availbenchArray = array();
       $i = 0;
 
@@ -1081,7 +1082,7 @@ class ExcelEditorController extends Controller
       }
 
       //dd($availbenchArray);
-      
+
       for ($i = 0; $i < count($availbenchArray); $i++){
         //echo $availbenchArray[$i]['call_forecast_owner_key'].' - '.$availbenchArray[$i]['call_date_interval_start_time'].' - '.$i;
         DB::table('availbench_report')->updateOrInsert(

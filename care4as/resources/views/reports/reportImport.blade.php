@@ -4,6 +4,19 @@
 @endsection
 @section('content')
 
+@section('additional_css')
+<link href="{{asset('css/dropzone.min.css')}}" rel="stylesheet" />
+<style media="screen">
+  .loadingerDA, .loadingerAB, .loadingerRD
+  {
+    animation: blink 2s infinite;
+  }
+  @keyframes blink {
+  from {color: black;}
+  to {color: white;}
+  }
+</style>
+@endsection
 <div class="row">
     <div class="col-md-12">
         <div class="max-main-container">
@@ -15,41 +28,71 @@
                             <table class="table" style="text-align: center;">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: left;">Report</th>
+                                        <th style="text-align: left;">Report Test</th>
                                         <th>Daten von</th>
                                         <th>Daten bis</th>
                                         <th>Import</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr class="loadingerAB">
                                         <td style="text-align: left; font-weight: 600;">1u1 Availbench</td>
-                                        <td id="availbenchStart">{{Carbon\Carbon::parse(App\Availbench::min('date_date'))->format('d.m.Y')}}</td>
-                                        <td id="availbenchEnd">{{Carbon\Carbon::parse(App\Availbench::max('date_date'))->format('d.m.Y')}}</td>
+                                        <td id="" >Daten werden geladen</td>
+                                        <td id=""></td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
                                     </tr>
-                                    <tr>
+                                    <tr id="avData" style="display:none;">
+                                        <td style="text-align: left; font-weight: 600;">1u1 Availbench</td>
+                                        <td id="availbenchStart">xxx</td>
+                                        <td id="availbenchEnd">xxx</td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
+                                    </tr>
+                                    <tr class="loadingerDA">
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
-                                        <td id="dailyAgentStart">{{Carbon\Carbon::parse(App\DailyAgent::min('date'))->format('d.m.Y')}}</td>
-                                        <td id="dailyAgentEnd">{{Carbon\Carbon::parse(App\DailyAgent::max('date'))->format('d.m.Y')}}</td>
+                                        <td id="" >Daten werden geladen</td>
+                                        <td id=""></td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
                                     </tr>
-                                    <tr>
+                                    <tr id="dailyagentData" style="display:none;">
+                                        <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
+                                        <td id="dailyAgentStart">1</td>
+                                        <td id="dailyAgentEnd">1</td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
+                                    </tr>
+                                    <tr class="loadingerOptin">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
-                                        <td id="optinStart">{{Carbon\Carbon::parse(App\Optin::min('date'))->format('d.m.Y')}}</td>
-                                        <td id="optinEnd">{{Carbon\Carbon::parse(App\Optin::max('date'))->format('d.m.Y')}}</td>
+                                        <td id="">Daten werden geladen</td>
+                                        <td id=""></td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
                                     </tr>
-                                    <tr>
+                                    <tr id="OptinDataStatus" style="display:none;">
+                                        <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
+                                        <td id="optinStart">1</td>
+                                        <td id="optinEnd">1</td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
+                                    </tr>
+                                    <tr class="loadingerRD" >
                                         <td style="text-align: left; font-weight: 600;">1u1 Retention Details</td>
-                                        <td id="retDetailsStart">{{Carbon\Carbon::parse(App\RetentionDetail::min('call_date'))->format('d.m.Y')}}</td>
-                                        <td id="retDetailsEnd">{{Carbon\Carbon::parse(App\RetentionDetail::max('call_date'))->format('d.m.Y')}}</td>
+                                        <td id="">Daten werden geladen</td>
+                                        <td id=""></td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#retDetailsModal">Importieren</button></td>
                                     </tr>
-                                    <tr>
+                                    <tr id="RDDataStatus" style="display:none;">
+                                        <td style="text-align: left; font-weight: 600;">1u1 Retention Details</td>
+                                        <td id="retDetailsStart">xxx</td>
+                                        <td id="retDetailsEnd">xxx</td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#retDetailsModal">Importieren</button></td>
+                                    </tr>
+                                    <tr class="loadingerSAS">
                                         <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
-                                        <td id="sasStart">{{Carbon\Carbon::parse(App\SAS::min('date'))->format('d.m.Y')}}</td>
-                                        <td id="sasEnd">{{Carbon\Carbon::parse(App\SAS::max('date'))->format('d.m.Y')}}</td>
+                                        <td id="">Daten werden geladen</td>
+                                        <td id=""></td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#retDetailsModal">Importieren</button></td>
+                                    </tr>
+                                    <tr id="SASDataStatus" style="display:none;">
+                                        <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
+                                        <td id="sasStart">sas</td>
+                                        <td id="sasEnd">sas</td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sasModal">Importieren</button></td>
                                     </tr>
                                 </tbody>
@@ -79,12 +122,15 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
+<<<<<<< HEAD
                     
                     <form action="{{route('availbench.upload')}}" enctype="multipart/form-data" method="POST">
                     @csrf
                         <input type="file" name="file" id="" >
                         <button type="submit" id="" class="btn btn-primary">Speichern</button>
                     </form>    
+=======
+>>>>>>> M+A
                     <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -124,7 +170,7 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
                     <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="dailyAgentDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="dailyAgentContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -164,7 +210,7 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
                     <form action="{{route('reports.OptIn.upload')}}" class="dropzone" id="optinDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="optinContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -204,7 +250,7 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
                     <form action="{{route('excel.test')}}" class="dropzone" id="retDetailsDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="retDetailsContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -244,7 +290,7 @@
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
-                    </div>    
+                    </div>
                     <form action="{{route('reports.SAS.upload')}}" class="dropzone" id="sasDropzone" enctype="multipart/form-data">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="sasContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -539,7 +585,14 @@ Dropzone.options.sasDropzone = {
 <script type="text/javascript">
 
 $( document ).ready(function() {
-  console.log('test')
+  loadData('dailyAgentDataStatus','#dailyagentData','.loadingerDA')
+
+  loadData('SASStatus','#SASDataStatus','.loadingerSAS')
+  //
+  loadData('OptinStatus','#OptinDataStatus','.loadingerOptin')
+  //
+  loadData('RDDataStatus','#RDDataStatus', '.loadingerRD')
+
 });
 $(function(){
 

@@ -15,11 +15,11 @@
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <li class="page-item">
-                    <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">@lang('pagination.next')</a>
+                    <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">@lang('pagination.next')1</a>
                 </li>
             @else
                 <li class="page-item disabled" aria-disabled="true">
-                    <span class="page-link">@lang('pagination.next')</span>
+                    <span class="page-link">@lang('pagination.next')1</span>
                 </li>
             @endif
         </ul>

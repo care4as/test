@@ -96,6 +96,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/reportImport', function()
   {
     return view('reports.reportImport');
+    
   })->name('reportImport');
 
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:importReports');
