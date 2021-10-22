@@ -360,7 +360,6 @@
               <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li>
             </ul>
           </li>
-<<<<<<< HEAD
           @endif -->
           @if(in_array('telefonicapause',Auth()->user()->getRights()))
           <li>
@@ -370,8 +369,6 @@
               <p><b>Pausentool <br>Telefonica</b></p>
             </a>
           </li>
-=======
->>>>>>> 6a69f04211aaa28a5be4ea217c86c3c1b80c16a6
           @endif
           @if(in_array('sendReports',Auth()->user()->getRights()))
           <li>
