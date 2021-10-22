@@ -1325,7 +1325,7 @@ fieldset[disabled] .btn-link.active {
   background-color: transparent;
   border: 1px solid #E3E3E3;
   border-radius: 30px;
-  color: white;
+  /* color: white; */
   line-height: normal;
   height: auto;
   font-size: 0.8571em;

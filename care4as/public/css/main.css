@@ -462,7 +462,7 @@ body
       width:20%;
       padding: 10px;
       border-bottom: 1px solid  rgb(124, 124, 124);
-      color: white;
+      /* color: white; */
       font-weight: bold;
       font-size: 1rem;
       cursor: pointer;
@@ -478,11 +478,6 @@ body
       background-color: lightblue;
       color: black;
     }
-
-    .inhalt
-    {
-    }
-
     .ueberschriften
     {
       display:flex;

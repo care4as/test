@@ -73,7 +73,7 @@
             </a>
           </li>
           @endif
-          @if(in_array('indexCancels',Auth()->user()->getRights()))
+          <!-- @if(in_array('indexCancels',Auth()->user()->getRights()))
             <li>
               <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
                 <i class="fas fa-skull-crossbones"></i>
@@ -89,8 +89,8 @@
                 @endif
               </ul>
             </li>
-            @endif
-            @if(in_array('importReports',Auth()->user()->getRights()))
+            @endif -->
+            <!-- @if(in_array('importReports',Auth()->user()->getRights()))
               <li>
                 <a class="" data-toggle="collapse" href="#collapseProvision" role="button" aria-expanded="false" aria-controls="collapseCancel">
                   <i class="fas fa-euro-sign"></i>
@@ -101,7 +101,7 @@
                   <li><a href="{{route('buchungsliste.show')}}">Buchungslisten</a></li>
                 </ul>
               </li>
-            @endif
+            @endif -->
           @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseUser" role="button" aria-expanded="false" aria-controls="collapseUser">
@@ -145,7 +145,7 @@
             </a>
           </li>
           @endif
-          @if(in_array('indexMabel',Auth()->user()->getRights()))
+          <!-- @if(in_array('indexMabel',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseMable" role="button" aria-expanded="false" aria-controls="collapseUser">
               <i class="fas fa-hammer"></i>
@@ -158,7 +158,7 @@
               </ul>
             </div>
           </li>
-          @endif
+          @endif -->
           @if(in_array('importReports',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseReport" role="button" aria-expanded="false" aria-controls="collapseCancel">
@@ -195,7 +195,7 @@
             </div>
           </li>
           @endif
-          @if(in_array('indexSurvey',Auth()->user()->getRights()))
+          <!-- @if(in_array('indexSurvey',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseSurvey" role="button" aria-expanded="false" aria-controls="collapseSurvey">
               <i class="fas fa-poll-h"></i>
@@ -214,7 +214,7 @@
               </ul>
             </div>
           </li>
-          @endif
+          @endif -->
           @if(in_array('indexFeedback',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseFeedback" role="button" aria-expanded="false" aria-controls="collapseFeedback">
@@ -247,7 +247,7 @@
             </div>
           </li>
           @endif
-          @if(in_array('trainings',Auth()->user()->getRights()))
+          <!-- @if(in_array('trainings',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="fas fa-running"></i>
@@ -259,10 +259,10 @@
               @if(Auth()->user()->role != 'Agent')
                 <li><a href="{{route('offers.create')}}">Angebote einspielen</a> </li>
               @endif
-              <!-- <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li> -->
+              <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li>
             </ul>
           </li>
-          @endif
+          @endif -->
           @if(in_array('telefonicapause',Auth()->user()->getRights()))
           <li>
             <!-- <a class="" data-toggle="collapse" href="#collapseTelefonicaPause" role="button" aria-expanded="false" aria-controls="collapseFeedback"> -->

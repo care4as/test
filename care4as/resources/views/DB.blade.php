@@ -15,6 +15,11 @@
     border-radius: 15px;
 
   }
+  .fixedCol
+  {
+    color:white;
+    font-weight: bold;
+  }
   div .dataTables_scrollFoot{
      /* display: none; */
    }
@@ -311,145 +316,22 @@
   </div>
 </div>
 
-<div class="container-fluid bg-cool m-1">
+<div class="max-main-container">
+  <div class="max-panel-content">
   <div class="row m-1 justify-content-center align-self-center m-1">
-      <h4 class="unit-translucent p-1">DB1 Alternative</h4>
+      <h4 class="p-1">DB1 Alternative</h4>
   </div>
-  <div class="row m-1 mt-4" id="dataState">
-
-    <div class="col-12 text-left" >
-      <a class="" data-toggle="collapse" href="#collapseDataState" role="button" aria-expanded="false" aria-controls="collapseDataState">
-        <caption class="text-center unit-translucent m-2">Aktueller Datenstand <small>(Klicken für weitere Informationen)</small></caption>
-      </a>
-      <div class="collapse" id="collapseDataState">
-      <table class="table table-borderless tablespacing">
-
-        <tr class="unit-translucent">
-          <td>
-            @if(!App\DailyAgent::min('date'))
-              <h5>keine Daten eingegeben</h5>
-            @else
-              <div class="loadingerDA">Lade Daten DailyAgent...</div>
-              <span id="dailyagentData" style="display: none;">  </span>
-            @endif
-          </td>
-          <td><a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
-        </tr>
-        <tr class="unit-translucent">
-          <td>
-            @if(!App\Hoursreport::min('work_date'))
-              <h5>keine Daten eingegeben</h5>
-            @else
-              <div class="loadingerHR">Lade Daten Stundenreport...</div>
-              <span id="HoursreportData" style="display: none;">Daily Agent im Zeitraum vom Test</span>
-            @endif
-          </td>
-          <td><a href="{{route('reports.reportHours.update')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Aktualisieren</button></a></td>
-        </tr>
-        <tr class="unit-translucent">
-          <td>
-            @if(!App\RetentionDetail::min('call_date'))
-              <h5>keine Daten eingegeben</h5>
-            @else
-              <div class="loadingerRD">Lade Daten Retention Details...</div>
-              <span id="RDDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
-            @endif
-          </td>
-          <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
-        </tr>
-        <tr class="unit-translucent">
-          <td>
-            @if(!App\SAS::min('date'))
-              <h5>keine Daten eingegeben</h5>
-            @else
-              <div class="loadingerSAS">Lade Daten SAS...</div>
-              <span id="SASDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
-            @endif
-          </td>
-          <td><a href="{{route('reports.SAS')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
-        </tr>
-        <tr class="unit-translucent">
-          <td>
-            @if(!App\Optin::min('date'))
-              <h5>keine Daten eingegeben</h5>
-            @else
-              <div class="loadingerOptin">Lade Daten Optin...</div>
-              <span id="OptinDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
-            @endif
-          </td>
-          <td><a href="{{route('reports.OptIn')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
-        </tr>
-      </table>
-    </div>
-    </div>
-    <hr>
-  </div>
-
-  <div class="row unit-translucent  m-2 mt-2" id="filtermenu">
-    <div class="col-12 d-flex justify-content-center align-self-center">
-      <a class="" data-toggle="collapse" href="#collapseFiltermenu" role="button" aria-expanded="false" aria-controls="collapseFiltermenu">
+  <div class="row m-3 mt-2" id="filtermenu">
+    <div class="col-12 d-flex justify-content-start align-self-center">
+      <a class="btn btn-outline-primary" data-toggle="modal" data-target="#modalFilter" role="button" aria-expanded="false" style="padding-top: 0; padding-bottom: 0;">
         <h5>Filtermenü &#128269;</h5>
       </a>
     </div>
-    <div class="col-12">
-      <div class="collapse" id="collapseFiltermenu">
-        <form class="mt-2 w-100" action="{{route('presentation')}}" method="get">
-          <div class="row m-0 justify-content-center">
-            <div class="col-6 p-0" style="border-right: 2px solid black;">
-              <div class="row m-2 justify-content-end">
-                <div class="col-4 ml-1 p-0">
-                  <div class="row">
-                      <label for="department">Abteilung:</label>
-                  </div>
-                  <div class="row">
-                    <select class="form-control" name="department" id="department" style="width:218px;">
-                      <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
-                      <option value="1&1 DSL Retention" @if(request('department') == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
-                      <option value="1&1 Mobile Retention" @if(request('department') == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
-                    </select>
-                  </div>
-                  <div class="row">
-                    <label for="team">Team:</label>
-                  </div>
-                  <div class="row">
-                    <select class="form-control" name="team" id="team" style="width:218px;">
-                      <option value="" selected>Wähle das Team</option>
-                      <option value="Liesa" >Liesa</option>
-                      <option value="XYZ" >XYZ</option>
-                    </select>
-                  </div>
-
-                </div>
-                <div class="col-3 p-0 mr-2">
-                  <label for="department">Welche MA:</label>
-                  <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 150px; overflow:scroll;">
-
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="col-6 p-0">
-              <div class="row m-2 justify-content-start">
-                <div class="col-sm-3">
-                  <label for="datefrom">Von:</label>
-                   <input type="date" id="start_date" name="start_date" class="form-control" placeholder="" value="{{request('start_date')}}">
-                 </div>
-                 <div class="col-sm-3">
-                   <label for="dateTo">Bis:</label>
-                   <input type="date" id="end_date" name="end_date" class="form-control" placeholder="" value="{{request('end_date')}}">
-                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 p-0">
-            <div class="row m-2 justify-content-center">
-              <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
-            </div>
-          </div>
-          </form>
-      </div>
+    <div class="col-12 d-flex justify-content-start align-self-center">
+      <a class="btn btn-outline-primary" data-toggle="modal" data-target="#modalData" role="button" aria-expanded="false"  style="padding-top: 0; padding-bottom: 0;">
+        <h5>Datenstand</h5>
+      </a>
     </div>
-
   </div>
   <div class="row m-2 mt-4 justify-content-center align-self-center" >
     <div class="col-12">
@@ -482,9 +364,9 @@
           KPI´s übersichtlich
         </div>
       </div>
-      <table class="table table-borderless tablespacing text-white" id="tableoverview">
+      <table class="max-table" id="tableoverview">
         <thead class="thead">
-          <tr class="unit-translucent">
+          <tr class="">
             <th>#</th>
             <th>Name</th>
             <th>AHT</th>
@@ -521,9 +403,9 @@
       </thead>
       <tbody>
         @foreach($users as $user)
-          <tr class="unit-translucent">
-            <td data-order="{{$user->id}}" style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
-            <td data-order="{{$user->lastname}}" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->surname}} {{$user->lastname}}</span></td>
+          <tr class="">
+            <td data-order="{{$user->id}}" class="fixedCol" style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
+            <td data-order="{{$user->lastname}}" class="fixedCol" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->surname}} {{$user->lastname}}</span></td>
             <td data-order="{{$user->salesdata['aht']}}" style= "font-size: 900; color: @if($user->salesdata['aht'] < 750 && $user->salesdata['aht'] != 0) green @else red @endif;">
               {{$user->salesdata['aht']}}
             </td>
@@ -611,14 +493,14 @@
             <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
             <td data-order="{{$user->id}}" class="" style="text-align:center; font-size: 1.4em;">
               <a class="text-muted" href="{{route('user.stats', ['id' => $user->id])}}">
-                <span class="material-icons text-white">preview</span>
+                <span class="material-icons">preview</span>
               </a>
             </td>
           </tr>
         @endforeach
       </tbody>
       <tfoot class="tfoot1">
-        <tr class="unit-translucent" id='footerdata'>
+        <tr class="" id='footerdata'>
           <td>Total:</td>
           <td id="countMA">Anzahl</td>
           <td id="aht">aht</td>
@@ -657,6 +539,148 @@
     </div>
   </div>
 </div>
+</div>
+</div>
+
+
+@endsection
+
+@section('additional_modal')
+<div class="modal show" id="modalData" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-center" role="document" style="z-index: 500000; margin: 20vh auto;">
+        <div class="modal-content">
+            <div class="modal-header ">
+              <h5 class="modal-title w-100 text-center" id="" style="font-size: 1.45em;">Daten eingepflegt von/bis</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="font-size: 14px;">
+              <div class="row m-3 mt-4" id="dataState">
+                <div class="col-12 text-left" >
+                  <table class="table table-borderless tablespacing">
+                    <tr class="">
+                      <td>
+                        @if(!App\DailyAgent::min('date'))
+                          <h5>keine Daten eingegeben</h5>
+                        @else
+                          <div class="loadingerDA">Lade Daten DailyAgent...</div>
+                          <span id="dailyagentData" style="display: none;">  </span>
+                        @endif
+                      </td>
+                      <td><a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+                    </tr>
+                    <tr class="">
+                      <td>
+                        @if(!App\Hoursreport::min('work_date'))
+                          <h5>keine Daten eingegeben</h5>
+                        @else
+                          <div class="loadingerHR">Lade Daten Stundenreport...</div>
+                          <span id="HoursreportData" style="display: none;">Daily Agent im Zeitraum vom Test</span>
+                        @endif
+                      </td>
+                      <td><a href="{{route('reports.reportHours.update')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Aktualisieren</button></a></td>
+                    </tr>
+                    <tr class="">
+                      <td>
+                        @if(!App\RetentionDetail::min('call_date'))
+                          <h5>keine Daten eingegeben</h5>
+                        @else
+                          <div class="loadingerRD">Lade Daten Retention Details...</div>
+                          <span id="RDDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+                        @endif
+                      </td>
+                      <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+                    </tr>
+                    <tr class="">
+                      <td>
+                        @if(!App\SAS::min('date'))
+                          <h5>keine Daten eingegeben</h5>
+                        @else
+                          <div class="loadingerSAS">Lade Daten SAS...</div>
+                          <span id="SASDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+                        @endif
+                      </td>
+                      <td><a href="{{route('reports.SAS')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+                    </tr>
+                    <tr class="">
+                      <td>
+                        @if(!App\Optin::min('date'))
+                          <h5>keine Daten eingegeben</h5>
+                        @else
+                          <div class="loadingerOptin">Lade Daten Optin...</div>
+                          <span id="OptinDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
+                        @endif
+                      </td>
+                      <td><a href="{{route('reports.OptIn')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
+                    </tr>
+                  </table>
+
+                </div>
+                <hr>
+              </div>
+              </div>
+              <div class="modal-footer" style="font-size: 14px;">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+<div class="modal show" id="modalFilter" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-center" role="document" style="z-index: 500000; margin: 20vh auto;">
+        <div class="modal-content">
+            <div class="modal-header ">
+              <h5 class="modal-title w-100 text-center" id="" style="font-size: 1.45em;">Welche Daten sollen angezeigt werden?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form class="mt-2 w-100" action="{{route('presentation')}}" method="get">
+            <div class="modal-body" style="font-size: 14px;">
+              <div class="row m-3 mt-4" id="dataState">
+                <div class="col-12 text-left" >
+
+                      <div class="row m-0">
+                        <div class="col-12 p-0" style="border-right: 2px solid black;">
+                          <label for="department">Abteilung:</label>
+                          <select class="form-control" name="department" id="department" style="width:218px;">
+                            <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
+                            <option value="1&1 DSL Retention" @if(request('department') == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
+                            <option value="1&1 Mobile Retention" @if(request('department') == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
+                          </select>
+                        </div>
+                        <div class="col-12 p-0">
+                          <label for="team">Team:</label>
+                            <select class="form-control" name="team" id="team" style="width:218px;">
+                            <option value="" selected>Wähle das Team</option>
+                            <option value="Liesa" >Liesa</option>
+                            <option value="XYZ" >XYZ</option>
+                          </select>
+                        </div>
+                        <div class="col-12 p-0">
+                          <label for="department">Welche MA:</label>
+                            <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 150px; overflow:scroll;">
+                            </select>
+                        </div>
+                        <div class="col-12 p-0">
+                          <label for="datefrom">Von:</label>
+                          <input type="date" id="start_date" name="start_date" class="form-control w-25" placeholder="" value="{{request('start_date')}}">
+                         </div>
+                         <div class="col-sm-12 p-0">
+                           <label for="dateTo">Bis:</label>
+                           <input type="date" id="end_date" name="end_date" class="form-control w-25" placeholder="" value="{{request('end_date')}}">
+                         </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer" style="font-size: 14px;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                    <button type="submit" class="btn btn-primary">Anzeigen</button>
+                  </div>
+              </form>
+            </div>
+          </div>
 
 @endsection
 
@@ -795,7 +819,7 @@
                   this.className='subauswahl'
               });
               event.target.className = 'subauswahl aktiv';
-
+            
               switch(event.target.id) {
                 case 'allData':
                     table.colReorder.reset();
@@ -804,7 +828,7 @@
                     // table.draw()
                   break;
                 case 'teamleiterview':
-                  table.colReorder.reset();
+                  // table.colReorder.reset();
                   table.columns().visible( false );
                   table.columns([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,27,31]).visible( true );
                   $('.DTFC_LeftBodyWrapper').hide()

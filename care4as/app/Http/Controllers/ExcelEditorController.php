@@ -197,7 +197,7 @@ class ExcelEditorController extends Controller
 
         $UNIX_DATE2 = ($cell[3] - 25569) * 86400;
         $date = gmdate("Y-m-d",$UNIX_DATE2);
-        // dd();
+
         $insertData[$i] = [
           'date' => gmdate($date),
           'department' => $cell[5],
@@ -221,7 +221,8 @@ class ExcelEditorController extends Controller
 
     $insertData = array_chunk($insertData, 3500);
 
-    // dd($insertData);
+    dd($insertData,$insertData[1],$insertData[1][1]);
+
     for($i=0; $i <= count($insertData)-1; $i++)
     {
       DB::table('optin')->insertOrIgnore($insertData[$i]);
@@ -549,7 +550,7 @@ class ExcelEditorController extends Controller
       $input['sheet'] = $sheet;
 
       $nameconvention = 'DAI';
-      
+
       if(str_contains($filename2Check, $nameconvention))
       {
         // dd($data);
