@@ -335,11 +335,6 @@
                                 Wie Projekt nur mit dem Filter auf Team1, Team2, ...
                             </div>
                             <div class="tab-pane active" id="employee">
-                                <!--
-                                <div class="max-panel-content">
-                                    <input type="text" id="tableFilter" onkeyup="masterSearch('dslMaTable')" placeholder="Mitarbeiter filtern..." style="padding-left: 5px; width: 100%; font-size: 16px;" autofocus>
-                                </div>
-                                -->
                                 <div class="max-panel-content">
                                     <div style="width: 100%;">
                                         <table class="max-table" id="dslMaTable" style="width:100%">

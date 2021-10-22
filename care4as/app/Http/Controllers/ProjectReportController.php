@@ -165,7 +165,7 @@ class ProjectReportController extends Controller
             $finalArray['sum']['rlz_plus_percentage'] = 0;
         }
 
-        $finalArray['sum']['revenue_sales'] = $finalArray['sum']['dsl_calls'] * $defaultVariablesArray['revenue_sale_dsl']; 
+        $finalArray['sum']['revenue_sales'] = $finalArray['sum']['dsl_saves'] * $defaultVariablesArray['revenue_sale_dsl']; 
         $finalArray['sum']['revenue_sum'] = $finalArray['sum']['revenue_sales'] + $finalArray['sum']['revenue_availbench'];
         $finalArray['sum']['revenue_delta'] = $finalArray['sum']['revenue_sum'] - $finalArray['sum']['pay_cost'];
         
