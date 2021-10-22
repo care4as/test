@@ -93,11 +93,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   })->name('reports.reportHours.view')->middleware('hasRight:importReports');
 
-  Route::get('/reportImport', function()
-  {
-    return view('reports.reportImport');
-    
-  })->name('reportImport');
+  Route::get('/reportImport', 'ReportImportController@load')->name('reportImport')->middleware('hasRight:controlling');
 
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:importReports');
 
@@ -325,7 +321,19 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/projectReport', 'ProjectReportController@load')->name('projectReport')->middleware('hasRight:controlling');
   Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
+
+  //DSL Routes
+  Route::get('/1u1/mobileRetenion/trackingDifference', 'TrackingDifferenceController@load')->name('mobileTrackingDifference');
+
+
+  //END DSL routes
+
+
+
 });
+
+
+
 
 //Provision
   Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');

@@ -335,16 +335,11 @@
                                 Wie Projekt nur mit dem Filter auf Team1, Team2, ...
                             </div>
                             <div class="tab-pane active" id="employee">
-                                <!--
-                                <div class="max-panel-content">
-                                    <input type="text" id="tableFilter" onkeyup="masterSearch('dslMaTable')" placeholder="Mitarbeiter filtern..." style="padding-left: 5px; width: 100%; font-size: 16px;" autofocus>
-                                </div>
-                                -->
                                 <div class="max-panel-content">
                                     <div style="width: 100%;">
-                                        <table class="max-table" id="dslMaTable">
+                                        <table class="max-table" id="dslMaTable" style="width:100%">
                                             <thead>
-                                                <tr style="width: 100%">
+                                                <tr>
                                                     <th>Name</th>
                                                     <th>Std. Bezahlt</th>
                                                     <th>Std. Produktiv</th>
@@ -507,6 +502,9 @@
             $( "tr[data-dt-row='" + rowIdx + "']" ).addClass("hoverRow"); // shade only the hovered row
         });
     });
+    document.getElementById('userListContainer').style.display = "block";
+    $($.fn.dataTable.tables(true)).DataTable()
+      .columns.adjust();
 })
 </script>
 @endsection

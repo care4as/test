@@ -65,6 +65,7 @@
             </a>
           </div>
         </li>
+          <!-- Dashboard -->
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
             <a @if(Auth::User()->role == 'Agent') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
@@ -73,6 +74,7 @@
             </a>
           </li>
           @endif
+<<<<<<< HEAD
           <!-- @if(in_array('indexCancels',Auth()->user()->getRights()))
             <li>
               <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
@@ -102,14 +104,18 @@
                 </ul>
               </li>
             @endif -->
+=======
+          <!-- Mitarbeiterverwaltung -->
+>>>>>>> 6a69f04211aaa28a5be4ea217c86c3c1b80c16a6
           @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseUser" role="button" aria-expanded="false" aria-controls="collapseUser">
               <i class="fas fa-users"></i>
-              <p><b>Usermenü</b></p>
+              <p><b>Mitarbeiter</b></p>
             </a>
             <div class="collapse" id="collapseUser" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('userlist')}}">Mitarbeiterliste</a></li>
                 @if(in_array('createUser',Auth()->user()->getRights()))
                   <li><a href="{{route('user.create')}}">User anlegen</a></li>
                   @if(Auth()->user()->role == "superadmin")
@@ -117,15 +123,57 @@
                   @endif
                 @endif
                   <li><a href="{{route('user.index')}}">User Index</a></li>
-                  <li><a href="{{route('userlist')}}">Mitarbeiterliste</a></li>
               </ul>
             </div>
           </li>
           @endif
+          <!-- 1u1 DSL Retention -->
+          @if(in_array('indexCancels',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapse1u1DslRet" role="button" aria-expanded="false" aria-controls="collapseCancel">
+                <i class="fas fa-project-diagram"></i>
+                <p><b>1u1 DSL Ret</b></p>
+              </a>
+              <div class="collapse" id="collapse1u1DslRet" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="">Element 1</a></li>
+                <li><a href="">Element 2</a></li>
+              </ul>
+            </li>
+          @endif
+          <!-- 1u1 Mobile Retention -->
+          @if(in_array('indexCancels',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapse1u1MobileRet" role="button" aria-expanded="false" aria-controls="collapseCancel">
+                <i class="fas fa-project-diagram"></i>
+                <p><b>1u1 Mobile Ret</b></p>
+              </a>
+              <div class="collapse" id="collapse1u1MobileRet" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('mobileTrackingDifference')}}">Tracking Differenz</a></li>
+                <li><a href="">Element 2</a></li>
+              </ul>
+            </li>
+          @endif
+          <!-- Telefonica -->
+          @if(in_array('indexCancels',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapseTelefonica" role="button" aria-expanded="false" aria-controls="collapseCancel">
+                <i class="fas fa-project-diagram"></i>
+                <p><b>Telefonica</b></p>
+              </a>
+              <div class="collapse" id="collapseTelefonica" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('pausetool')}}">Pausentool</b></a></li>
+                <li><a href="">Element 2</a></li>
+              </ul>
+            </li>
+          @endif
+          <!-- Controlling -->
           @if(in_array('controlling',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseControlling" role="button" aria-expanded="false" aria-controls="collapseControlling">
-              <i class="fas fa-users"></i>
+              <i class="fas fa-file-contract"></i>
               <p><b>Controlling</b></p>
             </a>
             <div class="collapse" id="collapseControlling" style="margin-left:50px;">
@@ -137,6 +185,51 @@
             </div>
           </li>
           @endif
+          @if(in_array('inventory',Auth()->user()->getRights()))
+          <li>
+            <a class="" data-toggle="collapse" href="#collapseInventory" role="button" aria-expanded="false" aria-controls="collapseInventory">
+              <i class="fas fa-server"></i>
+              <b>IT</b>
+            </a>
+            <div class="collapse" id="collapseInventory" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('inventory.list')}}">HW Liste</a> </li>
+                <li><a href="{{route('inventory.add')}}">HW hinzufügen</a> </li>
+              </ul>
+            </div>
+          </li>
+          @endif
+          @if(in_array('indexCancels',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
+                <i class="fas fa-skull-crossbones"></i>
+                <p><b>Cancelliste</b></p>
+              </a>
+              <div class="collapse" id="collapseCancel" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('cancelcauses')}}">Cancelgründe</a></li>
+                <li><a href="{{route('agent.cancels', ['id' => Auth()->user()->id])}}">meine Cancels</a></li>
+                @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
+                <li><a href="{{route('cancels.index')}}">Cancelgründe auswerten</a></li>
+                <li><a href="{{route('cancels.callback')}}">Rückrufliste</a></li>
+                @endif
+              </ul>
+            </li>
+            @endif
+            @if(in_array('importReports',Auth()->user()->getRights()))
+              <li>
+                <a class="" data-toggle="collapse" href="#collapseProvision" role="button" aria-expanded="false" aria-controls="collapseCancel">
+                  <i class="fas fa-euro-sign"></i>
+                  <p><b>Provision</b></p>
+                </a>
+                <div class="collapse" id="collapseProvision" style="margin-left:50px;">
+                  <ul class="list-group list-group-flush" style="list-style-type: none;">
+                  <li><a href="{{route('buchungsliste.show')}}">Buchungslisten</a></li>
+                </ul>
+              </li>
+            @endif
+          
+          
           @if(in_array('statistics',Auth()->user()->getRights()))
           <li>
             <a class="" href="{{route('presentation')}}">
@@ -230,6 +323,7 @@
             </div>
           </li>
           @endif
+<<<<<<< HEAD
           @if(in_array('changeConfig',Auth()->user()->getRights()))
           <li class="">
             <a class="" data-toggle="collapse" href="#collapseConfiguration" role="button" aria-expanded="false" aria-controls="collapseFeedback">
@@ -248,6 +342,10 @@
           </li>
           @endif
           <!-- @if(in_array('trainings',Auth()->user()->getRights()))
+=======
+          
+          @if(in_array('trainings',Auth()->user()->getRights()))
+>>>>>>> 6a69f04211aaa28a5be4ea217c86c3c1b80c16a6
           <li>
             <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="fas fa-running"></i>
@@ -262,6 +360,7 @@
               <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li>
             </ul>
           </li>
+<<<<<<< HEAD
           @endif -->
           @if(in_array('telefonicapause',Auth()->user()->getRights()))
           <li>
@@ -271,6 +370,8 @@
               <p><b>Pausentool <br>Telefonica</b></p>
             </a>
           </li>
+=======
+>>>>>>> 6a69f04211aaa28a5be4ea217c86c3c1b80c16a6
           @endif
           @if(in_array('sendReports',Auth()->user()->getRights()))
           <li>
@@ -299,19 +400,21 @@
             </a>
           </li>
           @endif
-          @if(in_array('inventory',Auth()->user()->getRights()))
-          <li>
-            <a class="" data-toggle="collapse" href="#collapseInventory" role="button" aria-expanded="false" aria-controls="collapseInventory">
+          
+          @if(in_array('changeConfig',Auth()->user()->getRights()))
+          <li class="">
+            <a class="" data-toggle="collapse" href="#collapseConfiguration" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="material-icons">
-                assessment
+                brightness_high
               </i>
-              <b>HW Inventar</b>
+              <b>Konfiguration</b>
             </a>
-            <div class="collapse" id="collapseInventory" style="margin-left:50px;">
+            <div class="collapse" id="collapseConfiguration" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-                <li><a href="{{route('inventory.list')}}">HW Liste</a> </li>
-                <li><a href="{{route('inventory.add')}}">HW hinzufügen</a> </li>
-              </ul>
+              <li><a href="{{route('roles.index')}}">Rollen</a> </li>
+              <li><a href="{{route('feedback.view')}}">Rollen und Rechte</a> </li>
+              <li><a href="{{route('config.view')}}">allgemeine Einstellungen</a> </li>
+            </ul>
             </div>
           </li>
           @endif
