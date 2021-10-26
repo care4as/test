@@ -339,7 +339,13 @@ class UserTrackingController extends Controller
     }
     public function dailyAgentDetectiveIndex(Request $request)
     {
-      // dd($request);
+  
+      $request->validate([
+        'start_date' => 'required',
+        'end_date' => 'required',
+
+      ]);
+
       $users = User::where('role','agent')
       ->with(['dailyAgent' => function($q) {
         // $q->select(['id','person_id','calls','call_date']);

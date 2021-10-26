@@ -328,12 +328,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   //END DSL routes
 
-
-
 });
-
-
-
 
 //Provision
   Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');
@@ -357,5 +352,5 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/test', function(){
 
-
+    return view('test');
   })->name('test');

@@ -4,7 +4,7 @@
 <div class="max-main-container">
     <div class="max-panel-content">
         <div style="width: 100%;">
-            <table class="max-table" id="userTable" style="width: 100%;">
+            <table class="max-table" id="xxx" style="width: 100%;">
                 <thead>
                     <td>header</td>
                     <td>header</td>
