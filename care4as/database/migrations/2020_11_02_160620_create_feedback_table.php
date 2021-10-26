@@ -15,14 +15,16 @@ class CreateFeedbackTable extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('content');
-            $table->text('goals');
-            $table->integer('creator');
+            $table->string('title')->nullable();
+            $table->text('content')->nullable();
+            $table->text('goals')->nullable();
+            $table->integer('creator')->nullable();
             $table->integer('lead_by');
             $table->integer('with_user');
+            $table->date('date');
             $table->timestamps();
         });
+
     }
 
     /**
