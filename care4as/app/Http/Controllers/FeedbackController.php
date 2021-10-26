@@ -395,4 +395,9 @@ class FeedbackController extends Controller
       // dd($feedback);
       return view('FeedBackShow', compact('feedback','users'));
     }
+
+    public function newFeedback(){
+
+
+    }
 }

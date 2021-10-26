@@ -15,6 +15,44 @@
   from {color: black;}
   to {color: white;}
   }
+  table.dataTable {
+        border-collapse: collapse;
+    }
+    .form-control{
+        color:black;
+    }
+    table.dataTable tbody td, table.dataTable tfoot td, table.dataTable thead th {
+        padding: 0px 15px;
+    }
+    .sorting_desc, .sorting_asc {
+        background-blend-mode: luminosity;
+    }
+    .dataTables_wrapper .dataTables_length select{
+        width: 60px;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+    label{
+        display: flex;
+        align-items: center;
+    }
+    .DTFC_LeftBodyLiner {
+        overflow-x: hidden;
+    }
+    .hoverRow{
+        background-color: #ddd !important;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+        border: 1px solid transparent;
+        background: transparent;
+    }
+    .page-item.active .page-link{
+        background-color: #FA7A50;
+        border-color: #FA7A50;
+    }
+    .form-control[readonly]{
+        cursor: default;
+    }
 </style>
 @endsection
 <div class="row">
@@ -35,16 +73,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="loadingerAB">
+                                    <tr id="availbench">
                                         <td style="text-align: left; font-weight: 600;">1u1 Availbench</td>
-                                        <td id="" >Daten werden geladen</td>
-                                        <td id=""></td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
-                                    </tr>
-                                    <tr id="avData" style="display:none;">
-                                        <td style="text-align: left; font-weight: 600;">1u1 Availbench</td>
-                                        <td id="availbenchStart">xxx</td>
-                                        <td id="availbenchEnd">xxx</td>
+                                        @if(isset($refinedDataTables['availbench_report']['min_date']))
+                                            <td>{{$refinedDataTables['availbench_report']['min_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
+                                        @if(isset($refinedDataTables['availbench_report']['max_date']))
+                                            <td>{{$refinedDataTables['availbench_report']['max_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
                                     </tr>
                                     <tr class="loadingerDA">
@@ -105,6 +145,106 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="max-main-container">
+            <form action="{{route('reportImport')}}" method="get()">
+            @csrf
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="max-panel bg-none">
+                            <div class="max-panel-title">
+                                Datenstand Tagesfilter
+                            </div>
+                            <div class="max-panel-content">
+                                <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 5px;">
+                                    <p style="margin: auto;">Von:</p>
+                                    <input type="date" id="dateFrom" name="startDate" class="form-control" placeholder="" value="{{$defaultVariablesArray['startDate']}}" style="color: black;">
+                                    <p style="margin: auto;">Bis:</p>
+                                    <input type="date" id="dateTo" name="endDate" class="form-control" placeholder="" value="{{$defaultVariablesArray['endDate']}}" style="color: black;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="display: flex;">
+                        <button class="btn btn-primary" style="margin: auto;" type="submit">Reportübersicht anzeigen</button>
+                    </div>
+                </div>
+            </form>
+            @if($defaultVariablesArray['recordFilterSet'] == 'true')
+            <div class="row" id="userListContainer" style="display: none;">
+                <div class="col-md-12">
+                    <div class="max-panel bg-none">
+                        <div class="max-panel-title">Datenstand</div>
+                        <div class="max-panel-content">
+                            <div style="width: 100%;">
+                                <table class="max-table" id="timespanTable" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Datum</th>
+                                            <th>Availbench</th>
+                                            <th>Daily Agent</th>
+                                            <th>OptIn</th>
+                                            <th>Retention Details</th>
+                                            <th>SaS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($datatablesDates as $key => $entry)
+                                        <tr style="text-align: center">
+                                            <td>{{$key}}</td>
+                                            @if($entry['availbench'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+                                            @if($entry['daily_agent'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+                                            @if($entry['optin'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+                                            @if($entry['retention_details'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+                                            @if($entry['sas'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @if($defaultVariablesArray['recordFilterSet'] == 'error')
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="max-panel bg-none">
+                        <div class="max-panel-title">Fehler</div>
+                        <div class="max-panel-content">
+                            Fehlerhafte Datumseingabe. Bitte überprüfen Sie die gesetzten Werte.
+                        </div>
+                    </div>
+                </div>
+            </div>             
+            @endif
+        </div>
+    </div>
+</div>
+
+
 @endsection
 @section('additional_modal')
 <!-- Availbench -->
@@ -113,7 +253,7 @@
         <div class="modal-content">
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Availbench</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -122,7 +262,14 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data">
+                    <!-- DEBUG
+                    <form action="{{route('availbench.upload')}}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                        <input type="file" name="file" id="file">
+                        <button type="submit">Test</button>
+                    </form>
+                    -->
+                    <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -138,7 +285,7 @@
                         </div>
                 </div>
                         <div class="modal-footer" style="font-size: 14px;">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
                             <button type="button" id="availbenchDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                         </div>
                     </form>
@@ -162,7 +309,7 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="dailyAgentDropzone" enctype="multipart/form-data">
+                    <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="dailyAgentDropzone" enctype="multipart/form-data"  style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="dailyAgentContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -202,7 +349,7 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('reports.OptIn.upload')}}" class="dropzone" id="optinDropzone" enctype="multipart/form-data">
+                    <form action="{{route('reports.OptIn.upload')}}" class="dropzone" id="optinDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="optinContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -242,7 +389,7 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('excel.test')}}" class="dropzone" id="retDetailsDropzone" enctype="multipart/form-data">
+                    <form action="{{route('excel.test')}}" class="dropzone" id="retDetailsDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="retDetailsContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -282,7 +429,7 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
                      Datei auswählen
                     </div>
-                    <form action="{{route('reports.SAS.upload')}}" class="dropzone" id="sasDropzone" enctype="multipart/form-data">
+                    <form action="{{route('reports.SAS.upload')}}" class="dropzone" id="sasDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="sasContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
@@ -309,6 +456,52 @@
 @endsection
 
 @section('additional_js')
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
+<script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
+<script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    let table = $('#timespanTable').DataTable({
+        "language": {
+            "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+            "zeroRecords": "Keinen Eintrag gefunden",
+            "info": "Seite _PAGE_ von _PAGES_",
+            "infoEmpty": "Keinen Eintrag gefunden",
+            "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
+            "loadingRecords": "Lädt...",
+            "processing":     "Lädt...",
+            "search":         "Suche:",
+            "paginate": {
+                "first":      "Erste",
+                "last":       "Letzte",
+                "next":       "Nächste",
+                "previous":   "Zurück"
+            },
+        },
+        "lengthMenu": [ [-1, 3, 5, 10, 25, 50, 100], ["alle", 3, 5, 10, 25, 50, 100] ],
+        scrollX: true,
+        scrollCollapse: false,
+        fixedColumns: false,
+        select: true,
+        order: [[0, "asc"]],
+    });
+    document.getElementById('userListContainer').style.display = "block";
+    $($.fn.dataTable.tables(true)).DataTable()
+      .columns.adjust();
+})
+</script>
+
 <script type="text/javascript">
 
 Dropzone.options.availbenchDropzone = {
@@ -358,7 +551,7 @@ Dropzone.options.availbenchDropzone = {
         $('#loaderDiv').css('display','none');
       });
       this.on("complete", function(file) {
-        // this.removeAllFiles()
+        
       });
     }
 };
