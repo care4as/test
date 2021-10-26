@@ -74,35 +74,7 @@
             </a>
           </li>
           @endif
-          <!-- @if(in_array('indexCancels',Auth()->user()->getRights()))
-            <li>
-              <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
-                <i class="fas fa-skull-crossbones"></i>
-                <p><b>Cancelliste</b></p>
-              </a>
-              <div class="collapse" id="collapseCancel" style="margin-left:50px;">
-                <ul class="list-group list-group-flush" style="list-style-type: none;">
-                <li><a href="{{route('cancelcauses')}}">Cancelgründe</a></li>
-                <li><a href="{{route('agent.cancels', ['id' => Auth()->user()->id])}}">meine Cancels</a></li>
-                @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
-                <li><a href="{{route('cancels.index')}}">Cancelgründe auswerten</a></li>
-                <li><a href="{{route('cancels.callback')}}">Rückrufliste</a></li>
-                @endif
-              </ul>
-            </li>
-            @endif -->
-            <!-- @if(in_array('importReports',Auth()->user()->getRights()))
-              <li>
-                <a class="" data-toggle="collapse" href="#collapseProvision" role="button" aria-expanded="false" aria-controls="collapseCancel">
-                  <i class="fas fa-euro-sign"></i>
-                  <p><b>Provision</b></p>
-                </a>
-                <div class="collapse" id="collapseProvision" style="margin-left:50px;">
-                  <ul class="list-group list-group-flush" style="list-style-type: none;">
-                  <li><a href="{{route('buchungsliste.show')}}">Buchungslisten</a></li>
-                </ul>
-              </li>
-            @endif -->
+          <!-- Mitarbeiterverwaltung -->
           @if(in_array('indexUser',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseUser" role="button" aria-expanded="false" aria-controls="collapseUser">
