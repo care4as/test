@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class ReportImportController extends Controller
 {
-    public function load(){
+    public function loadtest(){
+
         /** request variables from userform */
         $startDateString = request('startDate');
         $endDateString = request('endDate');
@@ -63,7 +64,7 @@ class ReportImportController extends Controller
             $refinedDataTables[$entry['data_table']]['min_date'] = date_format(date_create_from_format('Y-m-d', $entry['min_date']), 'd.m.Y');
             $refinedDataTables[$entry['data_table']]['max_date'] = date_format(date_create_from_format('Y-m-d', $entry['max_date']), 'd.m.Y');
         }
-
+        // dd($defaultVariablesArray);
         return view('reports.reportImport', compact('refinedDataTables', 'defaultVariablesArray', 'datatablesDates'));
     }
 
@@ -80,7 +81,7 @@ class ReportImportController extends Controller
 
         for($i = 0; $i <= $defaultVariablesArray['differenceDate']; $i++){
             $day = date('Y-m-d', strtotime($defaultVariablesArray['startDate']. '+ '.$i.' days'));
-            
+
             $dataTables[$day]['availbench'] = 'false';
             $dataTables[$day]['daily_agent'] = 'false';
             $dataTables[$day]['optin'] = 'false';
@@ -92,7 +93,7 @@ class ReportImportController extends Controller
                     $dataTables[$day]['availbench'] = 'true';
                 }
             }
-            foreach($dailyAgentData as $key => $entry){               
+            foreach($dailyAgentData as $key => $entry){
                 if($entry == $day){
                     $dataTables[$day]['daily_agent'] = 'true';
                 }
@@ -141,7 +142,7 @@ class ReportImportController extends Controller
         ->get('date')
         ->toArray();
 
-        
+
 
         foreach($data as $key => $entry){
             $entryArray = (array) $entry;
@@ -155,7 +156,7 @@ class ReportImportController extends Controller
         //format date
         $startDate = $defaultVariablesArray['startDatePHP']->setTime(0,0);
         $endDate = $defaultVariablesArray['endDatePHP']->setTime(23,59);
-        
+
         $data = DB::table('dailyagent')
         ->where('start_time', '>=', $startDate)
         ->where('start_time', '<=', $endDate)
@@ -205,4 +206,3 @@ class ReportImportController extends Controller
     }
 
 }
-
