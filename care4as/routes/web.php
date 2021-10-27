@@ -92,19 +92,13 @@ Route::group(['middleware' => ['auth']], function () {
 
   })->name('reports.reportHours.view')->middleware('hasRight:importReports');
 
-  Route::get('/reportImport', 'ReportImportController@load')->name('reportImport')->middleware('hasRight:controlling');
+  Route::get('/reportImport', 'ReportImportController@loadtest')->name('reportImport')->middleware('hasRight:controlling');
 
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:importReports');
 
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@queueOrNot')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
   Route::post('/report/ReportUploadDebug', 'ExcelEditorController@Debug')->name('excel.upload.debug')->middleware('hasRight:importReports');
   Route::post('/report/availbench', 'ExcelEditorController@availbenchReport')->name('availbench.upload')->middleware('hasRight:importReports');
-
-  Route::get('/reportImport', function()
-  {
-    return view('reports.reportImport');
-    
-  })->name('reportImport');
 
   // Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
   Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');
