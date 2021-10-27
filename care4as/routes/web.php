@@ -357,8 +357,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/test', function(){
 
-<<<<<<< HEAD
-=======
+
     return view('test');
->>>>>>> f5e3ca8d176c10c09ff7a36144dfdd60a33e1307
+
   })->name('test');
