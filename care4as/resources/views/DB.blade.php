@@ -405,7 +405,7 @@
         @foreach($users as $user)
           <tr class="">
             <td data-order="{{$user->id}}" class="fixedCol" style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
-            <td data-order="{{$user->lastname}}" class="fixedCol" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->surname}} {{$user->lastname}}</span></td>
+            <td data-order="{{$user->name}}" class="fixedCol" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->name}} </span></td>
             <td data-order="{{$user->salesdata['aht']}}" style= "font-size: 900; color: @if($user->salesdata['aht'] < 750 && $user->salesdata['aht'] != 0) green @else red @endif;">
               {{$user->salesdata['aht']}}
             </td>
@@ -645,8 +645,8 @@
                           <label for="department">Abteilung:</label>
                           <select class="form-control" name="department" id="department" style="width:218px;">
                             <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
-                            <option value="1&1 DSL Retention" @if(request('department') == '1&1 DSL Retention') selected @endif>1&1 DSL Retention</option>
-                            <option value="1&1 Mobile Retention" @if(request('department') == '1&1 Mobile Retention') selected @endif>1&1 Mobile Retention</option>
+                            <option value="1und1 DSL Retention" @if(request('department') == '1und1 DSL Retention') selected @endif>1&1 DSL Retention</option>
+                            <option value="1und1 Retention" @if(request('department') == '1und1 Retention') selected @endif>1&1 Mobile Retention</option>
                           </select>
                         </div>
                         <div class="col-12 p-0">
@@ -819,7 +819,7 @@
                   this.className='subauswahl'
               });
               event.target.className = 'subauswahl aktiv';
-            
+
               switch(event.target.id) {
                 case 'allData':
                     table.colReorder.reset();

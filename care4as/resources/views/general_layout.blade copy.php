@@ -55,6 +55,7 @@
   <div class="wrapper ">
     <div class="sidebar" id='sidebar'>
       <div class="sidebar-wrapper" id="sidebar-wrapper" style="overflow-y: scroll; height: 100%">
+        
         @php
           Auth()->user()->getRights();
         @endphp
@@ -83,16 +84,14 @@
             </a>
             <div class="collapse" id="collapseUser" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('userlist')}}">Mitarbeiterliste</a></li>
                 @if(in_array('createUser',Auth()->user()->getRights()))
-                  <li><a href="{{route('userlist')}}">Mitarbeiterliste</a></li>
-                @endif
-                <!-- @if(in_array('createUser',Auth()->user()->getRights()))
                   <li><a href="{{route('user.create')}}">User anlegen</a></li>
                   @if(Auth()->user()->role == "superadmin")
                     <li><a href="{{route('user.startEnd')}}">MA Daten</a></li>
                   @endif
                 @endif
-                  <li><a href="{{route('user.index')}}">User Index</a></li> -->
+                  <li><a href="{{route('user.index')}}">User Index</a></li>
               </ul>
             </div>
           </li>
@@ -169,7 +168,37 @@
             </div>
           </li>
           @endif
-
+          @if(in_array('indexCancels',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapseCancel" role="button" aria-expanded="false" aria-controls="collapseCancel">
+                <i class="fas fa-skull-crossbones"></i>
+                <p><b>Cancelliste</b></p>
+              </a>
+              <div class="collapse" id="collapseCancel" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('cancelcauses')}}">Cancelgründe</a></li>
+                <li><a href="{{route('agent.cancels', ['id' => Auth()->user()->id])}}">meine Cancels</a></li>
+                @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
+                <li><a href="{{route('cancels.index')}}">Cancelgründe auswerten</a></li>
+                <li><a href="{{route('cancels.callback')}}">Rückrufliste</a></li>
+                @endif
+              </ul>
+            </li>
+            @endif
+            @if(in_array('importReports',Auth()->user()->getRights()))
+              <li>
+                <a class="" data-toggle="collapse" href="#collapseProvision" role="button" aria-expanded="false" aria-controls="collapseCancel">
+                  <i class="fas fa-euro-sign"></i>
+                  <p><b>Provision</b></p>
+                </a>
+                <div class="collapse" id="collapseProvision" style="margin-left:50px;">
+                  <ul class="list-group list-group-flush" style="list-style-type: none;">
+                  <li><a href="{{route('buchungsliste.show')}}">Buchungslisten</a></li>
+                </ul>
+              </li>
+            @endif
+          
+          
           @if(in_array('statistics',Auth()->user()->getRights()))
           <li>
             <a class="" href="{{route('presentation')}}">
@@ -214,7 +243,7 @@
             </div>
           </li>
           @endif
-          <!-- @if(in_array('importReports',Auth()->user()->getRights()))
+          @if(in_array('importReports',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseEmail" role="button" aria-expanded="false" aria-controls="collapseCancel">
             <i class="fas fa-mail-bulk"></i>
@@ -223,12 +252,12 @@
             <div class="collapse" id="collapseEmail" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 <li><a href="{{route('eobmail')}}">Feierabendmail </a></li>
-              <li><a href="">Top/Worst Report</a></li>
+              <!-- <li><a href="">Top/Worst Report</a></li> -->
               </ul>
             </div>
           </li>
           @endif
-          @if(in_array('indexSurvey',Auth()->user()->getRights()))
+          <!-- @if(in_array('indexSurvey',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseSurvey" role="button" aria-expanded="false" aria-controls="collapseSurvey">
               <i class="fas fa-poll-h"></i>
@@ -248,7 +277,7 @@
             </div>
           </li>
           @endif -->
-          <!-- @if(in_array('indexFeedback',Auth()->user()->getRights()))
+          @if(in_array('indexFeedback',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseFeedback" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="far fa-comments"></i>
@@ -262,7 +291,7 @@
             </ul>
             </div>
           </li>
-          @endif -->
+          @endif
           @if(in_array('changeConfig',Auth()->user()->getRights()))
           <li class="">
             <a class="" data-toggle="collapse" href="#collapseConfiguration" role="button" aria-expanded="false" aria-controls="collapseFeedback">
@@ -296,15 +325,15 @@
             </ul>
           </li>
           @endif -->
-          <!-- @if(in_array('telefonicapause',Auth()->user()->getRights()))
+          @if(in_array('telefonicapause',Auth()->user()->getRights()))
           <li>
-           <a class="" data-toggle="collapse" href="#collapseTelefonicaPause" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+            <!-- <a class="" data-toggle="collapse" href="#collapseTelefonicaPause" role="button" aria-expanded="false" aria-controls="collapseFeedback"> -->
             <a href="{{route('pausetool')}}">
               <i class="fas fa-running"></i>
               <p><b>Pausentool <br>Telefonica</b></p>
             </a>
           </li>
-          @endif -->
+          @endif
           @if(in_array('sendReports',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseReports" role="button" aria-expanded="false" aria-controls="collapseFeedback">
@@ -324,16 +353,16 @@
             </div>
           </li>
           @endif
-          <!-- @if(in_array('presentation',Auth()->user()->getRights()))
+          @if(in_array('presentation',Auth()->user()->getRights()))
             <li>
             <a class="" href="{{route('presentation')}}">
               <i class="far fa-file-powerpoint"></i>
               <p><b>Präsentation</b></p>
             </a>
           </li>
-          @endif -->
-
-          <!-- @if(in_array('changeConfig',Auth()->user()->getRights()))
+          @endif
+          
+          @if(in_array('changeConfig',Auth()->user()->getRights()))
           <li class="">
             <a class="" data-toggle="collapse" href="#collapseConfiguration" role="button" aria-expanded="false" aria-controls="collapseFeedback">
               <i class="material-icons">
@@ -349,7 +378,7 @@
             </ul>
             </div>
           </li>
-          @endif -->
+          @endif
         </ul>
       </div>
     </div>

@@ -63,7 +63,7 @@
                                                 <option value="all" selected>Alle</option>
                                             @else
                                                 <option value="all">Alle</option>
-                                            @endif    
+                                            @endif
                                             @if($defaultVariables['project'] == 'Care4as')
                                                 <option value="Care4as" selected>Organisation</option>
                                             @else
@@ -72,23 +72,23 @@
                                             @if($defaultVariables['project'] == '1und1 DSL Retention')
                                                 <option value="1und1 DSL Retention" selected>1und1 DSL Retention</option>
                                             @else
-                                                <option value="1und1 DSL Retention">1und1 DSL Retention</option> 
-                                            @endif 
+                                                <option value="1und1 DSL Retention">1und1 DSL Retention</option>
+                                            @endif
                                             @if($defaultVariables['project'] == '1und1 Offline')b
                                                 <option value="1und1 Offline" selected>1und1 Kündigungsadministration</option>
                                             @else
-                                                <option value="1und1 Offline">1und1 Kündigungsadministration</option> 
-                                            @endif 
+                                                <option value="1und1 Offline">1und1 Kündigungsadministration</option>
+                                            @endif
                                             @if($defaultVariables['project'] == '1und1 Retention')
                                                 <option value="1und1 Retention" selected>1und1 Mobile Retention</option>
                                             @else
                                                 <option value="1und1 Retention">1und1 Mobile Retention</option>
-                                            @endif 
+                                            @endif
                                             @if($defaultVariables['project'] == 'Telefonica')
                                                 <option value="Telefonica" selected>Telefonica</option>
                                             @else
                                                 <option value="Telefonica">Telefonica</option>
-                                            @endif 
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -142,13 +142,13 @@
                             </div>
                         </div>
                     </div>
-                </div>  
-            </div>    
+                </div>
+            </div>
         </div>
     </form>
 </div>
 @if($defaultVariables['project'] != null)
-<div class="row" id="userListContainer" style="display: none;">  
+<div class="row" id="userListContainer" style="display: none;">
     <div class="col-md-12">
         <div class="max-main-container">
             <div class="max-panel-content">
@@ -163,38 +163,44 @@
                                 <th>Projekt</th>
                                 <th>Abteilung</th>
                                 <th>Team</th>
+                                <th>Rolle</th>
                                 <th>Eintritt</th>
                                 <th>Austritt</th>
+                                <th>KDW ID</th>
                                 <th>1u1 Personen ID</th>
                                 <th>1u1 Agenten ID</th>
-                                <th>1u1 SSE ID</th>
+                                <th>1u1 SSE Name</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($users as $key => $user)
-                            <tr>
-                                <td>
-                                    <div style="display: flex;">
-                                        <button type="button" data-toggle="modal" data-target="#modal{{$user['ds_id']}}" class="btn btn-primary btn-sm" style="margin: auto; padding-top: 0; padding-bottom: 0;"><i class="now-ui-icons business_badge"></i></button>
-                                    </div>
-                                </td>
-                                <td>{{$user['full_name']}}</td>
-                                <td>{{$user['username']}}</td>
-                                <td>{{$user['work_hours']}}</td>
-                                <td>{{$user['project']}}</td>
-                                <td>{{$user['department']}}</td>
-                                <td>{{$user['team']}}</td>
-                                <td>{{$user['entry_date']}}</td>
-                                <td>{{$user['leave_date']}}</td>
-                                <td>{{$user['1u1_person_id']}}</td>
-                                <td>{{$user['1u1_agent_id']}}</td>
-                                <td>{{$user['1u1_sse_id']}}</td>
-                            </tr>
+                          @foreach($users as $key => $user)
+                            @if($user['role'] != "superadmin")
+                              <tr>
+                                  <td>
+                                      <div style="display: flex;">
+                                          <button type="button" data-toggle="modal" data-target="#modal{{$user['ds_id']}}" class="btn btn-primary btn-sm" style="margin: auto; padding-top: 0; padding-bottom: 0;"><i class="now-ui-icons business_badge"></i></button>
+                                      </div>
+                                  </td>
+                                  <td> {{$user['full_name']}}</td>
+                                  <td>{{$user['name']}}</td>
+                                  <td>{{$user['work_hours']}}</td>
+                                  <td>{{$user['project']}}</td>
+                                  <td>{{$user['department']}}</td>
+                                  <td>{{$user['team']}}</td>
+                                  <td>{{$user['role']}}</td>
+                                  <td>{{$user['entry_date']}}</td>
+                                  <td>{{$user['leave_date']}}</td>
+                                  <td>{{$user['ds_id']}}</td>
+                                  <td>{{$user['1u1_person_id']}}</td>
+                                  <td>{{$user['1u1_agent_id']}}</td>
+                                  <td>{{$user['1u1_sse_name']}}</td>
+                              </tr>
+                              @endif
                             @endforeach
                         </tbody>
-                    </table>    
+                    </table>
                 </div>
-            </div>           
+            </div>
         </div>
     </div>
 </div>
@@ -204,6 +210,7 @@
 <!-- Modals -->
 @section('additional_modal')
     @foreach($users as $key => $user)
+      @if($user['role'] != "superadmin")
         <div class="modal fade" id="modal{{$user['ds_id']}}" tabindex="-1" role="dialog" aria-labelledby="modal{{$user['ds_id']}}Label" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document" style="z-index: 500000;">
                 <div class="modal-content">
@@ -213,85 +220,223 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{route('userlist.updateuser')}}" method="post()" style="width: 100%">
-                        <div class="modal-body" style="font-size: 14px;">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h5>Stammdaten</h5>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Person</h5>
-                                    <div style="width: 100%; display: grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px">
-                                        <div style="margin-top: auto; margin-bottom: auto">MA-ID:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" readonly name="ds_id" value="{{$user['ds_id']}}"></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Nutzername:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['username']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Nachname:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['lastname']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Vorname:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['firstname']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Geburtstag:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['birthdate']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Geschlecht:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['gender']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">PLZ:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['zipcode']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Ort:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['location']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Straße:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['street']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Telefon:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['phone']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Mobil:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['mobile']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">E-Mail:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['mail']}}" readonly></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Vertrag</h5>
-                                    <div style="width: 100%; display: grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
-                                        <div style="margin-top: auto; margin-bottom: auto">Eintritt:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['entry_date']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Austritt:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['leave_date']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Wochenstunden:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['work_hours']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Standort:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['work_location']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Projekt:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['project']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Team:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['team']}}" readonly></div>
-                                        <div style="margin-top: auto; margin-bottom: auto">Funktion:</div>
-                                        <div><input class="form-control" id="disabledInput" type="text" value="{{$user['department']}}" readonly></div>
-                                    </div>    
-                                </div>
-                                
-                                    <div class="col-md-12" style="margin-top: 20px">
-                                        <h5>Auftraggeberinformation</h5>
+                    <div class="nav-tabs-navigation">
+                        <div class="nav-tabs-wrapper">
+                            <ul class="nav nav-tabs" data-tabs="tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#userdata{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Stammdaten</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#id{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;"style="font-size: 16px; font-weight: bold;">Auftraggeberinformation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#administration{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Administration</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <!-- Stammdaten -->
+                        <div class="tab-pane active" id="userdata{{$user['ds_id']}}">
+                            <div class="modal-body" style="font-size: 14px;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Person</h5>
+                                        <div style="width: 100%; display: grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px">
+                                            <div style="margin-top: auto; margin-bottom: auto">MA-ID:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" readonly name="ds_id" value="{{$user['ds_id']}}"></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Nutzername:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['name']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Nachname:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['lastname']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Vorname:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['firstname']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Geburtstag:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['birthdate']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Geschlecht:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['gender']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">PLZ:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['zipcode']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Ort:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['location']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Straße:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['street']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Telefon:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['phone']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Mobil:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['mobile']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">E-Mail:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['mail']}}" readonly></div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <h5>1und1</h5>
+                                        <h5>Vertrag</h5>
                                         <div style="width: 100%; display: grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
-                                            <div style="margin-top: auto; margin-bottom: auto">Personen ID:</div>
-                                            <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="person_id" value="{{$user['1u1_person_id']}}"></div>
-                                            <div style="margin-top: auto; margin-bottom: auto">Agenten ID:</div>
-                                            <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="agent_id" value="{{$user['1u1_agent_id']}}"></div>
-                                            <div style="margin-top: auto; margin-bottom: auto">SSE ID:</div>
-                                            <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="sse_id" value="{{$user['1u1_sse_id']}}"></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Eintritt:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['entry_date']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Austritt:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['leave_date']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Wochenstunden:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['work_hours']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Standort:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['work_location']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Projekt:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['project']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Team:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['team']}}" readonly></div>
+                                            <div style="margin-top: auto; margin-bottom: auto">Funktion:</div>
+                                            <div><input class="form-control" id="disabledInput" type="text" value="{{$user['department']}}" readonly></div>
                                         </div>
-                                    </div>    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="font-size: 14px;">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
                             </div>
                         </div>
-                        <div class="modal-footer" style="font-size: 14px;">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
-                            <button type="submit" class="btn btn-primary">Speichern</button>
+                        <!-- Auftraggeberinformation -->
+                        <div class="tab-pane" id="id{{$user['ds_id']}}">
+                            <form action="{{route('userlist.updateuser')}}" method="post()" style="width: 100%">
+                                <div class="modal-body" style="font-size: 14px;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5>KDW</h5>
+                                            <div style="width: 100%; display: grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
+                                                <div style="margin-top: auto; margin-bottom: auto">MA-ID:</div>
+                                                <div><input class="form-control" id="disabledInput" type="text" readonly name="ds_id" value="{{$user['ds_id']}}"></div>
+                                                <div style="margin-top: auto; margin-bottom: auto">Tracking ID:</div>
+                                                <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="tracking_id" value="{{$user['kdw_tracking_id']}}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5>1und1</h5>
+                                            <div style="width: 100%; display: grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
+                                                <div style="margin-top: auto; margin-bottom: auto">Personen ID:</div>
+                                                <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="person_id" value="{{$user['1u1_person_id']}}"></div>
+                                                <div style="margin-top: auto; margin-bottom: auto">Agenten ID:</div>
+                                                <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="agent_id" value="{{$user['1u1_agent_id']}}"></div>
+                                                <div style="margin-top: auto; margin-bottom: auto">SSE ID:</div>
+                                                <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="sse_id" value="{{$user['1u1_sse_name']}}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" style="font-size: 14px;">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                                    <button type="submit" class="btn btn-primary">Speichern</button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                        <!-- Administration -->
+                        <div class="tab-pane" id="administration{{$user['ds_id']}}">
+                            <div class="nav-tabs-navigation">
+                                <div class="nav-tabs-wrapper">
+                                    <ul class="nav nav-tabs" data-tabs="tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="#roles{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Rollen und Rechte</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#password{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;"style="font-size: 16px; font-weight: bold;">Passwort zurücksetzen</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                <!-- Rollen und Rechte -->
+                                <div class="tab-pane active" id="roles{{$user['ds_id']}}">
+                                    <form action="{{route('userlist.updateUserRole')}}" method="post()" style="width: 100%">
+                                        <div class="modal-body" style="font-size: 14px;">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <h5>Rollenverwaltung</h5>
+                                                    <div style="width: 100%; display: grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
+                                                        <div style="margin-top: auto; margin-bottom: auto">MA-ID:</div>
+                                                        <div><input class="form-control" id="disabledInput" type="text" readonly name="ds_id" value="{{$user['ds_id']}}"></div>
+                                                        <div style="margin-top: auto; margin-bottom: auto">Aktuelle Rolle:</div>
+                                                        <div><input class="form-control" type="text" readonly name="current_role" value="{{$user['role']}}"></div>
+                                                        <div style="margin-top: auto; margin-bottom: auto">Neue Rolle:</div>
+                                                        <div>
+                                                            <select id="new_role" class="form-control" name="new_role" style="color:black;">
+                                                                <option selected value="null">Keine Rolle</option>
+                                                                @foreach($roleArray as $key => $role)
+                                                                  @if($key != "superadmin")
+                                                                    <option value="{{$key}}">{{$key}}</option>
+                                                                  @endif
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <h5>Aktuelle Berechtigungen</h5>
+                                                    @if($user['role'] == null)
+                                                    <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
+                                                            @foreach($roleArray[array_key_first($roleArray)]['rights'] as $key => $entry)
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input disabled class="form-check-input" type="checkbox" value="" disabled>
+                                                                    {{$entry['name']}}
+                                                                    <span class="form-check-sign">
+                                                                        <span class="check"></span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                            @endforeach
+                                                        </div>
+                                                    @else
+                                                        <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
+
+                                                            @foreach($roleArray[$user['role']]['rights'] as $key => $entry)
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input @if($entry['has_right'] == 'true') checked @endif disabled class="form-check-input" type="checkbox" value="" disabled>
+                                                                    {{$entry['name']}}
+                                                                    <span class="form-check-sign">
+                                                                        <span class="check"></span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="font-size: 14px;">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                                            <button type="submit" class="btn btn-primary">Speichern</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- Passwort zurücksetzen -->
+                                <div class="tab-pane" id="password{{$user['ds_id']}}">
+                                    <form action="{{route('userlist.updateUserPassword')}}" method="post()" style="width: 100%">
+                                        <div class="modal-body" style="font-size: 14px;">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h5>Passwort</h5>
+                                                    <div style="width: 100%; display: grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
+                                                        <div style="margin-top: auto; margin-bottom: auto">MA-ID:</div>
+                                                        <div><input class="form-control" id="disabledInput" type="text" readonly name="ds_id" value="{{$user['ds_id']}}"></div>
+                                                        <div style="margin-top: auto; margin-bottom: auto">Neues Passwort:</div>
+                                                        <div><input class="form-control" type="text" placeholder="Bitte einen Wert eingeben ..." name="new_password" value="care4as2021!"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="font-size: 14px;">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                                            <button type="submit" class="btn btn-primary">Zurücksetzen</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        @endif
     @endforeach
 @endsection
 

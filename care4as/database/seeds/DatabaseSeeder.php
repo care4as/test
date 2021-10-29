@@ -29,11 +29,11 @@ class UserSeeder extends Seeder
     }
     \DB::table('users')->insert(
     [
-      'name' => 'superuser987',
-      'password' => Hash::make('test123'),
-      'email' => 'testmail@test.de',
+      'name' => 'superuser',
+      'password' => Hash::make('Care4Superadmin?'),
       'role' => 'superadmin',
-      'email_verified_at' => Carbon::now(),
+      'status' => 1,
+      'ds_id' => 0,
       'created_at' => Carbon::now(),
       'updated_at' => Carbon::now(),
 
