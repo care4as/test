@@ -260,6 +260,19 @@
             <div id="app">
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                        Dateiformat
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiname: Ohne Konvention
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiformat: <i>.txt</i>
+                    </div>
+                    <div style="width: 100%;">
+                        Hinweis: Die Datei, kann unverändert übernommen werden.
+                    </div>
+                
+                    <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
                     <!-- DEBUG
@@ -271,7 +284,7 @@
                     -->
                     <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
-                        <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                        <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="margin-top: 0px; margin-bottom: 16px; min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
                         </div>
                         <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 20px;">
@@ -307,11 +320,24 @@
             <div id="app">
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                        Dateiformat
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiname: <i>DAI_JJJJ_MM_TT</i>
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiformat: <i>.xlsx</i> (übliche Excel Datei)
+                    </div>
+                    <div style="width: 100%;">
+                        Hinweis: Datei muss zu <i>Dateiname</i> umbenannt werden, Format bleibt unverändert.
+                    </div>
+                
+                    <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
                     <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="dailyAgentDropzone" enctype="multipart/form-data"  style="padding: 0;">
                     @csrf
-                        <div class="form-row dropzone-previews dz-default dz-message" id="dailyAgentContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                        <div class="form-row dropzone-previews dz-default dz-message" id="dailyAgentContainer" style="margin-top: 0px; margin-bottom: 16px; min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
                         </div>
                         <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 20px;">
@@ -347,11 +373,24 @@
             <div id="app">
                 <div class="modal-body" style="font-size: 14px;">
                     <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                        Dateiformat
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiname: Ohne Konvention.
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiformat: <i>.xlsx</i> (übliche Excel Datei)
+                    </div>
+                    <div style="width: 100%;">
+                        Hinweis: Datei aus Zip entnehmen -> öffnen -> als .xlsx Datei speichern. Im ursprünglichen Verzeichnis liegt die Datei lediglich im Binärformat vor.
+                    </div>
+                
+                    <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
                     <form action="{{route('reports.OptIn.upload')}}" class="dropzone" id="optinDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
-                        <div class="form-row dropzone-previews dz-default dz-message" id="optinContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                        <div class="form-row dropzone-previews dz-default dz-message" id="optinContainer" style="margin-top: 0px; margin-bottom: 16px; min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
                         </div>
                         <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 20px;">
@@ -386,12 +425,25 @@
             </div>
             <div id="app">
                 <div class="modal-body" style="font-size: 14px;">
-                    <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                        Dateiformat
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiname: Ohne Konvention.
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiformat: <i>.xlsx</i> (übliche Excel Datei)
+                    </div>
+                    <div style="width: 100%;">
+                        Hinweis: Datei aus Zip entnehmen -> öffnen -> als .xlsx Datei speichern. Im ursprünglichen Verzeichnis liegt die Datei lediglich im Binärformat vor.
+                    </div>
+                
+                    <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
                     <form action="{{route('excel.test')}}" class="dropzone" id="retDetailsDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
-                        <div class="form-row dropzone-previews dz-default dz-message" id="retDetailsContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                        <div class="form-row dropzone-previews dz-default dz-message" id="retDetailsContainer" style="margin-top: 0px; margin-bottom: 16px; min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
                         </div>
                         <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 20px;">
@@ -426,12 +478,25 @@
             </div>
             <div id="app">
                 <div class="modal-body" style="font-size: 14px;">
-                    <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                        Dateiformat
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiname: Ohne Konvention.
+                    </div>
+                    <div style="width: 100%;">
+                        Dateiformat: <i>.xlsx</i> (übliche Excel Datei)
+                    </div>
+                    <div style="width: 100%;">
+                        Hinweis: Datei aus Zip entnehmen -> öffnen -> als .xlsx Datei speichern. Im ursprünglichen Verzeichnis liegt die Datei lediglich im Binärformat vor.
+                    </div>
+                
+                    <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
                     <form action="{{route('reports.SAS.upload')}}" class="dropzone" id="sasDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
-                        <div class="form-row dropzone-previews dz-default dz-message" id="sasContainer" style="min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                        <div class="form-row dropzone-previews dz-default dz-message" id="sasContainer" style="margin-top: 0px; margin-bottom: 16px; min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
                         </div>
                         <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 20px;">

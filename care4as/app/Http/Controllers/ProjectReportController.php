@@ -28,7 +28,7 @@ class ProjectReportController extends Controller
 
         /** calculate days between start and end */
         $differenceDate = Carbon::parse($startDate)->diffInDays($endDate);
-        
+
         /** save variables in array */
         $defaultVariablesArray = array(
             'project' => $project,
@@ -59,9 +59,9 @@ class ProjectReportController extends Controller
         //sum data
         $finalArray = $this->get1u1DslRetSum($defaultVariablesArray, $finalArray);
 
-        
-        
-        
+
+
+
 
         return $finalArray;
     }
@@ -104,7 +104,7 @@ class ProjectReportController extends Controller
             $finalArray['sum']['rlz_minus'] += $entry['rlz_minus'];
             $finalArray['sum']['rlz_plus'] += $entry['rlz_plus'];
         }
-        
+
         if($finalArray['sum']['work_hours'] > 0){
             $finalArray['sum']['productive_percentage'] = ($finalArray['sum']['productive_hours'] / $finalArray['sum']['work_hours']) * 100;
         } else {
@@ -165,10 +165,10 @@ class ProjectReportController extends Controller
             $finalArray['sum']['rlz_plus_percentage'] = 0;
         }
 
-        $finalArray['sum']['revenue_sales'] = $finalArray['sum']['dsl_saves'] * $defaultVariablesArray['revenue_sale_dsl']; 
+        $finalArray['sum']['revenue_sales'] = $finalArray['sum']['dsl_saves'] * $defaultVariablesArray['revenue_sale_dsl'];
         $finalArray['sum']['revenue_sum'] = $finalArray['sum']['revenue_sales'] + $finalArray['sum']['revenue_availbench'];
         $finalArray['sum']['revenue_delta'] = $finalArray['sum']['revenue_sum'] - $finalArray['sum']['pay_cost'];
-        
+
         if($finalArray['sum']['work_hours'] > 0){
             $finalArray['sum']['revenue_per_hour_paid'] = $finalArray['sum']['revenue_sum'] / $finalArray['sum']['work_hours'];
         } else {
@@ -180,11 +180,22 @@ class ProjectReportController extends Controller
         } else {
             $finalArray['sum']['revenue_per_hour_productive'] = 0;
         }
-        
+
         //calculate final employee data
+        // dd($finalArray['employees']);
         foreach($finalArray['employees'] as $key => $entry) {
-            if($finalArray['sum']['dsl_calls'] > 0){
-                $finalArray['employees'][$key]['revenue_availbench'] = ($entry['dsl_calls'] / $finalArray['sum']['dsl_calls']) * $finalArray['sum']['revenue_availbench'];
+
+            if(isset($finalArray['employees'][$key]['revenue_availbench'])){
+              if($finalArray['sum']['dsl_calls'] > 0){
+                  $finalArray['employees'][$key]['revenue_availbench'] = ($entry['dsl_calls'] / $finalArray['sum']['dsl_calls']) * $finalArray['sum']['revenue_availbench'];
+              }
+            }
+            else {
+              $finalArray['employees'][$key]['revenue_availbench'] = 0;
+            }
+            if(!isset($finalArray['employees'][$key]['revenue_availbench']))
+            {
+              dd($finalArray['employees'][$key]);
             }
             $finalArray['employees'][$key]['revenue_sum'] = $finalArray['employees'][$key]['revenue_availbench'] + $finalArray['employees'][$key]['revenue_sales'];
             $finalArray['employees'][$key]['revenue_delta'] = $finalArray['employees'][$key]['revenue_sum'] - $finalArray['employees'][$key]['pay_cost'];
@@ -214,7 +225,7 @@ class ProjectReportController extends Controller
             ->orWhere('abteilung_id', '=', 10); //Linesteuerung
         })
         ->where('projekt_id', '=', 10)
-        ->where(function($query) use($defaultVariablesArray){ 
+        ->where(function($query) use($defaultVariablesArray){
             $query
             ->where('austritt', '=', null)
             ->orWhere('austritt', '>', $defaultVariablesArray['startDate']);})
@@ -223,7 +234,7 @@ class ProjectReportController extends Controller
         ->toArray();
 
         //save 1u1 person_id in array
-        $personList = DB::table('userlist')
+        $personList = DB::table('users')
         ->get()
         ->toArray();
 
@@ -231,9 +242,11 @@ class ProjectReportController extends Controller
 
         foreach($personList as $key => $person){
             $personArray = (array) $person;
-            $refinedPersonList[$personArray['ds_id']]['ds_id'] = $personArray['ds_id'];
-            $refinedPersonList[$personArray['ds_id']]['person_id'] = $personArray['1u1_person_id'];
-            $refinedPersonList[$personArray['ds_id']]['cosmocom_id'] = $personArray['1u1_agent_id'];
+            if($personArray['name'] != 'superuser'){
+              $refinedPersonList[$personArray['ds_id']]['ds_id'] = $personArray['ds_id'];
+              $refinedPersonList[$personArray['ds_id']]['person_id'] = $personArray['1u1_person_id'];
+              $refinedPersonList[$personArray['ds_id']]['cosmocom_id'] = $personArray['1u1_agent_id'];
+            }
         }
 
         //get kdw data
@@ -283,10 +296,10 @@ class ProjectReportController extends Controller
                         $refinedEmployees[$employeeArray['ds_id']]['break_hours'] += $entry['pay_break_hours'];
                     }
                 }
-                
+
             }
             $refinedEmployees[$employeeArray['ds_id']]['pay_cost'] = $refinedEmployees[$employeeArray['ds_id']]['work_hours'] * 35;
-            
+
             /** calculate sick and break percentage */
             if($refinedEmployees[$employeeArray['ds_id']]['work_hours'] > 0){
                 $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] = ($refinedEmployees[$employeeArray['ds_id']]['sick_hours'] / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])*100;
@@ -295,7 +308,7 @@ class ProjectReportController extends Controller
                 $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] = 0;
                 $refinedEmployees[$employeeArray['ds_id']]['break_percentage'] = 0;
             }
-            
+
             /** calculate dailyagent prod. hours and % */
             $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] = 0;
             $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;
@@ -373,7 +386,7 @@ class ProjectReportController extends Controller
             /** calculate optin */
             $refinedEmployees[$employeeArray['ds_id']]['optin_calls_new'] = 0;
             $refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible'] = 0;
-            
+
             if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){
                 foreach($optinData as $key => $entry){
                     if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){
@@ -409,7 +422,7 @@ class ProjectReportController extends Controller
         asort($refinedEmployees); //sort list
         //dd($refinedEmployees);
 
-        return $refinedEmployees; 
+        return $refinedEmployees;
     }
 
     public function getKdwHours($defaultVariablesArray){
@@ -463,7 +476,7 @@ class ProjectReportController extends Controller
         //format date
         $startDate = $defaultVariablesArray['startDatePHP']->setTime(0,0);
         $endDate = $defaultVariablesArray['endDatePHP']->setTime(23,59);
-        
+
         $data = DB::table('dailyagent')
         ->where('start_time', '>=', $startDate)
         ->where('start_time', '<=', $endDate)
@@ -512,4 +525,3 @@ class ProjectReportController extends Controller
         return $data;
     }
 }
-

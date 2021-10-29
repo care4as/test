@@ -114,8 +114,11 @@ class FeedbackController extends Controller
         $end_date->setISODate($year,$kwi,7)->format('Y-m-d');
         $end_date->setTime(23,59,59);
 
-        if($user->department == '1&1 Mobile Retention')
+        if($user->department == null)
         {
+          $department = null;
+        }
+        else if($user->department == '1und1 Retention') {
           $department = 'Retention Mobile Inbound Care4as Eggebek';
         }
         else {

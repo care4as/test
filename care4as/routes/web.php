@@ -14,7 +14,8 @@ use App\Http\Controllers\ControllingController;
 |
 */
 
-
+//Um User anzulegen, wenn noch keine User vorhanden sind
+Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync');
 
 Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
 
@@ -24,8 +25,6 @@ Route::get('/messageOfTheDay', function()
 {
   return view('messageOfTheDay');
 })->name('dailyMessage');
-
-Route::group(['middleware' => ['auth']], function () {
 
   Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool');
   Route::get('/telefonica/getIntoPause', 'PauseController@getIntoPause')->name('getIntoPause');
@@ -314,9 +313,11 @@ Route::group(['middleware' => ['auth']], function () {
   //end nettozeitenreporte
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
-  Route::get('/userlist', 'UserListController@load')->name('userlist')->middleware('hasRight:controlling');
+  Route::get('/userlist', 'UserListController@load')->name('userlist');
   Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync');
   Route::get('/userlist/updateuser', 'UserListController@updateUser')->name('userlist.updateuser');
+  Route::get('/userlist/resetpassword', 'UserListController@updateUserPassword')->name('userlist.updateUserPassword');
+  Route::get('/userlist/updaterole', 'UserListController@updateUserRole')->name('userlist.updateUserRole');
   Route::get('/projectReport', 'ProjectReportController@load')->name('projectReport')->middleware('hasRight:controlling');
   Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
@@ -326,8 +327,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 
   //END DSL routes
-
-});
 
 //Provision
   Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');
@@ -352,6 +351,18 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/test', function(){
 
 
-    return view('test');
+    $userData = DB::connection('mysqlkdw')
+    ->table('MA')
+    ->where('austritt', null)
+    ->get()
+    ->pluck('ds_id');
+
+    DB::table('users')
+    ->whereNotIn('ds_id', $userData)
+    ->update([
+      'status' => 0,
+    ]);
+
+    dd($userData);
 
   })->name('test');

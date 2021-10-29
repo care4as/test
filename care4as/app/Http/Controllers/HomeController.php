@@ -43,12 +43,12 @@ class HomeController extends Controller
         // dd(request('employees'));
         $userids = DB::table('intermediate_status')
         ->whereDate('date', Carbon::today())
-        ->pluck('person_id')
+        ->pluck('1u1_person_id')
         ->toArray();
 
         $users = User::whereIN('id',request('employees'))
-        ->whereIN('person_id', $userids)
-        ->orderBy('lastname')
+        ->whereIN('1u1_person_id', $userids)
+        ->orderBy('name')
         ->get();
       }
       else {
@@ -57,19 +57,19 @@ class HomeController extends Controller
         ->pluck('person_id')
         ->toArray();
 
-        $users = User::whereIn('person_id', $userids)->orderBy('lastname')->get();
+        $users = User::whereIn('1u1_person_id', $userids)->orderBy('name')->get();
       }
 
       $mobileTeamids = DB::table('users')
-      ->where('department', '1&1 Mobile Retention')
+      ->where('project', '1und1 Retention')
       ->where('status',1)
-      ->pluck('person_id')
+      ->pluck('1u1_person_id')
       ->toArray();
 
       $DSLTeamids = DB::table('users')
-      ->where('department', '1&1 DSL Retention')
+      ->where('project', '1und1 DSL Retention')
       ->where('status',1)
-      ->pluck('person_id')
+      ->pluck('1u1_person_id')
       ->toArray();
 
 
@@ -177,10 +177,10 @@ class HomeController extends Controller
       if($request->employees)
       {
 
-        $users = User::where('role','agent')
+        $users = User::where('role','Agent')
         ->where('status',1)
         ->whereIn('id', $request->employees)
-        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
+        ->select('id','1u1_person_id','1u1_agent_id','project','ds_id')
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
           if($start_date !== 1)
@@ -195,7 +195,7 @@ class HomeController extends Controller
           }
           }])
         ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
-          // $q->select(['id','person_id','calls','time_in_state','call_date']);
+          // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
           if($start_date !== 1)
           {
             $q->where('call_date','>=',$start_date);
@@ -237,7 +237,7 @@ class HomeController extends Controller
             }
           }])
           ->with(['gevo' => function($q) use ($start_date,$end_date){
-            // $q->select(['id','person_id','calls','time_in_state','call_date']);
+            // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
             if($start_date !== 1)
             {
               $q->where('date','>=',$start_date);
@@ -263,11 +263,12 @@ class HomeController extends Controller
       elseif($request->team)
       {
         // dd($request->team);
-        $users = User::where('role','agent')
+        $users = User::where('role','Agent')
         ->where('status',1)
         ->where('team', $request->team)
-        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
-        ->where('agent_id','!=',null)
+        ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
+        ->where('1u1_agent_id','!=',null)
+
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
           if($start_date !== 1)
@@ -282,7 +283,7 @@ class HomeController extends Controller
           }
           }])
         ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
-          // $q->select(['id','person_id','calls','time_in_state','call_date']);
+          // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
           if($start_date !== 1)
           {
             $q->where('call_date','>=',$start_date);
@@ -293,7 +294,7 @@ class HomeController extends Controller
           }
           }])
         ->with(['gevo' => function($q) use ($start_date,$end_date){
-          // $q->select(['id','person_id','calls','time_in_state','call_date']);
+          // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
           if($start_date !== 1)
           {
             $q->where('date','>=',$start_date);
@@ -355,12 +356,15 @@ class HomeController extends Controller
         else {
           $department = '';
         }
+
+        // dd($department);
         // return \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
-        $users = User::where('role','agent')
+        $users = User::where('role','Agent')
         ->where('status',1)
-        ->where('department', $department)
-        ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
-        ->where('agent_id','!=',null)
+        ->where('project', $department)
+        ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
+        // ->where('1u1_agent_id','!=',null)
+
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
           if($start_date !== 1)
@@ -375,7 +379,7 @@ class HomeController extends Controller
           }
           }])
         ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
-          // $q->select(['id','person_id','calls','time_in_state','call_date']);
+          // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
           if($start_date !== 1)
           {
             $q->where('call_date','>=',$start_date);
@@ -386,7 +390,7 @@ class HomeController extends Controller
           }
           }])
         ->with(['gevo' => function($q) use ($start_date,$end_date){
-          // $q->select(['id','person_id','calls','time_in_state','call_date']);
+          // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
           if($start_date !== 1)
           {
             $q->where('date','>=',$start_date);
@@ -440,7 +444,7 @@ class HomeController extends Controller
         // ->limit(10)
         ->get();
       }
-
+      // dd($users);
       //the days without holiday and weekends and sickdays stuff
       if($start_date != 1)
       {
@@ -692,7 +696,7 @@ class HomeController extends Controller
     {
       $start_date = '2021-02-01';
       $end_date = '2021-02-28';
-      $users = User::where('role','agent')
+      $users = User::where('role','Agent')
       ->with(['SSETracking' => function($q) use ($start_date,$end_date){
         if($start_date != 1)
         {

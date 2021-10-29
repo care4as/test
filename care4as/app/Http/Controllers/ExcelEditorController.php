@@ -844,7 +844,7 @@ class ExcelEditorController extends Controller
         $fromRow = 2;
       }
       $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
-      // dd($data);
+      dd($data);
       $insertarray = array();
       for($i = $fromRow-1; $i <= count($data)-1; $i++)
       {
