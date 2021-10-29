@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Hash;
 
 class CreateUsersTable extends Migration
 {
@@ -15,14 +16,22 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('role')->nullable();
-            $table->integer('person_id')->nullable();
-            $table->rememberToken();
             $table->timestamps();
+            $table->rememberToken();
+            $table->string('name');
+            $table->string('password')->default(Hash::make('care4as2021!'));
+            $table->string('role')->nullable();
+            $table->integer('status')->default(0);
+            $table->string('mail')->nullable();
+            $table->timestamp('mail_verified_at')->nullable();           
+            $table->integer('ds_id')->unique();
+            $table->string('project')->nullable();
+            $table->string('department')->nullable();
+            $table->string('team')->nullable();
+            $table->integer('1u1_person_id')->nullable();
+            $table->integer('1u1_agent_id')->nullable();
+            $table->string('1u1_sse_name')->nullable();
+            $table->integer('kdw_tracking_id')->nullable();
         });
     }
 

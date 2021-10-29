@@ -61,13 +61,13 @@ class HomeController extends Controller
       }
 
       $mobileTeamids = DB::table('users')
-      ->where('department', '1&1 Mobile Retention')
+      ->where('department', '1und1 Retention')
       ->where('status',1)
       ->pluck('person_id')
       ->toArray();
 
       $DSLTeamids = DB::table('users')
-      ->where('department', '1&1 DSL Retention')
+      ->where('department', '1und1 DSL Retention')
       ->where('status',1)
       ->pluck('person_id')
       ->toArray();

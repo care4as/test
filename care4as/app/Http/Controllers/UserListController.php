@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,6 +19,8 @@ class UserListController extends Controller
         $defaultVariables['inputEmployee'] = $employeeState;
 
         //dd($defaultVariables);
+
+        $roleArray = $this->getRoles();
                 
         $users = $this->getUnfilteredUsers();
         //dd($users);
@@ -35,7 +38,45 @@ class UserListController extends Controller
 
         //dd($users);
 
-        return view('usermanagement.userlist', compact('users', 'defaultVariables'));
+        return view('usermanagement.userlist', compact('users', 'defaultVariables', 'roleArray'));
+    }
+
+    public function getRoles(){
+        $roles = DB::table('roles')
+        ->get()
+        ->toArray();
+
+        $rights = DB::table('rights')
+        ->get()
+        ->toArray();
+
+        $roleRights = DB::table('roles_has_rights')
+        ->get()
+        ->toArray();
+
+        $roleArray = array();
+        //fill roles
+        foreach($roles as $keyRole => $role){
+            $role = (array) $role;
+            $roleArray[$role['name']] = null;
+            
+            foreach($rights as $keyRight => $right){
+                $right = (array) $right;
+                $roleArray[$role['name']]['rights'][$right['id']]['name'] = $right['name'];
+                $roleArray[$role['name']]['rights'][$right['id']]['has_right'] = false;
+
+                foreach($roleRights as $keyRoleRight => $roleRight){
+                    $roleRight = (array) $roleRight;
+                    if($roleRight['role_id'] == $role['id'] && $roleRight['rights_id'] == $right['id']){
+                        $roleArray[$role['name']]['rights'][$right['id']]['has_right'] = true;
+                    }
+                }
+            }
+        }
+
+        //dd($currentRight);
+        //dd($roleArray);
+        return $roleArray;
     }
 
     public function syncUserlistKdw(){
@@ -118,7 +159,7 @@ class UserListController extends Controller
             if($user['abteilung_id'] != null && $user['abteilung_id'] != 0){
                 $user['abteilung_id'] = $departmentDataArray[$user['abteilung_id']];
             } else {
-                $user['abteilung_id'] = null;
+                $user['abteilung_id'] = 'Keine Angabe';
             }
 
             if(isset($teamEmployeeDataArray[$user['ds_id']])){
@@ -135,33 +176,18 @@ class UserListController extends Controller
             }
   
             //INSERT OR IGNORE
-            DB::table('userlist')->updateOrInsert(
+            DB::table('users')->updateOrInsert(
                 [
                   'ds_id' => $user['ds_id']
                 ],
                 [
-                'username' => $user['agent_id'],
-                'password' => Hash::make('care4as2021!'),
-                'lastname' => $user['familienname'],
-                'firstname' => $user['vorname'],
-                'full_name' => $user['familienname'] . ', ' . $user['vorname'],
-                'gender' => $user['geschlecht'],
-                'birthdate' => $user['geburt'],
-                'zipcode' => intval($user['plz']),
-                'location' => $user['ort'],
-                'street' => $user['strasse'],
-                'phone' => $user['telefon'],
-                'mobile' => $user['handy'],
-                'mail' => $user['email'],
-                'work_location' => $user['standort'],
+                'name' => $user['agent_id'],
                 'project' => $user['projekt_id'], 
                 'department' => $user['abteilung_id'],
                 'team' => $user['team'],
-                'entry_date' => date_create_from_format('Y-m-d', $user['eintritt']),
-                'leave_date' => $user['austritt'],
-                'work_hours' => intval($user['soll_h_day']),
                 ]
               );
+
         }
 
         //redirect back to userlist
@@ -173,15 +199,52 @@ class UserListController extends Controller
         $person_id = request('person_id');
         $agent_id = request('agent_id');
         $sse_id = request('sse_id');
+        $tracking_id = request('tracking_id');
 
-        DB::table('userlist')->updateOrInsert(
+        DB::table('users')->updateOrInsert(
             [
               'ds_id' => $ds_id
             ],
             [
             '1u1_person_id' => $person_id,
             '1u1_agent_id' => $agent_id,
-            '1u1_sse_id' => $sse_id,
+            '1u1_sse_name' => $sse_id,
+            'kdw_tracking_id' => $tracking_id,
+            ]
+          );
+
+        return redirect()->back(); 
+    }
+
+    public function updateUserPassword(){
+        $ds_id = request('ds_id');
+        $new_password = request('new_password');
+
+        DB::table('users')->updateOrInsert(
+            [
+              'ds_id' => $ds_id
+            ],
+            [
+                'password' => Hash::make($new_password),
+            ]
+          );
+
+        return redirect()->back(); 
+    }
+
+    public function updateUserRole(){
+        $ds_id = request('ds_id');
+        $new_role = request('new_role');
+        if($new_role == 'null'){
+            $new_role = null;
+        }
+
+        DB::table('users')->updateOrInsert(
+            [
+              'ds_id' => $ds_id
+            ],
+            [
+                'role' => $new_role,
             ]
           );
 
@@ -189,7 +252,12 @@ class UserListController extends Controller
     }
 
     public function getUnfilteredUsers(){
-        $users = DB::table('userlist')
+        $users = DB::table('users')
+        ->get()
+        ->toArray();
+
+        $kdwUsers = DB::connection('mysqlkdw')
+        ->table('MA')
         ->get()
         ->toArray();
 
@@ -197,6 +265,28 @@ class UserListController extends Controller
 
         foreach($users as $key => $entry){
             $entry = (array) $entry;
+
+            foreach($kdwUsers as $keyKdw => $entryKdw){
+                $entryKdw = (array) $entryKdw;
+                if ($entryKdw['ds_id'] == $entry['ds_id']){
+                    $entry['entry_date'] = $entryKdw['eintritt'];
+                    $entry['leave_date'] = $entryKdw['austritt'];
+                    $entry['work_hours'] = $entryKdw['soll_h_day'];
+                    $entry['work_location'] = $entryKdw['standort'];
+                    $entry['lastname'] = $entryKdw['familienname'];
+                    $entry['firstname'] = $entryKdw['vorname'];
+                    $entry['full_name'] = $entryKdw['familienname'] . ', ' . $entryKdw['vorname'];
+                    $entry['birthdate'] = $entryKdw['geburt'];
+                    $entry['gender'] = $entryKdw['geschlecht'];
+                    $entry['zipcode'] = $entryKdw['plz'];
+                    $entry['location'] = $entryKdw['ort'];
+                    $entry['street'] = $entryKdw['strasse'];
+                    $entry['phone'] = $entryKdw['telefon'];
+                    $entry['mobile'] = $entryKdw['handy'];
+                    $entry['mail'] = $entryKdw['email']; 
+                }
+            }
+
             $userArray[] = $entry;
         }
 
