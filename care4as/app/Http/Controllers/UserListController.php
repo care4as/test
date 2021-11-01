@@ -286,10 +286,8 @@ class UserListController extends Controller
                     $entry['mail'] = $entryKdw['email']; 
                 }
             }
-
             $userArray[] = $entry;
         }
-
         return $userArray;
     }
 
