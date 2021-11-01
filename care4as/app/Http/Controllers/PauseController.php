@@ -24,7 +24,7 @@ class PauseController extends Controller
 
       if ($users->count() < $pip) {
 
-      $username = Auth()->user()->surname.' '.Auth()->user()->lastname;
+      $username = Auth()->user()->name;
 
       if(DB::table('pause')->where('name', $username)->exists())
         {
@@ -45,7 +45,8 @@ class PauseController extends Controller
     }
     public function getOutOfPause($value='')
     {
-      $username = Auth()->user()->surname.' '.Auth()->user()->lastname;
+      $username = Auth()->user()->name;
+      
       if(DB::table('pause')->where('name', $username)->delete())
       {
         return response()->json('Pause beendet');
