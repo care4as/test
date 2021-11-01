@@ -126,7 +126,7 @@
             </li>
           @endif
           <!-- Telefonica -->
-          @if(in_array('indexCancels',Auth()->user()->getRights()))
+          @if(in_array('telefonicapause',Auth()->user()->getRights()))
             <li>
               <a class="" data-toggle="collapse" href="#collapseTelefonica" role="button" aria-expanded="false" aria-controls="collapseCancel">
                 <i class="fas fa-project-diagram"></i>
