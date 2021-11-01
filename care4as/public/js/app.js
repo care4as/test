@@ -2666,9 +2666,9 @@ __webpack_require__.r(__webpack_exports__);
     getUsers: function getUsers() {
       var _this = this;
 
-      var host = window.location.host;
-      axios.get('http://' + host + '/care4as/care4as/public/telefonica/getUsersInPause') // axios.get('http://'+host+'/telefonica/getUsersInPause')
-      .then(function (response) {
+      var host = window.location.host; // axios.get('http://'+host+'/care4as/care4as/public/telefonica/getUsersInPause')
+
+      axios.get('http://' + host + '/telefonica/getUsersInPause').then(function (response) {
         console.log(response.data);
         _this.users = response.data;
       })["catch"](function (err) {
@@ -2677,9 +2677,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goIntoPause: function goIntoPause() {
-      var host = window.location.host;
-      axios.get('http://' + host + '/care4as/care4as/public/telefonica/getIntoPause') // axios.get('http://'+host+'/telefonica/getIntoPause')
-      .then(function (response) {
+      var host = window.location.host; // axios.get('http://'+host+'/care4as/care4as/public/telefonica/getIntoPause')
+
+      axios.get('http://' + host + '/telefonica/getIntoPause').then(function (response) {
         console.log(response.data);
 
         if (response.data == "du bist schon in Pause") {
@@ -2698,9 +2698,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getOutOfPause: function getOutOfPause() {
-      var host = window.location.host;
-      axios.get('http://' + host + '/care4as/care4as/public/telefonica/getOutOfPause') // axios.get('http://'+host+'/telefonica/getOutOfPause')
-      .then(function (response) {
+      var host = window.location.host; // axios.get('http://'+host+'/care4as/care4as/public/telefonica/getOutOfPause')
+
+      axios.get('http://' + host + '/telefonica/getOutOfPause').then(function (response) {
         console.log(response.data);
       })["catch"](function (err) {
         console.log('error');

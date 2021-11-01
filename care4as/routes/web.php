@@ -26,7 +26,7 @@ Route::get('/messageOfTheDay', function()
   return view('messageOfTheDay');
 })->name('dailyMessage');
 
-  Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool');
+  Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool')->->middleware('auth');
   Route::get('/telefonica/getIntoPause', 'PauseController@getIntoPause')->name('getIntoPause');
   Route::get('/telefonica/getOutOfPause', 'PauseController@getOutOfPause')->name('getOutOfPause');
   Route::get('/telefonica/getUsersInPause', 'PauseController@getUsers')->name('getUsersInPause');
