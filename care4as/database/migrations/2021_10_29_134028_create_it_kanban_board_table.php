@@ -21,6 +21,7 @@ class CreateItKanbanBoardTable extends Migration
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();
             $table->integer('status')->nullable();
+            $table->integer('priority')->nullable();
         });
     }
 
