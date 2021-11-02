@@ -20,12 +20,13 @@ class CreateItKanbanBoardTable extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();
+            $table->integer('priority')->nullable();
             $table->integer('status')->nullable();
         });
     }
 
     /**
-     * Reverse the migrations.. 
+     * Reverse the migrations..
      *
      * @return void
      */
