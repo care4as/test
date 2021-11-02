@@ -161,6 +161,7 @@
             </a>
             <div class="collapse" id="collapseInventory" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('scrum.itkanbanboard')}}">Scrum</a> </li>
                 <li><a href="{{route('inventory.list')}}">HW Liste</a> </li>
                 <li><a href="{{route('inventory.add')}}">HW hinzufügen</a> </li>
               </ul>

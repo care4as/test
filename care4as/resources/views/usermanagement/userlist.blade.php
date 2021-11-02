@@ -167,6 +167,7 @@
                                 <th>Eintritt</th>
                                 <th>Austritt</th>
                                 <th>KDW ID</th>
+                                <th>KDW Tracking ID</th>
                                 <th>1u1 Personen ID</th>
                                 <th>1u1 Agenten ID</th>
                                 <th>1u1 SSE Name</th>
@@ -190,6 +191,7 @@
                                 <td>{{$user['entry_date']}}</td>
                                 <td>{{$user['leave_date']}}</td>
                                 <td>{{$user['ds_id']}}</td>
+                                <td>{{$user['kdw_tracking_id']}}</td>
                                 <td>{{$user['1u1_person_id']}}</td>
                                 <td>{{$user['1u1_agent_id']}}</td>
                                 <td>{{$user['1u1_sse_name']}}</td>
