@@ -167,35 +167,35 @@
                                 <th>Eintritt</th>
                                 <th>Austritt</th>
                                 <th>KDW ID</th>
+                                <th>KDW Tracking ID</th>
                                 <th>1u1 Personen ID</th>
                                 <th>1u1 Agenten ID</th>
                                 <th>1u1 SSE Name</th>
                             </tr>
                         </thead>
                         <tbody>
-                          @foreach($users as $key => $user)
-                            @if($user['role'] != "superadmin")
-                              <tr>
-                                  <td>
-                                      <div style="display: flex;">
-                                          <button type="button" data-toggle="modal" data-target="#modal{{$user['ds_id']}}" class="btn btn-primary btn-sm" style="margin: auto; padding-top: 0; padding-bottom: 0;"><i class="now-ui-icons business_badge"></i></button>
-                                      </div>
-                                  </td>
-                                  <td> {{$user['full_name']}}</td>
-                                  <td>{{$user['name']}}</td>
-                                  <td>{{$user['work_hours']}}</td>
-                                  <td>{{$user['project']}}</td>
-                                  <td>{{$user['department']}}</td>
-                                  <td>{{$user['team']}}</td>
-                                  <td>{{$user['role']}}</td>
-                                  <td>{{$user['entry_date']}}</td>
-                                  <td>{{$user['leave_date']}}</td>
-                                  <td>{{$user['ds_id']}}</td>
-                                  <td>{{$user['1u1_person_id']}}</td>
-                                  <td>{{$user['1u1_agent_id']}}</td>
-                                  <td>{{$user['1u1_sse_name']}}</td>
-                              </tr>
-                              @endif
+                            @foreach($users as $key => $user)
+                            <tr>
+                                <td>
+                                    <div style="display: flex;">
+                                        <button type="button" data-toggle="modal" data-target="#modal{{$user['ds_id']}}" class="btn btn-primary btn-sm" style="margin: auto; padding-top: 0; padding-bottom: 0;"><i class="now-ui-icons business_badge"></i></button>
+                                    </div>
+                                </td>
+                                <td>{{$user['full_name']}}</td>
+                                <td>{{$user['name']}}</td>
+                                <td>{{$user['work_hours']}}</td>
+                                <td>{{$user['project']}}</td>
+                                <td>{{$user['department']}}</td>
+                                <td>{{$user['team']}}</td>
+                                <td>{{$user['role']}}</td>
+                                <td>{{$user['entry_date']}}</td>
+                                <td>{{$user['leave_date']}}</td>
+                                <td>{{$user['ds_id']}}</td>
+                                <td>{{$user['kdw_tracking_id']}}</td>
+                                <td>{{$user['1u1_person_id']}}</td>
+                                <td>{{$user['1u1_agent_id']}}</td>
+                                <td>{{$user['1u1_sse_name']}}</td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>

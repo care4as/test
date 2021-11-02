@@ -322,6 +322,13 @@ Route::get('/messageOfTheDay', function()
   Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
 
+  //START Scrum
+  Route::get('/scrum', 'ScrumController@init')->name('scrum.itkanbanboard');
+  Route::get('/scrum/add', 'ScrumController@add')->name('scrum.add');
+  Route::get('/scrum/update', 'ScrumController@update')->name('scrum.update');
+  Route::get('/scrum/delete', 'ScrumController@delete')->name('scrum.delete');
+  //END Scrum
+
   //DSL Routes
   Route::get('/1u1/mobileRetenion/trackingDifference', 'TrackingDifferenceController@load')->name('mobileTrackingDifference');
 
