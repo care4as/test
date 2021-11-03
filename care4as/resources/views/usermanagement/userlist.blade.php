@@ -42,6 +42,9 @@
     .form-control[readonly]{
         cursor: default;
     }
+    .dt-buttons{
+        margin-bottom: 10px;
+    }
 
 </style>
 @endsection
@@ -481,6 +484,11 @@
         fixedColumns: false,
         select: true,
         order: [[1, "asc"]],
+        dom: 'Blfrtip',
+        buttons: [
+            { extend: 'csv', text: 'CSV Export', className: 'btn btn-primary' },
+            { extend: 'excel', text: 'Excel Export', className: 'btn btn-primary' },
+        ],
     });
     document.getElementById('userListContainer').style.display = "block";
     $($.fn.dataTable.tables(true)).DataTable()
