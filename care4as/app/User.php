@@ -52,9 +52,7 @@ class User extends Authenticatable
         $query->where('person_id',$this->person_id);
         $query->where('call_date','>=', $date1);
         $query->where('call_date','<=', $date2);
-
         $salesdata = $query->get();
-
         $calls = $salesdata->sum('calls');
         $savesssc = $salesdata->sum('orders_smallscreen');
         $calls_ssc = $salesdata->sum('calls_smallscreen');
@@ -94,11 +92,11 @@ class User extends Authenticatable
     }
     public function dailyagent()
     {
-      return $this->hasMany('\App\DailyAgent','agent_id','agent_id');
+      return $this->hasMany('\App\DailyAgent','agent_id','1u1_agent_id');
     }
     public function retentionDetails()
     {
-      return $this->hasMany('\App\RetentionDetail','person_id','person_id');
+      return $this->hasMany('\App\RetentionDetail','person_id','1u1_person_id');
     }
     public function hoursReport()
     {
@@ -106,7 +104,7 @@ class User extends Authenticatable
     }
     public function SSETracking()
     {
-      return $this->hasMany('\App\SSETracking','person_id','person_id');
+      return $this->hasMany('\App\SSETracking','person_id','1u1_person_id');
     }
     public function getRights()
     {
@@ -156,19 +154,19 @@ class User extends Authenticatable
     }
     public function SAS()
     {
-      return $this->hasMany('\App\SAS','person_id','person_id');
+      return $this->hasMany('\App\SAS','person_id','1u1_person_id');
     }
     public function Optin()
     {
-      return $this->hasMany('\App\Optin','person_id','person_id');
+      return $this->hasMany('\App\Optin','person_id','1u1_person_id');
     }
     public function intermediatesLatest()
     {
-      return $this->hasOne('\App\Intermediate','person_id','person_id')->latest('date');
+      return $this->hasOne('\App\Intermediate','person_id','1u1_person_id')->latest('date');
     }
     public function gevo()
     {
-      return $this->hasMany('\App\GeVoTracking','person_id','person_id');
+      return $this->hasMany('\App\GeVoTracking','person_id','1u1_person_id');
     }
     public function offlineTracking()
     {

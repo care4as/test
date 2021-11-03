@@ -141,6 +141,8 @@ class HomeController extends Controller
     }
     public function presentation(Request $request)
     {
+
+
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
@@ -176,7 +178,6 @@ class HomeController extends Controller
 
       if($request->employees)
       {
-
         $users = User::where('role','Agent')
         ->where('status',1)
         ->whereIn('id', $request->employees)
@@ -350,6 +351,7 @@ class HomeController extends Controller
       }
       else {
 
+        // return 'test';
         if ($request->department) {
           $department = $request->department;
         }
@@ -400,51 +402,51 @@ class HomeController extends Controller
             $q->where('date','<=',$end_date);
           }
           }])
-          ->with(['hoursReport' => function($q) use ($start_date,$end_date){
-
-            if($start_date !== 1)
-            {
-              $q->where('work_date','>=',$start_date);
-            }
-            if($end_date !== 1)
-            {
-              $q->where('work_date','<=',$end_date);
-            }
-            }])
-          ->with(['SSETracking' => function($q) use ($start_date,$end_date){
-            if($start_date != 1)
-            {
-              $q->where('trackingdate','>=',$start_date);
-            }
-            if($end_date != 1)
-            {
-              $q->where('trackingdate','<=',$end_date);
-            }
+        ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+          if($start_date !== 1)
+          {
+            $q->where('work_date','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('work_date','<=',$end_date);
+          }
           }])
-          ->with(['SAS' => function($q) use ($start_date,$end_date){
-            if($start_date != 1)
-            {
-              $q->where('date','>=',$start_date);
-            }
-            if($end_date != 1)
-            {
-              $q->where('date','<=',$end_date);
-            }
+        ->with(['SSETracking' => function($q) use ($start_date,$end_date){
+          if($start_date != 1)
+          {
+            $q->where('trackingdate','>=',$start_date);
+          }
+          if($end_date != 1)
+          {
+            $q->where('trackingdate','<=',$end_date);
+          }
           }])
-          ->with(['Optin' => function($q) use ($start_date,$end_date){
-            if($start_date != 1)
-            {
-              $q->where('date','>=',$start_date);
-            }
-            if($end_date != 1)
-            {
-              $q->where('date','<=',$end_date);
-            }
-          }])
+        ->with(['SAS' => function($q) use ($start_date,$end_date){
+          if($start_date != 1)
+          {
+            $q->where('date','>=',$start_date);
+          }
+          if($end_date != 1)
+          {
+            $q->where('date','<=',$end_date);
+          }
+        }])
+        ->with(['Optin' => function($q) use ($start_date,$end_date){
+          if($start_date != 1)
+          {
+            $q->where('date','>=',$start_date);
+          }
+          if($end_date != 1)
+          {
+            $q->where('date','<=',$end_date);
+          }
+        }])
         // ->limit(10)
         ->get();
       }
-      // dd($users);
+
+      // dd($users[1]);
       //the days without holiday and weekends and sickdays stuff
       if($start_date != 1)
       {
@@ -692,10 +694,12 @@ class HomeController extends Controller
       //dd($overalldata);
       return view('DB', compact('overalldata', 'users'));
     }
+
     public function test($value='')
     {
       $start_date = '2021-02-01';
       $end_date = '2021-02-28';
+
       $users = User::where('role','Agent')
       ->with(['SSETracking' => function($q) use ($start_date,$end_date){
         if($start_date != 1)

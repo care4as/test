@@ -547,74 +547,79 @@
 
 @section('additional_modal')
 <div class="modal show" id="modalData" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-center" role="document" style="z-index: 500000; margin: 20vh auto;">
+    <div class="modal-dialog modal-lg modal-center" role="document" style="margin: 20vh auto;">
         <div class="modal-content">
-            <div class="modal-header ">
-              <h5 class="modal-title w-100 text-center" id="" style="font-size: 1.45em;">Daten eingepflegt von/bis</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" style="font-size: 14px;">
-              <div class="row m-3 mt-4" id="dataState">
+          <div class="modal-body p-0" style="font-size: 14px;">
+              <div class="row" id="dataState">
                 <div class="col-12 text-left" >
-                  <table class="table table-borderless tablespacing">
-                    <tr class="">
-                      <td>
-                        @if(!App\DailyAgent::min('date'))
-                          <h5>keine Daten eingegeben</h5>
-                        @else
-                          <div class="loadingerDA">Lade Daten DailyAgent...</div>
-                          <span id="dailyagentData" style="display: none;">  </span>
-                        @endif
-                      </td>
-                      <td><a href="{{route('excel.dailyAgent.import')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
-                    </tr>
-                    <tr class="">
-                      <td>
-                        @if(!App\Hoursreport::min('work_date'))
-                          <h5>keine Daten eingegeben</h5>
-                        @else
-                          <div class="loadingerHR">Lade Daten Stundenreport...</div>
-                          <span id="HoursreportData" style="display: none;">Daily Agent im Zeitraum vom Test</span>
-                        @endif
-                      </td>
-                      <td><a href="{{route('reports.reportHours.update')}}"><button type="button" class="btn btn-success btn-sm border-round" name="button">Aktualisieren</button></a></td>
-                    </tr>
-                    <tr class="">
-                      <td>
-                        @if(!App\RetentionDetail::min('call_date'))
-                          <h5>keine Daten eingegeben</h5>
-                        @else
-                          <div class="loadingerRD">Lade Daten Retention Details...</div>
-                          <span id="RDDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
-                        @endif
-                      </td>
-                      <td><a href="{{route('reports.report')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
-                    </tr>
-                    <tr class="">
-                      <td>
-                        @if(!App\SAS::min('date'))
-                          <h5>keine Daten eingegeben</h5>
-                        @else
-                          <div class="loadingerSAS">Lade Daten SAS...</div>
-                          <span id="SASDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
-                        @endif
-                      </td>
-                      <td><a href="{{route('reports.SAS')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
-                    </tr>
-                    <tr class="">
-                      <td>
-                        @if(!App\Optin::min('date'))
-                          <h5>keine Daten eingegeben</h5>
-                        @else
-                          <div class="loadingerOptin">Lade Daten Optin...</div>
-                          <span id="OptinDataStatus" style="display: none;">Daily Agent im Zeitraum vom Test  </span>
-                        @endif
-                      </td>
-                      <td><a href="{{route('reports.OptIn')}}">  <button type="button" class="btn btn-success btn-sm border-round" name="button">Zum Upload</button></a></td>
-                    </tr>
-                  </table>
+                  <div class="max-panel m-0 bg-none">
+                      <div class="max-panel-title">Datenstand</div>
+                      <div class="max-panel-content">
+                          <table class="table" style="text-align: center;">
+                              <thead>
+                                  <tr>
+                                      <th style="text-align: left;">Report Test</th>
+                                      <th>Daten von</th>
+                                      <th>Daten bis</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr id="availbench">
+                                      <td style="text-align: left; font-weight: 600;">1u1 Availbench</td>
+                                      <td>Max kann kein Javascript</td>
+                                      <td> sonst würde hier was stehen </td>
+
+                                  </tr>
+                                  <tr class="loadingerDA">
+                                      <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
+                                      <td id="" >Daten werden geladen</td>
+                                      <td id=""></td>
+
+                                  </tr>
+                                  <tr id="dailyagentData" style="display:none;">
+                                      <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
+                                      <td id="dailyAgentStart">1</td>
+                                      <td id="dailyAgentEnd">1</td>
+
+                                  </tr>
+                                  <tr class="loadingerOptin">
+                                      <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
+                                      <td id="">Daten werden geladen</td>
+                                      <td id=""></td>
+
+                                  <tr id="OptinDataStatus" style="display:none;">
+                                      <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
+                                      <td id="optinStart">1</td>
+                                      <td id="optinEnd">1</td>
+
+                                  </tr>
+                                  <tr class="loadingerRD" >
+                                      <td style="text-align: left; font-weight: 600;">1u1 Retention Details</td>
+                                      <td id="">Daten werden geladen</td>
+                                      <td id=""></td>
+
+                                  </tr>
+                                  <tr id="RDDataStatus" style="display:none;">
+                                      <td style="text-align: left; font-weight: 600;">1u1 Retention Details</td>
+                                      <td id="retDetailsStart">xxx</td>
+                                      <td id="retDetailsEnd">xxx</td>
+
+                                  </tr>
+                                  <tr class="loadingerSAS">
+                                      <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
+                                      <td id="">Daten werden geladen</td>
+                                      <td id=""></td>
+
+                                  <tr id="SASDataStatus" style="display:none;">
+                                      <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
+                                      <td id="sasStart">sas</td>
+                                      <td id="sasEnd">sas</td>
+
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
 
                 </div>
                 <hr>
@@ -921,16 +926,14 @@
           let dep = this.value
           var host = window.location.host;
           // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
-
-          axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
-          // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
+          axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
           .then(response => {
-            // console.log(response)
+            console.log(response)
             let users = response.data
 
             users.forEach(function(user){
               let option = document.createElement("option");
-              let name = user.surname + ' ' + user.lastname;
+              let name = user.name;
 
               option.value = user.id;
               option.innerHTML = name;
