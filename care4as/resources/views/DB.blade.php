@@ -925,8 +925,8 @@
           $('#exampleFormControlSelect2').empty()
           let dep = this.value
           var host = window.location.host;
-          // axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
-          axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
+          axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+          // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
           .then(response => {
             console.log(response)
             let users = response.data
