@@ -34,7 +34,7 @@ class UserListController extends Controller
         if($project != null && $project != 'all'){
             $users = $this->refineUserlistProject($users, $project);
         }
-          dd($users);
+          // dd($users);
         //users erstellen und anschließend nach bedarf durch verschiedene filter laufen lassen, wodurch nutzer entfernt werden
 
         //dd($users);
@@ -255,6 +255,7 @@ class UserListController extends Controller
     public function getUnfilteredUsers(){
         $users = DB::table('users')
         ->where('name','!=','superuser')
+
         ->get()
         ->toArray();
 
