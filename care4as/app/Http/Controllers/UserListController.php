@@ -254,6 +254,7 @@ class UserListController extends Controller
 
     public function getUnfilteredUsers(){
         $users = DB::table('users')
+        ->where('role','!=','superadmin')
         ->get()
         ->toArray();
 
