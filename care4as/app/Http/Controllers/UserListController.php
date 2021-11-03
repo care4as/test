@@ -21,7 +21,8 @@ class UserListController extends Controller
         //dd($defaultVariables);
 
         $roleArray = $this->getRoles();
-                
+
+        // dd($roleArray);
         $users = $this->getUnfilteredUsers();
         //dd($users);
         if($employeeState == 'active'){
@@ -59,7 +60,7 @@ class UserListController extends Controller
         foreach($roles as $keyRole => $role){
             $role = (array) $role;
             $roleArray[$role['name']] = null;
-            
+
             foreach($rights as $keyRight => $right){
                 $right = (array) $right;
                 $roleArray[$role['name']]['rights'][$right['id']]['name'] = $right['name'];
@@ -83,7 +84,7 @@ class UserListController extends Controller
         DB::disableQueryLog();
         ini_set('memory_limit', '-1');
         ini_set('max_execution_time', '0'); // for infinite time of execution
-        
+
         $userData = DB::connection('mysqlkdw')
         ->table('MA')
         ->get()
@@ -92,7 +93,7 @@ class UserListController extends Controller
         $projectData = DB::connection('mysqlkdw')
         ->table('projekte')
         ->get()
-        ->toArray(); 
+        ->toArray();
 
         $projectDataArray = array();
 
@@ -104,7 +105,7 @@ class UserListController extends Controller
         $departmentData = DB::connection('mysqlkdw')
         ->table('abteilungen')
         ->get()
-        ->toArray(); 
+        ->toArray();
 
         $departmentDataArray = array();
 
@@ -116,7 +117,7 @@ class UserListController extends Controller
         $teamData = DB::connection('mysqlkdw')
         ->table('teams')
         ->get()
-        ->toArray(); 
+        ->toArray();
 
         $teamDataArray = array();
 
@@ -128,7 +129,7 @@ class UserListController extends Controller
         $teamEmployeeData = DB::connection('mysqlkdw')
         ->table('teams_MA')
         ->get()
-        ->toArray(); 
+        ->toArray();
 
         $teamEmployeeDataArray = array();
 
@@ -174,7 +175,7 @@ class UserListController extends Controller
             } else {
                 $user['geschlecht'] = 'Divers';
             }
-  
+
             //INSERT OR IGNORE
             DB::table('users')->updateOrInsert(
                 [
@@ -182,7 +183,7 @@ class UserListController extends Controller
                 ],
                 [
                 'name' => $user['agent_id'],
-                'project' => $user['projekt_id'], 
+                'project' => $user['projekt_id'],
                 'department' => $user['abteilung_id'],
                 'team' => $user['team'],
                 ]
@@ -191,7 +192,7 @@ class UserListController extends Controller
         }
 
         //redirect back to userlist
-        return redirect()->back();  
+        return redirect()->back();
     }
 
     public function updateUser(){
@@ -213,7 +214,7 @@ class UserListController extends Controller
             ]
           );
 
-        return redirect()->back(); 
+        return redirect()->back();
     }
 
     public function updateUserPassword(){
@@ -229,7 +230,7 @@ class UserListController extends Controller
             ]
           );
 
-        return redirect()->back(); 
+        return redirect()->back();
     }
 
     public function updateUserRole(){
@@ -248,11 +249,12 @@ class UserListController extends Controller
             ]
           );
 
-        return redirect()->back(); 
+        return redirect()->back();
     }
 
     public function getUnfilteredUsers(){
         $users = DB::table('users')
+        ->where('role','!=','superadmin')
         ->get()
         ->toArray();
 
@@ -283,7 +285,7 @@ class UserListController extends Controller
                     $entry['street'] = $entryKdw['strasse'];
                     $entry['phone'] = $entryKdw['telefon'];
                     $entry['mobile'] = $entryKdw['handy'];
-                    $entry['mail'] = $entryKdw['email']; 
+                    $entry['mail'] = $entryKdw['email'];
                 }
             }
             $userArray[] = $entry;
@@ -293,19 +295,24 @@ class UserListController extends Controller
 
     public function refineUserlistActive($userlist){
         foreach($userlist as $key => $entry) {
-            if (($entry['leave_date'] < today()) && $entry['leave_date'] != null) {
-                unset($userlist[$key]);
+            if(isset($entry['leave_date']))
+            {
+              if (($entry['leave_date'] < today()) && $entry['leave_date'] != null) {
+                  unset($userlist[$key]);
+              }
             }
-
         }
         return $userlist;
     }
 
     public function refineUserlistInactive($userlist){
         foreach($userlist as $key => $entry) {
+          if(isset($entry['leave_date']))
+          {
             if (($entry['leave_date'] > today()) || $entry['leave_date'] == null) {
                 unset($userlist[$key]);
             }
+          }
 
         }
         return $userlist;
@@ -321,4 +328,3 @@ class UserListController extends Controller
     }
 
 }
-

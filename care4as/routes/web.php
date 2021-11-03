@@ -26,7 +26,7 @@ Route::get('/messageOfTheDay', function()
   return view('messageOfTheDay');
 })->name('dailyMessage');
 
-  Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool');
+  Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool')->middleware('auth');
   Route::get('/telefonica/getIntoPause', 'PauseController@getIntoPause')->name('getIntoPause');
   Route::get('/telefonica/getOutOfPause', 'PauseController@getOutOfPause')->name('getOutOfPause');
   Route::get('/telefonica/getUsersInPause', 'PauseController@getUsers')->name('getUsersInPause');
@@ -91,7 +91,7 @@ Route::get('/messageOfTheDay', function()
 
   })->name('reports.reportHours.view')->middleware('hasRight:importReports');
 
-  Route::get('/reportImport', 'ReportImportController@load')->name('reportImport')->middleware('hasRight:controlling');
+  Route::get('/reportImport', 'ReportImportController@loadtest')->name('reportImport')->middleware('hasRight:controlling');
 
   Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:importReports');
 
@@ -293,6 +293,7 @@ Route::get('/messageOfTheDay', function()
   Route::post('/eobmail/FaMailStoreKPIs', 'MailController@FaMailStoreKPIs')->name('eobmail.kpi.store');
   Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
   //endeobmail
+
   //Presentation
   Route::get('/presentation', 'HomeController@presentation')->name('presentation')->middleware('hasRight:importReports');
   //endpresentation
@@ -335,13 +336,6 @@ Route::get('/messageOfTheDay', function()
 
   //END DSL routes
 
-
-
-
-
-
-
-
 //Provision
   Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');
 //end Provison
@@ -360,9 +354,24 @@ Route::get('/messageOfTheDay', function()
   Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');
   Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');
   Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas')->middleware('hasRight:dashboardAdmin');
-  Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
+  Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersbyDep')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
+  Route::get('/user/getUsersByIM/{department}', 'UserController@getUsersIntermediate')->name('user.byIM')->middleware('hasRight:dashboardAdmin');
 
   Route::get('/test', function(){
 
+
+    $userData = DB::connection('mysqlkdw')
+    ->table('MA')
+    ->where('austritt', null)
+    ->get()
+    ->pluck('ds_id');
+
+    DB::table('users')
+    ->whereNotIn('ds_id', $userData)
+    ->update([
+      'status' => 0,
+    ]);
+
+    dd($userData);
 
   })->name('test');

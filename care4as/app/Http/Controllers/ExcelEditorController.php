@@ -501,11 +501,7 @@ class ExcelEditorController extends Controller
         // dd($insertarray);
         $insertarray = array_chunk($insertarray, 3500);
       }
-
-      ImportDailyAgentChunks::dispatch($insertarray[1])
-      ->onConnection('sync');
-
-      dd($insertarray[1], $insertarray, $data[0]);
+      dd($insertarray);
     }
 
     public function queueOrNot(Request $request)
@@ -843,8 +839,11 @@ class ExcelEditorController extends Controller
       {
         $fromRow = 2;
       }
+
       $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
-      dd($data);
+
+      // dd($data);
+
       $insertarray = array();
       for($i = $fromRow-1; $i <= count($data)-1; $i++)
       {

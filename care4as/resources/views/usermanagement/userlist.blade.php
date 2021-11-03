@@ -63,7 +63,7 @@
                                                 <option value="all" selected>Alle</option>
                                             @else
                                                 <option value="all">Alle</option>
-                                            @endif    
+                                            @endif
                                             @if($defaultVariables['project'] == 'Care4as')
                                                 <option value="Care4as" selected>Organisation</option>
                                             @else
@@ -72,23 +72,23 @@
                                             @if($defaultVariables['project'] == '1und1 DSL Retention')
                                                 <option value="1und1 DSL Retention" selected>1und1 DSL Retention</option>
                                             @else
-                                                <option value="1und1 DSL Retention">1und1 DSL Retention</option> 
-                                            @endif 
+                                                <option value="1und1 DSL Retention">1und1 DSL Retention</option>
+                                            @endif
                                             @if($defaultVariables['project'] == '1und1 Offline')b
                                                 <option value="1und1 Offline" selected>1und1 Kündigungsadministration</option>
                                             @else
-                                                <option value="1und1 Offline">1und1 Kündigungsadministration</option> 
-                                            @endif 
+                                                <option value="1und1 Offline">1und1 Kündigungsadministration</option>
+                                            @endif
                                             @if($defaultVariables['project'] == '1und1 Retention')
                                                 <option value="1und1 Retention" selected>1und1 Mobile Retention</option>
                                             @else
                                                 <option value="1und1 Retention">1und1 Mobile Retention</option>
-                                            @endif 
+                                            @endif
                                             @if($defaultVariables['project'] == 'Telefonica')
                                                 <option value="Telefonica" selected>Telefonica</option>
                                             @else
                                                 <option value="Telefonica">Telefonica</option>
-                                            @endif 
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -142,13 +142,13 @@
                             </div>
                         </div>
                     </div>
-                </div>  
-            </div>    
+                </div>
+            </div>
         </div>
     </form>
 </div>
 @if($defaultVariables['project'] != null)
-<div class="row" id="userListContainer" style="display: none;">  
+<div class="row" id="userListContainer" style="display: none;">
     <div class="col-md-12">
         <div class="max-main-container">
             <div class="max-panel-content">
@@ -198,9 +198,9 @@
                             </tr>
                             @endforeach
                         </tbody>
-                    </table>    
+                    </table>
                 </div>
-            </div>           
+            </div>
         </div>
     </div>
 </div>
@@ -210,6 +210,7 @@
 <!-- Modals -->
 @section('additional_modal')
     @foreach($users as $key => $user)
+      @if($user['role'] != "superadmin")
         <div class="modal fade" id="modal{{$user['ds_id']}}" tabindex="-1" role="dialog" aria-labelledby="modal{{$user['ds_id']}}Label" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document" style="z-index: 500000;">
                 <div class="modal-content">
@@ -285,7 +286,7 @@
                                             <div><input class="form-control" id="disabledInput" type="text" value="{{$user['team']}}" readonly></div>
                                             <div style="margin-top: auto; margin-bottom: auto">Funktion:</div>
                                             <div><input class="form-control" id="disabledInput" type="text" value="{{$user['department']}}" readonly></div>
-                                        </div>    
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -358,7 +359,9 @@
                                                             <select id="new_role" class="form-control" name="new_role" style="color:black;">
                                                                 <option selected value="null">Keine Rolle</option>
                                                                 @foreach($roleArray as $key => $role)
+                                                                  @if($key != "superadmin")
                                                                     <option value="{{$key}}">{{$key}}</option>
+                                                                  @endif
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -382,6 +385,7 @@
                                                         </div>
                                                     @else
                                                         <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-column-gap: 25px; grid-row-gap: 5px;">
+
                                                             @foreach($roleArray[$user['role']]['rights'] as $key => $entry)
                                                             <div class="form-check">
                                                                 <label class="form-check-label">
@@ -432,6 +436,7 @@
                 </div>
             </div>
         </div>
+        @endif
     @endforeach
 @endsection
 
