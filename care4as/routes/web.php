@@ -360,18 +360,10 @@ Route::get('/messageOfTheDay', function()
   Route::get('/test', function(){
 
 
-    $userData = DB::connection('mysqlkdw')
-    ->table('MA')
-    ->where('austritt', null)
+    $users = DB::table('users')
+    ->whereNull('role')
+    ->where('status',1)
     ->get()
-    ->pluck('ds_id');
-
-    DB::table('users')
-    ->whereNotIn('ds_id', $userData)
-    ->update([
-      'status' => 0,
-    ]);
-
-    dd($userData);
-
+    ->toArray();
+    dd($users);
   })->name('test');

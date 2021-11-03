@@ -24,7 +24,7 @@ class UserListController extends Controller
 
         // dd($roleArray);
         $users = $this->getUnfilteredUsers();
-        //dd($users);
+
         if($employeeState == 'active'){
             $users = $this->refineUserlistActive($users);
         }
@@ -34,7 +34,7 @@ class UserListController extends Controller
         if($project != null && $project != 'all'){
             $users = $this->refineUserlistProject($users, $project);
         }
-
+          // dd($users);
         //users erstellen und anschließend nach bedarf durch verschiedene filter laufen lassen, wodurch nutzer entfernt werden
 
         //dd($users);
@@ -254,10 +254,12 @@ class UserListController extends Controller
 
     public function getUnfilteredUsers(){
         $users = DB::table('users')
-        ->where('role','!=','superadmin')
+        ->where('name','!=','superuser')
+
         ->get()
         ->toArray();
 
+        // dd($users);
         $kdwUsers = DB::connection('mysqlkdw')
         ->table('MA')
         ->get()
@@ -294,6 +296,7 @@ class UserListController extends Controller
     }
 
     public function refineUserlistActive($userlist){
+
         foreach($userlist as $key => $entry) {
             if(isset($entry['leave_date']))
             {
