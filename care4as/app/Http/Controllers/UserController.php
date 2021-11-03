@@ -58,6 +58,23 @@ class UserController extends Controller
         return response()->json(request('employees'));
       }
     }
+    public function getUsersbyDep()
+    {
+
+      if(request('department'))
+      {
+        $users= User::where('project',request('department'))
+        ->where('role','Agent')
+        ->where('status',1)
+        // ->whereIn('person_id',$userids)
+        ->get();
+
+        return response()->json($users);
+      }
+      else {
+        return abort(403, 'keine Abteilung übermittelt');
+      }
+    }
 
     /**
      * Show the form for creating a new resource.

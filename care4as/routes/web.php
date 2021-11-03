@@ -293,6 +293,7 @@ Route::get('/messageOfTheDay', function()
   Route::post('/eobmail/FaMailStoreKPIs', 'MailController@FaMailStoreKPIs')->name('eobmail.kpi.store');
   Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
   //endeobmail
+
   //Presentation
   Route::get('/presentation', 'HomeController@presentation')->name('presentation')->middleware('hasRight:importReports');
   //endpresentation
@@ -353,7 +354,8 @@ Route::get('/messageOfTheDay', function()
   Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');
   Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');
   Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas')->middleware('hasRight:dashboardAdmin');
-  Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersIntermediate')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
+  Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersbyDep')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
+  Route::get('/user/getUsersByIM/{department}', 'UserController@getUsersIntermediate')->name('user.byIM')->middleware('hasRight:dashboardAdmin');
 
   Route::get('/test', function(){
 
