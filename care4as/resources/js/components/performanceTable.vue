@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid ">
+    <div class="container-fluid unit-translucent">
       <div class="p-0 readabilitysuperior">
       <div class="row ">
         <div class="col">
@@ -14,15 +14,15 @@
           <p class="m-0" v-bind:style="[department == 'DSL' ? {'color': 'white'} : {'color':'black'}]">DSL</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-6 p-1">
+      <div class="row justify-content-center">
+        <div class="col-5 m-1">
           <div class="row center_items">
             <h5 class="text-center text-white">Liveticker Agents</h5>
           </div>
 
           <div class="table-responsive ">
-            <table class="table table-borderless text-white tablespacing" id="ptable" v-if="this.department == 'Mobile'">
-              <tr class="unit-translucent">
+            <table class="max-table text-dark" style="width: 100%;" id="ptable" v-if="this.department == 'Mobile'">
+              <tr class="">
                 <th @click="sorted('name')" style="cursor:pointer" >User </th>
                 <th @click="sorted('ssc_quota')" style="cursor:pointer">SSC-CR</th>
                 <th @click="sorted('ssc_calls')" style="cursor:pointer">SSC-Calls</th>
@@ -31,10 +31,10 @@
                 <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
                 <th @click="sorted('orders')" style="cursor:pointer">Orders</th>
               </tr>
-              <tr class="unit-translucent" v-for="user in sortedUsers">
-                <td >{{user.surname}} {{user.lastname}}</td>
+              <tr class="" v-for="user in sortedUsers">
+                <td>{{user.name}}</td>
                 <td>{{user.ssc_quota}}%</td>
-                <td >{{user.ssc_calls}}</td>
+                <td>{{user.ssc_calls}}</td>
                 <td>{{user.ssc_orders}}</td>
                 <td>{{user.cr}}%</td>
                 <td>{{user.calls}}</td>
@@ -42,8 +42,8 @@
               </tr>
 
             </table>
-            <table class="table table-borderless text-white tablespacing" v-else>
-              <tr class="unit-translucent">
+            <table class="max-table" style="width: 100%;"v-else>
+              <tr class="">
                 <th @click="sorted('name')" style="cursor:pointer" >User </th>
                 <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
                 <th @click="sorted('calls')" style="cursor:pointer">SSC_Calls</th>
@@ -51,7 +51,7 @@
 
               </tr >
               <tr class="unit-translucent" v-for="user in sortedUsers">
-                <td>{{user.surname}} {{user.lastname}}</td>
+                <td>{{user.name}}</td>
                 <td>{{user.dslqouta}}%</td>
                 <td>{{user.calls}}</td>
                 <td>{{user.orders}}</td>
@@ -60,48 +60,48 @@
             </table>
           </div>
         </div>
-        <div class="col-6 p-1">
+        <div class="col-5 m-1">
           <div class="row center_items">
             <h5 class="text-center text-white">Liveticker Team</h5>
           </div>
           <div class="row">
-            <table class="table table-borderless tablespacing " v-if="this.department == 'Mobile'">
-              <tr class="unit-translucent">
+            <table class="max-table w-100 text-dark" v-if="this.department == 'Mobile'">
+              <tr class="">
                 <th>GeVo-CR</th>
                 <th>Calls</th>
                 <th>Saves</th>
               </tr>
-              <tr class="unit-translucent">
+              <tr class="">
                 <td>{{GeVoCr}}%</td>
                 <td>{{calls}}</td>
                 <td>{{saves}}</td>
               </tr>
-              <tr class="unit-translucent">
+              <tr class="">
                 <th>SSC-GeVo-CR</th>
                 <th>SSC-Calls</th>
                 <th>SSC-Saves</th>
               </tr>
-              <tr class="unit-translucent">
+              <tr class="">
                 <td>{{sscCR}}%</td>
                 <td>{{sscCalls}}</td>
                 <td>{{sscSaves}}</td>
               </tr>
-              <tr class="unit-translucent">
+              <tr class="">
                 <th>BSC-CR</th>
                 <th>BSC-Calls</th>
                 <th>BSC-Saves</th>
               </tr>
-              <tr class="unit-translucent">
+              <tr class="">
                 <td>{{bscCR}}%</td>
                 <td>{{bscCalls}}</td>
                 <td>{{bscSaves}}</td>
               </tr>
-              <tr class="unit-translucent">
+              <tr class="">
                 <th>Portal-CR</th>
                 <th>Portal-Calls</th>
                 <th>Portal-Saves</th>
               </tr>
-              <tr class="unit-translucent">
+              <tr class="">
                 <td>{{portalCR}}%</td>
                 <td>{{portalCalls}}</td>
                 <td>{{portalSaves}}</td>
@@ -109,12 +109,12 @@
             </table>
 
           <table class="table table-borderless tablespacing" v-else>
-            <tr class="unit-translucent">
+            <tr class="">
               <th>GeVo-CR</th>
               <th>Calls</th>
               <th>Saves</th>
             </tr>
-            <tr class="unit-translucent">
+            <tr class="">
               <td>{{GeVoCr}}%</td>
               <td>{{calls}}</td>
               <td>{{saves}}</td>
@@ -122,7 +122,7 @@
           </table>
           </div>
           <div class="row unit-translucent text-white center_items mb-0">
-            <div class="col-12">
+            <div class="col-12 m-2">
               <h5>Liveticker Tagesquote</h5>
             </div>
 
@@ -372,6 +372,8 @@
 td,tr,table
 {
   border-radius: 15px;
+  border-collapse: separate;
+  width: auto;
 }
 .table-striped>tbody>tr:nth-child(even) {
     background-color: #ddf8e8;
