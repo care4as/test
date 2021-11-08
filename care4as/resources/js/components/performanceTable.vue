@@ -1,139 +1,149 @@
 <template>
-    <div class="container-fluid unit-translucent">
-      <div class="p-0 readabilitysuperior">
-      <div class="row ">
-        <div class="col">
-          <h4 class="text-center text-white "><u>Aktuelle Trackingdaten {{department}}</u></h4>
-        </div>
-      </div>
-      <div class="row justify-content-center m-1" >
-        <div class="col-4 mr-3 d-flex justify-content-center department align-items-center unit-translucent" @click="changeDepartment('Mobile')" style="background-color: rgba(0,0,0,0.2);">
-          <p class="m-0" v-bind:style="[department == 'Mobile' ? {'color': 'white'} : {'color':'black'}]">Mobile</p>
-        </div>
-        <div class="col-4 ml-3 d-flex justify-content-center department align-items-center unit-translucent" @click="changeDepartment('DSL')" style="background-color: rgba(0,0,0,0.2);">
-          <p class="m-0" v-bind:style="[department == 'DSL' ? {'color': 'white'} : {'color':'black'}]">DSL</p>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-5 m-1">
-          <div class="row center_items">
-            <h5 class="text-center text-white">Liveticker Agents</h5>
+  <div class="container-fluid p-2 f2">
+    <div class="row center_items">
+      <div class="col-10 p-0">
+        <div class="row m-0">
+        <div class="col-md rotated  p-2" v-bind:class= "[this.sscCR > 50 ? 'bg-success' : 'bg-danger text-white']">
+          <div class="row m-1 text-center">
+            SSC-CR:
           </div>
-
-          <div class="table-responsive ">
-            <table class="max-table text-dark" style="width: 100%;" id="ptable" v-if="this.department == 'Mobile'">
-              <tr class="">
-                <th @click="sorted('name')" style="cursor:pointer" >User </th>
-                <th @click="sorted('ssc_quota')" style="cursor:pointer">SSC-CR</th>
-                <th @click="sorted('ssc_calls')" style="cursor:pointer">SSC-Calls</th>
-                <th @click="sorted('ssc_orders')" style="cursor:pointer">SSC-Saves</th>
-                <th @click="sorted('cr')" style="cursor:pointer">CR</th>
-                <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
-                <th @click="sorted('orders')" style="cursor:pointer">Orders</th>
-              </tr>
-              <tr class="" v-for="user in sortedUsers">
-                <td>{{user.name}}</td>
-                <td>{{user.ssc_quota}}%</td>
-                <td>{{user.ssc_calls}}</td>
-                <td>{{user.ssc_orders}}</td>
-                <td>{{user.cr}}%</td>
-                <td>{{user.calls}}</td>
-                <td>{{user.orders}}</td>
-              </tr>
-
-            </table>
-            <table class="max-table" style="width: 100%;"v-else>
-              <tr class="">
-                <th @click="sorted('name')" style="cursor:pointer" >User </th>
-                <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
-                <th @click="sorted('calls')" style="cursor:pointer">SSC_Calls</th>
-                <th @click="sorted('orders')" style="cursor:pointer">SSC_Saves</th>
-
-              </tr >
-              <tr class="unit-translucent" v-for="user in sortedUsers">
-                <td>{{user.name}}</td>
-                <td>{{user.dslqouta}}%</td>
-                <td>{{user.calls}}</td>
-                <td>{{user.orders}}</td>
-              </tr>
-
-            </table>
-          </div>
-        </div>
-        <div class="col-5 m-1">
-          <div class="row center_items">
-            <h5 class="text-center text-white">Liveticker Team</h5>
-          </div>
-          <div class="row">
-            <table class="max-table w-100 text-dark" v-if="this.department == 'Mobile'">
-              <tr class="">
-                <th>GeVo-CR</th>
-                <th>Calls</th>
-                <th>Saves</th>
-              </tr>
-              <tr class="">
-                <td>{{GeVoCr}}%</td>
-                <td>{{calls}}</td>
-                <td>{{saves}}</td>
-              </tr>
-              <tr class="">
-                <th>SSC-GeVo-CR</th>
-                <th>SSC-Calls</th>
-                <th>SSC-Saves</th>
-              </tr>
-              <tr class="">
-                <td>{{sscCR}}%</td>
-                <td>{{sscCalls}}</td>
-                <td>{{sscSaves}}</td>
-              </tr>
-              <tr class="">
-                <th>BSC-CR</th>
-                <th>BSC-Calls</th>
-                <th>BSC-Saves</th>
-              </tr>
-              <tr class="">
-                <td>{{bscCR}}%</td>
-                <td>{{bscCalls}}</td>
-                <td>{{bscSaves}}</td>
-              </tr>
-              <tr class="">
-                <th>Portal-CR</th>
-                <th>Portal-Calls</th>
-                <th>Portal-Saves</th>
-              </tr>
-              <tr class="">
-                <td>{{portalCR}}%</td>
-                <td>{{portalCalls}}</td>
-                <td>{{portalSaves}}</td>
-              </tr>
-            </table>
-
-          <table class="table table-borderless tablespacing" v-else>
-            <tr class="">
-              <th>GeVo-CR</th>
-              <th>Calls</th>
-              <th>Saves</th>
-            </tr>
-            <tr class="">
-              <td>{{GeVoCr}}%</td>
-              <td>{{calls}}</td>
-              <td>{{saves}}</td>
-            </tr>
-          </table>
-          </div>
-          <div class="row unit-translucent text-white center_items mb-0">
-            <div class="col-12 m-2">
-              <h5>Liveticker Tagesquote</h5>
+          <div class="row m-1">
+            <div class="col-6">
+              <p>{{sscCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
             </div>
-
-            <div class="co-12 center_items" id="chartcontainer" style="width: 90%;">
-              <canvas id="dailyQuota" style="height: 300px; width: 90%;"></canvas>
+            <div class="col-6 p-0">
+              <p><i class="fa-solid fa-arrow-trend-up"></i></p>
             </div>
+          </div>
+          <div class="row m-1">
+            <p>Calls: {{sscCalls}} / Saves: {{sscSaves}}</p>
+          </div>
+        </div>
+        <div class="col-md rotated bg-light p-2" v-bind:class= "[this.bscCR > 20 ? 'bg-success' : 'bg-danger text-white']">
+          <div class="row m-1">
+            BSC-CR:
+          </div>
+          <div class="row m-1">
+            <div class="col-6 p-0">
+              <p>{{bscCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+            </div>
+            <div class="col-6 p-0">
+              <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+            </div>
+          </div>
+          <div class="row m-1">
+            <p>Calls: {{bscCalls}} / Saves: {{bscSaves}}</p>
+
+          </div>
+        </div>
+        <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.sscCR > 60 ? 'bg-success' : 'bg-danger text-white']">
+          <div class="row m-1">
+            Portal-CR:
+          </div>
+          <div class="row m-1">
+            <div class="col-6 p-0">
+              <p>{{portalCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+            </div>
+            <div class="col-6 p-0">
+              <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+            </div>
+          </div>
+          <div class="row m-1">
+            <p>Calls: {{portalCalls}} / Saves: {{portalSaves}}</p>
+          </div>
+        </div>
+        <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.sscCR > 15 ? 'bg-success' : 'bg-danger text-white']">
+          <div class="row m-1">
+            Optin:
+          </div>
+          <div class="row m-1">
+            <div class="col-6 p-0">
+              <p>6% <i class="fa-solid fa-arrow-trend-down"></i></p>
+            </div>
+            <div class="col-6 p-0">
+              <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+            </div>
+          </div>
+          <div class="row m-1">
+            <p>Calls: 250 / Optins: 25</p>
           </div>
         </div>
       </div>
     </div>
     </div>
+    <div class="row mt-4 center_items ">
+      <div class="col-10 p-0 bg-light " style="border-radius: 25px;">
+        <div class="row m-0">
+          <div class="col-md m-3 shadow" style="transform: rotateY(-25deg);">
+            <div class="row center_items">
+              <h5>Liveticker Teamquote</h5>
+            </div>
+            <div class="row">
+              <div class="col-12 center_items" id="chartcontainer" style="width: 90%;">
+                <canvas id="dailyQuota" style="height: 300px; width: 90%;"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-md m-3 shadow " style="transform: rotateY(25deg);">
+            <div class="row center_items">
+              <h5>Performance</h5>
+            </div>
+            <div class="row center_items">
+            <div class="max-panel-content">
+              <div style="width: 100%;">
+                <table class="max-table text-dark" style="width: 100%;" id="ptable" v-if="this.department == 'Mobile'">
+                  <tr class="">
+                    <th @click="sorted('name')" style="cursor:pointer" >User </th>
+                    <th @click="sorted('ssc_quota')" style="cursor:pointer">SSC-CR</th>
+                    <th @click="sorted('ssc_calls')" style="cursor:pointer">SSC-Calls</th>
+                    <th @click="sorted('ssc_orders')" style="cursor:pointer">SSC-Saves</th>
+                    <th @click="sorted('cr')" style="cursor:pointer">CR</th>
+                    <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
+                    <th @click="sorted('orders')" style="cursor:pointer">Orders</th>
+                  </tr>
+                  <tr class="" v-bind:class= "[user.ssc_quota > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
+                    <td>{{user.name}}</td>
+                    <td>{{user.ssc_quota}}%</td>
+                    <td>{{user.ssc_calls}}</td>
+                    <td>{{user.ssc_orders}}</td>
+                    <td>{{user.cr}}%</td>
+                    <td>{{user.calls}}</td>
+                    <td>{{user.orders}}</td>
+                  </tr>
+
+                </table>
+                <table class="max-table" style="width: 100%;"v-else>
+                  <tr class="">
+                    <th @click="sorted('name')" style="cursor:pointer" >User </th>
+                    <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
+                    <th @click="sorted('calls')" style="cursor:pointer">SSC_Calls</th>
+                    <th @click="sorted('orders')" style="cursor:pointer">SSC_Saves</th>
+
+                  </tr >
+                  <tr class="unit-translucent" v-for="user in sortedUsers">
+                    <td>{{user.name}}</td>
+                    <td>{{user.dslqouta}}%</td>
+                    <td>{{user.calls}}</td>
+                    <td>{{user.orders}}</td>
+                  </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="row center_items">
+    <div class="col center_items">
+      <button type="button" name="button">Mobile</button>
+    </div>
+    <div class="col center_items">
+      <button type="button" name="button">DSL</button>
+    </div>
+  </div>
+</div>
+
 </template>
 
 <script>
@@ -272,7 +282,7 @@
             }
             })
           .catch(function (err) {
-            console.log('error Userdata')
+            console.log('error Userdata Ptable')
             console.log(err.response);
           })
         },
@@ -312,38 +322,35 @@
             })
           },
         createChart(chartId, chartData) {
-
         let chart = document.getElementById(chartId);
-
         if (typeof chart != 'undefined' || chart != null )
         {
           document.getElementById(chartId).remove()
           $('#chartcontainer').append('<canvas id="'+chartId+'" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>')
           // console.log('test')
         }
-
         const ctx = document.getElementById(chartId);
         const myChart = new Chart(ctx, {
           type: 'bar',
           data: {
               datasets: [{
-               type: 'line',
                label: 'CR',
+               type: 'line',
+               fill: true,
                data: chartData[0],
-               fill: false,
-               backgroundColor: 'rgba(41, 241, 195, 1)',
+               backgroundColor: 'rgba(41, 241, 195, 0.5)',
                borderColor: 'rgba(41, 241, 195, 1)',
                borderWidth: 2
            },
            {
               label: 'SSC-CR',
               type: 'line',
-              fill: false,
+              fill: true,
               data: chartData[1],
-              backgroundColor: 'rgba(255, 99, 132)',
-              borderColor: 'rgba(255, 99, 132, 1)',
+              backgroundColor: 'rgba(255, 99, 132,0.2)',
+              borderColor: 'rgba(255, 99, 132, 0.5)',
               borderWidth: 2
-        }],
+            }],
         labels:chartData[2],
          },
          options: {
@@ -358,8 +365,12 @@
                    min: 30,
                    max: 75,
                }
-             }
-            ]}
+             }],
+             xAxes:[{
+               id:'B',
+               beginAtZero: true,
+             }]
+           }
            }
         });
       }
@@ -389,5 +400,24 @@ td,tr,table
 {
   height: 300px !important;
   color:white !important;
+}
+.f1{
+  font-size: 1.7em;
+}
+.f2{
+  font-size: 1.3em;
+}
+.rotated
+{
+  transform: rotateY(30deg);
+  box-shadow: 1rem 1rem rgba(0,0,0,.15) !important;
+  border-radius: 25px;
+
+}
+.rotated:hover{
+  animation: rotateback 5s;
+}
+@keyframes rotateback {
+50% {transform: rotateY(0deg);}
 }
 </style>

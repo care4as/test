@@ -359,11 +359,5 @@ Route::get('/messageOfTheDay', function()
 
   Route::get('/test', function(){
 
-
-    $users = DB::table('users')
-    ->whereNull('role')
-    ->where('status',1)
-    ->get()
-    ->toArray();
-    dd($users);
+    return view('test');
   })->name('test');
