@@ -141,6 +141,7 @@ class Configcontroller extends Controller
 
     public function activateAutomaticeIntermediate()
     {
+      // return 'test';
       $time =  time();
       $nextHalfHour = ceil(time() / (30 * 60)) * (30 * 60);
       $timediff = intval($nextHalfHour)-$time;

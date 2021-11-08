@@ -142,6 +142,7 @@ class Intermediate implements ShouldQueue
       }
 
       dd($users,$insertarray);
+      
       if($users->first())
       {
         DB::table('intermediate_status')->insert($insertarray);
