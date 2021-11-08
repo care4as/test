@@ -36,7 +36,7 @@
 
           </div>
         </div>
-        <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.sscCR > 60 ? 'bg-success' : 'bg-danger text-white']">
+        <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.portalCR > 60 ? 'bg-success' : 'bg-danger text-white']">
           <div class="row m-1">
             Portal-CR:
           </div>
