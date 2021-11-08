@@ -319,7 +319,7 @@ class ReportController extends Controller
     }
     public function getIntermediate($value='')
     {
-      dd('test');
+      // dd('test');
       Intermediate::dispatch('nonsync')->onQueue('intermediate')->onConnection('sync');
       return redirect()->back();
     }
