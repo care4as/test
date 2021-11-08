@@ -341,9 +341,9 @@ $('#customSwitch2').click(function(){
     var host = window.location.host;
     //axios.get('http://'+host+'/care4as/care4as/public/config/activateSiMa')
 
-    axios.get('http://'+host+'/config/activateSiMa')
+    axios.get('http://'+host+'/config/activateAutomaticIntermediate')
     .then(response => {
-      alert('Krankenstand wird automatisch gesendet')
+      alert('Zwischenstand wird automatisch gezogen')
 
       })
     .catch(function (err) {
@@ -355,11 +355,11 @@ $('#customSwitch2').click(function(){
 
     var host = window.location.host;
 
-    axios.get('http://'+host+'/config/deactivateSiMa')
+    axios.get('http://'+host+'/config/deactivateAutomaticIntermediate')
     //axios.get('http://'+host+'/care4as/care4as/pu7blic/config/deactivateSiMa')
 
     .then(response => {
-      alert('automatischer Krankenstand deaktiviert')
+      alert('automatischer Zwischenstand deaktiviert')
 
       })
     .catch(function (err) {
