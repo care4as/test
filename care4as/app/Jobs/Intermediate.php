@@ -62,9 +62,7 @@ class Intermediate implements ShouldQueue
 
       $trackingidsMobile = $mobileSalesSata->pluck('agent_ds_id')->toArray();
       $trackingidsDSL = $dslSalesData->pluck('agent_ds_id')->toArray();
-
       $trackingids = array_merge($trackingidsMobile, $trackingidsDSL);
-
       $users = User::whereIn('kdw_tracking_id',$trackingids)
       ->where('role','Agent')
       ->get();
@@ -143,6 +141,7 @@ class Intermediate implements ShouldQueue
           }
       }
 
+      dd($users,$insertarray);
       if($users->first())
       {
         DB::table('intermediate_status')->insert($insertarray);
