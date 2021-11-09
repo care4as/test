@@ -910,11 +910,7 @@ class ExcelEditorController extends Controller
       }
       // return response()->json($insertarray);
       // return redirect()->back();
-<<<<<<< HEAD
-      // dd($data);
-=======
       // dd($insertarray);
->>>>>>> 2094295b648ace70cd3eca05f202be11c6ca7e7c
 
     }
 
