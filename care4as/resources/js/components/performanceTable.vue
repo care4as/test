@@ -33,7 +33,6 @@
           </div>
           <div class="row m-1">
             <p>Calls: {{bscCalls}} / Saves: {{bscSaves}}</p>
-
           </div>
         </div>
         <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.portalCR > 60 ? 'bg-success' : 'bg-danger text-white']">
@@ -52,20 +51,20 @@
             <p>Calls: {{portalCalls}} / Saves: {{portalSaves}}</p>
           </div>
         </div>
-        <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.sscCR > 15 ? 'bg-success' : 'bg-danger text-white']">
+        <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.optinQuota > 15 ? 'bg-success' : 'bg-danger text-white']">
           <div class="row m-1">
-            Optin:
+            Optinquote:
           </div>
           <div class="row m-1">
             <div class="col-6 p-0">
-              <p>6% <i class="fa-solid fa-arrow-trend-down"></i></p>
+              <p>{{optinQuota}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
             </div>
             <div class="col-6 p-0">
               <p><i class="fa-solid fa-arrow-trend-up"></i></p>
             </div>
           </div>
           <div class="row m-1">
-            <p>Calls: 250 / Optins: 25</p>
+            <p>Calls: {{calls}} / {{optins}}: </p>
           </div>
         </div>
       </div>
@@ -80,7 +79,7 @@
             </div>
             <div class="row">
               <div class="col-12 center_items" id="chartcontainer" style="width: 90%;">
-                <canvas id="dailyQuota" style="height: 300px; width: 90%;"></canvas>
+                <canvas id="dailyQuota" style="height: 90%; width: 90%;"></canvas>
               </div>
             </div>
           </div>
@@ -163,6 +162,7 @@
           sscSaves: 0,
           calls:0,
           saves:0,
+          optins: 0,
           department: 'Mobile',
           timer: null,
         }
@@ -195,6 +195,15 @@
         GeVoCr: function(){
           if (this.calls != 0) {
             return Math.round((this.saves*100/this.calls)*100)/100
+          }
+          else {
+            // return this.saves
+            return 0
+          }
+        },
+        optinQuota: function(){
+          if (this.calls != 0) {
+            return Math.round((this.optins*100/this.calls)*100)/100
           }
           else {
             // return this.saves
@@ -269,6 +278,7 @@
                 this.portalSaves = response.data[1]['portal_saves']
                 this.calls = response.data[1]['calls']
                 this.saves = response.data[1]['orders']
+                this.optins = response.data[1]['optins']
               }
               else {
                 this.users = response.data[0]
@@ -289,12 +299,9 @@
         changeDepartment(dep)
         {
           this.department = dep
-
           this.getUserData(dep)
           this.getDailyQouta(dep)
-
           clearInterval(this.timer)
-
           this.timer =
           setInterval(function()
           {

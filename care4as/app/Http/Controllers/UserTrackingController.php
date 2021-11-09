@@ -112,6 +112,7 @@ class UserTrackingController extends Controller
           $user->portal_calls = $user->salesdata->calls_portal;
           $user->portal_orders = $user->salesdata->ret_portal_save;
           $user->orders = $user->ssc_orders + $user->bsc_orders + $user->portal_orders;
+          $user->optins = $user->salesdata->optin;
 
           if($user->ssc_calls != 0)
           {
@@ -159,6 +160,7 @@ class UserTrackingController extends Controller
         $allPortalOrders = $users->sum('portal_orders');
         $allOrders = $allSSCOrders + $allBSCOrders + $allPortalOrders ;
         $allCalls = $users->sum('calls');
+        $allOptins = $users->sum('optins');
 
         $data[] = array(
           'ssc_calls'=>$allSSCCalls,
@@ -169,13 +171,12 @@ class UserTrackingController extends Controller
           'portal_saves'=>$allPortalOrders,
           'calls'=>$allCalls,
           'orders'=>$allOrders,
+          'optins'=>$allOptins,
         );
       }
       else {
-
         $allCalls = $users->sum('calls');
         $allOrders = $users->sum('orders');
-
         $data[] = array(
           'calls'=>$allCalls,
           'orders'=>$allOrders,
