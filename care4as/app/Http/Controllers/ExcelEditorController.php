@@ -908,8 +908,8 @@ class ExcelEditorController extends Controller
         DB::table('retention_details')->insertOrIgnore($insertarray[$i]);
       }
       // return response()->json($insertarray);
-      return redirect()->back();
-      // dd($data);
+      // return redirect()->back();
+      // dd($insertarray);
 
     }
 
