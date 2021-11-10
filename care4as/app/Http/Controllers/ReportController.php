@@ -319,6 +319,7 @@ class ReportController extends Controller
     }
     public function getIntermediate($value='')
     {
+      // dd('test');
       Intermediate::dispatch('nonsync')->onQueue('intermediate')->onConnection('sync');
       return redirect()->back();
     }
@@ -349,13 +350,13 @@ class ReportController extends Controller
     }
     public function categoriesDisplay($startdate,$enddate)
     {
-      $department = '1&1 Mobile Retention';
+      $department = '1und1 Retention';
 
       if ($startdate or $enddate) {
         // code...
-      $sellers = User::where('department',$department)
+      $sellers = User::where('status',1)
       ->where('role','Agent')
-      ->where('status',1)
+      ->where('project',$department)
       ->with(['retentionDetails' => function($q) use ($startdate,$enddate){
         // $q->select(['id','person_id','calls','time_in_state','call_date']);
         if($startdate !== 1)

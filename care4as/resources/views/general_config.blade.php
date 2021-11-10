@@ -333,5 +333,39 @@ $('#customSwitchSiMa').click(function(){
       console.log(err.response);
     })
   }})
+$('#customSwitch2').click(function(){
+
+  if(this.checked == true)
+  {
+
+    var host = window.location.host;
+    //axios.get('http://'+host+'/care4as/care4as/public/config/activateSiMa')
+
+    axios.get('http://'+host+'/config/activateAutomaticIntermediate')
+    .then(response => {
+      alert('Zwischenstand wird automatisch gezogen')
+
+      })
+    .catch(function (err) {
+      console.log('error')
+      console.log(err.response);
+    })
+  }
+  else {
+
+    var host = window.location.host;
+
+    axios.get('http://'+host+'/config/deactivateAutomaticIntermediate')
+    //axios.get('http://'+host+'/care4as/care4as/pu7blic/config/deactivateSiMa')
+
+    .then(response => {
+      alert('automatischer Zwischenstand deaktiviert')
+
+      })
+    .catch(function (err) {
+      console.log('error')
+      console.log(err.response);
+    })
+  }})
 </script>
 @endsection

@@ -53,11 +53,16 @@
     .form-control[readonly]{
         cursor: default;
     }
+    #loaderDiv
+    {
+      display: none;
+    }
 </style>
 @endsection
 <div class="row">
     <div class="col-md-12">
         <div class="max-main-container">
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="max-panel bg-none">
@@ -238,7 +243,7 @@
                         </div>
                     </div>
                 </div>
-            </div>             
+            </div>
             @endif
         </div>
     </div>
@@ -251,6 +256,9 @@
 <div class="modal fade" id="availbenchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
+          <div class="loaderDiv" id="loaderDiv1">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Availbench</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
@@ -271,7 +279,7 @@
                     <div style="width: 100%;">
                         Hinweis: Die Datei, kann unverändert übernommen werden.
                     </div>
-                
+
                     <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
@@ -311,6 +319,9 @@
 <div class="modal fade" id="dailyAgentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
+          <div class="loaderDiv" id="loaderDiv2">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Daily Agent</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -331,7 +342,7 @@
                     <div style="width: 100%;">
                         Hinweis: Datei muss zu <i>Dateiname</i> umbenannt werden, Format bleibt unverändert.
                     </div>
-                
+
                     <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
@@ -364,6 +375,9 @@
 <div class="modal fade" id="optinModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
+          <div class="loaderDiv" id="loaderDiv3">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">OptIn</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -384,7 +398,7 @@
                     <div style="width: 100%;">
                         Hinweis: Datei aus Zip entnehmen -> öffnen -> als .xlsx Datei speichern. Im ursprünglichen Verzeichnis liegt die Datei lediglich im Binärformat vor.
                     </div>
-                
+
                     <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
@@ -417,6 +431,9 @@
 <div class="modal fade" id="retDetailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
+          <div class="loaderDiv" id="loaderDiv4">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Retention Details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -437,7 +454,7 @@
                     <div style="width: 100%;">
                         Hinweis: Datei aus Zip entnehmen -> öffnen -> als .xlsx Datei speichern. Im ursprünglichen Verzeichnis liegt die Datei lediglich im Binärformat vor.
                     </div>
-                
+
                     <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
@@ -470,6 +487,9 @@
 <div class="modal fade" id="sasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
+          <div class="loaderDiv" id="loaderDiv5">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">SaS</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -490,7 +510,7 @@
                     <div style="width: 100%;">
                         Hinweis: Datei aus Zip entnehmen -> öffnen -> als .xlsx Datei speichern. Im ursprünglichen Verzeichnis liegt die Datei lediglich im Binärformat vor.
                     </div>
-                
+
                     <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
@@ -596,7 +616,7 @@ Dropzone.options.availbenchDropzone = {
        e.preventDefault();
        e.stopPropagation();
        myDropzone.processQueue();
-       $('#loaderDiv').css('display','flex');
+       $('#loaderDiv1').css('display','flex');
       });
 
       this.on('error', function (file,errormessage, xhr, formData) {
@@ -606,17 +626,17 @@ Dropzone.options.availbenchDropzone = {
           $('#failFile').html('Datei: '+ errormessage.file)
           $('#failLine').html('Line: '+ errormessage.line)
           $('#failModal').modal('show')
-          $('#loaderDiv').css('display','none');
+          $('#loaderDiv1').css('display','none');
       });
       this.on("success", function(file, response) {
         // console.log(response)
         this.removeFile(file)
         $('#failContent').html('Die Datei wurde hochgeladen')
         $('#successModal').modal('show')
-        $('#loaderDiv').css('display','none');
+        $('#loaderDiv1').css('display','none');
       });
       this.on("complete", function(file) {
-        
+
       });
     }
 };
@@ -649,7 +669,7 @@ Dropzone.options.dailyAgentDropzone = {
        e.preventDefault();
        e.stopPropagation();
        myDropzone.processQueue();
-       $('#loaderDiv').css('display','flex');
+       $('#loaderDiv2').css('display','flex');
       });
 
       this.on('error', function (file,errormessage, xhr, formData) {
@@ -659,14 +679,14 @@ Dropzone.options.dailyAgentDropzone = {
           $('#failFile').html('Datei: '+ errormessage.file)
           $('#failLine').html('Line: '+ errormessage.line)
           $('#failModal').modal('show')
-          $('#loaderDiv').css('display','none');
+          $('#loaderDiv2').css('display','none');
       });
       this.on("success", function(file, response) {
         // console.log(response)
         this.removeFile(file)
         $('#failContent').html('Die Datei wurde hochgeladen')
         $('#successModal').modal('show')
-        $('#loaderDiv').css('display','none');
+        $('#loaderDiv2').css('display','none');
       });
       this.on("complete", function(file) {
         // this.removeAllFiles()
@@ -701,7 +721,7 @@ Dropzone.options.optinDropzone = {
        e.preventDefault();
        e.stopPropagation();
        myDropzone.processQueue();
-       $('#loaderDiv').css('display','flex');
+       $('#loaderDiv3').css('display','flex');
       });
 
       this.on('error', function (file,errormessage, xhr, formData) {
@@ -711,14 +731,14 @@ Dropzone.options.optinDropzone = {
           $('#failFile').html('Datei: '+ errormessage.file)
           $('#failLine').html('Line: '+ errormessage.line)
           $('#failModal').modal('show')
-          $('#loaderDiv').css('display','none');
+          $('#loaderDiv3').css('display','none');
       });
       this.on("success", function(file, response) {
         // console.log(response)
         this.removeFile(file)
         $('#failContent').html('Die Datei wurde hochgeladen')
         $('#successModal').modal('show')
-        $('#loaderDiv').css('display','none');
+        $('#loaderDiv3').css('display','none');
       });
       this.on("complete", function(file) {
         // this.removeAllFiles()
@@ -753,7 +773,7 @@ Dropzone.options.retDetailsDropzone = {
        e.preventDefault();
        e.stopPropagation();
        myDropzone.processQueue();
-       $('#loaderDiv').css('display','flex');
+       $('#loaderDiv4').css('display','flex');
       });
 
       this.on('error', function (file,errormessage, xhr, formData) {
@@ -763,14 +783,14 @@ Dropzone.options.retDetailsDropzone = {
           $('#failFile').html('Datei: '+ errormessage.file)
           $('#failLine').html('Line: '+ errormessage.line)
           $('#failModal').modal('show')
-          $('#loaderDiv').css('display','none');
+          $('#loaderDiv4').css('display','none');
       });
       this.on("success", function(file, response) {
         // console.log(response)
         this.removeFile(file)
         $('#failContent').html('Die Datei wurde hochgeladen')
         $('#successModal').modal('show')
-        $('#loaderDiv').css('display','none');
+        $('#loaderDiv4').css('display','none');
       });
       this.on("complete", function(file) {
         // this.removeAllFiles()
@@ -805,7 +825,7 @@ Dropzone.options.sasDropzone = {
        e.preventDefault();
        e.stopPropagation();
        myDropzone.processQueue();
-       $('#loaderDiv').css('display','flex');
+       $('#loaderDiv5').css('display','flex');
       });
 
       this.on('error', function (file,errormessage, xhr, formData) {
@@ -815,14 +835,14 @@ Dropzone.options.sasDropzone = {
           $('#failFile').html('Datei: '+ errormessage.file)
           $('#failLine').html('Line: '+ errormessage.line)
           $('#failModal').modal('show')
-          $('#loaderDiv').css('display','none');
+          $('#loaderDiv5').css('display','none');
       });
       this.on("success", function(file, response) {
         // console.log(response)
         this.removeFile(file)
         $('#failContent').html('Die Datei wurde hochgeladen')
         $('#successModal').modal('show')
-        $('#loaderDiv').css('display','none');
+        $('#loaderDiv5').css('display','none');
       });
       this.on("complete", function(file) {
       });

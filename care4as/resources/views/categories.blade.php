@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div class="container-fluid unit-translucent mt-4" style="width: 75vw;">
+<div class="container-fluid mt-4" style="width: 75vw;">
   <div class="row ">
     <form class="mt-2 w-100" action="{{route('report.joyce')}}" method="get">
       @csrf
@@ -33,7 +33,7 @@
     </form>
   </div>
   <div class="row ">
-    <div class="col text-center text-white  center_items" style="border-radius: 15px;">
+    <div class="col text-center center_items" style="border-radius: 15px;">
 
       <table>
         <tr>
@@ -44,8 +44,8 @@
         </tr>
       <tr>
         <td class="" style="vertical-align: top;">
-          <h3 class="text-white">Highperformer</h3>
-          <table class="table m-3 text-white">
+          <h3 class="">Highperformer</h3>
+          <table class="max-table" id="xxx" style="width: 100%;">
             <tr>
               <th>PID</th>
               <th>Name</th>
@@ -53,8 +53,8 @@
             </tr>
               @foreach($highperformers as $performer)
               <tr>
-                <td>{{$performer->person_id}}</td>
-                <td>{{$performer->surname}} {{$performer->lastname}}</td>
+                <td>{{($performer->{'1u1_person_id'})}}</td>
+                <td>{{$performer->name}}</td>
                 <td>{{$performer->quota}}</td>
 
               </tr>
@@ -63,8 +63,8 @@
 
         </td>
         <td style="vertical-align: top;">
-          <h3 class="text-white">Midperformer</h3>
-          <table class="table text-white m-3">
+          <h3 class="">Midperformer</h3>
+          <table class="max-table" id="xxx" style="width: 100%;">
             <tr>
               <th>PID</th>
               <th>Name</th>
@@ -72,8 +72,8 @@
             </tr>
               @foreach($midperformers as $performer)
               <tr>
-                <td>{{$performer->person_id}}</td>
-                <td>{{$performer->surname}} {{$performer->lastname}}</td>
+                <td>{{($performer->{'1u1_person_id'})}}</td>
+                <td>{{$performer->name}}</td>
                 <td>{{$performer->quota}}</td>
 
               </tr>
@@ -81,8 +81,8 @@
           </table>
         </td>
         <td style="vertical-align: top;">
-          <h3 class="text-white">Lowperformer</h3>
-          <table class="table text-white m-3">
+          <h3 class="">Lowperformer</h3>
+          <table class="max-table" id="xxx" style="width: 100%;">
             <tr>
               <th>PID</th>
               <th>Name</th>
@@ -90,8 +90,8 @@
             </tr>
               @foreach($lowperformers as $performer)
               <tr>
-                <td>{{$performer->person_id}}</td>
-                <td>{{$performer->surname}} {{$performer->lastname}}</td>
+                <td>{{($performer->{'1u1_person_id'})}}</td>
+                <td>{{$performer->name}}</td>
                 <td>{{$performer->quota}}</td>
               </tr>
               @endforeach
@@ -104,13 +104,13 @@
   </div>
 </div>
 <div class="container-fluid mt-4" style="width: 75vw; border-radius: 25px;">
-  <table class="table text-white">
+  <table class="max-table" id="xxx" style="width: 100%;">
     @foreach($dataarray as $key => $data)
-    <tr class="unit-translucent">
+    <tr class="">
       <td>{{$key}}</td>
       <td>insgesamt: {{count($data['date'])}}</td>
       <td>
-        <table class="table table-borderless text-white">
+        <table class="table table-borderless">
           @foreach($data['date'] as $date)
           <tr>
             <td>{{$date}}</td>

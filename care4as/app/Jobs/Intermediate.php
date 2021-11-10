@@ -48,7 +48,6 @@ class Intermediate implements ShouldQueue
      */
     public function handle()
     {
-
       $mobileSalesSata = DB::connection('mysqlkdwtracking')
       ->table('1und1_mr_tracking_inb_new_ebk')
       // ->whereIn('MA_id', $userids)
@@ -63,12 +62,12 @@ class Intermediate implements ShouldQueue
 
       $trackingidsMobile = $mobileSalesSata->pluck('agent_ds_id')->toArray();
       $trackingidsDSL = $dslSalesData->pluck('agent_ds_id')->toArray();
-
       $trackingids = array_merge($trackingidsMobile, $trackingidsDSL);
-
-      $users = User::whereIn('tracking_id',$trackingids)
+      $users = User::whereIn('kdw_tracking_id',$trackingids)
       ->where('role','Agent')
       ->get();
+
+      // dd($users);
 
       if(!$users->first())
       {
@@ -91,12 +90,12 @@ class Intermediate implements ShouldQueue
       foreach($users as $user)
       {
 
-        if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->tracking_id)->first())
+        if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->kdw_tracking_id)->first())
         {
-          if($user->person_id)
+          if($user->{'1u1_person_id'})
           {
               $insertarray[] = array(
-              'person_id' => $user->person_id,
+              'person_id' => $user->{'1u1_person_id'},
               'date' => Carbon::now()->format('Y-m-d H:i:s'),
               'Calls' => $user->salesdata->calls,
               'SSC_Calls' => $user->salesdata->calls_ssc,
@@ -110,16 +109,19 @@ class Intermediate implements ShouldQueue
               'Portal_Orders' => $user->salesdata->ret_portal_save,
             );
           }
+          else {
+            return 'test';
+          }
 
         }
         else {
 
-            $user->salesdata = $dslSalesData->where('agent_ds_id', $user->tracking_id)->first();
+            $user->salesdata = $dslSalesData->where('agent_ds_id', $user->kdw_tracking_id)->first();
             // dd($user);
-            if($user->person_id)
+            if($user->{'1u1_person_id'})
             {
               $insertarray[] = array(
-                'person_id' => $user->person_id,
+                'person_id' => $user->{'1u1_person_id'},
                 'date' => Carbon::now()->format('Y-m-d H:i:s'),
                 'Calls' => $user->salesdata->calls,
                 'KüRü' => $user->salesdata->kuerue,
@@ -133,8 +135,13 @@ class Intermediate implements ShouldQueue
                 'Portal_Orders' => 0,
               );
             }
+            else {
+              return 'test';
+            }
           }
       }
+
+      dd($users,$insertarray);
 
       if($users->first())
       {

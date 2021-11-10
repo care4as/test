@@ -359,19 +359,5 @@ Route::get('/messageOfTheDay', function()
 
   Route::get('/test', function(){
 
-
-    $userData = DB::connection('mysqlkdw')
-    ->table('MA')
-    ->where('austritt', null)
-    ->get()
-    ->pluck('ds_id');
-
-    DB::table('users')
-    ->whereNotIn('ds_id', $userData)
-    ->update([
-      'status' => 0,
-    ]);
-
-    dd($userData);
-
+    return view('test');
   })->name('test');

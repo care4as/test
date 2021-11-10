@@ -65,7 +65,7 @@ class UserTrackingController extends Controller
 
       if($dep == 'Mobile')
       {
-        $department = '1&1 Mobile Retention';
+        $department = '1und1 Retention';
 
         $mobileSalesSata = DB::connection('mysqlkdwtracking')
         ->table('1und1_mr_tracking_inb_new_ebk')
@@ -77,7 +77,7 @@ class UserTrackingController extends Controller
       }
 
       else {
-        $department = '1&1 DSL Retention';
+        $department = '1und1 DSL Retention';
 
         $dslSalesSata = DB::connection('mysqlkdwtracking')
         ->table('1und1_dslr_tracking_inb_new_ebk')
@@ -88,18 +88,21 @@ class UserTrackingController extends Controller
         $SalesSata = $dslSalesSata;
       }
 
+      // dd($SalesSata);
       $trackingidsMobile = $SalesSata->pluck('agent_ds_id')->toArray();
 
-      $users = User::whereIn('tracking_id',$trackingidsMobile)
+      $users = User::whereIn('kdw_tracking_id',$trackingidsMobile)
       ->where('role','Agent')
-      ->where('department',$department)
+      ->where('project',$department)
       ->get();
+
+      // dd($users);
 
       foreach($users as $key => $user)
       {
-        if ($user->department == '1&1 Mobile Retention') {
+        if ($user->project == '1und1 Retention') {
 
-          $user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->tracking_id)->first();
+          $user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->kdw_tracking_id)->first();
           $user->ssc_calls = $user->salesdata->calls_ssc;
           $user->ssc_orders = $user->salesdata->ret_ssc_contract_save;
           $user->calls = $user->salesdata->calls;
@@ -109,6 +112,7 @@ class UserTrackingController extends Controller
           $user->portal_calls = $user->salesdata->calls_portal;
           $user->portal_orders = $user->salesdata->ret_portal_save;
           $user->orders = $user->ssc_orders + $user->bsc_orders + $user->portal_orders;
+          $user->optins = $user->salesdata->optin;
 
           if($user->ssc_calls != 0)
           {
@@ -122,7 +126,8 @@ class UserTrackingController extends Controller
         }
         //the users in the dsl department
         else {
-            if ($user->salesdata = $dslSalesSata->where('agent_ds_id', $user->tracking_id)->first()) {
+
+            if ($user->salesdata = $dslSalesSata->where('agent_ds_id', $user->kdw_tracking_id)->first()) {
               $user->calls = $user->salesdata->calls;
               // dd($user);
               $user->orders = $user->salesdata->ret_de_1u1_rt_save;
@@ -155,6 +160,7 @@ class UserTrackingController extends Controller
         $allPortalOrders = $users->sum('portal_orders');
         $allOrders = $allSSCOrders + $allBSCOrders + $allPortalOrders ;
         $allCalls = $users->sum('calls');
+        $allOptins = $users->sum('optins');
 
         $data[] = array(
           'ssc_calls'=>$allSSCCalls,
@@ -165,13 +171,12 @@ class UserTrackingController extends Controller
           'portal_saves'=>$allPortalOrders,
           'calls'=>$allCalls,
           'orders'=>$allOrders,
+          'optins'=>$allOptins,
         );
       }
       else {
-
         $allCalls = $users->sum('calls');
         $allOrders = $users->sum('orders');
-
         $data[] = array(
           'calls'=>$allCalls,
           'orders'=>$allOrders,
@@ -339,7 +344,7 @@ class UserTrackingController extends Controller
     }
     public function dailyAgentDetectiveIndex(Request $request)
     {
-  
+
       $request->validate([
         'start_date' => 'required',
         'end_date' => 'required',
@@ -446,15 +451,16 @@ class UserTrackingController extends Controller
       $timesarray = array();
       // return 1;
       if ($dep == 'Mobile') {
-        $department = '1&1 Mobile Retention';
+        $department = '1und1 Retention';
       }
       elseif($dep == 'DSL') {
-        $department = '1&1 DSL Retention';
+        $department = '1und1 DSL Retention';
 
       }
-      $IDs = User::where('department',$department)
+
+      $IDs = User::where('project',$department)
       ->where('status',1)
-      ->pluck('person_id');
+      ->pluck('1u1_person_id');
 
       $intermediates = Intermediate::whereDate('date', Carbon::today())
       ->whereIn('person_id',$IDs)

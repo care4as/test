@@ -845,6 +845,7 @@ class ExcelEditorController extends Controller
       // dd($data);
 
       $insertarray = array();
+
       for($i = $fromRow-1; $i <= count($data)-1; $i++)
       {
         $UNIX_DATE = ($data[$i][1] - 25569) * 86400;
@@ -908,8 +909,8 @@ class ExcelEditorController extends Controller
         DB::table('retention_details')->insertOrIgnore($insertarray[$i]);
       }
       // return response()->json($insertarray);
-      return redirect()->back();
-      // dd($data);
+      // return redirect()->back();
+      // dd($insertarray);
 
     }
 
