@@ -667,6 +667,7 @@ body
 .max-table{
   white-space: nowrap;
   border-radius: 0px;
+  border-collapse: collapse;
 }
 
 .max-table td, .max-table th{

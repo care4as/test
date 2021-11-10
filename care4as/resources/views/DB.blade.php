@@ -640,7 +640,7 @@
                   <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form class="mt-2 w-100" action="{{route('presentation')}}" method="get">
+            <form class="mt-2 w-100" action="{{route('1u1_deckungsbeitrag')}}" method="get">
             <div class="modal-body" style="font-size: 14px;">
               <div class="row m-3 mt-4" id="dataState">
                 <div class="col-12 text-left" >

@@ -59,36 +59,45 @@ class RightsSeeder extends Seeder
     $rightsarray = array(
       'dashboard',
       'dashboardAdmin',
-      'createUser',
-      'updateUser',
-      'indexUser',
-      'indexCancels',
-      'createCancels',
-      'deleteCancels',
-      'changeCancels',
-      'importReports',
-      'createMabel',
-      'indexMabel',
-      'deleteMabel',
-      'createSurvey',
-      'indexSurvey',
-      'deleteSurvey',
-      'sendReports',
-      'indexFeedback',
-      'changeConfig',
-      'trainings',
-      'presentation',
-      'changeRole',
-      'createRole',
-      'analyzeCancels',
-      'attendSurvey',
-      'config',
-      'deleteUser',
-      'telefonicapause',
+      //'indexCancels',
+      //'createCancels',
+      //'deleteCancels',
+      //'changeCancels',
+      'reports_base', // Basiszugriff auf Reporte
+      'reports_import', // Zugriff Reporte hochzuladen
+      'reports_send', // Berechtigung Reporte zu versenden
+      //'createMabel',
+      //'indexMabel',
+      //'deleteMabel',
+      //'createSurvey',
+      //'indexSurvey',
+      //'deleteSurvey',
+      //'indexFeedback',
+      //'trainings',
+      'presentation', // Zugriff auf Ansichten die für Präsentationszwecke erstellt werden
+      //'analyzeCancels',
+      //'attendSurvey',
+      //'statistics',
+      'config_base', // Basiszugriff auf die Konfiguration des Softwaretools
+      'config_create_roll', // Berechtigung neue Rollen anzulegen
+      '1u1_dsl_base', //Basiszugriff für 1u1 DSL Retention
+      '1u1_mobile_base', // Basiszugriff für 1u1 Mobile Retention
+      '1u1_db', // Zugriff auf den Deckungsbeitrag der beiden Retention Projekte 1u1
+      'telefonica_base', //Basiszugriff für Telefonica
       'telefonica_config',
-      'inventory',
-      'controlling',
-      'statistics',
+      'controlling_base',
+      'controlling_attainment', //Zugriff auf die Zielerreichung
+      'controlling_revenuereport', //Zugriff auf die Umsatzmeldung
+      'controlling_projectreport', //Zugriff auf die Projektmeldung
+      'it_base', // Basiszugriff auf IT
+      'it_scrum', // Zugriff auf das IT-Scrum Board
+      'it_inventory', // Zugriff auf die Inventarverwaltung der IT
+      'users_base',
+      'users_userlist', // Zugriff auf die Mitarbeiterliste
+      'users_update', // Berechtigung Mitarbeiterdaten zu ändern
+      'users_change_roll', // Berechtigung Mitarbeiterrollen zu ändern
+      'users_reset_password', // Möglichkeit Mitarbeiterpasswörter zurückzusetzen
+
     );
     $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
 

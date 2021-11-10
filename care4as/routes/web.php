@@ -35,17 +35,17 @@ Route::get('/messageOfTheDay', function()
 
   Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin')->middleware('hasRight:dashboardAdmin');
   //users
-  Route::get('/create/user', 'UserController@create')->name('user.create')->middleware('hasRight:createUser');
-  Route::post('/create/user', 'UserController@store')->name('create.user.post')->middleware('hasRight:createUser');
-  Route::get('/user/index', 'UserController@index')->name('user.index')->middleware('hasRight:indexUser');
-  Route::get('/user/deactivate/{id}', 'UserController@deactivate')->name('user.deactivate')->middleware('hasRight:indexUser');
-  Route::get('/user/activate/{id}', 'UserController@activate')->name('user.activate')->middleware('hasRight:indexUser');
+  //Route::get('/create/user', 'UserController@create')->name('user.create')->middleware('hasRight:createUser');
+  //Route::post('/create/user', 'UserController@store')->name('create.user.post')->middleware('hasRight:createUser');
+  //Route::get('/user/index', 'UserController@index')->name('user.index')->middleware('hasRight:indexUser');
+  //Route::get('/user/deactivate/{id}', 'UserController@deactivate')->name('user.deactivate')->middleware('hasRight:indexUser');
+  //Route::get('/user/activate/{id}', 'UserController@activate')->name('user.activate')->middleware('hasRight:indexUser');
 
-  // Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
-  Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post')->middleware('hasRight:updateUser');
-  Route::get('/user/analytics/{id}', 'UserController@Scorecard')->name('user.stats')->middleware('hasRight:updateUser');
-  // Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
-  Route::post('/user/update/{id}', 'UserController@update')->name('user.update')->middleware('hasRight:updateUser');
+  //Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
+  //Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post')->middleware('hasRight:updateUser');
+  //Route::get('/user/analytics/{id}', 'UserController@Scorecard')->name('user.stats')->middleware('hasRight:updateUser');
+  //Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
+  //Route::post('/user/update/{id}', 'UserController@update')->name('user.update')->middleware('hasRight:updateUser');
   Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
   Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
   Route::get('/user/getAHT', 'UserController@getAHTofMonth')->name('user.aht');
@@ -295,7 +295,7 @@ Route::get('/messageOfTheDay', function()
   //endeobmail
 
   //Presentation
-  Route::get('/presentation', 'HomeController@presentation')->name('presentation')->middleware('hasRight:importReports');
+  Route::get('/1u1_deckungsbeitrag', 'HomeController@presentation')->name('1u1_deckungsbeitrag')->middleware('hasRight:importReports');
   //endpresentation
 
   //inventory
