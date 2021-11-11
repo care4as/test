@@ -667,7 +667,11 @@ body
 .max-table{
   white-space: nowrap;
   border-radius: 0px;
-  border-collapse: collapse;
+  border-collapse: collapse !important;
+}
+
+.max-table tbody, .max-table thead {
+  border-collapse: collapse !important;
 }
 
 .max-table td, .max-table th{
@@ -675,6 +679,7 @@ body
   padding-left: 5px;
   padding-right: 5px;
   border-radius: 0px;
+  border-collapse: collapse !important;
 }
 
 .max-table th{
@@ -682,6 +687,7 @@ body
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   background-color: #ddd;
+  border-collapse: collapse !important;
 }
 
 .max-table tr:hover{

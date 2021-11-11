@@ -64,6 +64,7 @@ class ReportImportController extends Controller
             $refinedDataTables[$entry['data_table']]['min_date'] = date_format(date_create_from_format('Y-m-d', $entry['min_date']), 'd.m.Y');
             $refinedDataTables[$entry['data_table']]['max_date'] = date_format(date_create_from_format('Y-m-d', $entry['max_date']), 'd.m.Y');
         }
+
         // dd($defaultVariablesArray);
         return view('reports.reportImport', compact('refinedDataTables', 'defaultVariablesArray', 'datatablesDates'));
     }
@@ -71,57 +72,101 @@ class ReportImportController extends Controller
     public function getDatatableDates($defaultVariablesArray){
         //$defaultVariablesArray['startDate'] = date_format(date_create_from_format('Y-m-d', $defaultVariablesArray['startDate']), 'd.m.Y');
         //$defaultVariablesArray['endDate'] = date_format(date_create_from_format('Y-m-d', $defaultVariablesArray['endDate']), 'd.m.Y');
-        $availbenchData = $this->getAvailbench($defaultVariablesArray);
-        $dailyAgentData = $this->getDailyAgent($defaultVariablesArray);
-        $optInData = $this->getOptin($defaultVariablesArray);
-        $retentionDetailsData = $this->getRetDetails($defaultVariablesArray);
-        $sasData = $this->getSas($defaultVariablesArray);
+        $availbenchDslData = $this->getAvailbench($defaultVariablesArray, 53);
+        $availbenchMobileData = $this->getAvailbench($defaultVariablesArray, 54);
+        $dailyAgentDslData = $this->getDailyAgent($defaultVariablesArray, 772);
+        $dailyAgentMobileData = $this->getDailyAgent($defaultVariablesArray, 1253);
+        $optInDslData = $this->getOptin($defaultVariablesArray, 'Care4as Retention DSL Eggebek');
+        $optInMobileData = $this->getOptin($defaultVariablesArray, 'KDW Retention Mobile Flensburg');
+        $retentionDetailsDslData = $this->getRetDetails($defaultVariablesArray, 'Care4as Retention DSL Eggebek');
+        $retentionDetailsMobileData = $this->getRetDetails($defaultVariablesArray, 'Retention Mobile Inbound Care4as Eggebek');
+        $retentionDetailsMobileNewData = $this->getRetDetails($defaultVariablesArray, 'KDW Retention Mobile Flensburg');
+        $sasDslData = $this->getSas($defaultVariablesArray, 'RT_DSL');
+        $sasMobileData = $this->getSas($defaultVariablesArray, 'RT_Mobile');
 
         $dataTables = array();
 
         for($i = 0; $i <= $defaultVariablesArray['differenceDate']; $i++){
             $day = date('Y-m-d', strtotime($defaultVariablesArray['startDate']. '+ '.$i.' days'));
 
-            $dataTables[$day]['availbench'] = 'false';
-            $dataTables[$day]['daily_agent'] = 'false';
-            $dataTables[$day]['optin'] = 'false';
-            $dataTables[$day]['retention_details'] = 'false';
-            $dataTables[$day]['sas'] = 'false';
+            $dataTables[$day]['availbench_dsl'] = 'false';
+            $dataTables[$day]['availbench_mobile'] = 'false';
+            $dataTables[$day]['daily_agent_dsl'] = 'false';
+            $dataTables[$day]['daily_agent_mobile'] = 'false';
+            $dataTables[$day]['optin_dsl'] = 'false';
+            $dataTables[$day]['optin_mobile'] = 'false';   
+            $dataTables[$day]['sas_dsl'] = 'false';
+            $dataTables[$day]['sas_mobile'] = 'false';
+            $dataTables[$day]['retention_details_dsl'] = 'false';
+            $dataTables[$day]['retention_details_mobile'] = 'false';
 
-            foreach($availbenchData as $key => $entry){
+            foreach($availbenchDslData as $key => $entry){
                 if($entry['date_date'] == $day){
-                    $dataTables[$day]['availbench'] = 'true';
+                    $dataTables[$day]['availbench_dsl'] = 'true';
                 }
             }
-            foreach($dailyAgentData as $key => $entry){
+            foreach($availbenchMobileData as $key => $entry){
+                if($entry['date_date'] == $day){
+                    $dataTables[$day]['availbench_mobile'] = 'true';
+                }
+            }
+            foreach($dailyAgentDslData as $key => $entry){
                 if($entry == $day){
-                    $dataTables[$day]['daily_agent'] = 'true';
+                    $dataTables[$day]['daily_agent_dsl'] = 'true';
                 }
             }
-            foreach($optInData as $key => $entry){
+            foreach($dailyAgentMobileData as $key => $entry){
                 if($entry == $day){
-                    $dataTables[$day]['optin'] = 'true';
+                    $dataTables[$day]['daily_agent_mobile'] = 'true';
                 }
             }
-            foreach($retentionDetailsData as $key => $entry){
+            foreach($optInDslData as $key => $entry){
+                if($entry == $day){
+                    $dataTables[$day]['optin_dsl'] = 'true';
+                }
+            }
+            foreach($optInMobileData as $key => $entry){
+                if($entry == $day){
+                    $dataTables[$day]['optin_mobile'] = 'true';
+                }
+            }
+            foreach($retentionDetailsDslData as $key => $entry){
                 if($entry['call_date'] == $day){
-                    $dataTables[$day]['retention_details'] = 'true';
+                    $dataTables[$day]['retention_details_dsl'] = 'true';
                 }
             }
-            foreach($sasData as $key => $entry){
+            foreach($retentionDetailsMobileData as $key => $entry){
+                if($entry['call_date'] == $day){
+                    $dataTables[$day]['retention_details_mobile'] = 'true';
+                }
+            }
+            //Weil das Department sich geändert hat
+            foreach($retentionDetailsMobileNewData as $key => $entry){
+                if($entry['call_date'] == $day){
+                    $dataTables[$day]['retention_details_mobile'] = 'true';
+                }
+            }
+            foreach($sasDslData as $key => $entry){
                 if($entry['date'] == $day){
-                    $dataTables[$day]['sas'] = 'true';
+                    $dataTables[$day]['sas_dsl'] = 'true';
+                }
+            }
+            foreach($sasMobileData as $key => $entry){
+                if($entry['date'] == $day){
+                    $dataTables[$day]['sas_mobile'] = 'true';
                 }
             }
         }
+        //dd($dataTables);
 
         return $dataTables;
     }
 
-    public function getRetDetails($defaultVariablesArray){
+    public function getRetDetails($defaultVariablesArray, $department){
         $data = DB::table('retention_details')
         ->where('call_date', '>=', $defaultVariablesArray['startDate'])
         ->where('call_date', '<=', $defaultVariablesArray['endDate'])
+        ->where('department_desc', $department)
         ->distinct()
         ->get('call_date')
         ->toArray();
@@ -134,15 +179,14 @@ class ReportImportController extends Controller
         return $data;
     }
 
-    public function getOptin($defaultVariablesArray){
+    public function getOptin($defaultVariablesArray, $department){
         $data = DB::table('optin')
         ->where('date', '>=', $defaultVariablesArray['startDate'])
         ->where('date', '<=', $defaultVariablesArray['endDate'])
+        ->where('department', $department)
         ->distinct()
         ->get('date')
         ->toArray();
-
-
 
         foreach($data as $key => $entry){
             $entryArray = (array) $entry;
@@ -152,7 +196,7 @@ class ReportImportController extends Controller
         return $data;
     }
 
-    public function getDailyAgent($defaultVariablesArray){
+    public function getDailyAgent($defaultVariablesArray, $groupId){
         //format date
         $startDate = $defaultVariablesArray['startDatePHP']->setTime(0,0);
         $endDate = $defaultVariablesArray['endDatePHP']->setTime(23,59);
@@ -160,6 +204,7 @@ class ReportImportController extends Controller
         $data = DB::table('dailyagent')
         ->where('start_time', '>=', $startDate)
         ->where('start_time', '<=', $endDate)
+        ->where('agent_group_id', $groupId)
         ->distinct()
         ->get('start_time')
         ->toArray();
@@ -173,10 +218,11 @@ class ReportImportController extends Controller
         return $data;
     }
 
-    public function getAvailbench($defaultVariablesArray){
+    public function getAvailbench($defaultVariablesArray, $forecast){
         $data = DB::table('availbench_report')
         ->where('date_date', '>=', $defaultVariablesArray['startDate'])
         ->where('date_date', '<=', $defaultVariablesArray['endDate'])
+        ->where('call_forecast_issue_key', $forecast)
         ->distinct()
         ->get('date_date')
         ->toArray();
@@ -189,10 +235,11 @@ class ReportImportController extends Controller
         return $data;
     }
 
-    public function getSas($defaultVariablesArray){
+    public function getSas($defaultVariablesArray, $topic){
         $data = DB::table('sas')
         ->where('date', '>=', $defaultVariablesArray['startDate'])
         ->where('date', '<=', $defaultVariablesArray['endDate'])
+        ->where('topic', $topic)
         ->distinct()
         ->get('date')
         ->toArray();

@@ -79,7 +79,7 @@ class RightsSeeder extends Seeder
       //'attendSurvey',
       //'statistics',
       'config_base', // Basiszugriff auf die Konfiguration des Softwaretools
-      'config_create_roll', // Berechtigung neue Rollen anzulegen
+      'config_create_role', // Berechtigung neue Rollen anzulegen
       '1u1_dsl_base', //Basiszugriff für 1u1 DSL Retention
       '1u1_mobile_base', // Basiszugriff für 1u1 Mobile Retention
       '1u1_db', // Zugriff auf den Deckungsbeitrag der beiden Retention Projekte 1u1
@@ -95,7 +95,7 @@ class RightsSeeder extends Seeder
       'users_base',
       'users_userlist', // Zugriff auf die Mitarbeiterliste
       'users_update', // Berechtigung Mitarbeiterdaten zu ändern
-      'users_change_roll', // Berechtigung Mitarbeiterrollen zu ändern
+      'users_change_role', // Berechtigung Mitarbeiterrollen zu ändern
       'users_reset_password', // Möglichkeit Mitarbeiterpasswörter zurückzusetzen
 
     );

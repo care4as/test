@@ -337,7 +337,7 @@
             </a>
             <div class="collapse" id="collapseConfiguration" style="margin-left:50px;">
               <ul class="list-group list-group-flush" style="list-style-type: none;">
-              @if(in_array('config_create_roll',Auth()->user()->getRights()))
+              @if(in_array('config_create_role',Auth()->user()->getRights()))
                 <li><a href="{{route('roles.index')}}">Rollen</a> </li>
               @endif
               <!-- {{--
