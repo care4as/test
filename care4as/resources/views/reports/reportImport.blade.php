@@ -68,7 +68,7 @@
                     <div class="max-panel bg-none">
                         <div class="max-panel-title">Reporte importieren</div>
                         <div class="max-panel-content">
-                            <table class="table" style="text-align: center;">
+                            <table class="table" style="text-align: center; border-collapse: collapse;">
                                 <thead>
                                     <tr>
                                         <th style="text-align: left;">Report Test</th>
@@ -256,7 +256,7 @@
 <div class="modal fade" id="availbenchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
-          <div class="loaderDiv" id="loaderDiv1">
+          <div class="loaderDiv" id="loaderDiv1" style="display:flex;">
             <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           </div>
             <div class="modal-header ">

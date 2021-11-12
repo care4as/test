@@ -141,7 +141,7 @@ class Intermediate implements ShouldQueue
           }
       }
 
-      dd($users,$insertarray);
+      // dd($users,$insertarray);
 
       if($users->first())
       {

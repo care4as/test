@@ -24,6 +24,12 @@ body
       background: -webkit-linear-gradient(to top, #2c3e50, #4ca1af); /* Chrome 10-25, Safari 5.1-6 */
       background: linear-gradient(to top, #2c3e50, #4ca1af);
     }
+    .iconbutton
+    {
+      height: 150px;
+      width: 150px;
+      border-radius: 50%;
+    }
     .HWModal
     {
       position: fixed;
@@ -162,18 +168,18 @@ body
     color: official;
     align-self: center;
     position: relative;
-    width: 250px;
-    height: 250px;
+    width: 16%;
+    height: 80%;
     align-self: center;
     display: block;
     justify-content: center;
     }
     .lds-spinner {
-    color: official;
-    align-self: center;
-    position: relative;
-    width: 250px;
-    height: 250px;
+    /* color: official; */
+    /* align-self: center; */
+    /* position: relative; */
+    width: 86%;
+    height: 16%;
     align-self: center;
     display: flex;
     justify-content: center;
@@ -257,7 +263,7 @@ body
       background-color:rgba(0,0,0,0.8);;
       z-index:100;
       display: none;
-      justify-content: center;
+      /* justify-content: center; */
     }
     .loader {
     /* display:none; */

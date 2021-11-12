@@ -197,11 +197,11 @@ class UserTrackingController extends Controller
       $user = User::find($id);
 
       $intermediates = DB::Table('intermediate_status')
-      ->where('person_id',$user->person_id)
+      ->where('person_id',$user->{'1u1_person_id'})
       ->whereDate('date',Carbon::today())
       ->get();
 
-      // dd($user);
+      // dd($intermediates);
 
       foreach ($intermediates as $key => $intervall) {
 
@@ -209,7 +209,7 @@ class UserTrackingController extends Controller
 
         $formerValues = DB::table('intermediate_status')
         ->where('date','<', $intervall->date)
-        ->where('person_id', $user->person_id)
+        ->where('person_id', $user->{'1u1_person_id'})
         // ->where('id','!=', $intervall->id)
         ->orderBY('id','DESC')
         ->select('Calls','Orders','date','id')

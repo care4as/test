@@ -15,7 +15,7 @@ class FeedbackController extends Controller
     {
       $feedbacks = Feedback::with(['Creator'],['withUser'])->get();
 
-      dd($feedbacks);
+      // dd($feedbacks);
 
       return view('FeedbackIndex', compact('feedbacks'));
     }
@@ -32,7 +32,7 @@ class FeedbackController extends Controller
           dd($userid);
       }
 
-      $users = User::where('role','agent')->select('id','surname','lastname','name')->get();
+      $users = User::where('role','agent')->select('id','name')->get();
 
       $kw = date("W");
 
@@ -52,7 +52,7 @@ class FeedbackController extends Controller
       // dd($end_date, $start_date);
 
       $user = User::where('role','agent')
-      ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
+      ->select('id','1u1_person_id','1u1_agent_id','project','ds_id')
       ->with(['dailyagent' => function($q) use ($start_date,$end_date){
         $q->select(['id','agent_id','status','time_in_state','date']);
         if($start_date !== 1)
@@ -187,8 +187,6 @@ class FeedbackController extends Controller
         ->where('call_date','<=',$end_date)
         ->where('department_desc',$department)
         ->sum('orders_portale');
-
-
 
         $statsArray = array(
 
