@@ -1,79 +1,97 @@
 <template>
-  <div class="container-fluid p-2 f2">
-    <div class="row center_items">
+  <div class="container-fluid p-2 f2" style="height: 100vh;">
+    <div class="row center_items mt-2">
       <div class="col-10 p-0">
-        <div class="row m-0">
-        <div class="col-md rotated  p-2" v-bind:class= "[this.sscCR > 50 ? 'bg-success' : 'bg-danger text-white']">
-          <div class="row m-1 text-center">
-            SSC-CR:
-          </div>
-          <div class="row m-1">
-            <div class="col-6">
-              <p>{{sscCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+        <div class="row m-0" v-if="department=='Mobile'">
+          <div class="col-md rotated  p-2" v-bind:class= "[this.sscCR > 50 ? 'bg-success' : 'bg-danger text-white']">
+            <div class="row m-1 text-center">
+              SSC-CR:
             </div>
-            <div class="col-6 p-0">
-              <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+            <div class="row m-1">
+              <div class="col-6">
+                <p>{{sscCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+              </div>
+              <div class="col-6 p-0">
+                <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+              </div>
+            </div>
+            <div class="row m-1">
+              <p>Calls: {{sscCalls}} / Saves: {{sscSaves}}</p>
             </div>
           </div>
-          <div class="row m-1">
-            <p>Calls: {{sscCalls}} / Saves: {{sscSaves}}</p>
+          <div class="col-md rotated bg-light p-2" v-bind:class= "[this.bscCR > 20 ? 'bg-success' : 'bg-danger text-white']">
+            <div class="row m-1">
+              BSC-CR:
+            </div>
+            <div class="row m-1">
+              <div class="col-6 p-0">
+                <p>{{bscCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+              </div>
+              <div class="col-6 p-0">
+                <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+              </div>
+            </div>
+            <div class="row m-1">
+              <p>Calls: {{bscCalls}} / Saves: {{bscSaves}}</p>
+            </div>
+          </div>
+          <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.portalCR > 60 ? 'bg-success' : 'bg-danger text-white']">
+            <div class="row m-1">
+              Portal-CR:
+            </div>
+            <div class="row m-1">
+              <div class="col-6 p-0">
+                <p>{{portalCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+              </div>
+              <div class="col-6 p-0">
+                <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+              </div>
+            </div>
+            <div class="row m-1">
+              <p>Calls: {{portalCalls}} / Saves: {{portalSaves}}</p>
+            </div>
+          </div>
+          <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.optinQuota > 15 ? 'bg-success' : 'bg-danger text-white']">
+            <div class="row m-1">
+              Optinquote:
+            </div>
+            <div class="row m-1">
+              <div class="col-6 p-0">
+                <p>{{optinQuota}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+              </div>
+              <div class="col-6 p-0">
+                <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+              </div>
+            </div>
+            <div class="row m-1">
+              <p>Calls: {{calls}} / {{optins}}: </p>
+            </div>
           </div>
         </div>
-        <div class="col-md rotated bg-light p-2" v-bind:class= "[this.bscCR > 20 ? 'bg-success' : 'bg-danger text-white']">
-          <div class="row m-1">
-            BSC-CR:
-          </div>
-          <div class="row m-1">
-            <div class="col-6 p-0">
-              <p>{{bscCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+        <div class="row m-0" v-else>
+          <div class="col-md-5 rotated bg-light p-2 " v-bind:class= "[this.optinQuota > 15 ? 'bg-success' : 'bg-danger text-white']">
+            <div class="row m-1">
+              CR:
             </div>
-            <div class="col-6 p-0">
-              <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+            <div class="row m-1">
+              <div class="col-6 p-0">
+                <p>{{GeVoCr}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+              </div>
+              <div class="col-6 p-0">
+                <p><i class="fa-solid fa-arrow-trend-up"></i></p>
+              </div>
             </div>
-          </div>
-          <div class="row m-1">
-            <p>Calls: {{bscCalls}} / Saves: {{bscSaves}}</p>
-          </div>
-        </div>
-        <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.portalCR > 60 ? 'bg-success' : 'bg-danger text-white']">
-          <div class="row m-1">
-            Portal-CR:
-          </div>
-          <div class="row m-1">
-            <div class="col-6 p-0">
-              <p>{{portalCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
+            <div class="row m-1">
+              <p>Calls: {{calls}} / {{saves}}: </p>
             </div>
-            <div class="col-6 p-0">
-              <p><i class="fa-solid fa-arrow-trend-up"></i></p>
-            </div>
-          </div>
-          <div class="row m-1">
-            <p>Calls: {{portalCalls}} / Saves: {{portalSaves}}</p>
-          </div>
-        </div>
-        <div class="col-md rotated bg-light p-2 " v-bind:class= "[this.optinQuota > 15 ? 'bg-success' : 'bg-danger text-white']">
-          <div class="row m-1">
-            Optinquote:
-          </div>
-          <div class="row m-1">
-            <div class="col-6 p-0">
-              <p>{{optinQuota}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
-            </div>
-            <div class="col-6 p-0">
-              <p><i class="fa-solid fa-arrow-trend-up"></i></p>
-            </div>
-          </div>
-          <div class="row m-1">
-            <p>Calls: {{calls}} / {{optins}}: </p>
           </div>
         </div>
       </div>
     </div>
-    </div>
-    <div class="row mt-4 center_items ">
-      <div class="col-10 p-0 bg-light " style="border-radius: 25px;">
-        <div class="row m-0">
-          <div class="col-md m-3 shadow" style="transform: rotateY(-25deg);">
+    <div class="row mt-4 center_items " style="">
+      <div class="col-10 p-0 bg-light center_items " style="min-height: 50vh;border-radius: 25px;">
+        <div class="row m-0" style="min-height: 45vh;">
+          <div class="col-md bg-white shadow derotate" style="transform: rotateY(-25deg);">
             <div class="row center_items">
               <h5>Liveticker Teamquote</h5>
             </div>
@@ -83,7 +101,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md m-3 shadow " style="transform: rotateY(25deg);">
+          <div class="col-md bg-white shadow derotate" style="transform: rotateY(25deg);">
             <div class="row center_items">
               <h5>Performance</h5>
             </div>
@@ -109,7 +127,6 @@
                     <td>{{user.calls}}</td>
                     <td>{{user.orders}}</td>
                   </tr>
-
                 </table>
                 <table class="max-table" style="width: 100%;"v-else>
                   <tr class="">
@@ -117,7 +134,6 @@
                     <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
                     <th @click="sorted('calls')" style="cursor:pointer">SSC_Calls</th>
                     <th @click="sorted('orders')" style="cursor:pointer">SSC_Saves</th>
-
                   </tr >
                   <tr class="unit-translucent" v-for="user in sortedUsers">
                     <td>{{user.name}}</td>
@@ -133,12 +149,17 @@
         </div>
       </div>
     </div>
-  <div class="row center_items">
-    <div class="col center_items">
-      <button type="button" name="button">Mobile</button>
-    </div>
-    <div class="col center_items">
-      <button type="button" name="button">DSL</button>
+  <div class="row mt-4 center_items">
+    <div class="btn-group dropend">
+      <button type="button" class="btn btn-secondary dropdown-toggle rounded-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-bars fa-3x"></i>
+      </button>
+      <div class="dropdown-menu">
+        <div class="d-flex center_items m-2">
+          <button type="button" name="button" class="p-2 m-2 iconbutton" @click="changeDepartment('Mobile')"><i class="fas fa-mobile-alt fa-7x"></i></button>
+          <button type="button" name="button" class="p-2 m-2 iconbutton" @click="changeDepartment('DSL')"><i class="fas fa-yin-yang fa-7x"></i></button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -387,44 +408,5 @@
 
 <style media="screen">
 
-td,tr,table
-{
-  border-radius: 15px;
-  border-collapse: separate;
-  width: auto;
-}
-.table-striped>tbody>tr:nth-child(even) {
-    background-color: #ddf8e8;
-}
-.department{
-  cursor: pointer;
-}
-.department:hover{
-  opacity: 0.5;
-}
 
-#dailyQuota
-{
-  height: 300px !important;
-  color:white !important;
-}
-.f1{
-  font-size: 1.7em;
-}
-.f2{
-  font-size: 1.3em;
-}
-.rotated
-{
-  transform: rotateY(30deg);
-  box-shadow: 1rem 1rem rgba(0,0,0,.15) !important;
-  border-radius: 25px;
-
-}
-.rotated:hover{
-  animation: rotateback 5s;
-}
-@keyframes rotateback {
-50% {transform: rotateY(0deg);}
-}
 </style>

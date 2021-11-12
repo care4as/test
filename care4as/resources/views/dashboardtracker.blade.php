@@ -5,7 +5,48 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
 
 <style>
+td,tr,table
+{
+  border-radius: 15px;
+  border-collapse: separate;
+  width: auto;
+}
+.table-striped>tbody>tr:nth-child(even) {
+    background-color: #ddf8e8;
+}
+.department{
+  cursor: pointer;
+}
+.department:hover{
+  opacity: 0.5;
+}
 
+#dailyQuota
+{
+  height: 300px !important;
+  color:white !important;
+}
+.f1{
+  font-size: 1.7em;
+}
+.f2{
+  font-size: 1.3em;
+}
+.rotated
+{
+  transform: rotateY(30deg);
+  box-shadow: 1rem 1rem rgba(0,0,0,.15) !important;
+  border-radius: 25px;
+}
+.rotated:hover{
+  animation: rotateback 5s;
+}
+.derotate:hover{
+  animation: rotateback 5s;
+}
+@keyframes rotateback {
+50% {transform: rotateY(0deg);}
+}
 .borders-roundedlight
 {
   border-radius: 15px;
@@ -63,7 +104,7 @@
 @section('content')
 
 <div class="container-fluid m-1 " id="app">
-  <div class="row">
+  <div class="row bg-light">
     <div class="nav-tabs-navigation">
       <div class="nav-tabs-wrapper">
         <ul class="nav nav-tabs" data-tabs="tabs">
@@ -85,7 +126,7 @@
   </div>
   <div class="tab-content">
     <div id="currentTracking" class="tab-pane fade in show active">
-      <div class="row  m-1 bg-cool borders-roundedlight">
+      <div class="row m-3 bg-cool borders-roundedlight">
         <div class="col">
           <div class="row">
               <ptable> </ptable>
@@ -138,30 +179,25 @@
               </div>
               </div>
             </div>
-            <div class="col-12 unit-translucent">
-              <h5 class="text-center"><a data-toggle="collapse" data-target="#collapseUserDash" aria-expanded="true" aria-controls="collapseUserDash" style="cursor:pointer;">
-                Userdashboard
-                <span class="material-icons">
-                  expand_more
-                  </span>
-              </a></h5>
+            <div class="col-12">
+              <h5>Userdash</h5>
             </div>
             <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
-            <div class="col-12">
-              <div class="row">
-                @foreach($users as $user)
-                  <div class="col-designed m-3 p-1 border unit-translucent rounded shadow">
-                    <h5>{{$user->wholeName()}}
-                        <a class="align-items-center" href="{{route('user.stats',['id' => $user->id])}}">
-                          <span class="material-icons">
-                          preview
-                          </span>
-                        </a>
-                      </h5>
-                    <trackchart :userid="{{$user->id}}"> </trackchart>
-                  </div>
-                @endforeach
-              </div>
+              <div class="col-12">
+                <div class="row">
+                  @foreach($users as $user)
+                    <div class="col-designed m-3 p-1 border unit-translucent rounded shadow">
+                      <h5>{{$user->name}}
+                          <a class="align-items-center" href="{{route('user.stats',['id' => $user->id])}}">
+                            <span class="material-icons">
+                            preview
+                            </span>
+                          </a>
+                        </h5>
+                      <trackchart :userid="{{$user->id}}"> </trackchart>
+                    </div>
+                  @endforeach
+                </div>
             </div>
           </div>
         </div>

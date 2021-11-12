@@ -29,6 +29,8 @@ class Configcontroller extends Controller
          $process->duedate = $datetime->format('Y-m-d H:i:s');
        }
 
+       // dd($processes);
+
        return view('general_config', compact('adresses','processes'));
   }
     public function sendIntermediateMail()
