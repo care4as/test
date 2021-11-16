@@ -15,16 +15,15 @@ use App\Http\Controllers\ControllingController;
 */
 
 //Um User anzulegen, wenn noch keine User vorhanden sind
-Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync');
+  Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync');
 
-Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
+  Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
 
-
-Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
-Route::get('/messageOfTheDay', function()
-{
-  return view('messageOfTheDay');
-})->name('dailyMessage');
+  Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
+  Route::get('/messageOfTheDay', function()
+  {
+    return view('messageOfTheDay');
+  })->name('dailyMessage');
 
   Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool')->middleware('auth');
   Route::get('/telefonica/getIntoPause', 'PauseController@getIntoPause')->name('getIntoPause');
@@ -60,14 +59,14 @@ Route::get('/messageOfTheDay', function()
   //endusers
 
   //cancels
-    Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses')->middleware('hasRight:createCancels');
-    Route::get('/cancels/admin', 'CancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
-    Route::get('/cancels/agent/{id}', 'CancelController@agentCancels')->name('agent.cancels')->middleware('hasRight:createUser');
-    Route::get('/cancels/callback', 'CallbackController@callback')->name('cancels.callback');
-    Route::get('/cancels/delete/{id}', 'CancelController@destroy')->name('cancels.delete')->middleware('hasRight:deleteCancels');
-    Route::get('/cancels/status/{id}/{status}', 'CancelController@changeStatus')->name('cancels.change.status')->middleware('hasRight:changeCancels');
-    Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save')->middleware('hasRight:createCancels');
-    Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post')->middleware('hasRight:analyzeCancels');
+  Route::get('/cancelcauses', 'CancelController@create')->name('cancelcauses')->middleware('hasRight:createCancels');
+  Route::get('/cancels/admin', 'CancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
+  Route::get('/cancels/agent/{id}', 'CancelController@agentCancels')->name('agent.cancels')->middleware('hasRight:createUser');
+  Route::get('/cancels/callback', 'CallbackController@callback')->name('cancels.callback');
+  Route::get('/cancels/delete/{id}', 'CancelController@destroy')->name('cancels.delete')->middleware('hasRight:deleteCancels');
+  Route::get('/cancels/status/{id}/{status}', 'CancelController@changeStatus')->name('cancels.change.status')->middleware('hasRight:changeCancels');
+  Route::post('/cancelcauses', 'CancelController@store')->name('cancels.save')->middleware('hasRight:createCancels');
+  Route::get('/cancelcauses/filtered', 'CancelController@filter')->name('filter.cancels.post')->middleware('hasRight:analyzeCancels');
   //endcancels
   //offlineTracking
   Route::get('/offlineTracking', 'OfflineCancelController@create')->name('offlinetracking.view.agent')->middleware('hasRight:createCancels');
@@ -212,8 +211,7 @@ Route::get('/messageOfTheDay', function()
 
   Route::post('/report/ssetracking/post','ExcelEditorController@sseTrackingUpload')->name('reports.ssetracking.upload')->middleware('hasRight:importReports');
   Route::get('/report/intermediate/sync','ReportController@getIntermediate')->name('reports.intermediate.sync')->middleware('hasRight:importReports');
-
-    //end ssetracking
+  //end ssetracking
 
   //end Report Routes
 
@@ -231,8 +229,8 @@ Route::get('/messageOfTheDay', function()
   Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
   Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config');
   Route::post('/config/telefonica/changePauseConfig', 'Configcontroller@changePIPTelefonica')->name('telefonica.changePausePeople')->middleware('hasRight:telefonica_config');
-
   //endconfig
+
   //roles and rights
     Route::get('/roles/index', 'RolesController@index')->name('roles.index')->middleware('hasRight:createRole');
     Route::get('/role/show/{id}', 'RolesController@show')->name('role.show')->middleware('hasRight:changeRole');
@@ -299,12 +297,12 @@ Route::get('/messageOfTheDay', function()
   //endpresentation
 
   //inventory
-    Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');
-    Route::post('/inventory/add', 'HardwareController@store')->name('inventory.store');
-    Route::get('/inventory', 'HardwareController@index')->name('inventory.list');
-    Route::get('/inventory/item/show/{id}', 'HardwareController@show')->name('inventory.item.show');
-    Route::post('/inventory/item/update/{id}', 'HardwareController@update')->name('inventory.item.update');
-    Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');
+  Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');
+  Route::post('/inventory/add', 'HardwareController@store')->name('inventory.store');
+  Route::get('/inventory', 'HardwareController@index')->name('inventory.list');
+  Route::get('/inventory/item/show/{id}', 'HardwareController@show')->name('inventory.item.show');
+  Route::post('/inventory/item/update/{id}', 'HardwareController@update')->name('inventory.item.update');
+  Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');
 
   //endinventory
 
@@ -332,24 +330,21 @@ Route::get('/messageOfTheDay', function()
 
   //DSL Routes
   Route::get('/1u1/mobileRetenion/trackingDifference', 'TrackingDifferenceController@load')->name('mobileTrackingDifference');
-
-
   //END DSL routes
 
-//Provision
+  //Provision
   Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');
-//end Provison
+  //end Provison
 
-//offers
+  //offers
   Route::get('/offers/create', 'OfferController@create')->name('offers.create');
   Route::post('/offers/store', 'OfferController@store')->name('offers.store');
   Route::get('/offers/JSON', 'OfferController@OffersInJSON')->name('offers.inJSON');
   Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');
   Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');
-//endoffers
+  //endoffers
   Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
   Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
-
 
   Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');
   Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');
