@@ -67,7 +67,9 @@ class Intermediate implements ShouldQueue
       ->where('role','Agent')
       ->get();
 
-      // dd($users);
+      dd($users);
+
+      // dd('test');
 
       if(!$users->first())
       {
@@ -89,7 +91,6 @@ class Intermediate implements ShouldQueue
 
       foreach($users as $user)
       {
-
         if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->kdw_tracking_id)->first())
         {
           if($user->{'1u1_person_id'})
@@ -108,9 +109,6 @@ class Intermediate implements ShouldQueue
               'BSC_Orders' => $user->salesdata->ret_bsc_contract_save,
               'Portal_Orders' => $user->salesdata->ret_portal_save,
             );
-          }
-          else {
-            return 'test';
           }
 
         }
@@ -135,12 +133,8 @@ class Intermediate implements ShouldQueue
                 'Portal_Orders' => 0,
               );
             }
-            else {
-              return 'test';
-            }
           }
       }
-
       // dd($users,$insertarray);
 
       if($users->first())
