@@ -861,6 +861,8 @@ class ExcelEditorController extends Controller
         // $report->calls = $row[11];
         $insertarray[$i]['calls']  = $data[$i][11];
 
+        
+
         if($data[$i][9] !='Care4as Retention DSL Eggebek')
         {
           // $report->calls_smallscreen = $row[14];
@@ -900,7 +902,7 @@ class ExcelEditorController extends Controller
 
         // $report->Rabatt_Guthaben_Brutto_Mobile = $row[28];
         $insertarray[$i]['Rabatt_Guthaben_Brutto_Mobile'] = $data[$i][28];
-
+        $insertarray[$i]['orders_kuerue']  = $data[$i][50] + $data[$i][54];
         // $insertarray2[] = $insertarray;
       }
 
@@ -1066,6 +1068,8 @@ class ExcelEditorController extends Controller
         }
       }
 
+      //dd($fileArray);
+
       foreach($fileArray as $row) {
         if(count($header) == count($row)) {
           $availbenchArray[$i]['date_key'] = intval($row[0]);
@@ -1080,18 +1084,18 @@ class ExcelEditorController extends Controller
           $availbenchArray[$i]['availtime_summary'] = intval($row[9]);
           $availbenchArray[$i]['availtime_sec'] = intval($row[10]);
           $availbenchArray[$i]['handling_time_sec'] = intval($row[11]);
-          $availbenchArray[$i]['availtime_percent'] = doubleval($row[12]);
-          $availbenchArray[$i]['forecast_rate'] = doubleval($row[13]);
-          $availbenchArray[$i]['avail_bench'] = doubleval($row[14]);
+          $availbenchArray[$i]['availtime_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[12])));
+          $availbenchArray[$i]['forecast_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[13])));
+          $availbenchArray[$i]['avail_bench'] = floatval(str_replace(',', '.', str_replace('.', '', $row[14])));
           $availbenchArray[$i]['idp_done'] = intval($row[15]);
-          $availbenchArray[$i]['number_payed_calls'] = doubleval($row[16]);
-          $availbenchArray[$i]['price'] = doubleval($row[17]);
-          $availbenchArray[$i]['aht'] = doubleval($row[18]);
-          $availbenchArray[$i]['productive_minutes'] = doubleval($row[19]);
-          $availbenchArray[$i]['malus_interval'] = doubleval($row[20]);
-          $availbenchArray[$i]['malus_percent'] = doubleval($row[21]);
-          $availbenchArray[$i]['acceptance_rate'] = doubleval($row[22]);
-          $availbenchArray[$i]['total_costs_per_interval'] = doubleval($row[23]);
+          $availbenchArray[$i]['number_payed_calls'] = floatval(str_replace(',', '.', str_replace('.', '', $row[16])));
+          $availbenchArray[$i]['price'] = floatval(str_replace(',', '.', str_replace('.', '', $row[17])));
+          $availbenchArray[$i]['aht'] = floatval(str_replace(',', '.', str_replace('.', '', $row[18])));
+          $availbenchArray[$i]['productive_minutes'] = floatval(str_replace(',', '.', str_replace('.', '', $row[19])));
+          $availbenchArray[$i]['malus_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[20])));
+          $availbenchArray[$i]['malus_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[21])));
+          $availbenchArray[$i]['acceptance_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[22])));
+          $availbenchArray[$i]['total_costs_per_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[23])));
           $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
 
           if ($minDate == null) {
