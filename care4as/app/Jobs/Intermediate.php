@@ -67,8 +67,6 @@ class Intermediate implements ShouldQueue
       ->where('role','Agent')
       ->get();
 
-      // dd($users);
-
       if(!$users->first())
       {
         $insertarray[] = array(
@@ -86,6 +84,8 @@ class Intermediate implements ShouldQueue
           'Portal_Orders' => 0,
         );
       }
+
+      // dd('test2');
 
       foreach($users as $user)
       {
@@ -109,15 +109,11 @@ class Intermediate implements ShouldQueue
               'Portal_Orders' => $user->salesdata->ret_portal_save,
             );
           }
-          else {
-            return 'test';
-          }
-
         }
         else {
 
             $user->salesdata = $dslSalesData->where('agent_ds_id', $user->kdw_tracking_id)->first();
-            // dd($user);
+
             if($user->{'1u1_person_id'})
             {
               $insertarray[] = array(
@@ -135,13 +131,11 @@ class Intermediate implements ShouldQueue
                 'Portal_Orders' => 0,
               );
             }
-            else {
-              return 'test';
-            }
           }
       }
 
-      // dd($users,$insertarray);
+      // dd('test3');
+      // dd($insertarray, $users);
 
       if($users->first())
       {
