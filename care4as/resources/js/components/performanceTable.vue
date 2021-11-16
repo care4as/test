@@ -91,7 +91,7 @@
     <div class="row mt-4 center_items " style="">
       <div class="col-10 p-0 bg-light center_items " style="min-height: 50vh;border-radius: 25px;">
         <div class="row m-0" style="min-height: 45vh;">
-          <div class="col-md bg-white shadow derotate" style="transform: rotateY(-25deg);">
+          <div class="col-md bg-white shadow " style="transform: rotateY(-15deg);">
             <div class="row center_items">
               <h5>Liveticker Teamquote</h5>
             </div>
@@ -101,7 +101,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md bg-white shadow derotate" style="transform: rotateY(25deg);">
+          <div class="col-md bg-white shadow " style="transform: rotateY(15deg);">
             <div class="row center_items">
               <h5>Performance</h5>
             </div>
