@@ -1,22 +1,24 @@
 @extends('layouts.app')
-
 @section('content')
+
 <div class="container" style="position:absolute;top: 50%; left: 50%;transform: translate(-50%,-50%);">
     <div class="row justify-content-center" >
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                  <div class="card-img">
+                  <div style="display: flex; justify-content: center; margin: 30px 0;">
                     <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="">
                   </div>
                   <hr>
-                  {{ __('Login') }}
+                  <div style="text-align: center; font-size: large;">
+                    Anmeldung
+                  </div>
                 </div>
                 <div class="card-body" >
                     <form method="POST" action="{{ route('user.login.post') }}">
                         @csrf
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Nutzername:') }}</label>
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control text-dark @error('email') is-invalid @enderror" name="name" value="{{ old('username') }}" required autocomplete="email" autofocus>
                                 @error('name')
@@ -28,7 +30,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Passwort:') }}</label>
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control text-dark @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                 @error('password')
@@ -39,10 +41,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
+                        <div class="form-group row mb-0" style="justify-content: center;">
+                            <div>
+                                <button type="submit" class="btn btn-primary" style="padding: 6px 40px; font-size: 1.4rem;">
+                                    <i class="fas fa-sign-in-alt"></i>
                                 </button>
 
                                 @if (Route::has('password.request'))

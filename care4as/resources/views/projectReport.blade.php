@@ -51,23 +51,31 @@
             @csrf
                 <div class="max-main-container">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                             <div class="max-panel">
                                 <div class="max-panel-title">Projekt</div>
                                 <div class="max-panel-content">
                                     <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px;">
                                         <label for="inputState" style="margin: auto;">Auswahl:</label>
                                         <select id="inputState" class="form-control" style="color:black;" name="project">
-                                            <option selected value="1u1_dsl_ret">1u1 DSL Retention</option>
-                                            <option value="1u1_mobile_ret">1u1 Mobile Retention</option>
-                                            <option value="1u1_offline">1u1 Kündigungsadministration</option>
-                                            <option value="telefonica_outbound">Telefonica Outbound</option>
+                                            @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                                <option selected value="1u1_dsl_ret">1u1 DSL Retention</option>
+                                            @else
+                                                <option value="1u1_dsl_ret">1u1 DSL Retention</option>
+                                            @endif
+                                            @if($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                                <option selected value="1u1_mobile_ret">1u1 Mobile Retention</option>
+                                            @else
+                                                <option value="1u1_mobile_ret">1u1 Mobile Retention</option>
+                                            @endif
+                                            <!-- <option value="1u1_offline">1u1 Kündigungsadministration</option>
+                                            <option value="telefonica_outbound">Telefonica Outbound</option> -->
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                             <div class="max-panel">
                                 <div class="max-panel-title">Zeitraum</div>
                                 <div class="max-panel-content">
@@ -80,29 +88,12 @@
                                 </div>
                             </div>
                         </div>
-                        <!--
-                        <div class="col-md-3">
-                            <div class="max-panel">
-                                <div class="max-panel-title">Darstellung</div>
-                                <div class="max-panel-content">
-                                    <p style="font-style: italic;">Vorrübergehend nur "kummuliert" auswählbar.</p>
-                                    <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px;">
-                                        <label for="inputState" style="margin: auto;">Auswahl:</label>
-                                        <select id="inputState" class="form-control" style="color:black;">
-                                            <option selected>Kumuliert</option>
-                                
-                                            <option>Monat</option>
-                                            <option>Woche</option>
-                                            <option>Tag</option>
-                                            
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        -->
-                        <div class="col-md-4" style="display:flex; margin-top: 20px; margin-bottom: 20px;">
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" style="display:flex; margin-top: 20px; margin-bottom: 20px;">
                             <button class="btn btn-primary" style="margin: auto;" type="submit">Bericht erzeugen</button>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" style="display:flex; flex-direction: column; margin-top: 20px; margin-bottom: 20px; row-gap: 20px;">
+                            <button class="btn btn-primary" style="margin: auto;">Einstellungen</button>
+                            <button class="btn btn-primary" style="margin: auto;">Datenstand</button>
                         </div>
                     </div>
                 </div>
@@ -115,340 +106,286 @@
     <div class="row">  
         <div class="col-md-12">
             <div class="max-main-container">
-                <div class="card card-nav-tabs card-plain">
-                    <div class="card-header card-header-danger">
-                        <div class="nav-tabs-navigation">
-                            <div class="nav-tabs-wrapper">
-                                <ul class="nav nav-tabs" data-tabs="tabs">
-                                    <!--
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#project" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Projekt</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#team" data-toggle="tab" style="font-size: 16px; font-weight: bold;"style="font-size: 16px; font-weight: bold;">Team</a>
-                                    </li>
-                                    -->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#employee" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Kundenberater</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body ">
-                        <div class="tab-content text-center">
-                            <div class="tab-pane" id="project">
-
-                                <!-- Darstellung nur als Beispiel. In zukunft sollen Daten mithilfe eines Array übergeben werden. Dieses Array füllt die entsprechenden Divs automatisch. -->
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="max-info-panel-kategorie">
-                                            Stunden
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <!-- DSL Stunden: Bezahlt -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">Stunden bezahlt</div>
-                                            <div class="max-info-panel-value">3684</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL Stunden: Produktiv -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">Stunden produktiv</div>
-                                            <div class="max-info-panel-value">1819</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL Stunden: Produktiv in % -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">Stunden produktiv in %</div>
-                                            <div class="max-info-panel-value">48,9%</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL Stunden: Pause -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">Stunden Pause</div>
-                                            <div class="max-info-panel-value">879</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL Stunden: Pause in % -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">Stunden Pause in %</div>
-                                            <div class="max-info-panel-value">20,6%</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL Stunden: Krank -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">Stunden Krank</div>
-                                            <div class="max-info-panel-value">12</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL Stunden: Krank in % -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">Stunden Krank in %</div>
-                                            <div class="max-info-panel-value">8,5%</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="max-info-panel-kategorie">
-                                            Calls
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="max-info-panel-kategorie">
-                                            Sonstige
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="max-info-panel-kategorie">
-                                            Umsatz
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                    <!-- DSL AHT -->
-                                    <div class="col-md-3">
-                                        <div class="max-info-panel">
-                                            <div class="max-info-panel-title">AHT in Sekunden</div>
-                                            <div class="max-info-panel-value">583</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="team">
-                                Wie Projekt nur mit dem Filter auf Team1, Team2, ...
-                            </div>
-                            <div class="tab-pane active" id="employee">
-                                <div class="max-panel-content">
-                                    <div style="width: 100%;">
-                                        <table class="max-table" id="dslMaTable" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Std. Bezahlt</th>
-                                                    <th>Std. Produktiv</th>
-                                                    <th>← in %</th>
-                                                    <th>Std. Pause</th>
-                                                    <th>← in %</th>
-                                                    <th>Std. Krank</th>
-                                                    <th>← in %</th>
-                                                    <th>∑ Calls</th>
-                                                    <th>← / Stunde</th>
-                                                    <th>AHT</th>
-                                                    <th>∑ GeVo Saves</th>
-                                                    <th>← CR</th>
-                                                    <th>∑ OptIn</th>
-                                                    <th>← in %</th>
-                                                    <th>∑ Mögliche OptIn</th>
-                                                    <th>← in %</th>
-                                                    <th>∑ SaS</th>
-                                                    <th>← in ‰</th>
-                                                    <th>RLZ+24 Quote</th>
-                                                    <th>€ Availbench</th>
-                                                    <th>€ Sales</th>
-                                                    <th>€ Gesamt</th>
-                                                    <th>€ / Std. bez.</th>
-                                                    <th>€ / Std. prod.</th>
-                                                    <th>€ MA Kosten</th>
-                                                    <th>€ Delta</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($dataArray['employees'] as $key => $employee)
-                                                    <tr>
-                                                    <!--Name-->         <td style="text-align: left;">{{$employee['full_name']}}</td>
-                                                    <!--Std. bez.-->    <td>{{number_format($employee['work_hours'], 2,",",".")}}</td>
-                                                    <!--Std. prod.-->   <td>{{number_format($employee['productive_hours'], 2,",",".")}}</td>
-                                                    <!--in %-->         <td>{{number_format($employee['productive_percentage'], 2,",",".")}}%</td>
-                                                    <!--Pause-->        <td>{{number_format($employee['break_hours'], 2,",",".")}}</td>
-                                                    <!--in %-->         <td>{{number_format($employee['break_percentage'], 2,",",".")}}%</td>
-                                                    <!--Krank-->        <td>{{number_format($employee['sick_hours'], 2,",",".")}}</td>
-                                                    <!--in %-->         <td>{{number_format($employee['sick_percentage'], 2,",",".")}}%</td>
-                                                    <!--Summe Calls-->  <td>{{$employee['dsl_calls']}}</td>
-                                                    <!--Pro Std.-->     <td>{{number_format($employee['calls_per_hour'], 2,",",".")}}</td>
-                                                    <!--AHT-->          <td>{{number_format($employee['aht'], 0,",","")}}</td>
-                                                    <!--GeVo Sales-->   <td>{{$employee['dsl_saves']}}</td>
-                                                    <!--GeVo CR-->      <td>{{number_format($employee['dsl_cr'], 2,",",".")}}%</td>
-                                                    <!--OptIn Summe-->  <td>{{$employee['optin_calls_new']}}</td>
-                                                    <!--in %-->         <td>{{number_format($employee['optin_percentage'], 2,",",".")}}%</td>
-                                                    <!--OptIn Möglich--><td>{{$employee['optin_calls_possible']}}</td>
-                                                    <!--in %-->         <td>{{number_format($employee['optin_possible_percentage'], 2,",",".")}}%</td>
-                                                    <!--SaS Summe-->    <td>{{$employee['sas_orders']}}</td>
-                                                    <!--in ‰-->         <td>{{number_format($employee['sas_promille'], 2,",",".")}}‰</td>
-                                                    <!--RLZ Quote-->    <td>{{number_format($employee['rlz_plus_percentage'], 2,",",".")}}%</td>
-                                                    <!--U. Availbench--><td style="text-align: right;">{{number_format($employee['revenue_availbench'], 2,",","")}}€</td>
-                                                    <!--U. Sales-->     <td style="text-align: right;">{{number_format($employee['revenue_sales'], 2,",","")}}€</td>
-                                                    <!--U. Gesamt-->    <td style="text-align: right;">{{number_format($employee['revenue_sum'], 2,",","")}}€</td>
-                                                    <!--U. / bez.-->    <td style="text-align: right;">{{number_format($employee['revenue_per_hour_paid'], 2,",","")}}€</td>
-                                                    <!--U. / prod.-->   <td style="text-align: right;">{{number_format($employee['revenue_per_hour_productive'], 2,",","")}}€</td>
-                                                    <!--Kosten-->       <td style="text-align: right;">{{number_format($employee['pay_cost'], 2,",","")}}€</td>
-                                                    <!--U. Delta-->     <td style="text-align: right;">{{number_format($employee['revenue_delta'], 2,",","")}}€</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                            <tfoot>
-                                                <tr style="font-weight: bold; background-color: #ddd;">
-                                                    <!--Name-->         <td>Summe</td>
-                                                    <!--Std. bez.-->    <td>{{number_format($dataArray['sum']['work_hours'], 2,",",".")}}</td>
-                                                    <!--Std. prod.-->   <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
-                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage'], 2,",",".")}}%</td>
-                                                    <!--Pause-->        <td>{{number_format($dataArray['sum']['break_hours'], 2,",",".")}}</td>
-                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['break_percentage'], 2,",",".")}}%</td>
-                                                    <!--Krank-->        <td>{{number_format($dataArray['sum']['sick_hours'], 2,",",".")}}</td>
-                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['sick_percentage'], 2,",",".")}}%</td>
-                                                    <!--Summe Calls-->  <td>{{$dataArray['sum']['dsl_calls']}}</td>
-                                                    <!--Pro Std.-->     <td>{{number_format($dataArray['sum']['calls_per_hour'], 2,",",".")}}</td>
-                                                    <!--AHT-->          <td>{{number_format($dataArray['sum']['aht'], 0,",",".")}}</td>
-                                                    <!--GeVo Sales-->   <td>{{$dataArray['sum']['dsl_saves']}}</td>
-                                                    <!--GeVo CR-->      <td>{{number_format($dataArray['sum']['dsl_cr'], 2,",",".")}}%</td>
-                                                    <!--OptIn Summe-->  <td>{{$dataArray['sum']['optin_calls_new']}}</td>
-                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['optin_percentage'], 2,",",".")}}%</td>
-                                                    <!--OptIn Möglich--><td>{{$dataArray['sum']['optin_calls_possible']}}</td>
-                                                    <!--in %-->         <td>{{number_format($dataArray['sum']['optin_possible_percentage'], 2,",",".")}}%</td>
-                                                    <!--SaS Summe-->    <td>{{$dataArray['sum']['sas_orders']}}</td>
-                                                    <!--in ‰-->         <td>{{number_format($dataArray['sum']['sas_promille'], 2,",",".")}}‰</td>
-                                                    <!--RLZ Quote-->    <td>{{number_format($dataArray['sum']['rlz_plus_percentage'], 2,",",".")}}%</td>
-                                                    <!--U. Availbench--><td style="text-align: right;">{{number_format($dataArray['sum']['revenue_availbench'], 2,",",".")}}€</td>
-                                                    <!--U. Sales-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_sales'], 2,",",".")}}€</td>
-                                                    <!--U. Gesamt-->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_sum'], 2,",",".")}}€</td>
-                                                    <!--U. / bez.-->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_per_hour_paid'], 2,",",".")}}€</td>
-                                                    <!--U. / prod.-->   <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_per_hour_productive'], 2,",",".")}}€</td>
-                                                    <!--Kosten-->       <td style="text-align: right;">{{number_format($dataArray['sum']['pay_cost'], 2,",",".")}}€</td>
-                                                    <!--U. Delta-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_delta'], 2,",",".")}}€</td>
-                                                    </tr>
-                                            </tfoot>
-                                        </table>    
-                                    </div>
-                                </div>           
-                            </div>
-                        </div>
-                    </div>
+                <div class="max-panel-title">
+                    Projektmeldung 1u1 DSL Retention
                 </div>
+                <div class="max-panel-content">
+                    <div style="width: 100%;">
+                        <table class="max-table" id="dslMaTable" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Std. Bezahlt</th>
+                                    <th>Std. Produktiv</th>
+                                    <th>← in %</th>
+                                    <th>Std. Pause</th>
+                                    <th>← in %</th>
+                                    <th>Std. Krank</th>
+                                    <th>← in %</th>
+                                    <th>Std. Speedretention</th>
+                                    <th>∑ Calls</th>
+                                    <th>← / Stunde</th>
+                                    <th>AHT</th>
+                                    <th>∑ GeVo Saves</th>
+                                    <th>← CR</th>
+                                    <th>∑ KüRü</th>
+                                    <th>∑ bez. OptIn</th>
+                                    <th>∑ OptIn</th>
+                                    <th>← in %</th>
+                                    <th>∑ Mögliche OptIn</th>
+                                    <th>← in %</th>
+                                    <th>∑ SaS</th>
+                                    <th>← in ‰</th>
+                                    <th>RLZ+24 Quote</th>
+                                    <th><abbr title="Pro Std.: {{number_format($defaultVariablesArray['revenue_hour_speedretention'], 2, ',', '.')}}€">€ Speedretention</abbr></th>
+                                    <th>€ Availbench</th>
+                                    <th><abbr title="Call: {{number_format($defaultVariablesArray['optin_call'], 2, ',', '.')}}€&#010;Mail: {{number_format($defaultVariablesArray['optin_mail'], 2, ',', '.')}}€&#010;Print: {{number_format($defaultVariablesArray['optin_print'], 2, ',', '.')}}€&#010;SMS: {{number_format($defaultVariablesArray['optin_sms'], 2, ',', '.')}}€&#010;Verkehrsdaten: {{number_format($defaultVariablesArray['optin_traffic'], 2, ',', '.')}}€&#010;Nutzungsdaten: {{number_format($defaultVariablesArray['optin_usage'], 2, ',', '.')}}€">€ OptIn</abbr></th>
+                                    <th><abbr title="GeVo: {{number_format($defaultVariablesArray['revenue_sale_dsl'], 2, ',', '.')}}€&#010;KüRü {{number_format($defaultVariablesArray['revenue_kuerue_dsl'], 2, ',', '.')}}€">€ Sales</abbr></th>
+                                    <th>€ Gesamt</th>
+                                    <th>€ / Std. bez.</th>
+                                    <th>€ / Std. prod.</th>
+                                    <th>€ MA Kosten</th>
+                                    <th>€ Delta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($dataArray['employees'] as $key => $employee)
+                                    <tr>
+                                    <!--Name-->         <td style="text-align: left;">{{$employee['full_name']}}</td>
+                                    <!--Std. bez.-->    <td>{{number_format($employee['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. prod.-->   <td>{{number_format($employee['productive_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--Pause-->        <td>{{number_format($employee['break_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['break_percentage'], 2,",",".")}}%</td>
+                                    <!--Krank-->        <td>{{number_format($employee['sick_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['sick_percentage'], 2,",",".")}}%</td>
+                                    <!--Std. SR-->      <td>{{number_format($employee['hours_speedretention'], 2,",",".")}}</td>
+                                    <!--Summe Calls-->  <td>{{$employee['dsl_calls']}}</td>
+                                    <!--Pro Std.-->     <td>{{number_format($employee['calls_per_hour'], 2,",",".")}}</td>
+                                    <!--AHT-->          <td>{{number_format($employee['aht'], 0,",","")}}</td>
+                                    <!--GeVo Sales-->   <td>{{$employee['dsl_saves']}}</td>
+                                    <!--GeVo CR-->      <td>{{number_format($employee['dsl_cr'], 2,",",".")}}%</td>
+                                    <!--Kürü Sales-->   <td>{{$employee['dsl_kuerue']}}</td>
+                                    <!--OptIn bez.-->   <td>{{$employee['optin_sum_payed']}}</td>
+                                    <!--OptIn Summe-->  <td>{{$employee['optin_calls_new']}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['optin_percentage'], 2,",",".")}}%</td>
+                                    <!--OptIn Möglich--><td>{{$employee['optin_calls_possible']}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['optin_possible_percentage'], 2,",",".")}}%</td>
+                                    <!--SaS Summe-->    <td>{{$employee['sas_orders']}}</td>
+                                    <!--in ‰-->         <td>{{number_format($employee['sas_promille'], 2,",",".")}}‰</td>
+                                    <!--RLZ Quote-->    <td>{{number_format($employee['rlz_plus_percentage'], 2,",",".")}}%</td>
+                                    <!--U. SR -->       <td style="text-align: right;">{{number_format($employee['revenue_speedretention'], 2,",","")}}€</td>
+                                    <!--U. Availbench--><td style="text-align: right;">{{number_format($employee['revenue_availbench'], 2,",","")}}€</td>
+                                    <!--U. OptIn -->    <td style="text-align: right;">{{number_format($employee['revenue_optin'], 2,",","")}}€</td>
+                                    <!--U. Sales-->     <td style="text-align: right;">{{number_format($employee['revenue_sales'], 2,",","")}}€</td>
+                                    <!--U. Gesamt-->    <td style="text-align: right;">{{number_format($employee['revenue_sum'], 2,",","")}}€</td>
+                                    <!--U. / bez.-->    <td style="text-align: right;">{{number_format($employee['revenue_per_hour_paid'], 2,",","")}}€</td>
+                                    <!--U. / prod.-->   <td style="text-align: right;">{{number_format($employee['revenue_per_hour_productive'], 2,",","")}}€</td>
+                                    <!--Kosten-->       <td style="text-align: right;">{{number_format($employee['pay_cost'], 2,",","")}}€</td>
+                                    <!--U. Delta-->     <td style="text-align: right;">{{number_format($employee['revenue_delta'], 2,",","")}}€</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr style="font-weight: bold; background-color: #ddd;">
+                                    <!--Name-->         <td>Summe</td>
+                                    <!--Std. bez.-->    <td>{{number_format($dataArray['sum']['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. prod.-->   <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--Pause-->        <td>{{number_format($dataArray['sum']['break_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['break_percentage'], 2,",",".")}}%</td>
+                                    <!--Krank-->        <td>{{number_format($dataArray['sum']['sick_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['sick_percentage'], 2,",",".")}}%</td>
+                                    <!--Std. SR-->      <td>{{number_format($dataArray['sum']['hours_speedretention'], 2,",",".")}}</td>
+                                    <!--Summe Calls-->  <td>{{$dataArray['sum']['dsl_calls']}}</td>
+                                    <!--Pro Std.-->     <td>{{number_format($dataArray['sum']['calls_per_hour'], 2,",",".")}}</td>
+                                    <!--AHT-->          <td>{{number_format($dataArray['sum']['aht'], 0,",",".")}}</td>
+                                    <!--GeVo Sales-->   <td>{{$dataArray['sum']['dsl_saves']}}</td>
+                                    <!--GeVo CR-->      <td>{{number_format($dataArray['sum']['dsl_cr'], 2,",",".")}}%</td>
+                                    <!--Kürü Sales-->   <td>{{$dataArray['sum']['dsl_kuerue']}}</td>
+                                    <!--OptIn bez.-->   <td>{{$dataArray['sum']['optin_sum_payed']}}</td>
+                                    <!--OptIn Summe-->  <td>{{$dataArray['sum']['optin_calls_new']}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['optin_percentage'], 2,",",".")}}%</td>
+                                    <!--OptIn Möglich--><td>{{$dataArray['sum']['optin_calls_possible']}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['optin_possible_percentage'], 2,",",".")}}%</td>
+                                    <!--SaS Summe-->    <td>{{$dataArray['sum']['sas_orders']}}</td>
+                                    <!--in ‰-->         <td>{{number_format($dataArray['sum']['sas_promille'], 2,",",".")}}‰</td>
+                                    <!--RLZ Quote-->    <td>{{number_format($dataArray['sum']['rlz_plus_percentage'], 2,",",".")}}%</td>
+                                    <!--U. SR -->       <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_speedretention'], 2,",",".")}}€</td>
+                                    <!--U. Availbench--><td style="text-align: right;">{{number_format($dataArray['sum']['revenue_availbench'], 2,",",".")}}€</td>
+                                    <!--U. OptIn -->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_optin'], 2,",",".")}}€</td>
+                                    <!--U. Sales-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_sales'], 2,",",".")}}€</td>
+                                    <!--U. Gesamt-->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_sum'], 2,",",".")}}€</td>
+                                    <!--U. / bez.-->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_per_hour_paid'], 2,",",".")}}€</td>
+                                    <!--U. / prod.-->   <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_per_hour_productive'], 2,",",".")}}€</td>
+                                    <!--Kosten-->       <td style="text-align: right;">{{number_format($dataArray['sum']['pay_cost'], 2,",",".")}}€</td>
+                                    <!--U. Delta-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_delta'], 2,",",".")}}€</td>
+                                    </tr>
+                            </tfoot>
+                        </table>    
+                    </div>
+                </div>           
             </div>
         </div>
     </div>
     @endif     
+<!-- END PROJECT: DSL -->
+
+<!-- START PROJECT: MOBILE -->
+@if($defaultVariablesArray['project'] == '1u1_mobile_ret')
+    <div class="row">  
+        <div class="col-md-12">
+            <div class="max-main-container">
+                <div class="max-panel-title">
+                    Projektmeldung 1u1 Mobile Retention
+                </div>
+                <div class="max-panel-content">
+                    <div style="width: 100%;">
+                        <table class="max-table" id="dslMaTable" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Std. Bezahlt</th>
+                                    <th>Std. Produktiv</th>
+                                    <th>← in %</th>
+                                    <th>Std. Pause</th>
+                                    <th>← in %</th>
+                                    <th>Std. Krank</th>
+                                    <th>← in %</th>
+                                    <th>Std. Speedretention</th>
+                                    <th>∑ Calls</th>
+                                    <th>← / Stunde</th>
+                                    <th>AHT</th>
+                                    <th>∑ Calls SSC</th>
+                                    <th>∑ GeVo Saves SSC</th>
+                                    <th>← CR</th>
+                                    <th>∑ Calls BSC</th>
+                                    <th>∑ GeVo Saves BSC</th>
+                                    <th>← CR</th>
+                                    <th>∑ Calls Portale</th>
+                                    <th>∑ GeVo Saves Portale</th>
+                                    <th>← CR</th>
+                                    <th>∑ KüRü</th>
+                                    <th>∑ Saves</th>
+                                    <th>∑ bez. OptIn</th>
+                                    <th>∑ OptIn</th>
+                                    <th>← in %</th>
+                                    <th>∑ Mögliche OptIn</th>
+                                    <th>← in %</th>
+                                    <th>∑ SaS</th>
+                                    <th>← in ‰</th>
+                                    <th>RLZ+24 Quote</th>
+                                    <th><abbr title="Pro Std.: {{number_format($defaultVariablesArray['revenue_hour_speedretention'], 2, ',', '.')}}€">€ Speedretention</abbr></th>
+                                    <th>€ Availbench</th>
+                                    <th><abbr title="Call: {{number_format($defaultVariablesArray['optin_call'], 2, ',', '.')}}€&#010;Mail: {{number_format($defaultVariablesArray['optin_mail'], 2, ',', '.')}}€&#010;Print: {{number_format($defaultVariablesArray['optin_print'], 2, ',', '.')}}€&#010;SMS: {{number_format($defaultVariablesArray['optin_sms'], 2, ',', '.')}}€&#010;Verkehrsdaten: {{number_format($defaultVariablesArray['optin_traffic'], 2, ',', '.')}}€&#010;Nutzungsdaten: {{number_format($defaultVariablesArray['optin_usage'], 2, ',', '.')}}€">€ OptIn</abbr></th>
+                                    <th><abbr title="SSC: {{number_format($defaultVariablesArray['revenue_sale_mobile_ssc'], 2, ',', '.')}}€&#010;BSC: {{number_format($defaultVariablesArray['revenue_sale_mobile_bsc'], 2, ',', '.')}}€&#010;Portale: {{number_format($defaultVariablesArray['revenue_sale_mobile_ssc'], 2, ',', '.')}}€&#010;KüRü {{number_format($defaultVariablesArray['revenue_kuerue_mobile'], 2, ',', '.')}}€">€ Sales</abbr></th>
+                                    <th>€ Gesamt</th>
+                                    <th>€ / Std. bez.</th>
+                                    <th>€ / Std. prod.</th>
+                                    <th>€ MA Kosten</th>
+                                    <th>€ Delta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($dataArray['employees'] as $key => $employee)
+                                    <tr>
+                                    <!--Name-->         <td style="text-align: left;">{{$employee['full_name']}}</td>
+                                    <!--Std. bez.-->    <td>{{number_format($employee['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. prod.-->   <td>{{number_format($employee['productive_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--Pause-->        <td>{{number_format($employee['break_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['break_percentage'], 2,",",".")}}%</td>
+                                    <!--Krank-->        <td>{{number_format($employee['sick_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['sick_percentage'], 2,",",".")}}%</td>
+                                    <!--Std. SR-->      <td>{{number_format($employee['hours_speedretention'], 2,",",".")}}</td>
+                                    <!--Summe Calls-->  <td>{{$employee['mobile_calls_sum']}}</td>
+                                    <!--Pro Std.-->     <td>{{number_format($employee['calls_per_hour'], 2,",",".")}}</td>
+                                    <!--AHT-->          <td>{{number_format($employee['aht'], 0,",","")}}</td>
+                                    <!--Calls SSC-->    <td>{{$employee['mobile_calls_ssc']}}</td>
+                                    <!--SSC Sales-->    <td>{{$employee['mobile_saves_ssc']}}</td>
+                                    <!--GeVo CR-->      <td>{{number_format($employee['mobile_cr_ssc'], 2,",",".")}}%</td>
+                                    <!--Calls BSC-->    <td>{{$employee['mobile_calls_bsc']}}</td>
+                                    <!--BSC Sales-->    <td>{{$employee['mobile_saves_bsc']}}</td>
+                                    <!--GeVo CR-->      <td>{{number_format($employee['mobile_cr_bsc'], 2,",",".")}}%</td>
+                                    <!--Calls Portal--> <td>{{$employee['mobile_calls_portale']}}</td>
+                                    <!--Portale Sales--><td>{{$employee['mobile_saves_portale']}}</td>
+                                    <!--GeVo CR-->      <td>{{number_format($employee['mobile_cr_portale'], 2,",",".")}}%</td>
+                                    <!--Kürü Sales-->   <td>{{$employee['mobile_kuerue']}}</td>
+                                    <!--Alle Sales-->   <td>{{$employee['mobile_saves_sum']}}</td>
+                                    <!--OptIn bez.-->   <td>{{$employee['optin_sum_payed']}}</td>
+                                    <!--OptIn Summe-->  <td>{{$employee['optin_calls_new']}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['optin_percentage'], 2,",",".")}}%</td>
+                                    <!--OptIn Möglich--><td>{{$employee['optin_calls_possible']}}</td>
+                                    <!--in %-->         <td>{{number_format($employee['optin_possible_percentage'], 2,",",".")}}%</td>
+                                    <!--SaS Summe-->    <td>{{$employee['sas_orders']}}</td>
+                                    <!--in ‰-->         <td>{{number_format($employee['sas_promille'], 2,",",".")}}‰</td>
+                                    <!--RLZ Quote-->    <td>{{number_format($employee['rlz_plus_percentage'], 2,",",".")}}%</td>
+                                    <!--U. SR -->       <td style="text-align: right;">{{number_format($employee['revenue_speedretention'], 2,",","")}}€</td>
+                                    <!--U. Availbench--><td style="text-align: right;">{{number_format($employee['revenue_availbench'], 2,",","")}}€</td>
+                                    <!--U. OptIn -->    <td style="text-align: right;">{{number_format($employee['revenue_optin'], 2,",","")}}€</td>
+                                    <!--U. Sales-->     <td style="text-align: right;">{{number_format($employee['revenue_sales'], 2,",","")}}€</td>
+                                    <!--U. Gesamt-->    <td style="text-align: right;">{{number_format($employee['revenue_sum'], 2,",","")}}€</td>
+                                    <!--U. / bez.-->    <td style="text-align: right;">{{number_format($employee['revenue_per_hour_paid'], 2,",","")}}€</td>
+                                    <!--U. / prod.-->   <td style="text-align: right;">{{number_format($employee['revenue_per_hour_productive'], 2,",","")}}€</td>
+                                    <!--Kosten-->       <td style="text-align: right;">{{number_format($employee['pay_cost'], 2,",","")}}€</td>
+                                    <!--U. Delta-->     <td style="text-align: right;">{{number_format($employee['revenue_delta'], 2,",","")}}€</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr style="font-weight: bold; background-color: #ddd;">
+                                    <!--Name-->         <td>Summe</td>
+                                    <!--Std. bez.-->    <td>{{number_format($dataArray['sum']['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. prod.-->   <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--Pause-->        <td>{{number_format($dataArray['sum']['break_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['break_percentage'], 2,",",".")}}%</td>
+                                    <!--Krank-->        <td>{{number_format($dataArray['sum']['sick_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['sick_percentage'], 2,",",".")}}%</td>
+                                    <!--Std. SR-->      <td>{{number_format($dataArray['sum']['hours_speedretention'], 2,",",".")}}</td>
+                                    <!--Summe Calls-->  <td>{{$dataArray['sum']['mobile_calls_sum']}}</td>
+                                    <!--Pro Std.-->     <td>{{number_format($dataArray['sum']['calls_per_hour'], 2,",",".")}}</td>
+                                    <!--AHT-->          <td>{{number_format($dataArray['sum']['aht'], 0,",",".")}}</td>
+                                    <!--Calls SSC-->    <td>{{$dataArray['sum']['mobile_calls_ssc']}}</td>
+                                    <!--SSC Sales-->    <td>{{$dataArray['sum']['mobile_saves_ssc']}}</td>
+                                    <!--GeVo CR-->      <td>{{number_format($dataArray['sum']['mobile_cr_ssc'], 2,",",".")}}%</td>
+                                    <!--Calls BSC-->    <td>{{$dataArray['sum']['mobile_calls_bsc']}}</td>
+                                    <!--BSC Sales-->    <td>{{$dataArray['sum']['mobile_saves_bsc']}}</td>
+                                    <!--GeVo CR-->      <td>{{number_format($dataArray['sum']['mobile_cr_bsc'], 2,",",".")}}%</td>
+                                    <!--Calls Portal--> <td>{{$dataArray['sum']['mobile_calls_portale']}}</td>
+                                    <!--Portale Sales--><td>{{$dataArray['sum']['mobile_saves_portale']}}</td>
+                                    <!--GeVo CR-->      <td>{{number_format($dataArray['sum']['mobile_cr_portale'], 2,",",".")}}%</td>
+                                    <!--Kürü Sales-->   <td>{{$dataArray['sum']['mobile_kuerue']}}</td>
+                                    <!--Alle Sales-->   <td>{{$dataArray['sum']['mobile_saves_sum']}}</td>
+                                    <!--OptIn bez.-->   <td>{{$dataArray['sum']['optin_sum_payed']}}</td>
+                                    <!--OptIn Summe-->  <td>{{$dataArray['sum']['optin_calls_new']}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['optin_percentage'], 2,",",".")}}%</td>
+                                    <!--OptIn Möglich--><td>{{$dataArray['sum']['optin_calls_possible']}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['optin_possible_percentage'], 2,",",".")}}%</td>
+                                    <!--SaS Summe-->    <td>{{$dataArray['sum']['sas_orders']}}</td>
+                                    <!--in ‰-->         <td>{{number_format($dataArray['sum']['sas_promille'], 2,",",".")}}‰</td>
+                                    <!--RLZ Quote-->    <td>{{number_format($dataArray['sum']['rlz_plus_percentage'], 2,",",".")}}%</td>
+                                    <!--U. SR -->       <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_speedretention'], 2,",",".")}}€</td>
+                                    <!--U. Availbench--><td style="text-align: right;">{{number_format($dataArray['sum']['revenue_availbench'], 2,",",".")}}€</td>
+                                    <!--U. OptIn -->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_optin'], 2,",",".")}}€</td>
+                                    <!--U. Sales-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_sales'], 2,",",".")}}€</td>
+                                    <!--U. Gesamt-->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_sum'], 2,",",".")}}€</td>
+                                    <!--U. / bez.-->    <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_per_hour_paid'], 2,",",".")}}€</td>
+                                    <!--U. / prod.-->   <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_per_hour_productive'], 2,",",".")}}€</td>
+                                    <!--Kosten-->       <td style="text-align: right;">{{number_format($dataArray['sum']['pay_cost'], 2,",",".")}}€</td>
+                                    <!--U. Delta-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_delta'], 2,",",".")}}€</td>
+                                    </tr>
+                            </tfoot>
+                        </table>    
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+    @endif     
+<!-- END PROJECT: MOBILE -->
+
 </div>
-
-
-
-    
 @endsection
 
 @section('additional_js')

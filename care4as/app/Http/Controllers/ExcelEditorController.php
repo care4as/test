@@ -861,6 +861,8 @@ class ExcelEditorController extends Controller
         // $report->calls = $row[11];
         $insertarray[$i]['calls']  = $data[$i][11];
 
+        
+
         if($data[$i][9] !='Care4as Retention DSL Eggebek')
         {
           // $report->calls_smallscreen = $row[14];
@@ -900,7 +902,7 @@ class ExcelEditorController extends Controller
 
         // $report->Rabatt_Guthaben_Brutto_Mobile = $row[28];
         $insertarray[$i]['Rabatt_Guthaben_Brutto_Mobile'] = $data[$i][28];
-
+        $insertarray[$i]['orders_kuerue']  = $data[$i][50] + $data[$i][54];
         // $insertarray2[] = $insertarray;
       }
 
@@ -1027,8 +1029,6 @@ class ExcelEditorController extends Controller
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
 
-
-
       //validate $request
       $request->validate([
         'file' => 'required',
@@ -1068,6 +1068,8 @@ class ExcelEditorController extends Controller
         }
       }
 
+      //dd($fileArray);
+
       foreach($fileArray as $row) {
         if(count($header) == count($row)) {
           $availbenchArray[$i]['date_key'] = intval($row[0]);
@@ -1082,18 +1084,18 @@ class ExcelEditorController extends Controller
           $availbenchArray[$i]['availtime_summary'] = intval($row[9]);
           $availbenchArray[$i]['availtime_sec'] = intval($row[10]);
           $availbenchArray[$i]['handling_time_sec'] = intval($row[11]);
-          $availbenchArray[$i]['availtime_percent'] = doubleval($row[12]);
-          $availbenchArray[$i]['forecast_rate'] = doubleval($row[13]);
-          $availbenchArray[$i]['avail_bench'] = doubleval($row[14]);
+          $availbenchArray[$i]['availtime_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[12])));
+          $availbenchArray[$i]['forecast_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[13])));
+          $availbenchArray[$i]['avail_bench'] = floatval(str_replace(',', '.', str_replace('.', '', $row[14])));
           $availbenchArray[$i]['idp_done'] = intval($row[15]);
-          $availbenchArray[$i]['number_payed_calls'] = doubleval($row[16]);
-          $availbenchArray[$i]['price'] = doubleval($row[17]);
-          $availbenchArray[$i]['aht'] = doubleval($row[18]);
-          $availbenchArray[$i]['productive_minutes'] = doubleval($row[19]);
-          $availbenchArray[$i]['malus_interval'] = doubleval($row[20]);
-          $availbenchArray[$i]['malus_percent'] = doubleval($row[21]);
-          $availbenchArray[$i]['acceptance_rate'] = doubleval($row[22]);
-          $availbenchArray[$i]['total_costs_per_interval'] = doubleval($row[23]);
+          $availbenchArray[$i]['number_payed_calls'] = floatval(str_replace(',', '.', str_replace('.', '', $row[16])));
+          $availbenchArray[$i]['price'] = floatval(str_replace(',', '.', str_replace('.', '', $row[17])));
+          $availbenchArray[$i]['aht'] = floatval(str_replace(',', '.', str_replace('.', '', $row[18])));
+          $availbenchArray[$i]['productive_minutes'] = floatval(str_replace(',', '.', str_replace('.', '', $row[19])));
+          $availbenchArray[$i]['malus_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[20])));
+          $availbenchArray[$i]['malus_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[21])));
+          $availbenchArray[$i]['acceptance_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[22])));
+          $availbenchArray[$i]['total_costs_per_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[23])));
           $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
 
           if ($minDate == null) {
@@ -1155,6 +1157,239 @@ class ExcelEditorController extends Controller
             'max_date' => $maxDate,
           ]
         );
+      }
+      return redirect()->back();
+    }
+
+    public function availbenchReportKDW(Request $request){
+      //configure DB import settings
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+
+      //validate $request
+      $request->validate([
+        'file' => 'required',
+      ]);
+
+      $file = request()->file('file');  //save $request in variable
+
+      //convert .txt file to array
+      $file = file_get_contents($file);                         // Get the whole file as string
+      $file = mb_convert_encoding($file, 'UTF8', 'UTF-16LE');   // Convert the file to UTF8
+      $file = preg_split("/\R/", $file);                        // Split it by line breaks
+
+      $fileArray = array(); //initialize array
+
+      foreach ($file as $key => $line) {
+        $fileArray[$key] = str_getcsv($line, "\t");
+      };
+
+      $header = array_shift($fileArray);
+
+      $availbenchArray = array();
+      $i = 0;
+
+      //get datatables timespan
+      $dataTables = DB::table('datatables_timespan')
+      ->get()
+      ->toArray();
+
+      $minDate = null;
+      $maxDate = null;
+
+      foreach($dataTables as $key => $entry){
+        $entry = (array) $entry;
+        if ($entry['data_table'] == 'availbench_report'){
+          $minDate = date_create_from_format('Y-m-d', $entry['min_date']);
+          $maxDate = date_create_from_format('Y-m-d',$entry['max_date']);
+        }
+      }
+
+      //dd($fileArray);
+
+      foreach($fileArray as $row) {
+        if(count($header) == count($row)) {
+          if(intval($row[3]) == 54){
+            $availbenchArray[$i]['date_key'] = intval($row[0]);
+            $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
+            $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y G:i', $row[2]); //timestamp
+            $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
+            $availbenchArray[$i]['call_forecast_issue'] = $row[4];
+            $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
+            $availbenchArray[$i]['call_forecast_owner'] = $row[6];
+            $availbenchArray[$i]['forecast'] = intval($row[7]);
+            $availbenchArray[$i]['handled'] = intval($row[8]);
+            $availbenchArray[$i]['availtime_summary'] = intval($row[9]);
+            $availbenchArray[$i]['availtime_sec'] = intval($row[10]);
+            $availbenchArray[$i]['handling_time_sec'] = intval($row[11]);
+            $availbenchArray[$i]['availtime_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[12])));
+            $availbenchArray[$i]['forecast_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[13])));
+            $availbenchArray[$i]['avail_bench'] = floatval(str_replace(',', '.', str_replace('.', '', $row[14])));
+            $availbenchArray[$i]['idp_done'] = intval($row[15]);
+            $availbenchArray[$i]['number_payed_calls'] = floatval(str_replace(',', '.', str_replace('.', '', $row[16])));
+            $availbenchArray[$i]['price'] = floatval(str_replace(',', '.', str_replace('.', '', $row[17])));
+            $availbenchArray[$i]['aht'] = floatval(str_replace(',', '.', str_replace('.', '', $row[18])));
+            $availbenchArray[$i]['productive_minutes'] = floatval(str_replace(',', '.', str_replace('.', '', $row[19])));
+            $availbenchArray[$i]['malus_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[20])));
+            $availbenchArray[$i]['malus_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[21])));
+            $availbenchArray[$i]['acceptance_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[22])));
+            $availbenchArray[$i]['total_costs_per_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[23])));
+            $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
+  
+            if ($minDate == null) {
+              $minDate = $availbenchArray[$i]['date_date'];
+            } else if ($availbenchArray[$i]['date_date'] < $minDate){
+              $minDate = $availbenchArray[$i]['date_date'];
+            }
+  
+            if ($maxDate == null) {
+              $maxDate = $availbenchArray[$i]['date_date'];
+            } else if ($availbenchArray[$i]['date_date'] > $maxDate){
+              $maxDate = $availbenchArray[$i]['date_date'];
+            }
+            $i++;
+          } 
+        }
+      }
+
+      for ($i = 0; $i < count($availbenchArray); $i++){
+        //echo $availbenchArray[$i]['call_forecast_owner_key'].' - '.$availbenchArray[$i]['call_date_interval_start_time'].' - '.$i;
+        DB::table('availbench_report')->updateOrInsert(
+          [
+            'call_forecast_issue_key' => $availbenchArray[$i]['call_forecast_issue_key'],
+            'call_date_interval_start_time' => $availbenchArray[$i]['call_date_interval_start_time']
+          ],
+          [
+          'date_key' => $availbenchArray[$i]['date_key'],
+          'date_date' => $availbenchArray[$i]['date_date'],
+          'call_forecast_owner_key' => $availbenchArray[$i]['call_forecast_owner_key'],
+          'call_forecast_issue' => $availbenchArray[$i]['call_forecast_issue'],
+          'call_forecast_owner' => $availbenchArray[$i]['call_forecast_owner'],
+          'forecast' => $availbenchArray[$i]['forecast'],
+          'handled' => $availbenchArray[$i]['handled'],
+          'availtime_summary' => $availbenchArray[$i]['availtime_summary'],
+          'availtime_sec' => $availbenchArray[$i]['availtime_sec'],
+          'handling_time_sec' => $availbenchArray[$i]['handling_time_sec'],
+          'availtime_percent' => $availbenchArray[$i]['availtime_percent'],
+          'forecast_rate' => $availbenchArray[$i]['forecast_rate'],
+          'avail_bench' => $availbenchArray[$i]['avail_bench'],
+          'idp_done' => $availbenchArray[$i]['idp_done'],
+          'number_payed_calls' => $availbenchArray[$i]['number_payed_calls'],
+          'price' => $availbenchArray[$i]['price'],
+          'aht' => $availbenchArray[$i]['aht'],
+          'productive_minutes' => $availbenchArray[$i]['productive_minutes'],
+          'malus_interval' => $availbenchArray[$i]['malus_interval'],
+          'malus_percent' => $availbenchArray[$i]['malus_percent'],
+          'acceptance_rate' => $availbenchArray[$i]['acceptance_rate'],
+          'total_costs_per_interval' => $availbenchArray[$i]['total_costs_per_interval'],
+          'malus_approval_done' => $availbenchArray[$i]['malus_approval_done']
+          ]
+        );
+
+        DB::table('datatables_timespan')->updateOrInsert(
+          [
+            'data_table' => 'availbench_report',
+          ],
+          [
+            'min_date' => $minDate,
+            'max_date' => $maxDate,
+          ]
+        );
+      }
+      return redirect()->back();
+    }
+
+    public function dailyAgentCsvUpload(Request $request){
+      //configure DB import settings
+      DB::disableQueryLog();
+      ini_set('memory_limit', '-1');
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+
+      //validate $request
+      $request->validate([
+        'file' => 'required',
+      ]);
+
+      $file = request()->file('file');  //save $request in variable
+
+      $csv = array_map('str_getcsv', file($file));
+      $csv[0][0] = 'mydate';
+      array_pop($csv);
+      array_walk($csv, function(&$a) use ($csv) {
+        $a = array_combine($csv[0], $a);
+      });
+      array_shift($csv);
+
+      //get datatables timespan
+      $dataTables = DB::table('datatables_timespan')
+      ->get()
+      ->toArray();
+
+      $minDate = null;
+      $maxDate = null;
+      
+      foreach($dataTables as $key => $entry){
+        $entry = (array) $entry;
+        if ($entry['data_table'] == 'dailyAgent_report'){
+          $minDate = date_create_from_format('Y-m-d', $entry['min_date']);
+          $maxDate = date_create_from_format('Y-m-d',$entry['max_date']);
+        }
+      }
+
+      foreach($csv as $entry){
+        if($entry['agent_group_id'] == 772 || $entry['agent_group_id'] == 1253) {
+          // find date for datatables timespan min- and max- values
+          $date = date_create_from_format('Y-m-d', $entry['mydate']);
+
+          if ($minDate == null) {
+            $minDate = $date;
+          } else if ($date < $minDate){
+            $minDate = $date;
+          }
+
+          if ($maxDate == null) {
+            $maxDate = $date;
+          } else if ($date > $maxDate){
+            $maxDate = $date;
+          }
+
+          DB::table('datatables_timespan')->updateOrInsert(
+            [
+              'data_table' => 'dailyAgent_report',
+            ],
+            [
+              'min_date' => $minDate,
+              'max_date' => $maxDate,
+            ]
+          );
+
+          DB::table('dailyagent')->insertOrIgnore(
+            [
+              'start_time' => $entry['start_time'],
+              'agent_id' => $entry['agent_id'],
+              'status' => $entry['status'],
+              'date' => $date,
+              'kw' => $entry['kw'],
+              'dialog_call_id' => $entry['dialog_call_id'],
+              'agent_login_name' => $entry['agent_login_name'],
+              'agent_name' => $entry['agent_name'],
+              'agent_group_name' => $entry['agent_group_name'],
+              'agent_group_id' => $entry['agent_group_id'],
+              'agent_team_id' => $entry['agent_team_id'],
+              'agent_team_name' => $entry['agent_team_name'],
+              'queue_id' => $entry['queue_id'],
+              'queue_name' => $entry['queue_name'],
+              'skill_id' => $entry['skill_id'],
+              'skill_name' => $entry['skill_name'],          
+              'start_time' => $entry['start_time'],
+              'end_time' => $entry['end_time'],
+              'time_in_state' => $entry['time_in_state'],
+              'timezone' => $entry['timezone']         
+            ]
+          );
+        }
+        
       }
       return redirect()->back();
     }

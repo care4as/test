@@ -247,6 +247,9 @@ th
       <textarea name="content" class="printBorder" rows="8" cols="200" style="height: 300px; max-width: 100%"></textarea>
       </div>
     </div>
+    <div id="myChart" style="width: 100%; height: 500px;">
+
+    </div>
 
 </div>
 
@@ -254,6 +257,7 @@ th
 
 @endsection
 @section('additional_js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 <script>
   $(document).ready(function() {
     $(function () {
@@ -264,5 +268,22 @@ th
     // demo.initDashboardPageCharts();
 
   });
+
+  var ctx = document.getElementById('myChart');
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [1, 2, 3],
+        datasets: [{
+            data: [5, 6, 7],
+        }]
+    },
+    options: {
+        legend: {
+            display: true,
+            position: 'right',
+        },
+    }
+});
 </script>
 @endsection

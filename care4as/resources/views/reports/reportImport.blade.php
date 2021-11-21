@@ -92,18 +92,27 @@
                                         @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
                                     </tr>
-                                    <tr class="loadingerDA">
+                                    <tr class="dailyagent">
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
-                                        <td id="" >Daten werden geladen</td>
-                                        <td id=""></td>
+                                        @if(isset($refinedDataTables['dailyAgent_report']['min_date']))
+                                            <td>{{$refinedDataTables['dailyAgent_report']['min_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
+                                        @if(isset($refinedDataTables['dailyAgent_report']['max_date']))
+                                            <td>{{$refinedDataTables['dailyAgent_report']['max_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
                                     </tr>
+                                    <!--
                                     <tr id="dailyagentData" style="display:none;">
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
                                         <td id="dailyAgentStart">1</td>
                                         <td id="dailyAgentEnd">1</td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
-                                    </tr>
+                                    </tr> -->
                                     <tr class="loadingerOptin">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
                                         <td id="">Daten werden geladen</td>
@@ -132,7 +141,7 @@
                                         <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
                                         <td id="">Daten werden geladen</td>
                                         <td id=""></td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#retDetailsModal">Importieren</button></td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sasModal">Importieren</button></td>
                                     </tr>
                                     <tr id="SASDataStatus" style="display:none;">
                                         <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
@@ -187,38 +196,77 @@
                                     <thead>
                                         <tr>
                                             <th>Datum</th>
-                                            <th>Availbench</th>
-                                            <th>Daily Agent</th>
-                                            <th>OptIn</th>
-                                            <th>Retention Details</th>
-                                            <th>SaS</th>
+                                            <th>Availbench (DSL)</th>
+                                            <th>Availbench (Mobile)</th>
+                                            <th>Daily Agent (DSL)</th>
+                                            <th>Daily Agent (Mobile)</th>
+                                            <th>OptIn (DSL)</th>
+                                            <th>OptIn (Mobile)</th>
+                                            <th>Retention Details (DSL)</th>
+                                            <th>Retention Details (Mobile)</th>
+                                            <th>SaS (DSL)</th>
+                                            <th>SaS (Mobile)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($datatablesDates as $key => $entry)
                                         <tr style="text-align: center">
                                             <td>{{$key}}</td>
-                                            @if($entry['availbench'] == 'true')
+                                            <!-- Availench -->
+                                            @if($entry['availbench_dsl'] == 'true')
                                                 <td style='color: green; font-weight: 600;'>✓</td>
                                             @else
                                                 <td style='color: red; font-weight: 600;'>✗</td>
                                             @endif
-                                            @if($entry['daily_agent'] == 'true')
+                                            @if($entry['availbench_mobile'] == 'true')
                                                 <td style='color: green; font-weight: 600;'>✓</td>
                                             @else
                                                 <td style='color: red; font-weight: 600;'>✗</td>
                                             @endif
-                                            @if($entry['optin'] == 'true')
+
+                                            <!-- Daily Agent -->
+                                            @if($entry['daily_agent_dsl'] == 'true')
                                                 <td style='color: green; font-weight: 600;'>✓</td>
                                             @else
                                                 <td style='color: red; font-weight: 600;'>✗</td>
                                             @endif
-                                            @if($entry['retention_details'] == 'true')
+                                            @if($entry['daily_agent_mobile'] == 'true')
                                                 <td style='color: green; font-weight: 600;'>✓</td>
                                             @else
                                                 <td style='color: red; font-weight: 600;'>✗</td>
                                             @endif
-                                            @if($entry['sas'] == 'true')
+
+                                            <!-- OptIn -->
+                                            @if($entry['optin_dsl'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+                                            @if($entry['optin_mobile'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+
+                                            <!-- Retention Details -->
+                                            @if($entry['retention_details_dsl'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+                                            @if($entry['retention_details_mobile'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+
+                                            <!-- SAS -->
+                                            @if($entry['sas_dsl'] == 'true')
+                                                <td style='color: green; font-weight: 600;'>✓</td>
+                                            @else
+                                                <td style='color: red; font-weight: 600;'>✗</td>
+                                            @endif
+                                            @if($entry['sas_mobile'] == 'true')
                                                 <td style='color: green; font-weight: 600;'>✓</td>
                                             @else
                                                 <td style='color: red; font-weight: 600;'>✗</td>
@@ -253,6 +301,7 @@
 @endsection
 @section('additional_modal')
 <!-- Availbench -->
+<!-- ALT
 <div class="modal fade" id="availbenchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
@@ -283,26 +332,17 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
-                    <!-- DEBUG
+                    DEBUG
                     <form action="{{route('availbench.upload')}}" enctype="multipart/form-data" method="POST">
                     @csrf
                         <input type="file" name="file" id="file">
                         <button type="submit">Test</button>
                     </form>
-                    -->
+                    
                     <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
-                        <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="margin-top: 0px; margin-bottom: 16px; min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                        <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="margin-top: 0px; margin-bottom: 0px; min-height: 150px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
                             <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
-                        </div>
-                        <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 20px;">
-                            Import konfigurieren
-                        </div>
-                        <div style="display: grid; grid-template-columns: auto 1fr; grid-gap: 5px;">
-                            <div style="padding-right: 5px; align-self: center;">Blatt:</div>
-                            <div><input type="text" class="form-control" name="sheet" placeholder="Wert..." style="color: black;"></div>
-                            <div style="padding-right: 5px; align-self: center;">Zeile:</div>
-                            <div><input type="text" class="form-control" name="fromRow" placeholder="Wert..." style="color: black;"></div>
                         </div>
                 </div>
                         <div class="modal-footer" style="font-size: 14px;">
@@ -310,6 +350,98 @@
                             <button type="button" id="availbenchDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                         </div>
                     </form>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+<div class="modal fade" id="availbenchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="z-index: 500000;">
+        <div class="modal-content">
+          <div class="loaderDiv" id="loaderDiv1">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          </div>
+            <div class="modal-header ">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Availbench</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="app">
+                <div class="tab-pane">
+                    <div class="nav-tabs-navigation">
+                        <div class="nav-tabs-wrapper">
+                            <ul class="nav nav-tabs" data-tabs="tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#availbenchCare4as" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Upload Care4as (DSL)</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#availbenchKdw" data-toggle="tab" style="font-size: 16px; font-weight: bold;" style="font-size: 16px; font-weight: bold;">Upload KDW (Mobile)</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="availbenchCare4as">
+                            <div class="modal-body" style="font-size: 14px;">
+                                <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                                    Dateiformat
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiname: Ohne Konvention
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiformat: <i>.txt</i>
+                                </div>
+                                <div style="width: 100%;">
+                                    Hinweis: Die Datei, kann unverändert übernommen werden.
+                                </div>
+                                <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
+                                Datei auswählen
+                                </div>
+                                <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data" style="padding: 0;">
+                                @csrf
+                                    <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="margin-top: 0px; margin-bottom: 0px; min-height: 150px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                                        <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
+                                    </div>
+                                </div>
+                                    <div class="modal-footer" style="font-size: 14px;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
+                                        <button type="button" id="availbenchDropZoneSubmitter" class="btn btn-primary">Speichern</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <div class="tab-pane" id="availbenchKdw">
+                            <div class="modal-body" style="font-size: 14px;">
+                                <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                                    Dateiformat
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiname: Ohne Konvention
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiformat: <i>.txt</i>
+                                </div>
+                                <div style="width: 100%;">
+                                    Hinweis: Die Datei, kann unverändert übernommen werden.
+                                </div>
+                                <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
+                                Datei auswählen
+                                </div>
+                                <form action="{{route('availbenchKdw.upload')}}" class="dropzone" id="availbenchKdwDropzone" enctype="multipart/form-data" style="padding: 0;">
+                                @csrf
+                                    <div class="form-row dropzone-previews dz-default dz-message" id="availbenchKdwContainer" style="margin-top: 0px; margin-bottom: 0px; min-height: 150px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                                        <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
+                                    </div>
+                            </div>
+                                    <div class="modal-footer" style="font-size: 14px;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
+                                        <button type="button" id="availbenchKdwDropZoneSubmitter" class="btn btn-primary">Speichern</button>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -329,43 +461,91 @@
                 </button>
             </div>
             <div id="app">
-                <div class="modal-body" style="font-size: 14px;">
-                    <div style="width: 100%; font-size: 16px; font-weight: 600;">
-                        Dateiformat
+                <div class="tab-pane">
+                    <div class="nav-tabs-navigation">
+                        <div class="nav-tabs-wrapper">
+                            <ul class="nav nav-tabs" data-tabs="tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#dailyAgentCsv" data-toggle="tab" style="font-size: 16px; font-weight: bold;">CSV Upload</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#dailyAgentXlsx" data-toggle="tab" style="font-size: 16px; font-weight: bold;" style="font-size: 16px; font-weight: bold;">XLSX Upload</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div style="width: 100%;">
-                        Dateiname: <i>DAI_JJJJ_MM_TT</i>
-                    </div>
-                    <div style="width: 100%;">
-                        Dateiformat: <i>.xlsx</i> (übliche Excel Datei)
-                    </div>
-                    <div style="width: 100%;">
-                        Hinweis: Datei muss zu <i>Dateiname</i> umbenannt werden, Format bleibt unverändert.
-                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="dailyAgentCsv">
+                            <div class="modal-body" style="font-size: 14px;">
+                                <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                                    Dateiformat
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiname: <i>Keine Konvention</i>
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiformat: <i>.csv</i>
+                                </div>
+                                <div style="width: 100%;">
+                                    Hinweis: In Ordner <i>Agentenreporte</i> werden Dateien bereits im CSV Fortmat abgelegt. Ansonsten bei herunterladen das richtige Format auswählen.
+                                </div>
 
-                    <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
-                     Datei auswählen
-                    </div>
-                    <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="dailyAgentDropzone" enctype="multipart/form-data"  style="padding: 0;">
-                    @csrf
-                        <div class="form-row dropzone-previews dz-default dz-message" id="dailyAgentContainer" style="margin-top: 0px; margin-bottom: 16px; min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
-                            <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
-                        </div>
-                        <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 20px;">
-                            Import konfigurieren
-                        </div>
-                        <div style="display: grid; grid-template-columns: auto 1fr; grid-gap: 5px;">
-                            <div style="padding-right: 5px; align-self: center;">Blatt:</div>
-                            <div><input type="text" class="form-control" name="sheet" placeholder="Wert..." style="color: black;" value="1"></div>
-                            <div style="padding-right: 5px; align-self: center;">Zeile:</div>
-                            <div><input type="text" class="form-control" name="fromRow" placeholder="Wert..." style="color: black;" value="2"></div>
+                                <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
+                                Datei auswählen
+                                </div>
+                                <form action="{{route('dailyAgent.uploadCsv')}}" class="dropzone" id="dailyAgentDropzone" enctype="multipart/form-data"  style="padding: 0;">
+                                @csrf
+                                    <div class="form-row dropzone-previews dz-default dz-message" id="dailyAgentContainer" style="margin-top: 0px; margin-bottom: 0px; min-height: 150px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                                        <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
+                                    </div>
+                                </div>
+                                    <div class="modal-footer" style="font-size: 14px;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                                        <button type="button" id="dailyAgentDropZoneSubmitter" class="btn btn-primary">Speichern</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <div class="tab-pane" id="dailyAgentXlsx">
+                        <div class="modal-body" style="font-size: 14px;">
+                                <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                                    Dateiformat
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiname: <i>DAI_YYYY_MM_TT</i>
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiformat: <i>.xlsx</i> (übliche Excel Datei)
+                                </div>
+                                <div style="width: 100%;">
+                                    Hinweis: Die Datei muss unbedingt in den oben genannten Dateinamen umbenannt werden.
+                                </div>
+
+                                <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
+                                Datei auswählen
+                                </div>
+                                <form action="{{route('excel.dailyAgent.upload')}}" class="dropzone" id="dailyAgentXlsxDropzone" enctype="multipart/form-data"  style="padding: 0;">
+                                @csrf
+                                    <div class="form-row dropzone-previews dz-default dz-message" id="dailyAgentXlsxContainer" style="margin-top: 0px; margin-bottom: 16px; min-height: 100px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                                        <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
+                                    </div>
+                                    <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 20px;">
+                                        Import konfigurieren
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: auto 1fr; grid-gap: 5px;">
+                                        <div style="padding-right: 5px; align-self: center;">Blatt:</div>
+                                        <div><input type="text" class="form-control" name="sheet" placeholder="Wert..." style="color: black;" value="1"></div>
+                                        <div style="padding-right: 5px; align-self: center;">Zeile:</div>
+                                        <div><input type="text" class="form-control" name="fromRow" placeholder="Wert..." style="color: black;" value="2"></div>
+                                    </div>
+                                </div>
+                                    <div class="modal-footer" style="font-size: 14px;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                                        <button type="button" id="dailyAgentXlsxDropZoneSubmitter" class="btn btn-primary">Speichern</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                 </div>
-                        <div class="modal-footer" style="font-size: 14px;">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
-                            <button type="button" id="dailyAgentDropZoneSubmitter" class="btn btn-primary">Speichern</button>
-                        </div>
-                    </form>
             </div>
         </div>
     </div>
@@ -641,9 +821,8 @@ Dropzone.options.availbenchDropzone = {
     }
 };
 
-
-Dropzone.options.dailyAgentDropzone = {
-  previewsContainer: "#dailyAgentContainer",
+Dropzone.options.availbenchKdwDropzone = {
+  previewsContainer: "#availbenchKdwContainer",
   addRemoveLinks: true,
   dictDefaultMessage: 'test',
   dictFallbackMessage: 'Testmessage',
@@ -660,7 +839,112 @@ Dropzone.options.dailyAgentDropzone = {
 
       var myDropzone = this;
       // Update selector to match your button
+      document.querySelector("#availbenchKdwDropZoneSubmitter").addEventListener("click", function(e) {
+        if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
+          alert('keine Datei abgelegt')
+           throw new Error('keine Datei abgelegt');
+       }
+     // Make sure that the form isn't actually being sent.
+       e.preventDefault();
+       e.stopPropagation();
+       myDropzone.processQueue();
+       $('#loaderDiv1').css('display','flex');
+      });
+
+      this.on('error', function (file,errormessage, xhr, formData) {
+          // Append all form inputs to the formData Dropzone will POST
+          console.log(errormessage)
+          $('#failContent').html('Fehler: '+ errormessage.message)
+          $('#failFile').html('Datei: '+ errormessage.file)
+          $('#failLine').html('Line: '+ errormessage.line)
+          $('#failModal').modal('show')
+          $('#loaderDiv1').css('display','none');
+      });
+      this.on("success", function(file, response) {
+        // console.log(response)
+        this.removeFile(file)
+        $('#failContent').html('Die Datei wurde hochgeladen')
+        $('#successModal').modal('show')
+        $('#loaderDiv1').css('display','none');
+      });
+      this.on("complete", function(file) {
+
+      });
+    }
+};
+
+
+Dropzone.options.dailyAgentDropzone = {
+  previewsContainer: "#dailyAgentContainer",
+  addRemoveLinks: true,
+  dictDefaultMessage: 'test',
+  dictFallbackMessage: 'Testmessage',
+  paramName: "file", // The name that will be used to transfer the file
+  maxFilesize: 12000, // MB
+  // chunking:true,
+  dictRemoveFile: 'entfernen',
+  dictResponseError: null,
+  autoProcessQueue: false,
+  timeout: 1200000,
+  parallelUploads: 64,
+
+  init: function () {
+
+      var myDropzone = this;
+      // Update selector to match your button
       document.querySelector("#dailyAgentDropZoneSubmitter").addEventListener("click", function(e) {
+        if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
+          alert('keine Datei abgelegt')
+           throw new Error('keine Datei abgelegt');
+       }
+     // Make sure that the form isn't actually being sent.
+       e.preventDefault();
+       e.stopPropagation();
+       myDropzone.processQueue();
+       $('#loaderDiv2').css('display','flex');
+      });
+
+      this.on('error', function (file,errormessage, xhr, formData) {
+          // Append all form inputs to the formData Dropzone will POST
+          console.log(errormessage)
+          $('#failContent').html('Fehler: '+ errormessage.message)
+          $('#failFile').html('Datei: '+ errormessage.file)
+          $('#failLine').html('Line: '+ errormessage.line)
+          $('#failModal').modal('show')
+          $('#loaderDiv2').css('display','none');
+      });
+      this.on("success", function(file, response) {
+        // console.log(response)
+        this.removeFile(file)
+        $('#failContent').html('Die Datei wurde hochgeladen')
+        $('#successModal').modal('show')
+        $('#loaderDiv2').css('display','none');
+      });
+      this.on("complete", function(file) {
+        // this.removeAllFiles()
+      });
+    }
+};
+
+Dropzone.options.dailyAgentXlsxDropzone = {
+  previewsContainer: "#dailyAgentXlsxContainer",
+  addRemoveLinks: true,
+  dictDefaultMessage: 'test',
+  dictFallbackMessage: 'Testmessage',
+  paramName: "file", // The name that will be used to transfer the file
+  maxFilesize: 12000, // MB
+  // chunking:true,
+  dictRemoveFile: 'entfernen',
+  dictResponseError: null,
+  autoProcessQueue: false,
+  timeout: 1200000,
+  parallelUploads: 64,
+
+  init: function () {
+
+      var myDropzone = this;
+      // Update selector to match your button
+      document.querySelector("#dailyAgentXlsxDropZoneSubmitter").addEventListener("click", function(e) {
         if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
           alert('keine Datei abgelegt')
            throw new Error('keine Datei abgelegt');
