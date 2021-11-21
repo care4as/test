@@ -251,7 +251,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                             <a class="nav-link" href="#id{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;" style="font-size: 16px; font-weight: bold;">Auftraggeberinformation</a>
                         </li>
                         @endif
-                        @if(in_array('users_change_roll',Auth()->user()->getRights()) || in_array('users_reset_password',Auth()->user()->getRights()))
+                        @if(in_array('users_change_role',Auth()->user()->getRights()) || in_array('users_reset_password',Auth()->user()->getRights()))
                         <li class="nav-item">
                             <a class="nav-link" href="#administration{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Administration</a>
                         </li>
@@ -354,12 +354,12 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                 </div>
                 @endif
                 <!-- Administration -->
-                @if(in_array('users_change_roll',Auth()->user()->getRights()) || in_array('users_reset_password',Auth()->user()->getRights()))
+                @if(in_array('users_change_role',Auth()->user()->getRights()) || in_array('users_reset_password',Auth()->user()->getRights()))
                 <div class="tab-pane" id="administration{{$user['ds_id']}}">
                     <div class="nav-tabs-navigation">
                         <div class="nav-tabs-wrapper">
                             <ul class="nav nav-tabs" data-tabs="tabs">
-                                @if(in_array('users_change_roll',Auth()->user()->getRights()))
+                                @if(in_array('users_change_role',Auth()->user()->getRights()))
                                     <li class="nav-item">
                                         <a class="nav-link active" href="#roles{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Rollen und Rechte</a>
                                     </li>
@@ -374,7 +374,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                     </div>
                     <div class="tab-content">
                         <!-- Rollen und Rechte -->
-                        @if(in_array('users_change_roll',Auth()->user()->getRights()))
+                        @if(in_array('users_change_role',Auth()->user()->getRights()))
                         <div class="tab-pane active" id="roles{{$user['ds_id']}}">
                             <form action="{{route('userlist.updateUserRole')}}" method="post()" style="width: 100%">
                                 <div class="modal-body" style="font-size: 14px;">
