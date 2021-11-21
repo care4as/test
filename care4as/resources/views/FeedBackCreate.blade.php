@@ -23,7 +23,7 @@ td,th
         <label for="lead_by">Gespräch geführt mit:</label>
             <select name="with_user" class="form-control w-25" id="lead_by" aria-describedby="title" autocomplete="off" onchange="location = this.value;">
               @foreach($users as $user)
-                <option value="{{route('feedback.view' , ['userid' => $user->id])}}"  @if($user->id == request('userid')) selected @endif >{{$user->surname}} {{$user->lastname}}</option>
+                <option value="{{route('feedback.view' , ['userid' => $user->id])}}"  @if($user->id == request('userid')) selected @endif >{{$user->name}}</option>
               @endforeach
             </select>
       </div>

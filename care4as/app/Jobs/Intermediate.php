@@ -89,6 +89,8 @@ class Intermediate implements ShouldQueue
         );
       }
 
+      // dd('test2');
+
       foreach($users as $user)
       {
         if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->kdw_tracking_id)->first())
@@ -115,7 +117,7 @@ class Intermediate implements ShouldQueue
         else {
 
             $user->salesdata = $dslSalesData->where('agent_ds_id', $user->kdw_tracking_id)->first();
-            // dd($user);
+
             if($user->{'1u1_person_id'})
             {
               $insertarray[] = array(

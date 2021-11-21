@@ -353,4 +353,6 @@ use App\Http\Controllers\ControllingController;
   Route::get('/user/getUsersByIM/{department}', 'UserController@getUsersIntermediate')->name('user.byIM')->middleware('hasRight:dashboardAdmin');
 
   Route::get('/test', function(){
+
+    return view('test');
   })->name('test');

@@ -27,6 +27,7 @@ Vue.component('trackchart', require('./components/Tracker.vue').default);
 Vue.component('ptable', require('./components/performanceTable.vue').default);
 
 Vue.component('ptool', require('./components/pausetracker.vue').default);
+Vue.component('timetracker', require('./components/TimeTracking.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

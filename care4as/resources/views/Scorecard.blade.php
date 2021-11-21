@@ -242,7 +242,6 @@
           </form>
       </div>
       <div class="row justify-content-center">
-
         <button type="button" class="btn btn-primary rounded-circle" name="button" id="dropdwnbtnRD" onclick="showReportDiv('Sales')">
           <i class="fas fa-euro-sign"></i>
         </button>

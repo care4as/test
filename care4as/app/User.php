@@ -47,12 +47,14 @@ class User extends Authenticatable
       // echo $date1.' / '.$date2.'</br>';
       $query = \App\RetentionDetail::query();
 
-      if($this->person_id)
+      if($this->{'1u1_person_id'})
       {
-        $query->where('person_id',$this->person_id);
+        $query->where('person_id', $this->{'1u1_person_id'});
         $query->where('call_date','>=', $date1);
         $query->where('call_date','<=', $date2);
         $salesdata = $query->get();
+
+        // dd($salesdata);
         $calls = $salesdata->sum('calls');
         $savesssc = $salesdata->sum('orders_smallscreen');
         $calls_ssc = $salesdata->sum('calls_smallscreen');
@@ -65,12 +67,12 @@ class User extends Authenticatable
       }
 
       else {
-        if($this->surname)
+        if($this->name)
         {
-          abort(403,'user: '.$this->surname.' '.$this->lastname.' hat keine Personen ID');
+          abort(403,'user: '.$this->name.' hat keine Personen ID');
         }
         else {
-          abort(403,'user: '.$this->name.' hat keine Personen ID');
+          abort(403,'dieser user hat keine Personen ID');
         }
       }
 

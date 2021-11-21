@@ -38,7 +38,6 @@
         mounted() {
             console.log('PauseTool mounted.')
             var self = this;
-            console.log('ptable Component mounted.')
             self.getUsers()
             this.timer =
             setInterval(function()

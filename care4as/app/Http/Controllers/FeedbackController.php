@@ -26,13 +26,13 @@ class FeedbackController extends Controller
       $start_date = 1;
       $end_date = 1;
 
+      $userid = request('userid');
 
-      if($userid)
-      {
-          dd($userid);
-      }
-
-      $users = User::where('role','agent')->select('id','name')->get();
+      $users = User::where('role','agent')
+      ->where('status',1)
+      ->select('id','name')
+      ->orderBy('name')
+      ->get();
 
       $kw = date("W");
 
@@ -51,10 +51,8 @@ class FeedbackController extends Controller
       }
       // dd($end_date, $start_date);
 
-      $user = User::where('role','agent')
-      ->select('id','1u1_person_id','1u1_agent_id','project','ds_id')
+      $user = User::where('id',$userid)
       ->with(['dailyagent' => function($q) use ($start_date,$end_date){
-        $q->select(['id','agent_id','status','time_in_state','date']);
         if($start_date !== 1)
         {
           $datemod = Carbon::parse($start_date)->setTime(2,0,0);
@@ -101,6 +99,7 @@ class FeedbackController extends Controller
       // ->limit(10)
       ->first();
 
+      // dd($user);
       foreach($kws as $kwi)
       {
         $query = null;
@@ -124,7 +123,6 @@ class FeedbackController extends Controller
         else {
           $department = 'Care4as Retention DSL Eggebek';
         }
-
 
         $weekstats =  $user->retentionDetails
         ->where('call_date','>=', $start_date)
@@ -215,19 +213,22 @@ class FeedbackController extends Controller
       // dd($weekperformance);
       return view('FeedBackCreate', compact('users', 'user','weekperformance'));
     }
+
     public function print($userid = null)
     {
       DB::disableQueryLog();
       $year = Carbon::now()->year;
 
-      $users = User::where('role','agent')->select('id','surname','lastname')->get();
+      $users = User::where('role','agent')
+      ->where('status',1)
+      // ->select('id','name',)
+      ->get();
 
       if(request('userid'))
       {
-          // return 1;
+        // return 1;
         $userreport = User::where('id',request('userid'))->first();
         $kw = date("W");
-
         for ($i= 1 ; $i <= 4; $i++) {
          $kws[] = $kw - $i;
         }
@@ -247,6 +248,7 @@ class FeedbackController extends Controller
 
           $weekperformance[] = $userreport->getSalesDataInTimespan($start_date,$end_date);
 
+          // dd($userreport->getSalesDataInTimespan($start_date,$end_date));
           if($userreport->department == '1&1 Mobile Retention')
           {
             $department = 'Retention Mobile Inbound Care4as Eggebek';
@@ -255,16 +257,15 @@ class FeedbackController extends Controller
           {
             $department = 'Care4as Retention DSL Eggebek';
           }
-
           $queryDepartment = \App\RetentionDetail::query();
           $queryDepartment->where('department_desc',$department);
 
           $query2 = \App\DailyAgent::query();
 
-          if($userreport->agent_id)
+          if($userreport->{'1u1_agent_id'})
           {
             // return $userreport->agent_id;
-            $query2->where('agent_id', $userreport->agent_id);
+            $query2->where('agent_id', $userreport->{'1u1_agent_id'});
             $query2->where('date','>=', $start_date);
             $query2->where('date','<=', $end_date);
             $kwworkdata[$kwi] = $query2->get();
@@ -295,8 +296,9 @@ class FeedbackController extends Controller
             'portalTeam' => $portalTeam,
           );
         }
+
         // dd($teamweekperformance);
-        if($userreport->agent_id)
+        if($userreport->{'1u1_agent_id'})
         {
 
           foreach ($kwworkdata as $key => $DAweek) {

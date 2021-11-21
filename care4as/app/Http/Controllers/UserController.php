@@ -321,7 +321,10 @@ class UserController extends Controller
     }
     public function getSalesperformanceBetweenDates()
     {
+      //the values for the average cr in the timespan will be returned in this array
       $avgCRArray = array();
+      // revenue array, likewise
+      $revenuearray = array();
       // return response()->json(request('userid'));
       // return request('start');
 
@@ -392,9 +395,12 @@ class UserController extends Controller
           $sscArray[] = round($day->orders_smallscreen *100 / $day->calls_smallscreen,2);
         }
 
+        $revenue = $day->orders * 25;
+
         $timestamparray[] = $day->call_date->format('d.m.');
         $avgCRArray[] = $averageCR;
         $averageSSCCArray[] = $averageSSCCR;
+        $revenuearray[] = $revenue;
       }
 
       if(!isset($performanceArray))
