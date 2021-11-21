@@ -20,8 +20,13 @@ class FeedbackController extends Controller
       return view('FeedbackIndex', compact('feedbacks'));
     }
 
+    public function showfeedback(){
+      return view('FeedBackShowView');
+    }
+
     public function create11($userid = null)
     {
+      return view('FeedBackCreate');
       $year = Carbon::now()->year;
       $start_date = 1;
       $end_date = 1;
@@ -32,7 +37,7 @@ class FeedbackController extends Controller
           dd($userid);
       }
 
-      $users = User::where('role','agent')->select('id','surname','lastname','name')->get();
+      $users = User::where('role','agent')->select('id','name')->get();
 
       $kw = date("W");
 
@@ -52,7 +57,7 @@ class FeedbackController extends Controller
       // dd($end_date, $start_date);
 
       $user = User::where('role','agent')
-      ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
+      ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
       ->with(['dailyagent' => function($q) use ($start_date,$end_date){
         $q->select(['id','agent_id','status','time_in_state','date']);
         if($start_date !== 1)
@@ -114,11 +119,11 @@ class FeedbackController extends Controller
         $end_date->setISODate($year,$kwi,7)->format('Y-m-d');
         $end_date->setTime(23,59,59);
 
-        if($user->department == null)
+        if($user->project == null)
         {
           $department = null;
         }
-        else if($user->department == '1und1 Retention') {
+        else if($user->project == '1und1 Retention') {
           $department = 'Retention Mobile Inbound Care4as Eggebek';
         }
         else {

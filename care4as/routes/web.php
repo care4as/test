@@ -98,6 +98,7 @@ Route::get('/messageOfTheDay', function()
   Route::post('/report/dailyAgentUpload', 'ExcelEditorController@queueOrNot')->name('excel.dailyAgent.upload')->middleware('hasRight:importReports');
   Route::post('/report/ReportUploadDebug', 'ExcelEditorController@Debug')->name('excel.upload.debug')->middleware('hasRight:importReports');
   Route::post('/report/availbench', 'ExcelEditorController@availbenchReport')->name('availbench.upload')->middleware('hasRight:importReports');
+  Route::post('/report/availbenchKdw', 'ExcelEditorController@availbenchReportKdw')->name('availbenchKdw.upload')->middleware('hasRight:importReports');
   Route::post('/report/dailyAgentCsvUpload', 'ExcelEditorController@dailyAgentCsvUpload')->name('dailyAgent.uploadCsv')->middleware('hasRight:importReports');
 
   // Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
@@ -271,6 +272,7 @@ Route::get('/messageOfTheDay', function()
 
   //feedback
   Route::get('/feedback/print', 'FeedbackController@print')->name('feedback.print');
+  Route::get('/feedback/showfeedback', 'FeedbackController@showfeedback')->name('feedback.showfeedback');
   Route::get('/feedback/view', 'FeedbackController@create11')->name('feedback.view');
   Route::get('/feedback/index', 'FeedbackController@index')->name('feedback.myIndex');
   Route::post('/feedback/update', 'FeedbackController@update')->name('feedback.update');

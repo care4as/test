@@ -92,7 +92,7 @@
                                         @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
                                     </tr>
-                                    <tr class="availbench">
+                                    <tr class="dailyagent">
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
                                         @if(isset($refinedDataTables['dailyAgent_report']['min_date']))
                                             <td>{{$refinedDataTables['dailyAgent_report']['min_date']}}</td>
@@ -106,12 +106,13 @@
                                         @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
                                     </tr>
+                                    <!--
                                     <tr id="dailyagentData" style="display:none;">
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
                                         <td id="dailyAgentStart">1</td>
                                         <td id="dailyAgentEnd">1</td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
-                                    </tr>
+                                    </tr> -->
                                     <tr class="loadingerOptin">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
                                         <td id="">Daten werden geladen</td>
@@ -140,7 +141,7 @@
                                         <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
                                         <td id="">Daten werden geladen</td>
                                         <td id=""></td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#retDetailsModal">Importieren</button></td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sasModal">Importieren</button></td>
                                     </tr>
                                     <tr id="SASDataStatus" style="display:none;">
                                         <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
@@ -300,6 +301,7 @@
 @endsection
 @section('additional_modal')
 <!-- Availbench -->
+<!-- ALT
 <div class="modal fade" id="availbenchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
@@ -330,13 +332,13 @@
                     <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
                      Datei auswählen
                     </div>
-                    <!-- DEBUG
+                    DEBUG
                     <form action="{{route('availbench.upload')}}" enctype="multipart/form-data" method="POST">
                     @csrf
                         <input type="file" name="file" id="file">
                         <button type="submit">Test</button>
                     </form>
-                    -->
+                    
                     <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="margin-top: 0px; margin-bottom: 0px; min-height: 150px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
@@ -348,6 +350,98 @@
                             <button type="button" id="availbenchDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                         </div>
                     </form>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+<div class="modal fade" id="availbenchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="z-index: 500000;">
+        <div class="modal-content">
+          <div class="loaderDiv" id="loaderDiv1">
+            <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          </div>
+            <div class="modal-header ">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Availbench</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="app">
+                <div class="tab-pane">
+                    <div class="nav-tabs-navigation">
+                        <div class="nav-tabs-wrapper">
+                            <ul class="nav nav-tabs" data-tabs="tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#availbenchCare4as" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Upload Care4as (DSL)</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#availbenchKdw" data-toggle="tab" style="font-size: 16px; font-weight: bold;" style="font-size: 16px; font-weight: bold;">Upload KDW (Mobile)</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="availbenchCare4as">
+                            <div class="modal-body" style="font-size: 14px;">
+                                <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                                    Dateiformat
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiname: Ohne Konvention
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiformat: <i>.txt</i>
+                                </div>
+                                <div style="width: 100%;">
+                                    Hinweis: Die Datei, kann unverändert übernommen werden.
+                                </div>
+                                <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
+                                Datei auswählen
+                                </div>
+                                <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data" style="padding: 0;">
+                                @csrf
+                                    <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="margin-top: 0px; margin-bottom: 0px; min-height: 150px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                                        <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
+                                    </div>
+                                </div>
+                                    <div class="modal-footer" style="font-size: 14px;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
+                                        <button type="button" id="availbenchDropZoneSubmitter" class="btn btn-primary">Speichern</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <div class="tab-pane" id="availbenchKdw">
+                            <div class="modal-body" style="font-size: 14px;">
+                                <div style="width: 100%; font-size: 16px; font-weight: 600;">
+                                    Dateiformat
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiname: Ohne Konvention
+                                </div>
+                                <div style="width: 100%;">
+                                    Dateiformat: <i>.txt</i>
+                                </div>
+                                <div style="width: 100%;">
+                                    Hinweis: Die Datei, kann unverändert übernommen werden.
+                                </div>
+                                <div style="width: 100%; font-size: 16px; font-weight: 600; margin-top: 16px;">
+                                Datei auswählen
+                                </div>
+                                <form action="{{route('availbenchKdw.upload')}}" class="dropzone" id="availbenchKdwDropzone" enctype="multipart/form-data" style="padding: 0;">
+                                @csrf
+                                    <div class="form-row dropzone-previews dz-default dz-message" id="availbenchKdwContainer" style="margin-top: 0px; margin-bottom: 0px; min-height: 150px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
+                                        <p class="w-100 text-center" style="margin-bottom: 0;">Ziehe Dateien in dieses Fenster oder klicke darauf.</p>
+                                    </div>
+                            </div>
+                                    <div class="modal-footer" style="font-size: 14px;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
+                                        <button type="button" id="availbenchKdwDropZoneSubmitter" class="btn btn-primary">Speichern</button>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -694,6 +788,58 @@ Dropzone.options.availbenchDropzone = {
       var myDropzone = this;
       // Update selector to match your button
       document.querySelector("#availbenchDropZoneSubmitter").addEventListener("click", function(e) {
+        if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
+          alert('keine Datei abgelegt')
+           throw new Error('keine Datei abgelegt');
+       }
+     // Make sure that the form isn't actually being sent.
+       e.preventDefault();
+       e.stopPropagation();
+       myDropzone.processQueue();
+       $('#loaderDiv1').css('display','flex');
+      });
+
+      this.on('error', function (file,errormessage, xhr, formData) {
+          // Append all form inputs to the formData Dropzone will POST
+          console.log(errormessage)
+          $('#failContent').html('Fehler: '+ errormessage.message)
+          $('#failFile').html('Datei: '+ errormessage.file)
+          $('#failLine').html('Line: '+ errormessage.line)
+          $('#failModal').modal('show')
+          $('#loaderDiv1').css('display','none');
+      });
+      this.on("success", function(file, response) {
+        // console.log(response)
+        this.removeFile(file)
+        $('#failContent').html('Die Datei wurde hochgeladen')
+        $('#successModal').modal('show')
+        $('#loaderDiv1').css('display','none');
+      });
+      this.on("complete", function(file) {
+
+      });
+    }
+};
+
+Dropzone.options.availbenchKdwDropzone = {
+  previewsContainer: "#availbenchKdwContainer",
+  addRemoveLinks: true,
+  dictDefaultMessage: 'test',
+  dictFallbackMessage: 'Testmessage',
+  paramName: "file", // The name that will be used to transfer the file
+  maxFilesize: 120, // MB
+  // chunking:true,
+  dictRemoveFile: 'entfernen',
+  dictResponseError: null,
+  autoProcessQueue: false,
+  timeout: 1200000,
+  parallelUploads: 10,
+
+  init: function () {
+
+      var myDropzone = this;
+      // Update selector to match your button
+      document.querySelector("#availbenchKdwDropZoneSubmitter").addEventListener("click", function(e) {
         if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
           alert('keine Datei abgelegt')
            throw new Error('keine Datei abgelegt');

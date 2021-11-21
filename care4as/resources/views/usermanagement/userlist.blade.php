@@ -210,7 +210,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                                 <td>{{$user['leave_date']}}</td>
                                 <td>{{$user['ds_id']}}</td>
                                 @if($defaultVariables['project'] == '1und1 Retention')
-                                <td>{{$user['kdw_tracking_id']}}</td>´
+                                <td>{{$user['kdw_tracking_id']}}</td>
                                 @endif
                                 <td>{{$user['1u1_person_id']}}</td>
                                 <td>{{$user['1u1_agent_id']}}</td>
