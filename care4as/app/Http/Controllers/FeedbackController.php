@@ -33,20 +33,11 @@ class FeedbackController extends Controller
 
       $userid = request('userid');
 
-<<<<<<< HEAD
       $users = User::where('role','agent')
       ->where('status',1)
       ->select('id','name')
       ->orderBy('name')
       ->get();
-=======
-      if($userid)
-      {
-          dd($userid);
-      }
-
-      $users = User::where('role','agent')->select('id','name')->get();
->>>>>>> 88a9c3d69315c73939c246c4146e82956484a768
 
       $kw = date("W");
 
@@ -65,12 +56,7 @@ class FeedbackController extends Controller
       }
       // dd($end_date, $start_date);
 
-<<<<<<< HEAD
       $user = User::where('id',$userid)
-=======
-      $user = User::where('role','agent')
-      ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
->>>>>>> 88a9c3d69315c73939c246c4146e82956484a768
       ->with(['dailyagent' => function($q) use ($start_date,$end_date){
         if($start_date !== 1)
         {
