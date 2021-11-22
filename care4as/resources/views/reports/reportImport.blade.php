@@ -98,7 +98,12 @@
                                         <td id=""></td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
                                     </tr>
-
+                                    <tr class="loadingerDA" >
+                                        <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
+                                        <td id="">Daten werden geladen</td>
+                                        <td id=""></td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
+                                    </tr>
                                     <tr id="dailyagentData" style="display:none;">
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
                                         <td id="dailyAgentStart">1</td>
