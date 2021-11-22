@@ -92,33 +92,20 @@
                                         @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
                                     </tr>
-                                    <tr class="dailyagent">
-                                        <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
-                                        @if(isset($refinedDataTables['dailyAgent_report']['min_date']))
-                                            <td>{{$refinedDataTables['dailyAgent_report']['min_date']}}</td>
-                                        @else
-                                            <td>Keine Daten verfügbar</td>
-                                        @endif
-                                        @if(isset($refinedDataTables['dailyAgent_report']['max_date']))
-                                            <td>{{$refinedDataTables['dailyAgent_report']['max_date']}}</td>
-                                        @else
-                                            <td>Keine Daten verfügbar</td>
-                                        @endif
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
-                                    </tr>
-                                    <!--
-                                    <tr id="dailyagentData" style="display:none;">
-                                        <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
-                                        <td id="dailyAgentStart">1</td>
-                                        <td id="dailyAgentEnd">1</td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
-                                    </tr> -->
-                                    <tr class="loadingerOptin">
+                                    <tr class="loadingerDA">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
                                         <td id="">Daten werden geladen</td>
                                         <td id=""></td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
                                     </tr>
+
+                                    <tr id="dailyagentData" style="display:none;">
+                                        <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
+                                        <td id="dailyAgentStart">1</td>
+                                        <td id="dailyAgentEnd">1</td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
+                                    </tr>
+
                                     <tr id="OptinDataStatus" style="display:none;">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
                                         <td id="optinStart">1</td>
@@ -297,7 +284,6 @@
     </div>
 </div>
 
-
 @endsection
 @section('additional_modal')
 <!-- Availbench -->
@@ -338,7 +324,7 @@
                         <input type="file" name="file" id="file">
                         <button type="submit">Test</button>
                     </form>
-                    
+
                     <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="margin-top: 0px; margin-bottom: 0px; min-height: 150px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">
