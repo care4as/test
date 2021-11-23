@@ -7,10 +7,11 @@
 @section('additional_css')
 <link href="{{asset('css/dropzone.min.css')}}" rel="stylesheet" />
 <style media="screen">
-  .loadingerDA, .loadingerAB, .loadingerRD
+  .loadingerDA, .loadingerAB, .loadingerRD,.loadingerOptin,.loadingerSAS
   {
     animation: blink 2s infinite;
   }
+
   @keyframes blink {
   from {color: black;}
   to {color: white;}
@@ -92,12 +93,6 @@
                                         @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
                                     </tr>
-                                    <tr class="loadingerDA">
-                                        <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
-                                        <td id="">Daten werden geladen</td>
-                                        <td id=""></td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
-                                    </tr>
                                     <tr class="loadingerDA" >
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
                                         <td id="">Daten werden geladen</td>
@@ -110,7 +105,12 @@
                                         <td id="dailyAgentEnd">1</td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
                                     </tr>
-
+                                    <tr class="loadingerOptin">
+                                        <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
+                                        <td id="">Daten werden geladen</td>
+                                        <td id=""></td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
+                                    </tr>
                                     <tr id="OptinDataStatus" style="display:none;">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
                                         <td id="optinStart">1</td>
