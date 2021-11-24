@@ -296,7 +296,7 @@ use App\Http\Controllers\ControllingController;
   //endeobmail
 
   //Presentation
-  Route::get('/1u1_deckungsbeitrag', 'HomeController@presentation')->name('1u1_deckungsbeitrag')->middleware('hasRight:importReports');
+  Route::get('/1u1_deckungsbeitrag', 'HomeController@presentation')->name('1u1_deckungsbeitrag')->middleware('hasRight:1u1_db');
   //endpresentation
 
   //inventory

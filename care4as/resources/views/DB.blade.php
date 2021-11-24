@@ -349,19 +349,19 @@
 
 
       <div class="auswahl">
-      @if(in_array('dashboard',Auth()->user()->getRights()))
-        <div class="subauswahl aktiv" id="allData">
-          Alle Daten
-        </div>
-        <div class="subauswahl" id="teamleiterview" >
-          Teamleiterdaten
-        </div>
-        <div class="subauswahl"  id="crview" >
-          CR Daten
-        </div>
-        <div class="subauswahl"  id="timesview">
-          Zeit Daten
-        </div>
+        @if(in_array('dashboard',Auth()->user()->getRights()))
+          <div class="subauswahl aktiv" id="allData">
+            Alle Daten
+          </div>
+          <div class="subauswahl" id="teamleiterview" >
+            Teamleiterdaten
+          </div>
+          <div class="subauswahl"  id="crview" >
+            CR Daten
+          </div>
+          <div class="subauswahl"  id="timesview">
+            Zeit Daten
+          </div>
         @endif
         <div class="subauswahl" id="performanceShort" >
           KPI´s übersichtlich
