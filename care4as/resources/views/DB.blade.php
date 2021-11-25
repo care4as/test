@@ -348,7 +348,7 @@
       @endphp
 
       <div class="auswahl">
-        @if(in_array('statistics111',Auth()->user()->getRights()))
+        @if(in_array('statistics',Auth()->user()->getRights()))
           <div class="subauswahl aktiv" id="allData">
             Alle Daten
           </div>
