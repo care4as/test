@@ -23,7 +23,7 @@ td,tr,table
 
 #dailyQuota
 {
-  height: 300px !important;
+  height: 90% !important;
   color:white !important;
 }
 .f1{

@@ -90,14 +90,14 @@
     </div>
     <div class="row mt-4 center_items " style="">
       <div class="col-10 p-0 bg-light center_items " style="min-height: 50vh;border-radius: 25px;">
-        <div class="row m-0" style="min-height: 45vh;">
-          <div class="col-md bg-white shadow " style="transform: rotateY(-15deg);">
+        <div class="row m-0 w-100" style="min-height: 45vh;">
+          <div class="col-md bg-white shadow" style="transform: rotateY(-15deg);">
             <div class="row center_items">
               <h5>Liveticker Teamquote</h5>
             </div>
-            <div class="row">
-              <div class="col-12 center_items" id="chartcontainer" style="width: 90%;">
-                <canvas id="dailyQuota" style="height: 90%; width: 90%;"></canvas>
+            <div class="row h-75">
+              <div class="col-12 center_items " id="chartcontainer" style="width: 90%;">
+                <canvas id="dailyQuota" style="height: 90% !important; width: 90%;"></canvas>
               </div>
             </div>
           </div>
@@ -186,6 +186,7 @@
           optins: 0,
           department: 'Mobile',
           timer: null,
+          testdata: [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:01","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]],
         }
       },
       mounted() {
@@ -332,9 +333,11 @@
 
         },
         getDailyQouta(dep){
+
           var host = window.location.host;
           let department = dep
-
+          let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:01","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
+          this.createChart('dailyQuota', testarray)
           // axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
           axios.get('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
@@ -347,6 +350,7 @@
             function (err) {
               console.log('error DQ')
               console.log(err.response);
+
             })
           },
         createChart(chartId, chartData) {
