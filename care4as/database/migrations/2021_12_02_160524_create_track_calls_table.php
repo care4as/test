@@ -17,6 +17,7 @@ class CreateTrackCallsTable extends Migration
             $table->id();
             $table->integer('calls');
             $table->integer('user_id');
+            $table->text('category');
             $table->timestamps();
         });
     }
