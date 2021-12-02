@@ -1,30 +1,70 @@
 <template>
-    <div class="container bg-light">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+    <div class="d-flex bg-light" style="border-radius: 15px; width: 20em !important;">
+        <div class="row center_items h-100 m-3" >
+            <div class="col">
                 <div class="row">
-                  <h5>Zeiterfassung</h5>
+                  <div class="col-4 p-3 center_items bg-test5" style="position:relative;">
+                    <div class="" style="position: absolute; ">
+                      <p>Verfügbar</p>
+                    </div>
+                    <button @click="changeStatus('Verfügbar')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="fas fa-play fa-2x"></i></button>
+                  </div>
+                  <div class="col-4 p-3 center_items bg-test8" style="position:relative;">
+                    <div class="" style="position: absolute; top: 5px; ">
+                      Langpause
+                      <p></p>
+                    </div>
+                    <button @click="changeStatus('Kurzpause')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="fas fa-play fa-2x"></i></button>
+                  </div>
+                  <div class="col-4 p-3 center_items bg-test3" style="position:relative;">
+                    <div class="" style="position: absolute;">
+                      <p>Kurzpause <br>
+                        Rauchen, WC</p>
+                    </div>
+                    <button @click="changeStatus('Verfügbar')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="fas fa-play fa-2x"></i></button>
+                  </div>
+                  <div class="col-4 p-3 center_items bg-test4" style="position:relative;">
+                    <div class="" style="position: absolute;">
+                      Meeting
+                    </div>
+                    <button @click="changeStatus('Meeting')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="fas fa-play fa-2x"></i></button>
+                  </div>
+                  <div class="col-4 p-3 center_items bg-test2" style="position:relative;">
+                    <div class="" style="position: relative;overflow:hidden;height: 100px; width:100px; border-radius:50%; border: solid white 3px;">
+                      <div class="bg-danger center_items" id="progress" style="">
+                        {{this.progress}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4 p-3 center_items bg-test9" style="position:relative;">
+                    <div class="" style="position: absolute;">
+                      In Schulung
+                    </div>
+                    <button @click="changeStatus('In Schulung')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="fas fa-play fa-2x"></i></button>
+                  </div>
+                  <div class="col-4 p-3 center_items bg-test1" style="position:relative;">
+                    <div class="" style="position: absolute;">
+                      Systemausfall
+                    </div>
+                    <button @click="changeStatus('Verfügbar')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="fas fa-play fa-2x"></i></button>
+                  </div>
+                  <div class="col-4 p-3 center_items bg-test7" style="position:relative;">
+                    <div class="" style="position: absolute;">
+                      test
+                    </div>
+                    <button @click="changeStatus('Verfügbar')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="fas fa-play fa-2x"></i></button>
+                  </div>
+                  <div class="col-4 p-3 center_items bg-test6">
+                    <div class="" style="position: absolute;">
+                      Adios Care4as!
+                    </div>
+                    <button @click="changeStatus('Feierabend')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="far fa-stop-circle fa-2x"></i></button>
+                  </div>
                 </div>
-                <hr>
                 <div class="row">
                   Im Status {{this.status}} seit {{duration}} Minuten
                 </div>
-                <div class="row">
-                  <div class="col-md">
-                    <button @click="changeStatus('Verfügbar')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="fas fa-play fa-2x"></i></button>
-                  </div>
-                  <div class="col-md">
-                    <button @click="changeStatus('Feierabend')" type="button" name="button" class="btn-primary rounded-circle p-3 d-flex justify-content-center"><i class="far fa-stop-circle fa-2x"></i></button>
-                  </div>
-                  <div class="col-md">
-                    <select class="custom-select" id="status">
-                     <option selected>Achtung beim Klicken</option>
-                     <option value="1" @click="changeStatus('Kurzpause')">Kurzpause</option>
-                     <option value="2" @click="changeStatus('Langpause')">Langpause</option>
-                     <option value="3" @click="changeStatus('Meeting')">Meeting</option>
-                   </select>
-                  </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -32,6 +72,7 @@
 
 <script>
     export default {
+
       data(){
         return{
           user: '',
@@ -39,6 +80,8 @@
           status: 'test',
           status_start: 1,
           duration: '',
+          progress: 0,
+          duty: 8,
         }
       },
       mounted() {
@@ -56,6 +99,7 @@
           if(status !== 'Feierabend')
           {
             setInterval(this.calcTimeDifference, 1000);
+            setInterval(this.updateProgress, 1000);
             this.status = status
           }
           else
@@ -66,6 +110,21 @@
           }
 
           //count up the time
+        },
+        updateProgress()
+        {
+          let rest = (((this.duty*60)/100) * this.progress)
+           // (this.progress/100)
+
+          let a = this.duration.split(':'); // split it at the colons
+          // minutes are worth 60 seconds. Hours are worth 60 minutes.
+          var diff = rest - ((+a[0]) * 60 + (+a[1]));
+          let percent = Math.round((diff/rest) * 100,2)
+          // let percent = diff/duty
+          this.progress = percent
+          $('#progress').height(100 - percent)
+
+          console.log((this.duty*60)/100)
         },
         calcTimeDifference()
         {
@@ -98,3 +157,17 @@
     }
     }
 </script>
+<style media="screen">
+  .btn-primary
+  {
+    z-index: 20;
+    opacity: 0.1 !important;
+  }
+  .btn-primary:hover
+  {
+
+      opacity: 1 !important;;
+
+  }
+
+  </style>

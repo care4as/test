@@ -73,11 +73,9 @@ use App\Http\Controllers\ControllingController;
   Route::get('/offlineTracking/index', 'CancelController@index')->name('cancels.index')->middleware('hasRight:analyzeCancels');
   Route::post('/offlineTracking/save', 'OfflineCancelController@store')->name('offlineTracking.save')->middleware('hasRight:createCancels');
   //end offlinetracking
-
   //dashboard
   Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard')->middleware('hasRight:dashboard');
   //enddashboard
-
   //Report Routes
   Route::view('/report/retention/', 'reports.RetentionDetailsReport')->name('reports.report')->middleware('hasRight:importReports');
   Route::get('/report/hoursreport/update', 'ReportController@updateHoursReport')->name('reports.reportHours.update')->middleware('hasRight:importReports');
@@ -355,7 +353,5 @@ use App\Http\Controllers\ControllingController;
   Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersbyDep')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
   Route::get('/user/getUsersByIM/{department}', 'UserController@getUsersIntermediate')->name('user.byIM')->middleware('hasRight:dashboardAdmin');
 
-  Route::get('/test', function(){
-
-    return view('test');
-  })->name('test');
+  Route::get('/test', 'AgentTrackingController@store')->name('test');
+  Route::get('/test2', 'AgentTrackingController@AdminIndex')->name('test');

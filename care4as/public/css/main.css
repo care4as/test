@@ -9,6 +9,14 @@ body
       /* font-family: 'Actor'; */
       font-size: 1.2rem;
     }
+    #worktimeconsole
+    {
+      display: none;
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      z-index: 5000;
+    }
     .tablespacing
     {
       border-collapse: separate;
@@ -17,6 +25,52 @@ body
     .dropzone{
       background: none !important;
       border: none !important;
+    }
+    .bg-test9
+    {
+      background: #8e9eab;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    }
+    .bg-test8
+    {
+      background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+    }
+    .bg-test7
+    {
+      background-image: linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%);
+    }
+    .bg-test6
+    {
+      background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
+    }
+    .bg-test9
+    {
+      background: #314755;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #26a0da, #314755);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #26a0da, #314755); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    }
+    .bg-test5
+    {
+      background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+    }
+    .bg-test4
+    {
+      background-image: linear-gradient(to right, #0acffe 0%, #495aff 100%);
+    }
+    .bg-test3
+    {
+      background-image: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);
+    }
+    .bg-test2
+    {
+      background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+    }
+    .bg-test1
+    {
+      background-image: linear-gradient(to top, #0c3483 0%, #a2b6df 100%, #6b8cce 100%, #a2b6df 100%);
     }
     .bg-cool
     {

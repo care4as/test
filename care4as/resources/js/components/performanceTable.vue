@@ -157,7 +157,7 @@
       <div class="dropdown-menu">
         <div class="d-flex center_items m-2">
           <button type="button" name="button" class="p-2 m-2 iconbutton" @click="changeDepartment('Mobile')"><i class="fas fa-mobile-alt fa-7x"></i></button>
-          <button type="button" name="button" class="p-2 m-2 iconbutton" @click="changeDepartment('DSL')"><i class="fas fa-yin-yang fa-7x"></i></button>
+          <button type="button" name="button" class="p-2 m-2 iconbutton" @click="changeDepartment('DSL')"><i class="fas fa-desktop fa-7x"></i></button>
         </div>
       </div>
     </div>

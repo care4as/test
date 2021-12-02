@@ -38,3 +38,6 @@ Vue.component('timetracker', require('./components/TimeTracking.vue').default);
 const app = new Vue({
     el: '#app',
 });
+const app2 = new Vue({
+    el: '#worktimeconsole',
+});
