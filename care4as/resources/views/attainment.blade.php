@@ -27,6 +27,16 @@
                                                 @else
                                                     <option value="dsl_forecast_attainment">DSL Forecasterfüllung</option>
                                                 @endif
+                                                @if($defaultVariablesArray['attainment'] == 'dsl_employee_surcharge')
+                                                    <option selected value="dsl_employee_surcharge">MA Stundenuschlag</option>
+                                                @else
+                                                    <option value="dsl_employee_surcharge">MA Stundenzuschlag</option>
+                                                @endif
+                                                @if($defaultVariablesArray['attainment'] == 'mobile_employee_surcharge')
+                                                    <option selected value="mobile_employee_surcharge">MA Stundenuschlag</option>
+                                                @else
+                                                    <option value="mobile_employee_surcharge">MA Stundenzuschlag</option>
+                                                @endif
                                             </select>
                                         </div>
                                     </div>
@@ -334,6 +344,40 @@
         </div>        
         @endif
         <!-- END DSL FORECASTERFÜLLUNG -->
+
+        <!-- MA DSL STUNDENZUSCHLAG -->
+        @if($defaultVariablesArray['attainment'] == 'dsl_employee_surcharge')
+        <div class="row">
+            <div class="col-md-12">
+                <div class="max-main-container">
+                    <div class="max-panel">
+                        <div class="max-panel-title">MA Stundenzuschlag</div>
+                        <div class="max-panel-content">
+                            <table class="max-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Wert</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>Summe</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                          
+                </div>
+            </div>
+        </div>        
+        @endif
+        <!-- END MA STUNDENZUSCHLAG -->
 
 
     </div>

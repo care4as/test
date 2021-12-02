@@ -58,6 +58,9 @@
         @php
           Auth()->user()->getRights();
         @endphp
+        <div id="time-container" style="width: 100%">
+
+        </div>
         <ul class="nav" style="margin-bottom: 15px;">
           <li><div class="logo bg-white m-2" style="border-radius: 20px;">
             <a href="text-muted" class="simple-text logo-normal">
@@ -109,6 +112,7 @@
                 @if(in_array('1u1_db',Auth()->user()->getRights()))
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
                 @endif
+                <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
               </ul>
             </li>
           @endif
@@ -123,9 +127,10 @@
                 <ul class="list-group list-group-flush" style="list-style-type: none;">
                   @if(in_array('1u1_db',Auth()->user()->getRights()))
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
-                  @endif
                   <li><a href="{{route('mobileTrackingDifference')}}">Tracking Differenz</a></li>
                   <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
+                  @endif
+                  <li><a href="{{route('mobile.tracking.agents')}}">Mobile Tracking</a></li>
               </ul>
             </li>
           @endif
@@ -158,7 +163,7 @@
                   <li><a href="{{route('projectReport')}}">Projektmeldung</a></li>
                 @endif
                 @if(in_array('controlling_attainment',Auth()->user()->getRights()))
-                  <li><a href="{{route('attainment')}}">Zielerreichung</a></li>
+                  <li><a href="{{route('attainment')}}">Bonusauswertung</a></li>
                 @endif
               </ul>
             </div>
@@ -439,13 +444,70 @@
                   <a class="dropdown-item" href="#">test3</a>
                 </div>
               </li> -->
-              <li class="nav-item dropdown m-2">
+              <!-- <li class="nav-item dropdown m-2">
                 <div class="row">
                     <a href="#" class="nav-link" onclick="showWTConsole()"><i class="fas fa-stopwatch fa-2x"></i></a>
                 </div>
               </li>
-              <li class="nav-item dropdown m-2" >
-
+              <li class="nav-item dropdown m-2" > -->
+              @if(in_array('controlling_base',Auth()->user()->getRights()))
+              <li class="nav-item dropdown" style="margin-right: 10px;">
+                <a class="nav-link dropdown-toggle" id="dataDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i style="font-size: 20px; line-height: 1.625rem" class="fas fa-database"></i>
+                  <p>
+                    <span class="d-lg-none d-md-block"> </span>
+                  </p>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                  <div class="d-flex justify-content-center">
+                    <p class="">Datenstand</p>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                    <p class="dropdown-item">Vollständig:</p>
+                  <div class="dropdown-divider"></div>
+                    <p class="dropdown-item">
+                      @if(isset($refinedDataTables['availbench_report']['max_date']) && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($refinedDataTables['availbench_report']['max_date']))
+                        <i class="fas fa-check-circle"></i>
+                      @else
+                        <i class="fas fa-times-circle"></i>
+                      @endif
+                       Availbench:
+                      @if(isset($refinedDataTables['availbench_report']['min_date']))
+                        <td>{{$refinedDataTables['availbench_report']['min_date']}}</td>
+                      @else
+                        <td>%</td>
+                      @endif
+                       -
+                      @if(isset($refinedDataTables['availbench_report']['max_date']))
+                        <td>{{$refinedDataTables['availbench_report']['max_date']}}</td>
+                      @else
+                        <td>%</td>
+                      @endif</p>
+                    <p class="dropdown-item">
+                      @if(isset($refinedDataTables['dailyAgent_report']['max_date']) && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($refinedDataTables['dailyAgent_report']['max_date']))
+                        <i class="fas fa-check-circle"></i>
+                      @else
+                        <i class="fas fa-times-circle"></i>
+                      @endif
+                       Daily Agent:
+                      @if(isset($refinedDataTables['dailyAgent_report']['min_date']))
+                        <td>{{$refinedDataTables['dailyAgent_report']['min_date']}}</td>
+                      @else
+                        <td>%</td>
+                      @endif
+                       -
+                      @if(isset($refinedDataTables['dailyAgent_report']['max_date']))
+                        <td>{{$refinedDataTables['dailyAgent_report']['max_date']}}</td>
+                      @else
+                        <td>%</td>
+                      @endif</p>
+                    <p class="dropdown-item">Ret Details: </p>
+                    <p class="dropdown-item">OptIn: </p>
+                    <p class="dropdown-item">SAS: </p>
+                </div>
+              </li>
+              @endif
+              <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="userDropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons users_single-02"></i>
                   <p>

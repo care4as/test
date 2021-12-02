@@ -18,7 +18,7 @@
         background-blend-mode: luminosity;
     }
     .dataTables_wrapper .dataTables_length select{
-        width: 60px;
+        width: 65px;
         margin-left: 4px;
         margin-right: 4px;
     }
@@ -39,6 +39,34 @@
     .page-item.active .page-link{
         background-color: #FA7A50;
         border-color: #FA7A50;
+    }
+    .dataTables_filter{
+        width: 300px;
+    }
+
+    .dataTables_length{
+        width: max-content;
+    }
+
+    .page-item:hover{
+        border-color: #FA7A50;
+    }
+
+    .page-link{
+        margin: 5px !important;
+    }
+
+    .paginate_button:hover{
+        border: none !important;
+    }
+    
+    .page-link:hover{
+        border-color: #FA7A50;
+    }
+
+    .pagination{
+        width: min-content;
+        margin: 5px auto;
     }
 
 </style>
@@ -93,7 +121,6 @@
                         </div>
                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" style="display:flex; flex-direction: column; margin-top: 20px; margin-bottom: 20px; row-gap: 20px;">
                             <button class="btn btn-primary" style="margin: auto;">Einstellungen</button>
-                            <button class="btn btn-primary" style="margin: auto;">Datenstand</button>
                         </div>
                     </div>
                 </div>
@@ -414,7 +441,7 @@
             "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
             "loadingRecords": "Lädt...",
             "processing":     "Lädt...",
-            "search":         "Suche:",
+            "search":         "<p style='margin-bottom: 0; margin-right: 5px;'>Suche:</p>",
             "paginate": {
                 "first":      "Erste",
                 "last":       "Letzte",
@@ -427,6 +454,18 @@
         scrollCollapse: true,
         fixedColumns: true,
         select: true,
+        dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'csv',
+                    text: 'CSV Export',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel Export',
+                    className: 'btn btn-primary'
+                },
+            ],
     });
     table.rows().every( function () {
         var rowNode = this.node();

@@ -10,6 +10,10 @@
                   <div style="display: flex; justify-content: center; margin: 30px 0;">
                     <img class="shadow p-2" src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="width: 80%; border-radius: 15px; background-color: transparent;">
                   </div>
+                  <div style="text-align: center;">
+                    Software Tool
+                  </div>
+                  <hr>
                   <div style="text-align: center; font-size: large;">
                     Login
                   </div>

@@ -10,6 +10,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
 
     .form-control {
         color: black;
+        
     }
 
     table.dataTable tbody td,
@@ -24,7 +25,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
     }
 
     .dataTables_wrapper .dataTables_length select {
-        width: 60px;
+        width: 65px;
         margin-left: 4px;
         margin-right: 4px;
     }
@@ -43,7 +44,6 @@ Mitarbeiterverwaltung: Mitarbeiterliste
     }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        border: 1px solid transparent;
         background: transparent;
     }
 
@@ -56,9 +56,35 @@ Mitarbeiterverwaltung: Mitarbeiterliste
         cursor: default;
     }
 
-    .dt-buttons {
-        margin-bottom: 10px;
+    .dataTables_filter{
+        width: 300px;
     }
+
+    .dataTables_length{
+        width: max-content;
+    }
+
+    .page-item:hover{
+        border-color: #FA7A50;
+    }
+
+    .page-link{
+        margin: 5px !important;
+    }
+
+    .paginate_button:hover{
+        border: none !important;
+    }
+    
+    .page-link:hover{
+        border-color: #FA7A50;
+    }
+
+    .pagination{
+        width: min-content;
+        margin: 5px auto;
+    }
+
 </style>
 @endsection
 @section('content')
@@ -183,7 +209,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                                 <th>Eintritt</th>
                                 <th>Austritt</th>
                                 <th>KDW ID</th>
-                                @if($defaultVariables['project'] == '1und1 Retention')
+                                @if($defaultVariables['project'] == '1und1 Retention' || $defaultVariables['project'] == '1und1 DSL Retention')
                                 <th>KDW Tracking ID</th>
                                 @endif
                                 <th>1u1 Personen ID</th>
@@ -209,7 +235,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                                 <td>{{$user['entry_date']}}</td>
                                 <td>{{$user['leave_date']}}</td>
                                 <td>{{$user['ds_id']}}</td>
-                                @if($defaultVariables['project'] == '1und1 Retention')
+                                @if($defaultVariables['project'] == '1und1 Retention' || $defaultVariables['project'] == '1und1 DSL Retention')
                                 <td>{{$user['kdw_tracking_id']}}</td>
                                 @endif
                                 <td>{{$user['1u1_person_id']}}</td>
@@ -503,7 +529,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                 "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
                 "loadingRecords": "Lädt...",
                 "processing": "Lädt...",
-                "search": "Suche:",
+                "search": "<p style='margin-bottom: 0; margin-right: 5px;'>Suche:</p>",
                 "paginate": {
                     "first": "Erste",
                     "last": "Letzte",
