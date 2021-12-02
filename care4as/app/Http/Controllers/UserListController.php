@@ -20,18 +20,22 @@ class UserListController extends Controller
 
         //dd($defaultVariables);
 
-        $roleArray = $this->getRoles();
+        $roleArray = array();
 
         // dd($roleArray);
-        $users = $this->getUnfilteredUsers();
+        $users = array();
 
         if($employeeState == 'active'){
+            $roleArray = $this->getRoles();
+            $users = $this->getUnfilteredUsers();
             $users = $this->refineUserlistActive($users);
-        }
-        if($employeeState == 'inactive'){
+        } else if ($employeeState == 'inactive'){
+            $roleArray = $this->getRoles();
+            $users = $this->getUnfilteredUsers();
             $users = $this->refineUserlistInactive($users);
         }
         if($project != null && $project != 'all'){
+            $roleArray = $this->getRoles();
             $users = $this->refineUserlistProject($users, $project);
         }
           // dd($users);
@@ -295,7 +299,6 @@ class UserListController extends Controller
     }
 
     public function refineUserlistActive($userlist){
-
         foreach($userlist as $key => $entry) {
             if(isset($entry['leave_date']))
             {

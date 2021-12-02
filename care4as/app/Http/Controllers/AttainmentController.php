@@ -42,6 +42,10 @@ class AttainmentController extends Controller
         /** functionhandler for attainments */
         if(($defaultVariablesArray['attainment'] == 'dsl_interval_attainment') || ($defaultVariablesArray['attainment'] == 'dsl_forecast_attainment')){
             $attainmentArray = $this->wfmDslAttainment($defaultVariablesArray);
+        } elseif ($defaultVariablesArray['attainment'] == 'dsl_employee_surcharge') {
+            $attainmentArray = $this->getEmployeeSurcharge();
+        } elseif ($defaultVariablesArray['attainment'] == 'mobile_employee_surcharge') {
+            $attainmentArray = $this->getEmployeeSurcharge();
         }
 
         //dd($attainmentArray);
@@ -250,6 +254,20 @@ class AttainmentController extends Controller
         }
 
         return $dateArray;
+    }
+
+    public function getEmployeeSurcharge(){
+        $data = array('employees', 'sum');
+
+        $employeesObject = null; // DB ABFRAGE MIT FILTER AUF BERECHTIGTE GRUPPEN
+        //FOREACH SCHLEIFE ÜBER ALLE MA -> IN EMPLOYEES SPEICHERN: DATA, DAYS
+        //IN DATA DIE DS_ID UND DEN NAMEN SPEICHERN
+        //IN DAYS EIN ARRAY ERSTELLEN MIT EINEM EINTRAG PRO TAG
+        //FÜR JEDEN TAG EINEN STUNDENWERT UND EINEN EUROWERT BERECHNEN
+        
+
+        dd($data);
+        return $data;
     }
 
 }

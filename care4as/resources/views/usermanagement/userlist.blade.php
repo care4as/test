@@ -10,6 +10,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
 
     .form-control {
         color: black;
+        
     }
 
     table.dataTable tbody td,
@@ -24,7 +25,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
     }
 
     .dataTables_wrapper .dataTables_length select {
-        width: 60px;
+        width: 65px;
         margin-left: 4px;
         margin-right: 4px;
     }
@@ -43,7 +44,6 @@ Mitarbeiterverwaltung: Mitarbeiterliste
     }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        border: 1px solid transparent;
         background: transparent;
     }
 
@@ -56,9 +56,35 @@ Mitarbeiterverwaltung: Mitarbeiterliste
         cursor: default;
     }
 
-    .dt-buttons {
-        margin-bottom: 10px;
+    .dataTables_filter{
+        width: 300px;
     }
+
+    .dataTables_length{
+        width: max-content;
+    }
+
+    .page-item:hover{
+        border-color: #FA7A50;
+    }
+
+    .page-link{
+        margin: 5px !important;
+    }
+
+    .paginate_button:hover{
+        border: none !important;
+    }
+    
+    .page-link:hover{
+        border-color: #FA7A50;
+    }
+
+    .pagination{
+        width: min-content;
+        margin: 5px auto;
+    }
+
 </style>
 @endsection
 @section('content')
@@ -183,7 +209,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                                 <th>Eintritt</th>
                                 <th>Austritt</th>
                                 <th>KDW ID</th>
-                                @if($defaultVariables['project'] == '1und1 Retention')
+                                @if($defaultVariables['project'] == '1und1 Retention' || $defaultVariables['project'] == '1und1 DSL Retention')
                                 <th>KDW Tracking ID</th>
                                 @endif
                                 <th>1u1 Personen ID</th>
@@ -209,7 +235,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                                 <td>{{$user['entry_date']}}</td>
                                 <td>{{$user['leave_date']}}</td>
                                 <td>{{$user['ds_id']}}</td>
-                                @if($defaultVariables['project'] == '1und1 Retention')
+                                @if($defaultVariables['project'] == '1und1 Retention' || $defaultVariables['project'] == '1und1 DSL Retention')
                                 <td>{{$user['kdw_tracking_id']}}</td>
                                 @endif
                                 <td>{{$user['1u1_person_id']}}</td>
@@ -251,7 +277,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                             <a class="nav-link" href="#id{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;" style="font-size: 16px; font-weight: bold;">Auftraggeberinformation</a>
                         </li>
                         @endif
-                        @if(in_array('users_change_roll',Auth()->user()->getRights()) || in_array('users_reset_password',Auth()->user()->getRights()))
+                        @if(in_array('users_change_role',Auth()->user()->getRights()) || in_array('users_reset_password',Auth()->user()->getRights()))
                         <li class="nav-item">
                             <a class="nav-link" href="#administration{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Administration</a>
                         </li>
@@ -354,12 +380,12 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                 </div>
                 @endif
                 <!-- Administration -->
-                @if(in_array('users_change_roll',Auth()->user()->getRights()) || in_array('users_reset_password',Auth()->user()->getRights()))
+                @if(in_array('users_change_role',Auth()->user()->getRights()) || in_array('users_reset_password',Auth()->user()->getRights()))
                 <div class="tab-pane" id="administration{{$user['ds_id']}}">
                     <div class="nav-tabs-navigation">
                         <div class="nav-tabs-wrapper">
                             <ul class="nav nav-tabs" data-tabs="tabs">
-                                @if(in_array('users_change_roll',Auth()->user()->getRights()))
+                                @if(in_array('users_change_role',Auth()->user()->getRights()))
                                     <li class="nav-item">
                                         <a class="nav-link active" href="#roles{{$user['ds_id']}}" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Rollen und Rechte</a>
                                     </li>
@@ -374,7 +400,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                     </div>
                     <div class="tab-content">
                         <!-- Rollen und Rechte -->
-                        @if(in_array('users_change_roll',Auth()->user()->getRights()))
+                        @if(in_array('users_change_role',Auth()->user()->getRights()))
                         <div class="tab-pane active" id="roles{{$user['ds_id']}}">
                             <form action="{{route('userlist.updateUserRole')}}" method="post()" style="width: 100%">
                                 <div class="modal-body" style="font-size: 14px;">
@@ -503,7 +529,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                 "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
                 "loadingRecords": "Lädt...",
                 "processing": "Lädt...",
-                "search": "Suche:",
+                "search": "<p style='margin-bottom: 0; margin-right: 5px;'>Suche:</p>",
                 "paginate": {
                     "first": "Erste",
                     "last": "Letzte",

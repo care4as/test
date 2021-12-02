@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Feedback;
+use App\User;
+use DateTime;
+use Carbon\Carbon;
+
+class UserFunctionController extends Controller
+{
+  public function getKdwUsersFromProject($projectId, $departmentId){
+    DB::disableQueryLog();
+    ini_set('memory_limit', '-1');
+    ini_set('max_execution_time', '0');
+
+    $users = DB::connection('mysqlkdw')
+    ->table('MA')
+    ->where('project_id', $projectId)
+    ->where('abteilung_id', $departmentId)
+    ->get()
+    ->toArray();
+
+    return $users;
+  }
+}

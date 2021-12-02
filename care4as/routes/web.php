@@ -324,6 +324,13 @@ use App\Http\Controllers\ControllingController;
   Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
 
+  //START MOBILE TRACKING
+    Route::get('/mobile/tracking', function(){
+
+      return view('trackingMobile');
+    })->name('mobile.tracking.agents');
+  // END MOBILE TRACKING
+
   //START Scrum
   Route::get('/scrum', 'ScrumController@init')->name('scrum.itkanbanboard');
   Route::get('/scrum/add', 'ScrumController@add')->name('scrum.add');

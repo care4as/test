@@ -9,6 +9,9 @@
                   <div style="display: flex; justify-content: center; margin: 30px 0;">
                     <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="">
                   </div>
+                  <div style="text-align: center;">
+                    Software Tool
+                  </div>
                   <hr>
                   <div style="text-align: center; font-size: large;">
                     Anmeldung
