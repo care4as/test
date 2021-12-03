@@ -56,27 +56,27 @@
                                         <thead>
                                             <tr>
                                                 <th rowspan="3" style="border-right: 2px solid grey">Name</th>
-                                                <th colspan="3">Gesamt</th>
-                                                <th colspan="9">SSC</th>
-                                                <th colspan="9">BSC</th>
-                                                <th colspan="9">Portal</th>
+                                                <th colspan="3" style="border-right: 2px solid grey">Gesamt</th>
+                                                <th colspan="9" style="border-right: 2px solid grey">SSC</th>
+                                                <th colspan="9" style="border-right: 2px solid grey">BSC</th>
+                                                <th colspan="9" style="border-right: 2px solid grey">Portal</th>
                                             </tr>
                                             <tr>
                                                 <th rowspan="2">Calls</th>
                                                 <th rowspan="2">Cancel</th>
-                                                <th rowspan="2">Service</th>
+                                                <th rowspan="2" style="border-right: 2px solid grey">Service</th>
                                                 <th rowspan="2">Calls</th>
                                                 <th colspan="4">Saves</th>
                                                 <th colspan="2">Negativ</th>
-                                                <th colspan="2">CR</th>
+                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
                                                 <th rowspan="2">Calls</th>
                                                 <th colspan="4">Saves</th>
                                                 <th colspan="2">Negativ</th>
-                                                <th colspan="2">CR</th>
+                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
                                                 <th rowspan="2">Calls</th>
                                                 <th colspan="4">Saves</th>
                                                 <th colspan="2">Negativ</th>
-                                                <th colspan="2">CR</th>
+                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
                                                 <th>Sonstige</th>
                                                 <th colspan="2">OptIn</th>
                                             </tr>
@@ -112,10 +112,10 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{Name1}</td>
+                                                <td style="border-right: 2px solid grey">{Name1}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
-                                                <td>{Wert}</td>
+                                                <td style="border-right: 2px solid grey">{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
@@ -150,7 +150,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td>Summe</td>
+                                                <td style="border-right: 2px solid grey">Summe</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
@@ -193,6 +193,7 @@
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
                                     <table class="tracking-table">
                                         <thead>
+                                            <th>Erstellt</th>
                                             <th>Kundenberater</th>
                                             <th>Vertragsnummer</th>
                                             <th>Produktgruppe</th>
@@ -212,8 +213,10 @@
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
+                                                <td>{Wert}</td>
                                             </tr>
                                             <tr>
+                                                <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>

@@ -129,9 +129,9 @@
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
                   <li><a href="{{route('mobileTrackingDifference')}}">Tracking Differenz</a></li>
                   <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
+                  <li><a href="{{route('mobile.tracking.admin')}}">Mobile Tracking Admin</a></li>
                   @endif
                   <li><a href="{{route('mobile.tracking.agents')}}">Mobile Tracking</a></li>
-                  <li><a href="{{route('mobile.tracking.admin')}}">Mobile Tracking Admin</a></li>
               </ul>
             </li>
           @endif
