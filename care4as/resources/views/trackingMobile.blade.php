@@ -1,6 +1,6 @@
 @extends('general_layout')
 @section('pagetitle')
-
+Tracking mit Vertragsnummer
 @endsection
 @section('content')
 @section('additional_css')
