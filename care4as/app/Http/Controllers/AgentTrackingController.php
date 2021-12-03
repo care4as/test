@@ -33,8 +33,13 @@ class AgentTrackingController extends Controller
     {
       $history = TrackEvent::where('created_by', Auth()->id())
       ->get();
+      $trackcalls = TrackCalls::where('user_id', Auth()->id())
+      ->whereDate('created_at', Carbon::today())
+      ->get();
 
-      return view('trackingMobile', compact('history'));
+
+      // dd();
+      return view('trackingMobile', compact('history','trackcalls'));
     }
     /**
      * Store a newly created resource in storage.
@@ -85,14 +90,16 @@ class AgentTrackingController extends Controller
       dd($events);
       // return view('adminIndex');
     }
-    public function trackCall($updown, $type)
+    public function trackCall($type, $updown)
     {
-      if ($trackcalls = TrackCalls::where('user_id', Auth()->id())->where('category', $type)->whereDate('created_at', Carbon::today())->exists())
+      // dd($type);
+
+      if (TrackCalls::where('user_id', Auth()->id())->where('category', $type)->whereDate('created_at', Carbon::today())->exists())
       {
         $trackcalls = TrackCalls::where('user_id', Auth()->id())
         ->where('category', $type)
         ->whereDate('created_at', Carbon::today())
-        ->get();
+        ->first();
       }
       else {
         $trackcalls = new TrackCalls;
@@ -105,23 +112,18 @@ class AgentTrackingController extends Controller
 
       // dd($trackcalls,$type, $updown);
 
-      if($updown == 1)
+      if($updown == '1')
       {
-        $trackcalls->each(function ($item){
-            $item->update(['calls' => $item->calls+1]);
-            $item->save();
-        });
+        $trackcalls->calls = $trackcalls->calls+1;
+        $trackcalls->save();
 
       }
       else {
-        $trackcalls->each(function ($item){
-          if($item->calls > 0)
-          {
-            $item->update(['calls' => $item->calls-1]);
-            $item->save();
-          }
+        if ($trackcalls->calls > 0) {
+          $trackcalls->calls = $trackcalls->calls-1;
+          $trackcalls->save();
+        }
 
-        });
       }
 
 

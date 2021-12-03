@@ -54,28 +54,36 @@
         <div class="col-md-3">
             <div class="max-main-container">
                 <div class="tracking_title">
-                    Calls
+                    Calls {{$trackcalls->sum('calls')}}
                 </div>
                 <div class="tracking_container">
                     SSC
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 1 , 'updown' => 0])}}" role="button">-</a>
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=>1,'updown'=> 1])}}" role="button">+</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
+                    @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',1)->first()->calls}} @else 0   @endif
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown'=> 1])}}" role="button">+</a>
                 </div>
                 <div class="tracking_container">
                     BSC
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>2,'updown'=>0])}}" role="button">-</a>
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>2,'updown'=>1])}}" role="button">+</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
+                    @if($trackcalls->where('category',2)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown'=> 1])}}" role="button">+</a>
                 </div>
                 <div class="tracking_container">
-                    Portale
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>3,'updown'=>0])}}" role="button">-</a>
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>3,'updown'=>1])}}" role="button">+</a>
+
+                    Portal
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
+                    @if($trackcalls->where('category',3)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown'=> 1])}}" role="button">+</a>
                 </div>
                 <div class="tracking_container">
+
                     Sonstige
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>4,'updown'=>0])}}" role="button">-</a>
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>4,'updown'=>1])}}" role="button">+</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 0])}}" role="button">-</a>
+                    @if($trackcalls->where('category',4)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown'=> 1])}}" role="button">+</a>
+
                 </div>
+
             </div>
         </div>
         <!-- END CALLS -->
