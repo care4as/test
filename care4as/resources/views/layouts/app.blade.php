@@ -28,8 +28,29 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{asset('css/now-ui-dashboard-master/assets/demo/demo.css')}}" rel="stylesheet" />
 
-    <style>
-      
+    <style media="screen" >
+
+      .logbut
+      {
+        padding: 6px 40px;
+        font-size: 1.4rem;
+        border-radius: 25px;
+        background-color: white;
+        border: 2px #fd7e14 solid;
+      }
+      .logbut:hover
+      {
+        background: #fd7e14;
+        color: white !important;
+      }
+      .logbut:hover
+      {
+        background: #fd7e14;
+      }
+      .logbut:hover span
+      {
+        color: white !important;
+      }
     </style>
 
 </head>

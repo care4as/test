@@ -59,7 +59,7 @@
           Auth()->user()->getRights();
         @endphp
         <div id="time-container" style="width: 100%">
-        
+
         </div>
         <ul class="nav" style="margin-bottom: 15px;">
           <li><div class="logo bg-white m-2" style="border-radius: 20px;">
@@ -380,7 +380,7 @@
             </a>
           </li>
           @endif --}} -->
-          
+
         </ul>
       </div>
     </div>
@@ -445,6 +445,12 @@
                   <a class="dropdown-item" href="#">test3</a>
                 </div>
               </li> -->
+              <!-- <li class="nav-item dropdown m-2">
+                <div class="row">
+                    <a href="#" class="nav-link" onclick="showWTConsole()"><i class="fas fa-stopwatch fa-2x"></i></a>
+                </div>
+              </li>
+              <li class="nav-item dropdown m-2" > -->
               @if(in_array('controlling_base',Auth()->user()->getRights()))
               <li class="nav-item dropdown" style="margin-right: 10px;">
                 <a class="nav-link dropdown-toggle" id="dataDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -463,16 +469,16 @@
                     <p class="dropdown-item">
                       @if(isset($refinedDataTables['availbench_report']['max_date']) && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($refinedDataTables['availbench_report']['max_date']))
                         <i class="fas fa-check-circle"></i>
-                      @else 
+                      @else
                         <i class="fas fa-times-circle"></i>
-                      @endif                     
-                       Availbench:  
+                      @endif
+                       Availbench:
                       @if(isset($refinedDataTables['availbench_report']['min_date']))
                         <td>{{$refinedDataTables['availbench_report']['min_date']}}</td>
                       @else
                         <td>%</td>
                       @endif
-                       - 
+                       -
                       @if(isset($refinedDataTables['availbench_report']['max_date']))
                         <td>{{$refinedDataTables['availbench_report']['max_date']}}</td>
                       @else
@@ -481,16 +487,16 @@
                     <p class="dropdown-item">
                       @if(isset($refinedDataTables['dailyAgent_report']['max_date']) && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($refinedDataTables['dailyAgent_report']['max_date']))
                         <i class="fas fa-check-circle"></i>
-                      @else 
+                      @else
                         <i class="fas fa-times-circle"></i>
-                      @endif   
-                       Daily Agent:   
+                      @endif
+                       Daily Agent:
                       @if(isset($refinedDataTables['dailyAgent_report']['min_date']))
                         <td>{{$refinedDataTables['dailyAgent_report']['min_date']}}</td>
                       @else
                         <td>%</td>
                       @endif
-                       - 
+                       -
                       @if(isset($refinedDataTables['dailyAgent_report']['max_date']))
                         <td>{{$refinedDataTables['dailyAgent_report']['max_date']}}</td>
                       @else
@@ -540,6 +546,7 @@
       </footer>
     </div>
   </div>
+
   @yield('additional_modal')
   <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -596,8 +603,12 @@
   </div>
 </div>
 </div>
+<div class="" id="worktimeconsole">
+  <timetracker> </timetracker>
 </div>
 </div>
+</div>
+
   <!--   Core JS Files   -->
   <script src="{{asset('css/now-ui-dashboard-master/assets/js/core/popper.min.js')}}"></script>
   <script src="{{asset('js/main.js')}}"></script>
@@ -615,6 +626,13 @@
   <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript')}}"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   <script src="{{asset('js/app.js')}}"></script>
 
+  <script type="text/javascript">
+
+  function showWTConsole() {
+    $('#worktimeconsole').toggle()
+
+  }
+  </script>
   @if($errors->any())
     <script>
       $('#errorModal').modal('show');
@@ -624,6 +642,7 @@
   @if($news = 0 == 1)
     <script>
       $('#newsModal').modal('show');
+
     </script>
   @endif
   @yield('additional_js')

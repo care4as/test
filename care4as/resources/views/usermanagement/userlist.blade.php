@@ -415,11 +415,11 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                                                 <div style="margin-top: auto; margin-bottom: auto">Neue Rolle:</div>
                                                 <div>
                                                     <select id="new_role" class="form-control" name="new_role" style="color:black;">
-                                                        <option selected value="null">Keine Rolle</option>
+                                                        <option value="null">Rolle wählen</option>
                                                         @foreach($roleArray as $key => $role)
-                                                        @if($key != "superadmin")
-                                                        <option value="{{$key}}">{{$key}}</option>
-                                                        @endif
+                                                          @if($key != "superadmin")
+                                                          <option value="{{$key}}" @if($key == $user['role']) selected @endif>{{$key}}</option>
+                                                          @endif
                                                         @endforeach
                                                     </select>
                                                 </div>

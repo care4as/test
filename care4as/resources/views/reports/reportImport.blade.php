@@ -7,10 +7,11 @@
 @section('additional_css')
 <link href="{{asset('css/dropzone.min.css')}}" rel="stylesheet" />
 <style media="screen">
-  .loadingerDA, .loadingerAB, .loadingerRD
+  .loadingerDA, .loadingerAB, .loadingerRD,.loadingerOptin,.loadingerSAS
   {
     animation: blink 2s infinite;
   }
+
   @keyframes blink {
   from {color: black;}
   to {color: white;}
@@ -92,27 +93,18 @@
                                         @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
                                     </tr>
-                                    <tr class="dailyagent">
+                                    <tr class="loadingerDA" >
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
-                                        @if(isset($refinedDataTables['dailyAgent_report']['min_date']))
-                                            <td>{{$refinedDataTables['dailyAgent_report']['min_date']}}</td>
-                                        @else
-                                            <td>Keine Daten verfügbar</td>
-                                        @endif
-                                        @if(isset($refinedDataTables['dailyAgent_report']['max_date']))
-                                            <td>{{$refinedDataTables['dailyAgent_report']['max_date']}}</td>
-                                        @else
-                                            <td>Keine Daten verfügbar</td>
-                                        @endif
+                                        <td id="">Daten werden geladen</td>
+                                        <td id=""></td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
                                     </tr>
-                                    <!--
                                     <tr id="dailyagentData" style="display:none;">
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
                                         <td id="dailyAgentStart">1</td>
                                         <td id="dailyAgentEnd">1</td>
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
-                                    </tr> -->
+                                    </tr>
                                     <tr class="loadingerOptin">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
                                         <td id="">Daten werden geladen</td>
@@ -297,7 +289,6 @@
     </div>
 </div>
 
-
 @endsection
 @section('additional_modal')
 <!-- Availbench -->
@@ -338,7 +329,7 @@
                         <input type="file" name="file" id="file">
                         <button type="submit">Test</button>
                     </form>
-                    
+
                     <form action="{{route('availbench.upload')}}" class="dropzone" id="availbenchDropzone" enctype="multipart/form-data" style="padding: 0;">
                     @csrf
                         <div class="form-row dropzone-previews dz-default dz-message" id="availbenchContainer" style="margin-top: 0px; margin-bottom: 0px; min-height: 150px; width: auto; border: 1px solid black; box-shadow: none; background-color: #E3E3E3; border-radius: 5px;">

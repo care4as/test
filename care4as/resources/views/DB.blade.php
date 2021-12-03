@@ -348,19 +348,21 @@
       @endphp
 
       <div class="auswahl">
-        <div class="subauswahl aktiv" id="allData">
-          Alle Daten
-        </div>
-        <div class="subauswahl" id="teamleiterview" >
-          Teamleiterdaten
-        </div>
-        <div class="subauswahl"  id="crview" >
-          CR Daten
-        </div>
-        <div class="subauswahl"  id="timesview">
-          Zeit Daten
-        </div>
-        <div class="subauswahl" id="performanceShort" >
+        @if(in_array('statistics',Auth()->user()->getRights()))
+          <div class="subauswahl aktiv" id="allData">
+            Alle Daten
+          </div>
+          <div class="subauswahl" id="teamleiterview" >
+            Teamleiterdaten
+          </div>
+          <div class="subauswahl"  id="crview" >
+            CR Daten
+          </div>
+          <div class="subauswahl"  id="timesview">
+            Zeit Daten
+          </div>
+        @endif
+        <div class="subauswahl @if((in_array('statistics',Auth()->user()->getRights()))) aktiv @endif" id="performanceShort" >
           KPI´s übersichtlich
         </div>
       </div>
@@ -568,7 +570,6 @@
                                       <td style="text-align: left; font-weight: 600;">1u1 Availbench</td>
                                       <td>Max kann kein Javascript</td>
                                       <td> sonst würde hier was stehen </td>
-
                                   </tr>
                                   <tr class="loadingerDA">
                                       <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
@@ -586,35 +587,29 @@
                                       <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
                                       <td id="">Daten werden geladen</td>
                                       <td id=""></td>
-
                                   <tr id="OptinDataStatus" style="display:none;">
                                       <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
                                       <td id="optinStart">1</td>
                                       <td id="optinEnd">1</td>
-
                                   </tr>
                                   <tr class="loadingerRD" >
                                       <td style="text-align: left; font-weight: 600;">1u1 Retention Details</td>
                                       <td id="">Daten werden geladen</td>
                                       <td id=""></td>
-
                                   </tr>
                                   <tr id="RDDataStatus" style="display:none;">
                                       <td style="text-align: left; font-weight: 600;">1u1 Retention Details</td>
                                       <td id="retDetailsStart">xxx</td>
                                       <td id="retDetailsEnd">xxx</td>
-
                                   </tr>
                                   <tr class="loadingerSAS">
                                       <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
                                       <td id="">Daten werden geladen</td>
                                       <td id=""></td>
-
                                   <tr id="SASDataStatus" style="display:none;">
                                       <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
                                       <td id="sasStart">sas</td>
                                       <td id="sasEnd">sas</td>
-
                                   </tr>
                               </tbody>
                           </table>
@@ -816,7 +811,61 @@
           ],
         });
 
+        let rights = {!! json_encode(Auth()->user()->getRights()) !!}
+
         if (document.querySelector('.subauswahl')) {
+
+          // console.log(rights)
+          if(!rights.includes('statistics'))
+          {
+            table.colReorder.reset();
+            // table.column(  ).data().sum();
+
+            // var calls = table.column(10).data().sum();
+            // var calls = table.column(10).data().sum();
+            let allssccalls = {{$overalldata['allSSCCalls']}}
+            let allsscsaves = {{$overalldata['allSSCSaves']}}
+            let allbsccalls = {{$overalldata['allBSCCalls']}}
+            let allbscsaves = {{$overalldata['allBSCSaves']}}
+            let allportalsaves = {{$overalldata['allPortaleSaves']}}
+            let allportalcalls = {{$overalldata['allPortaleCalls']}}
+            let rlz24 = {{$overalldata['allRLZ24']}}
+            let mvlz = {{$overalldata['allMVLZ']}}
+            let optinCalls = {{$overalldata['allOptinCalls']}}
+            let optinRequests = {{$overalldata['allOptinRequests']}}
+
+            table.columns().visible( false );
+            table.columns([0,1,2,17,21,22,23,24,25,30,31]).visible( true );
+
+            $('.DTFC_LeftBodyWrapper').hide()
+            $('.DTFC_RightWrapper').hide()
+            $('.dataTable tr').css('height','1em');
+            $('.dataTable tr').css('padding','0px');
+            $('.dataTable').css('margin','0px');
+            // $('.dataTable tbody').css('height','20em');
+            $('.dataTable tr').css('overflow','hidden');
+            // $('.dataTable').css('font-size','0.6em');
+            // $('.dataTable td').css('padding','10px');
+            // $('.dataTable td').css('vertical-align','top');
+            $('.dataTable').css('width','100%');
+
+            table.colReorder.order( [0,1,21,22,23,24,17,25,2,30,31]);
+
+            $('#tableoverview_info').css('margin-top','2em')
+            $('#tableoverview_paginate').css('margin-top','2em')
+
+            $(table.column( 2 ).footer() ).html('<b>'+getQuota(allssccalls,allsscsaves)+'%</b>');
+            $(table.column( 3 ).footer() ).html('<b>'+getQuota(allbsccalls,allbscsaves)+'%</b>');
+            $(table.column( 4 ).footer() ).html('<b>'+getQuota(allportalcalls,allportalsaves)+'%</b>');
+            $(table.column( 5 ).footer() ).html('<b> sas</b>');
+            $(table.column( 6 ).footer() ).html('<b>'+getQuota(rlz24,mvlz)+'%</b>');
+            $(table.column( 7 ).footer() ).html('<b>'+getQuota(optinCalls,optinRequests)+'%</b>');
+            $(table.column( 8 ).footer() ).html('<b>aht</b>');
+
+            // table.draw()
+            // table.order [[17, 'desc']]
+            // table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]);
+          }
           document.querySelectorAll('.subauswahl').forEach((elem) => {
             elem.addEventListener("click", function(event) {
               $('.subauswahl').each(function(){
@@ -890,7 +939,7 @@
                   $('.dataTable').css('margin','0px');
                   // $('.dataTable tbody').css('height','20em');
                   $('.dataTable tr').css('overflow','hidden');
-                  $('.dataTable').css('font-size','0.6em');
+                  // $('.dataTable').css('font-size','0.6em');
                   // $('.dataTable td').css('padding','10px');
                   // $('.dataTable td').css('vertical-align','top');
                   $('.dataTable').css('width','100%');

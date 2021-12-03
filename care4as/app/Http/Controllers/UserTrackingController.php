@@ -502,5 +502,8 @@ class UserTrackingController extends Controller
 
       return response()->json($dataarray);
     }
-
+    public function SaveEvent()
+    {
+      
+    }
 }

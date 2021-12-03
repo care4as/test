@@ -36,7 +36,7 @@ class FeedbackController extends Controller
     $feedbackArray['users'] = $this->getUsers($feedbackArray['projects']);
 
     //dd($feedbackArray);
-    
+
     /** Startdatum, falls nicht gesetzt, auf Montag vor 2 Wochen festlegen */
     if($feedbackArray['userformSelection']['selected_startDate'] == null){
       $feedbackArray['timespan'] = array(
@@ -147,7 +147,7 @@ class FeedbackController extends Controller
           $data[$projectKey][$userEntry['ds_id']]['rlz_plus_percentage'] = 0;
         }
         //AHT
-        $data[$projectKey][$userEntry['ds_id']]['time_in_call'] = $rawData['daily_agent']->where('agent_id', $userEntry['agent_id'])->whereIn('status', ['In Call', 'On Hold', 'Wrap Up'])->sum('time_in_state'); 
+        $data[$projectKey][$userEntry['ds_id']]['time_in_call'] = $rawData['daily_agent']->where('agent_id', $userEntry['agent_id'])->whereIn('status', ['In Call', 'On Hold', 'Wrap Up'])->sum('time_in_state');
 
         if($data[$projectKey][$userEntry['ds_id']]['calls_dsl'] > 0){
           $data[$projectKey][$userEntry['ds_id']]['aht'] = number_format($data[$projectKey][$userEntry['ds_id']]['time_in_call'] / $data[$projectKey][$userEntry['ds_id']]['calls_dsl'], 0,",",".");
@@ -159,8 +159,8 @@ class FeedbackController extends Controller
     }
     //dd($data);
     return $data;
-  
-  
+
+
   }
 
   public function getFeedbackArrayProjectData($feedbackArray, $userData){
@@ -275,7 +275,7 @@ class FeedbackController extends Controller
       $users[$key] = DB::connection('mysqlkdw')
       ->table('MA')
       ->where('projekt_id', $entry['id'])
-      ->where(function($query) {                                               
+      ->where(function($query) {
         $query
         ->where('abteilung_id', '=', 10)
         ->orWhere('abteilung_id', '=', 19);
@@ -317,10 +317,18 @@ class FeedbackController extends Controller
 
     if($userid)
     {
-        dd($userid);
-    }
+      return view('FeedBackCreate');
+      $year = Carbon::now()->year;
+      $start_date = 1;
+      $end_date = 1;
 
-    $users = User::where('role','agent')->select('id','name')->get();
+      $userid = request('userid');
+
+      $users = User::where('role','agent')
+      ->where('status',1)
+      ->select('id','name')
+      ->orderBy('name')
+      ->get();
 
     $kw = date("W");
 
@@ -347,25 +355,10 @@ class FeedbackController extends Controller
         $datemod = Carbon::parse($start_date)->setTime(2,0,0);
         $q->where('date','>=',$datemod);
       }
-      if($end_date !== 1)
-      {
-        $datemod2 = Carbon::parse($end_date)->setTime(23,59,59);
-        $q->where('date','<=',$datemod2);
-      }
-      }])
-    ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
-      // $q->select(['id','person_id','calls','time_in_state','call_date']);
-      if($start_date !== 1)
-      {
-        $q->where('call_date','>=',$start_date);
-      }
-      if($end_date !== 1)
-      {
-        $q->where('call_date','<=',$end_date);
-      }
-      }])
-      ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+      // dd($end_date, $start_date);
 
+      $user = User::where('id',$userid)
+      ->with(['dailyagent' => function($q) use ($start_date,$end_date){
         if($start_date !== 1)
         {
           $q->where('work_date','>=',$start_date);
@@ -692,7 +685,7 @@ class FeedbackController extends Controller
   }
 
   public function getDailyAgent($startDate, $endDate){
-    /** Diese Funktion greift auf die DailyAgent-Datenbank zurück und zieht sich alle Daten, welche die erstellten Kriterien erfüllen. 
+    /** Diese Funktion greift auf die DailyAgent-Datenbank zurück und zieht sich alle Daten, welche die erstellten Kriterien erfüllen.
      * Schlussendlich werden die Daten vor der Rückgabe in ein Array gewandelt. */
 
     $startDate = date_create_from_format('Y-m-d', $startDate);
@@ -710,7 +703,7 @@ class FeedbackController extends Controller
   }
 
   public function getOptin($startDate, $endDate){
-    /** Diese Funktion greift auf die OptIn-Datenbank zurück und zieht sich alle Daten, welche die erstellten Kriterien erfüllen. 
+    /** Diese Funktion greift auf die OptIn-Datenbank zurück und zieht sich alle Daten, welche die erstellten Kriterien erfüllen.
      * Schlussendlich werden die Daten vor der Rückgabe in ein Array gewandelt. */
 
     $data = DB::table('optin')         // Verbindung zur Tabelle 'optin' wird hergestellt
@@ -722,9 +715,9 @@ class FeedbackController extends Controller
   }
 
   public function getRetDetails($startDate, $endDate){
-    /** Diese Funktion greift auf die RetentionDetails-Datenbank zurück und zieht sich alle Daten, welche die erstellten Kriterien erfüllen. 
+    /** Diese Funktion greift auf die RetentionDetails-Datenbank zurück und zieht sich alle Daten, welche die erstellten Kriterien erfüllen.
      * Schlussendlich werden die Daten vor der Rückgabe in ein Array gewandelt. */
-    
+
     $data = DB::table('retention_details')   // Verbindung zur Tabelle 'retention_details' wird hergestellt
     ->where('call_date', '>=', $startDate)   // Datum muss größergleich dem Startdatum sein
     ->where('call_date', '<=', $endDate)     // Datum muss kleinergleich dem Enddatum sein
