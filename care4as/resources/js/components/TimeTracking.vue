@@ -158,16 +158,6 @@
     }
 </script>
 <style media="screen">
-  .btn-primary
-  {
-    z-index: 20;
-    opacity: 0.1 !important;
-  }
-  .btn-primary:hover
-  {
-
-      opacity: 1 !important;;
-
-  }
+  
 
   </style>
