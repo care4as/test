@@ -323,10 +323,10 @@ use App\Http\Controllers\ControllingController;
   //End Controlling Routes
 
   //START MOBILE TRACKING
-    Route::get('/mobile/tracking', function(){
+    Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents');
+    Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post');
+    Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track');
 
-      return view('trackingMobile');
-    })->name('mobile.tracking.agents');
   // END MOBILE TRACKING
 
   //START Scrum

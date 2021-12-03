@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\TrackEvent;
+use App\TrackCalls;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AgentTrackingController extends Controller
 {
@@ -26,7 +29,13 @@ class AgentTrackingController extends Controller
     {
         //
     }
+    public function userIndex()
+    {
+      $history = TrackEvent::where('created_by', Auth()->id())
+      ->get();
 
+      return view('trackingMobile', compact('history'));
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -35,22 +44,23 @@ class AgentTrackingController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //   'contract_number' => 'required',
-        //   'product_category' => 'required',
-        //   'event_category' => 'required',
-        //   'optin' => 'required',
-        //   'runtime' => 'required',
-        //   'backoffice' => 'required',
-        // ]);
+      // dd($request);
+        $request->validate([
+          'contract_number' => 'required|unique:track_events',
+          'product_category' => 'required',
+          'event_category' => 'required',
+          'optin' => 'required',
+          'runtime' => 'required',
+          'backoffice' => 'required',
+        ]);
 
-        $request->contract_number= 1312123;
-        $request->product_category= 'SSC';
-        $request->event_category= 'Cancel';
-        $request->optin= 1;
-        $request->runtime= 1;
-        $request->backoffice= 1;
-        $request->target_tarif= 'testtarif';
+        // $request->contract_number= 1312123;
+        // $request->product_category= 'SSC';
+        // $request->event_category= 'Cancel';
+        // $request->optin= 1;
+        // $request->runtime= 1;
+        // $request->backoffice= 1;
+        // $request->target_tarif= 'testtarif';
 
         $trackevent = new TrackEvent;
 
@@ -60,12 +70,12 @@ class AgentTrackingController extends Controller
         $trackevent->optin = $request->optin;
         $trackevent->runtime = $request->runtime;
         $trackevent->backoffice = $request->backoffice;
-        $trackevent->target_tarif = $request->target_tarif;
+        $trackevent->target_tariff = $request->target_tariff;
         $trackevent->created_by = Auth()->id();
         $trackevent->save();
 
-        dd($trackevent);
-        // return redirect()->back();
+        // dd($trackevent);
+        return redirect()->back();
     }
     public function AdminIndex()
     {
@@ -75,28 +85,48 @@ class AgentTrackingController extends Controller
       dd($events);
       // return view('adminIndex');
     }
-    public function trackCall($upDown)
+    public function trackCall($updown, $type)
     {
-
-      if($upDown == 1)
+      if ($trackcalls = TrackCalls::where('user_id', Auth()->id())->where('category', $type)->whereDate('created_at', Carbon::today())->exists())
       {
-        if(TrackCall::where('user_id', Auth()->id())->whereDate('created_at', Carbon::today())->first())
-        {
-          TrackCall::where('user_id', Auth()->id())
-          ->whereDate('created_at', Carbon::today())
-          ->update([
-            'calls' => DB::raw('count+1'),
-          ]);
-        }
+        $trackcalls = TrackCalls::where('user_id', Auth()->id())
+        ->where('category', $type)
+        ->whereDate('created_at', Carbon::today())
+        ->get();
       }
       else {
-        TrackCall::where('user_id', Auth()->id())
-        ->whereDate('created_at', Carbon::today())
-        ->update([
-          'calls' => DB::raw('count-1'),
-        ]);
+        $trackcalls = new TrackCalls;
+
+        $trackcalls->category = $type;
+        $trackcalls->calls = 0;
+        $trackcalls->user_id = Auth()->id();
+
       }
-    }
+
+      // dd($trackcalls,$type, $updown);
+
+      if($updown == 1)
+      {
+        $trackcalls->each(function ($item){
+            $item->update(['calls' => $item->calls+1]);
+            $item->save();
+        });
+
+      }
+      else {
+        $trackcalls->each(function ($item){
+          if($item->calls > 0)
+          {
+            $item->update(['calls' => $item->calls-1]);
+            $item->save();
+          }
+
+        });
+      }
+
+
+      return redirect()->back();
+      }
 
     /**
      * Display the specified resource.

@@ -1,6 +1,6 @@
 @extends('general_layout')
 @section('pagetitle')
-    Controlling: Projektmeldung
+    Tracking inklusive Vertragsnummer
 @endsection
 @section('content')
 @section('additional_css')
@@ -44,7 +44,7 @@
             <div class="max-main-container">
                 KPI
             </div>
-        </div>    
+        </div>
     </div>
     <!-- END KPI-->
 
@@ -58,23 +58,23 @@
                 </div>
                 <div class="tracking_container">
                     SSC
-                    <a class="btn btn-primary" href="#" role="button">-</a>
-                    <a class="btn btn-primary" href="#" role="button">+</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 1 , 'updown' => 0])}}" role="button">-</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=>1,'updown'=> 1])}}" role="button">+</a>
                 </div>
                 <div class="tracking_container">
                     BSC
-                    <a class="btn btn-primary" href="#" role="button">-</a>
-                    <a class="btn btn-primary" href="#" role="button">+</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>2,'updown'=>0])}}" role="button">-</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>2,'updown'=>1])}}" role="button">+</a>
                 </div>
                 <div class="tracking_container">
                     Portale
-                    <a class="btn btn-primary" href="#" role="button">-</a>
-                    <a class="btn btn-primary" href="#" role="button">+</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>3,'updown'=>0])}}" role="button">-</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>3,'updown'=>1])}}" role="button">+</a>
                 </div>
                 <div class="tracking_container">
                     Sonstige
-                    <a class="btn btn-primary" href="#" role="button">-</a>
-                    <a class="btn btn-primary" href="#" role="button">+</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>4,'updown'=>0])}}" role="button">-</a>
+                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',['type'=>4,'updown'=>1])}}" role="button">+</a>
                 </div>
             </div>
         </div>
@@ -82,6 +82,8 @@
         <!-- START ORDERS -->
         <div class="col-md-3">
             <div class="max-main-container">
+              <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
+                @csrf
                 <div class="tracking_title">
                     Saves
                 </div>
@@ -153,9 +155,10 @@
                     </div>
                 </div>
                 <div class="tracking_container">
-                    <input type="button" value="Speichern">
+                    <input type="submit" value="Speichern">
                 </div>
             </div>
+            </form>
         </div>
         <!-- END ORDERS -->
         <!-- START HISTORY -->
@@ -163,7 +166,32 @@
             <div class="max-main-container">
                 <div class="tracking_title">
                     Historie
-                </div>     
+                </div>
+                <div class="max-panel-content">
+                    <div style="width: 100%;">
+                        <table class="max-table" id="xxx" style="width: 100%;">
+                            <thead>
+                                <td>Vertragsnummer</td>
+                                <td>Produkt</td>
+                                <td>Typ</td>
+                                <td>Zieltarif</td>
+                                <!-- <td>Kategorie4</td> -->
+                                <!-- <td>Kategorie5</td> -->
+                            </thead>
+                            <tbody>
+                              @foreach($history as $record)
+                              <tr>
+
+                                <td>{{$record->contract_number}}</td>
+                                <td>{{$record->product_category}}</td>
+                                <td>{{$record->event_category}}</td>
+                                <td>{{$record->target_tarif}}</td>
+                              </tr>
+                              @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- END HISTORY -->
@@ -173,7 +201,7 @@
 @endsection
 
 @section('additional_js')
-<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<!-- <script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
@@ -185,6 +213,6 @@
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script> -->
 
 @endsection
