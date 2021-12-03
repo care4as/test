@@ -36,8 +36,6 @@ class AgentTrackingController extends Controller
       $trackcalls = TrackCalls::where('user_id', Auth()->id())
       ->whereDate('created_at', Carbon::today())
       ->get();
-
-
       // dd();
       return view('trackingMobile', compact('history','trackcalls'));
     }
@@ -84,11 +82,11 @@ class AgentTrackingController extends Controller
     }
     public function AdminIndex()
     {
-      $events = TrackEvent::with('createdBy')
-      ->get();
+      $history = TrackEvent::all();
+      $trackcalls = TrackCalls::all();
 
-      dd($events);
-      // return view('adminIndex');
+      // dd($events);
+      return view('trackingMobileAdmin', compact('history', 'trackcalls'));
     }
     public function trackCall($type, $updown)
     {

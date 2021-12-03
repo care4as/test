@@ -105,17 +105,17 @@ Tracking mit Vertragsnummer
                       <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
                   </div>
                   <div class="tracking_container">
-                      <div>BSC: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif</div>
+                      <div>BSC: @if($trackcalls->where('category',2)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif</div>
                       <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
                       <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
                   </div>
                   <div class="tracking_container">
-                      <div>Portale: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif</div>
+                      <div>Portale: @if($trackcalls->where('category',3)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif</div>
                       <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
                       <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
                   </div>
                   <div class="tracking_container">
-                      <div>Sonstige: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif</div>
+                      <div>Sonstige: @if($trackcalls->where('category',4)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif</div>
                       <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 0])}}" role="button">-</a>
                       <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
                   </div>
