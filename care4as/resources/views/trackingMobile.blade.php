@@ -142,12 +142,12 @@ Tracking mit Vertragsnummer
                         <div class="tracking_description">Produktgruppe</div>
                         <div class="btn-group-container">
                             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="product_category" value="ssc" id="product_category1" autocomplete="off">
+                                <input type="radio" class="btn-check" name="product_category" value="SSC" id="product_category1" autocomplete="off">
                                 <label class="btn btn-outline-primary first-btn-group-element" for="product_category1">SSC</label>
-                                <input type="radio" class="btn-check" name="product_category" value="bsc" id="product_category2" autocomplete="off">
+                                <input type="radio" class="btn-check" name="product_category" value="BSC" id="product_category2" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="product_category2">BSC</label>
 
-                                <input type="radio" class="btn-check" name="product_category" value="portale" id="product_category3" autocomplete="off">
+                                <input type="radio" class="btn-check" name="product_category" value="Portale" id="product_category3" autocomplete="off">
                                 <label class="btn btn-outline-primary last-btn-group-element" for="product_category3">Portal</label>
                             </div>
                         </div>
@@ -156,16 +156,16 @@ Tracking mit Vertragsnummer
                         <div class="tracking_description">Bearbeitung</div>
                         <div class="btn-group-container">
                             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="event_category" value="save" id="event_category1" autocomplete="off">
+                                <input type="radio" class="btn-check" name="event_category" value="Save" id="event_category1" autocomplete="off">
                                 <label class="btn btn-outline-primary first-btn-group-element" for="event_category1">Save</label>
 
-                                <input type="radio" class="btn-check" name="event_category" value="cancel" id="event_category2" autocomplete="off">
+                                <input type="radio" class="btn-check" name="event_category" value="Cancel" id="event_category2" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="event_category2">Cancel</label>
 
-                                <input type="radio" class="btn-check" name="event_category" value="service" id="event_category3" autocomplete="off">
+                                <input type="radio" class="btn-check" name="event_category" value="Service" id="event_category3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="event_category3">Service</label>
 
-                                <input type="radio" class="btn-check" name="event_category" value="kuerue" id="event_category4" autocomplete="off">
+                                <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off">
                                 <label class="btn btn-outline-primary last-btn-group-element" for="event_category4">KüRü</label>
                             </div>
                         </div>
@@ -245,9 +245,9 @@ Tracking mit Vertragsnummer
                             <td>{{$record->product_category}}</td>
                             <td>{{$record->event_category}}</td>
                             <td>{{$record->target_tariff}}</td>
-                            <td>@if($record->optin == 1) ja @else nein @endif</td>
-                            <td>@if($record->runtime == 1) ja @else nein @endif</td>
-                            <td>@if($record->backoffice == 1) ja @else nein @endif</td>
+                            <td>@if($record->optin == 1) Ja @else Nein @endif</td>
+                            <td>@if($record->runtime == 1) Ja @else Nein @endif</td>
+                            <td>@if($record->backoffice == 1) Ja @else Nein @endif</td>
                         </tr>
                         @endforeach    
                         </tbody>
