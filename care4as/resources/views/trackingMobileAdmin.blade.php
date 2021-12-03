@@ -88,7 +88,7 @@
                                                 <th>Cancel</th>
                                                 <th>Service</th>
                                                 <th>Gebucht</th>
-                                                <th>Gesamt</th>
+                                                <th style="border-right: 2px solid grey">Gesamt</th>
                                                 <th>Σ GeVo Saves</th>
                                                 <th>← Gebucht</th>
                                                 <th>← Nacharbeit</th>
@@ -96,7 +96,7 @@
                                                 <th>Cancel</th>
                                                 <th>Service</th>
                                                 <th>Gebucht</th>
-                                                <th>Gesamt</th>
+                                                <th style="border-right: 2px solid grey">Gesamt</th>
                                                 <th>Σ GeVo Saves</th>
                                                 <th>← Gebucht</th>
                                                 <th>← Nacharbeit</th>
@@ -104,7 +104,7 @@
                                                 <th>Cancel</th>
                                                 <th>Service</th>
                                                 <th>Gebucht</th>
-                                                <th>Gesamt</th>
+                                                <th style="border-right: 2px solid grey">Gesamt</th>
                                                 <th>Calls</th>
                                                 <th>Anzahl</th>
                                                 <th>Quote</th>
@@ -129,6 +129,7 @@
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
+                                                <td style="border-right: 2px solid grey">{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
@@ -137,6 +138,7 @@
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
+                                                <td style="border-right: 2px solid grey">{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
@@ -145,9 +147,7 @@
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
+                                                <td style="border-right: 2px solid grey">{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
@@ -158,6 +158,7 @@
                                                 <td style="border-right: 2px solid grey">Summe</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
+                                                <td style="border-right: 2px solid grey">{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
@@ -166,6 +167,7 @@
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
+                                                <td style="border-right: 2px solid grey">{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
@@ -174,6 +176,7 @@
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
+                                                <td style="border-right: 2px solid grey">{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
@@ -182,10 +185,7 @@
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
+                                                <td style="border-right: 2px solid grey">{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
