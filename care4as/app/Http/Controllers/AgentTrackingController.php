@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\TrackEvent;
 use App\TrackCalls;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -86,10 +87,10 @@ class AgentTrackingController extends Controller
       ->orderBy('created_at','DESC')
       ->get();
 
-      $user = User::with('TrackingToday')
-      ->where('status', 1)
-      ->where('project','1und1 Retention')
-      ->get();
+      // $user = User::with('TrackingToday')
+      // ->where('status', 1)
+      // ->where('project','1und1 Retention')
+      // ->get();
 
       $trackcalls = TrackCalls::all();
 
