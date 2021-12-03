@@ -5,15 +5,231 @@
 @section('content')
 @section('additional_css')
 <style>
+    .tracking_title{
+        border-bottom: 1px solid gray;
+        text-align: center;
+        font-size: 1.3rem;
+    }
+
+    .tracking-table{
+        width: 100%;
+        white-space: nowrap;
+        border: 2px solid grey;
+    }
+
+    .tracking-table th, td{
+        border: 1px solid grey;
+        padding: 0 5px;
+    }
+
+    .tracking-table th{
+        text-align: center;
+    }
 </style>
 @endsection
 
-<div>
+<div style="font-size: 1em">
     <!-- START MAIN-->
     <div class="row">
         <div class="col-md-12">
             <div class="max-main-container">
-                KPI
+                <div class="card card-nav-tabs card-plain">
+                    <div class="card-header card-header-danger">
+                        <div class="nav-tabs-navigation">
+                            <div class="nav-tabs-wrapper">
+                                <ul class="nav nav-tabs" data-tabs="tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#overview" data-toggle="tab">Übersicht</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#history" data-toggle="tab">Historie</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body ">
+                        <div class="tab-content text-center">
+                            <div class="tab-pane active" id="overview">
+                                <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
+                                    <table class="tracking-table">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="3" style="border-right: 2px solid grey">Name</th>
+                                                <th colspan="3">Gesamt</th>
+                                                <th colspan="9">SSC</th>
+                                                <th colspan="9">BSC</th>
+                                                <th colspan="9">Portal</th>
+                                            </tr>
+                                            <tr>
+                                                <th rowspan="2">Calls</th>
+                                                <th rowspan="2">Cancel</th>
+                                                <th rowspan="2">Service</th>
+                                                <th rowspan="2">Calls</th>
+                                                <th colspan="4">Saves</th>
+                                                <th colspan="2">Negativ</th>
+                                                <th colspan="2">CR</th>
+                                                <th rowspan="2">Calls</th>
+                                                <th colspan="4">Saves</th>
+                                                <th colspan="2">Negativ</th>
+                                                <th colspan="2">CR</th>
+                                                <th rowspan="2">Calls</th>
+                                                <th colspan="4">Saves</th>
+                                                <th colspan="2">Negativ</th>
+                                                <th colspan="2">CR</th>
+                                                <th>Sonstige</th>
+                                                <th colspan="2">OptIn</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Σ GeVo Saves</th>
+                                                <th>← Gebucht</th>
+                                                <th>← Nacharbeit</th>
+                                                <th>KüRü</th>
+                                                <th>Cancel</th>
+                                                <th>Service</th>
+                                                <th>Gebucht</th>
+                                                <th>Gesamt</th>
+                                                <th>Σ GeVo Saves</th>
+                                                <th>← Gebucht</th>
+                                                <th>← Nacharbeit</th>
+                                                <th>KüRü</th>
+                                                <th>Cancel</th>
+                                                <th>Service</th>
+                                                <th>Gebucht</th>
+                                                <th>Gesamt</th>
+                                                <th>Σ GeVo Saves</th>
+                                                <th>← Gebucht</th>
+                                                <th>← Nacharbeit</th>
+                                                <th>KüRü</th>
+                                                <th>Cancel</th>
+                                                <th>Service</th>
+                                                <th>Gebucht</th>
+                                                <th>Gesamt</th>
+                                                <th>Calls</th>
+                                                <th>Anzahl</th>
+                                                <th>Quote</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{Name1}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                            </tr>                           
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td>Summe</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="history">
+                                <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
+                                    <table class="tracking-table">
+                                        <thead>
+                                            <th>Kundenberater</th>
+                                            <th>Vertragsnummer</th>
+                                            <th>Produktgruppe</th>
+                                            <th>Bearbeitung</th>
+                                            <th>Zieltarif</th>
+                                            <th>OptIn</th>
+                                            <th>RLZ+24</th>
+                                            <th>Nacharbeit</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                                <td>{Wert}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>     
             </div>
         </div>    
     </div>
