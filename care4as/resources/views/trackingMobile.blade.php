@@ -296,14 +296,6 @@ function tracking_input(){
     var runtime = document.querySelector('input[name="runtime"]:checked')?.value;
     var backoffice = document.querySelector('input[name="backoffice"]:checked')?.value;
 
-    console.log(contract_field);
-    console.log(product_category_field)
-    console.log(event_category_field)
-    console.log(target_tariff_field)
-    console.log(optin)
-    console.log(runtime)
-    console.log(backoffice)
-
     if(event_category_field == 'Save'){
         document.querySelector('input[name="target_tariff"]').disabled = false;
     } else {
@@ -346,17 +338,6 @@ function tracking_input(){
     } else {
         document.getElementById('submit_tracking').disabled = true;
     }
-
-
-
-
-
-
-
-
-    console.log(error_counter);
-
-
 
 }
 
