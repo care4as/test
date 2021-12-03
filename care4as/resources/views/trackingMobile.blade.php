@@ -94,92 +94,37 @@
 
     <!-- START TRACKING -->
     <div class="row">
-        <!-- START CALLS -->
-        <div class="col-md-3">
-            <div class="max-main-container">
-                <div class="tracking_title">
-                    Calls {{$trackcalls->sum('calls')}}
-                </div>
-                <div class="tracking_container">
-                    SSC
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
-                    @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',1)->first()->calls}} @else 0   @endif
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown'=> 1])}}" role="button">+</a>
-                </div>
-                <div class="tracking_container">
-                    BSC
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
-                    @if($trackcalls->where('category',2)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown'=> 1])}}" role="button">+</a>
-                </div>
-                <div class="tracking_container">
-
-                    Portal
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
-                    @if($trackcalls->where('category',3)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown'=> 1])}}" role="button">+</a>
-                </div>
-                <div class="tracking_container">
-                    Sonstige
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 0])}}" role="button">-</a>
-                    @if($trackcalls->where('category',4)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif
-                    <a class="btn btn-primary" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown'=> 1])}}" role="button">+</a>
-                </div>
-
-            </div>
-        </div>
-        <!-- END CALLS -->
+      <div class="col-lg-6 col-sm-12">
+              <div class="max-main-container">
+                  <div class="tracking_title">
+                      Calls {{$trackcalls->sum('calls')}}
+                  </div>
+                  <div class="tracking_container">
+                      <div>SSC: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',1)->first()->calls}} @else 0   @endif</div>
+                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
+                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
+                  </div>
+                  <div class="tracking_container">
+                      <div>BSC: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif</div>
+                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
+                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
+                  </div>
+                  <div class="tracking_container">
+                      <div>Portale: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif</div>
+                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
+                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
+                  </div>
+                  <div class="tracking_container">
+                      <div>Sonstige: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif</div>
+                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 0])}}" role="button">-</a>
+                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
+                  </div>
+              </div>
+      </div>
         <!-- START ORDERS -->
-        <div class="col-md-3">
-            <div class="max-main-container">
-              <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
-                @csrf
-                <div class="tracking_title">
-                    Saves
-                </div>
-                <div class="tracking_container">
-                    <div class="tracking_description">Vertragsnummer</div>
-                    <input type="text" class="form-control" name="contract_number">
-                </div>
-                <div class="tracking_container">
-                    <div class="tracking_description">Produktgruppe</div>
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="product_category" value="ssc" id="product_category1" autocomplete="off">
-                        <label class="btn btn-outline-primary first-btn-group-element" for="product_category1">SSC</label>
-        <div class="col-lg-6 col-sm-12">
-            <form action="">
-                <div class="max-main-container">
-                    <div class="tracking_title">
-                        Calls
-                    </div>
-                    <div class="tracking_container">
-                        <div>SSC: {Calls}</div>
-                        <a class="btn btn-primary btn-tracking-change" href="#" role="button">-</a>
-                        <a class="btn btn-primary btn-tracking-change" href="#" role="button">+</a>
-                    </div>
-                    <div class="tracking_container">
-                        <div>BSC: {Calls}</div>
-                        <a class="btn btn-primary btn-tracking-change" href="#" role="button">-</a>
-                        <a class="btn btn-primary btn-tracking-change" href="#" role="button">+</a>
-                    </div>
-                    <div class="tracking_container">
-                        <div>Portale: {Calls}</div>
-                        <a class="btn btn-primary btn-tracking-change" href="#" role="button">-</a>
-                        <a class="btn btn-primary btn-tracking-change" href="#" role="button">+</a>
-                    </div>
-                    <div class="tracking_container">
-                        <div>Sonstige: {Calls}</div>
-                        <a class="btn btn-primary btn-tracking-change" href="#" role="button">-</a>
-                        <a class="btn btn-primary btn-tracking-change" href="#" role="button">+</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <!-- END CALLS -->
-        <!-- START ORDERS -->
-
-        <div class="col-lg-6 col-sm-12">
-            <form action="">
+          <div class="col-lg-6 col-sm-12">
+            <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
+              @csrf
                 <div class="max-main-container">
                     <div class="tracking_title">
                         Saves
@@ -261,11 +206,8 @@
                         </div>
                     </div>
                     <div class="tracking_container" style="display: flex;">
-                        <input type="button" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;">
+                        <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;">
                     </div>
-                </div>
-                <div class="tracking_container">
-                    <input type="submit" value="Speichern">
                 </div>
             </div>
 
@@ -275,35 +217,7 @@
         <!-- START HISTORY -->
         <div class="col-sm-12">
             <div class="max-main-container">
-                <div class="tracking_title">
-                    Historie
-                </div>
-                <div class="max-panel-content">
-                    <div style="width: 100%;">
-                        <table class="max-table" id="xxx" style="width: 100%;">
-                            <thead>
-                                <td>Vertragsnummer</td>
-                                <td>Produkt</td>
-                                <td>Typ</td>
-                                <td>Zieltarif</td>
-                                <!-- <td>Kategorie4</td> -->
-                                <!-- <td>Kategorie5</td> -->
-                            </thead>
-                            <tbody>
-                              @foreach($history as $record)
-                              <tr>
 
-                                <td>{{$record->contract_number}}</td>
-                                <td>{{$record->product_category}}</td>
-                                <td>{{$record->event_category}}</td>
-                                <td>{{$record->target_tarif}}</td>
-                              </tr>
-                              @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                </div>
                 <table class="tracking-table">
                     <thead>
                         <th>Vertragsnummer</th>
@@ -315,24 +229,18 @@
                         <th>Nacharbeit</th>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                        </tr>
-                        <tr>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                            <td>{Wert}</td>
-                        </tr>
+                      @foreach($history as $record)
+                      <tr>
+
+                        <td>{{$record->contract_number}}</td>
+                        <td>{{$record->product_category}}</td>
+                        <td>{{$record->event_category}}</td>
+                        <td>{{$record->target_tariff}}</td>
+                        <td>@if($record->optin == 1) ja @else nein @endif</td>
+                        <td>@if($record->runtime == 1) ja @else nein @endif</td>
+                        <td>@if($record->backoffice == 1) ja @else nein @endif</td>
+                      </tr>
+                      @endforeach
 
                     </tbody>
                 </table>
