@@ -328,6 +328,10 @@ use App\Http\Controllers\ControllingController;
     Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track');
     Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin');
 
+    Route::get('/mobile/tracking/admin', function(){
+
+      return view('trackingMobileAdmin');
+    })->name('mobile.tracking.admin');
   // END MOBILE TRACKING
 
   //START Scrum

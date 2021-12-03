@@ -22,12 +22,17 @@ Tracking mit Vertragsnummer
     }
 
     .tracking-table{
-        margin: 10px;
-        width: calc(100% - 20px);
+        white-space: nowrap;
+        width:100%;
     }
 
     .tracking-table th, td{
         border: 1px solid black;
+        padding: 0 5px;
+    }
+
+    .tracking-table th{
+        text-align: center;
     }
 
     .btn-check {
@@ -38,13 +43,13 @@ Tracking mit Vertragsnummer
 
     .btn-outline-primary:hover{
         color: white;
-        background-color: #fa7a50;;
+        background-color: #f96332;;
     }
 
     .btn-check:checked + label{
     color: white;
-    background-color: #fa7a50;;
-    border: 1px solid #fa7a50;
+    background-color: #f96332;;
+    border: 1px solid #f96332;
     }
 
     .first-btn-group-element{
@@ -81,7 +86,7 @@ Tracking mit Vertragsnummer
 </style>
 @endsection
 
-<div>
+<div style="font-size: 1em;">
     <!-- START KPI
     <div class="row">
         <div class="col-md-12">
@@ -217,33 +222,37 @@ Tracking mit Vertragsnummer
         <!-- START HISTORY -->
         <div class="col-sm-12">
             <div class="max-main-container">
-
-                <table class="tracking-table">
-                    <thead>
-                        <th>Vertragsnummer</th>
-                        <th>Produktgruppe</th>
-                        <th>Bearbeitung</th>
-                        <th>Zieltarif</th>
-                        <th>OptIn</th>
-                        <th>RLZ+24</th>
-                        <th>Nacharbeit</th>
-                    </thead>
-                    <tbody>
-                      @foreach($history as $record)
-                      <tr>
-
-                        <td>{{$record->contract_number}}</td>
-                        <td>{{$record->product_category}}</td>
-                        <td>{{$record->event_category}}</td>
-                        <td>{{$record->target_tariff}}</td>
-                        <td>@if($record->optin == 1) ja @else nein @endif</td>
-                        <td>@if($record->runtime == 1) ja @else nein @endif</td>
-                        <td>@if($record->backoffice == 1) ja @else nein @endif</td>
-                      </tr>
-                      @endforeach
-
-                    </tbody>
-                </table>
+                <div class="tracking_title">
+                    Historie
+                </div>    
+                <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
+                    <table class="tracking-table">
+                        <thead>
+                            <th>Erstellt</th>
+                            <th>Vertragsnummer</th>
+                            <th>Produktgruppe</th>
+                            <th>Bearbeitung</th>
+                            <th>Zieltarif</th>
+                            <th>OptIn</th>
+                            <th>RLZ+24</th>
+                            <th>Nacharbeit</th>
+                        </thead>
+                        <tbody>
+                        @foreach($history as $record)
+                        <tr>
+                            <td>{{$record->created_at}}</td>
+                            <td>{{$record->contract_number}}</td>
+                            <td>{{$record->product_category}}</td>
+                            <td>{{$record->event_category}}</td>
+                            <td>{{$record->target_tariff}}</td>
+                            <td>@if($record->optin == 1) ja @else nein @endif</td>
+                            <td>@if($record->runtime == 1) ja @else nein @endif</td>
+                            <td>@if($record->backoffice == 1) ja @else nein @endif</td>
+                        </tr>
+                        @endforeach    
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <!-- END HISTORY -->
@@ -253,7 +262,7 @@ Tracking mit Vertragsnummer
 @endsection
 
 @section('additional_js')
-<!-- <script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<!-- <script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>b
 <script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
