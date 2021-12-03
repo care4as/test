@@ -111,6 +111,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                          <tr>
+                                            @foreach($history as $record)
+
+                                            @endforeach
+                                          </tr>
                                             <tr>
                                                 <td style="border-right: 2px solid grey">{Name1}</td>
                                                 <td>{Wert}</td>
@@ -146,7 +151,7 @@
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
                                                 <td>{Wert}</td>
-                                            </tr>                           
+                                            </tr>
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -204,37 +209,28 @@
                                             <th>Nacharbeit</th>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                                <td>{Wert}</td>
-                                            </tr>
+                                          @foreach($history as $record)
+                                          <tr>
+                                            <td>{{$record->created_at}}</td>
+                                            <td>{{$record->createdBy->name}}</td>
+                                            <td>{{$record->contract_number}}</td>
+                                            <td>{{$record->product_category}}</td>
+                                            <td>{{$record->event_category}}</td>
+                                            <td>{{$record->target_tariff}}</td>
+                                            <td>@if($record->optin == 1) ja @else nein @endif</td>
+                                            <td>@if($record->runtime == 1) ja @else nein @endif</td>
+                                            <td>@if($record->backoffice == 1) ja @else nein @endif</td>
+                                          </tr>
+                                          @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>     
+                </div>
             </div>
-        </div>    
+        </div>
     </div>
     <!-- END MAIN-->
 </div>

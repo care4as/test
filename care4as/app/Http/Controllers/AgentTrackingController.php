@@ -82,7 +82,15 @@ class AgentTrackingController extends Controller
     }
     public function AdminIndex()
     {
-      $history = TrackEvent::all();
+      $history = TrackEvent::with('createdBy')
+      ->orderBy('created_at','DESC')
+      ->get();
+
+      $user = User::with('TrackingToday')
+      ->where('status', 1)
+      ->where('project','1und1 Retention')
+      ->get();
+
       $trackcalls = TrackCalls::all();
 
       // dd($events);

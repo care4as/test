@@ -40,7 +40,7 @@ class User extends Authenticatable
 
     public function TrackingToday()
     {
-      return $this->hasMany('\App\UserTracking')->whereDate('created_at', DB::raw('CURDATE()'));
+      return $this->hasMany('\App\TrackEvent')->whereDate('created_at', DB::raw('CURDATE()'));
     }
     public function getSalesDataInTimespan($date1,$date2)
     {
