@@ -171,7 +171,8 @@ function roundUp($calls,$quotient)
                                                 <td style="border-right: 2px solid grey">Summe</td>
                                                 <td>{{$allCalls = $users->sum(function ($user) {
                                                       return $user->TrackingCallsToday->sum('calls');
-                                                    });}}</td>
+                                                    })
+                                                  }}</td>
                                                 <td>
                                                   {{$users->sum(function ($user) {
                                                       return $user->TrackingToday->where('event_category','Cancel')->count();
@@ -180,7 +181,8 @@ function roundUp($calls,$quotient)
                                                 <td style="border-right: 2px solid grey">
                                                   {{$users->sum(function ($user) {
                                                       return $user->TrackingToday->where('event_category','Service')->count();
-                                                    });}}
+                                                    })
+                                                  ;}}
                                                 </td>
                                                 <td>
                                                   {{$allSSCCalls = $users->sum(function ($user) {
