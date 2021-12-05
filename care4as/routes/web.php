@@ -323,7 +323,7 @@ use App\Http\Controllers\ControllingController;
   //End Controlling Routes
 
   //START MOBILE TRACKING
-    Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents');
+    Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents')->middleware('auth');
     Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post');
     Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track');
     Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin');

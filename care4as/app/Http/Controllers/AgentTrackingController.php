@@ -32,12 +32,14 @@ class AgentTrackingController extends Controller
     }
     public function userIndex()
     {
-      $history = TrackEvent::where('created_by', Auth()->id())
-      ->get();
-      $trackcalls = TrackCalls::where('user_id', Auth()->id())
-      ->whereDate('created_at', Carbon::today())
-      ->get();
-      // dd();
+
+      $history = TrackEvent::where('created_by', Auth()->id());
+
+
+      $history = Auth()->user()->load('TrackingToday')->TrackingToday;
+      $trackcalls = Auth()->user()->load('TrackingCallsToday')->TrackingCallsToday;
+
+      // dd('test');
       return view('trackingMobile', compact('history','trackcalls'));
     }
     /**
@@ -87,15 +89,21 @@ class AgentTrackingController extends Controller
       ->orderBy('created_at','DESC')
       ->get();
 
-      // $user = User::with('TrackingToday')
-      // ->where('status', 1)
-      // ->where('project','1und1 Retention')
-      // ->get();
+      $users = User::with('TrackingToday')
+      ->where('status', 1)
+      ->where('project','1und1 Retention')
+      ->get();
 
-      $trackcalls = TrackCalls::all();
+      foreach ($users as $key => $user) {
+        if ($user->id == 408) {
+          // dd($user);
+        }
 
-      // dd($events);
-      return view('trackingMobileAdmin', compact('history', 'trackcalls'));
+      }
+      // $trackcalls = TrackCalls::all();
+
+      // dd($users);
+      return view('trackingMobileAdmin', compact('history', 'users'));
     }
     public function trackCall($type, $updown)
     {
