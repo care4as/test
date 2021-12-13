@@ -313,7 +313,7 @@ use App\Http\Controllers\ControllingController;
   //end nettozeitenreporte
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
-  Route::get('/userlist', 'UserListController@load')->name('userlist')->middleware('hasRight:users_userlist');
+  Route::get('/b', 'UserListController@load')->name('userlist')->middleware('hasRight:users_userlist');
   Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync')->middleware('hasRight:users_userlist');
   Route::get('/userlist/updateuser', 'UserListController@updateUser')->name('userlist.updateuser')->middleware('hasRight:users_update');
   Route::get('/userlist/resetpassword', 'UserListController@updateUserPassword')->name('userlist.updateUserPassword')->middleware('hasRight:users_reset_password');
