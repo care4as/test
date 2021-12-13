@@ -42,10 +42,8 @@ class AttainmentController extends Controller
         /** functionhandler for attainments */
         if(($defaultVariablesArray['attainment'] == 'dsl_interval_attainment') || ($defaultVariablesArray['attainment'] == 'dsl_forecast_attainment')){
             $attainmentArray = $this->wfmDslAttainment($defaultVariablesArray);
-        } elseif ($defaultVariablesArray['attainment'] == 'dsl_employee_surcharge') {
-            $attainmentArray = $this->getEmployeeSurcharge();
-        } elseif ($defaultVariablesArray['attainment'] == 'mobile_employee_surcharge') {
-            $attainmentArray = $this->getEmployeeSurcharge();
+        } elseif ($defaultVariablesArray['attainment'] == 'employee_surcharge') {
+            $attainmentArray = $this->getEmployeeSurcharge($defaultVariablesArray);
         }
 
         //dd($attainmentArray);
@@ -256,8 +254,64 @@ class AttainmentController extends Controller
         return $dateArray;
     }
 
-    public function getEmployeeSurcharge(){
-        $data = array('employees', 'sum');
+    public function getEmployeeSurcharge($defaultVariablesArray){
+        $data = array();
+
+        $hours =  DB::connection('mysqlkdw')                            // Verbindung zur externen Datenbanl 'mysqlkdw' wird hergestellt
+        ->table("chronology_work")                                      // Aus der Datenbank soll auf die Tabelle 'chronology_work' zugegriffen werden
+        ->where('work_date', '>=', $defaultVariablesArray['startDate']) // Datum muss größergleich dem Startdatum sein
+        ->where('work_date', '<=', $defaultVariablesArray['endDate'])   // Datum muss kleinergleich dem Enddatum sein
+        ->where('state_id', null)
+        ->get();                    
+
+        $employees = DB::connection('mysqlkdw')
+        ->table('MA')
+        ->where(function($query) {   
+            $query
+            ->where('projekt_id', '=', 10)
+            ->orWhere('projekt_id', '=', 7);
+        })
+        ->where('abteilung_id', '=', 10)
+        ->where(function($query) use($defaultVariablesArray){
+            $query
+            ->where('austritt', '=', null)
+            ->orWhere('austritt', '>', $defaultVariablesArray['startDate']);}) 
+        ->where('eintritt', '<=', $defaultVariablesArray['endDate'])            
+        ->get(['ds_id', 'familienname', 'vorname'])                                                                 
+        ->toArray();
+        
+        $userlist = array();
+        foreach($employees as $key => $entry){
+            $entry = (array) $entry;
+            $userlist[$entry['ds_id']]['information']['ds_id'] = $entry['ds_id'];
+            $userlist[$entry['ds_id']]['information']['name'] = $entry['familienname'] . ', ' . $entry['vorname'];
+
+            for($i = 0; $i <= $defaultVariablesArray['differenceDate']; $i++){
+                $date = Carbon::createFromFormat("Y-m-d", $defaultVariablesArray['startDate'])->modify('+' . $i . 'days');
+                $dateStr = date_format($date, "Y-m-d");
+
+    
+                $userlist[$entry['ds_id']]['dates'][$dateStr]['hours'] = 0;
+                $userlist[$entry['ds_id']]['dates'][$dateStr]['provision'] = 0;
+            }
+        }
+
+        $data['employees'] = $userlist;
+
+
+        for($i = 0; $i <= $defaultVariablesArray['differenceDate']; $i++){
+            $date = Carbon::createFromFormat("Y-m-d", $defaultVariablesArray['startDate'])->modify('+' . $i . 'days');
+            $dateStr = date_format($date, "Y-m-d");
+
+
+
+            
+            
+            
+            
+            
+            $data['sum'][$dateStr] = $dateStr;
+        }
 
         $employeesObject = null; // DB ABFRAGE MIT FILTER AUF BERECHTIGTE GRUPPEN
         //FOREACH SCHLEIFE ÜBER ALLE MA -> IN EMPLOYEES SPEICHERN: DATA, DAYS
@@ -265,7 +319,7 @@ class AttainmentController extends Controller
         //IN DAYS EIN ARRAY ERSTELLEN MIT EINEM EINTRAG PRO TAG
         //FÜR JEDEN TAG EINEN STUNDENWERT UND EINEN EUROWERT BERECHNEN
         
-
+        dd($hours);
         dd($data);
         return $data;
     }
