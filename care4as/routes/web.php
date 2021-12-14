@@ -43,7 +43,7 @@ use App\Http\Controllers\ControllingController;
   //Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
   //Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post')->middleware('hasRight:updateUser');
   Route::get('/user/analytics/{id}', 'UserController@Scorecard')->name('user.stats')->middleware('hasRight:updateUser');
-  Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
+  // Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
   //Route::post('/user/update/{id}', 'UserController@update')->name('user.update')->middleware('hasRight:updateUser');
   Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
   Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
