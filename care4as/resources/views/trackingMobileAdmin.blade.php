@@ -571,8 +571,8 @@ function loadModalWithData(id) {
   var host = window.location.host;
 
   axios.get
-    ('http://'+host+'/care4as/care4as/public/mobile/tracking/json/'+id)
-    // ('http://'+host+'/mobile/tracking/json/'+id)
+    // ('http://'+host+'/care4as/care4as/public/mobile/tracking/json/'+id)
+    ('http://'+host+'/mobile/tracking/json/'+id)
     .then(response => {
       if(response.data)
       {
