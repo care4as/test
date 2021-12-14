@@ -28,15 +28,23 @@ class UserListController extends Controller
         if($employeeState == 'active'){
             $roleArray = $this->getRoles();
             $users = $this->getUnfilteredUsers();
+            if ($project != 'all'){
+                $users = $this->refineUserlistProject($users, $project);
+            }            
             $users = $this->refineUserlistActive($users);
         } else if ($employeeState == 'inactive'){
             $roleArray = $this->getRoles();
             $users = $this->getUnfilteredUsers();
+            if ($project != 'all'){
+                $users = $this->refineUserlistProject($users, $project);
+            }  
             $users = $this->refineUserlistInactive($users);
-        }
-        if($project != null && $project != 'all'){
+        } else if($employeeState == 'all'){
             $roleArray = $this->getRoles();
-            $users = $this->refineUserlistProject($users, $project);
+            $users = $this->getUnfilteredUsers();
+            if ($project != 'all'){
+                $users = $this->refineUserlistProject($users, $project);
+            }  
         }
           // dd($users);
         //users erstellen und anschließend nach bedarf durch verschiedene filter laufen lassen, wodurch nutzer entfernt werden
@@ -312,13 +320,9 @@ class UserListController extends Controller
 
     public function refineUserlistInactive($userlist){
         foreach($userlist as $key => $entry) {
-          if(isset($entry['leave_date']))
-          {
             if (($entry['leave_date'] > today()) || $entry['leave_date'] == null) {
                 unset($userlist[$key]);
             }
-          }
-
         }
         return $userlist;
     }

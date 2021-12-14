@@ -267,15 +267,15 @@ use App\Http\Controllers\ControllingController;
   //end tracking routes
 
   //feedback
-  Route::get('/feedback/print', 'FeedbackController@print')->name('feedback.print');
-  Route::get('/feedback/showfeedback', 'FeedbackController@showfeedback')->name('feedback.showfeedback');
-  Route::get('/feedback/view', 'FeedbackController@create11')->name('feedback.view');
-  Route::get('/feedback/index', 'FeedbackController@index')->name('feedback.myIndex');
-  Route::post('/feedback/update', 'FeedbackController@update')->name('feedback.update');
-  Route::get('/feedback/show/{id}', 'FeedbackController@show')->name('feedback.show');
-  Route::post('/feedback/fill', 'FeedbackController@store')->name('feedback.store');
+  Route::get('/feedback/print', 'FeedbackController@print')->name('feedback.print');//RECHT FEHLT
+  Route::get('/feedback/showfeedback', 'FeedbackController@showfeedback')->name('feedback.showfeedback');//RECHT FEHLT
+  Route::get('/feedback/view', 'FeedbackController@create11')->name('feedback.view');//RECHT FEHLT
+  Route::get('/feedback/index', 'FeedbackController@index')->name('feedback.myIndex');//RECHT FEHLT
+  Route::post('/feedback/update', 'FeedbackController@update')->name('feedback.update');//RECHT FEHLT
+  Route::get('/feedback/show/{id}', 'FeedbackController@show')->name('feedback.show');//RECHT FEHLT
+  Route::post('/feedback/fill', 'FeedbackController@store')->name('feedback.store');//RECHT FEHLT
   //
-  Route::post('/callbackcauses', 'CallbackController@store')->name('callback.save');
+  Route::post('/callbackcauses', 'CallbackController@store')->name('callback.save');//RECHT FEHLT
   //trainings
   Route::get('/trainings/offers', function(){
     return view('TrainingOffers');
@@ -285,12 +285,12 @@ use App\Http\Controllers\ControllingController;
   //endtrainings
 
   //eobmail
-  Route::get('/eobmail', 'MailController@eobmail')->name('eobmail');
+  Route::get('/eobmail', 'MailController@eobmail')->name('eobmail');//RECHT FEHLT
 
-  Route::post('/eobmail/send', 'MailController@eobMailSend')->name('eobmail.send');
-  Route::post('/eobmail/comment', 'MailController@storeComment')->name('eobmail.note.store');
-  Route::post('/eobmail/FaMailStoreKPIs', 'MailController@FaMailStoreKPIs')->name('eobmail.kpi.store');
-  Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');
+  Route::post('/eobmail/send', 'MailController@eobMailSend')->name('eobmail.send');//RECHT FEHLT
+  Route::post('/eobmail/comment', 'MailController@storeComment')->name('eobmail.note.store');//RECHT FEHLT
+  Route::post('/eobmail/FaMailStoreKPIs', 'MailController@FaMailStoreKPIs')->name('eobmail.kpi.store');//RECHT FEHLT
+  Route::get('/note/delete/{id}', 'MailController@deleteComment')->name('note.delete');//RECHT FEHLT
   //endeobmail
 
   //Presentation
@@ -298,26 +298,26 @@ use App\Http\Controllers\ControllingController;
   //endpresentation
 
   //inventory
-  Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');
-  Route::post('/inventory/add', 'HardwareController@store')->name('inventory.store');
-  Route::get('/inventory', 'HardwareController@index')->name('inventory.list');
-  Route::get('/inventory/item/show/{id}', 'HardwareController@show')->name('inventory.item.show');
-  Route::post('/inventory/item/update/{id}', 'HardwareController@update')->name('inventory.item.update');
-  Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');
+  Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');//RECHT FEHLT
+  Route::post('/inventory/add', 'HardwareController@store')->name('inventory.store');//RECHT FEHLT
+  Route::get('/inventory', 'HardwareController@index')->name('inventory.list');//RECHT FEHLT
+  Route::get('/inventory/item/show/{id}', 'HardwareController@show')->name('inventory.item.show');//RECHT FEHLT
+  Route::post('/inventory/item/update/{id}', 'HardwareController@update')->name('inventory.item.update');//RECHT FEHLT
+  Route::get('/inventory/item/delete/{id}', 'HardwareController@delete')->name('inventory.item.delete');//RECHT FEHLT
 
   //endinventory
 
   //nettozeitenreporte
-  Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');
+  Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');//RECHT FEHLT
 
   //end nettozeitenreporte
   //Controlling Routes
   Route::get('/umsatzmeldung', [ControllingController::class, 'queryHandler'])->name('umsatzmeldung')->middleware('hasRight:controlling');
-  Route::get('/userlist', 'UserListController@load')->name('userlist');
-  Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync');
-  Route::get('/userlist/updateuser', 'UserListController@updateUser')->name('userlist.updateuser');
-  Route::get('/userlist/resetpassword', 'UserListController@updateUserPassword')->name('userlist.updateUserPassword');
-  Route::get('/userlist/updaterole', 'UserListController@updateUserRole')->name('userlist.updateUserRole');
+  Route::get('/b', 'UserListController@load')->name('userlist')->middleware('hasRight:users_userlist');
+  Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync')->middleware('hasRight:users_userlist');
+  Route::get('/userlist/updateuser', 'UserListController@updateUser')->name('userlist.updateuser')->middleware('hasRight:users_update');
+  Route::get('/userlist/resetpassword', 'UserListController@updateUserPassword')->name('userlist.updateUserPassword')->middleware('hasRight:users_reset_password');
+  Route::get('/userlist/updaterole', 'UserListController@updateUserRole')->name('userlist.updateUserRole')->middleware('hasRight:users_change_role');
   Route::get('/projectReport', 'ProjectReportController@load')->name('projectReport')->middleware('hasRight:controlling');
   Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
   //End Controlling Routes
@@ -331,32 +331,34 @@ use App\Http\Controllers\ControllingController;
     Route::get('/mobile/tracking/delete/{id}', 'AgentTrackingController@destroy')->name('tracking.delete.admin');
     Route::get('/mobile/tracking/json/{id}', 'AgentTrackingController@show')->name('tracking.show.admin');
 
+    //   return view('trackingMobileAdmin');
+    // })->name('mobile.tracking.admin');//RECHT FEHLT
   // END MOBILE TRACKING
 
   //START Scrum
-  Route::get('/scrum', 'ScrumController@init')->name('scrum.itkanbanboard');
-  Route::get('/scrum/add', 'ScrumController@add')->name('scrum.add');
-  Route::get('/scrum/update', 'ScrumController@update')->name('scrum.update');
-  Route::get('/scrum/delete', 'ScrumController@delete')->name('scrum.delete');
+  Route::get('/scrum', 'ScrumController@init')->name('scrum.itkanbanboard');//RECHT FEHLT
+  Route::get('/scrum/add', 'ScrumController@add')->name('scrum.add');//RECHT FEHLT
+  Route::get('/scrum/update', 'ScrumController@update')->name('scrum.update');//RECHT FEHLT
+  Route::get('/scrum/delete', 'ScrumController@delete')->name('scrum.delete');//RECHT FEHLT
   //END Scrum
 
   //DSL Routes
-  Route::get('/1u1/mobileRetenion/trackingDifference', 'TrackingDifferenceController@load')->name('mobileTrackingDifference');
+  Route::get('/1u1/mobileRetenion/trackingDifference', 'TrackingDifferenceController@load')->name('mobileTrackingDifference');//RECHT FEHLT
   //END DSL routes
 
   //Provision
-  Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');
+  Route::get('/provision/buchungslisten', 'ProvisionController@buchungslisteIndex')->name('buchungsliste.show');//RECHT FEHLT
   //end Provison
 
   //offers
-  Route::get('/offers/create', 'OfferController@create')->name('offers.create');
-  Route::post('/offers/store', 'OfferController@store')->name('offers.store');
-  Route::get('/offers/JSON', 'OfferController@OffersInJSON')->name('offers.inJSON');
-  Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');
-  Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');
+  Route::get('/offers/create', 'OfferController@create')->name('offers.create');//RECHT FEHLT
+  Route::post('/offers/store', 'OfferController@store')->name('offers.store');//RECHT FEHLT
+  Route::get('/offers/JSON', 'OfferController@OffersInJSON')->name('offers.inJSON');//RECHT FEHLT
+  Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');//RECHT FEHLT
+  Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');//RECHT FEHLT
   //endoffers
-  Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');
-  Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');
+  Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');//RECHT FEHLT
+  Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');//RECHT FEHLT
 
   Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');
   Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');

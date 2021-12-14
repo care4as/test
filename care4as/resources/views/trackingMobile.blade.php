@@ -35,6 +35,17 @@ Tracking mit Vertragsnummer
         text-align: center;
     }
 
+    .tracking_errormessage{
+        font-size: 0.8em;
+        text-align: center;
+        color: #f96332;
+        border: 1px solid #f96332;
+        max-width: 600px;
+        margin: 10px auto auto auto;
+        border-radius: 5px;
+        display: flex;
+    }
+
     .btn-check {
     position: absolute;
     clip: rect(0,0,0,0);
@@ -107,7 +118,7 @@ Tracking mit Vertragsnummer
 
     <!-- START TRACKING -->
     <div class="row">
-      <div class="col-xl-6 col-lg-12 col-sm-12">
+      <div class="col-xl-6 col-lg-12">
               <div class="max-main-container">
                   <div class="tracking_title">
                       Calls {{$trackcalls->sum('calls')}}
@@ -144,7 +155,11 @@ Tracking mit Vertragsnummer
                     </div>
                     <div class="tracking_container">
                         <div class="tracking_description">Vertragsnummer</div>
-                        <input type="text" class="form-control" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()">
+                        <input type="text" class="form-control" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
+                        <div class="tracking_errormessage" id="contract_number_errormessage" style="display: none;">
+                            <div style="margin: auto; padding: 0 5px;"><i class="far fa-times-circle"></i></div>
+                            <div >Fehlerhafter Wert: Bitte trage eine gültige Vertragsnummer ohne Buchstaben, Leer- oder Sonderzeichen ein.</div>
+                        </div>
                     </div>
                     <div class="tracking_container">
                         <div class="tracking_description">Produktgruppe</div>
@@ -180,7 +195,7 @@ Tracking mit Vertragsnummer
                     </div>
                     <div class="tracking_container">
                         <div class="tracking_description">Zieltarif</div>
-                        <input type="text" class="form-control" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" disabled>
+                        <input type="text" class="form-control" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()" disabled>
                     </div>
                     <div class="tracking_container">
                         <div class="tracking_description">OptIn gesetzt</div>
@@ -222,13 +237,16 @@ Tracking mit Vertragsnummer
                         <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;" id="submit_tracking" disabled>
                     </div>
                 </div>
+
             </div>
 
             </form>
         </div>
+    </div>
+    <div class="row">
         <!-- END ORDERS -->
         <!-- START HISTORY -->
-        <div class="col-sm-12">
+        <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
                     Historie
@@ -296,13 +314,7 @@ function tracking_input(){
     var runtime = document.querySelector('input[name="runtime"]:checked')?.value;
     var backoffice = document.querySelector('input[name="backoffice"]:checked')?.value;
 
-    console.log(contract_field);
-    console.log(product_category_field)
-    console.log(event_category_field)
-    console.log(target_tariff_field)
-    console.log(optin)
-    console.log(runtime)
-    console.log(backoffice)
+
 
     if(event_category_field == 'Save'){
         document.querySelector('input[name="target_tariff"]').disabled = false;
@@ -313,7 +325,15 @@ function tracking_input(){
 
     var error_counter = 0;
 
+
+
     if(contract_field == ''){
+        document.getElementById('contract_number_errormessage').style.display = 'none';
+        error_counter += 1;
+    } else if (Math.floor(contract_field) == contract_field) {
+        document.getElementById('contract_number_errormessage').style.display = 'none';
+    } else {
+        document.getElementById('contract_number_errormessage').style.display = 'flex';
         error_counter += 1;
     }
 
@@ -346,17 +366,6 @@ function tracking_input(){
     } else {
         document.getElementById('submit_tracking').disabled = true;
     }
-
-
-
-
-
-
-
-
-    console.log(error_counter);
-
-
 
 }
 

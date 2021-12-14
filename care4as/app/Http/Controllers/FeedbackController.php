@@ -318,7 +318,7 @@ class FeedbackController extends Controller
     if($userid)
     {
 
-      $year = Carbon::now()->year;
+      // $year = Carbon::now()->year;
       $start_date = 1;
       $end_date = 1;
 
@@ -330,24 +330,21 @@ class FeedbackController extends Controller
       ->orderBy('name')
       ->get();
 
-    $kw = date("W");
+      $kw = date("W");
 
-    for ($i= 1 ; $i <= 4; $i++) {
-      $kws[] = $kw - $i;
-      if ($i == 1) {
-        $end_date = Carbon::now();
-        $end_date->setISODate($year,$kw - $i,7)->format('Y-m-d');
-      }
-      if($i == 4)
-      {
-        $start_date = Carbon::now();
-        $start_date->setISODate($year,$kw - $i,1)->format('Y-m-d');
-      }
+      for ($i= 1 ; $i <= 4; $i++) {
+        $kws[] = $kw - $i;
+        if ($i == 1) {
+          $end_date = Carbon::now();
+          $end_date->setISODate($year,$kw - $i,7)->format('Y-m-d');
+        }
+        if($i == 4)
+        {
+          $start_date = Carbon::now();
+          $start_date->setISODate($year,$kw - $i,1)->format('Y-m-d');
+        }
 
-    }
-    // dd($end_date, $start_date);
-
-    $user = User::where('role','agent')
+    $user = User::where('role','Agent_Mobile')
     ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
     ->with(['dailyagent' => function($q) use ($start_date,$end_date){
       if($start_date !== 1)
@@ -357,146 +354,165 @@ class FeedbackController extends Controller
       }}]);
       // dd($end_date, $start_date);
 
-      $user = User::where('id',$userid)
+      $user = User::where('role','Agent_Mobile')
+      ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
       ->with(['dailyagent' => function($q) use ($start_date,$end_date){
         if($start_date !== 1)
         {
-          $q->where('work_date','>=',$start_date);
+          $datemod = Carbon::parse($start_date)->setTime(2,0,0);
+          $q->where('date','>=',$datemod);
         }
-        if($end_date !== 1)
-        {
-          $q->where('work_date','<=',$end_date);
-        }
+        // dd($end_date, $start_date);
+
+        $user = User::where('id',$userid)
+        ->with(['dailyagent' => function($q) use ($start_date,$end_date){
+          if($start_date !== 1)
+          {
+            $q->where('work_date','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('work_date','<=',$end_date);
+          }
+          }])
+        ->with(['SSETracking' => function($q) use ($start_date,$end_date){
+          if($start_date !== 1)
+          {
+            $q->where('trackingdate','>=',$start_date);
+          }
+          if($end_date !== 1)
+          {
+            $q->where('trackingdate','<=',$end_date);
+          }
         }])
-      ->with(['SSETracking' => function($q) use ($start_date,$end_date){
-        if($start_date !== 1)
-        {
-          $q->where('trackingdate','>=',$start_date);
-        }
-        if($end_date !== 1)
-        {
-          $q->where('trackingdate','<=',$end_date);
-        }
-      }])
-    // ->limit(10)
-    ->first();
+      // ->limit(10)
+      ->first();
 
-    // dd($user);
-    foreach($kws as $kwi)
-    {
-      $query = null;
-      //determin the date from monday 00:00:00 to sunday 23:59:59
-      $start_date = Carbon::now();
-      $end_date = Carbon::now();
-
-      $start_date->setISODate($year,$kwi,1)->format('Y-m-d');
-      $start_date->setTime(0,0);
-      // return $start_date;
-      $end_date->setISODate($year,$kwi,7)->format('Y-m-d');
-      $end_date->setTime(23,59,59);
-
-      if($user->project == null)
+      // dd($user);
+      foreach($kws as $kwi)
       {
-        $department = null;
+        $query = null;
+        //determin the date from monday 00:00:00 to sunday 23:59:59
+        $start_date = Carbon::now();
+        $end_date = Carbon::now();
+
+        $start_date->setISODate($year,$kwi,1)->format('Y-m-d');
+        $start_date->setTime(0,0);
+        // return $start_date;
+        $end_date->setISODate($year,$kwi,7)->format('Y-m-d');
+        $end_date->setTime(23,59,59);
+
+        if($user->project == null)
+        {
+          $department = null;
+        }
+        else if($user->project == '1und1 Retention') {
+          $department = 'Retention Mobile Inbound Care4as Eggebek';
+        }
+        else {
+          $department = 'Care4as Retention DSL Eggebek';
+        }
+
+        $weekstats =  $user->retentionDetails
+        ->where('call_date','>=', $start_date)
+        ->where('call_date','<=', $end_date);
+
+        $calls = $weekstats->sum('calls');
+        $callsssc = $weekstats->sum('calls_smallscreen');
+        $callsbsc = $weekstats->sum('calls_bigscreen');
+        $callsportale = $weekstats->sum('calls_portale');
+
+        $saves = $weekstats->sum('orders');
+        $sscSaves = $weekstats->sum('orders_smallscreen');
+        $bscSaves = $weekstats->sum('orders_bigscreen');
+        $portaleSaves = $weekstats->sum('orders_portale');
+
+        $teamcalls = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('calls');
+
+        $teamcalls_ssc = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('calls_smallscreen');
+
+        $teamcalls_bsc = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('calls_bigscreen');
+
+        $teamcalls_portale = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('calls_portale');
+
+        $teamsaves = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('orders');
+
+        $teamsaves_ssc = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('orders_smallscreen');
+
+        $teamsaves_bsc = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('orders_bigscreen');
+
+        $teamsaves_portale = DB::table('retention_details')
+        ->where('call_date','>=',$start_date)
+        ->where('call_date','<=',$end_date)
+        ->where('department_desc',$department)
+        ->sum('orders_portale');
+
+        $statsArray = array(
+
+        'calls' => $calls,
+        'callsssc' => $callsssc,
+        'callsbsc' => $callsbsc,
+        'callsportale' => $callsportale,
+        'saves' => $saves,
+        'sscSaves' => $sscSaves,
+        'bscSaves' => $bscSaves,
+        'portalSaves' => $portaleSaves,
+        'teamcalls' => $teamcalls,
+        'teamcalls_ssc' => $teamcalls_ssc,
+        'teamcalls_bsc' => $teamcalls_bsc,
+        'teamcalls_portale' => $teamcalls_portale,
+        'teamsaves' => $teamsaves,
+        'teamsaves_ssc' => $teamsaves_ssc,
+        'teamsaves_bsc' => $teamsaves_bsc,
+        'teamsaves_portale' => $teamsaves_portale,
+        );
+
+        $weekperformance[$kwi] =  $statsArray;
+
       }
-      else if($user->project == '1und1 Retention') {
-        $department = 'Retention Mobile Inbound Care4as Eggebek';
-      }
-      else {
-        $department = 'Care4as Retention DSL Eggebek';
-      }
-
-      $weekstats =  $user->retentionDetails
-      ->where('call_date','>=', $start_date)
-      ->where('call_date','<=', $end_date);
-
-      $calls = $weekstats->sum('calls');
-      $callsssc = $weekstats->sum('calls_smallscreen');
-      $callsbsc = $weekstats->sum('calls_bigscreen');
-      $callsportale = $weekstats->sum('calls_portale');
-
-      $saves = $weekstats->sum('orders');
-      $sscSaves = $weekstats->sum('orders_smallscreen');
-      $bscSaves = $weekstats->sum('orders_bigscreen');
-      $portaleSaves = $weekstats->sum('orders_portale');
-
-      $teamcalls = DB::table('retention_details')
-      ->where('call_date','>=',$start_date)
-      ->where('call_date','<=',$end_date)
-      ->where('department_desc',$department)
-      ->sum('calls');
-
-      $teamcalls_ssc = DB::table('retention_details')
-      ->where('call_date','>=',$start_date)
-      ->where('call_date','<=',$end_date)
-      ->where('department_desc',$department)
-      ->sum('calls_smallscreen');
-
-      $teamcalls_bsc = DB::table('retention_details')
-      ->where('call_date','>=',$start_date)
-      ->where('call_date','<=',$end_date)
-      ->where('department_desc',$department)
-      ->sum('calls_bigscreen');
-
-      $teamcalls_portale = DB::table('retention_details')
-      ->where('call_date','>=',$start_date)
-      ->where('call_date','<=',$end_date)
-      ->where('department_desc',$department)
-      ->sum('calls_portale');
-
-      $teamsaves = DB::table('retention_details')
-      ->where('call_date','>=',$start_date)
-      ->where('call_date','<=',$end_date)
-      ->where('department_desc',$department)
-      ->sum('orders');
-
-      $teamsaves_ssc = DB::table('retention_details')
-      ->where('call_date','>=',$start_date)
-      ->where('call_date','<=',$end_date)
-      ->where('department_desc',$department)
-      ->sum('orders_smallscreen');
-
-      $teamsaves_bsc = DB::table('retention_details')
-      ->where('call_date','>=',$start_date)
-      ->where('call_date','<=',$end_date)
-      ->where('department_desc',$department)
-      ->sum('orders_bigscreen');
-
-      $teamsaves_portale = DB::table('retention_details')
-      ->where('call_date','>=',$start_date)
-      ->where('call_date','<=',$end_date)
-      ->where('department_desc',$department)
-      ->sum('orders_portale');
-
-      $statsArray = array(
-
-      'calls' => $calls,
-      'callsssc' => $callsssc,
-      'callsbsc' => $callsbsc,
-      'callsportale' => $callsportale,
-      'saves' => $saves,
-      'sscSaves' => $sscSaves,
-      'bscSaves' => $bscSaves,
-      'portalSaves' => $portaleSaves,
-      'teamcalls' => $teamcalls,
-      'teamcalls_ssc' => $teamcalls_ssc,
-      'teamcalls_bsc' => $teamcalls_bsc,
-      'teamcalls_portale' => $teamcalls_portale,
-      'teamsaves' => $teamsaves,
-      'teamsaves_ssc' => $teamsaves_ssc,
-      'teamsaves_bsc' => $teamsaves_bsc,
-      'teamsaves_portale' => $teamsaves_portale,
-      );
-
-      $weekperformance[$kwi] =  $statsArray;
-
     }
 
     // dd($weekperformance);
+
     return view('FeedBackCreate', compact('users', 'user','weekperformance'));
+
   }
+<<<<<<< HEAD
   }
 
+=======
+
+
+
+>>>>>>> 6f6af2c1a82599039e1538baf07120c34dd28ce4
 
   public function print($userid = null)
   {

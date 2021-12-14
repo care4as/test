@@ -407,7 +407,7 @@ function roundUp($calls,$quotient)
                             </div>
                             <div class="tab-pane" id="history">
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
-                                    <table class="tracking-table">
+                                    <table class="tracking-table" id="history-table">
                                         <thead>
                                             <th>Erstellt</th>
                                             <th>Kundenberater</th>

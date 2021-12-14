@@ -27,16 +27,12 @@
                                                 @else
                                                     <option value="dsl_forecast_attainment">DSL Forecasterfüllung</option>
                                                 @endif
-                                                @if($defaultVariablesArray['attainment'] == 'dsl_employee_surcharge')
-                                                    <option selected value="dsl_employee_surcharge">MA Stundenuschlag</option>
+                                                @if($defaultVariablesArray['attainment'] == 'employee_surcharge')
+                                                    <option selected value="employee_surcharge">MA Stundenuschlag</option>
                                                 @else
-                                                    <option value="dsl_employee_surcharge">MA Stundenzuschlag</option>
+                                                    <option value="employee_surcharge">MA Stundenzuschlag</option>
                                                 @endif
-                                                @if($defaultVariablesArray['attainment'] == 'mobile_employee_surcharge')
-                                                    <option selected value="mobile_employee_surcharge">MA Stundenuschlag</option>
-                                                @else
-                                                    <option value="mobile_employee_surcharge">MA Stundenzuschlag</option>
-                                                @endif
+                                                
                                             </select>
                                         </div>
                                     </div>
@@ -346,7 +342,7 @@
         <!-- END DSL FORECASTERFÜLLUNG -->
 
         <!-- MA DSL STUNDENZUSCHLAG -->
-        @if($defaultVariablesArray['attainment'] == 'dsl_employee_surcharge')
+        @if($defaultVariablesArray['attainment'] == 'employee_surcharge')
         <div class="row">
             <div class="col-md-12">
                 <div class="max-main-container">
