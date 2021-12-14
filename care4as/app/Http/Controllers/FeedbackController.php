@@ -361,7 +361,7 @@ class FeedbackController extends Controller
         {
           $datemod = Carbon::parse($start_date)->setTime(2,0,0);
           $q->where('date','>=',$datemod);
-        }
+        }}]);
         // dd($end_date, $start_date);
 
         $user = User::where('id',$userid)
@@ -503,7 +503,6 @@ class FeedbackController extends Controller
     // dd($weekperformance);
 
     return view('FeedBackCreate', compact('users', 'user','weekperformance'));
-
   }
   }
 
