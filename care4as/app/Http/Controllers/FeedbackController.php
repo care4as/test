@@ -308,7 +308,7 @@ class FeedbackController extends Controller
 
   public function create11($userid = null)
   {
-    return view('FeedBackCreate');
+
     $year = Carbon::now()->year;
     $start_date = 1;
     $end_date = 1;
@@ -317,7 +317,7 @@ class FeedbackController extends Controller
 
     if($userid)
     {
-      return view('FeedBackCreate');
+
       $year = Carbon::now()->year;
       $start_date = 1;
       $end_date = 1;
@@ -354,7 +354,7 @@ class FeedbackController extends Controller
       {
         $datemod = Carbon::parse($start_date)->setTime(2,0,0);
         $q->where('date','>=',$datemod);
-      }
+      }}]);
       // dd($end_date, $start_date);
 
       $user = User::where('id',$userid)
@@ -495,6 +495,8 @@ class FeedbackController extends Controller
     // dd($weekperformance);
     return view('FeedBackCreate', compact('users', 'user','weekperformance'));
   }
+  }
+
 
   public function print($userid = null)
   {

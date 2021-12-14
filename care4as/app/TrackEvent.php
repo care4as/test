@@ -5,7 +5,7 @@ namespace App;
 // use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TrackEvent extends Model
+class TrackEvent extends ExtendedModel
 {
     // use HasFactory;
 

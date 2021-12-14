@@ -107,7 +107,7 @@ Tracking mit Vertragsnummer
 
     <!-- START TRACKING -->
     <div class="row">
-      <div class="col-lg-6 col-sm-12">
+      <div class="col-xl-6 col-lg-12 col-sm-12">
               <div class="max-main-container">
                   <div class="tracking_title">
                       Calls {{$trackcalls->sum('calls')}}
@@ -135,7 +135,7 @@ Tracking mit Vertragsnummer
               </div>
       </div>
         <!-- START ORDERS -->
-          <div class="col-lg-6 col-sm-12">
+          <div class="col-xl-6 col-lg-12 col-sm-12">
             <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
               @csrf
                 <div class="max-main-container">
@@ -232,7 +232,7 @@ Tracking mit Vertragsnummer
             <div class="max-main-container">
                 <div class="tracking_title">
                     Historie
-                </div>    
+                </div>
                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
                     <table class="tracking-table">
                         <thead>
@@ -257,7 +257,7 @@ Tracking mit Vertragsnummer
                             <td>@if($record->runtime == 1) Ja @else Nein @endif</td>
                             <td>@if($record->backoffice == 1) Ja @else Nein @endif</td>
                         </tr>
-                        @endforeach    
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

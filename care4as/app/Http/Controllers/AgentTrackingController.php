@@ -52,7 +52,7 @@ class AgentTrackingController extends Controller
     {
       // dd($request);
         $request->validate([
-          'contract_number' => 'required|unique:track_events',
+          'contract_number' => 'required',
           'product_category' => 'required',
           'event_category' => 'required',
           'optin' => 'required',
@@ -70,15 +70,21 @@ class AgentTrackingController extends Controller
 
         $trackevent = new TrackEvent;
 
-        $trackevent->contract_number = $request->contract_number;
-        $trackevent->product_category = $request->product_category;
-        $trackevent->event_category = $request->event_category;
-        $trackevent->optin = $request->optin;
-        $trackevent->runtime = $request->runtime;
-        $trackevent->backoffice = $request->backoffice;
-        $trackevent->target_tariff = $request->target_tariff;
-        $trackevent->created_by = Auth()->id();
-        $trackevent->save();
+        $additionalProperties = array('created_by' => Auth()->id());
+
+        $tranformed = request()->except(['_token']);
+        // dd($tranformed);
+
+        $trackevent->TranformRequestToModel($tranformed,$additionalProperties);
+        // $trackevent->contract_number = $request->contract_number;
+        // $trackevent->product_category = $request->product_category;
+        // $trackevent->event_category = $request->event_category;
+        // $trackevent->optin = $request->optin;
+        // $trackevent->runtime = $request->runtime;
+        // $trackevent->backoffice = $request->backoffice;
+        // $trackevent->target_tariff = $request->target_tariff;
+        // $trackevent->created_by = Auth()->id();
+        // $trackevent->save();
 
         // dd($trackevent);
         return redirect()->back();
@@ -153,7 +159,8 @@ class AgentTrackingController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = TrackEvent::find($id);
+        return response()->json($event);
     }
 
     /**
@@ -162,9 +169,18 @@ class AgentTrackingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        // dd($request);
+        $model = TrackEvent::where('id',$request->trackid)->first();
+
+        // dd($model);
+
+        $requestX =  request()->except(['_token','trackid']);
+        $model->TranformRequestToModel($requestX);
+        $model->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -187,6 +203,8 @@ class AgentTrackingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Trackevent::where('id',$id)->delete();
+
+        return redirect()->back();
     }
 }
