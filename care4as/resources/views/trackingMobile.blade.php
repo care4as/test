@@ -121,33 +121,6 @@ Tracking mit Vertragsnummer
         <!-- <div class="col-lg-6 col-sm-12">
             <div class="max-main-container">
                 <div class="tracking_title">
-                    Calls {{$trackcalls->sum('calls')}}
-                </div>
-                <div class="tracking_container">
-                    <div>SSC: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',1)->first()->calls}} @else 0   @endif</div>
-                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
-                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
-                </div>
-                <div class="tracking_container">
-                    <div>BSC: @if($trackcalls->where('category',2)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif</div>
-                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
-                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
-                </div>
-                <div class="tracking_container">
-                    <div>Portale: @if($trackcalls->where('category',3)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif</div>
-                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
-                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
-                </div>
-                <div class="tracking_container">
-                    <div>Sonstige: @if($trackcalls->where('category',4)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif</div>
-                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 0])}}" role="button">-</a>
-                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
-                </div>
-            </div>
-        </div> -->
-        <div class="col-lg-6 col-sm-12">
-            <div class="max-main-container">
-                <div class="tracking_title">
                     Calls (Gesamt: {{$trackcalls->sum('calls')}})
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin: 10px; row-gap: 10px;" >
@@ -205,7 +178,7 @@ Tracking mit Vertragsnummer
                     <div style="text-align: center">10%</div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- START ORDERS -->
         <div class="col-lg-6 col-sm-12">
             <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
