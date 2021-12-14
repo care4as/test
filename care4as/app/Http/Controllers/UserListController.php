@@ -28,17 +28,23 @@ class UserListController extends Controller
         if($employeeState == 'active'){
             $roleArray = $this->getRoles();
             $users = $this->getUnfilteredUsers();
-            $users = $this->refineUserlistProject($users, $project);
+            if ($project != 'all'){
+                $users = $this->refineUserlistProject($users, $project);
+            }            
             $users = $this->refineUserlistActive($users);
         } else if ($employeeState == 'inactive'){
             $roleArray = $this->getRoles();
             $users = $this->getUnfilteredUsers();
-            $users = $this->refineUserlistProject($users, $project);
+            if ($project != 'all'){
+                $users = $this->refineUserlistProject($users, $project);
+            }  
             $users = $this->refineUserlistInactive($users);
         } else if($employeeState == 'all'){
             $roleArray = $this->getRoles();
             $users = $this->getUnfilteredUsers();
-            $users = $this->refineUserlistProject($users, $project);
+            if ($project != 'all'){
+                $users = $this->refineUserlistProject($users, $project);
+            }  
         }
           // dd($users);
         //users erstellen und anschließend nach bedarf durch verschiedene filter laufen lassen, wodurch nutzer entfernt werden

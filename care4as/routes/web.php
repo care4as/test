@@ -326,11 +326,12 @@ use App\Http\Controllers\ControllingController;
     Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents');//RECHT FEHLT
     Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post');//RECHT FEHLT
     Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track');//RECHT FEHLT
+    Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin');//RECHT FEHLT
 
-    Route::get('/mobile/tracking/admin', function(){
+    // Route::get('/mobile/tracking/admin', function(){
 
-      return view('trackingMobileAdmin');
-    })->name('mobile.tracking.admin');//RECHT FEHLT
+    //   return view('trackingMobileAdmin');
+    // })->name('mobile.tracking.admin');//RECHT FEHLT
   // END MOBILE TRACKING
 
   //START Scrum

@@ -111,8 +111,8 @@
                 <ul class="list-group list-group-flush" style="list-style-type: none;">
                 @if(in_array('1u1_db',Auth()->user()->getRights()))
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
-                @endif
-                <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
+                  <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
+                @endif                
               </ul>
             </li>
           @endif

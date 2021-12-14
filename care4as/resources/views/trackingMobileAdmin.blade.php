@@ -323,7 +323,7 @@ function roundUp($calls,$quotient)
                             </div>
                             <div class="tab-pane" id="history">
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
-                                    <table class="tracking-table">
+                                    <table class="tracking-table" id="history-table">
                                         <thead>
                                             <th>Erstellt</th>
                                             <th>Kundenberater</th>
@@ -377,5 +377,6 @@ function roundUp($calls,$quotient)
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
 
 @endsection

@@ -305,10 +305,10 @@ class FeedbackController extends Controller
 
     return $users;
   }
-  /**
+  
   public function create11($userid = null)
   {
-    return view('FeedBackCreate');
+    
     $year = Carbon::now()->year;
     $start_date = 1;
     $end_date = 1;
@@ -317,7 +317,7 @@ class FeedbackController extends Controller
 
     if($userid)
     {
-      return view('FeedBackCreate');
+      
       $year = Carbon::now()->year;
       $start_date = 1;
       $end_date = 1;
@@ -491,12 +491,15 @@ class FeedbackController extends Controller
         $weekperformance[$kwi] =  $statsArray;
 
       }
+    }
 
     // dd($weekperformance);
     
     return view('FeedBackCreate', compact('users', 'user','weekperformance'));
-    }
-   */
+    
+  }
+    
+   
   
 
   public function print($userid = null)

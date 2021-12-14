@@ -35,6 +35,17 @@ Tracking mit Vertragsnummer
         text-align: center;
     }
 
+    .tracking_errormessage{
+        font-size: 0.8em;
+        text-align: center;
+        color: #f96332;
+        border: 1px solid #f96332;
+        max-width: 600px;
+        margin: 10px auto auto auto;
+        border-radius: 5px;
+        display: flex;
+    }
+
     .btn-check {
     position: absolute;
     clip: rect(0,0,0,0);
@@ -107,35 +118,96 @@ Tracking mit Vertragsnummer
 
     <!-- START TRACKING -->
     <div class="row">
-      <div class="col-lg-6 col-sm-12">
-              <div class="max-main-container">
-                  <div class="tracking_title">
-                      Calls {{$trackcalls->sum('calls')}}
-                  </div>
-                  <div class="tracking_container">
-                      <div>SSC: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',1)->first()->calls}} @else 0   @endif</div>
-                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
-                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
-                  </div>
-                  <div class="tracking_container">
-                      <div>BSC: @if($trackcalls->where('category',2)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif</div>
-                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
-                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
-                  </div>
-                  <div class="tracking_container">
-                      <div>Portale: @if($trackcalls->where('category',3)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif</div>
-                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
-                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
-                  </div>
-                  <div class="tracking_container">
-                      <div>Sonstige: @if($trackcalls->where('category',4)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif</div>
-                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 0])}}" role="button">-</a>
-                      <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
-                  </div>
-              </div>
-      </div>
+        <!-- <div class="col-lg-6 col-sm-12">
+            <div class="max-main-container">
+                <div class="tracking_title">
+                    Calls {{$trackcalls->sum('calls')}}
+                </div>
+                <div class="tracking_container">
+                    <div>SSC: @if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',1)->first()->calls}} @else 0   @endif</div>
+                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
+                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
+                </div>
+                <div class="tracking_container">
+                    <div>BSC: @if($trackcalls->where('category',2)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif</div>
+                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
+                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
+                </div>
+                <div class="tracking_container">
+                    <div>Portale: @if($trackcalls->where('category',3)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif</div>
+                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
+                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
+                </div>
+                <div class="tracking_container">
+                    <div>Sonstige: @if($trackcalls->where('category',4)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif</div>
+                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 0])}}" role="button">-</a>
+                    <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
+                </div>
+            </div>
+        </div> -->
+        <div class="col-lg-6 col-sm-12">
+            <div class="max-main-container">
+                <div class="tracking_title">
+                    Calls (Gesamt: {{$trackcalls->sum('calls')}})
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin: 10px; row-gap: 10px;" >
+                    <div style="font-weight: bold;">Queue</div>
+                    <div style="text-align: center; font-weight: bold;">Calls</div>
+                    <div style="text-align: center; font-weight: bold;">CR</div>
+                    <div>SSC</div>
+                    <div>
+                        <div style="display: flex; width: min-content; margin: auto;">
+                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',1)->first()->calls}} @else 0   @endif</div>
+                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
+                        </div>
+                    </div>
+                    <div style="text-align: center">10%</div>
+                    <div>BSC</div>
+                    <div>
+                        <div style="display: flex; width: min-content; margin: auto;">
+                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',2)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif</div>
+                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
+                        </div>
+                    </div>
+                    <div style="text-align: center">10%</div>
+                    <div>Portale</div>
+                    <div>
+                        <div style="display: flex; width: min-content; margin: auto;">
+                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',3)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif</div>
+                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
+                        </div>
+                    </div>
+                    <div style="text-align: center">10%</div>
+                    <div>Sonstige</div>
+                    <div>
+                        <div style="display: flex; width: min-content; margin: auto;">
+                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 0])}}" role="button">-</a>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',4)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif</div>
+                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
+                        </div>
+                    </div>
+                    <div style="text-align: center">10%</div>
+                </div>
+            </div>
+            <div class="max-main-container" style="margin-top: 40px">
+                <div class="tracking_title">
+                    Sonstige KPI
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; margin: 10px; row-gap: 10px;" >
+                    <div style="font-weight: bold;">Bezeichnung</div>
+                    <div style="text-align: center; font-weight: bold;">Wert</div>
+                    <div>RLZ+24 Anteil</div>
+                    <div style="text-align: center">10%</div>
+                    <div>OptIn Quote</div>
+                    <div style="text-align: center">10%</div>
+                </div>
+            </div>
+        </div>
         <!-- START ORDERS -->
-          <div class="col-lg-6 col-sm-12">
+        <div class="col-lg-6 col-sm-12">
             <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
               @csrf
                 <div class="max-main-container">
@@ -144,7 +216,11 @@ Tracking mit Vertragsnummer
                     </div>
                     <div class="tracking_container">
                         <div class="tracking_description">Vertragsnummer</div>
-                        <input type="text" class="form-control" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()">
+                        <input type="text" class="form-control" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
+                        <div class="tracking_errormessage" id="contract_number_errormessage" style="display: none;">
+                            <div style="margin: auto; padding: 0 5px;"><i class="far fa-times-circle"></i></div>
+                            <div >Fehlerhafter Wert: Bitte trage eine gültige Vertragsnummer ohne Buchstaben, Leer- oder Sonderzeichen ein.</div>
+                        </div>
                     </div>
                     <div class="tracking_container">
                         <div class="tracking_description">Produktgruppe</div>
@@ -180,7 +256,7 @@ Tracking mit Vertragsnummer
                     </div>
                     <div class="tracking_container">
                         <div class="tracking_description">Zieltarif</div>
-                        <input type="text" class="form-control" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" disabled>
+                        <input type="text" class="form-control" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()" disabled>
                     </div>
                     <div class="tracking_container">
                         <div class="tracking_description">OptIn gesetzt</div>
@@ -222,13 +298,16 @@ Tracking mit Vertragsnummer
                         <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;" id="submit_tracking" disabled>
                     </div>
                 </div>
+                
             </div>
 
             </form>
         </div>
+    </div>
+    <div class="row">
         <!-- END ORDERS -->
         <!-- START HISTORY -->
-        <div class="col-sm-12">
+        <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
                     Historie
@@ -296,6 +375,8 @@ function tracking_input(){
     var runtime = document.querySelector('input[name="runtime"]:checked')?.value;
     var backoffice = document.querySelector('input[name="backoffice"]:checked')?.value;
 
+
+
     if(event_category_field == 'Save'){
         document.querySelector('input[name="target_tariff"]').disabled = false;
     } else {
@@ -305,7 +386,15 @@ function tracking_input(){
 
     var error_counter = 0;
 
+
+
     if(contract_field == ''){
+        document.getElementById('contract_number_errormessage').style.display = 'none';
+        error_counter += 1;
+    } else if (Math.floor(contract_field) == contract_field) {
+        document.getElementById('contract_number_errormessage').style.display = 'none';
+    } else {
+        document.getElementById('contract_number_errormessage').style.display = 'flex';
         error_counter += 1;
     }
 
