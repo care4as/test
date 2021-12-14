@@ -501,7 +501,9 @@ function roundUp($calls,$quotient)
                                           <label class="btn btn-outline-primary" for="event_category3">Service</label>
 
                                           <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary last-btn-group-element" for="event_category4">KüRü</label>
+                                          <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
+                                          <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
+                                          <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">NaBu</label>
                                       </div>
                                   </div>
                               </div>

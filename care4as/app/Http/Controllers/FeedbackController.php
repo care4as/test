@@ -505,14 +505,8 @@ class FeedbackController extends Controller
     return view('FeedBackCreate', compact('users', 'user','weekperformance'));
 
   }
-<<<<<<< HEAD
   }
 
-=======
-
-
-
->>>>>>> 6f6af2c1a82599039e1538baf07120c34dd28ce4
 
   public function print($userid = null)
   {
