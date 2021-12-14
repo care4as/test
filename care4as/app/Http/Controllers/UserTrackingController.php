@@ -92,12 +92,11 @@ class UserTrackingController extends Controller
       $trackingidsMobile = $SalesSata->pluck('agent_ds_id')->toArray();
 
       $users = User::whereIn('kdw_tracking_id',$trackingidsMobile)
-      ->where('role','Agent')
+      ->where('role','Agent_Mobile')
       ->where('project',$department)
       ->get();
 
       // dd($users);
-
       foreach($users as $key => $user)
       {
         if ($user->project == '1und1 Retention') {
@@ -106,7 +105,6 @@ class UserTrackingController extends Controller
           $user->ssc_calls = $user->salesdata->calls_ssc;
           $user->ssc_orders = $user->salesdata->ret_ssc_contract_save;
           $user->calls = $user->salesdata->calls;
-
           $user->bsc_calls = $user->salesdata->calls_bsc;
           $user->bsc_orders = $user->salesdata->ret_bsc_contract_save;
           $user->portal_calls = $user->salesdata->calls_portal;
@@ -504,6 +502,6 @@ class UserTrackingController extends Controller
     }
     public function SaveEvent()
     {
-      
+
     }
 }
