@@ -189,7 +189,10 @@ Tracking mit Vertragsnummer
                                 <label class="btn btn-outline-primary" for="event_category3">Service</label>
 
                                 <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary last-btn-group-element" for="event_category4">KüRü</label>
+                                <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
+
+                                <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
+                                <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">NaBu</label>
                             </div>
                         </div>
                     </div>
@@ -243,6 +246,58 @@ Tracking mit Vertragsnummer
             </form>
         </div>
     </div>
+    <!-- END ORDERS -->
+    <!-- <div class="row">        
+        
+        <div class="col-md-12">
+            <div class="max-main-container">
+                <div class="tracking_title">
+                    Monatsübersicht
+                </div>
+                <div style="display: flex;">
+                    <div id="month_saves">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; margin: 10px; row-gap: 10px; text-align: center;" >
+                            <div style="text-align: left; font-weight: bold;">Queue</div>
+                            <div style="font-weight: bold;">Calls</div>
+                            <div style="font-weight: bold;">Saves</div>
+                            <div style="font-weight: bold;">CR</div>
+                            <div style="text-align: left;">SSC</div>
+                            <div>{Wert}</div>
+                            <div>{Wert}</div>
+                            <div>{Wert}%</div>
+                            <div style="text-align: left;">BSC</div>
+                            <div>{Wert}</div>
+                            <div>{Wert}</div>
+                            <div>{Wert}%</div>
+                            <div style="text-align: left;">Portale</div>
+                            <div>{Wert}</div>
+                            <div>{Wert}</div>
+                            <div>{Wert}%</div>
+                        </div>
+                    </div>
+                    <div id="month_carecoins">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr ; margin: 10px; row-gap: 10px; text-align: center;" >
+                            <div style="text-align: left; font-weight: bold;">...</div>
+                            <div style="font-weight: bold;">CareCoins</div>
+                            <div style="text-align: left;">Soll</div>
+                            <div>{Wert}</div>
+                            <div style="text-align: left;">Ist</div>
+                            <div>{Wert}</div>
+                            <div style="text-align: left;">Differenz</div>
+                            <div>{Wert}</div>
+                        </div>
+                    </div>
+                    <div id="provision_goals">
+
+                    </div>
+                    <div id="provision_attainment">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div> -->
     <div class="row">
         <!-- END ORDERS -->
         <!-- START HISTORY -->
