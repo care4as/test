@@ -107,7 +107,7 @@ Tracking mit Vertragsnummer
 
 <div style="font-size: 1em;">
     <!-- START TRACKING -->
-    <div class="row"> 
+    <div class="row">
         <div class="col-sm-12">
             <div class="max-main-container">
                 <div class="btn-group-container" style="margin: 20px auto">
@@ -122,14 +122,10 @@ Tracking mit Vertragsnummer
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
     </div>
     <div class="row">
-<<<<<<< HEAD
         <div class="col-xl-6 col-lg-12 ">
-=======
-        <div class="col-xl-6 col-lg-12">
->>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
             <div class="max-main-container">
                 <div class="tracking_title">
                     Calls (Gesamt: {{$trackcalls->sum('calls')}})
@@ -147,12 +143,7 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <div style="text-align: center"><i class="fas fa-tools"></i></div>
-=======
-                    <div style="text-align: center">5</div>
-                    <div style="text-align: center">10%</div>
->>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
                     <div>BSC</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
@@ -161,12 +152,7 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <div style="text-align: center"><i class="fas fa-tools"></i></div>
-=======
-                    <div style="text-align: center">5</div>
-                    <div style="text-align: center">10%</div>
->>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
                     <div>Portale</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
@@ -175,12 +161,7 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <div style="text-align: center"><i class="fas fa-tools"></i></div>
-=======
-                    <div style="text-align: center">5</div>
-                    <div style="text-align: center">10%</div>
->>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
                     <div>Sonstige</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
@@ -189,12 +170,7 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <div style="text-align: center"><i class="fas fa-tools"></i></div>
-=======
-                    <div style="text-align: center">5</div>
-                    <div style="text-align: center">10%</div>
->>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
                 </div>
             </div>
             <div class="max-main-container" style="margin-top: 40px">
@@ -212,11 +188,7 @@ Tracking mit Vertragsnummer
             </div>
         </div>
         <!-- START ORDERS -->
-<<<<<<< HEAD
           <div class="col-xl-6 col-lg-12">
-=======
-        <div class="col-xl-6 col-lg-12">
->>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
             <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
               @csrf
                 <div class="max-main-container">
@@ -315,12 +287,8 @@ Tracking mit Vertragsnummer
         </div>
     </div>
     <!-- END ORDERS -->
-<<<<<<< HEAD
     <!-- <div class="row">
 
-=======
-    <div class="row">        
->>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
@@ -436,7 +404,7 @@ Tracking mit Vertragsnummer
                                     </span>
                                 </label>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                     <div id="provision_value">
                         <div style="text-align: center; font-weight: bold;">
@@ -451,14 +419,9 @@ Tracking mit Vertragsnummer
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
         </div>
 
     </div> -->
-=======
-        </div>        
-    </div>
->>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
     <div class="row">
         <!-- END ORDERS -->
         <!-- START HISTORY -->
