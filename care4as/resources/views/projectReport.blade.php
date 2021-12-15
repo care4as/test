@@ -81,11 +81,11 @@
                     <div class="row">
                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                             <div class="max-panel">
-                                <div class="max-panel-title">Projekt</div>
+                                <div class="max-panel-title">Auswahl</div>
                                 <div class="max-panel-content">
-                                    <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px;">
-                                        <label for="inputState" style="margin: auto;">Auswahl:</label>
-                                        <select id="inputState" class="form-control" style="color:black;" name="project">
+                                    <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 5px;">
+                                        <label for="projectSelection" style="margin: auto 0 auto auto;">Projekt:</label>
+                                        <select id="projectSelection" class="form-control" style="color:black;" name="project" onchange="updateTeamSelection()">
                                             @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
                                                 <option selected value="1u1_dsl_ret">1u1 DSL Retention</option>
                                             @else
@@ -99,6 +99,9 @@
                                             <!-- <option value="1u1_offline">1u1 Kündigungsadministration</option>
                                             <option value="telefonica_outbound">Telefonica Outbound</option> -->
                                         </select>
+                                        <label for="teamSelection" style="margin: auto 0 auto auto;">Team:</label>
+                                        <select id="teamSelection" class="form-control" style="color:black;" name="team">
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -108,9 +111,9 @@
                                 <div class="max-panel-title">Zeitraum</div>
                                 <div class="max-panel-content">
                                     <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 5px;">
-                                        <p style="margin: auto;">Von:</p>
+                                        <p style="margin: auto 0 auto auto;">Von:</p>
                                         <input type="date" id="datefrom" name="startDate" class="form-control" placeholder="" style="color:black;" value="{{$defaultVariablesArray['startDate']}}">
-                                        <p style="margin: auto;">Bis:</p>
+                                        <p style="margin: auto 0 auto auto;">Bis:</p>
                                         <input type="date" id="datefrom" name="endDate" class="form-control" placeholder="" style="color:black;" value="{{$defaultVariablesArray['endDate']}}">
                                     </div>
                                 </div>
@@ -483,4 +486,48 @@
       .columns.adjust();
 })
 </script>
+<script>
+    $(document).ready(function() {
+        updateTeamSelection()
+    });
+    var teamList = <?php echo json_encode($defaultVariablesArray['projectData']) ?>;
+    var selectedTeam = 
+        <?php 
+            if(isset($defaultVariablesArray['team'])){
+                echo $defaultVariablesArray['team'];
+            }
+            else {
+                echo 0;
+            }
+        ?>;
+
+    function updateTeamSelection(){
+        selectedProject = document.getElementById('projectSelection').value;
+        teamSelection = document.getElementById('teamSelection');
+        
+        var child = teamSelection.lastElementChild;
+        while (child){
+            teamSelection.removeChild(child);
+            child = teamSelection.lastElementChild;
+        }
+
+        var newOption = document.createElement('option');
+            newOption.value = 'all';
+            newOption.innerHTML = 'Alle';
+            teamSelection.appendChild(newOption);
+
+        for(var i = 0; i < Object.keys(teamList[selectedProject]['teams']).length; i++){
+            var newOption = document.createElement('option');
+            newOption.value = teamList[selectedProject]['teams'][i]['ds_id'];
+            newOption.innerHTML = teamList[selectedProject]['teams'][i]['bezeichnung'];
+
+            if(teamList[selectedProject]['teams'][i]['ds_id'] == selectedTeam){
+                newOption.selected = true;
+            }
+
+            teamSelection.appendChild(newOption);
+        }        
+    }
+</script>
+
 @endsection
