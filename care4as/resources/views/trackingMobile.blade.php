@@ -106,26 +106,38 @@ Tracking mit Vertragsnummer
 @endsection
 
 <div style="font-size: 1em;">
-    <!-- START KPI
-    <div class="row">
-        <div class="col-md-12">
-            <div class="max-main-container">
-                KPI
-            </div>
-        </div>
-    </div>
-     END KPI-->
-
     <!-- START TRACKING -->
+    <div class="row"> 
+        <div class="col-sm-12">
+            <div class="max-main-container">
+                <div class="btn-group-container" style="margin: 20px auto">
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="product_category" value="SSC" id="group1" autocomplete="off" onchange="" checked>
+                        <label class="btn btn-outline-primary first-btn-group-element" for="group1" style="min-width: 150px;" >Tracking</label>
+                        <input type="radio" class="btn-check" name="product_category" value="BSC" id="group2" autocomplete="off" onchange="">
+                        <label class="btn btn-outline-primary" for="group2" style="min-width: 150px;">Historie</label>
+
+                        <input type="radio" class="btn-check" name="product_category" value="Portale" id="group3" autocomplete="off" onchange="">
+                        <label class="btn btn-outline-primary last-btn-group-element" for="group3" style="min-width: 150px;">Monatsübersicht</label>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </div>
     <div class="row">
+<<<<<<< HEAD
         <div class="col-xl-6 col-lg-12 ">
+=======
+        <div class="col-xl-6 col-lg-12">
+>>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
             <div class="max-main-container">
                 <div class="tracking_title">
                     Calls (Gesamt: {{$trackcalls->sum('calls')}})
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin: 10px; row-gap: 10px;" >
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; margin: 10px; row-gap: 10px;" >
                     <div style="font-weight: bold;">Queue</div>
                     <div style="text-align: center; font-weight: bold;">Calls</div>
+                    <div style="text-align: center; font-weight: bold;">Saves</div>
                     <div style="text-align: center; font-weight: bold;">CR</div>
                     <div>SSC</div>
                     <div>
@@ -135,7 +147,12 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div style="text-align: center"><i class="fas fa-tools"></i></div>
+=======
+                    <div style="text-align: center">5</div>
+                    <div style="text-align: center">10%</div>
+>>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
                     <div>BSC</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
@@ -144,7 +161,12 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div style="text-align: center"><i class="fas fa-tools"></i></div>
+=======
+                    <div style="text-align: center">5</div>
+                    <div style="text-align: center">10%</div>
+>>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
                     <div>Portale</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
@@ -153,7 +175,12 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div style="text-align: center"><i class="fas fa-tools"></i></div>
+=======
+                    <div style="text-align: center">5</div>
+                    <div style="text-align: center">10%</div>
+>>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
                     <div>Sonstige</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
@@ -162,7 +189,12 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div style="text-align: center"><i class="fas fa-tools"></i></div>
+=======
+                    <div style="text-align: center">5</div>
+                    <div style="text-align: center">10%</div>
+>>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
                 </div>
             </div>
             <div class="max-main-container" style="margin-top: 40px">
@@ -180,7 +212,11 @@ Tracking mit Vertragsnummer
             </div>
         </div>
         <!-- START ORDERS -->
+<<<<<<< HEAD
           <div class="col-xl-6 col-lg-12">
+=======
+        <div class="col-xl-6 col-lg-12">
+>>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
             <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
               @csrf
                 <div class="max-main-container">
@@ -279,16 +315,20 @@ Tracking mit Vertragsnummer
         </div>
     </div>
     <!-- END ORDERS -->
+<<<<<<< HEAD
     <!-- <div class="row">
 
+=======
+    <div class="row">        
+>>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
                     Monatsübersicht
                 </div>
-                <div style="display: flex;">
+                <div style="display: flex; margin: 10px; column-gap: 100px; row-gap: 20px; flex-wrap: wrap; justify-content: space-around;">
                     <div id="month_saves">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; margin: 10px; row-gap: 10px; text-align: center;" >
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; row-gap: 10px; text-align: center; column-gap:10px;" >
                             <div style="text-align: left; font-weight: bold;">Queue</div>
                             <div style="font-weight: bold;">Calls</div>
                             <div style="font-weight: bold;">Saves</div>
@@ -308,8 +348,8 @@ Tracking mit Vertragsnummer
                         </div>
                     </div>
                     <div id="month_carecoins">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr ; margin: 10px; row-gap: 10px; text-align: center;" >
-                            <div style="text-align: left; font-weight: bold;">...</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr ; row-gap: 10px; text-align: center;" >
+                            <div style="text-align: left; font-weight: bold;"></div>
                             <div style="font-weight: bold;">CareCoins</div>
                             <div style="text-align: left;">Soll</div>
                             <div>{Wert}</div>
@@ -319,17 +359,106 @@ Tracking mit Vertragsnummer
                             <div>{Wert}</div>
                         </div>
                     </div>
-                    <div id="provision_goals">
-
+                    <div id="provision_goals" style="white-space: nowrap;">
+                        <div style="text-align: center; font-weight: bold;">
+                            Provisionsziele
+                        </div>
+                        <div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    Ziel 1: CareCoin Ist >= CareCoin Soll
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    Ziel 2: OptIn Quote >= 15,0%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    Ziel 3: SSC CR >= 50,0%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    Ziel 4: BSC CR >= 17,0%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    Ziel 5: Portale CR >= 64,0%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    Ziel 6: Ziel 1 + SSC CR >= 60,0%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    Ziel 7: Ziel 1 + BSC CR >= 25,0%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    Ziel 8: Ziel 1 + Portale CR >= 80,0%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>                        
                     </div>
-                    <div id="provision_attainment">
-
+                    <div id="provision_value">
+                        <div style="text-align: center; font-weight: bold;">
+                            Geschätzte Provision
+                        </div>
+                        <div class="tracking_description">
+                            Berücksichtigt werden die im Tool hinterlegten Werte des laufenden Monats und nicht die tatsächlich bestätigten Geschäftsvorfälle.
+                        </div>
+                        <div style="text-align: center; font-size: 2em;">
+                            100.000,00€
+                        </div>
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
         </div>
 
     </div> -->
+=======
+        </div>        
+    </div>
+>>>>>>> f5c99ed53065f8fef7ba154b9fabeedd48553af7
     <div class="row">
         <!-- END ORDERS -->
         <!-- START HISTORY -->

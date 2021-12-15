@@ -12,6 +12,7 @@ class ProjectReportController extends Controller
         $project = request('project');              // Projektauswahl aus Webpage
         $startDateString = request('startDate');    // Startdatumsauswahl aus Webpage
         $endDateString = request('endDate');        // Enddatumsauswahl aus Webpage
+        $team = request('team');
 
         if ($startDateString == null){  // Prüfen ob Startdatum eingegeben wurde
             $startDate = null;          // Wenn nichts eingegeben wurde, Wert auf 'null' setzen
@@ -28,6 +29,8 @@ class ProjectReportController extends Controller
  
         $defaultVariablesArray = array(         // Speichert globale Variablen in Array
             'project' => $project,              // Projektauswahl aus Webpage
+            'projectData' => $this->getProjects(),
+            'team' => $team,
             'startDate' => $startDateString,    // Startdatum aus Webpage
             'endDate' => $endDateString,        // Enddatum aus Webpage
             'differenceDate' =>$differenceDate, // Differenz zwischen Start- und Enddatum
@@ -60,6 +63,37 @@ class ProjectReportController extends Controller
         //dd($dataArray);
         //dd($defaultVariablesArray);
         return view('projectReport', compact('defaultVariablesArray', 'dataArray'));
+    }
+
+    public function getProjects(){
+        $projects = array(
+            '1u1_dsl_ret' => [
+              'id' => 10,
+              'name' => '1und1 DSL Retention',
+              'teams' => $this->getTeams(10)
+            ],
+            '1u1_mobile_ret' => [
+              'id' => 7,
+              'name' => '1und1 Mobile Retention',
+              'teams' => $this->getTeams(7)
+            ],
+          );
+        return $projects;
+      }
+
+    public function getTeams($projectId){
+        $teamsData = DB::connection('mysqlkdw')
+        ->table('teams')
+        ->where('projekt_id', $projectId)
+        ->get();
+
+        $teams = array();
+        foreach($teamsData as $key => $entry){
+            $entry = (array) $entry;
+            $teams[$key]['ds_id'] = $entry['ds_id'];
+            $teams[$key]['bezeichnung'] = $entry['bezeichnung'];
+        }
+        return $teams;
     }
 
     public function get1u1MobileRet($defaultVariablesArray){
@@ -650,6 +684,8 @@ class ProjectReportController extends Controller
 
         $refinedPersonList = array();       // Leeres Array für die zusammengesetzte MA-Liste wird erzeugt
 
+        $teamEmployees = $this->getTeamEmployees();
+
         /* In dieser Schleife wird das User-Array um die Personen IDs ergänzt */
         foreach($personList as $key => $person){                                                            // Schleife durchläuft die Personenlist
             $personArray = (array) $person;                                                                 // Der aktuelle Eintrag wird von Objekt zu Array konvertiert
@@ -672,289 +708,295 @@ class ProjectReportController extends Controller
         /* Dies ist die Hauptschleife. Hier wird für jeden MA eine Abfrage über alle Variablen erstell und die Daten zugeordnet*/
         foreach($employees as $key => $employee) {                                                      // Das MA-Array aus dem KDW Tool wird durchlaufen
             $employeeArray = (array) $employee;                                                         // Der aktuelle Eintrag wird von Objekt zu Array konvertiert
-            $refinedEmployees[$employeeArray['ds_id']]['lastname'] = $employeeArray['familienname'];    // User-Array wird um Nachname ergänzt
-            $refinedEmployees[$employeeArray['ds_id']]['firstname'] = $employeeArray['vorname'];        // User-Array wird um Vorname ergänzt
-            $refinedEmployees[$employeeArray['ds_id']]['full_name'] =                                   // User-Array wird um zusammengesetzten Namen ergänzt
-                $employeeArray['familienname'] . ', ' . $employeeArray['vorname'];                      // Zusammengesetzter Name ist 'Nachname, Vorname'
-            $refinedEmployees[$employeeArray['ds_id']]['ds_id'] = $employeeArray['ds_id'];              // User-Array wird um ds-id ergänzt
+            $teamId = $teamEmployees->where('MA_id', $employeeArray['ds_id'])->sum('team_id');
 
-            $refinedEmployees[$employeeArray['ds_id']]['work_hours'] = 0;                               // MA bez. Stunden werden initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['sick_hours'] = 0;                               // MA krank Stunden werden initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['break_hours'] = 0;                              // MA pausen Stunden werden initialisiert
+            if($defaultVariablesArray['team'] == 'all' || $teamId == $defaultVariablesArray['team']){
+            
+                $refinedEmployees[$employeeArray['ds_id']]['lastname'] = $employeeArray['familienname'];    // User-Array wird um Nachname ergänzt
+                $refinedEmployees[$employeeArray['ds_id']]['firstname'] = $employeeArray['vorname'];        // User-Array wird um Vorname ergänzt
+                $refinedEmployees[$employeeArray['ds_id']]['full_name'] =                                   // User-Array wird um zusammengesetzten Namen ergänzt
+                    $employeeArray['familienname'] . ', ' . $employeeArray['vorname'];                      // Zusammengesetzter Name ist 'Nachname, Vorname'
+                $refinedEmployees[$employeeArray['ds_id']]['ds_id'] = $employeeArray['ds_id'];              // User-Array wird um ds-id ergänzt
+                $refinedEmployees[$employeeArray['ds_id']]['team_id'] = 
 
-            if(isset($refinedPersonList[$employeeArray['ds_id']]['person_id']) == true) {               // Prüfen ob Personen-ID gesetzt ist
-                $refinedEmployees[$employeeArray['ds_id']]['person_id'] =                               // Personen-ID in das finale User-Array übertragen
-                    $refinedPersonList[$employeeArray['ds_id']]['person_id'];
-            }
+                $refinedEmployees[$employeeArray['ds_id']]['work_hours'] = 0;                               // MA bez. Stunden werden initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['sick_hours'] = 0;                               // MA krank Stunden werden initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['break_hours'] = 0;                              // MA pausen Stunden werden initialisiert
 
-            if(isset($refinedPersonList[$employeeArray['ds_id']]['cosmocom_id']) == true) {             // Prüfen ob Personen-ID gesetzt ist
-                $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id'] =                             // Cosmocom-ID in das finale User-Array übertragen
-                    $refinedPersonList[$employeeArray['ds_id']]['cosmocom_id'];
-            }
+                if(isset($refinedPersonList[$employeeArray['ds_id']]['person_id']) == true) {               // Prüfen ob Personen-ID gesetzt ist
+                    $refinedEmployees[$employeeArray['ds_id']]['person_id'] =                               // Personen-ID in das finale User-Array übertragen
+                        $refinedPersonList[$employeeArray['ds_id']]['person_id'];
+                }
 
-            /* Hier wird das User-array um die Stunden aus dem KDW Tool ergänzt */
-            foreach($kdwHours as $key => $entry) {                                  // Das KDW-Array wird durchlaufen
-                if ($entry['MA_id'] == $employeeArray['ds_id']){                    // Wenn die 'MA_id' mit der ds_id matched wird fortgefahren
-                    $refinedEmployees[$employeeArray['ds_id']]['work_hours']        // Die bez. Stunden werden um die Stunden des Eintrags erweitert
-                        += $entry['work_hours'];
-                    if($entry['state_id'] == 1){                                    // Wenn Status == 1 ist ein MA an diesem Tag krank
-                        $refinedEmployees[$employeeArray['ds_id']]['sick_hours']    // In diesem Fall werden die Krank-Stunden erweitert
+                if(isset($refinedPersonList[$employeeArray['ds_id']]['cosmocom_id']) == true) {             // Prüfen ob Personen-ID gesetzt ist
+                    $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id'] =                             // Cosmocom-ID in das finale User-Array übertragen
+                        $refinedPersonList[$employeeArray['ds_id']]['cosmocom_id'];
+                }
+
+                /* Hier wird das User-array um die Stunden aus dem KDW Tool ergänzt */
+                foreach($kdwHours as $key => $entry) {                                  // Das KDW-Array wird durchlaufen
+                    if ($entry['MA_id'] == $employeeArray['ds_id']){                    // Wenn die 'MA_id' mit der ds_id matched wird fortgefahren
+                        $refinedEmployees[$employeeArray['ds_id']]['work_hours']        // Die bez. Stunden werden um die Stunden des Eintrags erweitert
                             += $entry['work_hours'];
+                        if($entry['state_id'] == 1){                                    // Wenn Status == 1 ist ein MA an diesem Tag krank
+                            $refinedEmployees[$employeeArray['ds_id']]['sick_hours']    // In diesem Fall werden die Krank-Stunden erweitert
+                                += $entry['work_hours'];
+                        } else {
+                            $refinedEmployees[$employeeArray['ds_id']]['break_hours']   // Wenn ein MA nicht krank ist, werden auch die Pausenstunden des Eintrags genommen
+                                += $entry['pay_break_hours'];
+                        }
+                    }
+                }
+
+                $refinedEmployees[$employeeArray['ds_id']]['pay_cost'] =        // Hier werden die Kosten eines MA bestimmt (bez. Stunden * Kosten pro Stunde)
+                    $refinedEmployees[$employeeArray['ds_id']]['work_hours']    // Hier die bezahlten Stunden
+                    * $defaultVariablesArray['cost_per_hour_dsl'];              // * Kosten pro Stunde
+
+                /* Hier werden die Kranken- und Pausenquote berechnet */
+                if($refinedEmployees[$employeeArray['ds_id']]['work_hours'] > 0){       // Quoten sollen nur berechnet werden, wenn bez. Stunden vorhanden sind
+                    $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] =     // Krankenquote berechnen (Krankstunden / bez. Stunden * 100)
+                        ($refinedEmployees[$employeeArray['ds_id']]['sick_hours']       // Hier die Krankstunden
+                        / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])     // / bez. Stunden
+                        * 100;                                                          // * 100 um in Prozent auszugeben
+                    $refinedEmployees[$employeeArray['ds_id']]['break_percentage'] =    // Pausenquote berechnen (Pausenstunden / bez. Stunden * 100)
+                        ($refinedEmployees[$employeeArray['ds_id']]['break_hours']      // Hier die Pausenstunden
+                        / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])     // / bez. Stunden
+                        * 100;                                                          // * 100 um in Prozent auszugeben
+                } else {                                                                // Falls keine Stunden vorhanden sind:
+                    $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] = 0;  // Krankenquote auf 0 setzen
+                    $refinedEmployees[$employeeArray['ds_id']]['break_percentage'] = 0; // Pausenquote auf 0 setzen
+                }
+
+                /** Hier werden die Produktivstunden aus dem Daily Agent genommen und die Produktivquote berechnet */
+                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] = 0;         // Produktivstunden werden initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Produktvquote wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] = 0;     // Summe Zeit in Call (in Sek.) wird initialisiert
+
+                if(isset($refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']) == true){                                   // Es wird geprüft ob für den MA die Cosmocom-ID gesetzt ist
+                    foreach($dailyagentData as $key => $entry){                                                                 // Dailyagent-Array wird durchlaufen
+                        if($entry['agent_id'] == $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']){                    // Prüfen Cosmocom-ID vom Eintrag mit der des Users übereinstimmt
+                            if($entry['status'] == 'Available') {                                                               // Prüfen ob Status von Eintrag == Available
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden der Zeit im Call hinzugefügt
+                            }
+                            if($entry['status'] == 'In Call') {                                                                 // Prüfen ob Status von Eintrag == In Call
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                            }
+                            if($entry['status'] == 'On Hold') {                                                                 // Prüfen ob Status von Eintrag == On Hold
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                            }
+                            if($entry['status'] == 'Wrap Up') {                                                                 // Prüfen ob Status von Eintrag == Wrap Up
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                            }
+                            if($entry['status'] == '05_Occupied') {                                                             // Prüfen ob Status von Eintrag == 05_Occupied
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            }
+                            if($entry['status'] == '06_Practice') {                                                             // Prüfen ob Status von Eintrag == 06_Practice
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            }
+                            if($entry['status'] == '09_Outbound') {                                                             // Prüfen ob Status von Eintrag == 09_Outbound
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            }
+                        }
+                    }
+                    $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] =        // Hier werden die summierten Sekunden in Stunden umgeandelt
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_hours']      // Genommen werden die Produktivstunden (aktuell noch sekunden)
+                            / 60                                                            // / 60 um in Minuten zu konvertieren
+                            / 60;                                                           // / 60 um in Stunden zu konvertieren
+
+                    /* Hier wird die Produktivquote berechnet */
+                    if ($refinedEmployees[$employeeArray['ds_id']]['work_hours'] == 0){             // Prüfen ob bez. Stunden vorhanden sind
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Fall nein, wird die Produktivquote auf 0 gesetzt
                     } else {
-                        $refinedEmployees[$employeeArray['ds_id']]['break_hours']   // Wenn ein MA nicht krank ist, werden auch die Pausenstunden des Eintrags genommen
-                            += $entry['pay_break_hours'];
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] =       // Falls ja, wird die Produktivquote berechnet
+                            ($refinedEmployees[$employeeArray['ds_id']]['productive_hours']         // Genommen werden die Produktivstunden
+                            / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])             // und durch die bez. Stunden geteilt
+                            * 100;                                                                  // mit 100 multipliert um Prozenz auszugeben
                     }
+                    
                 }
-            }
 
-            $refinedEmployees[$employeeArray['ds_id']]['pay_cost'] =        // Hier werden die Kosten eines MA bestimmt (bez. Stunden * Kosten pro Stunde)
-                $refinedEmployees[$employeeArray['ds_id']]['work_hours']    // Hier die bezahlten Stunden
-                * $defaultVariablesArray['cost_per_hour_dsl'];              // * Kosten pro Stunde
+                /* Hier werden die Retention Details Daten verarbeitet, summiert und Quoten berechnet */
+                $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] = 0;    // Summe DSL Calls wird initialisiert 
+                $refinedEmployees[$employeeArray['ds_id']]['dsl_saves'] = 0;    // Summe DSL Saves wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['dsl_kuerue'] = 0;   // Summe DSL KüRüs wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['rlz_minus'] = 0;    // Summe Saves ohne RLZ+24 wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['rlz_plus'] = 0;     // Summe Sabes mit RLZ+24 wird initialisiert
 
-            /* Hier werden die Kranken- und Pausenquote berechnet */
-            if($refinedEmployees[$employeeArray['ds_id']]['work_hours'] > 0){       // Quoten sollen nur berechnet werden, wenn bez. Stunden vorhanden sind
-                $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] =     // Krankenquote berechnen (Krankstunden / bez. Stunden * 100)
-                    ($refinedEmployees[$employeeArray['ds_id']]['sick_hours']       // Hier die Krankstunden
-                    / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])     // / bez. Stunden
-                    * 100;                                                          // * 100 um in Prozent auszugeben
-                $refinedEmployees[$employeeArray['ds_id']]['break_percentage'] =    // Pausenquote berechnen (Pausenstunden / bez. Stunden * 100)
-                    ($refinedEmployees[$employeeArray['ds_id']]['break_hours']      // Hier die Pausenstunden
-                    / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])     // / bez. Stunden
-                    * 100;                                                          // * 100 um in Prozent auszugeben
-            } else {                                                                // Falls keine Stunden vorhanden sind:
-                $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] = 0;  // Krankenquote auf 0 setzen
-                $refinedEmployees[$employeeArray['ds_id']]['break_percentage'] = 0; // Pausenquote auf 0 setzen
-            }
-
-            /** Hier werden die Produktivstunden aus dem Daily Agent genommen und die Produktivquote berechnet */
-            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] = 0;         // Produktivstunden werden initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Produktvquote wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] = 0;     // Summe Zeit in Call (in Sek.) wird initialisiert
-
-            if(isset($refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']) == true){                                   // Es wird geprüft ob für den MA die Cosmocom-ID gesetzt ist
-                foreach($dailyagentData as $key => $entry){                                                                 // Dailyagent-Array wird durchlaufen
-                    if($entry['agent_id'] == $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']){                    // Prüfen Cosmocom-ID vom Eintrag mit der des Users übereinstimmt
-                        if($entry['status'] == 'Available') {                                                               // Prüfen ob Status von Eintrag == Available
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden der Zeit im Call hinzugefügt
-                        }
-                        if($entry['status'] == 'In Call') {                                                                 // Prüfen ob Status von Eintrag == In Call
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                            $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
-                        }
-                        if($entry['status'] == 'On Hold') {                                                                 // Prüfen ob Status von Eintrag == On Hold
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                            $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
-                        }
-                        if($entry['status'] == 'Wrap Up') {                                                                 // Prüfen ob Status von Eintrag == Wrap Up
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                            $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
-                        }
-                        if($entry['status'] == '05_Occupied') {                                                             // Prüfen ob Status von Eintrag == 05_Occupied
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                        }
-                        if($entry['status'] == '06_Practice') {                                                             // Prüfen ob Status von Eintrag == 06_Practice
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                        }
-                        if($entry['status'] == '09_Outbound') {                                                             // Prüfen ob Status von Eintrag == 09_Outbound
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){                         // Prüfen ob Personen-ID gesetzt ist
+                    foreach($retDetailsData as $key => $entry){                                                     // Retention Details Array wird durchlaufen
+                        if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){         // Prüfen ob Personen-ID des Eintrags mit der des Users übereinstimmt
+                            $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] += $entry['calls'];             // Summe DSL Calls wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['dsl_saves'] += $entry['orders'];            // Summe DSL Saves wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['dsl_kuerue'] += $entry['orders_kuerue'];    // Summe DSL KüRüs wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['rlz_minus'] += $entry['mvlzNeu'];           // Summe DSL Saves ohne RLZ+24 wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['rlz_plus'] += $entry['rlzPlus'];            // Summe DSL Saves mit RLZ+24 wird um die Anzahl aus Eintrag erweitert
                         }
                     }
                 }
-                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] =        // Hier werden die summierten Sekunden in Stunden umgeandelt
-                    $refinedEmployees[$employeeArray['ds_id']]['productive_hours']      // Genommen werden die Produktivstunden (aktuell noch sekunden)
-                        / 60                                                            // / 60 um in Minuten zu konvertieren
-                        / 60;                                                           // / 60 um in Stunden zu konvertieren
 
-                /* Hier wird die Produktivquote berechnet */
-                if ($refinedEmployees[$employeeArray['ds_id']]['work_hours'] == 0){             // Prüfen ob bez. Stunden vorhanden sind
-                    $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Fall nein, wird die Produktivquote auf 0 gesetzt
+                /** Produktivstunden berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['productive_hours'] > 0){     // Prüfen ob MA Produktivstunden hat
+                    $refinedEmployees[$employeeArray['ds_id']]['calls_per_hour'] =          // Calls pro Stunde berechnen
+                        $refinedEmployees[$employeeArray['ds_id']]['dsl_calls']             // Calls nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['productive_hours'];   // Durch Produktivstunden teilen
+                } else{
+                    $refinedEmployees[$employeeArray['ds_id']]['calls_per_hour'] = 0;       // Wenn MA keine Produktivstunden hat werden Calls pro Stunde auf 0 gesetzt
+                }
+
+                /** AHT berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] > 0){            // Prüfen ob der MA Calls gemacht hat
+                    $refinedEmployees[$employeeArray['ds_id']]['aht'] =                     // AHT berechnen (Zeit im Call / Anzahl Calls)
+                        $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds']  // hier wird die Zeit im Call genommen
+                        / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'];          // Durch die Anzahl der Calls geteilt
                 } else {
-                    $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] =       // Falls ja, wird die Produktivquote berechnet
-                        ($refinedEmployees[$employeeArray['ds_id']]['productive_hours']         // Genommen werden die Produktivstunden
-                        / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])             // und durch die bez. Stunden geteilt
-                        * 100;                                                                  // mit 100 multipliert um Prozenz auszugeben
+                    $refinedEmployees[$employeeArray['ds_id']]['aht'] = 0;                  // Wenn keine Calls vorhanden sind wird die AHT auf 0 gesetzt
                 }
-                
-            }
 
-            /* Hier werden die Retention Details Daten verarbeitet, summiert und Quoten berechnet */
-            $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] = 0;    // Summe DSL Calls wird initialisiert 
-            $refinedEmployees[$employeeArray['ds_id']]['dsl_saves'] = 0;    // Summe DSL Saves wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['dsl_kuerue'] = 0;   // Summe DSL KüRüs wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['rlz_minus'] = 0;    // Summe Saves ohne RLZ+24 wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['rlz_plus'] = 0;     // Summe Sabes mit RLZ+24 wird initialisiert
+                /** CR berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] > 0){            // Prüfen ob der MA Calls gemacht hat 
+                    $refinedEmployees[$employeeArray['ds_id']]['dsl_cr'] =                  // DSL CR berechnen (Saves / Calls * 100)
+                        ($refinedEmployees[$employeeArray['ds_id']]['dsl_saves']            // DSL Saves nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'])          // Diese durch die DSL Calls teilen
+                        * 100;                                                              // Mit 100 multiplizeren um in Prozent zu wandeln
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['dsl_cr'] = 0;               // Wenn keine Calls vorhanden sind wird die CR auf 0 gesetzt
+                }
 
-            if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){                         // Prüfen ob Personen-ID gesetzt ist
-                foreach($retDetailsData as $key => $entry){                                                     // Retention Details Array wird durchlaufen
-                    if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){         // Prüfen ob Personen-ID des Eintrags mit der des Users übereinstimmt
-                        $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] += $entry['calls'];             // Summe DSL Calls wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['dsl_saves'] += $entry['orders'];            // Summe DSL Saves wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['dsl_kuerue'] += $entry['orders_kuerue'];    // Summe DSL KüRüs wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['rlz_minus'] += $entry['mvlzNeu'];           // Summe DSL Saves ohne RLZ+24 wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['rlz_plus'] += $entry['rlzPlus'];            // Summe DSL Saves mit RLZ+24 wird um die Anzahl aus Eintrag erweitert
+                /** RLZ+24 Quote berechnen */
+                if(($refinedEmployees[$employeeArray['ds_id']]['rlz_minus']                 // Prüfen ob die Summe von RLZ+24 mit und ohne > 0 ist 
+                    + $refinedEmployees[$employeeArray['ds_id']]['rlz_plus']) > 0) {        
+                        $refinedEmployees[$employeeArray['ds_id']]['rlz_plus_percentage'] = // RLZ+24 Quote berechnen ( RLZ+24 / (Rlz+24 mit und ohne) * 100)
+                            ($refinedEmployees[$employeeArray['ds_id']]['rlz_plus']         // Summe RLZ+24 Saves nehmen
+                            / ($refinedEmployees[$employeeArray['ds_id']]['rlz_plus']       // Teilen durch die Summe von RLZ+24 mit
+                            + $refinedEmployees[$employeeArray['ds_id']]['rlz_minus']))     // und RLZ+24 ohne
+                            * 100;                                                          // Mit 100 multiplizieren um in Prozent zu wandeln
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['rlz_plus_percentage'] = 0;  // Wenn keine Fälle mit RLZ bearbeitet wurden Quote auf 0 setzen
+                }
+
+                /** Umsatz durch Sales berechnen */
+                $refinedEmployees[$employeeArray['ds_id']]['revenue_sales'] =               // Hier werden alle Umsätze zusammengezählt
+                    $refinedEmployees[$employeeArray['ds_id']]['dsl_saves']                 // Summe der GeVo Saves
+                    * $defaultVariablesArray['revenue_sale_dsl']                            // Multipliziert mit dem €-Wert für einen Save
+                    + $refinedEmployees[$employeeArray['ds_id']]['dsl_kuerue']              // Summe der KüRüs
+                    * $defaultVariablesArray['revenue_kuerue_dsl'];                             // Multipliziert mit dem €-Wert für eine KüRü
+
+                /* Hier wird die Stückzahl an OptIn ermittelt und die Quoten berechnet */
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_email'] = 0;          // Anzahl OptIn Mail initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_print'] = 0;          // Anzahl OptIn Print initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms'] = 0;            // Anzahl OptIn SMS initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_call'] = 0;           // Anzahl OptIn Call initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage'] = 0;          // Anzahl OptIn Nutzungsdaten initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'] = 0;        // Anzahl OptIn Verkehrsdaten initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_sum_payed'] = 0;          // Summe bezahlte OptIn initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_calls_new'] = 0;          // Anzahl OptIn für Quote initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible'] = 0;     // Anzahl mögliche OptIn für Quote initialisieren
+
+                /** Hier wird die Anzahl gemachter OptIn summiert */
+                if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){
+                    foreach($optinData as $key => $entry){
+                        if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_calls_new'] += $entry['Anzahl_OptIn-Erfolg'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible'] += max($entry['Anzahl_Handled_Calls_ohne_Call-OptIn'], $entry['Anzahl_Handled_Calls_ohne_Daten-OptIn']);
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_email'] += $entry['Anzahl_Email_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_print'] += $entry['Anzahl_Print_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms'] += $entry['Anzahl_SMS_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_call'] += $entry['Anzahl_Call_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage'] += $entry['Anzahl_Nutzungsdaten_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'] += $entry['Anzahl_Verkehrsdaten_OptIn'];
+                        }
+                    }
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_sum_payed'] =                 // Hier wird die Summe aller OptIn zusammengezählt
+                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_email']               // + OptIn Mail
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_print']             // + OptIn Print
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms']               // + OptIn SMS
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_call']              // + OptIn Call
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage']             // + OptIn Nutzungsdaten
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'];          // + OptIn Verkehrsdaten
+                }
+
+                /** OptIn Quote und mögliche OptIn Quote berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] > 0){                    // Prüfen ob DSL Calls gemacht wurden
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_percentage'] =                // OptIn Quote berechnen
+                        ($refinedEmployees[$employeeArray['ds_id']]['optin_calls_new']              // Quotenrelevante OptIn nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'])                  // Durch die Calls teilen
+                        * 100;                                                                      // Mit 100 multiplizieren um Prozent auszugeben
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_possible_percentage'] =       // Mögliche OptIn Qupte berechnen
+                        ($refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible']         // Mögliche OptIn nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'])                  // Durch die Calls teilen
+                        * 100;                                                                      // Mit 100 multiplizieren um Prozent auszugeben
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_percentage'] = 0;             // Wenn keine Calls gemacht wurden OptIn Quote auf 0 setzen
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_possible_percentage'] = 0;    // Wenn keine Calls gemacht wurden mögliche OptIn Quote auf 0 setzen
+                }
+
+                /* Berechnung der SAS Anzahl und Quote */
+                $refinedEmployees[$employeeArray['ds_id']]['sas_orders'] = 0;   // SAS Orders werden initzialisiert und auf 0 gesetzt
+
+                if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){                 // Prüfen ob Personen ID gesetzt ist
+                    foreach($sasData as $key => $entry){                                                    // Wenn Personen ID gesetzt ist, die SAS Daten durchlaufen
+                        if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){ // Prüfen ob Personen ID des Eintrags mit aktuellem MA übereinstimmt
+                            $refinedEmployees[$employeeArray['ds_id']]['sas_orders'] += 1;                  // Anzahl SAS Orders um 1 erhöhen
+                        }
                     }
                 }
-            }
 
-            /** Produktivstunden berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['productive_hours'] > 0){     // Prüfen ob MA Produktivstunden hat
-                $refinedEmployees[$employeeArray['ds_id']]['calls_per_hour'] =          // Calls pro Stunde berechnen
-                    $refinedEmployees[$employeeArray['ds_id']]['dsl_calls']             // Calls nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['productive_hours'];   // Durch Produktivstunden teilen
-            } else{
-                $refinedEmployees[$employeeArray['ds_id']]['calls_per_hour'] = 0;       // Wenn MA keine Produktivstunden hat werden Calls pro Stunde auf 0 gesetzt
-            }
+                if($refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] > 0){        // Prüfen ob Calls vorhanden sind
+                    $refinedEmployees[$employeeArray['ds_id']]['sas_promille'] =        // SAS = SAS Orders / DSL Calls
+                        ($refinedEmployees[$employeeArray['ds_id']]['sas_orders']       // Zugriff auf SAS Orders des ausgewählten MA
+                        / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'])      // Zugriff auf DSL Calls des ausgewählten MA
+                        * 1000;                                                         // Ergebnis wird mit 1000 multipliziert, um Promille auszugeben
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['sas_promille'] = 0;     // Wenn keine Calls vorhanden sind Wert auf 0 setzen
+                }
 
-            /** AHT berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] > 0){            // Prüfen ob der MA Calls gemacht hat
-                $refinedEmployees[$employeeArray['ds_id']]['aht'] =                     // AHT berechnen (Zeit im Call / Anzahl Calls)
-                    $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds']  // hier wird die Zeit im Call genommen
-                    / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'];          // Durch die Anzahl der Calls geteilt
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['aht'] = 0;                  // Wenn keine Calls vorhanden sind wird die AHT auf 0 gesetzt
-            }
-
-            /** CR berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] > 0){            // Prüfen ob der MA Calls gemacht hat 
-                $refinedEmployees[$employeeArray['ds_id']]['dsl_cr'] =                  // DSL CR berechnen (Saves / Calls * 100)
-                    ($refinedEmployees[$employeeArray['ds_id']]['dsl_saves']            // DSL Saves nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'])          // Diese durch die DSL Calls teilen
-                    * 100;                                                              // Mit 100 multiplizeren um in Prozent zu wandeln
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['dsl_cr'] = 0;               // Wenn keine Calls vorhanden sind wird die CR auf 0 gesetzt
-            }
-
-            /** RLZ+24 Quote berechnen */
-            if(($refinedEmployees[$employeeArray['ds_id']]['rlz_minus']                 // Prüfen ob die Summe von RLZ+24 mit und ohne > 0 ist 
-                + $refinedEmployees[$employeeArray['ds_id']]['rlz_plus']) > 0) {        
-                    $refinedEmployees[$employeeArray['ds_id']]['rlz_plus_percentage'] = // RLZ+24 Quote berechnen ( RLZ+24 / (Rlz+24 mit und ohne) * 100)
-                        ($refinedEmployees[$employeeArray['ds_id']]['rlz_plus']         // Summe RLZ+24 Saves nehmen
-                        / ($refinedEmployees[$employeeArray['ds_id']]['rlz_plus']       // Teilen durch die Summe von RLZ+24 mit
-                        + $refinedEmployees[$employeeArray['ds_id']]['rlz_minus']))     // und RLZ+24 ohne
-                        * 100;                                                          // Mit 100 multiplizieren um in Prozent zu wandeln
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['rlz_plus_percentage'] = 0;  // Wenn keine Fälle mit RLZ bearbeitet wurden Quote auf 0 setzen
-            }
-
-            /** Umsatz durch Sales berechnen */
-            $refinedEmployees[$employeeArray['ds_id']]['revenue_sales'] =               // Hier werden alle Umsätze zusammengezählt
-                $refinedEmployees[$employeeArray['ds_id']]['dsl_saves']                 // Summe der GeVo Saves
-                * $defaultVariablesArray['revenue_sale_dsl']                            // Multipliziert mit dem €-Wert für einen Save
-                + $refinedEmployees[$employeeArray['ds_id']]['dsl_kuerue']              // Summe der KüRüs
-                * $defaultVariablesArray['revenue_kuerue_dsl'];                             // Multipliziert mit dem €-Wert für eine KüRü
-
-            /* Hier wird die Stückzahl an OptIn ermittelt und die Quoten berechnet */
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_email'] = 0;          // Anzahl OptIn Mail initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_print'] = 0;          // Anzahl OptIn Print initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms'] = 0;            // Anzahl OptIn SMS initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_call'] = 0;           // Anzahl OptIn Call initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage'] = 0;          // Anzahl OptIn Nutzungsdaten initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'] = 0;        // Anzahl OptIn Verkehrsdaten initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_sum_payed'] = 0;          // Summe bezahlte OptIn initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_calls_new'] = 0;          // Anzahl OptIn für Quote initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible'] = 0;     // Anzahl mögliche OptIn für Quote initialisieren
-
-            /** Hier wird die Anzahl gemachter OptIn summiert */
-            if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){
-                foreach($optinData as $key => $entry){
-                    if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_calls_new'] += $entry['Anzahl_OptIn-Erfolg'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible'] += max($entry['Anzahl_Handled_Calls_ohne_Call-OptIn'], $entry['Anzahl_Handled_Calls_ohne_Daten-OptIn']);
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_email'] += $entry['Anzahl_Email_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_print'] += $entry['Anzahl_Print_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms'] += $entry['Anzahl_SMS_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_call'] += $entry['Anzahl_Call_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage'] += $entry['Anzahl_Nutzungsdaten_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'] += $entry['Anzahl_Verkehrsdaten_OptIn'];
+                /** Speedretention berechnen */
+                $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] = 0;         // Stunden Speedretention initialisieren
+                $employeeSpeedRetentionArray = $speedRetentionData;                             // Hier wird ein Array erstellt, in das die für den MA relevanten Daten aus dem speedRetentionArray gespeichert werden.
+                foreach($employeeSpeedRetentionArray as $key => $entry) {                       // Gesamtes speedRetentionArray durchlaufen
+                    if($entry['MA_id'] != $refinedEmployees[$employeeArray['ds_id']]['ds_id']){ // Prüfen ob ds_id des Eintrags mit der des MA übereinstimmt
+                        unset($employeeSpeedRetentionArray[$key]);                              // Wenn dies nicht der Fall ist Eintrag entfernen
                     }
                 }
-                $refinedEmployees[$employeeArray['ds_id']]['optin_sum_payed'] =                 // Hier wird die Summe aller OptIn zusammengezählt
-                    $refinedEmployees[$employeeArray['ds_id']]['optin_new_email']               // + OptIn Mail
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_print']             // + OptIn Print
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms']               // + OptIn SMS
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_call']              // + OptIn Call
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage']             // + OptIn Nutzungsdaten
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'];          // + OptIn Verkehrsdaten
-            }
 
-            /** OptIn Quote und mögliche OptIn Quote berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] > 0){                    // Prüfen ob DSL Calls gemacht wurden
-                $refinedEmployees[$employeeArray['ds_id']]['optin_percentage'] =                // OptIn Quote berechnen
-                    ($refinedEmployees[$employeeArray['ds_id']]['optin_calls_new']              // Quotenrelevante OptIn nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'])                  // Durch die Calls teilen
-                    * 100;                                                                      // Mit 100 multiplizieren um Prozent auszugeben
-                $refinedEmployees[$employeeArray['ds_id']]['optin_possible_percentage'] =       // Mögliche OptIn Qupte berechnen
-                    ($refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible']         // Mögliche OptIn nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'])                  // Durch die Calls teilen
-                    * 100;                                                                      // Mit 100 multiplizieren um Prozent auszugeben
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['optin_percentage'] = 0;             // Wenn keine Calls gemacht wurden OptIn Quote auf 0 setzen
-                $refinedEmployees[$employeeArray['ds_id']]['optin_possible_percentage'] = 0;    // Wenn keine Calls gemacht wurden mögliche OptIn Quote auf 0 setzen
-            }
+                $speedretentionStartTime = 0;   // Variable Startzeit initialisieren
+                $speedretentionEndTime = 0;     // Variable Endzeit initialisieren
+                $isOnSpeedretention = false;    // Boolean ist in Status initialisieren
 
-            /* Berechnung der SAS Anzahl und Quote */
-            $refinedEmployees[$employeeArray['ds_id']]['sas_orders'] = 0;   // SAS Orders werden initzialisiert und auf 0 gesetzt
-
-            if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){                 // Prüfen ob Personen ID gesetzt ist
-                foreach($sasData as $key => $entry){                                                    // Wenn Personen ID gesetzt ist, die SAS Daten durchlaufen
-                    if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){ // Prüfen ob Personen ID des Eintrags mit aktuellem MA übereinstimmt
-                        $refinedEmployees[$employeeArray['ds_id']]['sas_orders'] += 1;                  // Anzahl SAS Orders um 1 erhöhen
+                foreach($employeeSpeedRetentionArray as $key => $entry){                        // Schleife über alle Einträge MA Speedretention Arrays
+                    if($isOnSpeedretention == false){                                           // Prüfen ob aktuell nicht im Status Speedretention
+                        if($entry['acd_state_id'] == 41){                                       // Prüfen ob Status die ID 41 hat (Speedretention)
+                            $speedretentionStartTime =                                          // Wenn dies der Fall ist Startzeit seiten
+                            date_create_from_format('Y-m-d H:i:s', $entry['book_date']          // Dazu ein Datum aus book_date und book_time erstellen
+                            . ' ' . 
+                            $entry['book_time'])
+                            ->format('U');                                                      // Dieses in UNIX formatieren
+                            $isOnSpeedretention = true;                                         // In Status auf true setzen
+                        }
+                    }
+                    else if($isOnSpeedretention == true){                                       // Prüfen ob aktuell im Status Speedretention ist, um Endwert zu finden
+                        if($entry['acd_state_id'] != 41){                                       // Prüfen ob Status ungleich 41 ist
+                            $speedretentionEndTime = 
+                            date_create_from_format('Y-m-d H:i:s', $entry['book_date']          // Dazu ein Datum aus book_date und book_time erstellen
+                            . ' ' . 
+                            $entry['book_time'])
+                            ->format('U');                                                      // Dieses in UNIX formatieren
+                            $isOnSpeedretention = false;                                        // In Status auf false setzen
+                            $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention']  // Zeit in Status um Differenz zwischen Start- und Endwert ergänzen
+                                += ($speedretentionEndTime - $speedretentionStartTime);         // Endzeit - Startzeit = Differenz
+                        }
                     }
                 }
-            }
 
-            if($refinedEmployees[$employeeArray['ds_id']]['dsl_calls'] > 0){        // Prüfen ob Calls vorhanden sind
-                $refinedEmployees[$employeeArray['ds_id']]['sas_promille'] =        // SAS = SAS Orders / DSL Calls
-                    ($refinedEmployees[$employeeArray['ds_id']]['sas_orders']       // Zugriff auf SAS Orders des ausgewählten MA
-                    / $refinedEmployees[$employeeArray['ds_id']]['dsl_calls'])      // Zugriff auf DSL Calls des ausgewählten MA
-                    * 1000;                                                         // Ergebnis wird mit 1000 multipliziert, um Promille auszugeben
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['sas_promille'] = 0;     // Wenn keine Calls vorhanden sind Wert auf 0 setzen
-            }
-
-            /** Speedretention berechnen */
-            $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] = 0;         // Stunden Speedretention initialisieren
-            $employeeSpeedRetentionArray = $speedRetentionData;                             // Hier wird ein Array erstellt, in das die für den MA relevanten Daten aus dem speedRetentionArray gespeichert werden.
-            foreach($employeeSpeedRetentionArray as $key => $entry) {                       // Gesamtes speedRetentionArray durchlaufen
-                if($entry['MA_id'] != $refinedEmployees[$employeeArray['ds_id']]['ds_id']){ // Prüfen ob ds_id des Eintrags mit der des MA übereinstimmt
-                    unset($employeeSpeedRetentionArray[$key]);                              // Wenn dies nicht der Fall ist Eintrag entfernen
+                if($refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] > 0){     // Wenn Zeit auf Speedretention > 0 ist, Zeit von Sekunden in Stunden ändern
+                    $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] = 
+                        $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention']      // Sekunden in Status nehmen
+                        / 60                                                                    // In Minuten wandeln
+                        / 60;                                                                   // In Stunden wandeln
                 }
-            }
-
-            $speedretentionStartTime = 0;   // Variable Startzeit initialisieren
-            $speedretentionEndTime = 0;     // Variable Endzeit initialisieren
-            $isOnSpeedretention = false;    // Boolean ist in Status initialisieren
-
-            foreach($employeeSpeedRetentionArray as $key => $entry){                        // Schleife über alle Einträge MA Speedretention Arrays
-                if($isOnSpeedretention == false){                                           // Prüfen ob aktuell nicht im Status Speedretention
-                    if($entry['acd_state_id'] == 41){                                       // Prüfen ob Status die ID 41 hat (Speedretention)
-                        $speedretentionStartTime =                                          // Wenn dies der Fall ist Startzeit seiten
-                        date_create_from_format('Y-m-d H:i:s', $entry['book_date']          // Dazu ein Datum aus book_date und book_time erstellen
-                        . ' ' . 
-                        $entry['book_time'])
-                        ->format('U');                                                      // Dieses in UNIX formatieren
-                        $isOnSpeedretention = true;                                         // In Status auf true setzen
-                    }
-                }
-                else if($isOnSpeedretention == true){                                       // Prüfen ob aktuell im Status Speedretention ist, um Endwert zu finden
-                    if($entry['acd_state_id'] != 41){                                       // Prüfen ob Status ungleich 41 ist
-                        $speedretentionEndTime = 
-                        date_create_from_format('Y-m-d H:i:s', $entry['book_date']          // Dazu ein Datum aus book_date und book_time erstellen
-                        . ' ' . 
-                        $entry['book_time'])
-                        ->format('U');                                                      // Dieses in UNIX formatieren
-                        $isOnSpeedretention = false;                                        // In Status auf false setzen
-                        $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention']  // Zeit in Status um Differenz zwischen Start- und Endwert ergänzen
-                            += ($speedretentionEndTime - $speedretentionStartTime);         // Endzeit - Startzeit = Differenz
-                    }
-                }
-            }
-
-            if($refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] > 0){     // Wenn Zeit auf Speedretention > 0 ist, Zeit von Sekunden in Stunden ändern
-                $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] = 
-                    $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention']      // Sekunden in Status nehmen
-                    / 60                                                                    // In Minuten wandeln
-                    / 60;                                                                   // In Stunden wandeln
             }
 
         }
@@ -972,11 +1014,11 @@ class ProjectReportController extends Controller
 
         $employees = DB::connection('mysqlkdw')                                 // Verbindung zur externen Datenbank 'mysqlkdw' wird hergestellt
         ->table('MA')                                                           // Berücksichtigt werden soll die Tabelle 'MA'
-        ->where(function($query) {                                              // Filter der zu berücksitgenden Funktionen    
-            $query
-            ->where('abteilung_id', '=', 10)                                    // Funktion: Agenten
-            ->orWhere('abteilung_id', '=', 19);                                 // Funktion: Backoffice
-        })
+        // ->where(function($query) {                                              // Filter der zu berücksitgenden Funktionen    
+        //     $query
+        //     ->where('abteilung_id', '=', 10)                                    // Funktion: Agenten
+        //     ->orWhere('abteilung_id', '=', 19);                                 // Funktion: Backoffice
+        // })
         ->where('projekt_id', '=', 7)                                          // Filter auf die Projekt ID. Hier ist Mobile: 7
         ->where(function($query) use($defaultVariablesArray){                   // Prüfen, dass MA zum Zeitpunkt im Unternehmen beschäftigt war
             $query
@@ -1002,6 +1044,7 @@ class ProjectReportController extends Controller
             }
         }
 
+
         /** ACHTUNG: Beim Wechsel von Mobile komplett zur Care4as müssen hier ggf. Änderungen vorgenommen werden! */
         $kdwHours = $this->getKdwHours($defaultVariablesArray);                                                         // KDW Stundenreport speichern
         $retDetailsData = $this->getRetDetails($defaultVariablesArray, 'KDW Retention Mobile Flensburg');               // Retention Details speichern
@@ -1009,333 +1052,338 @@ class ProjectReportController extends Controller
         $sasData = $this->getSas($defaultVariablesArray, 'RT_Mobile');                                                  // SAS Report speichern
         $dailyagentData = $this->getDailyAgent($defaultVariablesArray, 'DE_KDW_Retention_Mobile_Flensburg');            // Daily Agent speichern
         $speedRetentionData = $this->getSpeedRetention($defaultVariablesArray);                                         // Speed Retention speichern
+        $teamEmployees = $this->getTeamEmployees();
 
         $refinedEmployees = array();    // Ein neues Array wird angelegt, welches die finale MA-Liste beinhalten soll
 
         /* Dies ist die Hauptschleife. Hier wird für jeden MA eine Abfrage über alle Variablen erstell und die Daten zugeordnet*/
         foreach($employees as $key => $employee) {                                                      // Das MA-Array aus dem KDW Tool wird durchlaufen
             $employeeArray = (array) $employee;                                                         // Der aktuelle Eintrag wird von Objekt zu Array konvertiert
-            $refinedEmployees[$employeeArray['ds_id']]['lastname'] = $employeeArray['familienname'];    // User-Array wird um Nachname ergänzt
-            $refinedEmployees[$employeeArray['ds_id']]['firstname'] = $employeeArray['vorname'];        // User-Array wird um Vorname ergänzt
-            $refinedEmployees[$employeeArray['ds_id']]['full_name'] =                                   // User-Array wird um zusammengesetzten Namen ergänzt
-                $employeeArray['familienname'] . ', ' . $employeeArray['vorname'];                      // Zusammengesetzter Name ist 'Nachname, Vorname'
-            $refinedEmployees[$employeeArray['ds_id']]['ds_id'] = $employeeArray['ds_id'];              // User-Array wird um ds-id ergänzt
+            $teamId = $teamEmployees->where('MA_id', $employeeArray['ds_id'])->sum('team_id');
 
-            $refinedEmployees[$employeeArray['ds_id']]['work_hours'] = 0;                               // MA bez. Stunden werden initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['sick_hours'] = 0;                               // MA krank Stunden werden initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['break_hours'] = 0;                              // MA pausen Stunden werden initialisiert
+            if($defaultVariablesArray['team'] == 'all' || $teamId == $defaultVariablesArray['team']){
 
-            if(isset($refinedPersonList[$employeeArray['ds_id']]['person_id']) == true) {               // Prüfen ob Personen-ID gesetzt ist
-                $refinedEmployees[$employeeArray['ds_id']]['person_id'] =                               // Personen-ID in das finale User-Array übertragen
-                    $refinedPersonList[$employeeArray['ds_id']]['person_id'];
-            }
+                $refinedEmployees[$employeeArray['ds_id']]['lastname'] = $employeeArray['familienname'];    // User-Array wird um Nachname ergänzt
+                $refinedEmployees[$employeeArray['ds_id']]['firstname'] = $employeeArray['vorname'];        // User-Array wird um Vorname ergänzt
+                $refinedEmployees[$employeeArray['ds_id']]['full_name'] =                                   // User-Array wird um zusammengesetzten Namen ergänzt
+                    $employeeArray['familienname'] . ', ' . $employeeArray['vorname'];                      // Zusammengesetzter Name ist 'Nachname, Vorname'
+                $refinedEmployees[$employeeArray['ds_id']]['ds_id'] = $employeeArray['ds_id'];              // User-Array wird um ds-id ergänzt
 
-            if(isset($refinedPersonList[$employeeArray['ds_id']]['cosmocom_id']) == true) {             // Prüfen ob Personen-ID gesetzt ist
-                $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id'] =                             // Cosmocom-ID in das finale User-Array übertragen
-                    $refinedPersonList[$employeeArray['ds_id']]['cosmocom_id'];
-            }
+                $refinedEmployees[$employeeArray['ds_id']]['work_hours'] = 0;                               // MA bez. Stunden werden initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['sick_hours'] = 0;                               // MA krank Stunden werden initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['break_hours'] = 0;                              // MA pausen Stunden werden initialisiert
 
-            /* Hier wird das User-array um die Stunden aus dem KDW Tool ergänzt */
-            foreach($kdwHours as $key => $entry) {                                  // Das KDW-Array wird durchlaufen
-                if ($entry['MA_id'] == $employeeArray['ds_id']){                    // Wenn die 'MA_id' mit der ds_id matched wird fortgefahren
-                    $refinedEmployees[$employeeArray['ds_id']]['work_hours']        // Die bez. Stunden werden um die Stunden des Eintrags erweitert
-                        += $entry['work_hours'];
-                    if($entry['state_id'] == 1){                                    // Wenn Status == 1 ist ein MA an diesem Tag krank
-                        $refinedEmployees[$employeeArray['ds_id']]['sick_hours']    // In diesem Fall werden die Krank-Stunden erweitert
+                if(isset($refinedPersonList[$employeeArray['ds_id']]['person_id']) == true) {               // Prüfen ob Personen-ID gesetzt ist
+                    $refinedEmployees[$employeeArray['ds_id']]['person_id'] =                               // Personen-ID in das finale User-Array übertragen
+                        $refinedPersonList[$employeeArray['ds_id']]['person_id'];
+                }
+
+                if(isset($refinedPersonList[$employeeArray['ds_id']]['cosmocom_id']) == true) {             // Prüfen ob Personen-ID gesetzt ist
+                    $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id'] =                             // Cosmocom-ID in das finale User-Array übertragen
+                        $refinedPersonList[$employeeArray['ds_id']]['cosmocom_id'];
+                }
+
+                /* Hier wird das User-array um die Stunden aus dem KDW Tool ergänzt */
+                foreach($kdwHours as $key => $entry) {                                  // Das KDW-Array wird durchlaufen
+                    if ($entry['MA_id'] == $employeeArray['ds_id']){                    // Wenn die 'MA_id' mit der ds_id matched wird fortgefahren
+                        $refinedEmployees[$employeeArray['ds_id']]['work_hours']        // Die bez. Stunden werden um die Stunden des Eintrags erweitert
                             += $entry['work_hours'];
+                        if($entry['state_id'] == 1){                                    // Wenn Status == 1 ist ein MA an diesem Tag krank
+                            $refinedEmployees[$employeeArray['ds_id']]['sick_hours']    // In diesem Fall werden die Krank-Stunden erweitert
+                                += $entry['work_hours'];
+                        } else {
+                            $refinedEmployees[$employeeArray['ds_id']]['break_hours']   // Wenn ein MA nicht krank ist, werden auch die Pausenstunden des Eintrags genommen
+                                += $entry['pay_break_hours'];
+                        }
+                    }
+                }
+
+                $refinedEmployees[$employeeArray['ds_id']]['pay_cost'] =        // Hier werden die Kosten eines MA bestimmt (bez. Stunden * Kosten pro Stunde)
+                    $refinedEmployees[$employeeArray['ds_id']]['work_hours']    // Hier die bezahlten Stunden
+                    * $defaultVariablesArray['cost_per_hour_mobile'];           // * Kosten pro Stunde
+
+                /* Hier werden die Kranken- und Pausenquote berechnet */
+                if($refinedEmployees[$employeeArray['ds_id']]['work_hours'] > 0){       // Quoten sollen nur berechnet werden, wenn bez. Stunden vorhanden sind
+                    $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] =     // Krankenquote berechnen (Krankstunden / bez. Stunden * 100)
+                        ($refinedEmployees[$employeeArray['ds_id']]['sick_hours']       // Hier die Krankstunden
+                        / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])     // / bez. Stunden
+                        * 100;                                                          // * 100 um in Prozent auszugeben
+                    $refinedEmployees[$employeeArray['ds_id']]['break_percentage'] =    // Pausenquote berechnen (Pausenstunden / bez. Stunden * 100)
+                        ($refinedEmployees[$employeeArray['ds_id']]['break_hours']      // Hier die Pausenstunden
+                        / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])     // / bez. Stunden
+                        * 100;                                                          // * 100 um in Prozent auszugeben
+                } else {                                                                // Falls keine Stunden vorhanden sind:
+                    $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] = 0;  // Krankenquote auf 0 setzen
+                    $refinedEmployees[$employeeArray['ds_id']]['break_percentage'] = 0; // Pausenquote auf 0 setzen
+                }
+
+                /** Hier werden die Produktivstunden aus dem Daily Agent genommen und die Produktivquote berechnet */
+                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] = 0;         // Produktivstunden werden initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Produktvquote wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] = 0;     // Summe Zeit in Call (in Sek.) wird initialisiert
+
+                if(isset($refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']) == true){                                   // Es wird geprüft ob für den MA die Cosmocom-ID gesetzt ist
+                    foreach($dailyagentData as $key => $entry){                                                                 // Dailyagent-Array wird durchlaufen
+                        if($entry['agent_id'] == $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']){                    // Prüfen Cosmocom-ID vom Eintrag mit der des Users übereinstimmt
+                            if($entry['status'] == 'Available') {                                                               // Prüfen ob Status von Eintrag == Available
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden der Zeit im Call hinzugefügt
+                            }
+                            if($entry['status'] == 'In Call') {                                                                 // Prüfen ob Status von Eintrag == In Call
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                            }
+                            if($entry['status'] == 'On Hold') {                                                                 // Prüfen ob Status von Eintrag == On Hold
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                            }
+                            if($entry['status'] == 'Wrap Up') {                                                                 // Prüfen ob Status von Eintrag == Wrap Up
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                            }
+                            if($entry['status'] == '05_Occupied') {                                                             // Prüfen ob Status von Eintrag == 05_Occupied
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            }
+                            if($entry['status'] == '06_Practice') {                                                             // Prüfen ob Status von Eintrag == 06_Practice
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            }
+                            if($entry['status'] == '09_Outbound') {                                                             // Prüfen ob Status von Eintrag == 09_Outbound
+                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            }
+                        }
+                    }
+                    $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] =        // Hier werden die summierten Sekunden in Stunden umgeandelt
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_hours']      // Genommen werden die Produktivstunden (aktuell noch sekunden)
+                            / 60                                                            // / 60 um in Minuten zu konvertieren
+                            / 60;                                                           // / 60 um in Stunden zu konvertieren
+
+                    /* Hier wird die Produktivquote berechnet */
+                    if ($refinedEmployees[$employeeArray['ds_id']]['work_hours'] == 0){             // Prüfen ob bez. Stunden vorhanden sind
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Fall nein, wird die Produktivquote auf 0 gesetzt
                     } else {
-                        $refinedEmployees[$employeeArray['ds_id']]['break_hours']   // Wenn ein MA nicht krank ist, werden auch die Pausenstunden des Eintrags genommen
-                            += $entry['pay_break_hours'];
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] =       // Falls ja, wird die Produktivquote berechnet
+                            ($refinedEmployees[$employeeArray['ds_id']]['productive_hours']         // Genommen werden die Produktivstunden
+                            / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])             // und durch die bez. Stunden geteilt
+                            * 100;                                                                  // mit 100 multipliert um Prozenz auszugeben
                     }
+                    
                 }
-            }
 
-            $refinedEmployees[$employeeArray['ds_id']]['pay_cost'] =        // Hier werden die Kosten eines MA bestimmt (bez. Stunden * Kosten pro Stunde)
-                $refinedEmployees[$employeeArray['ds_id']]['work_hours']    // Hier die bezahlten Stunden
-                * $defaultVariablesArray['cost_per_hour_mobile'];           // * Kosten pro Stunde
+                /* Hier werden die Retention Details Daten verarbeitet, summiert und Quoten berechnet */
+                $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] = 0;     // Summe Mobile Calls wird initialisiert 
+                $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_ssc'] = 0;     // Summe Mobile Calls SSC wird initialisiert 
+                $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_bsc'] = 0;     // Summe Mobile Calls BSC wird initialisiert 
+                $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_portale'] = 0; // Summe Mobile Calls Portal wird initialisiert 
+                $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_sum'] = 0;     // Summe Mobile Saves wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_ssc'] = 0;     // Summe Mobile Saves SSC wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_bsc'] = 0;     // Summe Mobile Saves BSC wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_portale'] = 0; // Summe Mobile Saves Portal wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['mobile_kuerue'] = 0;        // Summe Mobile KüRüs wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['rlz_minus'] = 0;            // Summe Saves ohne RLZ+24 wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['rlz_plus'] = 0;             // Summe Sabes mit RLZ+24 wird initialisiert
 
-            /* Hier werden die Kranken- und Pausenquote berechnet */
-            if($refinedEmployees[$employeeArray['ds_id']]['work_hours'] > 0){       // Quoten sollen nur berechnet werden, wenn bez. Stunden vorhanden sind
-                $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] =     // Krankenquote berechnen (Krankstunden / bez. Stunden * 100)
-                    ($refinedEmployees[$employeeArray['ds_id']]['sick_hours']       // Hier die Krankstunden
-                    / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])     // / bez. Stunden
-                    * 100;                                                          // * 100 um in Prozent auszugeben
-                $refinedEmployees[$employeeArray['ds_id']]['break_percentage'] =    // Pausenquote berechnen (Pausenstunden / bez. Stunden * 100)
-                    ($refinedEmployees[$employeeArray['ds_id']]['break_hours']      // Hier die Pausenstunden
-                    / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])     // / bez. Stunden
-                    * 100;                                                          // * 100 um in Prozent auszugeben
-            } else {                                                                // Falls keine Stunden vorhanden sind:
-                $refinedEmployees[$employeeArray['ds_id']]['sick_percentage'] = 0;  // Krankenquote auf 0 setzen
-                $refinedEmployees[$employeeArray['ds_id']]['break_percentage'] = 0; // Pausenquote auf 0 setzen
-            }
-
-            /** Hier werden die Produktivstunden aus dem Daily Agent genommen und die Produktivquote berechnet */
-            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] = 0;         // Produktivstunden werden initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Produktvquote wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] = 0;     // Summe Zeit in Call (in Sek.) wird initialisiert
-
-            if(isset($refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']) == true){                                   // Es wird geprüft ob für den MA die Cosmocom-ID gesetzt ist
-                foreach($dailyagentData as $key => $entry){                                                                 // Dailyagent-Array wird durchlaufen
-                    if($entry['agent_id'] == $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']){                    // Prüfen Cosmocom-ID vom Eintrag mit der des Users übereinstimmt
-                        if($entry['status'] == 'Available') {                                                               // Prüfen ob Status von Eintrag == Available
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden der Zeit im Call hinzugefügt
-                        }
-                        if($entry['status'] == 'In Call') {                                                                 // Prüfen ob Status von Eintrag == In Call
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                            $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
-                        }
-                        if($entry['status'] == 'On Hold') {                                                                 // Prüfen ob Status von Eintrag == On Hold
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                            $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
-                        }
-                        if($entry['status'] == 'Wrap Up') {                                                                 // Prüfen ob Status von Eintrag == Wrap Up
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                            $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
-                        }
-                        if($entry['status'] == '05_Occupied') {                                                             // Prüfen ob Status von Eintrag == 05_Occupied
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                        }
-                        if($entry['status'] == '06_Practice') {                                                             // Prüfen ob Status von Eintrag == 06_Practice
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
-                        }
-                        if($entry['status'] == '09_Outbound') {                                                             // Prüfen ob Status von Eintrag == 09_Outbound
-                            $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){                                     // Prüfen ob Personen-ID gesetzt ist
+                    foreach($retDetailsData as $key => $entry){                                                                 // Retention Details Array wird durchlaufen
+                        if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){                     // Prüfen ob Personen-ID des Eintrags mit der des Users übereinstimmt
+                            $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] += $entry['calls'];                  // Summe Mobile Calls wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_ssc'] += $entry['calls_smallscreen'];      // Summe Mobile Calls SSC wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_bsc'] += $entry['calls_bigscreen'];        // Summe Mobile Calls BSC wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_portale'] += $entry['calls_portale'];      // Summe Mobile Calls Portal wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_sum'] += $entry['orders'];                 // Summe Mobile Saves wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_ssc'] += $entry['orders_smallscreen'];     // Summe Mobile Saves SSC wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_bsc'] += $entry['orders_bigscreen'];       // Summe Mobile Saves BSC wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_portale'] += $entry['orders_portale'];     // Summe Mobile Saves Portal wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['mobile_kuerue'] += $entry['orders_kuerue'];             // Summe Mobile KüRüs wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['rlz_minus'] += $entry['mvlzNeu'];                       // Summe Mobile Saves ohne RLZ+24 wird um die Anzahl aus Eintrag erweitert
+                            $refinedEmployees[$employeeArray['ds_id']]['rlz_plus'] += $entry['rlzPlus'];                        // Summe Mobile Saves mit RLZ+24 wird um die Anzahl aus Eintrag erweitert
                         }
                     }
                 }
-                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] =        // Hier werden die summierten Sekunden in Stunden umgeandelt
-                    $refinedEmployees[$employeeArray['ds_id']]['productive_hours']      // Genommen werden die Produktivstunden (aktuell noch sekunden)
-                        / 60                                                            // / 60 um in Minuten zu konvertieren
-                        / 60;                                                           // / 60 um in Stunden zu konvertieren
 
-                /* Hier wird die Produktivquote berechnet */
-                if ($refinedEmployees[$employeeArray['ds_id']]['work_hours'] == 0){             // Prüfen ob bez. Stunden vorhanden sind
-                    $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Fall nein, wird die Produktivquote auf 0 gesetzt
+                /** Produktivstunden berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['productive_hours'] > 0){         // Prüfen ob MA Produktivstunden hat
+                    $refinedEmployees[$employeeArray['ds_id']]['calls_per_hour'] =              // Calls pro Stunde berechnen
+                        $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum']          // Calls nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['productive_hours'];       // Durch Produktivstunden teilen
+                } else{
+                    $refinedEmployees[$employeeArray['ds_id']]['calls_per_hour'] = 0;           // Wenn MA keine Produktivstunden hat werden Calls pro Stunde auf 0 gesetzt
+                }
+
+                /** AHT berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] > 0){         // Prüfen ob der MA Calls gemacht hat
+                    $refinedEmployees[$employeeArray['ds_id']]['aht'] =                         // AHT berechnen (Zeit im Call / Anzahl Calls)
+                        $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds']      // hier wird die Zeit im Call genommen
+                        / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'];       // Durch die Anzahl der Calls geteilt
                 } else {
-                    $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] =       // Falls ja, wird die Produktivquote berechnet
-                        ($refinedEmployees[$employeeArray['ds_id']]['productive_hours']         // Genommen werden die Produktivstunden
-                        / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])             // und durch die bez. Stunden geteilt
-                        * 100;                                                                  // mit 100 multipliert um Prozenz auszugeben
+                    $refinedEmployees[$employeeArray['ds_id']]['aht'] = 0;                      // Wenn keine Calls vorhanden sind wird die AHT auf 0 gesetzt
                 }
-                
-            }
 
-            /* Hier werden die Retention Details Daten verarbeitet, summiert und Quoten berechnet */
-            $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] = 0;     // Summe Mobile Calls wird initialisiert 
-            $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_ssc'] = 0;     // Summe Mobile Calls SSC wird initialisiert 
-            $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_bsc'] = 0;     // Summe Mobile Calls BSC wird initialisiert 
-            $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_portale'] = 0; // Summe Mobile Calls Portal wird initialisiert 
-            $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_sum'] = 0;     // Summe Mobile Saves wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_ssc'] = 0;     // Summe Mobile Saves SSC wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_bsc'] = 0;     // Summe Mobile Saves BSC wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_portale'] = 0; // Summe Mobile Saves Portal wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['mobile_kuerue'] = 0;        // Summe Mobile KüRüs wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['rlz_minus'] = 0;            // Summe Saves ohne RLZ+24 wird initialisiert
-            $refinedEmployees[$employeeArray['ds_id']]['rlz_plus'] = 0;             // Summe Sabes mit RLZ+24 wird initialisiert
+                /** SSC CR berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_ssc'] > 0){         // Prüfen ob der MA Calls gemacht hat 
+                    $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_ssc'] =               // CR berechnen (Saves / Calls * 100)
+                        ($refinedEmployees[$employeeArray['ds_id']]['mobile_saves_ssc']         // Saves nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_ssc'])       // Diese durch die Calls teilen
+                        * 100;                                                                  // Mit 100 multiplizeren um in Prozent zu wandeln
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_ssc'] = 0;            // Wenn keine Calls vorhanden sind wird die CR auf 0 gesetzt
+                }
 
-            if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){                                     // Prüfen ob Personen-ID gesetzt ist
-                foreach($retDetailsData as $key => $entry){                                                                 // Retention Details Array wird durchlaufen
-                    if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){                     // Prüfen ob Personen-ID des Eintrags mit der des Users übereinstimmt
-                        $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] += $entry['calls'];                  // Summe Mobile Calls wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_ssc'] += $entry['calls_smallscreen'];      // Summe Mobile Calls SSC wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_bsc'] += $entry['calls_bigscreen'];        // Summe Mobile Calls BSC wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_portale'] += $entry['calls_portale'];      // Summe Mobile Calls Portal wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_sum'] += $entry['orders'];                 // Summe Mobile Saves wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_ssc'] += $entry['orders_smallscreen'];     // Summe Mobile Saves SSC wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_bsc'] += $entry['orders_bigscreen'];       // Summe Mobile Saves BSC wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_portale'] += $entry['orders_portale'];     // Summe Mobile Saves Portal wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['mobile_kuerue'] += $entry['orders_kuerue'];             // Summe Mobile KüRüs wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['rlz_minus'] += $entry['mvlzNeu'];                       // Summe Mobile Saves ohne RLZ+24 wird um die Anzahl aus Eintrag erweitert
-                        $refinedEmployees[$employeeArray['ds_id']]['rlz_plus'] += $entry['rlzPlus'];                        // Summe Mobile Saves mit RLZ+24 wird um die Anzahl aus Eintrag erweitert
+                /** BSC CR berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_bsc'] > 0){         // Prüfen ob der MA Calls gemacht hat 
+                    $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_bsc'] =               // CR berechnen (Saves / Calls * 100)
+                        ($refinedEmployees[$employeeArray['ds_id']]['mobile_saves_bsc']         // Saves nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_bsc'])       // Diese durch die Calls teilen
+                        * 100;                                                                  // Mit 100 multiplizeren um in Prozent zu wandeln
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_bsc'] = 0;            // Wenn keine Calls vorhanden sind wird die CR auf 0 gesetzt
+                }
+
+                /** Portal CR berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_portale'] > 0){     // Prüfen ob der MA Calls gemacht hat 
+                    $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_portale'] =           // CR berechnen (Saves / Calls * 100)
+                        ($refinedEmployees[$employeeArray['ds_id']]['mobile_saves_portale']     // Saves nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_portale'])   // Diese durch die Calls teilen
+                        * 100;                                                                  // Mit 100 multiplizeren um in Prozent zu wandeln
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_portale'] = 0;        // Wenn keine Calls vorhanden sind wird die CR auf 0 gesetzt
+                }
+
+                /** RLZ+24 Quote berechnen */
+                if(($refinedEmployees[$employeeArray['ds_id']]['rlz_minus']                 // Prüfen ob die Summe von RLZ+24 mit und ohne > 0 ist 
+                    + $refinedEmployees[$employeeArray['ds_id']]['rlz_plus']) > 0) {        
+                        $refinedEmployees[$employeeArray['ds_id']]['rlz_plus_percentage'] = // RLZ+24 Quote berechnen ( RLZ+24 / (Rlz+24 mit und ohne) * 100)
+                            ($refinedEmployees[$employeeArray['ds_id']]['rlz_plus']         // Summe RLZ+24 Saves nehmen
+                            / ($refinedEmployees[$employeeArray['ds_id']]['rlz_plus']       // Teilen durch die Summe von RLZ+24 mit
+                            + $refinedEmployees[$employeeArray['ds_id']]['rlz_minus']))     // und RLZ+24 ohne
+                            * 100;                                                          // Mit 100 multiplizieren um in Prozent zu wandeln
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['rlz_plus_percentage'] = 0;  // Wenn keine Fälle mit RLZ bearbeitet wurden Quote auf 0 setzen
+                }
+
+                /** Umsatz durch Sales berechnen */
+                $refinedEmployees[$employeeArray['ds_id']]['revenue_sales'] =               // Hier werden alle Umsätze zusammengezählt
+                    $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_ssc']          // Summe der SSC GeVo Saves
+                    * $defaultVariablesArray['revenue_sale_mobile_ssc']                     // Multipliziert mit dem €-Wert für einen SSC Save
+                    + $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_portale']    // Summe der Portale GeVo Saves
+                    * $defaultVariablesArray['revenue_sale_mobile_ssc']                     // Multipliziert mit dem €-Wert für einen SSC Save
+                    + $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_bsc']        // Summe der BSC GeVo Saves
+                    * $defaultVariablesArray['revenue_sale_mobile_bsc']                     // Multipliziert mit dem €-Wert für einen SSC Save
+                    + $refinedEmployees[$employeeArray['ds_id']]['mobile_kuerue']           // Summe der KüRüs
+                    * $defaultVariablesArray['revenue_kuerue_mobile'];                      // Multipliziert mit dem €-Wert für eine KüRü
+
+                /* Hier wird die Stückzahl an OptIn ermittelt und die Quoten berechnet */
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_email'] = 0;          // Anzahl OptIn Mail initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_print'] = 0;          // Anzahl OptIn Print initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms'] = 0;            // Anzahl OptIn SMS initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_call'] = 0;           // Anzahl OptIn Call initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage'] = 0;          // Anzahl OptIn Nutzungsdaten initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'] = 0;        // Anzahl OptIn Verkehrsdaten initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_sum_payed'] = 0;          // Summe bezahlte OptIn initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_calls_new'] = 0;          // Anzahl OptIn für Quote initialisieren
+                $refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible'] = 0;     // Anzahl mögliche OptIn für Quote initialisieren
+
+                /** Hier wird die Anzahl gemachter OptIn summiert */
+                if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){
+                    foreach($optinData as $key => $entry){
+                        if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_calls_new'] += $entry['Anzahl_OptIn-Erfolg'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible'] += max($entry['Anzahl_Handled_Calls_ohne_Call-OptIn'], $entry['Anzahl_Handled_Calls_ohne_Daten-OptIn']);
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_email'] += $entry['Anzahl_Email_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_print'] += $entry['Anzahl_Print_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms'] += $entry['Anzahl_SMS_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_call'] += $entry['Anzahl_Call_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage'] += $entry['Anzahl_Nutzungsdaten_OptIn'];
+                            $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'] += $entry['Anzahl_Verkehrsdaten_OptIn'];
+                        }
+                    }
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_sum_payed'] =                 // Hier wird die Summe aller OptIn zusammengezählt
+                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_email']               // + OptIn Mail
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_print']             // + OptIn Print
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms']               // + OptIn SMS
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_call']              // + OptIn Call
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage']             // + OptIn Nutzungsdaten
+                        + $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'];          // + OptIn Verkehrsdaten
+                }
+
+                /** OptIn Quote und mögliche OptIn Quote berechnen */
+                if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] > 0){             // Prüfen ob Mobile Calls gemacht wurden
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_percentage'] =                // OptIn Quote berechnen
+                        ($refinedEmployees[$employeeArray['ds_id']]['optin_calls_new']              // Quotenrelevante OptIn nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'])           // Durch die Calls teilen
+                        * 100;                                                                      // Mit 100 multiplizieren um Prozent auszugeben
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_possible_percentage'] =       // Mögliche OptIn Qupte berechnen
+                        ($refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible']         // Mögliche OptIn nehmen
+                        / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'])           // Durch die Calls teilen
+                        * 100;                                                                      // Mit 100 multiplizieren um Prozent auszugeben
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_percentage'] = 0;             // Wenn keine Calls gemacht wurden OptIn Quote auf 0 setzen
+                    $refinedEmployees[$employeeArray['ds_id']]['optin_possible_percentage'] = 0;    // Wenn keine Calls gemacht wurden mögliche OptIn Quote auf 0 setzen
+                }
+
+                /* Berechnung der SAS Anzahl und Quote */
+                $refinedEmployees[$employeeArray['ds_id']]['sas_orders'] = 0;   // SAS Orders werden initzialisiert und auf 0 gesetzt
+
+                if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){                 // Prüfen ob Personen ID gesetzt ist
+                    foreach($sasData as $key => $entry){                                                    // Wenn Personen ID gesetzt ist, die SAS Daten durchlaufen
+                        if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){ // Prüfen ob Personen ID des Eintrags mit aktuellem MA übereinstimmt
+                            $refinedEmployees[$employeeArray['ds_id']]['sas_orders'] += 1;                  // Anzahl SAS Orders um 1 erhöhen
+                        }
                     }
                 }
-            }
 
-            /** Produktivstunden berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['productive_hours'] > 0){         // Prüfen ob MA Produktivstunden hat
-                $refinedEmployees[$employeeArray['ds_id']]['calls_per_hour'] =              // Calls pro Stunde berechnen
-                    $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum']          // Calls nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['productive_hours'];       // Durch Produktivstunden teilen
-            } else{
-                $refinedEmployees[$employeeArray['ds_id']]['calls_per_hour'] = 0;           // Wenn MA keine Produktivstunden hat werden Calls pro Stunde auf 0 gesetzt
-            }
+                if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] > 0){     // Prüfen ob Calls vorhanden sind
+                    $refinedEmployees[$employeeArray['ds_id']]['sas_promille'] =            // SAS = SAS Orders / DSL Calls
+                        ($refinedEmployees[$employeeArray['ds_id']]['sas_orders']           // Zugriff auf SAS Orders des ausgewählten MA
+                        / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'])   // Zugriff auf DSL Calls des ausgewählten MA
+                        * 1000;                                                             // Ergebnis wird mit 1000 multipliziert, um Promille auszugeben
+                } else {
+                    $refinedEmployees[$employeeArray['ds_id']]['sas_promille'] = 0;         // Wenn keine Calls vorhanden sind Wert auf 0 setzen
+                }
 
-            /** AHT berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] > 0){         // Prüfen ob der MA Calls gemacht hat
-                $refinedEmployees[$employeeArray['ds_id']]['aht'] =                         // AHT berechnen (Zeit im Call / Anzahl Calls)
-                    $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds']      // hier wird die Zeit im Call genommen
-                    / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'];       // Durch die Anzahl der Calls geteilt
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['aht'] = 0;                      // Wenn keine Calls vorhanden sind wird die AHT auf 0 gesetzt
-            }
-
-            /** SSC CR berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_ssc'] > 0){         // Prüfen ob der MA Calls gemacht hat 
-                $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_ssc'] =               // CR berechnen (Saves / Calls * 100)
-                    ($refinedEmployees[$employeeArray['ds_id']]['mobile_saves_ssc']         // Saves nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_ssc'])       // Diese durch die Calls teilen
-                    * 100;                                                                  // Mit 100 multiplizeren um in Prozent zu wandeln
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_ssc'] = 0;            // Wenn keine Calls vorhanden sind wird die CR auf 0 gesetzt
-            }
-
-            /** BSC CR berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_bsc'] > 0){         // Prüfen ob der MA Calls gemacht hat 
-                $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_bsc'] =               // CR berechnen (Saves / Calls * 100)
-                    ($refinedEmployees[$employeeArray['ds_id']]['mobile_saves_bsc']         // Saves nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_bsc'])       // Diese durch die Calls teilen
-                    * 100;                                                                  // Mit 100 multiplizeren um in Prozent zu wandeln
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_bsc'] = 0;            // Wenn keine Calls vorhanden sind wird die CR auf 0 gesetzt
-            }
-
-            /** Portal CR berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_portale'] > 0){     // Prüfen ob der MA Calls gemacht hat 
-                $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_portale'] =           // CR berechnen (Saves / Calls * 100)
-                    ($refinedEmployees[$employeeArray['ds_id']]['mobile_saves_portale']     // Saves nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_portale'])   // Diese durch die Calls teilen
-                    * 100;                                                                  // Mit 100 multiplizeren um in Prozent zu wandeln
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['mobile_cr_portale'] = 0;        // Wenn keine Calls vorhanden sind wird die CR auf 0 gesetzt
-            }
-
-            /** RLZ+24 Quote berechnen */
-            if(($refinedEmployees[$employeeArray['ds_id']]['rlz_minus']                 // Prüfen ob die Summe von RLZ+24 mit und ohne > 0 ist 
-                + $refinedEmployees[$employeeArray['ds_id']]['rlz_plus']) > 0) {        
-                    $refinedEmployees[$employeeArray['ds_id']]['rlz_plus_percentage'] = // RLZ+24 Quote berechnen ( RLZ+24 / (Rlz+24 mit und ohne) * 100)
-                        ($refinedEmployees[$employeeArray['ds_id']]['rlz_plus']         // Summe RLZ+24 Saves nehmen
-                        / ($refinedEmployees[$employeeArray['ds_id']]['rlz_plus']       // Teilen durch die Summe von RLZ+24 mit
-                        + $refinedEmployees[$employeeArray['ds_id']]['rlz_minus']))     // und RLZ+24 ohne
-                        * 100;                                                          // Mit 100 multiplizieren um in Prozent zu wandeln
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['rlz_plus_percentage'] = 0;  // Wenn keine Fälle mit RLZ bearbeitet wurden Quote auf 0 setzen
-            }
-
-            /** Umsatz durch Sales berechnen */
-            $refinedEmployees[$employeeArray['ds_id']]['revenue_sales'] =               // Hier werden alle Umsätze zusammengezählt
-                $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_ssc']          // Summe der SSC GeVo Saves
-                * $defaultVariablesArray['revenue_sale_mobile_ssc']                     // Multipliziert mit dem €-Wert für einen SSC Save
-                + $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_portale']    // Summe der Portale GeVo Saves
-                * $defaultVariablesArray['revenue_sale_mobile_ssc']                     // Multipliziert mit dem €-Wert für einen SSC Save
-                + $refinedEmployees[$employeeArray['ds_id']]['mobile_saves_bsc']        // Summe der BSC GeVo Saves
-                * $defaultVariablesArray['revenue_sale_mobile_bsc']                     // Multipliziert mit dem €-Wert für einen SSC Save
-                + $refinedEmployees[$employeeArray['ds_id']]['mobile_kuerue']           // Summe der KüRüs
-                * $defaultVariablesArray['revenue_kuerue_mobile'];                      // Multipliziert mit dem €-Wert für eine KüRü
-
-            /* Hier wird die Stückzahl an OptIn ermittelt und die Quoten berechnet */
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_email'] = 0;          // Anzahl OptIn Mail initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_print'] = 0;          // Anzahl OptIn Print initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms'] = 0;            // Anzahl OptIn SMS initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_call'] = 0;           // Anzahl OptIn Call initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage'] = 0;          // Anzahl OptIn Nutzungsdaten initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'] = 0;        // Anzahl OptIn Verkehrsdaten initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_sum_payed'] = 0;          // Summe bezahlte OptIn initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_calls_new'] = 0;          // Anzahl OptIn für Quote initialisieren
-            $refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible'] = 0;     // Anzahl mögliche OptIn für Quote initialisieren
-
-            /** Hier wird die Anzahl gemachter OptIn summiert */
-            if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){
-                foreach($optinData as $key => $entry){
-                    if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_calls_new'] += $entry['Anzahl_OptIn-Erfolg'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible'] += max($entry['Anzahl_Handled_Calls_ohne_Call-OptIn'], $entry['Anzahl_Handled_Calls_ohne_Daten-OptIn']);
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_email'] += $entry['Anzahl_Email_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_print'] += $entry['Anzahl_Print_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms'] += $entry['Anzahl_SMS_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_call'] += $entry['Anzahl_Call_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage'] += $entry['Anzahl_Nutzungsdaten_OptIn'];
-                        $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'] += $entry['Anzahl_Verkehrsdaten_OptIn'];
+                /** Speedretention berechnen */
+                $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] = 0;         // Stunden Speedretention initialisieren
+                $employeeSpeedRetentionArray = $speedRetentionData;                             // Hier wird ein Array erstellt, in das die für den MA relevanten Daten aus dem speedRetentionArray gespeichert werden.
+                foreach($employeeSpeedRetentionArray as $key => $entry) {                       // Gesamtes speedRetentionArray durchlaufen
+                    if($entry['MA_id'] != $refinedEmployees[$employeeArray['ds_id']]['ds_id']){ // Prüfen ob ds_id des Eintrags mit der des MA übereinstimmt
+                        unset($employeeSpeedRetentionArray[$key]);                              // Wenn dies nicht der Fall ist Eintrag entfernen
                     }
                 }
-                $refinedEmployees[$employeeArray['ds_id']]['optin_sum_payed'] =                 // Hier wird die Summe aller OptIn zusammengezählt
-                    $refinedEmployees[$employeeArray['ds_id']]['optin_new_email']               // + OptIn Mail
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_print']             // + OptIn Print
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_sms']               // + OptIn SMS
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_call']              // + OptIn Call
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_usage']             // + OptIn Nutzungsdaten
-                    + $refinedEmployees[$employeeArray['ds_id']]['optin_new_traffic'];          // + OptIn Verkehrsdaten
-            }
 
-            /** OptIn Quote und mögliche OptIn Quote berechnen */
-            if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] > 0){             // Prüfen ob Mobile Calls gemacht wurden
-                $refinedEmployees[$employeeArray['ds_id']]['optin_percentage'] =                // OptIn Quote berechnen
-                    ($refinedEmployees[$employeeArray['ds_id']]['optin_calls_new']              // Quotenrelevante OptIn nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'])           // Durch die Calls teilen
-                    * 100;                                                                      // Mit 100 multiplizieren um Prozent auszugeben
-                $refinedEmployees[$employeeArray['ds_id']]['optin_possible_percentage'] =       // Mögliche OptIn Qupte berechnen
-                    ($refinedEmployees[$employeeArray['ds_id']]['optin_calls_possible']         // Mögliche OptIn nehmen
-                    / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'])           // Durch die Calls teilen
-                    * 100;                                                                      // Mit 100 multiplizieren um Prozent auszugeben
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['optin_percentage'] = 0;             // Wenn keine Calls gemacht wurden OptIn Quote auf 0 setzen
-                $refinedEmployees[$employeeArray['ds_id']]['optin_possible_percentage'] = 0;    // Wenn keine Calls gemacht wurden mögliche OptIn Quote auf 0 setzen
-            }
+                $speedretentionStartTime = 0;   // Variable Startzeit initialisieren
+                $speedretentionEndTime = 0;     // Variable Endzeit initialisieren
+                $isOnSpeedretention = false;    // Boolean ist in Status initialisieren
 
-            /* Berechnung der SAS Anzahl und Quote */
-            $refinedEmployees[$employeeArray['ds_id']]['sas_orders'] = 0;   // SAS Orders werden initzialisiert und auf 0 gesetzt
-
-            if(isset($refinedEmployees[$employeeArray['ds_id']]['person_id']) == true){                 // Prüfen ob Personen ID gesetzt ist
-                foreach($sasData as $key => $entry){                                                    // Wenn Personen ID gesetzt ist, die SAS Daten durchlaufen
-                    if($entry['person_id'] == $refinedEmployees[$employeeArray['ds_id']]['person_id']){ // Prüfen ob Personen ID des Eintrags mit aktuellem MA übereinstimmt
-                        $refinedEmployees[$employeeArray['ds_id']]['sas_orders'] += 1;                  // Anzahl SAS Orders um 1 erhöhen
+                foreach($employeeSpeedRetentionArray as $key => $entry){                        // Schleife über alle Einträge MA Speedretention Arrays
+                    if($isOnSpeedretention == false){                                           // Prüfen ob aktuell nicht im Status Speedretention
+                        if($entry['acd_state_id'] == 41){                                       // Prüfen ob Status die ID 41 hat (Speedretention)
+                            $speedretentionStartTime =                                          // Wenn dies der Fall ist Startzeit seiten
+                            date_create_from_format('Y-m-d H:i:s', $entry['book_date']          // Dazu ein Datum aus book_date und book_time erstellen
+                            . ' ' . 
+                            $entry['book_time'])
+                            ->format('U');                                                      // Dieses in UNIX formatieren
+                            $isOnSpeedretention = true;                                         // In Status auf true setzen
+                        }
+                    }
+                    else if($isOnSpeedretention == true){                                       // Prüfen ob aktuell im Status Speedretention ist, um Endwert zu finden
+                        if($entry['acd_state_id'] != 41){                                       // Prüfen ob Status ungleich 41 ist
+                            $speedretentionEndTime = 
+                            date_create_from_format('Y-m-d H:i:s', $entry['book_date']          // Dazu ein Datum aus book_date und book_time erstellen
+                            . ' ' . 
+                            $entry['book_time'])
+                            ->format('U');                                                      // Dieses in UNIX formatieren
+                            $isOnSpeedretention = false;                                        // In Status auf false setzen
+                            $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention']  // Zeit in Status um Differenz zwischen Start- und Endwert ergänzen
+                                += ($speedretentionEndTime - $speedretentionStartTime);         // Endzeit - Startzeit = Differenz
+                        }
                     }
                 }
-            }
 
-            if($refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] > 0){     // Prüfen ob Calls vorhanden sind
-                $refinedEmployees[$employeeArray['ds_id']]['sas_promille'] =            // SAS = SAS Orders / DSL Calls
-                    ($refinedEmployees[$employeeArray['ds_id']]['sas_orders']           // Zugriff auf SAS Orders des ausgewählten MA
-                    / $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'])   // Zugriff auf DSL Calls des ausgewählten MA
-                    * 1000;                                                             // Ergebnis wird mit 1000 multipliziert, um Promille auszugeben
-            } else {
-                $refinedEmployees[$employeeArray['ds_id']]['sas_promille'] = 0;         // Wenn keine Calls vorhanden sind Wert auf 0 setzen
-            }
-
-            /** Speedretention berechnen */
-            $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] = 0;         // Stunden Speedretention initialisieren
-            $employeeSpeedRetentionArray = $speedRetentionData;                             // Hier wird ein Array erstellt, in das die für den MA relevanten Daten aus dem speedRetentionArray gespeichert werden.
-            foreach($employeeSpeedRetentionArray as $key => $entry) {                       // Gesamtes speedRetentionArray durchlaufen
-                if($entry['MA_id'] != $refinedEmployees[$employeeArray['ds_id']]['ds_id']){ // Prüfen ob ds_id des Eintrags mit der des MA übereinstimmt
-                    unset($employeeSpeedRetentionArray[$key]);                              // Wenn dies nicht der Fall ist Eintrag entfernen
+                if($refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] > 0){     // Wenn Zeit auf Speedretention > 0 ist, Zeit von Sekunden in Stunden ändern
+                    $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] = 
+                        $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention']      // Sekunden in Status nehmen
+                        / 60                                                                    // In Minuten wandeln
+                        / 60;                                                                   // In Stunden wandeln
                 }
             }
-
-            $speedretentionStartTime = 0;   // Variable Startzeit initialisieren
-            $speedretentionEndTime = 0;     // Variable Endzeit initialisieren
-            $isOnSpeedretention = false;    // Boolean ist in Status initialisieren
-
-            foreach($employeeSpeedRetentionArray as $key => $entry){                        // Schleife über alle Einträge MA Speedretention Arrays
-                if($isOnSpeedretention == false){                                           // Prüfen ob aktuell nicht im Status Speedretention
-                    if($entry['acd_state_id'] == 41){                                       // Prüfen ob Status die ID 41 hat (Speedretention)
-                        $speedretentionStartTime =                                          // Wenn dies der Fall ist Startzeit seiten
-                        date_create_from_format('Y-m-d H:i:s', $entry['book_date']          // Dazu ein Datum aus book_date und book_time erstellen
-                        . ' ' . 
-                        $entry['book_time'])
-                        ->format('U');                                                      // Dieses in UNIX formatieren
-                        $isOnSpeedretention = true;                                         // In Status auf true setzen
-                    }
-                }
-                else if($isOnSpeedretention == true){                                       // Prüfen ob aktuell im Status Speedretention ist, um Endwert zu finden
-                    if($entry['acd_state_id'] != 41){                                       // Prüfen ob Status ungleich 41 ist
-                        $speedretentionEndTime = 
-                        date_create_from_format('Y-m-d H:i:s', $entry['book_date']          // Dazu ein Datum aus book_date und book_time erstellen
-                        . ' ' . 
-                        $entry['book_time'])
-                        ->format('U');                                                      // Dieses in UNIX formatieren
-                        $isOnSpeedretention = false;                                        // In Status auf false setzen
-                        $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention']  // Zeit in Status um Differenz zwischen Start- und Endwert ergänzen
-                            += ($speedretentionEndTime - $speedretentionStartTime);         // Endzeit - Startzeit = Differenz
-                    }
-                }
-            }
-
-            if($refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] > 0){     // Wenn Zeit auf Speedretention > 0 ist, Zeit von Sekunden in Stunden ändern
-                $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention'] = 
-                    $refinedEmployees[$employeeArray['ds_id']]['hours_speedretention']      // Sekunden in Status nehmen
-                    / 60                                                                    // In Minuten wandeln
-                    / 60;                                                                   // In Stunden wandeln
-            }
-
         }
 
         asort($refinedEmployees);   // Das gesamte Personenarray wird alphabetisch sortiert. Ausgangspunkt ist der erste Eintrag (Nachname)
@@ -1486,5 +1534,13 @@ class ProjectReportController extends Controller
 
         //dd($data);
         return $data; // Das Datenarray wird zurückgegeben
+    }
+
+    public function getTeamEmployees(){
+        $teamEmployees =  DB::connection('mysqlkdw')
+        ->table("teams_MA")
+        ->get();
+
+        return $teamEmployees;
     }
 }
