@@ -39,7 +39,7 @@
         <div class="col">
         <h4 class="text-left">Daten</h4>
           <div class="row p-3 justify-content-left">
-            <form class="" action="{{route('user.update', ['id' => $user->id])}}" method="post">
+            <form class="" action="route('user.update', ['id' => $user->id])" method="post">
               @csrf
               <table class="table table-bordered w-50">
                 <tr>

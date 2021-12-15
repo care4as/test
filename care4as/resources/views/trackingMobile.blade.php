@@ -2,6 +2,23 @@
 @section('pagetitle')
 Tracking mit Vertragsnummer
 @endsection
+
+@php
+function roundUp($calls,$quotient)
+{
+  if($calls == 0)
+  {
+    $quota = 0;
+  }
+  else
+  {
+    $quota = round($quotient*100/$calls, 2);
+  }
+
+  return $quota;
+}
+@endphp
+
 @section('content')
 @section('additional_css')
 <style>
@@ -107,7 +124,7 @@ Tracking mit Vertragsnummer
 
 <div style="font-size: 1em;">
     <!-- START TRACKING -->
-    <div class="row"> 
+    <div class="row">
         <div class="col-sm-12">
             <div class="max-main-container">
                 <div class="btn-group-container" style="margin: 20px auto">
@@ -122,7 +139,7 @@ Tracking mit Vertragsnummer
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
     </div>
     <div class="row" id="tracking_container">
         <div class="col-xl-6 col-lg-12">
@@ -139,32 +156,32 @@ Tracking mit Vertragsnummer
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
-                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',1)->first()->calls}} @else 0   @endif</div>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if( $trackcalls->where('category',1)->first()) {{ $sscCalls = $trackcalls->where('category',1)->first()->calls}} @else {{$sscCalls = 0 }}  @endif</div>
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center">5</div>
-                    <div style="text-align: center">10%</div>
+                    <div style="text-align: center">{{$sscSaves = $history->where('product_category','SSC')->where('event_category', 'Save')->count()}}</div>
+                    <div style="text-align: center">{{roundUp($sscCalls,$sscSaves)}}%</div>
                     <div>BSC</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
-                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',2)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif</div>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',2)->first()) {{$bscCalls = $trackcalls->where('category',2)->first()->calls}} @else {{$bscCalls = 0 }}  @endif</div>
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center">5</div>
-                    <div style="text-align: center">10%</div>
+                    <div style="text-align: center">{{$bscSaves = $history->where('product_category','BSC')->where('event_category', 'Save')->count()}}</div>
+                    <div style="text-align: center">{{roundUp($bscCalls,$bscSaves)}}%</div>
                     <div>Portale</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
-                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',3)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif</div>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',3)->first()) {{$portaleCalls = $trackcalls->where('category',3)->first()->calls}} @else {{$portaleCalls = 0 }}  @endif</div>
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center">5</div>
-                    <div style="text-align: center">10%</div>
+                    <div style="text-align: center">{{$portaleSaves = $history->where('product_category','Portale')->where('event_category', 'Save')->count()}}</div>
+                    <div style="text-align: center">{{roundUp($portaleCalls,$portaleSaves)}}%</div>
                     <div>Sonstige</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
@@ -173,8 +190,6 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center">5</div>
-                    <div style="text-align: center">10%</div>
                 </div>
             </div>
             <div class="max-main-container" style="margin-top: 40px">
@@ -185,14 +200,14 @@ Tracking mit Vertragsnummer
                     <div style="font-weight: bold;">Bezeichnung</div>
                     <div style="text-align: center; font-weight: bold;">Wert</div>
                     <div>RLZ+24 Anteil</div>
-                    <div style="text-align: center">10%</div>
+                    <div style="text-align: center"><i class="fas fa-tools"></i></div>
                     <div>OptIn Quote</div>
-                    <div style="text-align: center">10%</div>
+                    <div style="text-align: center"><i class="fas fa-tools"></i></div>
                 </div>
             </div>
         </div>
         <!-- START ORDERS -->
-        <div class="col-xl-6 col-lg-12">
+          <div class="col-xl-6 col-lg-12">
             <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
               @csrf
                 <div class="max-main-container">
@@ -286,14 +301,12 @@ Tracking mit Vertragsnummer
                         <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;" id="submit_tracking" disabled>
                     </div>
                 </div>
-                
-            </div>
-
+              </div>
             </form>
         </div>
     </div>
     <!-- END ORDERS -->
-    <div class="row" id="month_container" style="display: none;">        
+    <div class="row" id="month_container" style="display: none;">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
@@ -312,14 +325,14 @@ Tracking mit Vertragsnummer
                             <div style="display:flex">
                                 <div id="sscCr">59.23</div>
                                 <div>%</div>
-                            </div>                            
+                            </div>
                             <div style="text-align: left;">BSC</div>
                             <div id="bscCalls">17</div>
                             <div id="bscSaves">3</div>
                             <div style="display:flex">
                                 <div id="bscCr">59.23</div>
                                 <div>%</div>
-                            </div>     
+                            </div>
                             <div style="text-align: left;">Portale</div>
                             <div id="portaleCalls">29</div>
                             <div id="portaleSaves">27</div>
@@ -441,7 +454,7 @@ Tracking mit Vertragsnummer
                                     </span>
                                 </label>                                
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                     <div id="provision_value">
                         <div style="text-align: center; font-weight: bold;">
@@ -473,7 +486,7 @@ Tracking mit Vertragsnummer
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
     <div class="row" id="history_container" style="display: none">
         <!-- END ORDERS -->
@@ -482,7 +495,7 @@ Tracking mit Vertragsnummer
             <div class="max-main-container">
                 <div class="tracking_title">
                     Historie
-                </div>    
+                </div>
                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
                     <table class="tracking-table">
                         <thead>
@@ -507,7 +520,7 @@ Tracking mit Vertragsnummer
                             <td>@if($record->runtime == 1) Ja @else Nein @endif</td>
                             <td>@if($record->backoffice == 1) Ja @else Nein @endif</td>
                         </tr>
-                        @endforeach    
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

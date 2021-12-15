@@ -305,10 +305,10 @@ class FeedbackController extends Controller
 
     return $users;
   }
-  
+
   public function create11($userid = null)
   {
-    
+
     $year = Carbon::now()->year;
     $start_date = 1;
     $end_date = 1;
@@ -317,8 +317,8 @@ class FeedbackController extends Controller
 
     if($userid)
     {
-      
-      $year = Carbon::now()->year;
+
+      // $year = Carbon::now()->year;
       $start_date = 1;
       $end_date = 1;
 
@@ -344,17 +344,24 @@ class FeedbackController extends Controller
           $start_date->setISODate($year,$kw - $i,1)->format('Y-m-d');
         }
 
-      }
+    $user = User::where('role','Agent_Mobile')
+    ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
+    ->with(['dailyagent' => function($q) use ($start_date,$end_date){
+      if($start_date !== 1)
+      {
+        $datemod = Carbon::parse($start_date)->setTime(2,0,0);
+        $q->where('date','>=',$datemod);
+      }}]);
       // dd($end_date, $start_date);
 
-      $user = User::where('role','agent')
+      $user = User::where('role','Agent_Mobile')
       ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
       ->with(['dailyagent' => function($q) use ($start_date,$end_date){
         if($start_date !== 1)
         {
           $datemod = Carbon::parse($start_date)->setTime(2,0,0);
           $q->where('date','>=',$datemod);
-        }
+        }}]);
         // dd($end_date, $start_date);
 
         $user = User::where('id',$userid)
@@ -494,13 +501,11 @@ class FeedbackController extends Controller
     }
 
     // dd($weekperformance);
-    
-    return view('FeedBackCreate', compact('users', 'user','weekperformance'));
-    
+
+      return view('FeedBackCreate', compact('users', 'user','weekperformance'));
+    }
   }
-    
-   
-  
+
 
   public function print($userid = null)
   {

@@ -269,8 +269,8 @@ function mouseoutNewSidebar(){
           {
             $('#loaderDiv').css('display','block')
             // console.log($('#loaderDiv'));
-            axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
-           // axios.get('http://'+host+'/user/salesdataDates',
+            // axios.get('http://'+host+'/care4as/care4as/public/user/salesdataDates',
+           axios.get('http://'+host+'/user/salesdataDates',
            {
              params: {
                start: start.format('Y-MM-DD'),

@@ -43,7 +43,7 @@ use App\Http\Controllers\ControllingController;
   //Route::get('/user/show/{id}', 'UserController@showWithStats')->name('user.show');
   //Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post')->middleware('hasRight:updateUser');
   Route::get('/user/analytics/{id}', 'UserController@Scorecard')->name('user.stats')->middleware('hasRight:updateUser');
-  Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
+  // Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
   //Route::post('/user/update/{id}', 'UserController@update')->name('user.update')->middleware('hasRight:updateUser');
   Route::get('/user/changePasswort', 'UserController@changePasswordView')->name('user.changePasswort.view');
   Route::post('/user/changePasswort', 'UserController@changePassword')->name('user.changePasswort');
@@ -323,12 +323,13 @@ use App\Http\Controllers\ControllingController;
   //End Controlling Routes
 
   //START MOBILE TRACKING
-    Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents');//RECHT FEHLT
-    Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post');//RECHT FEHLT
-    Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track');//RECHT FEHLT
-    Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin');//RECHT FEHLT
-
-    // Route::get('/mobile/tracking/admin', function(){
+    Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents')->middleware('auth');
+    Route::post('/mobile/tracking/update',  'AgentTrackingController@edit')->name('mobile.tracking.agents.update')->middleware('auth');
+    Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post');
+    Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track');
+    Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin');
+    Route::get('/mobile/tracking/delete/{id}', 'AgentTrackingController@destroy')->name('tracking.delete.admin');
+    Route::get('/mobile/tracking/json/{id}', 'AgentTrackingController@show')->name('tracking.show.admin');
 
     //   return view('trackingMobileAdmin');
     // })->name('mobile.tracking.admin');//RECHT FEHLT

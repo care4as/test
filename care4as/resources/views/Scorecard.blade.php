@@ -152,7 +152,7 @@
       <hr>
       <hr>
       <div class="row justify-content-center">
-        <form class="text-white" action="{{route('user.update', ['id' => $user->id])}}" method="post">
+        <form class="text-white" action="route('user.update', ['id' => $user->id])" method="post">
             @csrf
             <table class="table table-borderless w-50 text-white">
               <tr>

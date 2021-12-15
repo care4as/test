@@ -47,7 +47,7 @@ class UserController extends Controller
         }
         else {
           $users= User::where('department',request('department'))
-          ->where('role','Agent')
+          ->where('role','Agent_Mobile')
           ->whereIn('person_id',$userids)
           ->get();
         }
@@ -64,7 +64,7 @@ class UserController extends Controller
       if(request('department'))
       {
         $users= User::where('project',request('department'))
-        ->where('role','Agent')
+        ->where('role','Agent_Mobile')
         ->where('status',1)
         // ->whereIn('person_id',$userids)
         ->get();
@@ -348,7 +348,7 @@ class UserController extends Controller
       // return response()->json($start_date);
 
       $user = User::where('id',request('userid'))
-      ->where('role','agent')
+      ->where('role','Agent_Mobile')
       // ->select('id','surname','lastname','person_id','agent_id','dailyhours','department','ds_id')
       ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
         // $q->select(['id','person_id','calls','call_date']);
@@ -437,7 +437,7 @@ class UserController extends Controller
       }
       $days = $this->getDays($start_date,$end_date);
       $user = User::where('id',$userid)
-      ->where('role','agent')
+      ->where('role','Agent_Mobile')
       ->with(['dailyAgent' => function($q) use ($start_date,$end_date){
         // $q->select(['id','person_id','calls','call_date']);
         if($start_date !== 1)
