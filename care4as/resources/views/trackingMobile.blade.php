@@ -2,6 +2,23 @@
 @section('pagetitle')
 Tracking mit Vertragsnummer
 @endsection
+
+@php
+function roundUp($calls,$quotient)
+{
+  if($calls == 0)
+  {
+    $quota = 0;
+  }
+  else
+  {
+    $quota = round($quotient*100/$calls, 2);
+  }
+
+  return $quota;
+}
+@endphp
+
 @section('content')
 @section('additional_css')
 <style>
@@ -112,20 +129,20 @@ Tracking mit Vertragsnummer
             <div class="max-main-container">
                 <div class="btn-group-container" style="margin: 20px auto">
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="product_category" value="SSC" id="group1" autocomplete="off" onchange="" checked>
-                        <label class="btn btn-outline-primary first-btn-group-element" for="group1" style="min-width: 150px;" >Tracking</label>
-                        <input type="radio" class="btn-check" name="product_category" value="BSC" id="group2" autocomplete="off" onchange="">
-                        <label class="btn btn-outline-primary" for="group2" style="min-width: 150px;">Historie</label>
+                        <input type="radio" class="btn-check" name="show_container" value="show_tracking_container" id="show_tracking_container" autocomplete="off" onchange="updateShowContainer()" checked>
+                        <label class="btn btn-outline-primary first-btn-group-element" for="show_tracking_container" style="min-width: 150px;" >Tracking</label>
+                        <input type="radio" class="btn-check" name="show_container" value="show_history_container" id="show_history_container" autocomplete="off" onchange="updateShowContainer()">
+                        <label class="btn btn-outline-primary" for="show_history_container" style="min-width: 150px;">Historie</label>
 
-                        <input type="radio" class="btn-check" name="product_category" value="Portale" id="group3" autocomplete="off" onchange="">
-                        <label class="btn btn-outline-primary last-btn-group-element" for="group3" style="min-width: 150px;">Monatsübersicht</label>
+                        <input type="radio" class="btn-check" name="show_container" value="show_month_container" id="show_month_container" autocomplete="off" onchange="updateShowContainer()">
+                        <label class="btn btn-outline-primary last-btn-group-element" for="show_month_container" style="min-width: 150px;">Monatsübersicht</label>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xl-6 col-lg-12 ">
+    <div class="row" id="tracking_container">
+        <div class="col-xl-6 col-lg-12">
             <div class="max-main-container">
                 <div class="tracking_title">
                     Calls (Gesamt: {{$trackcalls->sum('calls')}})
@@ -139,29 +156,32 @@ Tracking mit Vertragsnummer
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
-                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',1)->first()) {{$trackcalls->where('category',1)->first()->calls}} @else 0   @endif</div>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if( $trackcalls->where('category',1)->first()) {{ $sscCalls = $trackcalls->where('category',1)->first()->calls}} @else {{$sscCalls = 0 }}  @endif</div>
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center"><i class="fas fa-tools"></i></div>
+                    <div style="text-align: center">{{$sscSaves = $history->where('product_category','SSC')->where('event_category', 'Save')->count()}}</div>
+                    <div style="text-align: center">{{roundUp($sscCalls,$sscSaves)}}%</div>
                     <div>BSC</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 0])}}" role="button">-</a>
-                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',2)->first()) {{$trackcalls->where('category',2)->first()->calls}} @else 0   @endif</div>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',2)->first()) {{$bscCalls = $trackcalls->where('category',2)->first()->calls}} @else {{$bscCalls = 0 }}  @endif</div>
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 2, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center"><i class="fas fa-tools"></i></div>
+                    <div style="text-align: center">{{$bscSaves = $history->where('product_category','BSC')->where('event_category', 'Save')->count()}}</div>
+                    <div style="text-align: center">{{roundUp($bscSaves,$bscCalls)}}%</div>
                     <div>Portale</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 0])}}" role="button">-</a>
-                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',3)->first()) {{$trackcalls->where('category',3)->first()->calls}} @else 0   @endif</div>
+                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',3)->first()) {{$portaleCalls = $trackcalls->where('category',3)->first()->calls}} @else {{$portaleCalls = 0 }}  @endif</div>
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 3, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center"><i class="fas fa-tools"></i></div>
+                    <div style="text-align: center">{{$portaleSaves = $history->where('product_category','Portale')->where('event_category', 'Save')->count()}}</div>
+                    <div style="text-align: center">{{roundUp($portaleSaves,$bscCalls)}}%</div>
                     <div>Sonstige</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
@@ -170,7 +190,8 @@ Tracking mit Vertragsnummer
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center"><i class="fas fa-tools"></i></div>
+                    <div style="text-align: center">X</div>
+                    <div style="text-align: center">X</div>
                 </div>
             </div>
             <div class="max-main-container" style="margin-top: 40px">
@@ -287,14 +308,13 @@ Tracking mit Vertragsnummer
         </div>
     </div>
     <!-- END ORDERS -->
-    <!-- <div class="row">
-
+    <div class="row" id="month_container" style="display: none;">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
                     Monatsübersicht
                 </div>
-                <div style="display: flex; margin: 10px; column-gap: 100px; row-gap: 20px; flex-wrap: wrap; justify-content: space-around;">
+                <div style="display: flex; margin: 10px; row-gap: 20px; flex-wrap: wrap; justify-content: space-around;">
                     <div id="month_saves">
                         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; row-gap: 10px; text-align: center; column-gap:10px;" >
                             <div style="text-align: left; font-weight: bold;">Queue</div>
@@ -302,34 +322,52 @@ Tracking mit Vertragsnummer
                             <div style="font-weight: bold;">Saves</div>
                             <div style="font-weight: bold;">CR</div>
                             <div style="text-align: left;">SSC</div>
-                            <div>{Wert}</div>
-                            <div>{Wert}</div>
-                            <div>{Wert}%</div>
+                            <div id="sscCalls">54</div>
+                            <div id="sscSaves">32</div>
+                            <div style="display:flex">
+                                <div id="sscCr">59.23</div>
+                                <div>%</div>
+                            </div>
                             <div style="text-align: left;">BSC</div>
-                            <div>{Wert}</div>
-                            <div>{Wert}</div>
-                            <div>{Wert}%</div>
+                            <div id="bscCalls">17</div>
+                            <div id="bscSaves">3</div>
+                            <div style="display:flex">
+                                <div id="bscCr">59,23</div>
+                                <div>%</div>
+                            </div>
                             <div style="text-align: left;">Portale</div>
-                            <div>{Wert}</div>
-                            <div>{Wert}</div>
-                            <div>{Wert}%</div>
+                            <div id="portaleCalls">29</div>
+                            <div id="portaleSaves">27</div>
+                            <div style="display:flex">
+                                <div id="portaleCr">59,23</div>
+                                <div>%</div>
+                            </div>
                         </div>
                     </div>
                     <div id="month_carecoins">
                         <div style="display: grid; grid-template-columns: 1fr 1fr ; row-gap: 10px; text-align: center;" >
-                            <div style="text-align: left; font-weight: bold;"></div>
-                            <div style="font-weight: bold;">CareCoins</div>
+                            <div style="font-weight: bold; grid-column: 1 / span 2;">CareCoins</div>
                             <div style="text-align: left;">Soll</div>
-                            <div>{Wert}</div>
-                            <div style="text-align: left;">Ist</div>
-                            <div>{Wert}</div>
+                            <div id="careCoinShould">5000</div>
+                            <div  style="text-align: left;">Ist</div>
+                            <div id="careCoinIs">8000</div>
                             <div style="text-align: left;">Differenz</div>
-                            <div>{Wert}</div>
+                            <div id="careCoinDifference">3000</div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="max-main-container">
+                <div class="tracking_title">
+                    Provisionsschätzer
+                    <button onclick="calcProvision()">CALC PROVISION</button>
+                </div>
+                <div style="display: grid; margin: 10px; grid-template-columns: auto 1fr; gap: 10px;">
                     <div id="provision_goals" style="white-space: nowrap;">
                         <div style="text-align: center; font-weight: bold;">
-                            Provisionsziele
+                            Ziele
                         </div>
                         <div>
                             <div class="form-check">
@@ -413,16 +451,15 @@ Tracking mit Vertragsnummer
                         <div class="tracking_description">
                             Berücksichtigt werden die im Tool hinterlegten Werte des laufenden Monats und nicht die tatsächlich bestätigten Geschäftsvorfälle.
                         </div>
-                        <div style="text-align: center; font-size: 2em;">
-                            100.000,00€
+                        <div id="provisionSum" style="text-align: center; font-size: 2em;">
+                            0,00€
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    </div> -->
-    <div class="row">
+    </div>
+    <div class="row" id="history_container" style="display: none">
         <!-- END ORDERS -->
         <!-- START HISTORY -->
         <div class="col-md-12">
@@ -483,74 +520,139 @@ Tracking mit Vertragsnummer
 
 
 <script>
-
-function tracking_input(){
-    var contract_field = document.querySelector('input[name="contract_number"]').value;
-    var product_category_field = document.querySelector('input[name="product_category"]:checked')?.value;
-    var event_category_field = document.querySelector('input[name="event_category"]:checked')?.value;
-    var target_tariff_field = document.querySelector('input[name="target_tariff"]').value;
-    var optin = document.querySelector('input[name="optin"]:checked')?.value;
-    var runtime = document.querySelector('input[name="runtime"]:checked')?.value;
-    var backoffice = document.querySelector('input[name="backoffice"]:checked')?.value;
-
-
-
-    if(event_category_field == 'Save'){
-        document.querySelector('input[name="target_tariff"]').disabled = false;
-    } else {
-        document.querySelector('input[name="target_tariff"]').value = '';
-        document.querySelector('input[name="target_tariff"]').disabled = true;
-    }
-
-    var error_counter = 0;
+    function tracking_input(){
+        var contract_field = document.querySelector('input[name="contract_number"]').value;
+        var product_category_field = document.querySelector('input[name="product_category"]:checked')?.value;
+        var event_category_field = document.querySelector('input[name="event_category"]:checked')?.value;
+        var target_tariff_field = document.querySelector('input[name="target_tariff"]').value;
+        var optin = document.querySelector('input[name="optin"]:checked')?.value;
+        var runtime = document.querySelector('input[name="runtime"]:checked')?.value;
+        var backoffice = document.querySelector('input[name="backoffice"]:checked')?.value;
 
 
 
-    if(contract_field == ''){
-        document.getElementById('contract_number_errormessage').style.display = 'none';
-        error_counter += 1;
-    } else if (Math.floor(contract_field) == contract_field) {
-        document.getElementById('contract_number_errormessage').style.display = 'none';
-    } else {
-        document.getElementById('contract_number_errormessage').style.display = 'flex';
-        error_counter += 1;
-    }
+        if(event_category_field == 'Save'){
+            document.querySelector('input[name="target_tariff"]').disabled = false;
+        } else {
+            document.querySelector('input[name="target_tariff"]').value = '';
+            document.querySelector('input[name="target_tariff"]').disabled = true;
+        }
 
-    if(product_category_field == undefined){
-        error_counter += 1;
-    }
+        var error_counter = 0;
 
-    if(event_category_field == undefined){
-        error_counter += 1;
-    } else if (event_category_field == 'Save'){
-        if (target_tariff_field == ''){
+
+
+        if(contract_field == ''){
+            document.getElementById('contract_number_errormessage').style.display = 'none';
             error_counter += 1;
+        } else if (Math.floor(contract_field) == contract_field) {
+            document.getElementById('contract_number_errormessage').style.display = 'none';
+        } else {
+            document.getElementById('contract_number_errormessage').style.display = 'flex';
+            error_counter += 1;
+        }
+
+        if(product_category_field == undefined){
+            error_counter += 1;
+        }
+
+        if(event_category_field == undefined){
+            error_counter += 1;
+        } else if (event_category_field == 'Save'){
+            if (target_tariff_field == ''){
+                error_counter += 1;
+            }
+        }
+
+        if(optin == undefined){
+            error_counter += 1;
+        }
+
+        if(runtime == undefined){
+            error_counter += 1;
+        }
+
+        if(backoffice == undefined){
+            error_counter += 1;
+        }
+
+        if(error_counter == 0){
+            document.getElementById('submit_tracking').disabled = false;
+        } else {
+            document.getElementById('submit_tracking').disabled = true;
+        }
+
+    }
+</script>
+<script>
+    var trackingContainer = document.getElementById('tracking_container');
+    var monthContainer = document.getElementById('month_container');
+    var historyContainer = document.getElementById('history_container');
+
+    function updateShowContainer(){
+        var selectedShowContainer = document.querySelector('input[name="show_container"]:checked')?.value;
+        console.log(selectedShowContainer);
+
+        if(selectedShowContainer == 'show_tracking_container'){
+            trackingContainer.style.display = 'flex';
+            monthContainer.style.display = 'none';
+            historyContainer.style.display = 'none';
+        } else if (selectedShowContainer == 'show_month_container'){
+            trackingContainer.style.display = 'none';
+            monthContainer.style.display = 'flex';
+            historyContainer.style.display = 'none';
+        } else if (selectedShowContainer == 'show_history_container'){
+            trackingContainer.style.display = 'none';
+            monthContainer.style.display = 'none';
+            historyContainer.style.display = 'flex';
         }
     }
 
-    if(optin == undefined){
-        error_counter += 1;
-    }
-
-    if(runtime == undefined){
-        error_counter += 1;
-    }
-
-    if(backoffice == undefined){
-        error_counter += 1;
-    }
-
-    if(error_counter == 0){
-        document.getElementById('submit_tracking').disabled = false;
-    } else {
-        document.getElementById('submit_tracking').disabled = true;
-    }
-
-}
-
-
 </script>
 
+<script>
+    function calcProvision(){
+        var sscCalls = document.getElementById('sscCalls').innerText
+        var sscSaves = document.getElementById('sscSaves').innerText
+        var sscCr = document.getElementById('sscCr').innerText
+        var bscCalls = document.getElementById('bscCalls').innerText
+        var bscSaves = document.getElementById('bscSaves').innerText
+        var bscCr = document.getElementById('bscCr').innerText
+        var portaleCalls = document.getElementById('portaleCalls').innerText
+        var portaleSaves = document.getElementById('portaleSaves').innerText
+        var portaleCr = document.getElementById('portaleCr').innerText
+        var careCoinShould = document.getElementById('careCoinShould').innerText
+        var careCoinIs = document.getElementById('careCoinIs').innerText
+
+        var sscSaveSum = 0;
+        var bscSaveSum = 0;
+        var portaleSaveSum = 0;
+
+        var provisionSum = document.getElementById('provisionSum').innerText
+
+        //Ziel 1
+        if(careCoinIs >= careCoinShould){
+
+        }
+
+
+
+
+
+        console.log(sscCalls);
+        console.log(sscSaves);
+        console.log(sscCr);
+
+        provisionSum = sscSaves * 5;
+
+
+
+
+
+        document.getElementById('provisionSum').innerText = provisionSum;
+    }
+
+</script>
 
 
 

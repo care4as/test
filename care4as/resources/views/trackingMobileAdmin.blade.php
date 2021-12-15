@@ -556,12 +556,9 @@ function roundUp($calls,$quotient)
                       </form>
                     </div>
                 </div>
-
-        </div>
-    </div>
-</div>
-
-@endsection
+              </div>
+            </div>
+            @endsection
 
 @section('additional_js')
 
