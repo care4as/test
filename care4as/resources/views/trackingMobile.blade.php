@@ -171,7 +171,7 @@ function roundUp($calls,$quotient)
                         </div>
                     </div>
                     <div style="text-align: center">{{$bscSaves = $history->where('product_category','BSC')->where('event_category', 'Save')->count()}}</div>
-                    <div style="text-align: center">{{roundUp($bscSaves,$bscCalls)}}%</div>
+                    <div style="text-align: center">{{roundUp($bscCalls,$bscSaves)}}%</div>
                     <div>Portale</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">
@@ -181,7 +181,7 @@ function roundUp($calls,$quotient)
                         </div>
                     </div>
                     <div style="text-align: center">{{$portaleSaves = $history->where('product_category','Portale')->where('event_category', 'Save')->count()}}</div>
-                    <div style="text-align: center">{{roundUp($portaleSaves,$bscCalls)}}%</div>
+                    <div style="text-align: center">{{roundUp($portaleCalls,$portaleSaves)}}%</div>
                     <div>Sonstige</div>
                     <div>
                         <div style="display: flex; width: min-content; margin: auto;">

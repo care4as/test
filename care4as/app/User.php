@@ -43,6 +43,11 @@ class User extends Authenticatable
       return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at', DB::raw('CURDATE()'));
       // return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at', DB::raw('CURDATE()'));
     }
+    public function TrackingOverall()
+    {
+      return $this->hasMany('\App\TrackEvent','created_by');
+      // return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at', DB::raw('CURDATE()'));
+    }
     public function TrackingCallsToday()
     {
       return $this->hasMany('\App\TrackCalls')->whereDate('created_at', DB::raw('CURDATE()'));
