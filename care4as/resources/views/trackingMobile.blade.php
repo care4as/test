@@ -190,8 +190,6 @@ function roundUp($calls,$quotient)
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center">X</div>
-                    <div style="text-align: center">X</div>
                 </div>
             </div>
             <div class="max-main-container" style="margin-top: 40px">
@@ -332,16 +330,23 @@ function roundUp($calls,$quotient)
                             <div id="bscCalls">17</div>
                             <div id="bscSaves">3</div>
                             <div style="display:flex">
-                                <div id="bscCr">59,23</div>
+                                <div id="bscCr">59.23</div>
                                 <div>%</div>
                             </div>
                             <div style="text-align: left;">Portale</div>
                             <div id="portaleCalls">29</div>
                             <div id="portaleSaves">27</div>
                             <div style="display:flex">
-                                <div id="portaleCr">59,23</div>
+                                <div id="portaleCr">80.23</div>
                                 <div>%</div>
                             </div>
+                            <div style="text-align: left;">OptIn</div>
+                            <div id="optinCalls">29</div>
+                            <div id="optinSaves">27</div>
+                            <div style="display:flex">
+                                <div id="optinCr">59.23</div>
+                                <div>%</div>
+                            </div> 
                         </div>
                     </div>
                     <div id="month_carecoins">
@@ -362,7 +367,6 @@ function roundUp($calls,$quotient)
             <div class="max-main-container">
                 <div class="tracking_title">
                     Provisionsschätzer
-                    <button onclick="calcProvision()">CALC PROVISION</button>
                 </div>
                 <div style="display: grid; margin: 10px; grid-template-columns: auto 1fr; gap: 10px;">
                     <div id="provision_goals" style="white-space: nowrap;">
@@ -371,8 +375,9 @@ function roundUp($calls,$quotient)
                         </div>
                         <div>
                             <div class="form-check">
+                                <abbr title="SSC Save: +1,25€&#013;BSC Save: +1,25€&#013;Portale Save: +1,25€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="">
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment1" onchange="calcProvision()">
                                     Ziel 1: CareCoin Ist >= CareCoin Soll
                                     <span class="form-check-sign">
                                         <span class="check"></span>
@@ -380,67 +385,74 @@ function roundUp($calls,$quotient)
                                 </label>
                             </div>
                             <div class="form-check">
+                                <abbr title="SSC Save: +0,50€&#013;BSC Save: +0,50€&#013;Portale Save: +0,50€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    Ziel 2: OptIn Quote >= 15,0%
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment2" onchange="calcProvision()">
+                                    Ziel 2: OptIn Quote >= 15,00%                                   
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
                                 </label>
                             </div>
                             <div class="form-check">
+                                <abbr title="SSC Save: +1,25€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    Ziel 3: SSC CR >= 50,0%
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment3" onchange="calcProvision()">
+                                    Ziel 3: SSC CR >= 50,00%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
                                 </label>
                             </div>
                             <div class="form-check">
+                                <abbr title="BSC Save: +0,75€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    Ziel 4: BSC CR >= 17,0%
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment4" onchange="calcProvision()">
+                                    Ziel 4: BSC CR >= 17,00%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
                                 </label>
                             </div>
                             <div class="form-check">
+                                <abbr title="Portale Save: +0,75€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    Ziel 5: Portale CR >= 64,0%
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment5" onchange="calcProvision()">
+                                    Ziel 5: Portale CR >= 64,00%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
                                 </label>
                             </div>
                             <div class="form-check">
+                                <abbr title="SSC Save: +2,00€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    Ziel 6: Ziel 1 + SSC CR >= 60,0%
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment6" onchange="calcProvision()">
+                                    Ziel 6: Ziel 1 + SSC CR >= 60,00%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
                                 </label>
                             </div>
                             <div class="form-check">
+                                <abbr title="BSC Save: +2,50€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    Ziel 7: Ziel 1 + BSC CR >= 25,0%
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment7" onchange="calcProvision()">
+                                    Ziel 7: Ziel 1 + BSC CR >= 25,00%                               
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
                                 </label>
                             </div>
                             <div class="form-check">
+                                <abbr title="Portale Save: +2,50€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    Ziel 8: Ziel 1 + Portale CR >= 80,0%
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment8" onchange="calcProvision()">
+                                    Ziel 8: Ziel 1 + Portale CR >= 80,00%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
-                                </label>
+                                </label>                                
                             </div>
                         </div>
                     </div>
@@ -451,8 +463,25 @@ function roundUp($calls,$quotient)
                         <div class="tracking_description">
                             Berücksichtigt werden die im Tool hinterlegten Werte des laufenden Monats und nicht die tatsächlich bestätigten Geschäftsvorfälle.
                         </div>
-                        <div id="provisionSum" style="text-align: center; font-size: 2em;">
+                        <div id="provisionSum" style="text-align: center; font-size: 2em; margin-top: 30px; margin-bottom:30px;">
                             0,00€
+                        </div>
+                        <div style="width:max-content;margin:auto;">
+                            <div style="text-align: center">Vergütung je Save</div>
+                            <div style="display: flex">
+                                <div style="display:flex; margin:0 20px">
+                                    <div>SSC:</div>
+                                    <div style="margin-left:5px" id="sscSaveValue">0,00 €</div>
+                                </div>
+                                <div style="display:flex; margin:0 20px">
+                                    <div>BSC:</div>
+                                    <div style="margin-left:5px" id="bscSaveValue">0,00 €</div>
+                                </div>
+                                <div style="display:flex; margin:0 20px">
+                                    <div>Portale:</div>
+                                    <div style="margin-left:5px" id="portaleSaveValue">0,00 €</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -517,7 +546,6 @@ function roundUp($calls,$quotient)
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script> -->
-
 
 <script>
     function tracking_input(){
@@ -611,47 +639,145 @@ function roundUp($calls,$quotient)
 </script>
 
 <script>
-    function calcProvision(){
-        var sscCalls = document.getElementById('sscCalls').innerText
-        var sscSaves = document.getElementById('sscSaves').innerText
-        var sscCr = document.getElementById('sscCr').innerText
-        var bscCalls = document.getElementById('bscCalls').innerText
-        var bscSaves = document.getElementById('bscSaves').innerText
-        var bscCr = document.getElementById('bscCr').innerText
-        var portaleCalls = document.getElementById('portaleCalls').innerText
-        var portaleSaves = document.getElementById('portaleSaves').innerText
-        var portaleCr = document.getElementById('portaleCr').innerText
-        var careCoinShould = document.getElementById('careCoinShould').innerText
-        var careCoinIs = document.getElementById('careCoinIs').innerText
+    var sscCalls = document.getElementById('sscCalls').innerText
+    var sscSaves = document.getElementById('sscSaves').innerText
+    var sscCr = document.getElementById('sscCr').innerText
+    var bscCalls = document.getElementById('bscCalls').innerText
+    var bscSaves = document.getElementById('bscSaves').innerText
+    var bscCr = document.getElementById('bscCr').innerText
+    var portaleCalls = document.getElementById('portaleCalls').innerText
+    var portaleSaves = document.getElementById('portaleSaves').innerText
+    var portaleCr = document.getElementById('portaleCr').innerText
+    var optinCr = document.getElementById('optinCr').innerText
+    var careCoinShould = document.getElementById('careCoinShould').innerText
+    var careCoinIs = document.getElementById('careCoinIs').innerText
 
-        var sscSaveSum = 0;
-        var bscSaveSum = 0;
-        var portaleSaveSum = 0;
+    $(document).ready(function() {
+        checkAttainment();
+        calcProvision();
+    });
+
+    function checkAttainment(){
+        //Attainment 1
+        if(careCoinIs >= careCoinShould){
+            document.getElementById('attainment1').checked = true;
+        } else {
+            document.getElementById('attainment1').checked = false;
+        }
+
+        //Attainment 2
+        if(optinCr >= 15){
+            document.getElementById('attainment2').checked = true;
+        } else {
+            document.getElementById('attainment2').checked = false;
+        }
+
+        //Attainment 3
+        if(sscCr >= 50){
+            document.getElementById('attainment3').checked = true;
+        } else {
+            document.getElementById('attainment3').checked = false;
+        }
+
+        //Attainment 4
+        if(bscCr >= 17){
+            document.getElementById('attainment4').checked = true;
+        } else {
+            document.getElementById('attainment4').checked = false;
+        }
+
+        //Attainment 5
+        if(portaleCr >= 64){
+            document.getElementById('attainment5').checked = true;
+        } else {
+            document.getElementById('attainment5').checked = false;
+        }
+
+        //Attainment 6
+        if(careCoinIs >= careCoinShould && sscCr >= 60){
+            document.getElementById('attainment6').checked = true;
+        } else {
+            document.getElementById('attainment6').checked = false;
+        }
+
+        //Attainment 7
+        if(careCoinIs >= careCoinShould && bscCr >= 25){
+            document.getElementById('attainment7').checked = true;
+        } else {
+            document.getElementById('attainment7').checked = false;
+        }
+
+        //Attainment 8
+        if(careCoinIs >= careCoinShould && portaleCr >= 80){
+            document.getElementById('attainment8').checked = true;
+        } else {
+            document.getElementById('attainment8').checked = false;
+        }
+    }
+
+
+    function calcProvision(){
+        var sscSaveSum = 0.00;
+        var bscSaveSum = 0.00;
+        var portaleSaveSum = 0.00;
 
         var provisionSum = document.getElementById('provisionSum').innerText
 
-        //Ziel 1
-        if(careCoinIs >= careCoinShould){
-
+        //Attainment 1
+        if(document.getElementById('attainment1').checked == true){
+            sscSaveSum += 1.25;
+            bscSaveSum += 1.25;
+            portaleSaveSum += 1.25;
         }
 
+        //Attainment 2
+        if(document.getElementById('attainment2').checked == true){
+            sscSaveSum += 0.50;
+            bscSaveSum += 0.50;
+            portaleSaveSum += 0.50;
+        }
 
+        //Attainment 3
+        if(document.getElementById('attainment3').checked == true){
+            sscSaveSum += 1.25;
+        }
 
+        //Attainment 4
+        if(document.getElementById('attainment4').checked == true){
+            bscSaveSum += 0.75;
+        }
 
+        //Attainment 5
+        if(document.getElementById('attainment5').checked == true){
+            portaleSaveSum += 0.75;
+        }
 
-        console.log(sscCalls);
-        console.log(sscSaves);
-        console.log(sscCr);
+        //Attainment 6
+        if(document.getElementById('attainment6').checked == true){
+            sscSaveSum += 2.00;
+        }
 
-        provisionSum = sscSaves * 5;
+        //Attainment 7
+        if(document.getElementById('attainment7').checked == true){
+            bscSaveSum += 2.50;
+        }
 
+        //Attainment 8
+        if(document.getElementById('attainment8').checked == true){
+            portaleSaveSum += 2.50;
+        }
 
+        provisionSum = (sscSaves * sscSaveSum) + (bscSaves * bscSaveSum) + (portaleSaves * portaleSaveSum);
 
-
-
-        document.getElementById('provisionSum').innerText = provisionSum;
+        document.getElementById('provisionSum').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(provisionSum);
+        document.getElementById('sscSaveValue').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(sscSaveSum);
+        document.getElementById('bscSaveValue').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(bscSaveSum);
+        document.getElementById('portaleSaveValue').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(portaleSaveSum);
     }
 
+</script>
+<script>
+    
 </script>
 
 
