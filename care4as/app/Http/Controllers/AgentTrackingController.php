@@ -33,14 +33,17 @@ class AgentTrackingController extends Controller
     public function userIndex()
     {
 
-      $history = TrackEvent::where('created_by', Auth()->id());
+      // $monthSP = TrackEvent::where('created_by',Auth()->id())->get();
+      $userdata = DB::connection('mysqlkdw')->table('MA')->where('ds_id',Auth()->user()->ds_id)->first();
 
+      $monthSP = Auth()->user()->load('TrackingOverall')->TrackingOverall;
+      $trackcalls = Auth()->user()->load('TrackingCallsToday')->TrackingCallsToday;
+      $trackcallsM = Auth()->user()->load('TrackingCallsMonth')->TrackingCallsMonth;
 
       $history = Auth()->user()->load('TrackingToday')->TrackingToday;
-      $trackcalls = Auth()->user()->load('TrackingCallsToday')->TrackingCallsToday;
-
-      // dd('test');
-      return view('trackingMobile', compact('history','trackcalls'));
+      // $history = $monthSP->where('created_at', Carbon::today());
+      // dd($userdata);
+      return view('trackingMobile', compact('history','trackcalls','monthSP','userdata','trackcallsM'));
     }
     /**
      * Store a newly created resource in storage.
@@ -95,7 +98,7 @@ class AgentTrackingController extends Controller
       ->orderBy('created_at','DESC')
       ->get();
 
-      $users = User::with('TrackingToday')
+      $users = User::with('TrackingToday','TrackingCallsToday')
       ->where('status', 1)
       ->where('project','1und1 Retention')
       ->get();
@@ -108,7 +111,7 @@ class AgentTrackingController extends Controller
       }
       // $trackcalls = TrackCalls::all();
 
-      //dd($users);
+      // dd($users, $users[34]);
       return view('trackingMobileAdmin', compact('history', 'users'));
     }
     public function trackCall($type, $updown)

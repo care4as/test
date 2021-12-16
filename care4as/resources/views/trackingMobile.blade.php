@@ -56,7 +56,7 @@ function roundUp($calls,$quotient)
         font-size: 0.8em;
         text-align: center;
         color: #f96332;
-        border: 1px solid #f96332;
+        /* border: 1px solid #f96332; */
         max-width: 600px;
         margin: 10px auto auto auto;
         border-radius: 5px;
@@ -145,7 +145,7 @@ function roundUp($calls,$quotient)
         <div class="col-xl-6 col-lg-12">
             <div class="max-main-container">
                 <div class="tracking_title">
-                    Calls (Gesamt: {{$trackcalls->sum('calls')}})
+                    Calls (Gesamt: {{$allCallsD = $trackcalls->sum('calls')}})
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; margin: 10px; row-gap: 10px;" >
                     <div style="font-weight: bold;">Queue</div>
@@ -200,9 +200,9 @@ function roundUp($calls,$quotient)
                     <div style="font-weight: bold;">Bezeichnung</div>
                     <div style="text-align: center; font-weight: bold;">Wert</div>
                     <div>RLZ+24 Anteil</div>
-                    <div style="text-align: center"><i class="fas fa-tools"></i></div>
+                    <div style="text-align: center">{{roundUP(($allSavesD = $sscSaves + $bscSaves + $portaleSaves),$rlzP = $history->where('event_category','Save')->where('runtime', 1)->count())}}%</i></div>
                     <div>OptIn Quote</div>
-                    <div style="text-align: center"><i class="fas fa-tools"></i></div>
+                    <div style="text-align: center">{{roundUp($allCallsD,$history->where('optin',1)->count())}}%</i></div>
                 </div>
             </div>
         </div>
@@ -216,10 +216,9 @@ function roundUp($calls,$quotient)
                     </div>
                     <div class="tracking_container">
                         <div class="tracking_description">Vertragsnummer</div>
-                        <input type="text" class="form-control" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
+                        <input type="text" class="form-control" id="contract_number" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
                         <div class="tracking_errormessage" id="contract_number_errormessage" style="display: none;">
-                            <div style="margin: auto; padding: 0 5px;"><i class="far fa-times-circle"></i></div>
-                            <div >Fehlerhafter Wert: Bitte trage eine gültige Vertragsnummer ohne Buchstaben, Leer- oder Sonderzeichen ein.</div>
+                            <div style="margin: auto; padding: 0 5px;"><i class="far fa-times-circle"></i><small>Bitte trage eine gültige Vertragsnummer ohne Buchstaben, Leer- oder Sonderzeichen ein</small></div>
                         </div>
                     </div>
                     <div class="tracking_container">
@@ -320,44 +319,61 @@ function roundUp($calls,$quotient)
                             <div style="font-weight: bold;">Saves</div>
                             <div style="font-weight: bold;">CR</div>
                             <div style="text-align: left;">SSC</div>
-                            <div id="sscCalls">54</div>
-                            <div id="sscSaves">32</div>
+                            <div id="sscCalls">{{$sscCallsM = $trackcallsM->where('category',1)->sum('calls')}}</div>
+                            <div id="sscSaves">{{$sscSavesM = $monthSP->where("product_category","SSC")->where("event_category","Save")->count()}}</div>
                             <div style="display:flex">
-                                <div id="sscCr">59.23</div>
+                                <div id="sscCr">{{roundUp($sscCallsM,$sscSavesM)}}</div>
                                 <div>%</div>
                             </div>
                             <div style="text-align: left;">BSC</div>
-                            <div id="bscCalls">17</div>
-                            <div id="bscSaves">3</div>
+                            <div id="bscCalls">{{$bscCallsM = $trackcallsM->where('category',2)->sum('calls')}}</div>
+                            <div id="bscSaves">{{$bscSavesM = $monthSP->where("product_category","BSC")->where("event_category","Save")->count()}}</div>
                             <div style="display:flex">
-                                <div id="bscCr">59.23</div>
+                                <div id="bscCr">{{roundUp($bscCallsM,$bscSavesM)}}</div>
                                 <div>%</div>
                             </div>
                             <div style="text-align: left;">Portale</div>
-                            <div id="portaleCalls">29</div>
-                            <div id="portaleSaves">27</div>
+                            <div id="portaleCalls">{{$portalCallsM = $trackcallsM->where('category',3)->sum('calls')}}</div>
+                            <div id="portaleSaves">{{$portaleSavesM = $monthSP->where("product_category","Portale")->where("event_category","Save")->count()}}</div>
                             <div style="display:flex">
-                                <div id="portaleCr">80.23</div>
+                                <div id="portaleCr">{{roundUp($portalCallsM,$portaleSavesM)}}</div>
                                 <div>%</div>
                             </div>
                             <div style="text-align: left;">OptIn</div>
-                            <div id="optinCalls">29</div>
-                            <div id="optinSaves">27</div>
+                            <div id="optinCalls">{{$optinCalls = $trackcallsM->where('category','!=',4)->sum('calls')}}</div>
+                            <div id="optinSaves">{{$optin = $monthSP->where('optin',1)->count()}}</div>
                             <div style="display:flex">
-                                <div id="optinCr">59.23</div>
+                                <div id="optinCr">{{roundUp($optinCalls,$optin)}}</div>
                                 <div>%</div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
+                    @php
+                      $Allsaves = $sscSaves + $bscSaves + $portaleSaves;
+                    @endphp
                     <div id="month_carecoins">
                         <div style="display: grid; grid-template-columns: 1fr 1fr ; row-gap: 10px; text-align: center;" >
                             <div style="font-weight: bold; grid-column: 1 / span 2;">CareCoins</div>
                             <div style="text-align: left;">Soll</div>
-                            <div id="careCoinShould">5000</div>
+                              <div id="careCoinShould">
+
+                                @if($userdata)
+                                  @if($userdata->soll_h_day == 8) {{$CCTreshold = 5000}}
+                                    @elseif($userdata->soll_h_day == 7) {{$CCTreshold = 4375}}
+                                    @elseif($userdata->soll_h_day == 6) {{$CCTreshold = 3750}}
+                                    @elseif($userdata->soll_h_day == 5) {{$CCTreshold = 3125}}
+                                    @elseif($userdata->soll_h_day == 4) {{$CCTreshold = 2500}}
+                                    @elseif($userdata->soll_h_day == 3) {{$CCTreshold = 1875}}
+                                    @else Fehler Sollstunden KDW {{$CCTreshold = 0}}
+                                  @endif
+                                @else
+                                  keine Userdaten
+                                  {{$CCTreshold = 0}}
+                                @endif</div>
                             <div  style="text-align: left;">Ist</div>
-                            <div id="careCoinIs">8000</div>
+                            <div id="careCoinIs">{{$CCState = $Allsaves * 20}}</div>
                             <div style="text-align: left;">Differenz</div>
-                            <div id="careCoinDifference">3000</div>
+                            <div id="careCoinDifference">{{$CCTreshold - $CCState}} </div>
                         </div>
                     </div>
                 </div>
@@ -388,7 +404,7 @@ function roundUp($calls,$quotient)
                                 <abbr title="SSC Save: +0,50€&#013;BSC Save: +0,50€&#013;Portale Save: +0,50€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" value="" id="attainment2" onchange="calcProvision()">
-                                    Ziel 2: OptIn Quote >= 15,00%                                   
+                                    Ziel 2: OptIn Quote >= 15,00%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -438,7 +454,7 @@ function roundUp($calls,$quotient)
                                 <abbr title="BSC Save: +2,50€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" value="" id="attainment7" onchange="calcProvision()">
-                                    Ziel 7: Ziel 1 + BSC CR >= 25,00%                               
+                                    Ziel 7: Ziel 1 + BSC CR >= 25,00%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -452,7 +468,7 @@ function roundUp($calls,$quotient)
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
-                                </label>                                
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -569,14 +585,23 @@ function roundUp($calls,$quotient)
         var error_counter = 0;
 
 
+        let errorDiv = document.getElementById('contract_number_errormessage')
+        let contractnumber = $("#contract_number");
 
         if(contract_field == ''){
-            document.getElementById('contract_number_errormessage').style.display = 'none';
+            errorDiv.style.display = 'none';
+            contractnumber.css("border","1px solid #f96332")
             error_counter += 1;
         } else if (Math.floor(contract_field) == contract_field) {
-            document.getElementById('contract_number_errormessage').style.display = 'none';
+          contractnumber.css("border","1px solid #f96332")
+            errorDiv.style.display = 'none';
         } else {
-            document.getElementById('contract_number_errormessage').style.display = 'flex';
+
+
+            console.log(contractnumber)
+            // contractnumber.css('border-width', '0');
+            contractnumber.css("border","3px solid red")
+            errorDiv.style.display = 'flex';
             error_counter += 1;
         }
 
@@ -611,7 +636,9 @@ function roundUp($calls,$quotient)
         }
 
     }
+
 </script>
+
 <script>
     var trackingContainer = document.getElementById('tracking_container');
     var monthContainer = document.getElementById('month_container');
@@ -619,7 +646,7 @@ function roundUp($calls,$quotient)
 
     function updateShowContainer(){
         var selectedShowContainer = document.querySelector('input[name="show_container"]:checked')?.value;
-        console.log(selectedShowContainer);
+        // console.log(selectedShowContainer);
 
         if(selectedShowContainer == 'show_tracking_container'){
             trackingContainer.style.display = 'flex';
@@ -776,10 +803,4 @@ function roundUp($calls,$quotient)
     }
 
 </script>
-<script>
-    
-</script>
-
-
-
 @endsection

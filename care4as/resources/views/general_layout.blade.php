@@ -112,7 +112,7 @@
                 @if(in_array('1u1_db',Auth()->user()->getRights()))
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
                   <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
-                @endif                
+                @endif
               </ul>
             </li>
           @endif
@@ -603,9 +603,9 @@
   </div>
 </div>
 </div>
-<div class="" id="worktimeconsole">
+<!-- <div class="" id="worktimeconsole">
   <timetracker> </timetracker>
-</div>
+</div> -->
 </div>
 </div>
 

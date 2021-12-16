@@ -10,7 +10,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
 
     .form-control {
         color: black;
-        
+
     }
 
     table.dataTable tbody td,
@@ -75,7 +75,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
     .paginate_button:hover{
         border: none !important;
     }
-    
+
     .page-link:hover{
         border-color: #FA7A50;
     }
@@ -199,6 +199,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                         <thead>
                             <tr>
                                 <th>Bearbeiten</th>
+                                <th>Status ändern</th>
                                 <th>Name</th>
                                 <th>Nutzername</th>
                                 <th>Wochenstunden</th>
@@ -223,7 +224,22 @@ Mitarbeiterverwaltung: Mitarbeiterliste
                                 <td>
                                     <div style="display: flex;">
                                         <button type="button" data-toggle="modal" data-target="#modal{{$user['ds_id']}}" class="btn btn-primary btn-sm" style="margin: auto; padding-top: 0; padding-bottom: 0;"><i class="now-ui-icons business_badge"></i></button>
-                                    </div>
+                                      </div>
+                                </td>
+                                <td>
+                                    <div style="display: flex; justify-content: center;">
+                                      @if($user['status'] == 1)
+                                      <a href="{{route('user.changeStatus',['id' => $user['id'], 'status' => 0])}}">
+                                        <button type="button" class="btn btn-success btn-sm" href="" style="margin: auto; padding-top: 0; padding-bottom: 0;"><i class="fas fa-book-dead"></i></button>
+                                      </a>
+                                      @else
+                                      <a href="{{route('user.changeStatus',['id' => $user['id'], 'status' => 1])}}">
+                                        <button   type="button" class="btn btn-warning btn-sm"  style="margin: auto; padding-top: 0; padding-bottom: 0;"><i class="fas fa-book-dead"></i></button>
+                                      </a>
+
+                                      @endif
+                                      </div>
+
                                 </td>
                                 <td>{{$user['full_name']}}</td>
                                 <td>{{$user['name']}}</td>

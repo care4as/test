@@ -63,13 +63,19 @@ class Intermediate implements ShouldQueue
       $trackingidsMobile = $mobileSalesSata->pluck('agent_ds_id')->toArray();
       $trackingidsDSL = $dslSalesData->pluck('agent_ds_id')->toArray();
       $trackingids = array_merge($trackingidsMobile, $trackingidsDSL);
+
+
       $users = User::whereIn('kdw_tracking_id',$trackingids)
-      ->where('role','Agent')
+      ->where(function ($q) {
+          $q->where('role','Agent_Mobile')->orWhere('role', 'Agent_DSL');
+        })
       ->get();
 
-      dd($users);
+      // $usersDSL = User::whereIn('kdw_tracking_id',$trackingidsMobile)
+      // ->where('role','Agent_DSL')
+      // ->get();
 
-      // dd('test');
+      // dd($users);
 
       if(!$users->first())
       {
@@ -95,6 +101,7 @@ class Intermediate implements ShouldQueue
       {
         if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->kdw_tracking_id)->first())
         {
+          // dd($user);
           if($user->{'1u1_person_id'})
           {
               $insertarray[] = array(
@@ -118,6 +125,8 @@ class Intermediate implements ShouldQueue
 
             $user->salesdata = $dslSalesData->where('agent_ds_id', $user->kdw_tracking_id)->first();
 
+            // dd($user);
+
             if($user->{'1u1_person_id'})
             {
               $insertarray[] = array(
@@ -137,7 +146,7 @@ class Intermediate implements ShouldQueue
             }
           }
       }
-      // dd($users,$insertarray);
+      // dd($usersMob,$insertarray);
 
       if($users->first())
       {

@@ -167,7 +167,11 @@ class UserController extends Controller
     {
         //
     }
-
+    public function changeStatus($id,$status)
+    {
+      User::where('id',$id)->update(['status' => $status]);
+      return redirect()->back();
+    }
     /**
      * Update the specified resource in storage.
      *

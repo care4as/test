@@ -307,7 +307,7 @@ function roundUp($calls,$quotient)
                                                     })
                                                   }}
                                                   </td>
-                                                <td>{{roundUp($allCalls,$allSSCSaves_NBO)}}%</td>
+                                                <td>{{roundUp($allSSCCalls,$allSSCSaves_NBO)}}%</td>
                                                 <td style="border-right: 2px solid grey">{{roundUp($allSSCCalls,$allSSCSaves)}}%</td>
                                                 <td>
                                                   {{$allBSCCalls = $users->sum(function ($user) {
@@ -346,7 +346,7 @@ function roundUp($calls,$quotient)
                                                       return $user->TrackingToday->where('product_category','BSC')->where('event_category','Service')->count();
                                                     })
                                                   }}</td>
-                                                <td>{{roundUp($allCalls,$allBSCSaves_NBO)}}%</td>
+                                                <td>{{roundUp($allBSCCalls,$allBSCSaves_NBO)}}%</td>
                                                 <td style="border-right: 2px solid grey">{{roundUp($allBSCCalls,$allSSCSaves)}}%</td>
                                                 <td>
                                                   {{$allPortalCalls = $users->sum(function ($user) {
@@ -385,7 +385,7 @@ function roundUp($calls,$quotient)
                                                       return $user->TrackingToday->where('product_category','Portale')->where('event_category','Service')->count();
                                                     })
                                                   }}</td>
-                                                <td>{{roundUp($allCalls,$allPortalSaves_NBO)}}%</td>
+                                                <td>{{roundUp($allPortalCalls,$allPortalSaves_NBO)}}%</td>
                                                 <td style="border-right: 2px solid grey">{{roundUp($allPortalCalls,$allPortalSaves)}}%</td>
                                                 <td>
                                                   {{$allETCCalls = $users->sum(function ($user) {

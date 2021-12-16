@@ -13,13 +13,19 @@ use App\Http\Controllers\ControllingController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
+Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');//RECHT FEHLT
+Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
 
+Route::group(['middleware' => 'auth'], function () {
 //Um User anzulegen, wenn noch keine User vorhanden sind
   Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync');
 
-  Route::get('/', 'Auth\LoginController@loginview')->name('user.login');
+  Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');//RECHT FEHLT
 
-  Route::get('/login', 'Auth\LoginController@loginview')->name('user.login');
+
+
+
   Route::get('/messageOfTheDay', function()
   {
     return view('messageOfTheDay');
@@ -53,6 +59,8 @@ use App\Http\Controllers\ControllingController;
   Route::post('/user/getAht', 'UserController@getAHTbetweenDates');
   Route::get('/user/salesdataDates', 'UserController@getSalesperformanceBetweenDates');
   Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
+  Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:indexUser');
+
 
   Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:indexUser');
   Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:indexUser');
@@ -130,75 +138,75 @@ use App\Http\Controllers\ControllingController;
   Route::get('reports/SASStatus', 'ReportController@SASStatus')->name('reports.SASStatus')->middleware('hasRight:sendReports');
   Route::get('reports/OptinStatus', 'ReportController@OptinStatus')->name('reports.OptinStatus')->middleware('hasRight:sendReports');
   //endreport
-  Route::get('/retentiondetails/removeDuplicates', function(){
-    DB::statement(
-    '
-    DELETE FROM retention_details
-      WHERE id IN (
-        SELECT calc_id FROM (
-        SELECT MAX(id) AS calc_id
-        FROM retention_details
-        GROUP BY call_date, person_id
-        HAVING COUNT(id) > 1
-        ) temp)
-        '
-      );
-        // return 1;
-      return redirect()->back();
-  })->name('retentiondetails.removeDuplicates')->middleware('hasRight:importReports');
-
-  Route::get('/dailyagent/removeDuplicates', function(){
-
-    DB::disableQueryLog();
-    ini_set('memory_limit', '-1');
-    ini_set('max_execution_time', '0');
-
-    DB::statement(
-      '
-      DELETE t1 FROM dailyagent t1
-        INNER JOIN dailyagent t2
-        WHERE t1.id > t2.id
-        AND t1.start_time = t2.start_time
-        AND t1.agent_id = t2.agent_id
-        AND t1.status = t2.status
-    ');
-
-      return redirect()->back();
-  })->name('dailyagent.removeDuplicates')->middleware('hasRight:importReports');
-
-  Route::get('/hoursreport/removeDuplicates', function(){
-    DB::statement(
-    '
-    DELETE FROM hoursreport
-      WHERE id IN (
-        SELECT calc_id FROM (
-        SELECT MAX(id) AS calc_id
-        FROM hoursreport
-        GROUP BY name,date
-        HAVING COUNT(id) > 1
-        ) temp)
-        '
-      );
-        // return 1;
-      return redirect()->back();
-  })->name('hoursreport.removeDuplicates')->middleware('hasRight:importReports');
-
-  Route::get('/hoursreport/sync', function(){
-
-    $users = App\User::all();
-
-    foreach($users as $user)
-    {
-      $updates = DB::table('hoursreport')
-      ->where('name',$user->lastname.', '.$user->surname)
-      ->update(
-        [
-          'user_id' => $user->id,
-        ]);
-    }
-    return redirect()->route('reports.reportHours.view');
-
-  })->name('hoursreport.sync')->middleware('hasRight:importReports');
+  // Route::get('/retentiondetails/removeDuplicates', function(){
+  //   DB::statement(
+  //   '
+  //   DELETE FROM retention_details
+  //     WHERE id IN (
+  //       SELECT calc_id FROM (
+  //       SELECT MAX(id) AS calc_id
+  //       FROM retention_details
+  //       GROUP BY call_date, person_id
+  //       HAVING COUNT(id) > 1
+  //       ) temp)
+  //       '
+  //     );
+  //       // return 1;
+  //     return redirect()->back();
+  // })->name('retentiondetails.removeDuplicates')->middleware('hasRight:importReports');
+  //
+  // Route::get('/dailyagent/removeDuplicates', function(){
+  //
+  //   DB::disableQueryLog();
+  //   ini_set('memory_limit', '-1');
+  //   ini_set('max_execution_time', '0');
+  //
+  //   DB::statement(
+  //     '
+  //     DELETE t1 FROM dailyagent t1
+  //       INNER JOIN dailyagent t2
+  //       WHERE t1.id > t2.id
+  //       AND t1.start_time = t2.start_time
+  //       AND t1.agent_id = t2.agent_id
+  //       AND t1.status = t2.status
+  //   ');
+  //
+  //     return redirect()->back();
+  // })->name('dailyagent.removeDuplicates')->middleware('hasRight:importReports');
+  //
+  // Route::get('/hoursreport/removeDuplicates', function(){
+  //   DB::statement(
+  //   '
+  //   DELETE FROM hoursreport
+  //     WHERE id IN (
+  //       SELECT calc_id FROM (
+  //       SELECT MAX(id) AS calc_id
+  //       FROM hoursreport
+  //       GROUP BY name,date
+  //       HAVING COUNT(id) > 1
+  //       ) temp)
+  //       '
+  //     );
+  //       // return 1;
+  //     return redirect()->back();
+  // })->name('hoursreport.removeDuplicates')->middleware('hasRight:importReports');
+  //
+  // Route::get('/hoursreport/sync', function(){
+  //
+  //   $users = App\User::all();
+  //
+  //   foreach($users as $user)
+  //   {
+  //     $updates = DB::table('hoursreport')
+  //     ->where('name',$user->lastname.', '.$user->surname)
+  //     ->update(
+  //       [
+  //         'user_id' => $user->id,
+  //       ]);
+  //   }
+  //   return redirect()->route('reports.reportHours.view');
+  //
+  // })->name('hoursreport.sync')->middleware('hasRight:importReports');
 
   Route::view('/reports', 'reports')->name('reports.choose');
   //ssetracking
@@ -357,8 +365,7 @@ use App\Http\Controllers\ControllingController;
   Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');//RECHT FEHLT
   Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');//RECHT FEHLT
   //endoffers
-  Route::post('/login/post', 'Auth\LoginController@login')->name('user.login.post');//RECHT FEHLT
-  Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');//RECHT FEHLT
+
 
   Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');
   Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');
@@ -368,3 +375,4 @@ use App\Http\Controllers\ControllingController;
 
   Route::get('/test', 'AgentTrackingController@store')->name('test');
   Route::get('/test2', 'AgentTrackingController@AdminIndex')->name('test');
+});
