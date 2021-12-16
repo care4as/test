@@ -347,7 +347,7 @@ function roundUp($calls,$quotient)
                                                     })
                                                   }}</td>
                                                 <td>{{roundUp($allBSCCalls,$allBSCSaves_NBO)}}%</td>
-                                                <td style="border-right: 2px solid grey">{{roundUp($allBSCCalls,$allSSCSaves)}}%</td>
+                                                <td style="border-right: 2px solid grey">{{roundUp($allBSCCalls,$allBSCSaves)}}%</td>
                                                 <td>
                                                   {{$allPortalCalls = $users->sum(function ($user) {
                                                       return $user->TrackingCallsToday->where('category',3)->sum('calls');

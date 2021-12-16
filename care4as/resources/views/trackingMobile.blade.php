@@ -349,7 +349,7 @@ function roundUp($calls,$quotient)
                         </div>
                     </div>
                     @php
-                      $Allsaves = $sscSaves + $bscSaves + $portaleSaves;
+                      $Allsaves = $sscSavesM + $bscSavesM + $portaleSavesM;
                     @endphp
                     <div id="month_carecoins">
                         <div style="display: grid; grid-template-columns: 1fr 1fr ; row-gap: 10px; text-align: center;" >
