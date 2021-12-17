@@ -34,7 +34,21 @@ class AgentTrackingController extends Controller
     {
 
       // $monthSP = TrackEvent::where('created_by',Auth()->id())->get();
+      //get userdata from kdw tool
       $userdata = DB::connection('mysqlkdw')->table('MA')->where('ds_id',Auth()->user()->ds_id)->first();
+      //get vacation days within this month
+      $startOfMonth = new \Carbon\Carbon('first day of this month');
+
+
+      $userVacation = DB::connection('mysqlkdw')
+      ->table('chronology_work')
+      ->where('MA_id',Auth()->user()->ds_id)
+      ->where('state_id',2)
+      ->where('work_date','>', $startOfMonth)
+      ->sum('work_hours');
+
+
+      // dd($userVacation->sum('work_hours'));
 
       $monthSP = Auth()->user()->load('TrackingOverall')->TrackingOverall;
       $trackcalls = Auth()->user()->load('TrackingCallsToday')->TrackingCallsToday;
@@ -43,7 +57,7 @@ class AgentTrackingController extends Controller
       $history = Auth()->user()->load('TrackingToday')->TrackingToday;
       // $history = $monthSP->where('created_at', Carbon::today());
       // dd($userdata);
-      return view('trackingMobile', compact('history','trackcalls','monthSP','userdata','trackcallsM'));
+      return view('trackingMobile', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
     }
     /**
      * Store a newly created resource in storage.

@@ -152,10 +152,10 @@ function roundUp($calls,$quotient)
                         <div class="tab-content text-center">
                             <div class="tab-pane active" id="overview">
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
-                                    <table class="tracking-table">
+                                    <table class="tracking-table" id="AdminTrackingTable">
                                         <thead>
                                             <tr>
-                                                <th rowspan="3" style="border-right: 2px solid grey">Name</th>
+                                                <th rowspan="3" class="bg-dark text-white"style="border-right: 2px solid grey">Name</th>
                                                 <th colspan="3" style="border-right: 2px solid grey">Gesamt</th>
                                                 <th colspan="9" style="border-right: 2px solid grey">SSC</th>
                                                 <th colspan="9" style="border-right: 2px solid grey">BSC</th>
@@ -213,7 +213,7 @@ function roundUp($calls,$quotient)
                                         <tbody>
                                           <tr>
                                             @foreach($users as $user)
-                                            <td style="border-right: 2px solid grey">{{$user->name}}</td>
+                                            <td class="bg-dark text-white"style="border-right: 2px solid grey">{{$user->name}}</td>
                                             <td>{{$calls = $user->TrackingCallsToday->sum('calls')}}</td>
                                             <td>{{$cancels = $user->TrackingToday->where('event_category','Cancel')->count()}}</td>
                                             <td style="border-right: 2px solid grey">{{$user->TrackingToday->where('event_category','Service')->count()}}</td>
@@ -224,8 +224,8 @@ function roundUp($calls,$quotient)
                                             <td>{{$user->TrackingToday->where('product_category','SSC')->where('event_category','KüRü')->count()}}</td>
                                             <td>{{$user->TrackingToday->where('product_category','SSC')->where('event_category','Cancel')->count()}}</td>
                                             <td>{{$user->TrackingToday->where('product_category','SSC')->where('event_category','Service')->count()}}</td>
-                                            <td>{{roundUp($sscCalls,$sscSaves_NBO)}}</td>
-                                            <td style="border-right: 2px solid grey">{{roundUp($sscCalls,$sscSaves->count())}}</td>
+                                            <td>{{roundUp($sscCalls,$sscSaves_NBO)}}%</td>
+                                            <td style="border-right: 2px solid grey">{{roundUp($sscCalls,$sscSaves->count())}}%</td>
                                             <td>{{$bscCalls = $user->TrackingCallsToday->where('category',2)->sum('calls')}}</td>
                                             <td>@php $bscSaves = $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')@endphp {{ $bscSaves->count()}}</td>
                                             <td>{{$bscSaves_NBO = $bscSaves->where('backoffice',0)->count()}}</td>
@@ -233,7 +233,7 @@ function roundUp($calls,$quotient)
                                             <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','KüRü')->count()}}</td>
                                             <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','Cancel')->count()}}</td>
                                             <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','Service')->count()}}</td>
-                                            <td>{{roundUp($bscCalls,$bscSaves_NBO)}}</td>
+                                            <td>{{roundUp($bscCalls,$bscSaves_NBO)}}%</td>
                                             <td style="border-right: 2px solid grey">{{roundUp($bscCalls,$bscSaves->count())}}</td>
                                             <td>{{$portalCalls = $user->TrackingCallsToday->where('category',3)->sum('calls')}}</td>
                                             <td>@php $portalSaves = $user->TrackingToday->where('product_category','Portale')->where('event_category','Save')@endphp {{ $portalSaves->count()}}</td>
@@ -242,17 +242,17 @@ function roundUp($calls,$quotient)
                                             <td>{{$user->TrackingToday->where('product_category','Portale')->where('event_category','KüRü')->count()}}</td>
                                             <td>{{$user->TrackingToday->where('product_category','Portale')->where('event_category','Cancel')->count()}}</td>
                                             <td>{{$user->TrackingToday->where('product_category','Portale')->where('event_category','Service')->count()}}</td>
-                                            <td>{{roundUp($portalCalls,$portalSaves_NBO)}}</td>
+                                            <td>{{roundUp($portalCalls,$portalSaves_NBO)}}%</td>
                                             <td style="border-right: 2px solid grey">{{roundUp($portalCalls,$portalSaves->count())}}</td>
                                             <td>{{$sonstige = $user->TrackingCallsToday->where('category',4)->sum('calls')}}</td>
                                             <td>{{$optins = $user->TrackingToday->where('optin',1)->count()}}</td>
-                                            <td>{{roundUp($calls,$optins)}}</td>
+                                            <td>{{roundUp($calls,$optins)}}%</td>
                                           </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td style="border-right: 2px solid grey">Summe</td>
+                                                <td style="border-right: 2px solid grey" class="bg-dark text-white">Summe</td>
                                                 <td>{{$allCalls = $users->sum(function ($user) {
                                                       return $user->TrackingCallsToday->sum('calls');
                                                     })
@@ -561,8 +561,63 @@ function roundUp($calls,$quotient)
             @endsection
 
 @section('additional_js')
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
+<script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
+<script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
 
 <script type="text/javascript">
+
+let table = $('#AdminTrackingTable').DataTable({
+  select: true,
+  dom: 'Blfrtip',
+  lengthMenu: [
+      [-1, 3, 5, 10, 25, 50, 100],
+      ["alle", 3, 5, 10, 25, 50, 100]
+  ],
+  buttons: [
+          { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' },
+          { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' },
+          // 'excel',
+      ],
+    rowReorder: true,
+    colReorder: true,
+    scrollX: true,
+    scrollCollapse: true,
+    fixedColumns: {
+      leftColumns: 1,
+    }
+    })
+let table2 = $('#history-table').DataTable({
+  select: true,
+  dom: 'Blfrtip',
+  lengthMenu: [
+      [50, 100],
+      [50, 100]
+  ],
+  order: [ 0, "desc" ],
+  buttons: [
+          { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' },
+          { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' },
+          // 'excel',
+      ],
+    // scrollX: true,
+
+    // fixedColumns: {
+    //   leftColumns: 2,
+    // }
+    })
+
 function loadModalWithData(id) {
 
   var host = window.location.host;
@@ -642,21 +697,6 @@ function ModalClose() {
   $('#EditModal').toggle()
 }
 </script>
-
-<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
-<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
-<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
-<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
-<script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
-<script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-
 
 
 @endsection
