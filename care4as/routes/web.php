@@ -61,7 +61,6 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
   Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:indexUser');
 
-
   Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:indexUser');
   Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:indexUser');
   //endusers
@@ -336,6 +335,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post');
     Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track');
     Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin');
+    Route::get('/mobile/tracking/admin/json', 'AgentTrackingController@TrackingJson')->name('mobile.tracking.admin.json');
     Route::get('/mobile/tracking/delete/{id}', 'AgentTrackingController@destroy')->name('tracking.delete.admin');
     Route::get('/mobile/tracking/json/{id}', 'AgentTrackingController@show')->name('tracking.show.admin');
 

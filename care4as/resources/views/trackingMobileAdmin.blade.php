@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 @section('additional_css')
-
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @php
 function roundUp($calls,$quotient)
 {
@@ -151,6 +151,13 @@ function roundUp($calls,$quotient)
                     <div class="card-body ">
                         <div class="tab-content text-center">
                             <div class="tab-pane active" id="overview">
+                                <div class="row m-0 mt-2 w-100 h-100 justify-content-center align-items-center">
+                                Von/bis:
+                                <div id="reportrange" style="background: #fff;color:black; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%">
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    <span></span> <i class="fa fa-caret-down"></i>
+                                </div>
+                              </div>
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
                                     <table class="tracking-table" id="AdminTrackingTable">
                                         <thead>
@@ -574,9 +581,15 @@ function roundUp($calls,$quotient)
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 
 <script type="text/javascript">
+
+var start = moment().subtract(1, 'days');
+var end = moment();
+var host = window.location.host;
 
 let table = $('#AdminTrackingTable').DataTable({
   select: true,
@@ -589,6 +602,9 @@ let table = $('#AdminTrackingTable').DataTable({
           { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' },
           { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' },
           // 'excel',
+      ],
+      columnDefs: [
+      { className: "bg-dark text-white", targets: 0 },
       ],
     rowReorder: true,
     colReorder: true,
@@ -617,6 +633,56 @@ let table2 = $('#history-table').DataTable({
     //   leftColumns: 2,
     // }
     })
+  function cb(start, end) {
+
+      $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+      let params = new URLSearchParams();
+
+      params.append("start", start);
+      params.append("end" , end);
+
+      axios.get('http://'+host+'/care4as/care4as/public/mobile/tracking/admin/json',
+      {
+        params: {
+          start: start.format('Y-MM-DD'),
+          end: end.format('Y-MM-DD'),
+        }
+        })
+      .then(response => {
+
+        table.clear();
+        table.rows.add(response.data.trackingdata);
+        table.footer().html(response.data.footer);
+        table.draw();
+        // console.log(response.data)
+      })
+      .catch(function (err) {
+
+        // $('#loaderDiv').css('display','none')
+        console.log(err);
+        $('#failContent').html('Fehler: '+ err.response.data.message)
+        $('#failFile').html('Datei: '+ err.response.data.file)
+        $('#failLine').html('Line: '+ err.response.data.line)
+        $('#failModal').modal('show')
+        // $('#loaderDiv').css('display','none');
+      })
+
+
+    };
+
+    $('#reportrange').daterangepicker({
+      startDate: start,
+      endDate: end,
+      ranges: {
+         'Today': [moment(), moment()],
+         'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+         'This Month': [moment().startOf('month'), moment().endOf('month')],
+         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      }
+    }, cb);
 
 function loadModalWithData(id) {
 

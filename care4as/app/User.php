@@ -51,6 +51,12 @@ class User extends Authenticatable
       return $this->hasMany('\App\TrackEvent','created_by')->where('created_at','>=',$date);
       // return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at', DB::raw('CURDATE()'));
     }
+    public function TrackingAll()
+    {
+      // $month = Carbon::now()->month;
+      return $this->hasMany('\App\TrackEvent','created_by');
+      // return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at', DB::raw('CURDATE()'));
+    }
     public function TrackingCallsToday()
     {
       return $this->hasMany('\App\TrackCalls')->whereDate('created_at', DB::raw('CURDATE()'));
@@ -59,6 +65,10 @@ class User extends Authenticatable
     {
       $date = new \Carbon\Carbon('first day of this month');
       return $this->hasMany('\App\TrackCalls')->where('created_at','>=',$date);
+    }
+    public function TrackingAllCalls()
+    {
+      return $this->hasMany('\App\TrackCalls');
     }
     public function getSalesDataInTimespan($date1,$date2)
     {

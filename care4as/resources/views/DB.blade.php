@@ -653,8 +653,10 @@
                           <label for="team">Team:</label>
                             <select class="form-control" name="team" id="team" style="width:218px;">
                             <option value="" selected>Wähle das Team</option>
-                            <option value="Liesa" >Liesa</option>
-                            <option value="XYZ" >XYZ</option>
+                            @foreach(DB::table('users')->where('status',1)->groupBy('team')->pluck('team') as $team)
+                            <option value="{{$team}}" selected>{{$team}}</option>
+                            @endforeach
+
                           </select>
                         </div>
                         <div class="col-12 p-0">
