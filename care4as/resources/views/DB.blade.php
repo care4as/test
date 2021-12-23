@@ -947,7 +947,7 @@ Deckungsbeitrag
 
               $('#DataComplete').prop('checked', false)
               table.columns().visible( false );
-              table.columns([9,20]).visible( true );
+              table.columns([1,9,20]).visible( true );
             }
             else {
               table.columns([9,20]).visible( true );
