@@ -1,75 +1,51 @@
 @extends('general_layout')
 
 @section('additional_css')
-
 <style media="screen">
 
+
+
+.box {
+  position: relative;
+  height:  400px;
+  width: 380px;
+  display: block;
+  background: linear-gradient(0deg, black, #444444);
+}
+
+.glowing::before{
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  background: linear-gradient(45deg, #e8f74d, #ff6600d9, #00ff66, #13ff13, #ad27ad, #bd2681, #6512b9, #ff3300de, #5aabde);
+  background-size: 400%;
+  width: calc(100% + 5px);
+  height: calc(100% + 5px);
+  z-index: -1;
+  animation: glower 20s linear infinite;
+}
+
+@keyframes glower {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 400% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
 </style>
-
 @endsection
+
 @section('content')
-<div class="container-fluid p-2 f2" id="app">
-  <div class="row" style="">
-    @for($i=1; $i <= 1; $i++)
-    <div class="col-12 m-2">
-      @include('templates.Agentcard')
-    </div>
-
-    @endfor
+<div class="row" style="justify-content: center;align-items: center;">
+  <div class="box glowing">
+      hallo
   </div>
-
 </div>
-@endsection
-
-@section('additional_js')
-<script type="text/javascript">
-
-const ctx = document.getElementById('myChart');
-const myChart = new Chart(ctx, {
-  type: 'bar',
-
-  data: {
-      datasets: [{
-       type: 'line',
-       label: 'CR',
-       data: [1,2,3,4,5,6,7,8,9,10],
-       fill: false,
-       backgroundColor: 'rgba(41, 241, 195, 1)',
-       borderColor: 'rgba(41, 241, 195, 1)',
-       borderWidth: 1
-   },
-   {
-      label: 'Calls',
-      type: 'bar',
-      yAxisID: 'B',
-      data: [1,2,3,4,5,6,7,8,9,10],
-      backgroundColor: 'rgba(255, 99, 132)',
-      borderWidth: 1
-}],
-labels:[1,2,3,4,5,6,7,8,9,10],
- },
- options: {
-     scales: {
-       yAxes: [{
-         id: 'A',
-         type:'linear',
-         position: 'left',
-         ticks: {
-           beginAtZero: true,
-           min: 0,
-           max: 100,
-       }
-     },
-     {
-       id: 'B',
-       type:'linear',
-       position: 'right',
-       ticks: {
-         max: 10,
-         min: 0,
-       }
-     }]}
-   }
-});
-</script>
 @endsection

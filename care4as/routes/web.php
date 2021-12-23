@@ -373,6 +373,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersbyDep')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
   Route::get('/user/getUsersByIM/{department}', 'UserController@getUsersIntermediate')->name('user.byIM')->middleware('hasRight:dashboardAdmin');
 
-  Route::get('/test', 'AgentTrackingController@store')->name('test');
+  Route::get('/test', function(){
+    return view('test');
+  })->name('test');
   Route::get('/test2', 'AgentTrackingController@AdminIndex')->name('test');
 });

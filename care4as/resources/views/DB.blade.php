@@ -1,5 +1,7 @@
 @extends('general_layout')
-
+@section('pagetitle')
+Deckungsbeitrag
+@endsection
 @section('additional_css')
 
 <style media="screen">
@@ -77,6 +79,7 @@
     width: 65px;
     top: 40%;
     border-radius: 	50%;
+    z-index: 210;
   }
   .Lexika
   {
@@ -89,7 +92,39 @@
     display: none;
 
   }
-
+  .button1{
+    height: 5.5em;
+    width: 9.5em;
+    border-radius: 25px;
+    background: rgba(245, 208, 32, 0.5);
+    background-image: linear-gradient(315deg, #f5d020 0%, #f53803 74%);
+  }
+  .label
+  {
+    height: 5.5em;
+    width: 5.5em;
+    border-radius: 25px;
+    background: rgba(245, 208, 32, 0.5);
+    background-image: linear-gradient(315deg, #f5d020 0%, #f53803 74%);
+    opacity: 0.5;
+    font-size: 1.19em;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+  }
+  input[type="checkbox"]
+  {
+    display:none;
+  }
+  input[type="checkbox"]:checked+label
+  {
+    background-color: #f5d020;
+    background-image: linear-gradient(315deg, #f5d020 0%, #f53803 74%);
+    opacity: 1;
+  }
+  .label > input {
+    display: none;
+  }
 </style>
 
 @endsection
@@ -318,21 +353,86 @@
 
 <div class="max-main-container">
   <div class="max-panel-content">
-  <div class="row m-1 justify-content-center align-self-center m-1">
-      <h4 class="p-1">DB1 Alternative</h4>
-  </div>
-  <div class="row m-3 mt-2" id="filtermenu">
-    <div class="col-12 d-flex justify-content-start align-self-center">
-      <a class="btn btn-outline-primary" data-toggle="modal" data-target="#modalFilter" role="button" aria-expanded="false" style="padding-top: 0; padding-bottom: 0;">
-        <h5>Filtermenü &#128269;</h5>
-      </a>
+    <div class="row m-3 mt-2" id="filtermenu">
+      <div class="col-1 h-100">
+        <div class="row h-100 center_items">
+            <button class="button1" data-toggle="modal" data-target="#modalFilter" role="button" aria-expanded="false" style="">
+              <h5>Filtermenü &#128269;</h5>
+            </button>
+        </div>
+        <div class="row mt-2">
+          <button class="button1" data-toggle="modal" data-target="#modalData" role="button" aria-expanded="false"  style="">
+              <h5>Datenstand</h5>
+          </button>
+        </div>
+      </div>
+      <div class="col-2 offset-6">
+        <div class="row h-100 center_items mr-2">
+          <p style="font-size: 20px; font-weight: bold;">  Wähle die Daten:</p>
+
+        </div>
+      </div>
+      <div class="col-1 ">
+        <div class="row">
+          <input class="form-check-input" type="checkbox" value="" id="DataComplete">
+          <label class="label" for="DataComplete">
+            <div class="center_items w-100 h-100">
+            Alle Daten
+            </div>
+            </label>
+        </div>
+        <div class="row">
+
+              <input class="form-check-input" type="checkbox" value="" id="DataRD" >
+              <label class="label" for="DataRD">
+                <div class="center_items w-100 h-100">
+                  Retention Details
+                </div>
+              </label>
+          </div>
+      </div>
+      <div class="col-1">
+        <div class="row">
+          <input class="form-check-input" type="checkbox" value="" id="DataRev">
+          <label class="label" for="DataRev">
+          <div class="center_items w-100 h-100">
+          Umsatz
+          </div>
+          </label>
+        </div>
+        <div class="row">
+          <input class="form-check-input" type="checkbox" value="" id="DataGeVo">
+          <label class="label" for="DataGeVo">
+          <div class="center_items w-100 h-100">
+          GeVo Daten
+          </div>
+          </label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="row">
+          <input class="form-check-input" type="checkbox" value="" id="DataDA">
+          <label class="label" for="DataDA">
+            <div class="center_items w-100 h-100">
+            DailyAgent
+            </div>
+          </label>
+        </div>
+        <div class="row">
+
+            <input class="form-check-input" type="checkbox" value="" id="DataSick">
+            <label class="label" for="DataSick">
+              <div class="center_items w-100 h-100">
+                Krankheit
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-12 d-flex justify-content-start align-self-center">
-      <a class="btn btn-outline-primary" data-toggle="modal" data-target="#modalData" role="button" aria-expanded="false"  style="padding-top: 0; padding-bottom: 0;">
-        <h5>Datenstand</h5>
-      </a>
-    </div>
   </div>
+  <div class="max-main-container">
+    <div class="max-panel-content">
   <div class="row m-2 mt-4 justify-content-center align-self-center" >
     <div class="col-12">
     <div class="col p-1">
@@ -347,25 +447,6 @@
         }
       @endphp
 
-      <div class="auswahl">
-        @if(in_array('statistics',Auth()->user()->getRights()))
-          <div class="subauswahl aktiv" id="allData">
-            Alle Daten
-          </div>
-          <div class="subauswahl" id="teamleiterview" >
-            Teamleiterdaten
-          </div>
-          <div class="subauswahl"  id="crview" >
-            CR Daten
-          </div>
-          <div class="subauswahl"  id="timesview">
-            Zeit Daten
-          </div>
-        @endif
-        <div class="subauswahl @if((in_array('statistics',Auth()->user()->getRights()))) aktiv @endif" id="performanceShort" >
-          KPI´s übersichtlich
-        </div>
-      </div>
       <table class="max-table" id="tableoverview">
         <thead class="thead">
           <tr class="">
@@ -575,13 +656,11 @@
                                       <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
                                       <td id="" >Daten werden geladen</td>
                                       <td id=""></td>
-
                                   </tr>
                                   <tr id="dailyagentData" style="display:none;">
                                       <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
                                       <td id="dailyAgentStart">1</td>
                                       <td id="dailyAgentEnd">1</td>
-
                                   </tr>
                                   <tr class="loadingerOptin">
                                       <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
@@ -615,7 +694,6 @@
                           </table>
                       </div>
                   </div>
-
                 </div>
                 <hr>
               </div>
@@ -639,7 +717,6 @@
             <div class="modal-body" style="font-size: 14px;">
               <div class="row m-3 mt-4" id="dataState">
                 <div class="col-12 text-left" >
-
                       <div class="row m-0">
                         <div class="col-12 p-0" style="border-right: 2px solid black;">
                           <label for="department">Abteilung:</label>
@@ -656,7 +733,6 @@
                             @foreach(DB::table('users')->where('status',1)->groupBy('team')->pluck('team') as $team)
                             <option value="{{$team}}" selected>{{$team}}</option>
                             @endforeach
-
                           </select>
                         </div>
                         <div class="col-12 p-0">
@@ -703,16 +779,13 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
+    $('#DataComplete').prop( "checked",true )
+
     loadData('dailyAgentDataStatus','#dailyagentData','.loadingerDA')
-
     loadData('SASStatus','#SASDataStatus','.loadingerSAS')
-
     loadData('OptinStatus','#OptinDataStatus','.loadingerOptin')
-
     loadData('HRDataStatus','#HoursreportData', '.loadingerHR')
-
     loadData('RDDataStatus','#RDDataStatus', '.loadingerRD')
-
     let table = $('#tableoverview').DataTable({
 
       "footerCallback": function ( row, data, start, end, display ) {
@@ -786,8 +859,8 @@
               ['10', '25', '50 ', '100']
           ],
           buttons: [
-                  { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' },
-                  { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' },
+                  { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' , footer:true },
+                  { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>', footer:true },
                   // 'excel',
               ],
         rowReorder: true,
@@ -814,6 +887,130 @@
         });
 
         let rights = {!! json_encode(Auth()->user()->getRights()) !!}
+        $('#DataComplete').change(function(){
+          if ( $( this ).is( ":checked" ) )
+          {
+              $('#DataRD').prop('checked', false)
+              $('#DataGeVo').prop('checked', false)
+              $('#DataDA').prop('checked', false)
+              table.columns().visible( true );
+          }
+          else {
+            table.columns().visible( false );
+          }
+        })
+
+        $('#DataRD').change(function(){
+          if ( $( this ).is( ":checked" ) )
+          {
+              if($('#DataComplete').is( ":checked" ))
+              {
+
+                $('#DataComplete').prop('checked', false)
+                table.columns().visible( false );
+                table.columns([1,8,10,12,13,14,17,19,21,22,23]).visible( true );
+              }
+              else {
+                table.columns([8,10,12,13,14,17,19,21,22,23]).visible( true );
+              }
+
+          }
+          else {
+            table.columns([8,10,12,13,14,17,19,21,22,23]).visible( false );
+          }
+        })
+
+        $('#DataGeVo').change(function(){
+          if ( $( this ).is( ":checked" ) )
+          {
+            if($('#DataComplete').is( ":checked" ))
+            {
+
+              $('#DataComplete').prop('checked', false)
+              table.columns().visible( false );
+              table.columns([9,20]).visible( true );
+            }
+            else {
+              table.columns([9,20]).visible( true );
+            }
+
+          }
+          else {
+            table.columns([9,20]).visible( false );
+          }
+        })
+        $('#DataDA').change(function(){
+          if ( $( this ).is( ":checked" ) )
+          {
+            if($('#DataComplete').is( ":checked" ))
+            {
+
+              $('#DataComplete').prop('checked', false)
+              table.columns().visible( false );
+              table.columns([1,2,3,4,5,6,7]).visible( true );
+            }
+            else {
+              table.columns([2,3,4,5,6,7]).visible( true );
+            }
+                }
+          else {
+            table.columns([2,3,4,5,6,7]).visible( false );
+          }
+        })
+        $('#DataSick').change(function(){
+          if ( $( this ).is( ":checked" ) )
+          {
+            if($('#DataComplete').is( ":checked" ))
+            {
+
+              $('#DataComplete').prop('checked', false)
+              table.columns().visible( false );
+              table.columns([1,29,30]).visible( true );
+            }
+            else {
+              table.columns([29,30]).visible( true );
+            }
+                }
+          else {
+            table.columns([29,30]).visible( false );
+          }
+        })
+        $('#DataPS').change(function(){
+          if ( $( this ).is( ":checked" ) )
+          {
+            if($('#DataComplete').is( ":checked" ))
+            {
+
+              $('#DataComplete').prop('checked', false)
+              table.columns().visible( false );
+              table.columns([1,24,25]).visible( true );
+            }
+            else {
+              table.columns([24,25]).visible( true );
+            }
+                }
+          else {
+            table.columns([24,25]).visible( false );
+          }
+        })
+        $('#DataRev').change(function(){
+          if ( $( this ).is( ":checked" ) )
+          {
+            if($('#DataComplete').is( ":checked" ))
+            {
+
+              $('#DataComplete').prop('checked', false)
+              table.columns().visible( false );
+              table.columns([1,25,26,27]).visible( true );
+            }
+            else {
+              table.columns([24,25]).visible( true );
+            }
+                }
+          else {
+            table.columns([24,25]).visible( false );
+          }
+        })
 
         if (document.querySelector('.subauswahl')) {
 
@@ -868,108 +1065,111 @@
             // table.order [[17, 'desc']]
             // table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]);
           }
-          document.querySelectorAll('.subauswahl').forEach((elem) => {
-            elem.addEventListener("click", function(event) {
-              $('.subauswahl').each(function(){
-                  this.className=''
-                  this.className='subauswahl'
-              });
-              event.target.className = 'subauswahl aktiv';
 
-              switch(event.target.id) {
-                case 'allData':
-                    table.colReorder.reset();
-                    table.columns().visible( false );
-                    table.columns().visible( true );
-                    // table.draw()
-                  break;
-                case 'teamleiterview':
-                  // table.colReorder.reset();
-                  table.columns().visible( false );
-                  table.columns([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,27,31]).visible( true );
-                  $('.DTFC_LeftBodyWrapper').hide()
-                  $('.DTFC_RightWrapper').hide()
-                  $('#tableoverview').css('margin','0px');
-                  table.colReorder.order([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,17,31]);
-                  // table.colReorder.order([0,1,3,31,32,4,6,7,9,10,8,24,18,22,23,29,30]);
-                  // table.colReorder.order( [0,1,3,4,31,32,5,7,9,10,8,17,18,23,24,25,27],true);
-                  break;
-                case 'crview':
-                  table.colReorder.reset();
-                  table.columns().visible( false );
-                  table.columns([0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]).visible( true );
-                  $('.DTFC_LeftBodyWrapper').hide()
-                  $('.DTFC_RightWrapper').hide()
-                  $('#tableoverview').css('margin','0px');
-                  table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]);
-                  // table.columns.adjust().draw();
-                break;
-                case 'timesview':
-                  table.colReorder.reset();
-                  table.columns().visible( false );
-                  table.columns([0,1,2,3,4,5,6,7,10,29,30]).visible( true );
-                  $('.DTFC_LeftBodyWrapper').hide()
-                  $('.DTFC_RightWrapper').hide()
-                  $('#tableoverview').css('margin','0px');
-                  table.colReorder.order( [0,1,2,3,4,5,6,7,10,29,30]);
-                  // table.columns.adjust().draw();
-                break;
-                case 'performanceShort':
-                  table.colReorder.reset();
-                  // table.column(  ).data().sum();
 
-                  // var calls = table.column(10).data().sum();
-                  // var calls = table.column(10).data().sum();
-                  let allssccalls = {{$overalldata['allSSCCalls']}}
-                  let allsscsaves = {{$overalldata['allSSCSaves']}}
-                  let allbsccalls = {{$overalldata['allBSCCalls']}}
-                  let allbscsaves = {{$overalldata['allBSCSaves']}}
-                  let allportalsaves = {{$overalldata['allPortaleSaves']}}
-                  let allportalcalls = {{$overalldata['allPortaleCalls']}}
-                  let rlz24 = {{$overalldata['allRLZ24']}}
-                  let mvlz = {{$overalldata['allMVLZ']}}
-                  let optinCalls = {{$overalldata['allOptinCalls']}}
-                  let optinRequests = {{$overalldata['allOptinRequests']}}
 
-                  table.columns().visible( false );
-                  table.columns([0,1,2,17,21,22,23,24,25,30,31]).visible( true );
-
-                  $('.DTFC_LeftBodyWrapper').hide()
-                  $('.DTFC_RightWrapper').hide()
-                  $('.dataTable tr').css('height','1em');
-                  $('.dataTable tr').css('padding','0px');
-                  $('.dataTable').css('margin','0px');
-                  // $('.dataTable tbody').css('height','20em');
-                  $('.dataTable tr').css('overflow','hidden');
-                  // $('.dataTable').css('font-size','0.6em');
-                  // $('.dataTable td').css('padding','10px');
-                  // $('.dataTable td').css('vertical-align','top');
-                  $('.dataTable').css('width','100%');
-
-                  table.colReorder.order( [0,1,21,22,23,24,17,25,2,30,31]);
-
-                  $('#tableoverview_info').css('margin-top','2em')
-                  $('#tableoverview_paginate').css('margin-top','2em')
-
-                  $(table.column( 2 ).footer() ).html('<b>'+getQuota(allssccalls,allsscsaves)+'%</b>');
-                  $(table.column( 3 ).footer() ).html('<b>'+getQuota(allbsccalls,allbscsaves)+'%</b>');
-                  $(table.column( 4 ).footer() ).html('<b>'+getQuota(allportalcalls,allportalsaves)+'%</b>');
-                  $(table.column( 5 ).footer() ).html('<b> sas</b>');
-                  $(table.column( 6 ).footer() ).html('<b>'+getQuota(rlz24,mvlz)+'%</b>');
-                  $(table.column( 7 ).footer() ).html('<b>'+getQuota(optinCalls,optinRequests)+'%</b>');
-                  $(table.column( 8 ).footer() ).html('<b>aht</b>');
-
-                  // table.draw()
-                  // table.order [[17, 'desc']]
-                  // table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]);
-
-                break;
-              }
-
-              // var item = event.target.id;
-
-            });
-          });
+          // document.querySelectorAll('.subauswahl').forEach((elem) => {
+          //   elem.addEventListener("click", function(event) {
+          //     $('.subauswahl').each(function(){
+          //         this.className=''
+          //         this.className='subauswahl'
+          //     });
+          //     event.target.className = 'subauswahl aktiv';
+          //
+          //     switch(event.target.id) {
+          //       case 'allData':
+          //           table.colReorder.reset();
+          //           table.columns().visible( false );
+          //           table.columns().visible( true );
+          //           // table.draw()
+          //         break;
+          //       case 'teamleiterview':
+          //         // table.colReorder.reset();
+          //         table.columns().visible( false );
+          //         table.columns([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,27,31]).visible( true );
+          //         $('.DTFC_LeftBodyWrapper').hide()
+          //         $('.DTFC_RightWrapper').hide()
+          //         $('#tableoverview').css('margin','0px');
+          //         table.colReorder.order([0,1,3,4,30,29,6,7,8,9,15,16,17,23,24,25,17,31]);
+          //         // table.colReorder.order([0,1,3,31,32,4,6,7,9,10,8,24,18,22,23,29,30]);
+          //         // table.colReorder.order( [0,1,3,4,31,32,5,7,9,10,8,17,18,23,24,25,27],true);
+          //         break;
+          //       case 'crview':
+          //         table.colReorder.reset();
+          //         table.columns().visible( false );
+          //         table.columns([0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]).visible( true );
+          //         $('.DTFC_LeftBodyWrapper').hide()
+          //         $('.DTFC_RightWrapper').hide()
+          //         $('#tableoverview').css('margin','0px');
+          //         table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]);
+          //         // table.columns.adjust().draw();
+          //       break;
+          //       case 'timesview':
+          //         table.colReorder.reset();
+          //         table.columns().visible( false );
+          //         table.columns([0,1,2,3,4,5,6,7,10,29,30]).visible( true );
+          //         $('.DTFC_LeftBodyWrapper').hide()
+          //         $('.DTFC_RightWrapper').hide()
+          //         $('#tableoverview').css('margin','0px');
+          //         table.colReorder.order( [0,1,2,3,4,5,6,7,10,29,30]);
+          //         // table.columns.adjust().draw();
+          //       break;
+          //       case 'performanceShort':
+          //         table.colReorder.reset();
+          //         // table.column(  ).data().sum();
+          //
+          //         // var calls = table.column(10).data().sum();
+          //         // var calls = table.column(10).data().sum();
+          //         let allssccalls = {{$overalldata['allSSCCalls']}}
+          //         let allsscsaves = {{$overalldata['allSSCSaves']}}
+          //         let allbsccalls = {{$overalldata['allBSCCalls']}}
+          //         let allbscsaves = {{$overalldata['allBSCSaves']}}
+          //         let allportalsaves = {{$overalldata['allPortaleSaves']}}
+          //         let allportalcalls = {{$overalldata['allPortaleCalls']}}
+          //         let rlz24 = {{$overalldata['allRLZ24']}}
+          //         let mvlz = {{$overalldata['allMVLZ']}}
+          //         let optinCalls = {{$overalldata['allOptinCalls']}}
+          //         let optinRequests = {{$overalldata['allOptinRequests']}}
+          //
+          //         table.columns().visible( false );
+          //         table.columns([0,1,2,17,21,22,23,24,25,30,31]).visible( true );
+          //
+          //         $('.DTFC_LeftBodyWrapper').hide()
+          //         $('.DTFC_RightWrapper').hide()
+          //         $('.dataTable tr').css('height','1em');
+          //         $('.dataTable tr').css('padding','0px');
+          //         $('.dataTable').css('margin','0px');
+          //         // $('.dataTable tbody').css('height','20em');
+          //         $('.dataTable tr').css('overflow','hidden');
+          //         // $('.dataTable').css('font-size','0.6em');
+          //         // $('.dataTable td').css('padding','10px');
+          //         // $('.dataTable td').css('vertical-align','top');
+          //         $('.dataTable').css('width','100%');
+          //
+          //         table.colReorder.order( [0,1,21,22,23,24,17,25,2,30,31]);
+          //
+          //         $('#tableoverview_info').css('margin-top','2em')
+          //         $('#tableoverview_paginate').css('margin-top','2em')
+          //
+          //         $(table.column( 2 ).footer() ).html('<b>'+getQuota(allssccalls,allsscsaves)+'%</b>');
+          //         $(table.column( 3 ).footer() ).html('<b>'+getQuota(allbsccalls,allbscsaves)+'%</b>');
+          //         $(table.column( 4 ).footer() ).html('<b>'+getQuota(allportalcalls,allportalsaves)+'%</b>');
+          //         $(table.column( 5 ).footer() ).html('<b> sas</b>');
+          //         $(table.column( 6 ).footer() ).html('<b>'+getQuota(rlz24,mvlz)+'%</b>');
+          //         $(table.column( 7 ).footer() ).html('<b>'+getQuota(optinCalls,optinRequests)+'%</b>');
+          //         $(table.column( 8 ).footer() ).html('<b>aht</b>');
+          //
+          //         // table.draw()
+          //         // table.order [[17, 'desc']]
+          //         // table.colReorder.order( [0,1,8,9,11,12,13,14,17,18,19,20,21,22,30,31]);
+          //
+          //       break;
+          //     }
+          //
+          //     // var item = event.target.id;
+          //
+          //   });
+          // });
         }
         $('#department').change(function() {
 

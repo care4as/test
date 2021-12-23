@@ -151,13 +151,13 @@ function roundUp($calls,$quotient)
                     <div class="card-body ">
                         <div class="tab-content text-center">
                             <div class="tab-pane active" id="overview">
-                                <div class="row m-0 mt-2 w-100 h-100 justify-content-center align-items-center">
+                                <!-- <div class="row m-0 mt-2 w-100 h-100 justify-content-center align-items-center">
                                 Von/bis:
                                 <div id="reportrange" style="background: #fff;color:black; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%">
                                     <i class="fa fa-calendar"></i>&nbsp;
                                     <span></span> <i class="fa fa-caret-down"></i>
                                 </div>
-                              </div>
+                              </div> -->
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
                                     <table class="tracking-table" id="AdminTrackingTable">
                                         <thead>
@@ -599,8 +599,8 @@ let table = $('#AdminTrackingTable').DataTable({
       ["alle", 3, 5, 10, 25, 50, 100]
   ],
   buttons: [
-          { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' },
-          { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' },
+          { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>', footer:true },
+          { extend: 'excel', text: '<i class="fas fa-file-excel fa-2x"></i>' ,footer:true},
           // 'excel',
       ],
       columnDefs: [
@@ -614,6 +614,7 @@ let table = $('#AdminTrackingTable').DataTable({
       leftColumns: 1,
     }
     })
+
 let table2 = $('#history-table').DataTable({
   select: true,
   dom: 'Blfrtip',
@@ -651,9 +652,13 @@ let table2 = $('#history-table').DataTable({
         })
       .then(response => {
 
+        console.log(response.data.footer[0])
         table.clear();
         table.rows.add(response.data.trackingdata);
-        table.footer().html(response.data.footer);
+
+        for (let i = 1; i < response.data.footer.length-1; i++) {
+          $(table.column(i).footer() ).html('<b>'+response.data.footer[i-1]+'</b>');
+          }
         table.draw();
         // console.log(response.data)
       })
