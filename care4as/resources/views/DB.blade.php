@@ -8,15 +8,16 @@ Deckungsbeitrag
 
   th, td
   {
-    /* font-size: 1.4em !important; */
+    font-size: 0.95em !important;
     text-align: center;
     margin: 0;
     border: 0;
+    padding: 0px;
+    border-collapse: collapse !important;
     /* color: #746e58; */
     white-space: nowrap;
-    border-radius: 15px;
 
-  }
+    }
   .fixedCol
   {
     color:white;
@@ -511,7 +512,7 @@ Deckungsbeitrag
               <td data-order="{{$user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}</td>
             @endif
             <td data-order="{{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}">
-              <div class="center_items" style="position: relative; height: 65px; width: 100%;">
+              <div class="center_items" style="position: relative; height: auto; width: 100%;">
                 <div class="" style="position: absolute; display:block;">
                   <a onclick="showDetails({{$user->id}})" style="cursor:pointer;">  {{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}</a>
                 </div>
@@ -855,8 +856,8 @@ Deckungsbeitrag
           select: true,
           dom: 'Blfrtip',
           lengthMenu: [
-              [10, 25, 50, 100],
-              ['10', '25', '50 ', '100']
+              [-1,10, 25, 50, 100],
+              ['alle','10', '25', '50 ', '100']
           ],
           buttons: [
                   { extend: 'csv', text: '<i class="fas fa-file-csv fa-2x"></i>' , footer:true },
@@ -1038,8 +1039,8 @@ Deckungsbeitrag
 
             $('.DTFC_LeftBodyWrapper').hide()
             $('.DTFC_RightWrapper').hide()
-            $('.dataTable tr').css('height','1em');
-            $('.dataTable tr').css('padding','0px');
+            // $('.dataTable tr').css('height','1em');
+            // $('.dataTable tr').css('padding','0px');
             $('.dataTable').css('margin','0px');
             // $('.dataTable tbody').css('height','20em');
             $('.dataTable tr').css('overflow','hidden');
