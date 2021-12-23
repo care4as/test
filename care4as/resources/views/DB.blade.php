@@ -367,7 +367,7 @@ Deckungsbeitrag
           </button>
         </div>
       </div>
-      <div class="col-2 offset-6">
+      <div class="col-2 offset-5">
         <div class="row h-100 center_items mr-2">
           <p style="font-size: 20px; font-weight: bold;">  Wähle die Daten:</p>
 
@@ -383,22 +383,21 @@ Deckungsbeitrag
             </label>
         </div>
         <div class="row">
-
-              <input class="form-check-input" type="checkbox" value="" id="DataRD" >
-              <label class="label" for="DataRD">
-                <div class="center_items w-100 h-100">
-                  Retention Details
-                </div>
-              </label>
+          <input class="form-check-input" type="checkbox" value="" id="DataRD" >
+          <label class="label" for="DataRD">
+          <div class="center_items w-100 h-100">
+            Retention Details
           </div>
+          </label>
+        </div>
       </div>
       <div class="col-1">
         <div class="row">
           <input class="form-check-input" type="checkbox" value="" id="DataRev">
           <label class="label" for="DataRev">
-          <div class="center_items w-100 h-100">
-          Umsatz
-          </div>
+            <div class="center_items w-100 h-100">
+            Umsatz
+            </div>
           </label>
         </div>
         <div class="row">
@@ -425,6 +424,25 @@ Deckungsbeitrag
             <label class="label" for="DataSick">
               <div class="center_items w-100 h-100">
                 Krankheit
+              </div>
+            </label>
+          </div>
+        </div>
+      <div class="col-1">
+        <div class="row">
+          <input class="form-check-input" type="checkbox" value="" id="DataPS">
+          <label class="label" for="DataPS">
+            <div class="center_items w-100 h-100">
+            Opt-ins/SAS
+            </div>
+          </label>
+        </div>
+        <div class="row">
+
+            <input class="form-check-input" type="checkbox" value="" id="">
+            <label class="label" for="DataSick">
+              <div class="center_items w-100 h-100">
+                xxx
               </div>
             </label>
           </div>
@@ -731,7 +749,7 @@ Deckungsbeitrag
                           <label for="team">Team:</label>
                             <select class="form-control" name="team" id="team" style="width:218px;">
                             <option value="" selected>Wähle das Team</option>
-                            @foreach(DB::table('users')->where('status',1)->groupBy('team')->pluck('team') as $team)
+                            @foreach(DB::table('users')->where('status',1)->where('department','Agenten')->groupBy('team')->pluck('team') as $team)
                             <option value="{{$team}}" selected>{{$team}}</option>
                             @endforeach
                           </select>
@@ -1002,14 +1020,14 @@ Deckungsbeitrag
 
               $('#DataComplete').prop('checked', false)
               table.columns().visible( false );
-              table.columns([1,25,26,27]).visible( true );
+              table.columns([1,26,27,28]).visible( true );
             }
             else {
-              table.columns([24,25]).visible( true );
+              table.columns([26,27,28]).visible( true );
             }
                 }
           else {
-            table.columns([24,25]).visible( false );
+            table.columns([26,27,28]).visible( false );
           }
         })
 
