@@ -472,7 +472,7 @@ function roundUp($calls,$quotient)
                                           @foreach($history as $record)
                                           <tr>
                                             <td>{{$record->created_at}}</td>
-                                            <td>{{$record->createdBy->name}}</td>
+                                            <td>@if($record->createdBy){{$record->createdBy->name}} @else Fehler Ersteller @endif</td>
                                             <td>{{$record->contract_number}}</td>
                                             <td>{{$record->product_category}}</td>
                                             <td>{{$record->event_category}}</td>
@@ -697,7 +697,7 @@ let table2 = $('#history-table').DataTable({
         })
       .then(response => {
 
-        console.log(response.data.footer[0])
+        console.log(response)
         table.clear();
         table.rows.add(response.data.trackingdata);
 

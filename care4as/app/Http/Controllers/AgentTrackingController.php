@@ -132,7 +132,9 @@ class AgentTrackingController extends Controller
     public function TrackingJson()
     {
       $start = 1;
-      $end = 1;
+      // $start = "2021-12-23";
+      $end = 0;
+      // $end = "2021-12-23";
 
       if (request('start')) {
         $start = request('start');
@@ -145,34 +147,52 @@ class AgentTrackingController extends Controller
       $users = User::
       with(['TrackingAllCalls' => function($q) use ($start,$end){
         // $q->select(['id','person_id','calls','time_in_state','call_date']);
-        if($start !== 1)
+        if($start == $end)
         {
-          $q->where('created_at','>=',$start);
+
+          $q->whereDate('created_at','=',$start);
         }
-        if($end !== 1)
+        else
         {
-          $q->where('created_at','<=',$end);
+          if($start !== 1)
+          {
+            $q->where('created_at','>=',$start);
+          }
+          if($end !== 0)
+          {
+            $q->where('created_at','<=',$end);
+          }
         }
         }])
       ->with(['TrackingAll' => function($q) use ($start,$end){
         // $q->select(['id','person_id','calls','time_in_state','call_date']);
-        if($start !== 1)
+        if($start == $end)
         {
-          $q->where('created_at','>=',$start);
+          $q->whereDate('created_at','=',$start);
         }
-        if($end !== 1)
-        {
-          $q->where('created_at','<=',$end);
+        else {
+          if($start !== 1)
+          {
+            $q->where('created_at','>=',$start);
+          }
+          if($end !== 0)
+          {
+            $q->where('created_at','<=',$end);
+          }
         }
+
         }])
       ->where('status', 1)
       ->where('project','1und1 Retention')
       ->get();
 
+      // dd($start, $users);
+
       foreach ($users as $key => $user) {
-        if ($user->id == 408) {
-          // dd($user);
+        if ($user->TrackingAll->first()) {
+          // dd($start, $user);
         }
+
         $insertarray = array(
           $user->name,
           $callsU = $user->TrackingAllCalls->sum('calls'),
