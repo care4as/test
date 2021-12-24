@@ -255,67 +255,67 @@ class AgentTrackingController extends Controller
               return $user->TrackingAll->where('product_category','SSC')->where('event_category','Save')->where('backoffice',1)->count();
             }),
           $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','SSC')->where('event_category','KüRü')->count();
+              return $user->TrackingAll->where('product_category','SSC')->where('event_category','KüRü')->count();
           }),
           $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','SSC')->where('event_category','Cancel')->count();
+              return $user->TrackingAll->where('product_category','SSC')->where('event_category','Cancel')->count();
             }),
           $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','SSC')->where('event_category','Service')->count();
+              return $user->TrackingAll->where('product_category','SSC')->where('event_category','Service')->count();
             }),
           $this->roundUp($allSSCCalls,$allSSCSaves_NBO),
           $this->roundUp($allSSCCalls,$allSSCSaves),
           $allBSCCalls = $users->sum(function ($user) {
-              return $user->TrackingCallsToday->where('category',2)->sum('calls');
+              return $user->TrackingAllCalls->where('category',2)->sum('calls');
             }),
           $allBSCSaves = $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')->count();
+              return $user->TrackingAll->where('product_category','BSC')->where('event_category','Save')->count();
             }),
           $allBSCSaves_NBO = $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')->where('backoffice',0)->count();
+              return $user->TrackingAll->where('product_category','BSC')->where('event_category','Save')->where('backoffice',0)->count();
             }),
           $allBSCSaves_PBO = $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')->where('backoffice',1)->count();
+              return $user->TrackingAll->where('product_category','BSC')->where('event_category','Save')->where('backoffice',1)->count();
             }),
           $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','BSC')->where('event_category','KüRü')->count();
+              return $user->TrackingAll->where('product_category','BSC')->where('event_category','KüRü')->count();
             }),
           $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','BSC')->where('event_category','Cancel')->count();
+              return $user->TrackingAll->where('product_category','BSC')->where('event_category','Cancel')->count();
             }),
           $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','BSC')->where('event_category','Service')->count();
+              return $user->TrackingAll->where('product_category','BSC')->where('event_category','Service')->count();
             }),
           $this->roundUp($allBSCCalls,$allBSCSaves_NBO),
           $this->roundUp($allBSCCalls,$allBSCSaves),
           $allPortalCalls = $users->sum(function ($user) {
-              return $user->TrackingCallsToday->where('category',3)->sum('calls');
+              return $user->TrackingAllCalls->where('category',3)->sum('calls');
             }),
           $allPortalSaves = $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','Portale')->where('event_category','Save')->count();
+              return $user->TrackingAll->where('product_category','Portale')->where('event_category','Save')->count();
             }),
           $allPortalSaves_NBO = $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','Portale')->where('event_category','Save')->where('backoffice',0)->count();
+              return $user->TrackingAll->where('product_category','Portale')->where('event_category','Save')->where('backoffice',0)->count();
             }),
           $allPortalSaves_PBO = $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','Portale')->where('event_category','Save')->where('backoffice',1)->count();
+              return $user->TrackingAll->where('product_category','Portale')->where('event_category','Save')->where('backoffice',1)->count();
             }),
           $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','Portale')->where('event_category','KüRü')->count();
+              return $user->TrackingAll->where('product_category','Portale')->where('event_category','KüRü')->count();
             }),
           $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','Portale')->where('event_category','Cancel')->count();
+              return $user->TrackingAll->where('product_category','Portale')->where('event_category','Cancel')->count();
             }),
           $users->sum(function ($user) {
-              return $user->TrackingToday->where('product_category','Portale')->where('event_category','Service')->count();
+              return $user->TrackingAll->where('product_category','Portale')->where('event_category','Service')->count();
             }),
           $this->roundUp($allPortalCalls,$allPortalSaves_NBO),
           $this->roundUp($allPortalCalls,$allPortalSaves),
           $allETCCalls = $users->sum(function ($user) {
-              return $user->TrackingCallsToday->where('category',4)->sum('calls');
+              return $user->TrackingAllCalls->where('category',4)->sum('calls');
             }),
           $allOptins = $users->sum(function ($user) {
-              return $user->TrackingToday->where('optin',1)->count();
+              return $user->TrackingAll->where('optin',1)->count();
             }),
           $this->roundUp($allCalls,$allOptins),
         );
