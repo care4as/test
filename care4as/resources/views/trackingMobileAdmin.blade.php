@@ -744,8 +744,8 @@ function loadModalWithData(id) {
       if(response.data)
       {
         let data = response.data
-        console.log('data received')
-        console.log(data)
+        // console.log('data received')
+        // console.log(data)
 
         $('#trackid').val(data.id)
 
