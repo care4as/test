@@ -21,17 +21,64 @@ function roundUp($calls,$quotient)
 }
 @endphp
 <style>
-    .tracking_title{
-        border-bottom: 1px solid gray;
-        text-align: center;
-        font-size: 1.3rem;
-    }
+#AdminTrackingTable_wrapper
+{
+  display: block;
+}
+#AdminTrackingTable_length
+{
+  float: right;
+  width: 20%;
+    height: 100%;
+    margin: 5px;
+}
+#AdminTrackingTable_length label
+{
+  display: flex;
+}
+#AdminTrackingTable_length label select
+{
+  margin-left: 5px;
+  margin-right: 5px;
+}
 
-    .tracking-table{
-        width: 100%;
-        white-space: nowrap;
-        border: 2px solid grey;
-    }
+.dt-buttons
+{
+  width: 20%;
+  float: right;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.toolbar
+{
+  float: left;
+  width: 20%;
+}
+.dataTables_filter
+{
+  float: left;
+  width: 24%;
+  margin: 5px;
+
+}
+.dataTables_filter label
+{
+    display: flex !important;
+
+}
+.tracking_title{
+  border-bottom: 1px solid gray;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.tracking-table{
+    width: 100%;
+    white-space: nowrap;
+    border: 2px solid grey;
+}
 
     .tracking-table th, td{
         border: 1px solid grey;
@@ -149,16 +196,10 @@ function roundUp($calls,$quotient)
                         </div>
                     </div>
                     <div class="card-body ">
-                        <div class="tab-content text-center">
+                        <div class="tab-content">
                             <div class="tab-pane active" id="overview">
-                                <!-- <div class="row m-0 mt-2 w-100 h-100 justify-content-center align-items-center">
-                                Von/bis:
-                                <div id="reportrange" style="background: #fff;color:black; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%">
-                                    <i class="fa fa-calendar"></i>&nbsp;
-                                    <span></span> <i class="fa fa-caret-down"></i>
-                                </div>
-                              </div> -->
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
+
                                     <table class="tracking-table" id="AdminTrackingTable">
                                         <thead>
                                             <tr>
@@ -593,7 +634,9 @@ var host = window.location.host;
 
 let table = $('#AdminTrackingTable').DataTable({
   select: true,
-  dom: 'Blfrtip',
+  // dom: 'Blfrtip',
+  dom: '<"toolbar">Blfrtip',
+  // dom: '<"top"i>rt<"bottom"flp><"clear">',
   lengthMenu: [
       [-1, 3, 5, 10, 25, 50, 100],
       ["alle", 3, 5, 10, 25, 50, 100]
@@ -613,7 +656,8 @@ let table = $('#AdminTrackingTable').DataTable({
     fixedColumns: {
       leftColumns: 1,
     }
-    })
+  });
+  $("div.toolbar").html('<div class="row m-0 h-100 justify-content-center align-items-center">Von/bis:<div id="reportrange" style="background: #fff;color:black; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%"><i class="fa fa-calendar"></i>&nbsp;<span></span> <i class="fa fa-caret-down"></i></div></div>');
 
 let table2 = $('#history-table').DataTable({
   select: true,

@@ -22,6 +22,7 @@ function roundUp($calls,$quotient)
 @section('content')
 @section('additional_css')
 <style>
+    
     .tracking_container{
         padding: 10px;
     }
