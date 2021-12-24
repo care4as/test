@@ -687,7 +687,8 @@ let table2 = $('#history-table').DataTable({
       params.append("start", start);
       params.append("end" , end);
 
-      axios.get('http://'+host+'/care4as/care4as/public/mobile/tracking/admin/json',
+      // axios.get('http://'+host+'/care4as/care4as/public/mobile/tracking/admin/json',
+      axios.get('http://'+host+'/mobile/tracking/admin/json',
       {
         params: {
           start: start.format('Y-MM-DD'),
