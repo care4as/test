@@ -374,7 +374,13 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/user/getUsersByIM/{department}', 'UserController@getUsersIntermediate')->name('user.byIM')->middleware('hasRight:dashboardAdmin');
 
   Route::get('/test', function(){
-    return view('test');
+
+    $users = App\User::with('hoursReport')
+    ->where('status',1)
+    ->get();
+
+    dd($users, $users->where('ds_id',379));
   })->name('test');
+
   Route::get('/test2', 'AgentTrackingController@AdminIndex')->name('test');
 });

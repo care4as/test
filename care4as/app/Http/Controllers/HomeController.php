@@ -446,7 +446,7 @@ class HomeController extends Controller
         ->get();
       }
 
-      // dd($users[1]);
+      // dd($users);
       //the days without holiday and weekends and sickdays stuff
       if($start_date != 1)
       {
