@@ -861,7 +861,7 @@ class ExcelEditorController extends Controller
         // $report->calls = $row[11];
         $insertarray[$i]['calls']  = $data[$i][11];
 
-        
+
 
         if($data[$i][9] !='Care4as Retention DSL Eggebek')
         {
@@ -1236,20 +1236,20 @@ class ExcelEditorController extends Controller
             $availbenchArray[$i]['acceptance_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[22])));
             $availbenchArray[$i]['total_costs_per_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[23])));
             $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
-  
+
             if ($minDate == null) {
               $minDate = $availbenchArray[$i]['date_date'];
             } else if ($availbenchArray[$i]['date_date'] < $minDate){
               $minDate = $availbenchArray[$i]['date_date'];
             }
-  
+
             if ($maxDate == null) {
               $maxDate = $availbenchArray[$i]['date_date'];
             } else if ($availbenchArray[$i]['date_date'] > $maxDate){
               $maxDate = $availbenchArray[$i]['date_date'];
             }
             $i++;
-          } 
+          }
         }
       }
 
@@ -1328,7 +1328,7 @@ class ExcelEditorController extends Controller
 
       $minDate = null;
       $maxDate = null;
-      
+
       foreach($dataTables as $key => $entry){
         $entry = (array) $entry;
         if ($entry['data_table'] == 'dailyAgent_report'){
@@ -1381,15 +1381,15 @@ class ExcelEditorController extends Controller
               'queue_id' => $entry['queue_id'],
               'queue_name' => $entry['queue_name'],
               'skill_id' => $entry['skill_id'],
-              'skill_name' => $entry['skill_name'],          
+              'skill_name' => $entry['skill_name'],
               'start_time' => $entry['start_time'],
               'end_time' => $entry['end_time'],
               'time_in_state' => $entry['time_in_state'],
-              'timezone' => $entry['timezone']         
+              'timezone' => $entry['timezone']
             ]
           );
         }
-        
+
       }
       return redirect()->back();
     }

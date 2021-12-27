@@ -158,7 +158,6 @@ function mouseoutNewSidebar(){
 
 }
 
-
   function rotateButton(){
 
     var button = $("#LexikaButton");
@@ -176,7 +175,7 @@ function mouseoutNewSidebar(){
     $('.Lexika').toggle()
 
   }
-  function loadData(path,el, elpop)
+  function loadData(path,el,elpop)
   {
 
     let host = window.location.host;

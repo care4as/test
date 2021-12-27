@@ -361,7 +361,7 @@ Deckungsbeitrag
               <h5>Filtermenü &#128269;</h5>
             </button>
         </div>
-        <div class="row mt-2">
+        <div class="row mt-2 center_items">
           <button class="button1" data-toggle="modal" data-target="#modalData" role="button" aria-expanded="false"  style="">
               <h5>Datenstand</h5>
           </button>
@@ -750,7 +750,7 @@ Deckungsbeitrag
                             <select class="form-control" name="team" id="team" style="width:218px;">
                             <option value="" selected>Wähle das Team</option>
                             @foreach(DB::table('users')->where('status',1)->where('department','Agenten')->groupBy('team')->pluck('team') as $team)
-                            <option value="{{$team}}" selected>{{$team}}</option>
+                            <option value="{{$team}}">{{$team}}</option>
                             @endforeach
                           </select>
                         </div>
@@ -772,7 +772,7 @@ Deckungsbeitrag
                       </div>
                     </div>
                     <div class="modal-footer" style="font-size: 14px;">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-backdrop="false">Schließen</button>
                     <button type="submit" class="btn btn-primary">Anzeigen</button>
                   </div>
               </form>
@@ -796,7 +796,18 @@ Deckungsbeitrag
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+function toogleModal(modalid)
+{
+  console.log('testmodal')
+  $('#'+modalid).toggle()
+}
   $(document).ready(function(){
+
+    function toogleModal(modalid)
+    {
+      console.log('testmodal')
+      $('#'+modalid).toggle()
+    }
 
     $('#DataComplete').prop( "checked",true )
 
@@ -1217,7 +1228,13 @@ Deckungsbeitrag
             $('#failContent').html('Fehler: '+ err.response.data.message)
             $('#failFile').html('Datei: '+ err.response.data.file)
             $('#failLine').html('Line: '+ err.response.data.line)
-            $('#failModal').modal('show')
+            $('#failModal').modal('toggle')
+
+            var display = $('.modal-backdrop')
+             display.css("display");
+              if(display!="none") {
+                display.attr("style", "display:none");
+              }
             console.log(err.response);
           })
         })
