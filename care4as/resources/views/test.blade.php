@@ -2,50 +2,125 @@
 
 @section('additional_css')
 <style media="screen">
-
-
-
-.box {
-  position: relative;
-  height:  400px;
-  width: 380px;
-  display: block;
-  background: linear-gradient(0deg, black, #444444);
-}
-
-.glowing::before{
-  content: '';
-  position: absolute;
-  left: -2px;
-  top: -2px;
-  background: linear-gradient(45deg, #e8f74d, #ff6600d9, #00ff66, #13ff13, #ad27ad, #bd2681, #6512b9, #ff3300de, #5aabde);
-  background-size: 400%;
-  width: calc(100% + 5px);
-  height: calc(100% + 5px);
-  z-index: -1;
-  animation: glower 20s linear infinite;
-}
-
-@keyframes glower {
-  0% {
-    background-position: 0 0;
-  }
-
-  50% {
-    background-position: 400% 0;
-  }
-
-  100% {
-    background-position: 0 0;
-  }
+.max-table
+{
+  text-align: center;
 }
 </style>
 @endsection
 
 @section('content')
-<div class="row" style="justify-content: center;align-items: center;">
-  <div class="box glowing">
-      hallo
+  <div class="container-fluid">
+    <div class="row bg-light m-2" id="content">
+      <div class="col-12 text-center">
+        <h4>Projekt-Report Mobile Retention {{Carbon\Carbon::today()->subDays(1)->format('d.m.Y')}}</h4>
+      </div>
+      <hr>
+      <div class="col-md-6">
+
+        <div class="row m-2">
+          <h5>Performance</h5>
+          <hr>
+        </div>
+        <div class="row m-2">
+          <div class="col bg-white shadow rounded">
+            <div class="max-main-container">
+                <div class="max-panel-content">
+                    <div style="width: 100%;">
+                        <table class="max-table" id="xxx" style="width: 100%;">
+                            <tr>
+                              <th>Saves</th>
+                              <th>199</th>
+                            </tr>
+                            <tr>
+                              <td>-SSC</td>
+                              <td>129</td>
+                            </tr>
+                            <tr>
+                              <td>-BSC</td>
+                              <td>29</td>
+                            </tr>
+                            <tr>
+                              <td>-Portale</td>
+                              <td>29</td>
+                            </tr>
+                            <tr>
+                              <th>Calls</th>
+                              <th>199</th>
+                            </tr>
+                            <tr>
+                              <td>-SSC</td>
+                              <td>129</td>
+                            </tr>
+                            <tr>
+                              <td>-BSC</td>
+                              <td>29</td>
+                            </tr>
+                            <tr>
+                              <td>-Portale</td>
+                              <td>29</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row m-2">
+          <h5>Quoten</h5>
+          <hr>
+        </div>
+        <div class="row m-2">
+          <div class="col bg-white shadow rounded">
+            <div class="max-main-container">
+                <div class="max-panel-content">
+                    <div style="width: 100%;">
+                        <table class="max-table" id="xxx" style="width: 100%;">
+                            <tr>
+                              <th>CR</th>
+                              <th>50%</th>
+                            </tr>
+                            <tr>
+                              <th>SSC</th>
+                              <th>53%</th>
+                            </tr>
+                            <tr>
+                              <th>BSC</th>
+                              <th>21%</th>
+                            </tr>
+                            <tr>
+                              <th>Portale</th>
+                              <th>83%</th>
+                            </tr>
+                            <tr>
+                              <th>Optins</th>
+                              <th>11%</th>
+                            </tr>
+                            <tr>
+                              <td>RLZ+</td>
+                              <td>89%</td>
+                            </tr>
+                            <tr>
+                              <th>KQ</th>
+                              <th>23%</th>
+                            </tr>
+                            <tr>
+                              <th>Produktivität</th>
+                              <th>87%</th>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
-</div>
 @endsection

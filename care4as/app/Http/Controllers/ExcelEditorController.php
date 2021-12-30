@@ -97,6 +97,7 @@ class ExcelEditorController extends Controller
 
     public function GeVoUpload(Request $request)
     {
+
       $fromRow = 1;
       $insertData = array();
 

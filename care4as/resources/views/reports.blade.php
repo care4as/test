@@ -75,8 +75,8 @@
             <div class="col-12">
               <label for="department">Ausgenommen werden folgende Mitarbeiter:</label>
                 <select multiple class="form-control" name="employees[]" id="exampleFormControlSelect2" style="height: 150px; overflow:scroll;">
-                  @foreach($users1 = App\User::where('role','agent')->orderBy('lastname')->get() as $user)
-                    <option value="{{$user->id}}">{{$user->surname}} {{$user->lastname}}</option>
+                  @foreach($users1 = App\User::where('department','Agenten')->where('status',1)->orderBy('name')->get() as $user)
+                    <option value="{{$user->id}}">{{$user->name}}</option>
                   @endforeach
               </select>
             </div>

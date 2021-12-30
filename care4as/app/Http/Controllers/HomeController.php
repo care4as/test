@@ -178,7 +178,7 @@ class HomeController extends Controller
 
       if($request->employees)
       {
-        $users = User::where('role','Agent_Mobile')
+        $users = User::where('department','Agenten')
         ->where('status',1)
         ->whereIn('id', $request->employees)
         ->select('id','1u1_person_id','1u1_agent_id','project','ds_id')
@@ -264,7 +264,7 @@ class HomeController extends Controller
       elseif($request->team)
       {
         // dd($request->team);
-        $users = User::where('role','Agent_Mobile')
+        $users = User::where('department','Agenten')
         ->where('status',1)
         ->where('team', $request->team)
         ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
@@ -361,7 +361,7 @@ class HomeController extends Controller
 
         // dd($department);
         // return \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
-        $users = User::where('role','Agent_Mobile')
+        $users = User::where('department','Agenten')
         ->where('status',1)
         ->where('project', $department)
         ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
@@ -670,7 +670,7 @@ class HomeController extends Controller
         $sas = $user->SAS->count();
         $allCalls = $user->retentionDetails->sum('calls');
 
-        if (  $sas != 0) {
+        if (  $allCalls != 0) {
              $user->sasquota = round($sas*100/$allCalls,2).'%';
           }
         else {

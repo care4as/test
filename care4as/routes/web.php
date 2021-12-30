@@ -375,11 +375,8 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('/test', function(){
 
-    $users = App\User::with('hoursReport')
-    ->where('status',1)
-    ->get();
-
-    dd($users, $users->where('ds_id',379));
+    return view('test');
+    
   })->name('test');
 
   Route::get('/test2', 'AgentTrackingController@AdminIndex')->name('test');
