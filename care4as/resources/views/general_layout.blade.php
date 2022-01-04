@@ -16,12 +16,7 @@
 -->
 <!DOCTYPE html>
 <html lang="de">
-<style>
-  /** Scrollbar-Einstellungen */
-  * {
-  scrollbar-width: thin;
-  scrollbar-color: gray white;
-}
+
 </style>
 <head>
   <meta charset="utf-8" />

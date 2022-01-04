@@ -30,21 +30,21 @@ class UserListController extends Controller
             $users = $this->getUnfilteredUsers();
             if ($project != 'all'){
                 $users = $this->refineUserlistProject($users, $project);
-            }            
+            }
             $users = $this->refineUserlistActive($users);
         } else if ($employeeState == 'inactive'){
             $roleArray = $this->getRoles();
             $users = $this->getUnfilteredUsers();
             if ($project != 'all'){
                 $users = $this->refineUserlistProject($users, $project);
-            }  
+            }
             $users = $this->refineUserlistInactive($users);
         } else if($employeeState == 'all'){
             $roleArray = $this->getRoles();
             $users = $this->getUnfilteredUsers();
             if ($project != 'all'){
                 $users = $this->refineUserlistProject($users, $project);
-            }  
+            }
         }
           // dd($users);
         //users erstellen und anschließend nach bedarf durch verschiedene filter laufen lassen, wodurch nutzer entfernt werden
@@ -153,6 +153,8 @@ class UserListController extends Controller
         foreach($userData as $key => $user) {
             $user = (array) $user;
 
+            // dd($user);
+
             if($user['geburt'] == '0000-00-00'){
                 $user['geburt'] = null;
             } else {
@@ -195,6 +197,9 @@ class UserListController extends Controller
                 ],
                 [
                 'name' => $user['agent_id'],
+                'surname' => $user['vorname'],
+                'lastname' => $user['familienname'],
+                'contract_hours' => $user['soll_h_day'],
                 'project' => $user['projekt_id'],
                 'department' => $user['abteilung_id'],
                 'team' => $user['team'],

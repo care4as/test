@@ -375,8 +375,9 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('/test', function(){
 
-    return view('test');
     
+    return view('test');
+
   })->name('test');
 
   Route::get('/test2', 'AgentTrackingController@AdminIndex')->name('test');
