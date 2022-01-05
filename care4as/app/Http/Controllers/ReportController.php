@@ -355,7 +355,7 @@ class ReportController extends Controller
       if ($startdate or $enddate) {
         // code...
       $sellers = User::where('status',1)
-      ->where('role','Agent')
+      ->where('role','Agent_Mobile')
       ->where('project',$department)
       ->with(['retentionDetails' => function($q) use ($startdate,$enddate){
         // $q->select(['id','person_id','calls','time_in_state','call_date']);
@@ -413,7 +413,6 @@ class ReportController extends Controller
       ->where('acd_state_id',36)
       ->whereIn('MA_id', $maIDs)
       ->get();
-
 
       foreach($fu as $test)
       {
