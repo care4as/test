@@ -64,7 +64,7 @@ class User extends Authenticatable
     public function TrackingCallsMonth()
     {
       $date = new \Carbon\Carbon('first day of this month');
-      return $this->hasMany('\App\TrackCalls')->where('created_at','>=',$date);
+      return $this->hasMany('\App\TrackCalls')->whereDate('created_at','>=',$date);
     }
     public function TrackingAllCalls()
     {
