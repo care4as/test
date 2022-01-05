@@ -56,7 +56,7 @@ class AgentTrackingController extends Controller
 
       $history = Auth()->user()->load('TrackingToday')->TrackingToday;
       // $history = $monthSP->where('created_at', Carbon::today());
-      // dd($trackcallsM);
+      dd($monthSP->where('event_category','Save'));
       return view('trackingMobile', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
     }
     /**
