@@ -351,7 +351,6 @@ class ReportController extends Controller
     public function categoriesDisplay($startdate,$enddate)
     {
       $department = '1und1 Retention';
-
       if ($startdate or $enddate) {
         // code...
       $sellers = User::where('status',1)
@@ -369,7 +368,6 @@ class ReportController extends Controller
         }
         }])
       ->get();
-
       foreach ($sellers as $key => $seller) {
 
           // dd($seller, $seller->retentionDetails[1]);
@@ -377,7 +375,6 @@ class ReportController extends Controller
           $sscorders = $seller->retentionDetails->sum('orders_smallscreen');
           $seller->quota = $this->getquota($ssccalls,$sscorders);
       }
-
       // dd($sellers);
       $sellers = $sellers->sortByDesc('quota')->values();
 
@@ -433,7 +430,6 @@ class ReportController extends Controller
         //
         //   dd($nextentry);
         // }
-
 
         $data = $ma->where('ds_id', $test->MA_id)->values();
         // dd($ma->where('ds_id', $test->MA_id)->values());

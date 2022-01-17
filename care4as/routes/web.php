@@ -375,8 +375,96 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('/test', function(){
 
-    
-    return view('test');
+    $start_date= 1;
+    $end_date= 1;
+
+    $ids=array(606,603,602);
+
+    $users = App\User::
+    where('department','Agenten')
+    ->where('status',1)
+    ->whereIn('id', $ids)
+    ->select('id','1u1_person_id','1u1_agent_id','project','ds_id')
+    ->with(['dailyagent' => function($q) use ($start_date,$end_date){
+      $q->select(['id','agent_id','status','time_in_state','date']);
+      if($start_date !== 1)
+      {
+        $datemod = Carbon::parse($start_date)->setTime(2,0,0);
+        $q->where('date','>=',$datemod);
+      }
+      if($end_date !== 1)
+      {
+        $datemod2 = Carbon::parse($end_date)->setTime(23,59,59);
+        $q->where('date','<=',$datemod2);
+      }
+      }])
+    ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
+      // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
+      if($start_date !== 1)
+      {
+        $q->where('call_date','>=',$start_date);
+      }
+      if($end_date !== 1)
+      {
+        $q->where('call_date','<=',$end_date);
+      }
+      }])
+      ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+
+        if($start_date !== 1)
+        {
+          $q->where('work_date','>=',$start_date);
+        }
+        if($end_date !== 1)
+        {
+          $q->where('work_date','<=',$end_date);
+        }
+        }])
+      ->with(['SSETracking' => function($q) use ($start_date,$end_date){
+        if($start_date != 1)
+        {
+          $q->where('trackingdate','>=',$start_date);
+        }
+        if($end_date != 1)
+        {
+          $q->where('trackingdate','<=',$end_date);
+        }
+      }])
+      ->with(['SAS' => function($q) use ($start_date,$end_date){
+        if($start_date != 1)
+        {
+          $q->where('date','>=',$start_date);
+        }
+        if($end_date != 1)
+        {
+          $q->where('date','<=',$end_date);
+        }
+      }])
+      ->with(['gevo' => function($q) use ($start_date,$end_date){
+        // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
+        if($start_date !== 1)
+        {
+          $q->where('date','>=',$start_date);
+        }
+        if($end_date !== 1)
+        {
+          $q->where('date','<=',$end_date);
+        }
+        }])
+      ->with(['Optin' => function($q) use ($start_date,$end_date){
+        if($start_date != 1)
+        {
+          $q->where('date','>=',$start_date);
+        }
+        if($end_date != 1)
+        {
+          $q->where('date','<=',$end_date);
+        }
+      }])
+    // ->limit(10)
+    ->get();
+
+    dd($users);
 
   })->name('test');
 

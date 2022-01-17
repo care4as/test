@@ -141,13 +141,29 @@ class HomeController extends Controller
     }
     public function presentation(Request $request)
     {
-
-
+      //turn off the query log to save some time
       DB::disableQueryLog();
+      //sets off the limitation of memory an request can handle, bc of the large amount of data
       ini_set('memory_limit', '-1');
+      // since the request can last to several minutes, i had to turn off the execution time
       ini_set('max_execution_time', '0'); // for infinite time of execution
       date_default_timezone_set('Europe/Berlin');
-      $modul = 'Userübersicht';
+      // $modul = 'Userübersicht';
+
+      $productiveStates = array('Wrap Up','Ringing', 'In Call','On Hold','Available','Released (05_occupied)','Released (06_practice)','Released (09_outbound)');
+      $avgAHT= 0;
+      // all the hours from the "stundenreport"
+      $allWorkedHours = 0;
+      //all the hours the agent was logged in in the ccu
+      $allDAHours = 0;
+      $allDAProdHours = 0;
+      //all the hours the agent was on one of the productive states
+      $allDAProductiveHours = 0;
+
+      $allDailyAgentCalls =0;
+
+      $allGeVoSaves =0;
+      $allSSETRackingSaves =0;
 
       $allSSCCalls = 0;
       $allSSCSaves = 0;
@@ -159,7 +175,9 @@ class HomeController extends Controller
       $allMLZV= 0;
       $allOptinCalls =0;
       $allOptinRequests =0;
-
+      $allGeVoSaves = 0;
+      $allAHTSeconds = 0;
+      $allSickHours = 0;
       $year = Carbon::now()->year;
       $start_date = 1;
       $end_date = 1;
@@ -178,7 +196,8 @@ class HomeController extends Controller
 
       if($request->employees)
       {
-        $users = User::where('department','Agenten')
+        $users = User::
+        where('department','Agenten')
         ->where('status',1)
         ->whereIn('id', $request->employees)
         ->select('id','1u1_person_id','1u1_agent_id','project','ds_id')
@@ -260,6 +279,7 @@ class HomeController extends Controller
           }])
         // ->limit(10)
         ->get();
+        // dd($users);
       }
       elseif($request->team)
       {
@@ -269,7 +289,6 @@ class HomeController extends Controller
         ->where('team', $request->team)
         ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
         ->where('1u1_agent_id','!=',null)
-
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
           if($start_date !== 1)
@@ -366,7 +385,6 @@ class HomeController extends Controller
         ->where('project', $department)
         ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
         // ->where('1u1_agent_id','!=',null)
-
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
           if($start_date !== 1)
@@ -447,6 +465,7 @@ class HomeController extends Controller
       }
 
       // dd($users);
+
       //the days without holiday and weekends and sickdays stuff
       if($start_date != 1)
       {
@@ -509,12 +528,16 @@ class HomeController extends Controller
       }
       foreach ($users as $key => $user) {
 
+        $workedHours = 0;
+        $sickHours = 0;
+        $sicknessquota = '';
         // dd($user);
         $reports = $user->retentionDetails;
+
         $sumorders = $reports->sum('orders');
         // sum of all calls during the timespan
         $sumcalls = $reports->sum('calls');
-        $sumcalls = $reports->sum('calls');
+        // $sumcalls = $reports->sum('calls');
         $sumNMlz = $reports->sum('mvlzNeu');
         $sumrlz24 = $reports->sum('rlzPlus');
         $sumSSCCalls = $reports->sum('calls_smallscreen');
@@ -523,9 +546,12 @@ class HomeController extends Controller
         $sumSSCOrders = $reports->sum('orders_smallscreen');
         $sumBSCOrders = $reports->sum('orders_bigscreen');
         $sumPortalOrders = $reports->sum('orders_portale');
+
         $ssesaves = $user->SSETracking->where('Tracking_Item1','Save')->count();
+
         $ahtStates = array('On Hold','Wrap Up','In Call');
         $casetime = $user->dailyagent->whereIn('status', $ahtStates)->sum('time_in_state');
+
         $calls = $user->dailyagent->where('status', 'Ringing')
         ->count();
 
@@ -538,6 +564,11 @@ class HomeController extends Controller
         $allRLZ24 += $sumrlz24;
         $allMLZV += $sumNMlz;
 
+        $allGeVoSaves += $user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count();
+
+        $allAHTSeconds += $casetime;
+        $allDailyAgentCalls += $calls;
+
         if($calls == 0)
         {
           $AHT = 0;
@@ -546,10 +577,6 @@ class HomeController extends Controller
           $AHT =  round(($casetime/ $calls),0);
         }
         // $workdays = $reports->count();
-        $workedHours = 0;
-        $sickHours = 0;
-        $sicknessquota = '';
-
         if($sumSSCCalls == 0)
         {
           $SSCQouta = 0;
@@ -585,11 +612,13 @@ class HomeController extends Controller
         }
         else
         {
+          // dd($user,$sumorders,$sumcalls);
           $gevocr = round(($sumorders/$sumcalls) * 100,2);
         }
 
         //der Teil zum Stundenreport
         $workedHours = $user->hoursReport->sum('work_hours');
+        $allWorkedHours += $workedHours;
         //the vacation hours
         $vacationHours = $user->hoursReport->where('state_id',2)->sum('work_hours');
         $pauseHours = $user->hoursReport->sum('pause_hours');
@@ -605,29 +634,35 @@ class HomeController extends Controller
         }
         else {
           // $sicknessquota =  $sickHours.' /d:'.$days.'/dh:'.$user->dailyhours;
-          if (!$user->dailyhours) {
+          if ($workedHours == 0) {
             $sicknessquota = 0;
           }
           else {
-            $sicknessquota =  round(($sickHours/($contracthours))*100,2);
+            $sicknessquota =  round(($sickHours/($workedHours))*100,2);
           }
         }
         if ($calls != 0) {
 
+            // dd($user, $calls, $user->gevo->count());
             $gevocr2 = round($user->gevo->count()*100 / $calls,2);
         }
         else {
-
+          // dd($user, $calls, $user->gevo->count());
           $gevocr2 = 0;
         }
+
         $payed11 = round(($user->dailyagent->sum('time_in_state')/3600),2);
 
-        $productiveStates = array('Wrap Up','Ringing', 'In Call','On Hold','Available','Released (05_occupied)','Released (06_practice)','Released (09_outbound)');
+        //all dailyAgent time
+        $allDAHours += $payed11;
 
         $productive = $user->dailyagent->whereIn('status', $productiveStates)
         ->sum('time_in_state');
 
         $productive = round(($productive/3600),2);
+
+        //all dailyAgent time in productive states
+        $allDAProdHours += $productive;
 
         $user->salesdata = array(
           'calls' => $sumcalls,
@@ -651,6 +686,10 @@ class HomeController extends Controller
           'productive' => $productive,
           'aht' => $AHT,
           'sickhours' => $sickHours,
+          'dailyagentCalls' => $calls,
+          'sumSSCCalls' => $sumSSCCalls,
+          'sumBSCCalls' => $sumBSCCalls,
+          'sumPortalCalls' => $sumPortalCalls,
         );
 
         $optinCalls = $user->Optin->sum('Anzahl_Handled_Calls');
@@ -689,10 +728,35 @@ class HomeController extends Controller
         'allMVLZ' => $allMLZV,
         'allOptinCalls' => $allOptinCalls,
         'allOptinRequests' => $allOptinRequests,
+
+      );
+
+      if ($allDailyAgentCalls ==  0) {
+        $avgAHT = 0;
+      }
+      else {
+        $avgAHT = round($allAHTSeconds/$allDailyAgentCalls,2);
+      }
+
+      $footerdata = array(
+        'avgAHT' => $avgAHT,
+        'allSSCCalls' => $allSSCCalls,
+        'allSSCSaves' => $allSSCSaves,
+        'allBSCCalls' => $allBSCCalls,
+        'allBSCSaves' => $allBSCSaves,
+        'allPortaleCalls' => $allPortalCalls,
+        'allPortaleSaves' => $allPortalSaves,
+        'allRLZ24' => $allRLZ24,
+        'allMVLZ' => $allMLZV,
+        'allOptinCalls' => $allOptinCalls,
+        'allOptinRequests' => $allOptinRequests,
+        'allDailyAgentCalls' => $allDailyAgentCalls,
+        'allWorkedHours' => $allWorkedHours,
+        'allGeVoSaves' => $allGeVoSaves,
       );
 
       //dd($overalldata);
-      return view('DB', compact('overalldata', 'users'));
+      return view('DB', compact('overalldata', 'users','footerdata'));
     }
 
     public function test($value='')

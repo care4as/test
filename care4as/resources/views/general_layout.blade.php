@@ -544,7 +544,7 @@
   </div>
 
   @yield('additional_modal')
-  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal show" id="errorModal" role="dialog" aria-labelledby="exampleModalLabel" style="overflow:hidden;">
     <div class="modal-dialog">
       <div class="modal-content bg-danger text-white">
         <div class="modal-header">
