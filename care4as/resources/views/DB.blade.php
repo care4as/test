@@ -475,8 +475,8 @@ tfoot td
           <td id="productive11avg">prod1u1</td>
           <td id="produktivequote">pq</td>
           <td id="produktivequote11">pq1u1</td>
-          <td id="callsPerHour">{{getQuota((($allCalls = $footerdata['allSSCCalls'] + $footerdata['allBSCCalls'] + $footerdata['allPortaleCalls'])/$footerdata['allWorkedHours']),2)}}</td>
-          <td id="savesPerHour">{{getQuota((($allSaves = $footerdata['allSSCSaves'] + $footerdata['allBSCSaves'] + $footerdata['allPortaleSaves'])/$footerdata['allWorkedHours']),2)}}</td>
+          <td id="callsPerHour">{{getQuota((($allCalls = $footerdata['allSSCCalls'] + $footerdata['allBSCCalls'] + $footerdata['allPortaleCalls'])/0,2)}}</td>
+          <td id="savesPerHour">{{getQuota((($allSaves = $footerdata['allSSCSaves'] + $footerdata['allBSCSaves'] + $footerdata['allPortaleSaves'])/0,2)}}</td>
           <td id="allDailyAgentCalls"></td>
           <td id="allGeVoSaves">{{$footerdata['allGeVoSaves']}}</td>
           <td id="sseSaves">k.D.</td>
