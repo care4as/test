@@ -191,6 +191,7 @@ tfoot td
           </button>
         </div>
       </div>
+
       <div class="col-2 offset-5">
         <div class="row h-100 center_items mr-2">
           <p style="font-size: 20px; font-weight: bold;">  Wähle die Daten:</p>
@@ -271,255 +272,261 @@ tfoot td
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-3 center_items">
+          <small class=""><b>Scroll über die Überschrift der jeweiligen Spalte für eine Erklärung zu der KPI</b></small>
+        </div>
+      </div>
     </div>
   </div>
   <div class="max-main-container">
+
     <div class="max-panel-content">
-  <div class="row m-2 mt-4 justify-content-center align-self-center" >
-    <div class="col-12">
-    <div class="col p-1">
-      @php
-        if(request('department') == '1&1 DSL Retention')
-        {
-          $pricepersave = 15;
-        }
-        else
-        {
-          $pricepersave = 15;
-        }
-      @endphp
+      <div class="row m-2 mt-4 justify-content-center align-self-center" >
+        <div class="col p-1">
+          @php
+            if(request('department') == '1&1 DSL Retention')
+            {
+              $pricepersave = 15;
+            }
+            else
+            {
+              $pricepersave = 15;
+            }
+          @endphp
 
-      <table class="max-table" id="tableoverview">
-        <thead class="thead">
-          <tr class="">
-            <th>#</th>
-            <th>Name</th>
-            <th data-toggle="tooltip" data-placement="top" title="durschnittliche Bearbeitungszeit eines Cases in Sekunden">AHT</th>
-            <th data-toggle="tooltip" data-placement="top" title="Stundenreport KDW bezahlte Stunden">h bezahlt </th>
-            <th data-toggle="tooltip" data-placement="top" title="eingeloggte Zeit in der CCU">h anwesend</th>
-            <th data-toggle="tooltip" data-placement="top" title="Zeit in der CCU auf produktiven Status">h produktiv</th>
-            <th data-toggle="tooltip" data-placement="top" title="Produktivquote aus Spalte h bezahlt (KDW) und h produktiv (DA)">PQ</th>
-            <th data-toggle="tooltip" data-placement="top" title="Produktivquote aus den DailyAgent Daten ">1&1 PQ</th>
-            <th data-toggle="tooltip" data-placement="top" title="RD Calls / KDW bezahlte Stunden">Calls/h</th>
-            <th data-toggle="tooltip" data-placement="top" title="RD Gesamtsaves / KDW bezahlte Stunden">Saves/h</th>
-            <th data-toggle="tooltip" data-placement="top" title="Gesamtanzahl Calls aus dem DailyAgent">DA Calls</th>
-            <th>GeVo Saves</th>
-            <th>SSE Tracking</th>
-            <th>RD Calls</th>
-            <th>RD SSC Calls</th>
-            <th>RD BSC Calls</th>
-            <th>RD Portal Calls</th>
-            <th>RD Saves</th>
-            <th>RD SSC</th>
-            <th>RD BSC</th>
-            <th>RD Portal</th>
-            <th>RD SSC CR</th>
-            <th>RD BSC CR</th>
-            <th>RD Portal CR</th>
-            <th>GO CR (+KüRü)</th>
-            <th>RD CR</th>
-            <th>RLZ+24 %</th>
-            <th>GeVo/DA Calls CR</th>
-            <th>SaS</th>
-            <th>OptIn</th>
-            <th>Umsatz</th>
-            <th>Umsatz/h bez</th>
-            <th>Umsatz/h prod</th>
-            <th>Kr h</th>
-            <th>KQ</th>
-            <th>Optionen</th>
-          </tr>
-      </thead>
-      <tbody>
-        @foreach($users as $user)
-          <tr class="">
-            <td data-order="{{$user->id}}" class="fixedCol" style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
-            <td data-order="{{$user->name}}" class="fixedCol" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->name}} </span></td>
-            <td data-order="{{$user->salesdata['aht']}}" style= "font-size: 900; color: @if($user->salesdata['aht'] < 750 && $user->salesdata['aht'] != 0) green @else red @endif;">
-              {{$user->salesdata['aht']}}
-            </td>
-            <td data-order="{{$user->salesdata['workedHours']}}">{{$user->salesdata['workedHours']}}</td>
-            <td data-order="{{$user->salesdata['payedtime11']}}">{{$user->salesdata['payedtime11']}}</td>
-            <td data-order="{{$user->salesdata['productive']}}">{{$user->salesdata['productive']}}</td>
-            @if($user->salesdata['workedHours'] != 0)
-              <td data-order="{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}">{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}%</td>
-            @else
-              <td data-order="0">0%</td>
-            @endif
-            <!-- 1&1 Produktivquote -->
-            @if($user->salesdata['payedtime11'] != 0)
-              <td data-order="{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11'],2)}}">{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11']),2}}%</td>
-            @else
-              <td data-order="0">0%</td>
-            @endif
-            <!-- /1&1 Produktivquote -->
+          <table class="max-table" id="tableoverview">
 
-            <!-- Calls per hour-->
-            @if($user->salesdata['workedHours'] != 0)
-              <td data-order="{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}">{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}</td>
-              @else
-              <td data-order="0">0</td>
-            @endif
-            <!-- /Calls per hour-->
+            <thead class="thead">
 
-            <!-- Saves/h -->
-            @if($user->salesdata['workedHours'] != 0)
-              @if($user->department == '1&1 DSL Retention')
-                <td data-order="{{$user->salesdata['orders']/$user->salesdata['workedHours']}}">{{round($user->salesdata['orders']/($user->salesdata['workedHours']),2)}}</td>
-              @else
-                <td data-order="{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{round($sumSaves/($user->salesdata['workedHours']),2)}}</td>
-              @endif
-            @else
-              <td data-order="0">0</td>
-            @endif
-            <!-- /Saves/h -->
+              <tr class="">
+                <th># </th>
+                <th>Name</th>
+                <th data-toggle="tooltip" data-placement="top" title="durschnittliche Bearbeitungszeit eines Cases in Sekunden">AHT</th>
+                <th data-toggle="tooltip" data-placement="top" title="Stundenreport KDW bezahlte Stunden">h bezahlt </th>
+                <th data-toggle="tooltip" data-placement="top" title="eingeloggte Zeit in der CCU">h anwesend</th>
+                <th data-toggle="tooltip" data-placement="top" title="Zeit in der CCU auf produktiven Status">h produktiv</th>
+                <th data-toggle="tooltip" data-placement="top" title="Produktivquote aus Spalte h bezahlt (KDW) und h produktiv (DA)">PQ</th>
+                <th data-toggle="tooltip" data-placement="top" title="Produktivquote aus den DailyAgent Daten ">1&1 PQ</th>
+                <th data-toggle="tooltip" data-placement="top" title="RD Calls / KDW bezahlte Stunden">Calls/h</th>
+                <th data-toggle="tooltip" data-placement="top" title="RD Gesamtsaves / KDW bezahlte Stunden">Saves/h</th>
+                <th data-toggle="tooltip" data-placement="top" title="Gesamtanzahl Calls aus dem DailyAgent">DA Calls</th>
+                <th data-toggle="tooltip" data-placement="top" title="Saves insgesamt aus dem GeVo Tracking, mit einem Klick auf die Zahl wird die Verteilung angezeigt, Abweichungen zu RD Saves sehr wahrscheinlich">GeVo Saves</th>
+                <th data-toggle="tooltip" data-placement="top" title="Saves aus dem SSE Tracking Report, Abweichungen zu RD Saves sehr wahrscheinlich">SSE Tracking</th>
+                <th data-toggle="tooltip" data-placement="top" title="Gesamtanzahl Calls aus dem Retention Details Report">RD Calls</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details SSC Calls">RD SSC Calls</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details BSC Calls">RD BSC Calls</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details Portal Calls">RD Portal Calls</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details alle Saves ohne Kürüs">RD Saves</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details SSC Saves">RD SSC</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details BSC Saves">RD BSC</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details Portal Saves">RD Portal</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details SSC CR">RD SSC CR</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details BSC CR">RD BSC CR</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details Portal CR">RD Portal CR</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details Overall CR inkl. KüRüs">GO CR</th>
+                <th data-toggle="tooltip" data-placement="top" title="Retention Details CR ohne KüRüs">RD CR</th>
+                <th data-toggle="tooltip" data-placement="top" title="RLZ24 Quote, Berechnung zur 1&1 Berechung weicht ab">RLZ+24 %</th>
+                <th data-toggle="tooltip" data-placement="top" title="eine alternative CR zu der RD CR. Die Berechnung erfolgt aus den Saves aus dem GeVo Report und den Calls aus dem DailyAgent">CR 2</th>
+                <th data-toggle="tooltip" data-placement="top" title="SAS Quote">SaS</th>
+                <th data-toggle="tooltip" data-placement="top" title="Optinquote">OptIn</th>
+                <th data-toggle="tooltip" data-placement="top" title='Umsatz bei kalkulierten 15€ pro Save'>Umsatz</th>
+                <th data-toggle="tooltip" data-placement="top" title='Umsatz pro bezahlter Stunde(KDW)'>Umsatz/h bez</th>
+                <th data-toggle="tooltip" data-placement="top" title='Umsatz pro produktiver Stunde(DailyAgent)'>Umsatz/h prod</th>
+                <th data-toggle="tooltip" data-placement="top" title='alle Krankenstunden'>Kr h</th>
+                <th data-toggle="tooltip" data-placement="top" title='Quote bezahlte Stunden / Krankheitsstunden'>KQ</th>
+                <th>Optionen</th>
+              </tr>
+          </thead>
+          <tbody>
+            @foreach($users as $user)
+              <tr class="">
+                <td data-order="{{$user->id}}" class="fixedCol" style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
+                <td data-order="{{$user->name}}" class="fixedCol" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->name}} </span></td>
+                <td data-order="{{$user->salesdata['aht']}}" style= "font-size: 900; color: @if($user->salesdata['aht'] < 750 && $user->salesdata['aht'] != 0) green @else red @endif;">
+                  {{$user->salesdata['aht']}}
+                </td>
+                <td data-order="{{$user->salesdata['workedHours']}}">{{$user->salesdata['workedHours']}}</td>
+                <td data-order="{{$user->salesdata['payedtime11']}}">{{$user->salesdata['payedtime11']}}</td>
+                <td data-order="{{$user->salesdata['productive']}}">{{$user->salesdata['productive']}}</td>
+                @if($user->salesdata['workedHours'] != 0)
+                  <td data-order="{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}">{{round($user->salesdata['productive']*100/$user->salesdata['workedHours'],2)}}%</td>
+                @else
+                  <td data-order="0">0%</td>
+                @endif
+                <!-- 1&1 Produktivquote -->
+                @if($user->salesdata['payedtime11'] != 0)
+                  <td data-order="{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11'],2)}}">{{round($user->salesdata['productive']*100/$user->salesdata['payedtime11']),2}}%</td>
+                @else
+                  <td data-order="0">0%</td>
+                @endif
+                <!-- /1&1 Produktivquote -->
 
-            <!-- Calls DailyAgent -->
-            <td data-order="{{$user->salesdata['dailyagentCalls']}}">{{$user->salesdata['dailyagentCalls']}}</td>
-            <!-- /Calls DailyAgent -->
+                <!-- Calls per hour-->
+                @if($user->salesdata['workedHours'] != 0)
+                  <td data-order="{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}">{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}</td>
+                  @else
+                  <td data-order="0">0</td>
+                @endif
+                <!-- /Calls per hour-->
 
-            <!-- GeVo SAVES -->
-            <td data-order="{{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}">
-              <div class="center_items" style="position: relative; height: auto; width: 100%;">
-                <div class="" style="position: absolute; display:block;">
-                  <a onclick="showDetails({{$user->id}})" style="cursor:pointer;">  {{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}</a>
-                </div>
-                <div class="bg-light text-dark" style="position: absolute; display:none; z-index: 200;" id="details{{$user->id}}" onclick="hide(this)">
-                  <div class="">
-                    Upgrades:{{$user->gevo->where('change_cluster','Upgrade')->count()}}
+                <!-- Saves/h -->
+                @if($user->salesdata['workedHours'] != 0)
+                  @if($user->department == '1&1 DSL Retention')
+                    <td data-order="{{$user->salesdata['orders']/$user->salesdata['workedHours']}}">{{round($user->salesdata['orders']/($user->salesdata['workedHours']),2)}}</td>
+                  @else
+                    <td data-order="{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{round($sumSaves/($user->salesdata['workedHours']),2)}}</td>
+                  @endif
+                @else
+                  <td data-order="0">0</td>
+                @endif
+                <!-- /Saves/h -->
+
+                <!-- Calls DailyAgent -->
+                <td data-order="{{$user->salesdata['dailyagentCalls']}}">{{$user->salesdata['dailyagentCalls']}}</td>
+                <!-- /Calls DailyAgent -->
+
+                <!-- GeVo SAVES -->
+                <td data-order="{{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}">
+                  <div class="center_items" style="position: relative; height: auto; width: 100%;">
+                    <div class="" style="position: absolute; display:block;">
+                      <a onclick="showDetails({{$user->id}})" style="cursor:pointer;">  {{$user->gevo->where('change_cluster','Upgrade')->count() + $user->gevo->where('change_cluster','Sidegrade')->count() +$user->gevo->where('change_cluster','Downgrade')->count()}}</a>
+                    </div>
+                    <div class="bg-light text-dark" style="position: absolute; display:none; z-index: 200;" id="details{{$user->id}}" onclick="hide(this)">
+                      <div class="">
+                        Upgrades:{{$user->gevo->where('change_cluster','Upgrade')->count()}}
+                      </div>
+                      <div class="">
+                        Sidegrades:{{$user->gevo->where('change_cluster','Sidegrade')->count()}}
+                      </div>
+                      <div class="">
+                        Downgrades:{{$user->gevo->where('change_cluster','Downgrade')->count()}}
+                      </div>
+                    </div>
                   </div>
-                  <div class="">
-                    Sidegrades:{{$user->gevo->where('change_cluster','Sidegrade')->count()}}
-                  </div>
-                  <div class="">
-                    Downgrades:{{$user->gevo->where('change_cluster','Downgrade')->count()}}
-                  </div>
-                </div>
-              </div>
-            </td>
-            <!-- /GeVo SAVES -->
+                </td>
+                <!-- /GeVo SAVES -->
 
-            <!-- All SSE Saves -->
-            <td data-order="{{$user->salesdata['ssesaves']}}">{{$user->salesdata['ssesaves']}}</td>
-            <!-- All SSE Saves -->
+                <!-- All SSE Saves -->
+                <td data-order="{{$user->salesdata['ssesaves']}}">{{$user->salesdata['ssesaves']}}</td>
+                <!-- All SSE Saves -->
 
-            <!-- All RD Calls -->
-            <td data-order="{{$user->salesdata['calls']}}">{{$user->salesdata['calls']}}</td>
-            <!-- /All RD Calls -->
-            <td>{{$user->salesdata['sumSSCCalls']}}</td>
-            <td>{{$user->salesdata['sumBSCCalls']}}</td>
-            <td>{{$user->salesdata['sumPortalCalls']}}</td>
-            <!-- Gesamtsaves -->
-            @if($user->department == '1&1 DSL Retention')
-              <td data-order="{{$user->salesdata['orders']}}">{{$user->salesdata['orders']}}</td>
-            @else
-              <td data-order="{{$user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{$sumSaves}}</td>
-            @endif
-            <!-- /Gesamtsaves -->
-            <td data-order="{{$user->salesdata['sscOrders']}}">{{$user->salesdata['sscOrders']}}</td>
-            <td data-order="{{$user->salesdata['bscOrders']}}">{{$user->salesdata['bscOrders']}}</td>
-            <td data-order="{{$user->salesdata['portalOrders']}}">{{$user->salesdata['portalOrders']}}</td>
-            <td data-order="{{$user->salesdata['sscQuota']}}" style= "font-size: 900; color: @if($user->salesdata['sscQuota'] > 60) green @elseif ($user->salesdata['sscQuota'] > 51) #ffc107 @else red @endif;"> {{$user->salesdata['sscQuota']}}%</td>
-            <td data-order="{{$user->salesdata['bscQuota']}}" style= "font-size: 900; color: @if($user->salesdata['bscQuota'] > 18) green @else red @endif;">{{$user->salesdata['bscQuota']}}% </td>
-            <td data-order="{{$user->salesdata['portalQuota']}}" style= "font-size: 900; color: @if($user->salesdata['portalQuota'] > 65) green @else red @endif;">{{$user->salesdata['portalQuota']}}%</td>
-            <!-- CR with KüRü -->
-            <td data-order="50">GO CR</td>
-            <!-- /CR with KüRü  -->
+                <!-- All RD Calls -->
+                <td data-order="{{$user->salesdata['calls']}}">{{$user->salesdata['calls']}}</td>
+                <!-- /All RD Calls -->
+                <td>{{$user->salesdata['sumSSCCalls']}}</td>
+                <td>{{$user->salesdata['sumBSCCalls']}}</td>
+                <td>{{$user->salesdata['sumPortalCalls']}}</td>
+                <!-- Gesamtsaves -->
+                @if($user->department == '1&1 DSL Retention')
+                  <td data-order="{{$user->salesdata['orders']}}">{{$user->salesdata['orders']}}</td>
+                @else
+                  <td data-order="{{$user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{$sumSaves}}</td>
+                @endif
+                <!-- /Gesamtsaves -->
+                <td data-order="{{$user->salesdata['sscOrders']}}">{{$user->salesdata['sscOrders']}}</td>
+                <td data-order="{{$user->salesdata['bscOrders']}}">{{$user->salesdata['bscOrders']}}</td>
+                <td data-order="{{$user->salesdata['portalOrders']}}">{{$user->salesdata['portalOrders']}}</td>
+                <td data-order="{{$user->salesdata['sscQuota']}}" style= "font-size: 900; color: @if($user->salesdata['sscQuota'] > 60) green @elseif ($user->salesdata['sscQuota'] > 51) #ffc107 @else red @endif;"> {{$user->salesdata['sscQuota']}}%</td>
+                <td data-order="{{$user->salesdata['bscQuota']}}" style= "font-size: 900; color: @if($user->salesdata['bscQuota'] > 18) green @else red @endif;">{{$user->salesdata['bscQuota']}}% </td>
+                <td data-order="{{$user->salesdata['portalQuota']}}" style= "font-size: 900; color: @if($user->salesdata['portalQuota'] > 65) green @else red @endif;">{{$user->salesdata['portalQuota']}}%</td>
+                <!-- CR with KüRü -->
+                <td data-order="50">GO CR</td>
+                <!-- /CR with KüRü  -->
 
-            <!-- RD Gevo CR-->
-            @if($user->department == '1&1 Mobile Retention')
-              <td data-order="{{$user->salesdata['GeVo-Cr']}}" > {{$user->salesdata['GeVo-Cr']}}%</td>
-            @else
-              <td data-order="{{$user->salesdata['GeVo-Cr']}}" style= "font-size: 900; color: @if($user->salesdata['GeVo-Cr'] > 40) green @elseif ($user->salesdata['GeVo-Cr'] > 35) #ffc107 @else red @endif;"> {{$user->salesdata['GeVo-Cr']}}%</td>
-            @endif
-            <!--/RD CR-->
+                <!-- RD Gevo CR-->
+                @if($user->department == '1&1 Mobile Retention')
+                  <td data-order="{{$user->salesdata['GeVo-Cr']}}" > {{$user->salesdata['GeVo-Cr']}}%</td>
+                @else
+                  <td data-order="{{$user->salesdata['GeVo-Cr']}}" style= "font-size: 900; color: @if($user->salesdata['GeVo-Cr'] > 40) green @elseif ($user->salesdata['GeVo-Cr'] > 35) #ffc107 @else red @endif;"> {{$user->salesdata['GeVo-Cr']}}%</td>
+                @endif
+                <!--/RD CR-->
 
-            <!--RD RLZ-->
-              <td data-order="{{$user->salesdata['RLZ24Qouta']}}" style=" color: @if($user->salesdata['RLZ24Qouta'] > 70) green @else red @endif;">@if($user->salesdata['RLZ24Qouta'] != 0){{$user->salesdata['RLZ24Qouta']}}% @else 0% @endif</td>
-            <!--/RD RLZ-->
-            <!-- Gevo/DA CR-->
-            <td data-order="{{$user->salesdata['gevocr2']}}">{{$user->salesdata['gevocr2']}}%</td>
-            <!-- /Gevo/DA CR-->
+                <!--RD RLZ-->
+                  <td data-order="{{$user->salesdata['RLZ24Qouta']}}" style=" color: @if($user->salesdata['RLZ24Qouta'] > 70) green @else red @endif;">@if($user->salesdata['RLZ24Qouta'] != 0){{$user->salesdata['RLZ24Qouta']}}% @else 0% @endif</td>
+                <!--/RD RLZ-->
+                <!-- Gevo/DA CR-->
+                <td data-order="{{$user->salesdata['gevocr2']}}">{{$user->salesdata['gevocr2']}}%</td>
+                <!-- /Gevo/DA CR-->
 
-            <td data-order="{{$user->sasquota}}">{{$user->sasquota}}</td>
-            <td data-order="{{$user->optinQuota}}" style= "font-size: 900; color: @if($user->optinQuota > 16) green @else red @endif;">{{$user->optinQuota}}%</td>
-            <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
-            @if($user->salesdata['workedHours'] != 0)
-              <td data-order="{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}">{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
-            @else
-              <td data-order="0">0</td>
-            @endif
-            @if($user->salesdata['productive'] != 0)
-              <td data-order="{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}">{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}</td>
-            @else
-                <td data-order="0">0</td>
-            @endif
-            <td data-order="{{$user->salesdata['sickhours']}}">{{$user->salesdata['sickhours']}}</td>
-            <td data-order="{{$user->salesdata['sicknessquota']}}" style=" color: @if($user->salesdata['sicknessquota'] < 9) green @else red @endif;">{{$user->salesdata['sicknessquota']}}%</td>
-            <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
-            <td data-order="{{$user->id}}" class="" style="text-align:center; font-size: 1.4em;">
-              <a class="text-muted" href="{{route('user.stats', ['id' => $user->id])}}">
-                <span class="material-icons">preview</span>
-              </a>
-            </td>
-          </tr>
-        @endforeach
-      </tbody>
-      <tfoot class="">
-        <tr class="" id='footerdata'>
-          <td>Total:</td>
-          <td id="countMA">{{$users->count()}}</td>
-          <td id="aht">{{$footerdata['avgAHT']}}s</td>
-          <td id="kdw">kdw</td>
-          <td id="payed11avg">bez1u1</td>
-          <td id="productive11avg">prod1u1</td>
-          <td id="produktivequote">pq</td>
-          <td id="produktivequote11">pq1u1</td>
-          <td id="callsPerHour">
-            {{getQuota($allCalls = $footerdata['allSSCCalls'] + $footerdata['allBSCCalls'] + $footerdata['allPortaleCalls'], $footerdata['allWorkedHours'])/100}}
-          </td>
-          <td id="savesPerHour">{{getQuota($allSaves = $footerdata['allSSCSaves'] + $footerdata['allBSCSaves'] + $footerdata['allPortaleSaves'],$footerdata['allWorkedHours'])/100}}</td>
-          <td id="allDailyAgentCalls"></td>
-          <td id="allGeVoSaves">{{$footerdata['allGeVoSaves']}}</td>
-          <td id="sseSaves">k.D.</td>
-          <td id="RD Calls">{{$footerdata['allSSCCalls'] + $footerdata['allBSCCalls'] + $footerdata['allPortaleCalls']}}</td>
-          <td id="RD SSC Calls"></td>
-          <td id="RD BSC Calls">/td>
-          <td id="RD Portal Calls"></td>
-          <td id="RD Saves">RD Saves</td>
-          <td id="RD SSC Saves">RD SSC Saves</td>
-          <td id="RD BSC Saves">RD BSC Saves</td>
-          <td id="RD Portal Saves">RD Portal Saves</td>
-          <td id="RD SSC CR">{{getQuota($footerdata['allSSCCalls'],$footerdata['allSSCSaves'])}}%</td>
-          <td id="RD BSC CR">{{getQuota($footerdata['allBSCCalls'],$footerdata['allBSCSaves'])}}%</td>
-          <td id="RD Portale CR">{{getQuota($footerdata['allPortaleCalls'],$footerdata['allPortaleSaves'])}}%</td>
-          <td id="Go Cr">GO CR</td>
-          <td id="RD CR">{{getQuota($allCalls,$allSaves)}}%</td>
-          <td id="RLZ24">
-            @if($footerdata['allRLZ24'] + $footerdata['allMVLZ'] == 0)
-            0
+                <td data-order="{{$user->sasquota}}">{{$user->sasquota}}</td>
+                <td data-order="{{$user->optinQuota}}" style= "font-size: 900; color: @if($user->optinQuota > 16) green @else red @endif;">{{$user->optinQuota}}%</td>
+                <td data-order="{{$user->salesdata['orders'] * $pricepersave}}">{{$user->salesdata['orders'] * $pricepersave}}€</td>
+                @if($user->salesdata['workedHours'] != 0)
+                  <td data-order="{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}">{{round(($user->salesdata['orders'] * $pricepersave)/($user->salesdata['workedHours']),2)}}</td>
+                @else
+                  <td data-order="0">0</td>
+                @endif
+                @if($user->salesdata['productive'] != 0)
+                  <td data-order="{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}">{{round(($user->salesdata['orders'] * $pricepersave) / $user->salesdata['productive'],2) }}</td>
+                @else
+                    <td data-order="0">0</td>
+                @endif
+                <td data-order="{{$user->salesdata['sickhours']}}">{{$user->salesdata['sickhours']}}</td>
+                <td data-order="{{$user->salesdata['sicknessquota']}}" style=" color: @if($user->salesdata['sicknessquota'] < 9) green @else red @endif;">{{$user->salesdata['sicknessquota']}}%</td>
+                <!-- <td>round($user->salesdata['sicknessquota'],2)%</td> -->
+                <td data-order="{{$user->id}}" class="" style="text-align:center; font-size: 1.4em;">
+                  <a class="text-muted" href="{{route('user.stats', ['id' => $user->id])}}">
+                    <span class="material-icons">preview</span>
+                  </a>
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+          <tfoot class="">
+            <tr class="" id='footerdata'>
+              <td>Total:</td>
+              <td id="countMA">{{$users->count()}}</td>
+              <td id="aht">{{$footerdata['avgAHT']}}s</td>
+              <td id="kdw">kdw</td>
+              <td id="payed11avg">bez1u1</td>
+              <td id="productive11avg">prod1u1</td>
+              <td id="produktivequote">pq</td>
+              <td id="produktivequote11">pq1u1</td>
+              <td id="callsPerHour">
+                {{getQuota($allCalls = $footerdata['allSSCCalls'] + $footerdata['allBSCCalls'] + $footerdata['allPortaleCalls'], $footerdata['allWorkedHours'])/100}}
+              </td>
+              <td id="savesPerHour">{{getQuota($allSaves = $footerdata['allSSCSaves'] + $footerdata['allBSCSaves'] + $footerdata['allPortaleSaves'],$footerdata['allWorkedHours'])/100}}</td>
+              <td id="allDailyAgentCalls"></td>
+              <td id="allGeVoSaves">{{$footerdata['allGeVoSaves']}}</td>
+              <td id="sseSaves">k.D.</td>
+              <td id="RD Calls">{{$footerdata['allSSCCalls'] + $footerdata['allBSCCalls'] + $footerdata['allPortaleCalls']}}</td>
+              <td id="RD SSC Calls"></td>
+              <td id="RD BSC Calls">/td>
+              <td id="RD Portal Calls"></td>
+              <td id="RD Saves">RD Saves</td>
+              <td id="RD SSC Saves">RD SSC Saves</td>
+              <td id="RD BSC Saves">RD BSC Saves</td>
+              <td id="RD Portal Saves">RD Portal Saves</td>
+              <td id="RD SSC CR">{{getQuota($footerdata['allSSCCalls'],$footerdata['allSSCSaves'])}}%</td>
+              <td id="RD BSC CR">{{getQuota($footerdata['allBSCCalls'],$footerdata['allBSCSaves'])}}%</td>
+              <td id="RD Portale CR">{{getQuota($footerdata['allPortaleCalls'],$footerdata['allPortaleSaves'])}}%</td>
+              <td id="Go Cr">GO CR</td>
+              <td id="RD CR">{{getQuota($allCalls,$allSaves)}}%</td>
+              <td id="RLZ24">
+                @if($footerdata['allRLZ24'] + $footerdata['allMVLZ'] == 0)
+                0
 
-            @else
-            {{round((($footerdata['allRLZ24'] / ($footerdata['allRLZ24'] + $footerdata['allMVLZ']))*100),2)}}%
+                @else
+                {{round((($footerdata['allRLZ24'] / ($footerdata['allRLZ24'] + $footerdata['allMVLZ']))*100),2)}}%
 
-            @endif
-          </td>
-          <td id="CR2">{{getQuota($footerdata['allDailyAgentCalls'], $footerdata['allGeVoSaves'])}}%</td>
-          <td id="SAS">SAS</td>
-          <td id="Optin">{{getQuota($footerdata['allOptinCalls'], $footerdata['allOptinRequests'])}}%</td>
-          <td id="Revenue">revenue</td>
-          <td id="Revenue payed">Revenue payed</td>
-          <td id="Revenue productive">Revenue productive</td>
-          <td id="Sickness Hours">Sickness Hours</td>
-          <td id="Sickness Quota">Sickness Quota</td>
-          <td>total</td>
-        </tr>
-      </tfoot>
-    </table>
+                @endif
+              </td>
+              <td id="CR2">{{getQuota($footerdata['allDailyAgentCalls'], $footerdata['allGeVoSaves'])}}%</td>
+              <td id="SAS">SAS</td>
+              <td id="Optin">{{getQuota($footerdata['allOptinCalls'], $footerdata['allOptinRequests'])}}%</td>
+              <td id="Revenue">revenue</td>
+              <td id="Revenue payed">Revenue payed</td>
+              <td id="Revenue productive">Revenue productive</td>
+              <td id="Sickness Hours">Sickness Hours</td>
+              <td id="Sickness Quota">Sickness Quota</td>
+              <td>total</td>
+            </tr>
+          </tfoot>
+        </table>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</div>
 </div>
 
 
@@ -617,7 +624,7 @@ tfoot td
                       <div class="row m-0">
                         <div class="col-12 p-0" style="border-right: 2px solid black;">
                           <label for="department">Abteilung:</label>
-                          <select class="form-control" name="department" id="department" style="width:218px; z-index: 50100;">
+                          <select class="form-control" name="department" id="department" style="width:218px; z-index: 50100;" required>
                             <option value="" @if(!request('department')) selected @endif disabled>Wähle die Abteilung</option>
                             <option value="1und1 DSL Retention" @if(request('department') == '1und1 DSL Retention') selected @endif>1&1 DSL Retention</option>
                             <option value="1und1 Retention" @if(request('department') == '1und1 Retention') selected @endif>1&1 Mobile Retention</option>
@@ -812,14 +819,14 @@ function toogleModal(modalid)
               {
                 $('#DataComplete').prop('checked', false)
                 table.columns().visible( false );
-                table.columns([1,13,14,15,16,17,18,19,20,21,22,23,24,25,26,35]).visible( true );
+                table.columns([1,8,9,13,14,15,16,17,18,19,20,21,22,23,24,25,26,35]).visible( true );
               }
               else {
-                table.columns([8,13,14,15,16,17,18,19,20,21,22,23,24,35]).visible( true );
+                table.columns([8,9,13,14,15,16,17,18,19,20,21,22,23,24,25,26,35]).visible( true );
               }
           }
           else {
-            table.columns([8,10,12,13,14,17,19,21,22,23]).visible( false );
+            table.columns([8,9,13,14,15,16,17,18,19,20,21,22,23,24,25,26,35]).visible( false );
           }
         })
         $('#DataGeVo').change(function(){
@@ -829,14 +836,14 @@ function toogleModal(modalid)
             {
               $('#DataComplete').prop('checked', false)
               table.columns().visible( false );
-              table.columns([1,9,20]).visible( true );
+              table.columns([1,11,27]).visible( true );
             }
             else {
-              table.columns([9,20]).visible( true );
+              table.columns([11,27]).visible( true );
             }
           }
           else {
-            table.columns([9,20]).visible( false );
+            table.columns([11,27]).visible( false );
           }
         })
         $('#DataDA').change(function(){
@@ -846,14 +853,14 @@ function toogleModal(modalid)
             {
               $('#DataComplete').prop('checked', false)
               table.columns().visible( false );
-              table.columns([1,2,3,4,5,6,7]).visible( true );
+              table.columns([1,2,3,4,5,6,7,8,9,10,27]).visible( true );
             }
             else {
-              table.columns([2,3,4,5,6,7]).visible( true );
+              table.columns([2,3,4,5,6,7,8,9,10,27]).visible( true );
             }
               }
           else {
-            table.columns([2,3,4,5,6,7]).visible( false );
+            table.columns([2,3,4,5,6,7,8,9,10,27]).visible( false );
           }
         })
         $('#DataSick').change(function(){
@@ -864,14 +871,14 @@ function toogleModal(modalid)
 
               $('#DataComplete').prop('checked', false)
               table.columns().visible( false );
-              table.columns([1,29,30]).visible( true );
+              table.columns([1,33,34]).visible( true );
             }
             else {
-              table.columns([29,30]).visible( true );
+              table.columns([33,34]).visible( true );
             }
                 }
           else {
-            table.columns([29,30]).visible( false );
+            table.columns([33,34]).visible( false );
           }
         })
         $('#DataPS').change(function(){
@@ -882,14 +889,14 @@ function toogleModal(modalid)
 
               $('#DataComplete').prop('checked', false)
               table.columns().visible( false );
-              table.columns([1,24,25]).visible( true );
+              table.columns([1,28,29]).visible( true );
             }
             else {
-              table.columns([24,25]).visible( true );
+              table.columns([28,29]).visible( true );
             }
                 }
           else {
-            table.columns([24,25]).visible( false );
+            table.columns([28,29]).visible( false );
           }
         })
         $('#DataRev').change(function(){
@@ -900,14 +907,14 @@ function toogleModal(modalid)
 
               $('#DataComplete').prop('checked', false)
               table.columns().visible( false );
-              table.columns([1,26,27,28]).visible( true );
+              table.columns([1,5,6,7,8,9,30,31,32]).visible( true );
             }
             else {
-              table.columns([26,27,28]).visible( true );
+              table.columns([5,6,7,8,9,30,31,32]).visible( true );
             }
                 }
           else {
-            table.columns([26,27,28]).visible( false );
+            table.columns([5,6,7,8,9,30,31,32]).visible( false );
           }
         })
 
