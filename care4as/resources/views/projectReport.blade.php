@@ -461,12 +461,33 @@
             buttons: [{
                     extend: 'csv',
                     text: 'CSV Export',
-                    className: 'btn btn-primary'
+                    className: 'btn btn-primary',
+                    footer: 'true',
+                    title: null,
+                    filename: 'Projektmeldung_Export',
                 },
                 {
                     extend: 'excel',
                     text: 'Excel Export',
-                    className: 'btn btn-primary'
+                    className: 'btn btn-primary',
+                    footer: 'true',
+                    title: null,
+                    sheetName: 'Export',
+                    filename: 'Projektmeldung_Export',
+                    autoFilter: 'true',
+                    exportOptions: {
+                        columns: ':visible',
+                        format: {
+                            body: function(data, row, column, node) {
+                                data = $('<p>' + data + '</p>').text();
+                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                            },
+                            footer: function(data, row, column, node) {
+                                data = $('<p>' + data + '</p>').text();
+                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                            }
+                        }
+                    },
                 },
             ],
     });
