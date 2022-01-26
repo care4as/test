@@ -448,7 +448,8 @@
               </li>
               <li class="nav-item dropdown m-2" > -->
               @if(in_array('controlling_base',Auth()->user()->getRights()))
-              <li class="nav-item dropdown" style="margin-right: 10px;">
+              <?php $dataTables = \DB::table('datatables_timespan')->get() ?>
+              <li class="nav-item dropdown" style="margin-right: 10px; cursor: pointer;">
                 <a class="nav-link dropdown-toggle" id="dataDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i style="font-size: 20px; line-height: 1.625rem" class="fas fa-database"></i>
                   <p>
@@ -460,51 +461,138 @@
                     <p class="">Datenstand</p>
                   </div>
                   <div class="dropdown-divider"></div>
-                    <p class="dropdown-item">Vollständig:</p>
+                  <div class="dropdown-item" style="display: flex; justify-content: space-between;">
+                    <div>
+                      Vollständig:
+                    </div>
+                    <div style="margin-left: 5px;">
+                      {{date('d.m.Y', strtotime($dataTables->max('min_date')))}} - {{date('d.m.Y', strtotime($dataTables->min('max_date')))}}
+                    </div>
+                  </div>
                   <div class="dropdown-divider"></div>
-                    <p class="dropdown-item">
-                      @if(isset($refinedDataTables['availbench_report']['max_date']) && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($refinedDataTables['availbench_report']['max_date']))
+                  <div class="dropdown-item" style="display: flex; justify-content: space-between;">
+                    <div>
+                      @if($dataTables->where('data_table', 'availbench_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'availbench_report')->min('max_date')))
                         <i class="fas fa-check-circle"></i>
                       @else
                         <i class="fas fa-times-circle"></i>
                       @endif
-                       Availbench:
-                      @if(isset($refinedDataTables['availbench_report']['min_date']))
-                        <td>{{$refinedDataTables['availbench_report']['min_date']}}</td>
+                      Availbench:
+                    </div>
+                    <div style="margin-left: 5px;">
+                      @if($dataTables->where('data_table', 'availbench_report')->min('min_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'availbench_report')->min('min_date')))}}</td>
                       @else
                         <td>%</td>
                       @endif
-                       -
-                      @if(isset($refinedDataTables['availbench_report']['max_date']))
-                        <td>{{$refinedDataTables['availbench_report']['max_date']}}</td>
+                      -
+                      @if($dataTables->where('data_table', 'availbench_report')->min('max_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'availbench_report')->min('max_date')))}}</td>
                       @else
                         <td>%</td>
-                      @endif</p>
-                    <p class="dropdown-item">
-                      @if(isset($refinedDataTables['dailyAgent_report']['max_date']) && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($refinedDataTables['dailyAgent_report']['max_date']))
+                      @endif
+                    </div>
+                  </div>
+                  <!-- Daily Agent -->
+                  <div class="dropdown-item" style="display: flex; justify-content: space-between;">
+                    <div>
+                      @if($dataTables->where('data_table', 'dailyAgent_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'dailyAgent_report')->min('max_date')))
                         <i class="fas fa-check-circle"></i>
                       @else
                         <i class="fas fa-times-circle"></i>
                       @endif
-                       Daily Agent:
-                      @if(isset($refinedDataTables['dailyAgent_report']['min_date']))
-                        <td>{{$refinedDataTables['dailyAgent_report']['min_date']}}</td>
+                      Daily Agent:
+                    </div>
+                    <div style="margin-left: 5px;">
+                      @if($dataTables->where('data_table', 'dailyAgent_report')->min('min_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'dailyAgent_report')->min('min_date')))}}</td>
                       @else
                         <td>%</td>
                       @endif
-                       -
-                      @if(isset($refinedDataTables['dailyAgent_report']['max_date']))
-                        <td>{{$refinedDataTables['dailyAgent_report']['max_date']}}</td>
+                      -
+                      @if($dataTables->where('data_table', 'dailyAgent_report')->min('max_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'dailyAgent_report')->min('max_date')))}}</td>
                       @else
                         <td>%</td>
-                      @endif</p>
-                    <p class="dropdown-item">Ret Details: </p>
-                    <p class="dropdown-item">OptIn: </p>
-                    <p class="dropdown-item">SAS: </p>
+                      @endif
+                    </div>
+                  </div>
+                  <!-- OptIn -->
+                  <div class="dropdown-item" style="display: flex; justify-content: space-between;">
+                    <div>
+                      @if($dataTables->where('data_table', 'optin_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'optin_report')->min('max_date')))
+                        <i class="fas fa-check-circle"></i>
+                      @else
+                        <i class="fas fa-times-circle"></i>
+                      @endif
+                      OptIn:
+                    </div>
+                    <div style="margin-left: 5px;">
+                      @if($dataTables->where('data_table', 'optin_report')->min('min_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'optin_report')->min('min_date')))}}</td>
+                      @else
+                        <td>%</td>
+                      @endif
+                      -
+                      @if($dataTables->where('data_table', 'optin_report')->min('max_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'optin_report')->min('max_date')))}}</td>
+                      @else
+                        <td>%</td>
+                      @endif
+                    </div>
+                  </div>
+                  <!-- RET Details -->
+                  <div class="dropdown-item" style="display: flex; justify-content: space-between;">
+                    <div>
+                      @if($dataTables->where('data_table', 'details_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'details_report')->min('max_date')))
+                        <i class="fas fa-check-circle"></i>
+                      @else
+                        <i class="fas fa-times-circle"></i>
+                      @endif
+                      Ret Details:
+                    </div>
+                    <div style="margin-left: 5px;">
+                      @if($dataTables->where('data_table', 'details_report')->min('min_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'details_report')->min('min_date')))}}</td>
+                      @else
+                        <td>%</td>
+                      @endif
+                      -
+                      @if($dataTables->where('data_table', 'details_report')->min('max_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'details_report')->min('max_date')))}}</td>
+                      @else
+                        <td>%</td>
+                      @endif
+                    </div>
+                  </div>
+                  <!-- SaS -->  
+                  <div class="dropdown-item" style="display: flex; justify-content: space-between;">
+                    <div>
+                      @if($dataTables->where('data_table', 'sas_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'sas_report')->min('max_date')))
+                        <i class="fas fa-check-circle"></i>
+                      @else
+                        <i class="fas fa-times-circle"></i>
+                      @endif
+                      SaS:
+                    </div>
+                    <div style="margin-left: 5px;">
+                      @if($dataTables->where('data_table', 'sas_report')->min('min_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'sas_report')->min('min_date')))}}</td>
+                      @else
+                        <td>%</td>
+                      @endif
+                      -
+                      @if($dataTables->where('data_table', 'sas_report')->min('max_date') != null)
+                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'sas_report')->min('max_date')))}}</td>
+                      @else
+                        <td>%</td>
+                      @endif
+                    </div>
+                  </div>
                 </div>
               </li>
               @endif
-              <li class="nav-item dropdown">
+              <li class="nav-item dropdown" style="cursor: pointer;">
                 <a class="nav-link dropdown-toggle" id="userDropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons users_single-02"></i>
                   <p>
