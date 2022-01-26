@@ -451,7 +451,7 @@
               <?php $dataTables = \DB::table('datatables_timespan')->get() ?>
               <li class="nav-item dropdown" style="margin-right: 10px; cursor: pointer;">
                 <a class="nav-link dropdown-toggle" id="dataDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i style="font-size: 20px; line-height: 1.625rem" class="fas fa-database"></i>
+                  <i style="font-size: 25px; top: 4px; position: relative;" class="fas fa-tasks"></i>
                   <p>
                     <span class="d-lg-none d-md-block"> </span>
                   </p>
@@ -480,12 +480,12 @@
                       Availbench:
                     </div>
                     <div style="margin-left: 5px;">
-                      @if($dataTables->where('data_table', 'availbench_report')->min('min_date') != null)
+                      <!-- @if($dataTables->where('data_table', 'availbench_report')->min('min_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'availbench_report')->min('min_date')))}}</td>
                       @else
                         <td>%</td>
                       @endif
-                      -
+                      - -->
                       @if($dataTables->where('data_table', 'availbench_report')->min('max_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'availbench_report')->min('max_date')))}}</td>
                       @else
@@ -504,12 +504,12 @@
                       Daily Agent:
                     </div>
                     <div style="margin-left: 5px;">
-                      @if($dataTables->where('data_table', 'dailyAgent_report')->min('min_date') != null)
+                      <!-- @if($dataTables->where('data_table', 'dailyAgent_report')->min('min_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'dailyAgent_report')->min('min_date')))}}</td>
                       @else
                         <td>%</td>
                       @endif
-                      -
+                      - -->
                       @if($dataTables->where('data_table', 'dailyAgent_report')->min('max_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'dailyAgent_report')->min('max_date')))}}</td>
                       @else
@@ -528,12 +528,12 @@
                       OptIn:
                     </div>
                     <div style="margin-left: 5px;">
-                      @if($dataTables->where('data_table', 'optin_report')->min('min_date') != null)
+                      <!-- @if($dataTables->where('data_table', 'optin_report')->min('min_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'optin_report')->min('min_date')))}}</td>
                       @else
                         <td>%</td>
                       @endif
-                      -
+                      - -->
                       @if($dataTables->where('data_table', 'optin_report')->min('max_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'optin_report')->min('max_date')))}}</td>
                       @else
@@ -552,12 +552,12 @@
                       Ret Details:
                     </div>
                     <div style="margin-left: 5px;">
-                      @if($dataTables->where('data_table', 'details_report')->min('min_date') != null)
+                      <!-- @if($dataTables->where('data_table', 'details_report')->min('min_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'details_report')->min('min_date')))}}</td>
                       @else
                         <td>%</td>
                       @endif
-                      -
+                      - -->
                       @if($dataTables->where('data_table', 'details_report')->min('max_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'details_report')->min('max_date')))}}</td>
                       @else
@@ -576,12 +576,12 @@
                       SaS:
                     </div>
                     <div style="margin-left: 5px;">
-                      @if($dataTables->where('data_table', 'sas_report')->min('min_date') != null)
+                      <!-- @if($dataTables->where('data_table', 'sas_report')->min('min_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'sas_report')->min('min_date')))}}</td>
                       @else
                         <td>%</td>
                       @endif
-                      -
+                      - -->
                       @if($dataTables->where('data_table', 'sas_report')->min('max_date') != null)
                         <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'sas_report')->min('max_date')))}}</td>
                       @else
