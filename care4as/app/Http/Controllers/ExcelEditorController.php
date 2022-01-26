@@ -16,13 +16,11 @@ use App\Hoursreport;
 
 class ExcelEditorController extends Controller
 {
-    public function dailyAgentView($value='')
-    {
+    public function dailyAgentView($value='') {
       return view('reports/dailyAgent');
     }
 
-    public function nettozeitenImport(Request $request)
-    {
+    public function nettozeitenImport(Request $request) {
 
       $fromRow = 1;
       $insertData = array();
@@ -95,8 +93,7 @@ class ExcelEditorController extends Controller
       dd(count($data)-1);
     }
 
-    public function GeVoUpload(Request $request)
-    {
+    public function GeVoUpload(Request $request) {
 
       $fromRow = 1;
       $insertData = array();
@@ -153,8 +150,7 @@ class ExcelEditorController extends Controller
       return redirect()->back();
     }
 
-    public function Optinupload(Request $request)
-    {
+    public function Optinupload(Request $request) {
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
@@ -194,6 +190,22 @@ class ExcelEditorController extends Controller
       $insertData=array();
       // dd($data2);
 
+      //datatebles timespan
+      $dataTables = DB::table('datatables_timespan')
+      ->get()
+      ->toArray();
+
+      $minDate = null;
+      $maxDate = null;
+
+      foreach($dataTables as $key => $entry){
+        $entry = (array) $entry;
+        if ($entry['data_table'] == 'optin_report'){
+          $minDate = $entry['min_date'];
+          $maxDate = $entry['max_date'];
+        }
+      }
+
       for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
         $cell = $data2[$i];
 
@@ -219,7 +231,30 @@ class ExcelEditorController extends Controller
           'Quote Opt-In Abfragen auf Handled Calls' =>  $cell[19],
           'Quote Opt-In Erfolg' => $cell[20],
         ];
+
+        if ($minDate == null) {
+          $minDate = $insertData[$i]['date'];
+        } else if ($insertData[$i]['date'] < $minDate){
+          $minDate = $insertData[$i]['date'];
+        }
+        
+        if ($maxDate == null) {
+          $maxDate = $insertData[$i]['date'];
+        } else if ($insertData[$i]['date'] > $maxDate){
+          $maxDate = $insertData[$i]['date'];
+        }
+
       }
+
+      DB::table('datatables_timespan')->updateOrInsert(
+        [
+          'data_table' => 'optin_report',
+        ],
+        [
+          'min_date' => $minDate,
+          'max_date' => $maxDate,
+        ]
+      );
 
       $insertData = array_chunk($insertData, 3500);
 
@@ -228,11 +263,11 @@ class ExcelEditorController extends Controller
       {
         DB::table('optin')->insertOrIgnore($insertData[$i]);
       }
+
       return redirect()->back();
     }
 
-    public function SASupload(Request $request)
-    {
+    public function SASupload(Request $request) {
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
@@ -270,6 +305,22 @@ class ExcelEditorController extends Controller
 
       $insertData=array();
 
+      //datatebles timespan
+      $dataTables = DB::table('datatables_timespan')
+      ->get()
+      ->toArray();
+
+      $minDate = null;
+      $maxDate = null;
+
+      foreach($dataTables as $key => $entry){
+        $entry = (array) $entry;
+        if ($entry['data_table'] == 'sas_report'){
+          $minDate = $entry['min_date'];
+          $maxDate = $entry['max_date'];
+        }
+      }
+
       // dd($data2);
 
         for ($i=$fromRow-1; $i <= count($data2)-1; $i++) {
@@ -295,8 +346,31 @@ class ExcelEditorController extends Controller
             'productcluster' =>$cell[15] ,
             'GO_Prov' => $cell[35],
           ];
-      }
+
+          if ($minDate == null) {
+            $minDate = $insertData[$i]['date'];
+          } else if ($insertData[$i]['date'] < $minDate){
+            $minDate = $insertData[$i]['date'];
+          }
+          
+          if ($maxDate == null) {
+            $maxDate = $insertData[$i]['date'];
+          } else if ($insertData[$i]['date'] > $maxDate){
+            $maxDate = $insertData[$i]['date'];
+          }
+        }
+
       $insertData = array_chunk($insertData, 3500);
+
+      DB::table('datatables_timespan')->updateOrInsert(
+        [
+          'data_table' => 'sas_report',
+        ],
+        [
+          'min_date' => $minDate,
+          'max_date' => $maxDate,
+        ]
+      );
 
       // dd($insertData);
       for($i=0; $i <= count($insertData)-1; $i++)
@@ -306,8 +380,7 @@ class ExcelEditorController extends Controller
       return redirect()->back();
     }
 
-    public function sseTrackingUpload(Request $request)
-    {
+    public function sseTrackingUpload(Request $request) {
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
@@ -382,8 +455,7 @@ class ExcelEditorController extends Controller
       return redirect()->back();
     }
 
-    public function debug(Request $request)
-    {
+    public function debug(Request $request) {
       // for infinite time of execution
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
@@ -506,8 +578,7 @@ class ExcelEditorController extends Controller
       dd($insertarray);
     }
 
-    public function queueOrNot(Request $request)
-    {
+    public function queueOrNot(Request $request) {
       DB::disableQueryLog();
       ini_set('memory_limit', '-1');
       ini_set('max_execution_time', '0'); // for infinite time of execution
@@ -564,8 +635,7 @@ class ExcelEditorController extends Controller
         return response()->json('success');
     }
 
-    public function dailyAgentUploadQueue($data,$input)
-    {
+    public function dailyAgentUploadQueue($data,$input) {
 
       $sheet = $input['sheet'];
       $fromRow = $input['row'];
@@ -671,8 +741,7 @@ class ExcelEditorController extends Controller
         // return redirect()->back();
     }
 
-    public function dailyAgentUpload($data)
-    {
+    public function dailyAgentUpload($data) {
         $counter = 0;
 
         // dd($data[0]);
@@ -770,13 +839,11 @@ class ExcelEditorController extends Controller
         }
     }
 
-    public function capacitysuitReport ()
-    {
+    public function capacitysuitReport () {
       return view('reports.capacityReport');
     }
 
-    public function capacitysuitReportUpload(Request $request)
-    {
+    public function capacitysuitReportUpload(Request $request) {
       // the capacitysuitReport variable stores one entry for the capacityReport table
       $capaySuitInput = null;
 
@@ -823,8 +890,7 @@ class ExcelEditorController extends Controller
       return redirect()->back();
     }
 
-    public function RetentionDetailsReport(Request $request)
-    {
+    public function RetentionDetailsReport(Request $request) {
       if($request->sheet)
       {
         $sheet = $request->sheet;
@@ -848,6 +914,22 @@ class ExcelEditorController extends Controller
 
       $insertarray = array();
 
+      //datatebles timespan
+      $dataTables = DB::table('datatables_timespan')
+      ->get()
+      ->toArray();
+
+      $minDate = null;
+      $maxDate = null;
+
+      foreach($dataTables as $key => $entry){
+        $entry = (array) $entry;
+        if ($entry['data_table'] == 'details_report'){
+          $minDate = $entry['min_date'];
+          $maxDate = $entry['max_date'];
+        }
+      }
+
       for($i = $fromRow-1; $i <= count($data)-1; $i++)
       {
         $UNIX_DATE = ($data[$i][1] - 25569) * 86400;
@@ -863,7 +945,17 @@ class ExcelEditorController extends Controller
         // $report->calls = $row[11];
         $insertarray[$i]['calls']  = $data[$i][11];
 
-
+        if ($minDate == null) {
+          $minDate = $date;
+        } else if ($date < $minDate){
+          $minDate = $date;
+        }
+        
+        if ($maxDate == null) {
+          $maxDate = $date;
+        } else if ($date > $maxDate){
+          $maxDate = $date;
+        }
 
         if($data[$i][9] !='Care4as Retention DSL Eggebek')
         {
@@ -908,6 +1000,16 @@ class ExcelEditorController extends Controller
         // $insertarray2[] = $insertarray;
       }
 
+      DB::table('datatables_timespan')->updateOrInsert(
+        [
+          'data_table' => 'details_report',
+        ],
+        [
+          'min_date' => $minDate,
+          'max_date' => $maxDate,
+        ]
+      );
+
       for($i=$fromRow-1; $i <= count($insertarray); $i++)
       {
         DB::table('retention_details')->insertOrIgnore($insertarray[$i]);
@@ -918,13 +1020,11 @@ class ExcelEditorController extends Controller
 
     }
 
-    public function provisionView()
-    {
+    public function provisionView() {
       return view('reports/provisionInput');
     }
 
-    public function provisionUpload(Request $request)
-    {
+    public function provisionUpload(Request $request) {
       $name ='Dirki';
       $path1 = request()->file('file')->store('temp');
       $path= storage_path('app').'/'.$path1;
@@ -968,8 +1068,7 @@ class ExcelEditorController extends Controller
       // return redirect()->back();
     }
 
-    public function reportHours(Request $request)
-    {
+    public function reportHours(Request $request) {
       if($request->sheet)
       {
         $sheet = $request->sheet;
