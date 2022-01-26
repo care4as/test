@@ -21,6 +21,10 @@
     }
     .form-control{
         color:black;
+
+    }
+    .dataTables_filter{
+        width: 300px;
     }
     table.dataTable tbody td, table.dataTable tfoot td, table.dataTable thead th {
         padding: 0px 15px;
@@ -29,7 +33,7 @@
         background-blend-mode: luminosity;
     }
     .dataTables_wrapper .dataTables_length select{
-        width: 60px;
+        width: 65px;
         margin-left: 4px;
         margin-right: 4px;
     }
@@ -57,6 +61,32 @@
     #loaderDiv
     {
       display: none;
+    }
+
+    .page-item.active .page-link {
+        background-color: #FA7A50;
+        border-color: #FA7A50;
+    }
+
+    .page-item:hover{
+        border-color: #FA7A50;
+    }
+
+    .page-link{
+        margin: 5px !important;
+    }
+
+    .paginate_button:hover{
+        border: none !important;
+    }
+
+    .page-link:hover{
+        border-color: #FA7A50;
+    }
+
+    .pagination{
+        width: min-content;
+        margin: 5px auto;
     }
 </style>
 @endsection
@@ -217,7 +247,7 @@
                                     <tbody>
                                         @foreach($datatablesDates as $key => $entry)
                                         <tr style="text-align: center">
-                                            <td>{{$key}}</td>
+                                            <td>{{date('d.m.Y', strtotime($key))}}</td>
                                             <!-- Availench -->
                                             @if($entry['availbench_dsl'] == 'true')
                                                 <td style='color: green; font-weight: 600;'>✓</td>
@@ -744,27 +774,44 @@
   $(document).ready(function(){
     let table = $('#timespanTable').DataTable({
         "language": {
-            "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
-            "zeroRecords": "Keinen Eintrag gefunden",
-            "info": "Seite _PAGE_ von _PAGES_",
-            "infoEmpty": "Keinen Eintrag gefunden",
-            "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
-            "loadingRecords": "Lädt...",
-            "processing":     "Lädt...",
-            "search":         "Suche:",
-            "paginate": {
-                "first":      "Erste",
-                "last":       "Letzte",
-                "next":       "Nächste",
-                "previous":   "Zurück"
+                "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+                "zeroRecords": "Keinen Eintrag gefunden",
+                "info": "Seite _PAGE_ von _PAGES_",
+                "infoEmpty": "Keinen Eintrag gefunden",
+                "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
+                "loadingRecords": "Lädt...",
+                "processing": "Lädt...",
+                "search": "<p style='margin-bottom: 0; margin-right: 5px;'>Suche:</p>",
+                "paginate": {
+                    "first": "Erste",
+                    "last": "Letzte",
+                    "next": "Nächste",
+                    "previous": "Zurück"
+                },
             },
-        },
-        "lengthMenu": [ [-1, 3, 5, 10, 25, 50, 100], ["alle", 3, 5, 10, 25, 50, 100] ],
-        scrollX: true,
-        scrollCollapse: false,
-        fixedColumns: false,
-        select: true,
-        order: [[0, "asc"]],
+            "lengthMenu": [
+                [-1, 3, 5, 10, 25, 50, 100],
+                ["alle", 3, 5, 10, 25, 50, 100]
+            ],
+            scrollX: true,
+            scrollCollapse: false,
+            fixedColumns: false,
+            select: true,
+            order: [
+                [1, "asc"]
+            ],
+            dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'csv',
+                    text: 'CSV Export',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel Export',
+                    className: 'btn btn-primary'
+                },
+            ],
     });
     document.getElementById('userListContainer').style.display = "block";
     $($.fn.dataTable.tables(true)).DataTable()
