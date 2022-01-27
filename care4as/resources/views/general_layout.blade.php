@@ -16,7 +16,15 @@
 -->
 <!DOCTYPE html>
 <html lang="de">
+<style>
 
+#myVideo {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
 </style>
 <head>
   <meta charset="utf-8" />
@@ -617,8 +625,13 @@
       <div class="panel-header panel-header-lg" style="min-height: 100vh;">
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
-        <div class="content bg-cool" style="height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto; overflow-x: hidden;">
-          @yield('content')
+        <div class="content bg-cool" style="position: relative; height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto; overflow-x: hidden;">
+          
+        <!-- <video autoplay muted loop id="myVideo">
+          <source src="{{asset('videos/OMSBG12.mov')}}" type="video/mp4">
+        </video> -->
+        
+        @yield('content')
         </div>
         <!-- <div class="container bg-white">
           @if($errors->any())
