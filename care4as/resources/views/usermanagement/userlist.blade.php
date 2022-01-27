@@ -45,12 +45,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
 
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
         background: transparent;
-    }
-
-    .page-item.active .page-link {
-        background-color: #FA7A50;
-        border-color: #FA7A50;
-    }
+    }    
 
     .form-control[readonly] {
         cursor: default;
@@ -62,6 +57,11 @@ Mitarbeiterverwaltung: Mitarbeiterliste
 
     .dataTables_length{
         width: max-content;
+    }
+
+    .page-item.active .page-link {
+        background-color: #FA7A50;
+        border-color: #FA7A50;
     }
 
     .page-item:hover{
@@ -566,14 +566,21 @@ Mitarbeiterverwaltung: Mitarbeiterliste
             ],
             dom: 'Blfrtip',
             buttons: [{
-                    extend: 'csv',
+                extend: 'csv',
                     text: 'CSV Export',
-                    className: 'btn btn-primary'
+                    className: 'btn btn-primary',
+                    title: null,
+                    filename: 'Mitarbeiterliste_Export',
                 },
                 {
                     extend: 'excel',
                     text: 'Excel Export',
-                    className: 'btn btn-primary'
+                    className: 'btn btn-primary',
+                    footer: 'true',
+                    title: null,
+                    sheetName: 'MA-Liste',
+                    filename: 'Mitarbeiterliste_Export',
+                    autoFilter: 'true',
                 },
             ],
         });
