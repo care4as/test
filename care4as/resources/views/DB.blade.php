@@ -513,7 +513,7 @@ tfoot td
                 @endif
               </td>
               <td id="CR2">{{getQuota($footerdata['allDailyAgentCalls'], $footerdata['allGeVoSaves'])}}%</td>
-              <td id="SAS">SAS</td>
+              <td id="SAS">{{getQuota($allCalls, $footerdata['allSAS'])}}%</td>
               <td id="Optin">{{getQuota($footerdata['allOptinCalls'], $footerdata['allOptinRequests'])}}%</td>
               <td id="Revenue">revenue</td>
               <td id="Revenue payed">Revenue payed</td>

@@ -178,6 +178,7 @@ class HomeController extends Controller
       $allGeVoSaves = 0;
       $allAHTSeconds = 0;
       $allSickHours = 0;
+      $allSAS = 0;
       $year = Carbon::now()->year;
       $start_date = 1;
       $end_date = 1;
@@ -707,6 +708,9 @@ class HomeController extends Controller
             $user->optinQuota = 0;
           }
         $sas = $user->SAS->count();
+
+        $allSAS += $sas;
+
         $allCalls = $user->retentionDetails->sum('calls');
 
         if (  $allCalls != 0) {
@@ -753,6 +757,7 @@ class HomeController extends Controller
         'allDailyAgentCalls' => $allDailyAgentCalls,
         'allWorkedHours' => $allWorkedHours,
         'allGeVoSaves' => $allGeVoSaves,
+        'allSAS' => $allSAS,
       );
 
       //dd($overalldata);

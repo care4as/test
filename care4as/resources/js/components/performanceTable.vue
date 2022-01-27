@@ -280,8 +280,8 @@
                 + currentdate.getSeconds();
 
           axios.get
-          // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
-          ('http://'+host+'/users/getTracking/'+department)
+          ('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
+          // ('http://'+host+'/users/getTracking/'+department)
           .then(response => {
             if(response.data)
             {
