@@ -144,10 +144,12 @@
                         <table class="max-table" id="dslMaTable" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Std. Bezahlt</th>
-                                    <th>Std. Produktiv</th>
-                                    <th>← in %</th>
+                                    <th style="border-right: 0px;">Name</th>
+                                    <th><abbr title="Alle vom Unternehmen bezahlten Stunden inkl. Krank und Urlaub">Std. MGM Bezahlt</abbr></th>
+                                    <th><abbr title="Summe Anmeldezeit in der CCU abzüglich Mittagspause">Std. CCU angemeldet</abbr></th>
+                                    <th><abbr title="Stunden in Produktiven Status in der CCU:&#010;- Available&#010;- In Call&#010;- On Hold&#010;- Wrap Up&#010;- Outbound (Nur Speedretention)">Std. Produktiv</abbr></th>
+                                    <th><abbr title="'Std. Produktiv' in Relation zu 'Std. MGM Bezahlt'">← in % Brutto</abbr></th>
+                                    <th><abbr title="'Std. Produktiv' in Relation zu 'Std. CCU angemeldet'">← in % Netto</abbr></th>
                                     <th>Std. Pause</th>
                                     <th>← in %</th>
                                     <th>Std. Krank</th>
@@ -183,8 +185,10 @@
                                     <tr>
                                     <!--Name-->         <td style="text-align: left;">{{$employee['full_name']}}</td>
                                     <!--Std. bez.-->    <td>{{number_format($employee['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. angeme.--> <td>{{number_format($employee['ccu_hours'], 2,",",".")}}</td>
                                     <!--Std. prod.-->   <td>{{number_format($employee['productive_hours'], 2,",",".")}}</td>
-                                    <!--in %-->         <td>{{number_format($employee['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--in % B-->       <td>{{number_format($employee['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <!--in % N-->       <td>{{number_format($employee['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!--Pause-->        <td>{{number_format($employee['break_hours'], 2,",",".")}}</td>
                                     <!--in %-->         <td>{{number_format($employee['break_percentage'], 2,",",".")}}%</td>
                                     <!--Krank-->        <td>{{number_format($employee['sick_hours'], 2,",",".")}}</td>
@@ -218,10 +222,12 @@
                             </tbody>
                             <tfoot>
                                 <tr style="font-weight: bold; background-color: #ddd;">
-                                    <!--Name-->         <td>Summe</td>
+                                    <!--Name-->         <td style="border-right: 0px;">Summe</td>
                                     <!--Std. bez.-->    <td>{{number_format($dataArray['sum']['work_hours'], 2,",",".")}}</td>
-                                    <!--Std. prod.-->   <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
-                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--Std. angeme.--> <td>{{number_format($dataArray['sum']['ccu_hours'], 2,",",".")}}</td>
+                                    <!--Std. prod. B--> <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!--Pause-->        <td>{{number_format($dataArray['sum']['break_hours'], 2,",",".")}}</td>
                                     <!--in %-->         <td>{{number_format($dataArray['sum']['break_percentage'], 2,",",".")}}%</td>
                                     <!--Krank-->        <td>{{number_format($dataArray['sum']['sick_hours'], 2,",",".")}}</td>
@@ -274,10 +280,12 @@
                         <table class="max-table" id="dslMaTable" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Std. Bezahlt</th>
-                                    <th>Std. Produktiv</th>
-                                    <th>← in %</th>
+                                    <th style="border-right: 0px;">Name</th>
+                                    <th><abbr title="Alle vom Unternehmen bezahlten Stunden inkl. Krank und Urlaub">Std. MGM Bezahlt</abbr></th>
+                                    <th><abbr title="Summe Anmeldezeit in der CCU abzüglich Mittagspause">Std. CCU angemeldet</abbr></th>
+                                    <th><abbr title="Stunden in Produktiven Status in der CCU:&#010;- Available&#010;- In Call&#010;- On Hold&#010;- Wrap Up&#010;- Outbound (Nur Speedretention)">Std. Produktiv</abbr></th>
+                                    <th><abbr title="'Std. Produktiv' in Relation zu 'Std. MGM Bezahlt'">← in % Brutto</abbr></th>
+                                    <th><abbr title="'Std. Produktiv' in Relation zu 'Std. CCU angemeldet'">← in % Netto</abbr></th>
                                     <th>Std. Pause</th>
                                     <th>← in %</th>
                                     <th>Std. Krank</th>
@@ -321,8 +329,10 @@
                                     <tr>
                                     <!--Name-->         <td style="text-align: left;">{{$employee['full_name']}}</td>
                                     <!--Std. bez.-->    <td>{{number_format($employee['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. angeme.--> <td>{{number_format($employee['ccu_hours'], 2,",",".")}}</td>
                                     <!--Std. prod.-->   <td>{{number_format($employee['productive_hours'], 2,",",".")}}</td>
-                                    <!--in %-->         <td>{{number_format($employee['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($employee['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($employee['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!--Pause-->        <td>{{number_format($employee['break_hours'], 2,",",".")}}</td>
                                     <!--in %-->         <td>{{number_format($employee['break_percentage'], 2,",",".")}}%</td>
                                     <!--Krank-->        <td>{{number_format($employee['sick_hours'], 2,",",".")}}</td>
@@ -364,10 +374,12 @@
                             </tbody>
                             <tfoot>
                                 <tr style="font-weight: bold; background-color: #ddd;">
-                                    <!--Name-->         <td>Summe</td>
+                                    <!--Name-->         <td style="border-right: 0px;">Summe</td>
                                     <!--Std. bez.-->    <td>{{number_format($dataArray['sum']['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. angeme.--> <td>{{number_format($dataArray['sum']['ccu_hours'], 2,",",".")}}</td>
                                     <!--Std. prod.-->   <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
-                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!--Pause-->        <td>{{number_format($dataArray['sum']['break_hours'], 2,",",".")}}</td>
                                     <!--in %-->         <td>{{number_format($dataArray['sum']['break_percentage'], 2,",",".")}}%</td>
                                     <!--Krank-->        <td>{{number_format($dataArray['sum']['sick_hours'], 2,",",".")}}</td>
