@@ -66,7 +66,7 @@ class UserTrackingController extends Controller
       if($dep == 'Mobile')
       {
         $department = '1und1 Retention';
-
+        $agentRole ='Agent_Mobile';
         $mobileSalesSata = DB::connection('mysqlkdwtracking')
         ->table('1und1_mr_tracking_inb_new_ebk')
         // ->whereIn('MA_id', $userids)
@@ -78,7 +78,7 @@ class UserTrackingController extends Controller
 
       else {
         $department = '1und1 DSL Retention';
-
+        $agentRole ='Agent_DSL';
         $dslSalesSata = DB::connection('mysqlkdwtracking')
         ->table('1und1_dslr_tracking_inb_new_ebk')
         // ->whereIn('MA_id', $userids)
@@ -92,7 +92,7 @@ class UserTrackingController extends Controller
       $trackingidsMobile = $SalesSata->pluck('agent_ds_id')->toArray();
 
       $users = User::whereIn('kdw_tracking_id',$trackingidsMobile)
-      ->where('role','Agent_Mobile')
+      ->where('role',$agentRole)
       ->where('project',$department)
       ->get();
 

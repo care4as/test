@@ -129,6 +129,12 @@ Route::group(['middleware' => 'auth'], function () {
   Route::view('/report/nettozeitenreport/', 'reports.nettozeiten')->name('reports.nettozeiten')->middleware('hasRight:importReports');
   Route::post('/report/nettozeitenreport/', 'ExcelEditorController@nettozeitenImport')->name('reports.nettozeiten.upload')->middleware('hasRight:importReports');
 
+  //Memos
+
+  Route::view('/memos/create', 'createMemo')->name('memo.create');
+  Route::post('/memos/store', 'MemorandaController@store')->name('memo.store');
+  //end Memos
+
   //AHTReport
   Route::get('/report/AHTdaily', 'ReportController@AHTdaily')->name('reports.AHTdaily')->middleware('hasRight:sendReports');
   Route::get('reports/dailyAgentDataStatus', 'ReportController@dailyAgentDataStatus')->name('reports.dailyAgentDataStatus')->middleware('hasRight:sendReports');

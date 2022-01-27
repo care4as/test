@@ -72,6 +72,25 @@
             </a>
           </li>
           @endif
+
+          @if(1)
+          <li class="">
+            <a class="" data-toggle="collapse" href="#collapseMemoranda" role="button" aria-expanded="false" aria-controls="collapseMemoranda">
+              <i class="fas fa-pen"></i>
+              <p><b>Memoranda</b></p>
+            </a>
+            <div class="collapse" id="collapseMemoranda" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+                @if(1)
+                  <li><a href="{{route('memo.create')}}">
+
+                    Memoranda verfassen</a>
+                  </li>
+                @endif
+            </div>
+          </li>
+          @endif
+
           <!-- Mitarbeiterverwaltung -->
           @if(in_array('users_base',Auth()->user()->getRights()))
           <li>
