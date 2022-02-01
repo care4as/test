@@ -74,7 +74,7 @@
           <!-- Dashboard -->
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
-            <a @if(Auth::User()->ds_id == '333') href="{{route('scrum.itkanbanboard')}} @elseif(Auth::User()->role == 'Agent') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
+            <a @if(Auth::User()->ds_id == '333') href="{{route('scrum.itkanbanboard')}} @elseif(Auth::User()->department == 'Agenten') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
               <i class="fas fa-table"></i>
               <p><b>Dashboard</b></p>
             </a>
