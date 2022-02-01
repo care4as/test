@@ -141,6 +141,7 @@
           <i class="far fa-newspaper"></i>
           Neuigkeiten
         </div>
+<<<<<<< HEAD
         <div class="row" style="height: 80%; ">
           <div id="memo-sidebar " class="col-sm-12 col-lg-4 h-100" style="overflow:hide;">
             <div id="memo-toggle" class="btn-group-container">
@@ -148,14 +149,28 @@
                 <input type="radio" class="btn-check" name="backoffice" onclick="showNewMemos(1)" value="1" id="backoffice1" autocomplete="off" checked>
                 <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Neu</label>
                 <input type="radio" class="btn-check" name="backoffice" value="0" onclick="showNewMemos(2)" id="backoffice2" autocomplete="off">
+=======
+        <div class="row">
+          <div id="memo-sidebar" class="col-sm-12 col-lg-4">
+            <div id="memo-toggle" class="btn-group-container">
+              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="backoffice" value="1" id="backoffice1" autocomplete="off" checked>
+                <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Neu</label>
+                <input type="radio" class="btn-check" name="backoffice" value="0" id="backoffice2" autocomplete="off">
+>>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                 <label class="btn btn-outline-primary last-btn-group-element" for="backoffice2">Gelesen</label>
               </div>
             </div>
             <div id="memo-search">
               <input type="text" class="form-control" style="max-width: 200px; margin: 0 auto;" placeholder="Suche...">
             </div>
+<<<<<<< HEAD
             <div id="memo-new" style="overflow:scroll;">
               @foreach($unread as $memo)
+=======
+            <div id="memo-new">
+              @foreach($memos as $memo)
+>>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                 <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
                   @if($memo->has_image)
                     <div class="col-4 p-1 h-100 center_items">
@@ -175,8 +190,13 @@
                 </div>
               @endforeach
             </div>
+<<<<<<< HEAD
             <div id="memo-old" class="inactive h-100" style="overflow-y: scroll;">
             @foreach($read as $memo)
+=======
+            <div id="memo-old">
+            @foreach($memos as $memo)
+>>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
               <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
                 @if($memo->has_image)
                   <div class="col-4 p-1 h-100 center_items">
@@ -189,6 +209,10 @@
                   </div>
                   <hr class="w-50 m-2 mt-3">
                   <div class="row m-0 h-25">
+<<<<<<< HEAD
+=======
+                    <p>{!!$memo->content !!}</p> 
+>>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                     <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
                   </div>
                 </div>
@@ -196,6 +220,7 @@
             @endforeach
             </div>
           </div>
+<<<<<<< HEAD
           <div id="memo-content" class="col-sm-12 col-lg-7" >
           @foreach($unread->merge($read) as $memo)
             <div class="inactive" id="memoContent{{$memo->id}}">
@@ -226,6 +251,28 @@
 
               </div>
             </div>
+=======
+          <div id="memo-content" class="coll-sm-12 col-lg-7">
+          @foreach($memos as $memo)
+            <div class="inactive" id="memoContent{{$memo->id}}">
+            @if($memo->has_image)
+            <div>
+              <img class="contentimg" src="{{asset($memo->path)}}" alt="Bild">
+            </div>
+            @endif
+            
+            <div>
+              {{$memo->title}}
+            </div>
+            <div>
+              Name, Datum
+            </div>
+            <div>
+              {!!$memo->content !!}
+            </div>
+
+
+>>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
           @endforeach
           </div>
         </div>
@@ -298,7 +345,11 @@
               </div>
               <hr class="w-50 m-2 mt-3">
             <div class="row m-0 h-25">
+<<<<<<< HEAD
                    <p>{!!$memo->content !!}</p>
+=======
+                   <p>{!!$memo->content !!}</p> 
+>>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                   <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
               </div>
           </div>
