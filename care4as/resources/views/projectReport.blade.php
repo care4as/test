@@ -453,7 +453,7 @@
                             <thead>
                                 <tr>
                                     <th colspan="2">Mitarbeiter</th>
-                                    <th colspan="5">Stunden</th>
+                                    <th colspan="7">Stunden</th>
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
                                     <th colspan="1">Calls</th>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
@@ -477,9 +477,11 @@
                                     <th>FTE</th>
                                     <!-- Stunden -->
                                     <th>bezahlt</th>
-                                    <th>krank</th>
+                                    <th>angemeldet</th>
                                     <th>produktiv</th>
+                                    <th>krank</th>
                                     <th>krank in %</th>
+                                    <th>prod. brutto in %</th>
                                     <th>prod. netto in %</th>
                                     <!-- calls -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
@@ -515,132 +517,138 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($dataArray['employees'] as $key => $employee)
+                                @foreach($dataArray['team']['employees'] as $key => $employee)
                                 <tr>
-                                    <td style="border-right: 0px;">Name</td>
-                                    <td>FTE</td>
+                                    <td style="text-align: left;">{{$employee['full_name']}}</td>
+                                    <td>{{number_format($employee['fte'], 3,",",".")}}</td>
                                     <!-- Stunden -->
-                                    <td>bezahlt</td>
-                                    <td>krank</td>
-                                    <td>produktiv</td>
-                                    <td>krank in %</td>
-                                    <td>prod. netto in %</td>
+                                    <td>{{number_format($employee['work_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($employee['ccu_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($employee['productive_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($employee['sick_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($employee['sick_percentage'], 2,",",".")}}%</td>
+                                    <td>{{number_format($employee['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <td>{{number_format($employee['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!-- calls -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
+                                    <td>{{$employee['dsl_calls']}}</td>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
+                                    <td>{{$employee['mobile_calls_ssc']}}</td>
+                                    <td>{{$employee['mobile_calls_bsc']}}</td>
+                                    <td>{{$employee['mobile_calls_portale']}}</td>
                                     @endif
                                     <!-- Saves -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
+                                    <td>{{$employee['dsl_saves']}}</td>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
+                                    <td>{{$employee['mobile_saves_ssc']}}</td>
+                                    <td>{{$employee['mobile_saves_bsc']}}</td>
+                                    <td>{{$employee['mobile_saves_portale']}}</td>
                                     @endif
                                     <!-- CR -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
+                                    <td>{{number_format($employee['dsl_cr'], 2,",",".")}}%</td>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
+                                    <td>{{number_format($employee['mobile_cr_ssc'], 2,",",".")}}%</td>
+                                    <td>{{number_format($employee['mobile_cr_bsc'], 2,",",".")}}%</td>
+                                    <td>{{number_format($employee['mobile_cr_portale'], 2,",",".")}}%</td>
                                     @endif
                                     <!-- OptIn -->
-                                    <td>Stück</td>
-                                    <td>in %</td>
+                                    <td>{{$employee['optin_calls_new']}}</td>
+                                    <td>{{number_format($employee['optin_percentage'], 2,",",".")}}%</td>
                                     <!-- Umsatz -->
-                                    <td>Gesamt</td>
-                                    <td>Pro bez. Std.</td>
-                                    <td>Pro prod. Std.</td>
+                                    <td style="text-align: right;">{{number_format($employee['revenue_sum'], 2,",","")}}€</td>
+                                    <td style="text-align: right;">{{number_format($employee['revenue_per_hour_paid'], 2,",","")}}€</td>
+                                    <td style="text-align: right;">{{number_format($employee['revenue_per_hour_productive'], 2,",","")}}€</td>
                                 </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr style="font-weight: bold; background-color: #ddd;">
                                     <td>Team Gesamt</td>
-                                    <td>FTE</td>
+                                    <td>{{number_format($dataArray['team']['sum']['fte'], 3,",",".")}}</td>
                                     <!-- Stunden -->
-                                    <td>bezahlt</td>
-                                    <td>krank</td>
-                                    <td>produktiv</td>
-                                    <td>krank in %</td>
-                                    <td>prod. netto in %</td>
+                                    <td>{{number_format($dataArray['team']['sum']['work_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($dataArray['team']['sum']['ccu_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($dataArray['team']['sum']['productive_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($dataArray['team']['sum']['sick_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($dataArray['team']['sum']['sick_percentage'], 2,",",".")}}%</td>
+                                    <td>{{number_format($dataArray['team']['sum']['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <td>{{number_format($dataArray['team']['sum']['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!-- calls -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
+                                    <td>{{$dataArray['team']['sum']['dsl_calls']}}</td>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
+                                    <td>{{$dataArray['team']['sum']['mobile_calls_ssc']}}</td>
+                                    <td>{{$dataArray['team']['sum']['mobile_calls_bsc']}}</td>
+                                    <td>{{$dataArray['team']['sum']['mobile_calls_portale']}}</td>
                                     @endif
                                     <!-- Saves -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
+                                    <td>{{$dataArray['team']['sum']['dsl_saves']}}</td>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
+                                    <td>{{$dataArray['team']['sum']['mobile_saves_ssc']}}</td>
+                                    <td>{{$dataArray['team']['sum']['mobile_saves_bsc']}}</td>
+                                    <td>{{$dataArray['team']['sum']['mobile_saves_portale']}}</td>
                                     @endif
                                     <!-- CR -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
+                                    <td>{{number_format($dataArray['team']['sum']['dsl_cr'], 2,",",".")}}%</td>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
+                                    <td>{{number_format($dataArray['team']['sum']['mobile_cr_ssc'], 2,",",".")}}%</td>
+                                    <td>{{number_format($dataArray['team']['sum']['mobile_cr_bsc'], 2,",",".")}}%</td>
+                                    <td>{{number_format($dataArray['team']['sum']['mobile_cr_portale'], 2,",",".")}}%</td>
                                     @endif
                                     <!-- OptIn -->
-                                    <td>Stück</td>
-                                    <td>in %</td>
+                                    <td>{{$dataArray['team']['sum']['optin_calls_new']}}</td>
+                                    <td>{{number_format($dataArray['team']['sum']['optin_percentage'], 2,",",".")}}%</td>
                                     <!-- Umsatz -->
-                                    <td>Gesamt</td>
-                                    <td>Pro bez. Std.</td>
-                                    <td>Pro prod. Std.</td>
+                                    <td style="text-align: right;">{{number_format($dataArray['team']['sum']['revenue_sum'], 2,",",".")}}€</td>
+                                    <td style="text-align: right;">{{number_format($dataArray['team']['sum']['revenue_per_hour_paid'], 2,",",".")}}€</td>
+                                    <td style="text-align: right;">{{number_format($dataArray['team']['sum']['revenue_per_hour_productive'], 2,",",".")}}€</td>
                                 </tr>
                                 <tr style="font-weight: bold; background-color: #ddd;">
                                     <td>Projekt Gesamt</td>
-                                    <td>FTE</td>
+                                    <td>{{number_format($dataArray['project']['sum']['fte'], 3,",",".")}}</td>
                                     <!-- Stunden -->
-                                    <td>bezahlt</td>
-                                    <td>krank</td>
-                                    <td>produktiv</td>
-                                    <td>krank in %</td>
-                                    <td>prod. netto in %</td>
+                                    <td>{{number_format($dataArray['project']['sum']['work_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($dataArray['project']['sum']['ccu_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($dataArray['project']['sum']['productive_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($dataArray['project']['sum']['sick_hours'], 2,",",".")}}</td>
+                                    <td>{{number_format($dataArray['project']['sum']['sick_percentage'], 2,",",".")}}%</td>
+                                    <td>{{number_format($dataArray['project']['sum']['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <td>{{number_format($dataArray['project']['sum']['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!-- calls -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
+                                    <td>{{$dataArray['project']['sum']['dsl_calls']}}</td>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
+                                    <td>{{$dataArray['project']['sum']['mobile_calls_ssc']}}</td>
+                                    <td>{{$dataArray['project']['sum']['mobile_calls_bsc']}}</td>
+                                    <td>{{$dataArray['project']['sum']['mobile_calls_portale']}}</td>
                                     @endif
                                     <!-- Saves -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
+                                    <td>{{$dataArray['project']['sum']['dsl_saves']}}</td>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
+                                    <td>{{$dataArray['project']['sum']['mobile_saves_ssc']}}</td>
+                                    <td>{{$dataArray['project']['sum']['mobile_saves_bsc']}}</td>
+                                    <td>{{$dataArray['project']['sum']['mobile_saves_portale']}}</td>
                                     @endif
                                     <!-- CR -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
+                                    <td>{{number_format($dataArray['project']['sum']['dsl_cr'], 2,",",".")}}%</td>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
+                                    <td>{{number_format($dataArray['project']['sum']['mobile_cr_ssc'], 2,",",".")}}%</td>
+                                    <td>{{number_format($dataArray['project']['sum']['mobile_cr_bsc'], 2,",",".")}}%</td>
+                                    <td>{{number_format($dataArray['project']['sum']['mobile_cr_portale'], 2,",",".")}}%</td>
                                     @endif
                                     <!-- OptIn -->
-                                    <td>Stück</td>
-                                    <td>in %</td>
+                                    <td>{{$dataArray['project']['sum']['optin_calls_new']}}</td>
+                                    <td>{{number_format($dataArray['project']['sum']['optin_percentage'], 2,",",".")}}%</td>
                                     <!-- Umsatz -->
-                                    <td>Gesamt</td>
-                                    <td>Pro bez. Std.</td>
-                                    <td>Pro prod. Std.</td>
+                                    <td style="text-align: right;">{{number_format($dataArray['project']['sum']['revenue_sum'], 2,",",".")}}€</td>
+                                    <td style="text-align: right;">{{number_format($dataArray['project']['sum']['revenue_per_hour_paid'], 2,",",".")}}€</td>
+                                    <td style="text-align: right;">{{number_format($dataArray['project']['sum']['revenue_per_hour_productive'], 2,",",".")}}€</td>
                                 </tr>
                             </tfoot>
                         </table>    
@@ -767,24 +775,90 @@ $(document).ready(function(){
         fixedColumns: false,
         select: true,
         dom: 'Blfrtip',
-            buttons: [
-                {
-                    extend: 'excel',
-                    text: 'Excel Export',
-                    className: 'btn btn-primary',
-                    footer: 'true',
-                    customize: (xlsx, config, dataTable) => {
-                        let sheet = xlsx.xl.worksheets['sheet1.xml'];
-                        let footerIndex = $('sheetData row', sheet).length;
-                        let $footerRows = $('tr', dataTable.footer());
+        buttons: [
+            {
+                extend: 'excel',
+                text: 'Excel Export',
+                className: 'btn btn-primary',
+                footer: 'true',
+                customize: (xlsx, config, dataTable) => {
+                    let sheet = xlsx.xl.worksheets['sheet1.xml'];
+                    let footerIndex = $('sheetData row', sheet).length;
+                    let $footerRows = $('tr', dataTable.footer());
+                    var mergeCells = $('mergeCells', sheet);
+                    
 
-                        // Header Background
-                        $('row c[r*="2"]', sheet).attr( 's', '32' );
+                    mergeCells[0].children[0].remove(); // remove merge cell 1st row
+                    var rows = $('row', sheet);
+                    rows[0].children[0].remove(); // clear header cell
 
+
+                    // ---------- MULTI ROW HEADER ----------
+                    // MERGED CELL 1
+                    rows[0].appendChild(_createNode(sheet, 'c', {
+                        attr: {
+                            t: 'inlineStr',
+                            r: 'A1', //address of new cell
+                            s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                        },
+                        children: {
+                            row: _createNode(sheet, 'is', {
+                                children: {
+                                    row: _createNode(sheet, 't', {
+                                        text: 'Mitarbeiter'
+                                    })
+                                }
+                            })
+                        }
+                    }))
+
+                    // set new cell merged
+                    mergeCells[0].appendChild(_createNode(sheet, 'mergeCell', {
+                        attr: {
+                            ref: 'A1:B1' // merge address
+                        }
+                    }))
+
+                    mergeCells.attr('count', mergeCells.attr('count') + 1);
+
+                    // MERGED CELL 2
+                    rows[0].appendChild(_createNode(sheet, 'c', {
+                        attr: {
+                            t: 'inlineStr',
+                            r: 'C1', //address of new cell
+                            s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                        },
+                        children: {
+                            row: _createNode(sheet, 'is', {
+                                children: {
+                                    row: _createNode(sheet, 't', {
+                                        text: 'Stunden'
+                                    })
+                                }
+                            })
+                        }
+                    }))
+
+                    // set new cell merged
+                    mergeCells[0].appendChild(_createNode(sheet, 'mergeCell', {
+                        attr: {
+                            ref: 'C1:I1' // merge address
+                        }
+                    }))
+
+                    mergeCells.attr('count', mergeCells.attr('count') + 1);
+
+
+
+                    multiRowFooter();
+
+                    // ---------- FUNCTIONS ----------
+
+                    function multiRowFooter(){
                         // If there are more than one footer rows
                         if ($footerRows.length > 1) {
                             // First header row is already present, so we start from the second row (i = 1)
-                            
+                        
                             for (let i = 1; i < $footerRows.length; i++) {
                             // Get the current footer row
                             let $footerRow = $footerRows[i];
@@ -809,25 +883,48 @@ $(document).ready(function(){
                             `);
                             }
                         }
-                    },
-                    title: 'Teamscan',
-                    sheetName: 'Teamscan',
-                    filename: 'Teamscan_Export',
-                    exportOptions: {
-                        columns: ':visible',
-                        format: {
-                            body: function(data, row, column, node) {
-                                data = $('<p>' + data + '</p>').text();
-                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
-                            },
-                            footer: function(data, row, column, node) {
-                                data = $('<p>' + data + '</p>').text();
-                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                    }  
+
+                    function _createNode(doc, nodeName, opts) { 
+                        var tempNode = doc.createElement(nodeName);
+
+                        if (opts) {
+                            if (opts.attr) {
+                                $(tempNode).attr(opts.attr);
                             }
-                        }     
-                    },
+
+                            if (opts.children) {
+                                $.each(opts.children, function (key, value) {
+                                    tempNode.appendChild(value);
+                                });
+                            }
+
+                            if (opts.text !== null && opts.text !== undefined) {
+                                tempNode.appendChild(doc.createTextNode(opts.text));
+                            }
+                        }
+
+                        return tempNode;
+                    }
                 },
-            ],
+                title: 'Teamscan',
+                sheetName: 'Teamscan',
+                filename: 'Teamscan_Export',
+                exportOptions: {
+                    columns: ':visible',
+                    format: {
+                        body: function(data, row, column, node) {
+                            data = $('<p>' + data + '</p>').text();
+                            return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                        },
+                        footer: function(data, row, column, node) {
+                            data = $('<p>' + data + '</p>').text();
+                            return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                        }
+                    }     
+                },
+            },
+        ],
     });
 })
 </script>

@@ -74,13 +74,29 @@ class ProjectReportController extends Controller
             'cost_per_hour_dsl' => 36.41,          // Stündliche Kosten eines DSL MA
             'cost_per_hour_mobile' => 36.99,       // Stündliche Kosten eines DSL MA
         );
-
+ 
         $dataArray = array();   // Array für alle Daten anlegen, welche übermittelt werden sollen
+
+        // Daten je nach Projekt und Report bereitstellen
         if($defaultVariablesArray['project'] == '1u1_dsl_ret'){             // Auswahl wenn Projekt == DSL
-            $dataArray = $this->get1u1DslRet($defaultVariablesArray);       // Datenarray mit DSL Daten füllen
+            if ($report == 'projektmeldung'){
+                $dataArray = $this->get1u1DslRet($defaultVariablesArray);       // Datenarray mit DSL Daten füllen
+            } else if ($report == 'teamscan'){
+                $dataArray['team'] = $this->get1u1DslRet($defaultVariablesArray);
+                $defaultVariablesArray['team'] = 'all';
+                $dataArray['project'] = $this->get1u1DslRet($defaultVariablesArray);
+                $defaultVariablesArray['team'] = $team;
+            }
         }
         if($defaultVariablesArray['project'] == '1u1_mobile_ret'){             // Ablauf wenn Projekt == Mobile
-            $dataArray = $this->get1u1MobileRet($defaultVariablesArray);    // Datenarray mit Mobile Daten füllen
+            if ($report == 'projektmeldung'){
+                $dataArray = $this->get1u1MobileRet($defaultVariablesArray);    // Datenarray mit Mobile Daten füllen
+            } else if ($report == 'teamscan'){
+                $dataArray['team'] = $this->get1u1MobileRet($defaultVariablesArray);
+                $defaultVariablesArray['team'] = 'all';
+                $dataArray['project'] = $this->get1u1MobileRet($defaultVariablesArray);
+                $defaultVariablesArray['team'] = $team;
+            }
         }
 
         //dd($dataArray);
@@ -104,7 +120,8 @@ class ProjectReportController extends Controller
         return $projects;
       }
 
-    public function getTeams($projectId){
+    
+      public function getTeams($projectId){
         $teamsData = DB::connection('mysqlkdw')
         ->table('teams')
         ->where('projekt_id', $projectId)
@@ -160,6 +177,7 @@ class ProjectReportController extends Controller
         }
 
         /** Hier werden die globalen Variablen jeweils mit 0 initialisiert */
+        $finalArray['sum']['fte'] = 0;
         $finalArray['sum']['work_hours'] = 0;                   // Bezahlte Stunden initialisieren
         $finalArray['sum']['productive_hours'] = 0;             // Produktivstunden initialisieren
         $finalArray['sum']['ccu_hours'] = 0;             
@@ -187,6 +205,7 @@ class ProjectReportController extends Controller
 
         /** In dieser Schleife wird jeder Mitarbeiter betrachtet und seine Werte auf die Summe addiert */
         foreach($finalArray['employees'] as $key => $entry) {
+            $finalArray['sum']['fte'] += $entry['fte'];
             $finalArray['sum']['work_hours'] += $entry['work_hours'];
             $finalArray['sum']['productive_hours'] += $entry['productive_hours'];
             $finalArray['sum']['ccu_hours'] += $entry['ccu_hours'];
@@ -419,6 +438,7 @@ class ProjectReportController extends Controller
         }
         
         /** Hier werden die globalen Variablen jeweils mit 0 initialisiert */
+        $finalArray['sum']['fte'] = 0; 
         $finalArray['sum']['work_hours'] = 0;                   // Bezahlte Stunden initialisieren
         $finalArray['sum']['productive_hours'] = 0;             // Produktivstunden initialisieren
         $finalArray['sum']['ccu_hours'] = 0;
@@ -452,6 +472,7 @@ class ProjectReportController extends Controller
 
         /** In dieser Schleife wird jeder Mitarbeiter betrachtet und seine Werte auf die Summe addiert */
         foreach($finalArray['employees'] as $key => $entry) {
+            $finalArray['sum']['fte'] += $entry['fte'];
             $finalArray['sum']['work_hours'] += $entry['work_hours'];
             $finalArray['sum']['productive_hours'] += $entry['productive_hours'];
             $finalArray['sum']['ccu_hours'] += $entry['ccu_hours'];
@@ -762,6 +783,7 @@ class ProjectReportController extends Controller
                 $refinedEmployees[$employeeArray['ds_id']]['full_name'] =                                   // User-Array wird um zusammengesetzten Namen ergänzt
                     $employeeArray['familienname'] . ', ' . $employeeArray['vorname'];                      // Zusammengesetzter Name ist 'Nachname, Vorname'
                 $refinedEmployees[$employeeArray['ds_id']]['ds_id'] = $employeeArray['ds_id'];              // User-Array wird um ds-id ergänzt
+                $refinedEmployees[$employeeArray['ds_id']]['fte'] = $employeeArray['soll_h_day'] / 8;
                 $refinedEmployees[$employeeArray['ds_id']]['team_id'] = $teamEmployees->where('MA_id', $employeeArray['ds_id'])->sum('team_id');
 
                 $refinedEmployees[$employeeArray['ds_id']]['work_hours'] = 0;                               // MA bez. Stunden werden initialisiert
@@ -1152,6 +1174,7 @@ class ProjectReportController extends Controller
                 $refinedEmployees[$employeeArray['ds_id']]['firstname'] = $employeeArray['vorname'];        // User-Array wird um Vorname ergänzt
                 $refinedEmployees[$employeeArray['ds_id']]['full_name'] =                                   // User-Array wird um zusammengesetzten Namen ergänzt
                     $employeeArray['familienname'] . ', ' . $employeeArray['vorname'];                      // Zusammengesetzter Name ist 'Nachname, Vorname'
+                $refinedEmployees[$employeeArray['ds_id']]['fte'] = $employeeArray['soll_h_day'] / 8;
                 $refinedEmployees[$employeeArray['ds_id']]['ds_id'] = $employeeArray['ds_id'];              // User-Array wird um ds-id ergänzt
                 $refinedEmployees[$employeeArray['ds_id']]['team_id'] = $teamEmployees->where('MA_id', $employeeArray['ds_id'])->sum('team_id');
                 $refinedEmployees[$employeeArray['ds_id']]['work_hours'] = 0;                               // MA bez. Stunden werden initialisiert
