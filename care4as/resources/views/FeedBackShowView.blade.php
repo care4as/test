@@ -476,7 +476,7 @@ Controlling: Projektmeldung
         document.getElementById('feedback_table_last_week').innerHTML = "KW " + timespanArray['last_week_number'];
         document.getElementById('feedback_table_last_week2').innerHTML = "KW " + timespanArray['last_week_number'];
         today = new Date();
-        document.getElementById('feedback_table_date').innerHTML = ("0" + today.getDate()).slice(-2) + "." + ("0" + today.getMonth()).slice(-2) + "." + today.getFullYear();
+        document.getElementById('feedback_table_date').innerHTML = ("0" + today.getDate()).slice(-2) + "." + ("0" + today.getMonth() + 1).slice(-2) + "." + today.getFullYear();
         startDate = new Date(timespanArray['first_week_start_date'])
         document.getElementById('feedback_table_year').innerHTML = startDate.getFullYear();
         document.getElementById('feedback_table_year2').innerHTML = startDate.getFullYear();

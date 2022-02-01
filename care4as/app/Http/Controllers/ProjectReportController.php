@@ -13,6 +13,26 @@ class ProjectReportController extends Controller
         $startDateString = request('startDate');    // Startdatumsauswahl aus Webpage
         $endDateString = request('endDate');        // Enddatumsauswahl aus Webpage
         $team = request('team');
+        $report = request('report');
+
+        // Namen des Teams speichern
+        if ($team == 'all'){
+            $teamName = 'Alle Teams';
+        } else if ($team != null) {
+            $teamName = DB::connection('mysqlkdw')->table('teams')->where('ds_id', $team)->value('bezeichnung');
+        } else {
+            $teamName = null;
+        }
+
+        // Namen des Projekt nach eigener Konvention speichern
+
+        if ($project == '1u1_dsl_ret'){
+            $projectName = '1u1 DSL Retention';
+        } else if ($project == '1u1_mobile_ret') {
+            $projectName = '1u1 Mobile Retention';
+        } else {
+            $projectName = $project;
+        }
 
         if ($startDateString == null){  // Prüfen ob Startdatum eingegeben wurde
             $startDate = null;          // Wenn nichts eingegeben wurde, Wert auf 'null' setzen
@@ -29,8 +49,11 @@ class ProjectReportController extends Controller
  
         $defaultVariablesArray = array(         // Speichert globale Variablen in Array
             'project' => $project,              // Projektauswahl aus Webpage
+            'projectName' => $projectName,
             'projectData' => $this->getProjects(),
             'team' => $team,
+            'teamName' => $teamName,
+            'report' => $report,
             'startDate' => $startDateString,    // Startdatum aus Webpage
             'endDate' => $endDateString,        // Enddatum aus Webpage
             'differenceDate' =>$differenceDate, // Differenz zwischen Start- und Enddatum
@@ -48,8 +71,8 @@ class ProjectReportController extends Controller
             'optin_sms' => 0.1,                 // Umsatz für OptIn SMS
             'optin_usage' => 0.4,               // Umsatz für OptIn Nutzungsdaten
             'optin_traffic' => 0.4,             // Umsatz für OptIn Verkehrsdaten
-            'cost_per_hour_dsl' => 35,          // Stündliche Kosten eines DSL MA
-            'cost_per_hour_mobile' => 35,       // Stündliche Kosten eines DSL MA
+            'cost_per_hour_dsl' => 36.41,          // Stündliche Kosten eines DSL MA
+            'cost_per_hour_mobile' => 36.99,       // Stündliche Kosten eines DSL MA
         );
 
         $dataArray = array();   // Array für alle Daten anlegen, welche übermittelt werden sollen
@@ -139,6 +162,7 @@ class ProjectReportController extends Controller
         /** Hier werden die globalen Variablen jeweils mit 0 initialisiert */
         $finalArray['sum']['work_hours'] = 0;                   // Bezahlte Stunden initialisieren
         $finalArray['sum']['productive_hours'] = 0;             // Produktivstunden initialisieren
+        $finalArray['sum']['ccu_hours'] = 0;             
         $finalArray['sum']['sick_hours'] = 0;                   // Krankstunden initialisieren
         $finalArray['sum']['break_hours'] = 0;                  // Pausenstunden initialisieren
         $finalArray['sum']['dsl_calls'] = 0;                    // DSL Calls initialisieren
@@ -165,6 +189,7 @@ class ProjectReportController extends Controller
         foreach($finalArray['employees'] as $key => $entry) {
             $finalArray['sum']['work_hours'] += $entry['work_hours'];
             $finalArray['sum']['productive_hours'] += $entry['productive_hours'];
+            $finalArray['sum']['ccu_hours'] += $entry['ccu_hours'];
             $finalArray['sum']['sick_hours'] += $entry['sick_hours'];
             $finalArray['sum']['break_hours'] += $entry['break_hours'];
             $finalArray['sum']['dsl_calls'] += $entry['dsl_calls'];
@@ -203,12 +228,21 @@ class ProjectReportController extends Controller
 
         /** Hier wird die Produktivquote berechnet */
         if($finalArray['sum']['work_hours'] > 0){
-            $finalArray['sum']['productive_percentage'] = 
+            $finalArray['sum']['productive_percentage_brutto'] = 
                 ($finalArray['sum']['productive_hours'] 
                 / $finalArray['sum']['work_hours']) 
                 * 100;
         } else {
-            $finalArray['sum']['productive_percentage'] = 0;
+            $finalArray['sum']['productive_percentage_brutto'] = 0;
+        }
+
+        if($finalArray['sum']['ccu_hours'] > 0){
+            $finalArray['sum']['productive_percentage_netto'] = 
+                ($finalArray['sum']['productive_hours'] 
+                / $finalArray['sum']['ccu_hours']) 
+                * 100;
+        } else {
+            $finalArray['sum']['productive_percentage_netto'] = 0;
         }
 
         /** Hier wird die Pausenquote berechnet */
@@ -387,6 +421,7 @@ class ProjectReportController extends Controller
         /** Hier werden die globalen Variablen jeweils mit 0 initialisiert */
         $finalArray['sum']['work_hours'] = 0;                   // Bezahlte Stunden initialisieren
         $finalArray['sum']['productive_hours'] = 0;             // Produktivstunden initialisieren
+        $finalArray['sum']['ccu_hours'] = 0;
         $finalArray['sum']['sick_hours'] = 0;                   // Krankstunden initialisieren
         $finalArray['sum']['break_hours'] = 0;                  // Pausenstunden initialisieren
         $finalArray['sum']['mobile_calls_sum'] = 0;             // Mobile Calls initialisieren
@@ -419,6 +454,7 @@ class ProjectReportController extends Controller
         foreach($finalArray['employees'] as $key => $entry) {
             $finalArray['sum']['work_hours'] += $entry['work_hours'];
             $finalArray['sum']['productive_hours'] += $entry['productive_hours'];
+            $finalArray['sum']['ccu_hours'] += $entry['ccu_hours'];
             $finalArray['sum']['sick_hours'] += $entry['sick_hours'];
             $finalArray['sum']['break_hours'] += $entry['break_hours'];
             $finalArray['sum']['mobile_calls_sum'] += $entry['mobile_calls_sum'];
@@ -469,12 +505,21 @@ class ProjectReportController extends Controller
 
         /** Hier wird die Produktivquote berechnet */
         if($finalArray['sum']['work_hours'] > 0){
-            $finalArray['sum']['productive_percentage'] = 
+            $finalArray['sum']['productive_percentage_brutto'] = 
                 ($finalArray['sum']['productive_hours'] 
                 / $finalArray['sum']['work_hours']) 
                 * 100;
         } else {
-            $finalArray['sum']['productive_percentage'] = 0;
+            $finalArray['sum']['productive_percentage_brutto'] = 0;
+        }
+
+        if($finalArray['sum']['ccu_hours'] > 0){
+            $finalArray['sum']['productive_percentage_netto'] = 
+                ($finalArray['sum']['productive_hours'] 
+                / $finalArray['sum']['ccu_hours']) 
+                * 100;
+        } else {
+            $finalArray['sum']['productive_percentage_netto'] = 0;
         }
 
         /** Hier wird die Pausenquote berechnet */
@@ -717,7 +762,7 @@ class ProjectReportController extends Controller
                 $refinedEmployees[$employeeArray['ds_id']]['full_name'] =                                   // User-Array wird um zusammengesetzten Namen ergänzt
                     $employeeArray['familienname'] . ', ' . $employeeArray['vorname'];                      // Zusammengesetzter Name ist 'Nachname, Vorname'
                 $refinedEmployees[$employeeArray['ds_id']]['ds_id'] = $employeeArray['ds_id'];              // User-Array wird um ds-id ergänzt
-                $refinedEmployees[$employeeArray['ds_id']]['team_id'] = 
+                $refinedEmployees[$employeeArray['ds_id']]['team_id'] = $teamEmployees->where('MA_id', $employeeArray['ds_id'])->sum('team_id');
 
                 $refinedEmployees[$employeeArray['ds_id']]['work_hours'] = 0;                               // MA bez. Stunden werden initialisiert
                 $refinedEmployees[$employeeArray['ds_id']]['sick_hours'] = 0;                               // MA krank Stunden werden initialisiert
@@ -769,7 +814,9 @@ class ProjectReportController extends Controller
 
                 /** Hier werden die Produktivstunden aus dem Daily Agent genommen und die Produktivquote berechnet */
                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] = 0;         // Produktivstunden werden initialisiert
-                $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Produktvquote wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] = 0;
+                $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_netto'] = 0;    // Produktvquote wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_brutto'] = 0;    // Produktvquote wird initialisiert
                 $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] = 0;     // Summe Zeit in Call (in Sek.) wird initialisiert
 
                 if(isset($refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']) == true){                                   // Es wird geprüft ob für den MA die Cosmocom-ID gesetzt ist
@@ -777,27 +824,52 @@ class ProjectReportController extends Controller
                         if($entry['agent_id'] == $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']){                    // Prüfen Cosmocom-ID vom Eintrag mit der des Users übereinstimmt
                             if($entry['status'] == 'Available') {                                                               // Prüfen ob Status von Eintrag == Available
                                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden der Zeit im Call hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
+                            }
+                            if($entry['status'] == 'Ringing') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
                             }
                             if($entry['status'] == 'In Call') {                                                                 // Prüfen ob Status von Eintrag == In Call
                                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
                                 $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
                             }
                             if($entry['status'] == 'On Hold') {                                                                 // Prüfen ob Status von Eintrag == On Hold
                                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
                                 $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
                             }
                             if($entry['status'] == 'Wrap Up') {                                                                 // Prüfen ob Status von Eintrag == Wrap Up
                                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
                                 $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
                             }
-                            if($entry['status'] == '05_Occupied') {                                                             // Prüfen ob Status von Eintrag == 05_Occupied
-                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            if($entry['status'] == 'Released (01_screen break)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
                             }
-                            if($entry['status'] == '06_Practice') {                                                             // Prüfen ob Status von Eintrag == 06_Practice
-                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            if($entry['status'] == 'Released (03_away)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
                             }
-                            if($entry['status'] == '09_Outbound') {                                                             // Prüfen ob Status von Eintrag == 09_Outbound
-                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            if($entry['status'] == 'Released (04_offline work)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
+                            }
+                            if($entry['status'] == 'Released (05_occupied)') {                                                             // Prüfen ob Status von Eintrag == 05_Occupied
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
+                            }
+                            if($entry['status'] == 'Released (06_practice)') {                                                             // Prüfen ob Status von Eintrag == 06_Practice
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
+                            }
+                            if($entry['status'] == 'Released (07_meeting)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
+                            }
+                            if($entry['status'] == 'Released (08_organization)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
+                            }
+                            if($entry['status'] == 'Released (09_outbound)') {                                                             // Prüfen ob Status von Eintrag == 09_Outbound
+                                if($refinedEmployees[$employeeArray['ds_id']]['team_id'] == 90){
+                                    $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];
+                                }
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
                             }
                         }
                     }
@@ -806,14 +878,28 @@ class ProjectReportController extends Controller
                             / 60                                                            // / 60 um in Minuten zu konvertieren
                             / 60;                                                           // / 60 um in Stunden zu konvertieren
 
+                    $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] =        // Hier werden die summierten Sekunden in Stunden umgeandelt
+                    $refinedEmployees[$employeeArray['ds_id']]['ccu_hours']      // Genommen werden die Produktivstunden (aktuell noch sekunden)
+                        / 60                                                            // / 60 um in Minuten zu konvertieren
+                        / 60;                                                           // / 60 um in Stunden zu konvertieren
+
                     /* Hier wird die Produktivquote berechnet */
                     if ($refinedEmployees[$employeeArray['ds_id']]['work_hours'] == 0){             // Prüfen ob bez. Stunden vorhanden sind
-                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Fall nein, wird die Produktivquote auf 0 gesetzt
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_brutto'] = 0;    // Fall nein, wird die Produktivquote auf 0 gesetzt
                     } else {
-                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] =       // Falls ja, wird die Produktivquote berechnet
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_brutto'] =       // Falls ja, wird die Produktivquote berechnet
                             ($refinedEmployees[$employeeArray['ds_id']]['productive_hours']         // Genommen werden die Produktivstunden
                             / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])             // und durch die bez. Stunden geteilt
                             * 100;                                                                  // mit 100 multipliert um Prozenz auszugeben
+                    }
+
+                    if ($refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] == 0){             
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_netto'] = 0;    
+                    } else {
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_netto'] =      
+                            ($refinedEmployees[$employeeArray['ds_id']]['productive_hours']       
+                            / $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'])
+                            * 100;                                                               
                     }
                     
                 }
@@ -1000,7 +1086,6 @@ class ProjectReportController extends Controller
             }
 
         }
-
         asort($refinedEmployees);   // Das gesamte Personenarray wird alphabetisch sortiert. Ausgangspunkt ist der erste Eintrag (Nachname)
 
         return $refinedEmployees;   // Rückgabe des befüllten Personenarrays
@@ -1014,11 +1099,11 @@ class ProjectReportController extends Controller
 
         $employees = DB::connection('mysqlkdw')                                 // Verbindung zur externen Datenbank 'mysqlkdw' wird hergestellt
         ->table('MA')                                                           // Berücksichtigt werden soll die Tabelle 'MA'
-        // ->where(function($query) {                                              // Filter der zu berücksitgenden Funktionen    
-        //     $query
-        //     ->where('abteilung_id', '=', 10)                                    // Funktion: Agenten
-        //     ->orWhere('abteilung_id', '=', 19);                                 // Funktion: Backoffice
-        // })
+        ->where(function($query) {                                              // Filter der zu berücksitgenden Funktionen    
+            $query
+            ->where('abteilung_id', '=', 10)                                    // Funktion: Agenten
+            ->orWhere('abteilung_id', '=', 19);                                 // Funktion: Backoffice
+        })
         ->where('projekt_id', '=', 7)                                          // Filter auf die Projekt ID. Hier ist Mobile: 7
         ->where(function($query) use($defaultVariablesArray){                   // Prüfen, dass MA zum Zeitpunkt im Unternehmen beschäftigt war
             $query
@@ -1068,7 +1153,7 @@ class ProjectReportController extends Controller
                 $refinedEmployees[$employeeArray['ds_id']]['full_name'] =                                   // User-Array wird um zusammengesetzten Namen ergänzt
                     $employeeArray['familienname'] . ', ' . $employeeArray['vorname'];                      // Zusammengesetzter Name ist 'Nachname, Vorname'
                 $refinedEmployees[$employeeArray['ds_id']]['ds_id'] = $employeeArray['ds_id'];              // User-Array wird um ds-id ergänzt
-
+                $refinedEmployees[$employeeArray['ds_id']]['team_id'] = $teamEmployees->where('MA_id', $employeeArray['ds_id'])->sum('team_id');
                 $refinedEmployees[$employeeArray['ds_id']]['work_hours'] = 0;                               // MA bez. Stunden werden initialisiert
                 $refinedEmployees[$employeeArray['ds_id']]['sick_hours'] = 0;                               // MA krank Stunden werden initialisiert
                 $refinedEmployees[$employeeArray['ds_id']]['break_hours'] = 0;                              // MA pausen Stunden werden initialisiert
@@ -1119,7 +1204,9 @@ class ProjectReportController extends Controller
 
                 /** Hier werden die Produktivstunden aus dem Daily Agent genommen und die Produktivquote berechnet */
                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] = 0;         // Produktivstunden werden initialisiert
-                $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Produktvquote wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] = 0;
+                $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_netto'] = 0;    // Produktvquote wird initialisiert
+                $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_brutto'] = 0;    // Produktvquote wird initialisiert
                 $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] = 0;     // Summe Zeit in Call (in Sek.) wird initialisiert
 
                 if(isset($refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']) == true){                                   // Es wird geprüft ob für den MA die Cosmocom-ID gesetzt ist
@@ -1127,27 +1214,52 @@ class ProjectReportController extends Controller
                         if($entry['agent_id'] == $refinedEmployees[$employeeArray['ds_id']]['cosmocom_id']){                    // Prüfen Cosmocom-ID vom Eintrag mit der des Users übereinstimmt
                             if($entry['status'] == 'Available') {                                                               // Prüfen ob Status von Eintrag == Available
                                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden der Zeit im Call hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
+                            }
+                            if($entry['status'] == 'Ringing') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
                             }
                             if($entry['status'] == 'In Call') {                                                                 // Prüfen ob Status von Eintrag == In Call
                                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
                                 $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
                             }
                             if($entry['status'] == 'On Hold') {                                                                 // Prüfen ob Status von Eintrag == On Hold
                                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
                                 $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
                             }
                             if($entry['status'] == 'Wrap Up') {                                                                 // Prüfen ob Status von Eintrag == Wrap Up
                                 $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
                                 $refinedEmployees[$employeeArray['ds_id']]['time_in_call_seconds'] += $entry['time_in_state'];  // Sekunden werden der Zeit im Call hinzugefügt
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
                             }
-                            if($entry['status'] == '05_Occupied') {                                                             // Prüfen ob Status von Eintrag == 05_Occupied
-                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            if($entry['status'] == 'Released (01_screen break)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
                             }
-                            if($entry['status'] == '06_Practice') {                                                             // Prüfen ob Status von Eintrag == 06_Practice
-                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            if($entry['status'] == 'Released (03_away)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
                             }
-                            if($entry['status'] == '09_Outbound') {                                                             // Prüfen ob Status von Eintrag == 09_Outbound
-                                $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];      // Sekunden werden den Produktivstunden hinzugefügt
+                            if($entry['status'] == 'Released (04_offline work)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
+                            }
+                            if($entry['status'] == 'Released (05_occupied)') {                                                             // Prüfen ob Status von Eintrag == 05_Occupied
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
+                            }
+                            if($entry['status'] == 'Released (06_practice)') {                                                             // Prüfen ob Status von Eintrag == 06_Practice
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
+                            }
+                            if($entry['status'] == 'Released (07_meeting)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
+                            }
+                            if($entry['status'] == 'Released (08_organization)') {                                                               
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];     
+                            }
+                            if($entry['status'] == 'Released (09_outbound)') {                                                             // Prüfen ob Status von Eintrag == 09_Outbound
+                                if($refinedEmployees[$employeeArray['ds_id']]['team_id'] == 89){
+                                    $refinedEmployees[$employeeArray['ds_id']]['productive_hours'] += $entry['time_in_state'];
+                                }
+                                $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] += $entry['time_in_state'];   
                             }
                         }
                     }
@@ -1156,19 +1268,32 @@ class ProjectReportController extends Controller
                             / 60                                                            // / 60 um in Minuten zu konvertieren
                             / 60;                                                           // / 60 um in Stunden zu konvertieren
 
+                    $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] =        // Hier werden die summierten Sekunden in Stunden umgeandelt
+                    $refinedEmployees[$employeeArray['ds_id']]['ccu_hours']      // Genommen werden die Produktivstunden (aktuell noch sekunden)
+                        / 60                                                            // / 60 um in Minuten zu konvertieren
+                        / 60;                                                           // / 60 um in Stunden zu konvertieren
+
                     /* Hier wird die Produktivquote berechnet */
                     if ($refinedEmployees[$employeeArray['ds_id']]['work_hours'] == 0){             // Prüfen ob bez. Stunden vorhanden sind
-                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] = 0;    // Fall nein, wird die Produktivquote auf 0 gesetzt
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_brutto'] = 0;    // Fall nein, wird die Produktivquote auf 0 gesetzt
                     } else {
-                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage'] =       // Falls ja, wird die Produktivquote berechnet
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_brutto'] =       // Falls ja, wird die Produktivquote berechnet
                             ($refinedEmployees[$employeeArray['ds_id']]['productive_hours']         // Genommen werden die Produktivstunden
                             / $refinedEmployees[$employeeArray['ds_id']]['work_hours'])             // und durch die bez. Stunden geteilt
                             * 100;                                                                  // mit 100 multipliert um Prozenz auszugeben
                     }
+
+                    if ($refinedEmployees[$employeeArray['ds_id']]['ccu_hours'] == 0){             
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_netto'] = 0;    
+                    } else {
+                        $refinedEmployees[$employeeArray['ds_id']]['productive_percentage_netto'] =      
+                            ($refinedEmployees[$employeeArray['ds_id']]['productive_hours']       
+                            / $refinedEmployees[$employeeArray['ds_id']]['ccu_hours'])
+                            * 100;                                                               
+                    }
                     
                 }
 
-                /* Hier werden die Retention Details Daten verarbeitet, summiert und Quoten berechnet */
                 $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_sum'] = 0;     // Summe Mobile Calls wird initialisiert 
                 $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_ssc'] = 0;     // Summe Mobile Calls SSC wird initialisiert 
                 $refinedEmployees[$employeeArray['ds_id']]['mobile_calls_bsc'] = 0;     // Summe Mobile Calls BSC wird initialisiert 

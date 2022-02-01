@@ -1,6 +1,6 @@
 @extends('general_layout')
 @section('pagetitle')
-    Reporte: Import
+    Reporte: Übersicht
 @endsection
 @section('content')
 
@@ -21,6 +21,10 @@
     }
     .form-control{
         color:black;
+
+    }
+    .dataTables_filter{
+        width: 300px;
     }
     table.dataTable tbody td, table.dataTable tfoot td, table.dataTable thead th {
         padding: 0px 15px;
@@ -29,7 +33,7 @@
         background-blend-mode: luminosity;
     }
     .dataTables_wrapper .dataTables_length select{
-        width: 60px;
+        width: 65px;
         margin-left: 4px;
         margin-right: 4px;
     }
@@ -58,6 +62,32 @@
     {
       display: none;
     }
+
+    .page-item.active .page-link {
+        background-color: #FA7A50;
+        border-color: #FA7A50;
+    }
+
+    .page-item:hover{
+        border-color: #FA7A50;
+    }
+
+    .page-link{
+        margin: 5px !important;
+    }
+
+    .paginate_button:hover{
+        border: none !important;
+    }
+
+    .page-link:hover{
+        border-color: #FA7A50;
+    }
+
+    .pagination{
+        width: min-content;
+        margin: 5px auto;
+    }
 </style>
 @endsection
 <div class="row">
@@ -67,15 +97,16 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="max-panel bg-none">
-                        <div class="max-panel-title">Reporte importieren</div>
+                        <div class="max-panel-title">Reporte Import und Export</div>
                         <div class="max-panel-content">
                             <table class="table" style="text-align: center; border-collapse: collapse;">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: left;">Report Test</th>
+                                        <th style="text-align: left;">Bezeichnung</th>
                                         <th>Daten von</th>
                                         <th>Daten bis</th>
                                         <th>Import</th>
+                                        <th>Export</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -92,54 +123,67 @@
                                             <td>Keine Daten verfügbar</td>
                                         @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#availbenchModal">Importieren</button></td>
+                                        <td></td>
                                     </tr>
-                                    <tr class="loadingerDA" >
+                                    <tr id="dailyAgent">
                                         <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
-                                        <td id="">Daten werden geladen</td>
-                                        <td id=""></td>
+                                        @if(isset($refinedDataTables['dailyAgent_report']['min_date']))
+                                            <td>{{$refinedDataTables['dailyAgent_report']['min_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
+                                        @if(isset($refinedDataTables['dailyAgent_report']['max_date']))
+                                            <td>{{$refinedDataTables['dailyAgent_report']['max_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
+                                        <td></td>
                                     </tr>
-                                    <tr id="dailyagentData" style="display:none;">
-                                        <td style="text-align: left; font-weight: 600;">1u1 Daily Agent</td>
-                                        <td id="dailyAgentStart">1</td>
-                                        <td id="dailyAgentEnd">1</td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
-                                    </tr>
-                                    <tr class="loadingerOptin">
+                                    <tr id="optin">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
-                                        <td id="">Daten werden geladen</td>
-                                        <td id=""></td>
+                                        @if(isset($refinedDataTables['optin_report']['min_date']))
+                                            <td>{{$refinedDataTables['optin_report']['min_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
+                                        @if(isset($refinedDataTables['optin_report']['max_date']))
+                                            <td>{{$refinedDataTables['optin_report']['max_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
+                                        <td></td>
                                     </tr>
-                                    <tr id="OptinDataStatus" style="display:none;">
-                                        <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
-                                        <td id="optinStart">1</td>
-                                        <td id="optinEnd">1</td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#optinModal">Importieren</button></td>
-                                    </tr>
-                                    <tr class="loadingerRD" >
+                                    <tr id="sas">
                                         <td style="text-align: left; font-weight: 600;">1u1 Retention Details</td>
-                                        <td id="">Daten werden geladen</td>
-                                        <td id=""></td>
+                                        @if(isset($refinedDataTables['details_report']['min_date']))
+                                            <td>{{$refinedDataTables['details_report']['min_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
+                                        @if(isset($refinedDataTables['details_report']['max_date']))
+                                            <td>{{$refinedDataTables['details_report']['max_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#retDetailsModal">Importieren</button></td>
+                                        <td></td>
                                     </tr>
-                                    <tr id="RDDataStatus" style="display:none;">
-                                        <td style="text-align: left; font-weight: 600;">1u1 Retention Details</td>
-                                        <td id="retDetailsStart">xxx</td>
-                                        <td id="retDetailsEnd">xxx</td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#retDetailsModal">Importieren</button></td>
-                                    </tr>
-                                    <tr class="loadingerSAS">
+                                    <tr id="sas">
                                         <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
-                                        <td id="">Daten werden geladen</td>
-                                        <td id=""></td>
+                                        @if(isset($refinedDataTables['sas_report']['min_date']))
+                                            <td>{{$refinedDataTables['sas_report']['min_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
+                                        @if(isset($refinedDataTables['sas_report']['max_date']))
+                                            <td>{{$refinedDataTables['sas_report']['max_date']}}</td>
+                                        @else
+                                            <td>Keine Daten verfügbar</td>
+                                        @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sasModal">Importieren</button></td>
-                                    </tr>
-                                    <tr id="SASDataStatus" style="display:none;">
-                                        <td style="text-align: left; font-weight: 600;">1u1 SaS</td>
-                                        <td id="sasStart">sas</td>
-                                        <td id="sasEnd">sas</td>
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sasModal">Importieren</button></td>
+                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -203,7 +247,7 @@
                                     <tbody>
                                         @foreach($datatablesDates as $key => $entry)
                                         <tr style="text-align: center">
-                                            <td>{{$key}}</td>
+                                            <td>{{date('d.m.Y', strtotime($key))}}</td>
                                             <!-- Availench -->
                                             @if($entry['availbench_dsl'] == 'true')
                                                 <td style='color: green; font-weight: 600;'>✓</td>
@@ -346,6 +390,7 @@
     </div>
 </div>
 -->
+<!-- Availbench -->
 <div class="modal fade" id="availbenchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
@@ -354,10 +399,18 @@
           </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Availbench</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div id="debug_div" style="font-size: 12px">
+                    Debug
+                    <form action="{{route('availbenchKdw.upload')}}" enctype="multipart/form-data" method="POST">
+                        @csrf
+                        <input type="file" name="file" id="">
+                        <button type="submit">Hochladen</button>
+                    </form>
+                </div>
             <div id="app">
                 <div class="tab-pane">
                     <div class="nav-tabs-navigation">
@@ -447,7 +500,7 @@
           </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Daily Agent</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -491,7 +544,7 @@
                                     </div>
                                 </div>
                                     <div class="modal-footer" style="font-size: 14px;">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
                                         <button type="button" id="dailyAgentDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                                     </div>
                                 </form>
@@ -530,7 +583,7 @@
                                     </div>
                                 </div>
                                     <div class="modal-footer" style="font-size: 14px;">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
                                         <button type="button" id="dailyAgentXlsxDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                                     </div>
                                 </form>
@@ -551,7 +604,7 @@
           </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">OptIn</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -589,7 +642,7 @@
                         </div>
                 </div>
                         <div class="modal-footer" style="font-size: 14px;">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
                             <button type="button" id="optinDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                         </div>
                     </form>
@@ -607,7 +660,7 @@
           </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Retention Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -645,7 +698,7 @@
                         </div>
                 </div>
                         <div class="modal-footer" style="font-size: 14px;">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
                             <button type="button" id="retDetailsDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                         </div>
                     </form>
@@ -663,7 +716,7 @@
           </div>
             <div class="modal-header ">
                 <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">SaS</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -701,7 +754,7 @@
                         </div>
                 </div>
                         <div class="modal-footer" style="font-size: 14px;">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
                             <button type="button" id="sasDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                         </div>
                     </form>
@@ -730,27 +783,44 @@
   $(document).ready(function(){
     let table = $('#timespanTable').DataTable({
         "language": {
-            "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
-            "zeroRecords": "Keinen Eintrag gefunden",
-            "info": "Seite _PAGE_ von _PAGES_",
-            "infoEmpty": "Keinen Eintrag gefunden",
-            "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
-            "loadingRecords": "Lädt...",
-            "processing":     "Lädt...",
-            "search":         "Suche:",
-            "paginate": {
-                "first":      "Erste",
-                "last":       "Letzte",
-                "next":       "Nächste",
-                "previous":   "Zurück"
+                "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+                "zeroRecords": "Keinen Eintrag gefunden",
+                "info": "Seite _PAGE_ von _PAGES_",
+                "infoEmpty": "Keinen Eintrag gefunden",
+                "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
+                "loadingRecords": "Lädt...",
+                "processing": "Lädt...",
+                "search": "<p style='margin-bottom: 0; margin-right: 5px;'>Suche:</p>",
+                "paginate": {
+                    "first": "Erste",
+                    "last": "Letzte",
+                    "next": "Nächste",
+                    "previous": "Zurück"
+                },
             },
-        },
-        "lengthMenu": [ [-1, 3, 5, 10, 25, 50, 100], ["alle", 3, 5, 10, 25, 50, 100] ],
-        scrollX: true,
-        scrollCollapse: false,
-        fixedColumns: false,
-        select: true,
-        order: [[0, "asc"]],
+            "lengthMenu": [
+                [-1, 3, 5, 10, 25, 50, 100],
+                ["alle", 3, 5, 10, 25, 50, 100]
+            ],
+            scrollX: true,
+            scrollCollapse: false,
+            fixedColumns: false,
+            select: true,
+            order: [
+                [1, "asc"]
+            ],
+            dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'csv',
+                    text: 'CSV Export',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel Export',
+                    className: 'btn btn-primary'
+                },
+            ],
     });
     document.getElementById('userListContainer').style.display = "block";
     $($.fn.dataTable.tables(true)).DataTable()

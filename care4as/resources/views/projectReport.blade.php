@@ -119,18 +119,32 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" style="display:flex; margin-top: 20px; margin-bottom: 20px;">
-                            <button class="btn btn-primary" style="margin: auto;" type="submit">Bericht erzeugen</button>
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="max-panel">
+                                <div class="max-panel-title">Anpassen</div>
+                                <div class="max-panel-content">
+                                    <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 5px;">
+                                        <label for="reportSelection" style="margin: auto 0 auto auto;">Report:</label>
+                                        <select name="report" id="reportSelection" class="form-control" style="color:black;">
+                                            <option @if($defaultVariablesArray['report'] == 'projektmeldung') selected @endif value="projektmeldung">Projektmeldung</option>
+                                            <option @if($defaultVariablesArray['report'] == 'teamscan') selected @endif value="teamscan">Teamscan</option>
+                                        </select>
+                                    </div>
+                                <div style="display:flex;">
+                                        <button class="btn btn-primary btn-sm" style="margin: 5px auto;" type="submit">Bericht erzeugen</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" style="display:flex; flex-direction: column; margin-top: 20px; margin-bottom: 20px; row-gap: 20px;">
-                            <button class="btn btn-primary" style="margin: auto;">Einstellungen</button>
+                            <button class="btn btn-primary" style="margin: auto;" disabled>Einstellungen</button>
                         </div>
                     </div>
                 </div>
             </form>  
         </div>    
     </div>
-
+@if($defaultVariablesArray['report'] == 'projektmeldung')
 <!-- START PROJECT: DSL -->
     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
     <div class="row">  
@@ -144,10 +158,12 @@
                         <table class="max-table" id="dslMaTable" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Std. Bezahlt</th>
-                                    <th>Std. Produktiv</th>
-                                    <th>← in %</th>
+                                    <th style="border-right: 0px;">Name</th>
+                                    <th><abbr title="Alle vom Unternehmen bezahlten Stunden inkl. Krank und Urlaub">Std. MGM Bezahlt</abbr></th>
+                                    <th><abbr title="Summe Anmeldezeit in der CCU abzüglich Mittagspause">Std. CCU angemeldet</abbr></th>
+                                    <th><abbr title="Stunden in Produktiven Status in der CCU:&#010;- Available&#010;- In Call&#010;- On Hold&#010;- Wrap Up&#010;- Outbound (Nur Speedretention)">Std. Produktiv</abbr></th>
+                                    <th><abbr title="'Std. Produktiv' in Relation zu 'Std. MGM Bezahlt'">← in % Brutto</abbr></th>
+                                    <th><abbr title="'Std. Produktiv' in Relation zu 'Std. CCU angemeldet'">← in % Netto</abbr></th>
                                     <th>Std. Pause</th>
                                     <th>← in %</th>
                                     <th>Std. Krank</th>
@@ -183,8 +199,10 @@
                                     <tr>
                                     <!--Name-->         <td style="text-align: left;">{{$employee['full_name']}}</td>
                                     <!--Std. bez.-->    <td>{{number_format($employee['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. angeme.--> <td>{{number_format($employee['ccu_hours'], 2,",",".")}}</td>
                                     <!--Std. prod.-->   <td>{{number_format($employee['productive_hours'], 2,",",".")}}</td>
-                                    <!--in %-->         <td>{{number_format($employee['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--in % B-->       <td>{{number_format($employee['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <!--in % N-->       <td>{{number_format($employee['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!--Pause-->        <td>{{number_format($employee['break_hours'], 2,",",".")}}</td>
                                     <!--in %-->         <td>{{number_format($employee['break_percentage'], 2,",",".")}}%</td>
                                     <!--Krank-->        <td>{{number_format($employee['sick_hours'], 2,",",".")}}</td>
@@ -218,10 +236,12 @@
                             </tbody>
                             <tfoot>
                                 <tr style="font-weight: bold; background-color: #ddd;">
-                                    <!--Name-->         <td>Summe</td>
+                                    <!--Name-->         <td style="border-right: 0px;">Summe</td>
                                     <!--Std. bez.-->    <td>{{number_format($dataArray['sum']['work_hours'], 2,",",".")}}</td>
-                                    <!--Std. prod.-->   <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
-                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--Std. angeme.--> <td>{{number_format($dataArray['sum']['ccu_hours'], 2,",",".")}}</td>
+                                    <!--Std. prod. B--> <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!--Pause-->        <td>{{number_format($dataArray['sum']['break_hours'], 2,",",".")}}</td>
                                     <!--in %-->         <td>{{number_format($dataArray['sum']['break_percentage'], 2,",",".")}}%</td>
                                     <!--Krank-->        <td>{{number_format($dataArray['sum']['sick_hours'], 2,",",".")}}</td>
@@ -262,7 +282,7 @@
 <!-- END PROJECT: DSL -->
 
 <!-- START PROJECT: MOBILE -->
-@if($defaultVariablesArray['project'] == '1u1_mobile_ret')
+    @if($defaultVariablesArray['project'] == '1u1_mobile_ret')
     <div class="row">  
         <div class="col-md-12">
             <div class="max-main-container">
@@ -274,10 +294,12 @@
                         <table class="max-table" id="dslMaTable" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Std. Bezahlt</th>
-                                    <th>Std. Produktiv</th>
-                                    <th>← in %</th>
+                                    <th style="border-right: 0px;">Name</th>
+                                    <th><abbr title="Alle vom Unternehmen bezahlten Stunden inkl. Krank und Urlaub">Std. MGM Bezahlt</abbr></th>
+                                    <th><abbr title="Summe Anmeldezeit in der CCU abzüglich Mittagspause">Std. CCU angemeldet</abbr></th>
+                                    <th><abbr title="Stunden in Produktiven Status in der CCU:&#010;- Available&#010;- In Call&#010;- On Hold&#010;- Wrap Up&#010;- Outbound (Nur Speedretention)">Std. Produktiv</abbr></th>
+                                    <th><abbr title="'Std. Produktiv' in Relation zu 'Std. MGM Bezahlt'">← in % Brutto</abbr></th>
+                                    <th><abbr title="'Std. Produktiv' in Relation zu 'Std. CCU angemeldet'">← in % Netto</abbr></th>
                                     <th>Std. Pause</th>
                                     <th>← in %</th>
                                     <th>Std. Krank</th>
@@ -321,8 +343,10 @@
                                     <tr>
                                     <!--Name-->         <td style="text-align: left;">{{$employee['full_name']}}</td>
                                     <!--Std. bez.-->    <td>{{number_format($employee['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. angeme.--> <td>{{number_format($employee['ccu_hours'], 2,",",".")}}</td>
                                     <!--Std. prod.-->   <td>{{number_format($employee['productive_hours'], 2,",",".")}}</td>
-                                    <!--in %-->         <td>{{number_format($employee['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($employee['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($employee['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!--Pause-->        <td>{{number_format($employee['break_hours'], 2,",",".")}}</td>
                                     <!--in %-->         <td>{{number_format($employee['break_percentage'], 2,",",".")}}%</td>
                                     <!--Krank-->        <td>{{number_format($employee['sick_hours'], 2,",",".")}}</td>
@@ -364,10 +388,12 @@
                             </tbody>
                             <tfoot>
                                 <tr style="font-weight: bold; background-color: #ddd;">
-                                    <!--Name-->         <td>Summe</td>
+                                    <!--Name-->         <td style="border-right: 0px;">Summe</td>
                                     <!--Std. bez.-->    <td>{{number_format($dataArray['sum']['work_hours'], 2,",",".")}}</td>
+                                    <!--Std. angeme.--> <td>{{number_format($dataArray['sum']['ccu_hours'], 2,",",".")}}</td>
                                     <!--Std. prod.-->   <td>{{number_format($dataArray['sum']['productive_hours'], 2,",",".")}}</td>
-                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage_brutto'], 2,",",".")}}%</td>
+                                    <!--in %-->         <td>{{number_format($dataArray['sum']['productive_percentage_netto'], 2,",",".")}}%</td>
                                     <!--Pause-->        <td>{{number_format($dataArray['sum']['break_hours'], 2,",",".")}}</td>
                                     <!--in %-->         <td>{{number_format($dataArray['sum']['break_percentage'], 2,",",".")}}%</td>
                                     <!--Krank-->        <td>{{number_format($dataArray['sum']['sick_hours'], 2,",",".")}}</td>
@@ -414,6 +440,216 @@
     </div>
     @endif     
 <!-- END PROJECT: MOBILE -->
+@elseif($defaultVariablesArray['report'] == 'teamscan')
+    <div class="row">  
+        <div class="col-md-12">
+            <div class="max-main-container">
+                <div class="max-panel-title">
+                    Teamscan - {{$defaultVariablesArray['projectName']}} - {{$defaultVariablesArray['teamName']}}
+                </div>
+                <div class="max-panel-content">
+                    <div style="width: 100%;">
+                        <table class="max-table" id="teamscanTable" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Mitarbeiter</th>
+                                    <th colspan="5">Stunden</th>
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <th colspan="1">Calls</th>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <th colspan="3">Calls</th>
+                                    @endif
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <th colspan="1">GeVo Saves</th>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <th colspan="3">GeVo Saves</th>
+                                    @endif
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <th colspan="1">GeVo CR</th>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <th colspan="3">GeVo CR</th>
+                                    @endif
+                                    <th colspan="2">OptIn</th>
+                                    <th colspan="3">Umsatz</th>
+                                </tr>
+                                <tr>
+                                    <th style="border-right: 0px;">Name</th>
+                                    <th>FTE</th>
+                                    <!-- Stunden -->
+                                    <th>bezahlt</th>
+                                    <th>krank</th>
+                                    <th>produktiv</th>
+                                    <th>krank in %</th>
+                                    <th>prod. netto in %</th>
+                                    <!-- calls -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <th>DSL</th>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <th>SSC</th>
+                                    <th>BSC</th>
+                                    <th>Portale</th>
+                                    @endif
+                                    <!-- Saves -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <th>DSL</th>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <th>SSC</th>
+                                    <th>BSC</th>
+                                    <th>Portale</th>
+                                    @endif
+                                    <!-- CR -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <th>DSL</th>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <th>SSC</th>
+                                    <th>BSC</th>
+                                    <th>Portale</th>
+                                    @endif
+                                    <!-- OptIn -->
+                                    <th>Stück</th>
+                                    <th>in %</th>
+                                    <!-- Umsatz -->
+                                    <th>Gesamt</th>
+                                    <th>Pro bez. Std.</th>
+                                    <th>Pro prod. Std.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($dataArray['employees'] as $key => $employee)
+                                <tr>
+                                    <td style="border-right: 0px;">Name</td>
+                                    <td>FTE</td>
+                                    <!-- Stunden -->
+                                    <td>bezahlt</td>
+                                    <td>krank</td>
+                                    <td>produktiv</td>
+                                    <td>krank in %</td>
+                                    <td>prod. netto in %</td>
+                                    <!-- calls -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <td>DSL</td>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <td>SSC</td>
+                                    <td>BSC</td>
+                                    <td>Portale</td>
+                                    @endif
+                                    <!-- Saves -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <td>DSL</td>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <td>SSC</td>
+                                    <td>BSC</td>
+                                    <td>Portale</td>
+                                    @endif
+                                    <!-- CR -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <td>DSL</td>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <td>SSC</td>
+                                    <td>BSC</td>
+                                    <td>Portale</td>
+                                    @endif
+                                    <!-- OptIn -->
+                                    <td>Stück</td>
+                                    <td>in %</td>
+                                    <!-- Umsatz -->
+                                    <td>Gesamt</td>
+                                    <td>Pro bez. Std.</td>
+                                    <td>Pro prod. Std.</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr style="font-weight: bold; background-color: #ddd;">
+                                    <td>Team Gesamt</td>
+                                    <td>FTE</td>
+                                    <!-- Stunden -->
+                                    <td>bezahlt</td>
+                                    <td>krank</td>
+                                    <td>produktiv</td>
+                                    <td>krank in %</td>
+                                    <td>prod. netto in %</td>
+                                    <!-- calls -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <td>DSL</td>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <td>SSC</td>
+                                    <td>BSC</td>
+                                    <td>Portale</td>
+                                    @endif
+                                    <!-- Saves -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <td>DSL</td>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <td>SSC</td>
+                                    <td>BSC</td>
+                                    <td>Portale</td>
+                                    @endif
+                                    <!-- CR -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <td>DSL</td>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <td>SSC</td>
+                                    <td>BSC</td>
+                                    <td>Portale</td>
+                                    @endif
+                                    <!-- OptIn -->
+                                    <td>Stück</td>
+                                    <td>in %</td>
+                                    <!-- Umsatz -->
+                                    <td>Gesamt</td>
+                                    <td>Pro bez. Std.</td>
+                                    <td>Pro prod. Std.</td>
+                                </tr>
+                                <tr style="font-weight: bold; background-color: #ddd;">
+                                    <td>Projekt Gesamt</td>
+                                    <td>FTE</td>
+                                    <!-- Stunden -->
+                                    <td>bezahlt</td>
+                                    <td>krank</td>
+                                    <td>produktiv</td>
+                                    <td>krank in %</td>
+                                    <td>prod. netto in %</td>
+                                    <!-- calls -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <td>DSL</td>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <td>SSC</td>
+                                    <td>BSC</td>
+                                    <td>Portale</td>
+                                    @endif
+                                    <!-- Saves -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <td>DSL</td>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <td>SSC</td>
+                                    <td>BSC</td>
+                                    <td>Portale</td>
+                                    @endif
+                                    <!-- CR -->
+                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
+                                    <td>DSL</td>
+                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
+                                    <td>SSC</td>
+                                    <td>BSC</td>
+                                    <td>Portale</td>
+                                    @endif
+                                    <!-- OptIn -->
+                                    <td>Stück</td>
+                                    <td>in %</td>
+                                    <!-- Umsatz -->
+                                    <td>Gesamt</td>
+                                    <td>Pro bez. Std.</td>
+                                    <td>Pro prod. Std.</td>
+                                </tr>
+                            </tfoot>
+                        </table>    
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+@endif
 
 </div>
 @endsection
@@ -434,7 +670,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
-  $(document).ready(function(){
+    $(document).ready(function(){
     let table = $('#dslMaTable').DataTable({
         "language": {
             "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
@@ -461,12 +697,33 @@
             buttons: [{
                     extend: 'csv',
                     text: 'CSV Export',
-                    className: 'btn btn-primary'
+                    className: 'btn btn-primary',
+                    footer: 'true',
+                    title: null,
+                    filename: 'Projektmeldung_Export',
                 },
                 {
-                    extend: 'excel',
+                    extend: 'excelHtml5',
                     text: 'Excel Export',
-                    className: 'btn btn-primary'
+                    className: 'btn btn-primary',
+                    footer: 'true',
+                    title: null,
+                    sheetName: 'Export',
+                    filename: 'Projektmeldung_Export',
+                    autoFilter: 'true',
+                    exportOptions: {
+                        columns: ':visible',
+                        format: {
+                            body: function(data, row, column, node) {
+                                data = $('<p>' + data + '</p>').text();
+                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                            },
+                            footer: function(data, row, column, node) {
+                                data = $('<p>' + data + '</p>').text();
+                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                            }
+                        }
+                    },
                 },
             ],
     });
@@ -484,6 +741,94 @@
     document.getElementById('userListContainer').style.display = "block";
     $($.fn.dataTable.tables(true)).DataTable()
       .columns.adjust();
+})
+
+$(document).ready(function(){
+    let table2 = $('#teamscanTable').DataTable({
+        "language": {
+            "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+            "zeroRecords": "Keinen Eintrag gefunden",
+            "info": "Seite _PAGE_ von _PAGES_",
+            "infoEmpty": "Keinen Eintrag gefunden",
+            "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
+            "loadingRecords": "Lädt...",
+            "processing":     "Lädt...",
+            "search":         "<p style='margin-bottom: 0; margin-right: 5px;'>Suche:</p>",
+            "paginate": {
+                "first":      "Erste",
+                "last":       "Letzte",
+                "next":       "Nächste",
+                "previous":   "Zurück"
+            },
+        },
+        "lengthMenu": [ [-1, 3, 5, 10, 25, 50, 100], ["alle", 3, 5, 10, 25, 50, 100] ],
+        scrollX: true,
+        scrollCollapse: true,
+        fixedColumns: false,
+        select: true,
+        dom: 'Blfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: 'Excel Export',
+                    className: 'btn btn-primary',
+                    footer: 'true',
+                    customize: (xlsx, config, dataTable) => {
+                        let sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        let footerIndex = $('sheetData row', sheet).length;
+                        let $footerRows = $('tr', dataTable.footer());
+
+                        // Header Background
+                        $('row c[r*="2"]', sheet).attr( 's', '32' );
+
+                        // If there are more than one footer rows
+                        if ($footerRows.length > 1) {
+                            // First header row is already present, so we start from the second row (i = 1)
+                            
+                            for (let i = 1; i < $footerRows.length; i++) {
+                            // Get the current footer row
+                            let $footerRow = $footerRows[i];
+
+                            // Get footer row columns
+                            let $footerRowCols = $('td', $footerRow);
+
+                            // Increment the last row index
+                            footerIndex++;
+
+                            // Create the new header row XML using footerIndex and append it at sheetData
+                            $('sheetData', sheet).append(`
+                                <row r="${footerIndex}">
+                                ${$footerRowCols.map((index, el) => `
+                                    <c t="inlineStr" r="${String.fromCharCode(65 + index)}${footerIndex}" s="2">
+                                    <is>
+                                        <t xml:space="preserve">${$(el).text()}</t>
+                                    </is>
+                                    </c>
+                                `).get().join('')}
+                                </row>
+                            `);
+                            }
+                        }
+                    },
+                    title: 'Teamscan',
+                    sheetName: 'Teamscan',
+                    filename: 'Teamscan_Export',
+                    exportOptions: {
+                        columns: ':visible',
+                        format: {
+                            body: function(data, row, column, node) {
+                                data = $('<p>' + data + '</p>').text();
+                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                            },
+                            footer: function(data, row, column, node) {
+                                data = $('<p>' + data + '</p>').text();
+                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                            }
+                        }     
+                    },
+                },
+            ],
+    });
 })
 </script>
 <script>

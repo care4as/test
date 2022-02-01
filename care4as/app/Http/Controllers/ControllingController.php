@@ -92,9 +92,9 @@ class ControllingController extends Controller
 
         //default project variables
             //revenue should per hour
-            $defaultVariablesArray['revenue_hour_should']['1u1_dsl_retention'] = 36;
-            $defaultVariablesArray['revenue_hour_should']['1u1_mobile_retention'] = 35;
-            $defaultVariablesArray['revenue_hour_should']['1u1_terminationadministration'] = 24.5;
+            $defaultVariablesArray['revenue_hour_should']['1u1_dsl_retention'] = 36.41;
+            $defaultVariablesArray['revenue_hour_should']['1u1_mobile_retention'] = 36.99;
+            $defaultVariablesArray['revenue_hour_should']['1u1_terminationadministration'] = 26.21;
             $defaultVariablesArray['revenue_hour_should']['telefonica_outbound'] = 35;
 
             //project id
