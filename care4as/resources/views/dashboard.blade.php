@@ -337,8 +337,8 @@
 function showMemo(id)
 {
   let host = window.location.host;
-  axios.get('http://'+host+'/care4as/care4as/public/memo/read/'+id)
-  // axios.get('http://'+host+'/memo/read/'+id)
+  // axios.get('http://'+host+'/care4as/care4as/public/memo/read/'+id)
+  axios.get('http://'+host+'/memo/read/'+id)
   .then(response => {
 
   })
