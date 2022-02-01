@@ -261,7 +261,8 @@ class UserController extends Controller
       $unread = collect();
       $read = collect();
 
-      $memos = Memoranda::where('to', $user->project)
+      $memos = Memoranda::with('creator')
+      ->where('to', $user->project)
       ->orWhere('to', 'all')
       ->orWhere('to', $user->team)
       ->orderBy('created_at', 'DESC')

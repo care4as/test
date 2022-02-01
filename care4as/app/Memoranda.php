@@ -10,4 +10,9 @@ class Memoranda extends ExtendedModel
     use HasFactory;
 
     protected $table ="memoranda";
+
+    function creator()
+    {
+      return $this->belongsTo('App\User','created_by');
+    }
 }
