@@ -7,8 +7,7 @@
     background-color: transparent !important;
   }
   *{
-
-     scrollbar-width: thin;
+   scrollbar-width: thin;
   }
   ::-webkit-scrollbar {
   width: 9px;
@@ -154,7 +153,7 @@
             <div id="memo-search">
               <input type="text" class="form-control" style="max-width: 200px; margin: 0 auto;" placeholder="Suche...">
             </div>
-            <div id="memo-new" style="overflow:scroll;">
+            <div id="memo-new" style="overflow-y:scroll;">
               @foreach($unread as $memo)
                 <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
                   @if($memo->has_image)
@@ -174,7 +173,7 @@
                 </div>
               @endforeach
             </div>
-            <div id="memo-old" class="inactive" style="overflow-y: scroll;">
+            <div id="memo-old" class="inactive h-100" style="overflow-y: scroll;">
             @foreach($read as $memo)
               <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
                 @if($memo->has_image)
@@ -338,8 +337,8 @@
 function showMemo(id)
 {
   let host = window.location.host;
-  // axios.get('http://'+host+'/care4as/care4as/public/memo/read/'+id)
-  axios.get('http://'+host+'/memo/read/'+id)
+  axios.get('http://'+host+'/care4as/care4as/public/memo/read/'+id)
+  // axios.get('http://'+host+'/memo/read/'+id)
   .then(response => {
 
   })

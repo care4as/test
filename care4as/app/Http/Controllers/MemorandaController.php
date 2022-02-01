@@ -129,7 +129,14 @@ class MemorandaController extends Controller
       ->delete();
 
     }
+    public function checkMemos()
+    {
+      $news = \DB::table('user_read_memoranda')
+      ->where('user_id',Auth()->id())
+      ->count();
 
+      return response()->json($news);
+    }
     /**
      * Update the specified resource in storage.
      *

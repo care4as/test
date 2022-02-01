@@ -89,7 +89,6 @@
             })
           },
           getOutOfPause(){
-
             var host = window.location.host;
             // axios.get('http://'+host+'/care4as/care4as/public/telefonica/getOutOfPause')
             axios.get('http://'+host+'/telefonica/getOutOfPause')

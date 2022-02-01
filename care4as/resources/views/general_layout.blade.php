@@ -474,14 +474,17 @@
                 </div>
               </li>
               <li class="nav-item dropdown m-2" > -->
+              <li class="nav-item dropdown center_items text-white mr-4" style="margin-right: 10px;cursor: pointer;">
+                <a href="{{route('dashboard')}} " class="center_items">
+                  <i class="far fa-bell" style="font-size: 1.5em !important;"></i>
+                  <span class="badge badge-success" id="news"></span>
+                  </a>
+              </li>
               @if(in_array('controlling_base',Auth()->user()->getRights()))
               <?php $dataTables = \DB::table('datatables_timespan')->get() ?>
               <li class="nav-item dropdown" style="margin-right: 10px; cursor: pointer;">
                 <a class="nav-link dropdown-toggle" id="dataDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i style="font-size: 25px; top: 4px; position: relative;" class="fas fa-tasks"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block"> </span>
-                  </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                   <div class="d-flex justify-content-center">
@@ -755,12 +758,40 @@
     </script>
 
   @endif
-  @if($news = 0 == 1)
+
     <script>
-      $('#newsModal').modal('show');
+    let host = window.location.host;
+    axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
+    // axios.get('http://'+host+'/memo/checkMeMos/')
+    .then(response => {
+      console.log('check')
+      $('#news').html(response.data)
+
+    })
+    .catch(function (err) {
+      console.log('error Memocheck')
+      console.log(err.response);
+    });
+    
+    setInterval(function()
+    {
+      let host = window.location.host;
+      axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
+      // axios.get('http://'+host+'/memo/checkMeMos/')
+      .then(response => {
+        console.log('check')
+        $('#news').html(response.data)
+
+      })
+      .catch(function (err) {
+        console.log('error Memocheck')
+        console.log(err.response);
+      });
+    }, 1000*300);
+
 
     </script>
-  @endif
+
   @yield('additional_js')
 </body>
 

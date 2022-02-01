@@ -134,6 +134,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::view('/memos/create', 'createMemo')->name('memo.create');
   Route::post('/memos/store', 'MemorandaController@store')->name('memo.store');
   Route::get('/memo/read/{id}', 'MemorandaController@read')->name('memo.read');
+  Route::get('/memo/checkMeMos', 'MemorandaController@checkMemos')->name('memo.check');
   //end Memos
 
   //AHTReport
