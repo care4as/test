@@ -73,7 +73,7 @@
           </li>
           @endif
 
-          @if(1)
+          @if(in_array('write_memos',Auth()->user()->getRights()))
           <li class="">
             <a class="" data-toggle="collapse" href="#collapseMemoranda" role="button" aria-expanded="false" aria-controls="collapseMemoranda">
               <i class="fas fa-pen"></i>
