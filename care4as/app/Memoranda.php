@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Memoranda extends ExtendedModel
 {
-    use HasFactory;
-
     protected $table ="memoranda";
 
     function creator()
