@@ -56,12 +56,168 @@
     max-width: 80%;
     max-height: 80%;
   }
+  .btn-check {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+    }
+
+    .btn-outline-primary:hover{
+        color: white;
+        background-color: #f96332;;
+    }
+
+    .btn-check:checked + label{
+    color: white;
+    background-color: #f96332;;
+    border: 1px solid #f96332;
+    }
+
+    .first-btn-group-element{
+        border-top-left-radius: 5px !important;
+        border-bottom-left-radius: 5px !important;
+    }
+
+    .last-btn-group-element{
+        border-top-right-radius: 5px !important;
+        border-bottom-right-radius: 5px !important;
+    }
+
+    .btn-group > .btn:not(:first-child){
+        margin-left: -2px;
+    }
+
+    .btn{
+        padding: 5px 10px !important;
+        margin-top: 0;
+        margin-bottom: 0;
+        min-width: 100px;
+    }
+
+    .btn-group-container{
+        display: flex;
+        justify-content: center;
+    }
 </style>
 @endsection
 @section('content')
-<div class="container bg-white text-dark mt-4" style="width: 75vw; height: 85vh; font-size: 1.2em;">
+<div class="row">
+  <div class="col-md-12" style="height: calc(100vh - 66.5px)">
+    <div class="col-md-12">
+      <div class="max-main-container" style="text-align: center; padding: 10px;">
+        <div>
+          Hallo {{Auth()->user()->surname}} {{Auth()->user()->lastname}},
+        </div>
+        <div>
+          @php
+          $greetings = array('Schön dass du da bist!',
+          'Wir haben dich vermisst!',
+          'Ohne dich ist es nur halb so lustig!',
+          );
+          $image =false;
+          @endphp
+          {{$greetings[rand(0,count($greetings)-1)]}}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" style="height: calc(100% - 139.6px)">
+      <div class="max-main-container" style="height:100%">
+        <div style="margin:10px">
+          <i class="far fa-newspaper"></i>
+          Neuigkeiten
+        </div>
+        <div class="row">
+          <div id="memo-sidebar" class="col-sm-12 col-lg-4">
+            <div id="memo-toggle" class="btn-group-container">
+              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="backoffice" value="1" id="backoffice1" autocomplete="off" checked>
+                <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Neu</label>
+                <input type="radio" class="btn-check" name="backoffice" value="0" id="backoffice2" autocomplete="off">
+                <label class="btn btn-outline-primary last-btn-group-element" for="backoffice2">Gelesen</label>
+              </div>
+            </div>
+            <div id="memo-search">
+              <input type="text" class="form-control" style="max-width: 200px; margin: 0 auto;" placeholder="Suche...">
+            </div>
+            <div id="memo-new">
+              @foreach($memos as $memo)
+                <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
+                  @if($memo->has_image)
+                    <div class="col-4 p-1 h-100 center_items">
+                      <img class="thumbimg" src="{{asset($memo->path)}}" alt="Bild">
+                    </div>
+                  @endif
+                  <div class="  @if($memo->has_image) col-8 @else col-12 @endif h-100">
+                    <div class="row m-0 h-25 ">
+                      <h5 class="text-truncate">{{$memo->title}}</h5>
+                    </div>
+                    <hr class="w-50 m-2 mt-3">
+                    <div class="row m-0 h-25 ">
+                      <p>{!!$memo->content !!}</p>
+                      <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
+                    </div>
+                  </div>
+                </div>
+              @endforeach
+            </div>
+            <div id="memo-old">
+            @foreach($memos as $memo)
+              <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
+                @if($memo->has_image)
+                  <div class="col-4 p-1 h-100 center_items">
+                    <img class="thumbimg" src="{{asset($memo->path)}}" alt="Bild">
+                  </div>
+                @endif
+                <div class="  @if($memo->has_image) col-8 @else col-12 @endif h-100">
+                  <div class="row m-0 h-25">
+                    <h5 class="text-truncate">{{$memo->title}}</h5>
+                  </div>
+                  <hr class="w-50 m-2 mt-3">
+                  <div class="row m-0 h-25">
+                    <p>{!!$memo->content !!}</p> 
+                    <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
+                  </div>
+                </div>
+              </div>
+            @endforeach
+            </div>
+          </div>
+          <div id="memo-content" class="coll-sm-12 col-lg-7">
+          @foreach($memos as $memo)
+            <div class="inactive" id="memoContent{{$memo->id}}">
+            @if($memo->has_image)
+            <div>
+              <img class="contentimg" src="{{asset($memo->path)}}" alt="Bild">
+            </div>
+            @endif
+            
+            <div>
+              {{$memo->title}}
+            </div>
+            <div>
+              Name, Datum
+            </div>
+            <div>
+              {!!$memo->content !!}
+            </div>
+
+
+          @endforeach
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- <div class="container bg-white text-dark mt-4" style="width: 75vw; height: 85vh; font-size: 1.2em;">
   <div class="row p-2 center_items h-25">
-    <div class="col-8-md">
+    <div class="col-12-md">
       <p>
         <h3>&#128075; &#128075; &#128075; Hallo {{Auth()->user()->surname}} {{Auth()->user()->lastname}}, &#128075;&#128075;&#128075;</h3>
       </p>
@@ -95,7 +251,7 @@
               </div>
               <hr class="w-50 m-2 mt-3">
             <div class="row m-0 h-25 ">
-                  <!-- <p>{!!$memo->content !!}</p> -->
+                   <p>{!!$memo->content !!}</p>
                   <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
               </div>
           </div>
@@ -118,7 +274,7 @@
               </div>
               <hr class="w-50 m-2 mt-3">
             <div class="row m-0 h-25">
-                  <!-- <p>{!!$memo->content !!}</p> -->
+                   <p>{!!$memo->content !!}</p> 
                   <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
               </div>
           </div>
@@ -149,7 +305,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 @endsection
 @section('additional_js')

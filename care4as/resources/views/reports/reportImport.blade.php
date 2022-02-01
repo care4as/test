@@ -390,6 +390,7 @@
     </div>
 </div>
 -->
+<!-- Availbench -->
 <div class="modal fade" id="availbenchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
         <div class="modal-content">
@@ -402,6 +403,14 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div id="debug_div" style="font-size: 12px">
+                    Debug
+                    <form action="{{route('availbenchKdw.upload')}}" enctype="multipart/form-data" method="POST">
+                        @csrf
+                        <input type="file" name="file" id="">
+                        <button type="submit">Hochladen</button>
+                    </form>
+                </div>
             <div id="app">
                 <div class="tab-pane">
                     <div class="nav-tabs-navigation">

@@ -990,6 +990,14 @@ class ExcelEditorController extends Controller
 
           // $report->rlzPlus = $row[34];
           $insertarray[$i]['rlzPlus'] = $data[$i][34];
+
+          $insertarray[$i]['calls_smallscreen'] = null;
+          $insertarray[$i]['calls_bigscreen'] = null;
+          $insertarray[$i]['calls_portale'] = null;
+          $insertarray[$i]['orders_smallscreen'] = null;
+          $insertarray[$i]['orders_bigscreen'] = null;
+          $insertarray[$i]['orders_portale'] = null;
+
         }
         // $report->orders = $row[17] + $row[22];
         $insertarray[$i]['orders'] = $data[$i][17] + $data[$i][22];
@@ -1010,10 +1018,39 @@ class ExcelEditorController extends Controller
         ]
       );
 
+      /** UPLOAD Datensparend, aber ohne Update */
+      // for($i=$fromRow-1; $i <= count($insertarray); $i++)
+      // {
+      //   DB::table('retention_details')->insertOrIgnore($insertarray[$i]);
+      // }
+
       for($i=$fromRow-1; $i <= count($insertarray); $i++)
       {
-        DB::table('retention_details')->insertOrIgnore($insertarray[$i]);
+        DB::table('retention_details')->updateOrInsert(
+          [
+            'call_date' => $insertarray[$i]['call_date'],
+            'person_id' => $insertarray[$i]['person_id'],
+          ],
+          [
+            'department_desc' => $insertarray[$i]['department_desc'],
+            'calls' => $insertarray[$i]['calls'],
+            'calls_smallscreen' => $insertarray[$i]['calls_smallscreen'], 
+            'calls_bigscreen' => $insertarray[$i]['calls_bigscreen'], 
+            'calls_portale' => $insertarray[$i]['calls_portale'], 
+            'orders' => $insertarray[$i]['orders'], 
+            'orders_smallscreen' => $insertarray[$i]['orders_smallscreen'], 
+            'orders_bigscreen' => $insertarray[$i]['orders_bigscreen'], 
+            'orders_portale' => $insertarray[$i]['orders_portale'], 
+            'Rabatt_Guthaben_Brutto_Mobile' => $insertarray[$i]['Rabatt_Guthaben_Brutto_Mobile'], 
+            'mvlzNeu' => $insertarray[$i]['mvlzNeu'], 
+            'rlzPlus' => $insertarray[$i]['rlzPlus'], 
+            'orders_kuerue' => $insertarray[$i]['orders_kuerue'],
+          ]
+        );
       }
+
+      
+
       // return response()->json($insertarray);
       // return redirect()->back();
       // dd($insertarray);
@@ -1175,7 +1212,7 @@ class ExcelEditorController extends Controller
         if(count($header) == count($row)) {
           $availbenchArray[$i]['date_key'] = intval($row[0]);
           $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
-          $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y G:i:s', $row[2]); //timestamp
+          $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i:s', $row[2]); //timestamp
           $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
           $availbenchArray[$i]['call_forecast_issue'] = $row[4];
           $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
@@ -1278,13 +1315,17 @@ class ExcelEditorController extends Controller
       //convert .txt file to array
       $file = file_get_contents($file);                         // Get the whole file as string
       $file = mb_convert_encoding($file, 'UTF8', 'UTF-16LE');   // Convert the file to UTF8
+      $file = str_replace('"', '', $file);
       $file = preg_split("/\R/", $file);                        // Split it by line breaks
 
       $fileArray = array(); //initialize array
 
       foreach ($file as $key => $line) {
-        $fileArray[$key] = str_getcsv($line, "\t");
+        // $fileArray[$key] = str_getcsv($line, "\t"); <-- für Tabstop
+        $fileArray[$key] = str_getcsv($line, ";");
       };
+
+      //dd($fileArray);
 
       $header = array_shift($fileArray);
 
@@ -1314,7 +1355,7 @@ class ExcelEditorController extends Controller
           if(intval($row[3]) == 54){
             $availbenchArray[$i]['date_key'] = intval($row[0]);
             $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
-            $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y G:i', $row[2]); //timestamp
+            $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i:s', $row[2]); //timestamp
             $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
             $availbenchArray[$i]['call_forecast_issue'] = $row[4];
             $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
@@ -1353,6 +1394,7 @@ class ExcelEditorController extends Controller
           }
         }
       }
+      //dd($availbenchArray);
 
       for ($i = 0; $i < count($availbenchArray); $i++){
         //echo $availbenchArray[$i]['call_forecast_owner_key'].' - '.$availbenchArray[$i]['call_date_interval_start_time'].' - '.$i;

@@ -13,6 +13,26 @@ class ProjectReportController extends Controller
         $startDateString = request('startDate');    // Startdatumsauswahl aus Webpage
         $endDateString = request('endDate');        // Enddatumsauswahl aus Webpage
         $team = request('team');
+        $report = request('report');
+
+        // Namen des Teams speichern
+        if ($team == 'all'){
+            $teamName = 'Alle Teams';
+        } else if ($team != null) {
+            $teamName = DB::connection('mysqlkdw')->table('teams')->where('ds_id', $team)->value('bezeichnung');
+        } else {
+            $teamName = null;
+        }
+
+        // Namen des Projekt nach eigener Konvention speichern
+
+        if ($project == '1u1_dsl_ret'){
+            $projectName = '1u1 DSL Retention';
+        } else if ($project == '1u1_mobile_ret') {
+            $projectName = '1u1 Mobile Retention';
+        } else {
+            $projectName = $project;
+        }
 
         if ($startDateString == null){  // Prüfen ob Startdatum eingegeben wurde
             $startDate = null;          // Wenn nichts eingegeben wurde, Wert auf 'null' setzen
@@ -29,8 +49,11 @@ class ProjectReportController extends Controller
  
         $defaultVariablesArray = array(         // Speichert globale Variablen in Array
             'project' => $project,              // Projektauswahl aus Webpage
+            'projectName' => $projectName,
             'projectData' => $this->getProjects(),
             'team' => $team,
+            'teamName' => $teamName,
+            'report' => $report,
             'startDate' => $startDateString,    // Startdatum aus Webpage
             'endDate' => $endDateString,        // Enddatum aus Webpage
             'differenceDate' =>$differenceDate, // Differenz zwischen Start- und Enddatum
