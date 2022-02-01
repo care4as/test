@@ -761,8 +761,8 @@
 
     <script>
     let host = window.location.host;
-    axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
-    // axios.get('http://'+host+'/memo/checkMeMos/')
+    // axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
+    axios.get('http://'+host+'/memo/checkMeMos/')
     .then(response => {
       console.log('check')
       $('#news').html(response.data)
@@ -772,12 +772,12 @@
       console.log('error Memocheck')
       console.log(err.response);
     });
-    
+
     setInterval(function()
     {
       let host = window.location.host;
-      axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
-      // axios.get('http://'+host+'/memo/checkMeMos/')
+      // axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
+      axios.get('http://'+host+'/memo/checkMeMos/')
       .then(response => {
         console.log('check')
         $('#news').html(response.data)
