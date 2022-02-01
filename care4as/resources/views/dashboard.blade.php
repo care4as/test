@@ -82,7 +82,7 @@
     <div class="col-3 p-2 h-100">
       <span>Ungelesen</span>
       <div class="row thumbnails d-block" style="overflow-y:scroll;">
-        @foreach($memos as $memo)
+        @foreach($unread as $memo)
           <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
             @if($memo->has_image)
               <div class="col-4 p-1 h-100 center_items">
@@ -105,7 +105,7 @@
       <hr class="w-50">
       <h5>Gelesen</h5>
       <div class="row thumbnails d-block" style="overflow-y:scroll;">
-        @foreach($memos as $memo)
+        @foreach($read as $memo)
           <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
             @if($memo->has_image)
               <div class="col-4 p-1 h-100 center_items">
@@ -128,7 +128,7 @@
     </div>
     <div class="col-9 p-2 h-100">
       <div class="newscontent" style="overflow-y:scroll;">
-        @foreach($memos as $memo)
+        @foreach($unread->merge($read) as $memo)
         <div class="inactive" id="memoContent{{$memo->id}}">
           <div class="row m-0 center_items">
             <h5>{{$memo->title}}</h5>
@@ -158,6 +158,15 @@
 <script>
 function showMemo(id)
 {
+  let host = window.location.host;
+  axios.get('http://'+host+'/care4as/care4as/public/memo/read/'+id)
+  .then(response => {
+
+  })
+  .catch(function (err) {
+    console.log('error Memo')
+    console.log(err.response);
+  });
 
   let element = $('#memoContent'+ id)
 

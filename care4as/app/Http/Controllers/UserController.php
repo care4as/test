@@ -258,22 +258,36 @@ class UserController extends Controller
     public function dashboard()
     {
       $user = Auth()->user();
+      $unread = collect();
+      $read = collect();
 
       $memos = Memoranda::where('to', $user->project)
       ->orWhere('to', 'all')
       ->orWhere('to', $user->team)
+      ->orderBy('created_at', 'DESC')
+      ->limit(20)
       ->get();
 
       foreach ($memos as $key => $memo) {
+
+        // dd($memo);
         if($memo->has_image)
         {
           $image = Image::where('memo_id', $memo->id)->first();
           $memo->path = 'MeMoImages/'.$image->url;
         }
+        if(\DB::table('user_read_memoranda')->where('user_id', $user->id)->where('memo_id',$memo->id)->exists())
+        {
+          $unread->push($memo);
+        }
+        else {
+          // dd($memo);
+          $read->push($memo);
 
+        }
       }
-
-      return view('dashboard', compact('memos'));
+      // dd($read);
+      return view('dashboard', compact('unread','read'));
     }
 
     public function Scorecard($id)

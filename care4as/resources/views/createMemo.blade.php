@@ -19,7 +19,6 @@
                 <select id="to" class="form-control" name="to" style="color:black;">
                     <option value="" selected>Wähle</option>
                       <option value="all">Alle</option>
-
                       <optgroup label="Projekte">
                         @foreach(\DB::table('users')->where('status',1)->groupBy('project')->pluck('project') as $project)
                           <option value="{{$project}}">{{$project}}</option>
