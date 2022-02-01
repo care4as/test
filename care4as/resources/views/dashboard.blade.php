@@ -175,7 +175,7 @@
                 </div>
               @endforeach
             </div>
-            <div id="memo-old" class="inactive h-100" style="overflow-y: scroll;">
+            <div id="memo-old" class="inactive" style="overflow-y: scroll;">
             @foreach($read as $memo)
               <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
                 @if($memo->has_image)
