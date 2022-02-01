@@ -59,7 +59,7 @@
     .paginate_button:hover{
         border: none !important;
     }
-    
+
     .page-link:hover{
         border-color: #FA7A50;
     }
@@ -75,7 +75,7 @@
 <div>
     <div class="row">
         <div class="col-md-12">
-            <form action="{{route('projectReport')}}" method="get()"> 
+            <form action="{{route('projectReport')}}" method="get()">
             @csrf
                 <div class="max-main-container">
                     <div class="row">
@@ -141,13 +141,13 @@
                         </div>
                     </div>
                 </div>
-            </form>  
-        </div>    
+            </form>
+        </div>
     </div>
 @if($defaultVariablesArray['report'] == 'projektmeldung')
 <!-- START PROJECT: DSL -->
     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-    <div class="row">  
+    <div class="row">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="max-panel-title">
@@ -272,18 +272,18 @@
                                     <!--U. Delta-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_delta'], 2,",",".")}}€</td>
                                     </tr>
                             </tfoot>
-                        </table>    
+                        </table>
                     </div>
-                </div>           
+                </div>
             </div>
         </div>
     </div>
-    @endif     
+    @endif
 <!-- END PROJECT: DSL -->
 
 <!-- START PROJECT: MOBILE -->
     @if($defaultVariablesArray['project'] == '1u1_mobile_ret')
-    <div class="row">  
+    <div class="row">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="max-panel-title">
@@ -432,16 +432,16 @@
                                     <!--U. Delta-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_delta'], 2,",",".")}}€</td>
                                     </tr>
                             </tfoot>
-                        </table>    
+                        </table>
                     </div>
-                </div>           
+                </div>
             </div>
         </div>
     </div>
-    @endif     
+    @endif
 <!-- END PROJECT: MOBILE -->
 @elseif($defaultVariablesArray['report'] == 'teamscan')
-    <div class="row">  
+    <div class="row">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="max-panel-title">
@@ -453,11 +453,7 @@
                             <thead>
                                 <tr>
                                     <th colspan="2">Mitarbeiter</th>
-<<<<<<< HEAD
-                                    <th colspan="5">Stunden</th>
-=======
                                     <th colspan="7">Stunden</th>
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
                                     <th colspan="1">Calls</th>
                                     @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
@@ -481,17 +477,11 @@
                                     <th>FTE</th>
                                     <!-- Stunden -->
                                     <th>bezahlt</th>
-<<<<<<< HEAD
-                                    <th>krank</th>
-                                    <th>produktiv</th>
-                                    <th>krank in %</th>
-=======
                                     <th>angemeldet</th>
                                     <th>produktiv</th>
                                     <th>krank</th>
                                     <th>krank in %</th>
                                     <th>prod. brutto in %</th>
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                                     <th>prod. netto in %</th>
                                     <!-- calls -->
                                     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
@@ -527,49 +517,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-<<<<<<< HEAD
-                                @foreach($dataArray['employees'] as $key => $employee)
-                                <tr>
-                                    <td style="border-right: 0px;">Name</td>
-                                    <td>FTE</td>
-                                    <!-- Stunden -->
-                                    <td>bezahlt</td>
-                                    <td>krank</td>
-                                    <td>produktiv</td>
-                                    <td>krank in %</td>
-                                    <td>prod. netto in %</td>
-                                    <!-- calls -->
-                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
-                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
-                                    @endif
-                                    <!-- Saves -->
-                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
-                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
-                                    @endif
-                                    <!-- CR -->
-                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
-                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
-                                    @endif
-                                    <!-- OptIn -->
-                                    <td>Stück</td>
-                                    <td>in %</td>
-                                    <!-- Umsatz -->
-                                    <td>Gesamt</td>
-                                    <td>Pro bez. Std.</td>
-                                    <td>Pro prod. Std.</td>
-=======
                                 @foreach($dataArray['team']['employees'] as $key => $employee)
                                 <tr>
                                     <td style="text-align: left;">{{$employee['full_name']}}</td>
@@ -613,94 +560,12 @@
                                     <td style="text-align: right;">{{number_format($employee['revenue_sum'], 2,",","")}}€</td>
                                     <td style="text-align: right;">{{number_format($employee['revenue_per_hour_paid'], 2,",","")}}€</td>
                                     <td style="text-align: right;">{{number_format($employee['revenue_per_hour_productive'], 2,",","")}}€</td>
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                                 </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr style="font-weight: bold; background-color: #ddd;">
                                     <td>Team Gesamt</td>
-<<<<<<< HEAD
-                                    <td>FTE</td>
-                                    <!-- Stunden -->
-                                    <td>bezahlt</td>
-                                    <td>krank</td>
-                                    <td>produktiv</td>
-                                    <td>krank in %</td>
-                                    <td>prod. netto in %</td>
-                                    <!-- calls -->
-                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
-                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
-                                    @endif
-                                    <!-- Saves -->
-                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
-                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
-                                    @endif
-                                    <!-- CR -->
-                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
-                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
-                                    @endif
-                                    <!-- OptIn -->
-                                    <td>Stück</td>
-                                    <td>in %</td>
-                                    <!-- Umsatz -->
-                                    <td>Gesamt</td>
-                                    <td>Pro bez. Std.</td>
-                                    <td>Pro prod. Std.</td>
-                                </tr>
-                                <tr style="font-weight: bold; background-color: #ddd;">
-                                    <td>Projekt Gesamt</td>
-                                    <td>FTE</td>
-                                    <!-- Stunden -->
-                                    <td>bezahlt</td>
-                                    <td>krank</td>
-                                    <td>produktiv</td>
-                                    <td>krank in %</td>
-                                    <td>prod. netto in %</td>
-                                    <!-- calls -->
-                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
-                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
-                                    @endif
-                                    <!-- Saves -->
-                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
-                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
-                                    @endif
-                                    <!-- CR -->
-                                    @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-                                    <td>DSL</td>
-                                    @elseif($defaultVariablesArray['project'] == '1u1_mobile_ret')
-                                    <td>SSC</td>
-                                    <td>BSC</td>
-                                    <td>Portale</td>
-                                    @endif
-                                    <!-- OptIn -->
-                                    <td>Stück</td>
-                                    <td>in %</td>
-                                    <!-- Umsatz -->
-                                    <td>Gesamt</td>
-                                    <td>Pro bez. Std.</td>
-                                    <td>Pro prod. Std.</td>
-=======
                                     <td>{{number_format($dataArray['team']['sum']['fte'], 3,",",".")}}</td>
                                     <!-- Stunden -->
                                     <td>{{number_format($dataArray['team']['sum']['work_hours'], 2,",",".")}}</td>
@@ -784,12 +649,11 @@
                                     <td style="text-align: right;">{{number_format($dataArray['project']['sum']['revenue_sum'], 2,",",".")}}€</td>
                                     <td style="text-align: right;">{{number_format($dataArray['project']['sum']['revenue_per_hour_paid'], 2,",",".")}}€</td>
                                     <td style="text-align: right;">{{number_format($dataArray['project']['sum']['revenue_per_hour_productive'], 2,",",".")}}€</td>
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                                 </tr>
                             </tfoot>
-                        </table>    
+                        </table>
                     </div>
-                </div>           
+                </div>
             </div>
         </div>
     </div>
@@ -911,26 +775,6 @@ $(document).ready(function(){
         fixedColumns: false,
         select: true,
         dom: 'Blfrtip',
-<<<<<<< HEAD
-            buttons: [
-                {
-                    extend: 'excel',
-                    text: 'Excel Export',
-                    className: 'btn btn-primary',
-                    footer: 'true',
-                    customize: (xlsx, config, dataTable) => {
-                        let sheet = xlsx.xl.worksheets['sheet1.xml'];
-                        let footerIndex = $('sheetData row', sheet).length;
-                        let $footerRows = $('tr', dataTable.footer());
-
-                        // Header Background
-                        $('row c[r*="2"]', sheet).attr( 's', '32' );
-
-                        // If there are more than one footer rows
-                        if ($footerRows.length > 1) {
-                            // First header row is already present, so we start from the second row (i = 1)
-                            
-=======
         buttons: [
             {
                 extend: 'excel',
@@ -942,7 +786,7 @@ $(document).ready(function(){
                     let footerIndex = $('sheetData row', sheet).length;
                     let $footerRows = $('tr', dataTable.footer());
                     var mergeCells = $('mergeCells', sheet);
-                    
+
 
                     mergeCells[0].children[0].remove(); // remove merge cell 1st row
                     var rows = $('row', sheet);
@@ -1014,8 +858,7 @@ $(document).ready(function(){
                         // If there are more than one footer rows
                         if ($footerRows.length > 1) {
                             // First header row is already present, so we start from the second row (i = 1)
-                        
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
+
                             for (let i = 1; i < $footerRows.length; i++) {
                             // Get the current footer row
                             let $footerRow = $footerRows[i];
@@ -1040,30 +883,9 @@ $(document).ready(function(){
                             `);
                             }
                         }
-<<<<<<< HEAD
-                    },
-                    title: 'Teamscan',
-                    sheetName: 'Teamscan',
-                    filename: 'Teamscan_Export',
-                    exportOptions: {
-                        columns: ':visible',
-                        format: {
-                            body: function(data, row, column, node) {
-                                data = $('<p>' + data + '</p>').text();
-                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
-                            },
-                            footer: function(data, row, column, node) {
-                                data = $('<p>' + data + '</p>').text();
-                                return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
-                            }
-                        }     
-                    },
-                },
-            ],
-=======
-                    }  
+                    }
 
-                    function _createNode(doc, nodeName, opts) { 
+                    function _createNode(doc, nodeName, opts) {
                         var tempNode = doc.createElement(nodeName);
 
                         if (opts) {
@@ -1099,11 +921,10 @@ $(document).ready(function(){
                             data = $('<p>' + data + '</p>').text();
                             return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
                         }
-                    }     
+                    }
                 },
             },
         ],
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
     });
 })
 </script>
@@ -1112,8 +933,8 @@ $(document).ready(function(){
         updateTeamSelection()
     });
     var teamList = <?php echo json_encode($defaultVariablesArray['projectData']) ?>;
-    var selectedTeam = 
-        <?php 
+    var selectedTeam =
+        <?php
             if(isset($defaultVariablesArray['team'])){
                 echo $defaultVariablesArray['team'];
             }
@@ -1125,7 +946,7 @@ $(document).ready(function(){
     function updateTeamSelection(){
         selectedProject = document.getElementById('projectSelection').value;
         teamSelection = document.getElementById('teamSelection');
-        
+
         var child = teamSelection.lastElementChild;
         while (child){
             teamSelection.removeChild(child);
@@ -1147,7 +968,7 @@ $(document).ready(function(){
             }
 
             teamSelection.appendChild(newOption);
-        }        
+        }
     }
 </script>
 

@@ -500,8 +500,6 @@
                   <div class="dropdown-item" style="display: flex; justify-content: space-between;">
                     <div>
                       @if($dataTables->where('data_table', 'availbench_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'availbench_report')->min('max_date')))
-<<<<<<< HEAD
-=======
                         <i class="fas fa-check-circle"></i>
                       @else
                         <i class="fas fa-times-circle"></i>
@@ -526,56 +524,10 @@
                   <div class="dropdown-item" style="display: flex; justify-content: space-between;">
                     <div>
                       @if($dataTables->where('data_table', 'dailyAgent_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'dailyAgent_report')->min('max_date')))
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                         <i class="fas fa-check-circle"></i>
                       @else
                         <i class="fas fa-times-circle"></i>
                       @endif
-<<<<<<< HEAD
-                      Availbench:
-                    </div>
-                    <div style="margin-left: 5px;">
-                      <!-- @if($dataTables->where('data_table', 'availbench_report')->min('min_date') != null)
-                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'availbench_report')->min('min_date')))}}</td>
-=======
-                      Daily Agent:
-                    </div>
-                    <div style="margin-left: 5px;">
-                      <!-- @if($dataTables->where('data_table', 'dailyAgent_report')->min('min_date') != null)
-                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'dailyAgent_report')->min('min_date')))}}</td>
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
-                      @else
-                        <td>%</td>
-                      @endif
-                      - -->
-<<<<<<< HEAD
-                      @if($dataTables->where('data_table', 'availbench_report')->min('max_date') != null)
-                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'availbench_report')->min('max_date')))}}</td>
-=======
-                      @if($dataTables->where('data_table', 'dailyAgent_report')->min('max_date') != null)
-                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'dailyAgent_report')->min('max_date')))}}</td>
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
-                      @else
-                        <td>%</td>
-                      @endif
-                    </div>
-                  </div>
-<<<<<<< HEAD
-                  <!-- Daily Agent -->
-                  <div class="dropdown-item" style="display: flex; justify-content: space-between;">
-                    <div>
-                      @if($dataTables->where('data_table', 'dailyAgent_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'dailyAgent_report')->min('max_date')))
-=======
-                  <!-- OptIn -->
-                  <div class="dropdown-item" style="display: flex; justify-content: space-between;">
-                    <div>
-                      @if($dataTables->where('data_table', 'optin_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'optin_report')->min('max_date')))
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
-                        <i class="fas fa-check-circle"></i>
-                      @else
-                        <i class="fas fa-times-circle"></i>
-                      @endif
-<<<<<<< HEAD
                       Daily Agent:
                     </div>
                     <div style="margin-left: 5px;">
@@ -614,22 +566,6 @@
                       @else
                         <td>%</td>
                       @endif
-=======
-                      OptIn:
-                    </div>
-                    <div style="margin-left: 5px;">
-                      <!-- @if($dataTables->where('data_table', 'optin_report')->min('min_date') != null)
-                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'optin_report')->min('min_date')))}}</td>
-                      @else
-                        <td>%</td>
-                      @endif
-                      - -->
-                      @if($dataTables->where('data_table', 'optin_report')->min('max_date') != null)
-                        <td>{{date('d.m.Y', strtotime($dataTables->where('data_table', 'optin_report')->min('max_date')))}}</td>
-                      @else
-                        <td>%</td>
-                      @endif
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                     </div>
                   </div>
                   <!-- RET Details -->
@@ -656,11 +592,7 @@
                       @endif
                     </div>
                   </div>
-<<<<<<< HEAD
                   <!-- SaS -->
-=======
-                  <!-- SaS -->  
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
                   <div class="dropdown-item" style="display: flex; justify-content: space-between;">
                     <div>
                       @if($dataTables->where('data_table', 'sas_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'sas_report')->min('max_date')))
@@ -713,19 +645,11 @@
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
         <div class="content bg-cool" style="position: relative; height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto; overflow-x: hidden;">
-<<<<<<< HEAD
 
         <!-- <video autoplay muted loop id="myVideo">
           <source src="{{asset('videos/OMSBG12.mov')}}" type="video/mp4">
         </video> -->
 
-=======
-          
-        <!-- <video autoplay muted loop id="myVideo">
-          <source src="{{asset('videos/OMSBG12.mov')}}" type="video/mp4">
-        </video> -->
-        
->>>>>>> 1497143ce8b5b41cb9441a6c435720dcff490404
         @yield('content')
         </div>
         <!-- <div class="container bg-white">
