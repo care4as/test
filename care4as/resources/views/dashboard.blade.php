@@ -168,7 +168,6 @@
                     </div>
                     <hr class="w-50 m-2 mt-3">
                     <div class="row m-0 h-25 ">
-                      <p>{!!$memo->content !!}</p>
                       <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
                     </div>
                   </div>
@@ -196,7 +195,7 @@
             @endforeach
             </div>
           </div>
-          <div id="memo-content" class="col-sm-12 col-lg-7" style="overflow-y: scroll;">
+          <div id="memo-content" class="col-sm-12 col-lg-7 h-100" style="overflow-y: scroll;">
           @foreach($unread->merge($read) as $memo)
             <div class="inactive" id="memoContent{{$memo->id}}">
               @if($memo->has_image)
@@ -221,7 +220,7 @@
                 @endif
               </div>
               <hr class="w-50">
-              <div class="row">
+              <div class="row" >
                 {!!$memo->content !!}
 
               </div>
