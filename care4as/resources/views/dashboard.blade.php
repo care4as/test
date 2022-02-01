@@ -211,7 +211,7 @@
                 @if($memo->creator)
                 <div class="col-6 d-flex justify-content-start">
                   <small><span class="">{{$memo->creator->surname}} {{$memo->creator->lastname}}</span></small>
-                  <small><span class="">test123</span></small>
+                  <!-- <small><span class="">test123</span></small> -->
                 </div>
                 <div class="col-6 d-flex justify-content-end">
                   <small> <span class="align-self-end">erstellt: {{$memo->created_at}}</span></small>
