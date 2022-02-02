@@ -630,7 +630,6 @@ function roundUp($calls,$quotient)
 
 var start = moment().subtract(1, 'days');
 var end = moment();
-var host = window.location.host;
 
 let table = $('#AdminTrackingTable').DataTable({
   select: true,
