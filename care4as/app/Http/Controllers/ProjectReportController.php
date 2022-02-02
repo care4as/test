@@ -171,6 +171,7 @@ class ProjectReportController extends Controller
     public function get1u1DslRetSum($defaultVariablesArray, $finalArray){
         /** Hier wird der Projektumsatz durch den Availbench berechnet */
         $availbenchData = $this->getAvailbench($defaultVariablesArray, 'DE_1u1_RT_Access_1st');     // Datenbankabfrage um alle relevanten Availbenchdaten zu ziehen
+        $finalArray['sum']['availbench_calls'] = 0;
         $finalArray['sum']['revenue_availbench'] = 0;                                               // Umsatz Availbench mit 0 initialisieren
         foreach($availbenchData as $key => $entry){                                                 // Das Availbencharray durchlaufen
             $finalArray['sum']['revenue_availbench'] += $entry['total_costs_per_interval'];         // Für jeden Eintrag den Umsatz auf die Summe addieren
