@@ -1321,8 +1321,8 @@ class ExcelEditorController extends Controller
       $fileArray = array(); //initialize array
 
       foreach ($file as $key => $line) {
-        // $fileArray[$key] = str_getcsv($line, "\t"); <-- für Tabstop
-        $fileArray[$key] = str_getcsv($line, ";");
+        $fileArray[$key] = str_getcsv($line, "\t"); // <-- für Tabstop
+        // $fileArray[$key] = str_getcsv($line, ";"); // Für Simikolon
       };
 
       //dd($fileArray);
@@ -1355,7 +1355,8 @@ class ExcelEditorController extends Controller
           if(intval($row[3]) == 54){
             $availbenchArray[$i]['date_key'] = intval($row[0]);
             $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
-            $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i:s', $row[2]); //timestamp
+            $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i', $row[2]); //timestamp
+            // $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:is', $row[2]); // Für Simikolon
             $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
             $availbenchArray[$i]['call_forecast_issue'] = $row[4];
             $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
