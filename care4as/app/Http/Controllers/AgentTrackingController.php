@@ -108,22 +108,33 @@ class AgentTrackingController extends Controller
     }
     public function AdminIndex()
     {
+
+      $department ='Mobile';
+
       $history = TrackEvent::with('createdBy')
       ->orderBy('created_at','DESC')
       ->get();
 
-      $users = User::with('TrackingToday','TrackingCallsToday')
-      ->where('status', 1)
-      ->where('project','1und1 Retention')
-      ->get();
 
-      foreach ($users as $key => $user) {
-        if ($user->id == 408) {
-          // dd($user);
-        }
 
+      if(false)
+      {
+        $department ='1und1 DSL Retention';
+
+        $users = User::with('TrackingToday','TrackingCallsToday')
+        ->where('status', 1)
+        ->where('project',$department)
+        ->where('department','Agenten')
+        ->get();
       }
-      // $trackcalls = TrackCalls::all();
+      else {
+        $users = User::with('TrackingToday','TrackingCallsToday')
+        ->where('status', 1)
+        ->where('project','1und1 Retention')
+        ->where('department','Agenten')
+        ->get();
+      }
+        // $trackcalls = TrackCalls::all();
 
       // dd($users, $users[34]);
       return view('trackingMobileAdmin', compact('history', 'users'));

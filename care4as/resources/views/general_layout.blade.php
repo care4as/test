@@ -74,7 +74,7 @@
           <!-- Dashboard -->
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
-            <a @if(Auth::User()->ds_id == '333') href="{{route('scrum.itkanbanboard')}} @elseif(Auth::User()->department == 'Agenten') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
+            <a @if(Auth::User()->department == 'Agenten') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
               <i class="fas fa-table"></i>
               <p><b>Dashboard</b></p>
             </a>
@@ -756,17 +756,22 @@
     <script>
       $('#errorModal').modal('show');
     </script>
-
   @endif
-
-    <script>
+  <script>
     let host = window.location.host;
     // axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
     axios.get('http://'+host+'/memo/checkMeMos/')
     .then(response => {
-      console.log('check')
-      $('#news').html(response.data)
 
+      if(response.data > 0)
+      {
+        $('#news').html(response.data)
+        $('#news').css('display','flex')
+      }
+      else {
+
+        $('#news').css('display','none')
+      }
     })
     .catch(function (err) {
       console.log('error Memocheck')
@@ -779,8 +784,17 @@
       // axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
       axios.get('http://'+host+'/memo/checkMeMos/')
       .then(response => {
-        console.log('check')
-        $('#news').html(response.data)
+
+        if(response.data > 0)
+        {
+          $('#news').html(response.data)
+          $('#news').css('display','flex')
+        }
+        else {
+
+          $('#news').css('display','none')
+        }
+
 
       })
       .catch(function (err) {
