@@ -2538,6 +2538,11 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
  background: -webkit-linear-gradient(to right, #ff512f, #f09819);
  background: linear-gradient(to right, #ff512f, #f09819);
 }
+.bg-primary2 {
+  background: #ff512f;
+ background: -webkit-linear-gradient(to bottom, #ff512f, #f09819);
+ background: linear-gradient(to bottom, #ff512f, #f09819);
+}
 
 .bg-info {
   background-color: #2CA8FF !important;

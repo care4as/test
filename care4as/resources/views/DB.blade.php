@@ -421,7 +421,7 @@ tfoot td
                 @if($user->department == '1&1 DSL Retention')
                   <td data-order="{{$user->salesdata['orders']}}">{{$user->salesdata['orders']}}</td>
                 @else
-                  <td data-order="{{$user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{$sumSaves}}</td>
+                  <td data-order="{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{$sumSaves}}</td>
                 @endif
                 <!-- /Gesamtsaves -->
                 <td data-order="{{$user->salesdata['sscOrders']}}">{{$user->salesdata['sscOrders']}}</td>

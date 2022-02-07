@@ -30,15 +30,13 @@ class AgentTrackingController extends Controller
     {
         //
     }
-    public function userIndex()
+    public function userIndex($department=1)
     {
 
-      // $monthSP = TrackEvent::where('created_by',Auth()->id())->get();
       //get userdata from kdw tool
       $userdata = DB::connection('mysqlkdw')->table('MA')->where('ds_id',Auth()->user()->ds_id)->first();
       //get vacation days within this month
       $startOfMonth = new \Carbon\Carbon('first day of this month');
-
 
       $userVacation = DB::connection('mysqlkdw')
       ->table('chronology_work')
@@ -46,8 +44,6 @@ class AgentTrackingController extends Controller
       ->where('state_id',2)
       ->where('work_date','>', $startOfMonth)
       ->sum('work_hours');
-
-
       // dd($userVacation->sum('work_hours'));
 
       $monthSP = Auth()->user()->load('TrackingOverall')->TrackingOverall;
@@ -57,7 +53,14 @@ class AgentTrackingController extends Controller
       $history = Auth()->user()->load('TrackingToday')->TrackingToday;
       // $history = $monthSP->where('created_at', Carbon::today());
       // dd($monthSP->where('event_category','Save'));
-      return view('trackingMobile', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+
+      if ($department != 1) {
+        return view('trackingDSL', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+      }
+      else {
+        return view('trackingMobile', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+      }
+
     }
     /**
      * Store a newly created resource in storage.
@@ -86,13 +89,11 @@ class AgentTrackingController extends Controller
         // $request->target_tarif= 'testtarif';
 
         $trackevent = new TrackEvent;
-
         $additionalProperties = array('created_by' => Auth()->id());
-
         $tranformed = request()->except(['_token']);
         // dd($tranformed);
-
         $trackevent->TranformRequestToModel($tranformed,$additionalProperties);
+
         // $trackevent->contract_number = $request->contract_number;
         // $trackevent->product_category = $request->product_category;
         // $trackevent->event_category = $request->event_category;
@@ -114,8 +115,6 @@ class AgentTrackingController extends Controller
       $history = TrackEvent::with('createdBy')
       ->orderBy('created_at','DESC')
       ->get();
-
-
 
       if(false)
       {

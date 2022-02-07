@@ -56,8 +56,8 @@
   </div> -->
 
   <div class="wrapper ">
-    <div class="sidebar" id='sidebar'>
-      <div class="sidebar-wrapper" id="sidebar-wrapper" style="overflow-y: scroll; height: 100%">
+    <div class="sidebar " id='sidebar'>
+      <div class="sidebar-wrapper bg-primary2" id="sidebar-wrapper" style="height: 100%">
         @php
           Auth()->user()->getRights();
         @endphp
@@ -134,6 +134,7 @@
                 @if(in_array('1u1_db',Auth()->user()->getRights()))
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
                   <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
+                  <li><a href="{{route('dsl.tracking.agents',['department' => 2])}}">Tracking DSL</a> </li>
                 @endif
               </ul>
             </li>
