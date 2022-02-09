@@ -14,6 +14,10 @@ use App\CapacitySuitReport;
 use App\RetentionDetail;
 use App\Hoursreport;
 
+use App\Exports\DailyAgentExport;
+
+use \DateTime;
+
 class ExcelEditorController extends Controller
 {
     public function dailyAgentView($value='') {
@@ -1538,6 +1542,28 @@ class ExcelEditorController extends Controller
 
       }
       return redirect()->back();
+    }
+
+    public function dailyAgentExportXlsx(){
+      //turn off the query log to save some time
+      DB::disableQueryLog();
+      //sets off the limitation of memory an request can handle, bc of the large amount of data
+      ini_set('memory_limit', '-1');
+      // since the request can last to several minutes, i had to turn off the execution time
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+      date_default_timezone_set('Europe/Berlin');
+      // $modul = 'Userübersicht';
+
+      $startDateString = request('dailyAgentStartDate');
+      $endDateString = request('dailyAgentEndDate'); 
+
+      $startDate = new DateTime($startDateString);
+      $startDate->setTime(0,0);
+
+      $endDate = new DateTime($endDateString);
+      $endDate->setTime(23,59);
+
+      return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->download('DailyAgentExport.xlsx');
     }
 
 }
