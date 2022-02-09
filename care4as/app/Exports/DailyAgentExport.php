@@ -9,10 +9,8 @@ use \DateTime;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class DailyAgentExport implements FromQuery, ShouldAutoSize, WithMapping, WithStyles, WithHeadings
+class DailyAgentExport implements FromQuery, ShouldAutoSize, WithMapping, WithHeadings
 {
     use Exportable;
 
@@ -64,11 +62,6 @@ class DailyAgentExport implements FromQuery, ShouldAutoSize, WithMapping, WithSt
             $dailyAgent->time_in_state,
             $dailyAgent->timezone
         ];
-    }
-
-    public function styles(Worksheet $sheet)
-    {
-        $sheet->getStyle('1')->getFont()->setBold(true);
     }
 
     public function whereStartDate(DateTime $startDate){
