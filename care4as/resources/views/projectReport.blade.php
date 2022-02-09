@@ -71,7 +71,8 @@
 
 </style>
 @endsection
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/fh-3.2.1/datatables.css"/>
+ 
 <div>
     <div class="row">
         <div class="col-md-12">
@@ -291,7 +292,7 @@
                 </div>
                 <div class="max-panel-content">
                     <div style="width: 100%;">
-                        <table class="max-table" id="dslMaTable" style="width:100%">
+                        <table class="max-table" id="dslMaTable" style="width:100%;" >
                             <thead>
                                 <tr>
                                     <th style="border-right: 0px;">Name</th>
@@ -668,6 +669,7 @@
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
 <script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
+<script src="https://cdn.datatables.net/v/dt/fh-3.2.1/datatables.min.js"></script>
 <script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script>
 <script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -698,7 +700,7 @@
         },
         "lengthMenu": [ [-1, 3, 5, 10, 25, 50, 100], ["alle", 3, 5, 10, 25, 50, 100] ],
         scrollX: true,
-        scrollCollapse: true,
+        scrollCollapse: true,  
         fixedColumns: true,
         select: true,
         dom: 'Blfrtip',
@@ -734,21 +736,7 @@
                     },
                 },
             ],
-    });
-    table.rows().every( function () {
-        var rowNode = this.node();
-        var rowIndex = this.index();
-        $(rowNode).attr( 'data-dt-row', rowIndex );
-        $('tr').hover(function () {
-            var thisNode = $( this );
-            var rowIdx = thisNode.attr( 'data-dt-row' );
-            $( "tr" ).removeClass("hoverRow"); // remove all shading
-            $( "tr[data-dt-row='" + rowIdx + "']" ).addClass("hoverRow"); // shade only the hovered row
-        });
-    });
-    document.getElementById('userListContainer').style.display = "block";
-    $($.fn.dataTable.tables(true)).DataTable()
-      .columns.adjust();
+    });    
 })
 
 $(document).ready(function(){
