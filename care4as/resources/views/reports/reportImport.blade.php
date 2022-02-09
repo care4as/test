@@ -138,7 +138,7 @@
                                             <td>Keine Daten verfügbar</td>
                                         @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
-                                        <td></td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentExportModal">Exportieren</button></td>
                                     </tr>
                                     <tr id="optin">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
@@ -591,6 +591,41 @@
                         </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Daily Agent Export -->
+<div class="modal fade" id="dailyAgentExportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="z-index: 500000;">
+        <div class="modal-content">
+            <div class="loaderDiv" id="loaderDiv2">
+                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="modal-header ">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Daily Agent Export</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{route('dailyAgent.exportXlsx')}}"  style="padding: 0;" onformchange="">
+                @csrf
+                <div class="modal-body" style="font-size: 14px;">
+                    <div style="width:100%">
+                        Hinweis: Aufgrund des Datenumfangs und entsprechender Größe der Exportdatei sollte der Exportzeitraum einen Monat nicht überschreiten!
+                    </div>
+                    <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 5px; margin-top: 16px;">
+                        <p style="margin: auto 0 auto auto;">Startdatum:</p>
+                        <input type="date" id="dailyAgentStartDate" name="dailyAgentStartDate" class="form-control" placeholder="" style="color:black;" onchange="enableExportButton('dailyAgentStartDate', 'dailyAgentEndDate', 'dailyAgentExportButton')">
+                        <p style="margin: auto 0 auto auto;">Enddatum:</p>
+                        <input type="date" id="dailyAgentEndDate" name="dailyAgentEndDate" class="form-control" placeholder="" style="color:black;" onchange="enableExportButton('dailyAgentStartDate', 'dailyAgentEndDate', 'dailyAgentExportButton')">
+                    </div>
+                </div>
+                <div class="modal-footer" style="font-size: 14px;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
+                    <button type="submit" class="btn btn-primary" id="dailyAgentExportButton" disabled>Exportieren</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -1215,6 +1250,23 @@ $(function(){
     $('#debugroute').toggle()
   }
 })})
+</script>
+
+
+<!-- Export Buttons aktivieren, wenn Zeitraum ordentlich gesetzt ist -->
+<script>
+
+    function enableExportButton(startDateId, endDateId, buttonId){
+        var startDate = document.getElementById(startDateId).value;
+        var endDate = document.getElementById(endDateId).value;
+
+        if(startDate != "" && endDate != "" && startDate <= endDate){
+            document.getElementById(buttonId).disabled = false;
+        } else {
+            document.getElementById(buttonId).disabled = true;
+        }
+    }
+
 </script>
 
 @endsection
