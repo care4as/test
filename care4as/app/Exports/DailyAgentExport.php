@@ -74,8 +74,35 @@ class DailyAgentExport implements FromQuery, ShouldAutoSize, WithMapping, WithHe
         return $this;
     }
 
+    public function whereAgentId($agentId){
+        $this->agentId = $agentId;
+        return $this;
+    }
+
+    public function whereGroupName($groupName){
+        $this->groupName = $groupName;
+        return $this;
+    }
+
+    public function whereStatus($status){
+        $this->status = $status;
+        return $this;
+    }
+
+    // Verschiedene Abfragen. Zunächst solche mit Filtern. Falls keine Filter gesetzt sind wird die Standardabfrage durchgeführt.
     public function query()
     {
-        return DailyAgent::query()->where('start_time', '>=', $this->startDate)->where('end_time', '<=', $this->endDate);
+
+        return DailyAgent::query()
+            ->where('start_time', '>=', $this->startDate)
+            ->where('end_time', '<=', $this->endDate)
+            ->whereIn('status', $this->status)
+            ->when(isset($this->groupName), function ($query) {
+                return $query->where('agent_group_name', $this->groupName);
+            })
+            ->when(isset($this->agentId), function ($query) {
+                return $query->where('agent_id', $this->agentId);
+            });
+        
     }
 }
