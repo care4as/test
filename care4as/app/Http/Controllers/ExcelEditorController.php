@@ -1556,6 +1556,9 @@ class ExcelEditorController extends Controller
 
       $startDateString = request('dailyAgentStartDate');
       $endDateString = request('dailyAgentEndDate'); 
+      $filter = request('dailyAgentFilter');
+      $groupName = request('dailyAgentAgentGroupName');
+      $agentId = request('dailyAgentAgentId');
 
       $startDate = new DateTime($startDateString);
       $startDate->setTime(0,0);
@@ -1563,7 +1566,86 @@ class ExcelEditorController extends Controller
       $endDate = new DateTime($endDateString);
       $endDate->setTime(23,59);
 
-      return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->download('DailyAgentExport.xlsx');
+      // Array für alle Status erstellen
+      $statusArray = array();
+
+      if(request('dailyAgentStatus1') == 'true'){
+        array_push($statusArray, 'Initialized');
+      }
+      if(request('dailyAgentStatus2') == 'true'){
+        array_push($statusArray, 'Logged Out');
+      }
+      if(request('dailyAgentStatus3') == 'true'){
+        array_push($statusArray, 'Available');
+      }
+      if(request('dailyAgentStatus4') == 'true'){
+        array_push($statusArray, 'Comm Fault');
+      }
+      if(request('dailyAgentStatus5') == 'true'){
+        array_push($statusArray, 'In Call');
+      }
+      if(request('dailyAgentStatus6') == 'true'){
+        array_push($statusArray, 'On Hold');
+      }
+      if(request('dailyAgentStatus7') == 'true'){
+        array_push($statusArray, 'Ringing');
+      }
+      if(request('dailyAgentStatus8') == 'true'){
+        array_push($statusArray, 'Wrap Up');
+      }
+      if(request('dailyAgentStatus9') == 'true'){
+        array_push($statusArray, 'Released (01_screen break)');
+      }
+      if(request('dailyAgentStatus10') == 'true'){
+        array_push($statusArray, 'Released (02_lunch break)');
+      }
+      if(request('dailyAgentStatus11') == 'true'){
+        array_push($statusArray, 'Released (03_away)');
+      }
+      if(request('dailyAgentStatus12') == 'true'){
+        array_push($statusArray, 'Released (04_offline work)');
+      }
+      if(request('dailyAgentStatus13') == 'true'){
+        array_push($statusArray, 'Released (05_occupied)');
+      }
+      if(request('dailyAgentStatus14') == 'true'){
+        array_push($statusArray, 'Released (06_practice)');
+      }
+      if(request('dailyAgentStatus15') == 'true'){
+        array_push($statusArray, 'Released (07_meeting)');
+      }
+      if(request('dailyAgentStatus16') == 'true'){
+        array_push($statusArray, 'Released (08_organization)');
+      }
+      if(request('dailyAgentStatus17') == 'true'){
+        array_push($statusArray, 'Released (09_outbound)');
+      }
+      if(request('dailyAgentStatus18') == 'true'){
+        array_push($statusArray, 'Released (no code)');
+      }
+
+      switch ($filter){
+        case 'false':
+          return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->download('DailyAgentExport.xlsx');
+        break;
+
+        case 'agent_group_name':
+          if($groupName == null){
+            return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->download('DailyAgentExport.xlsx');
+          } else {
+            return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->whereGroupName($groupName)->download('DailyAgentExport.xlsx');
+          }
+        break;
+
+        case 'agent_id':
+          if($agentId == null){
+            return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->download('DailyAgentExport.xlsx');
+          } else {
+            return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->whereAgentId(intval($agentId))->download('DailyAgentExport.xlsx');
+          }
+        break;
+  
+      }
     }
 
 }

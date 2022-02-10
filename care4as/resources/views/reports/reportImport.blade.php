@@ -403,14 +403,14 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div id="debug_div" style="font-size: 12px">
-                    Debug
-                    <form action="{{route('availbenchKdw.upload')}}" enctype="multipart/form-data" method="POST">
-                        @csrf
-                        <input type="file" name="file" id="">
-                        <button type="submit">Hochladen</button>
-                    </form>
-                </div>
+            <!-- <div id="debug_div" style="font-size: 12px">
+                Debug
+                <form action="{{route('availbenchKdw.upload')}}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                    <input type="file" name="file" id="">
+                    <button type="submit">Hochladen</button>
+                </form>
+            </div> -->
             <div id="app">
                 <div class="tab-pane">
                     <div class="nav-tabs-navigation">
@@ -619,6 +619,130 @@
                         <input type="date" id="dailyAgentStartDate" name="dailyAgentStartDate" class="form-control" placeholder="" style="color:black;" onchange="enableExportButton('dailyAgentStartDate', 'dailyAgentEndDate', 'dailyAgentExportButton')">
                         <p style="margin: auto 0 auto auto;">Enddatum:</p>
                         <input type="date" id="dailyAgentEndDate" name="dailyAgentEndDate" class="form-control" placeholder="" style="color:black;" onchange="enableExportButton('dailyAgentStartDate', 'dailyAgentEndDate', 'dailyAgentExportButton')">
+                        <p style="text-align:center;margin-bottom:0;grid-column:1/-1;">Status:</p>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;grid-column:1/-1;font-size:12px;">
+                            <!-- Initizialized -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus1" value="true">Initialized<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Logged Out -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus2" value="true">Logged Out<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Available -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus3" value="true">Available<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Comm Fault -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus4" value="true">Comm Fault<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- In Call -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus5" value="true">In Call<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- On Hold -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus6" value="true">On Hold<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Ringing -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus7" value="true">Ringing<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Wrap Up -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus8" value="true">Wrap Up<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (01_screen break) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus9" value="true">Released (01_screen break)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (02_lunch break) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus10" value="true">Released (02_lunch break)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (03_away) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus11" value="true">Released (03_away)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (04_offline work) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus12" value="true">Released (04_offline work)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (05_occupied) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus13" value="true">Released (05_occupied)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (06_practice) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus14" value="true">Released (06_practice)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (07_meeting) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus15" value="true">Released (07_meeting)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (08_organization) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus16" value="true">Released (08_organization)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (09_outbound) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus17" value="true">Released (09_outbound)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (no code) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus18" value="true">Released (no code)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <p style="margin: auto 0 auto auto;">Weiterer Filter:</p>
+                        <select name="dailyAgentFilter" id="dailyAgentFilter" class="form-control" onchange="dailyAgentExportFilter()">
+                            <option value="false">Nein</option>
+                            <option value="agent_group_name">Agent Group</option>
+                            <option value="agent_id">Agent ID</option>
+                        </select>
+                        <p style="margin: auto 0 auto auto; display: none;" id="dailyAgentAgentGroupNameTitle">Agent Group:</p>
+                        <select name="dailyAgentAgentGroupName" id="dailyAgentAgentGroupNameInput" class="form-control" style="display: none;">
+                            <option value="DE_KDW_Retention_Mobile_Flensburg">DE_KDW_Retention_Mobile_Flensburg</option>
+                            <option value="DE_care4as_RT_DSL_Eggebek">DE_care4as_RT_DSL_Eggebek</option>
+                        </select>
+                        <p style="margin: auto 0 auto auto; display: none;" id="dailyAgentAgentIdTitle">Agent ID:</p>
+                        <input type="number" name="dailyAgentAgentId" id="dailyAgentAgentIdInput" class="form-control" style="display: none;">
                     </div>
                 </div>
                 <div class="modal-footer" style="font-size: 14px;">
@@ -1265,6 +1389,43 @@ $(function(){
         } else {
             document.getElementById(buttonId).disabled = true;
         }
+    }
+</script>
+
+<!-- Filter Funktionen Umsetzen -->
+<script>
+
+    // Daily Agent
+    function dailyAgentExportFilter(){
+        var filter = document.getElementById('dailyAgentFilter').value;
+
+        // Alle Elemente zurücksetzten
+        document.getElementById('dailyAgentAgentGroupNameInput').value = null;
+        document.getElementById('dailyAgentAgentIdInput').value = null;
+
+        switch (filter){
+            case 'false':
+                document.getElementById('dailyAgentAgentGroupNameTitle').style.display = 'none';
+                document.getElementById('dailyAgentAgentGroupNameInput').style.display = 'none';
+                document.getElementById('dailyAgentAgentIdTitle').style.display = 'none';
+                document.getElementById('dailyAgentAgentIdInput').style.display = 'none';
+            break;
+
+            case 'agent_group_name':
+                document.getElementById('dailyAgentAgentGroupNameTitle').style.display = 'block';
+                document.getElementById('dailyAgentAgentGroupNameInput').style.display = 'block';
+                document.getElementById('dailyAgentAgentIdTitle').style.display = 'none';
+                document.getElementById('dailyAgentAgentIdInput').style.display = 'none';
+            break;
+
+            case 'agent_id':
+                document.getElementById('dailyAgentAgentGroupNameTitle').style.display = 'none';
+                document.getElementById('dailyAgentAgentGroupNameInput').style.display = 'none';
+                document.getElementById('dailyAgentAgentIdTitle').style.display = 'block';
+                document.getElementById('dailyAgentAgentIdInput').style.display = 'block';
+            break;
+        }
+
     }
 
 </script>
