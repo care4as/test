@@ -898,9 +898,10 @@ class ExcelEditorController extends Controller
       if($request->sheet)
       {
         $sheet = $request->sheet;
+        $sheet = $sheet - 1;
       }
       else {
-        $sheet = 3;
+        $sheet = 5;
       }
 
       if($request->fromRow)
@@ -912,7 +913,9 @@ class ExcelEditorController extends Controller
         $fromRow = 2;
       }
 
-      $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
+      $data = Excel::ToArray(new DataImport, request()->file('file'))[$sheet];
+
+      //dd($data);
 
       // dd($data);
 
@@ -1214,45 +1217,47 @@ class ExcelEditorController extends Controller
 
       foreach($fileArray as $row) {
         if(count($header) == count($row)) {
-          $availbenchArray[$i]['date_key'] = intval($row[0]);
-          $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
-          $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i:s', $row[2]); //timestamp
-          $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
-          $availbenchArray[$i]['call_forecast_issue'] = $row[4];
-          $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
-          $availbenchArray[$i]['call_forecast_owner'] = $row[6];
-          $availbenchArray[$i]['forecast'] = intval($row[7]);
-          $availbenchArray[$i]['handled'] = intval($row[8]);
-          $availbenchArray[$i]['availtime_summary'] = intval($row[9]);
-          $availbenchArray[$i]['availtime_sec'] = intval($row[10]);
-          $availbenchArray[$i]['handling_time_sec'] = intval($row[11]);
-          $availbenchArray[$i]['availtime_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[12])));
-          $availbenchArray[$i]['forecast_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[13])));
-          $availbenchArray[$i]['avail_bench'] = floatval(str_replace(',', '.', str_replace('.', '', $row[14])));
-          $availbenchArray[$i]['idp_done'] = intval($row[15]);
-          $availbenchArray[$i]['number_payed_calls'] = floatval(str_replace(',', '.', str_replace('.', '', $row[16])));
-          $availbenchArray[$i]['price'] = floatval(str_replace(',', '.', str_replace('.', '', $row[17])));
-          $availbenchArray[$i]['aht'] = floatval(str_replace(',', '.', str_replace('.', '', $row[18])));
-          $availbenchArray[$i]['productive_minutes'] = floatval(str_replace(',', '.', str_replace('.', '', $row[19])));
-          $availbenchArray[$i]['malus_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[20])));
-          $availbenchArray[$i]['malus_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[21])));
-          $availbenchArray[$i]['acceptance_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[22])));
-          $availbenchArray[$i]['total_costs_per_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[23])));
-          $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
-
-          if ($minDate == null) {
-            $minDate = $availbenchArray[$i]['date_date'];
-          } else if ($availbenchArray[$i]['date_date'] < $minDate){
-            $minDate = $availbenchArray[$i]['date_date'];
+          if(intval($row[3]) == 53 || intval($row[3]) == 54){
+            $availbenchArray[$i]['date_key'] = intval($row[0]);
+            $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
+            $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i:s', $row[2]); //timestamp
+            $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
+            $availbenchArray[$i]['call_forecast_issue'] = $row[4];
+            $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
+            $availbenchArray[$i]['call_forecast_owner'] = $row[6];
+            $availbenchArray[$i]['forecast'] = intval($row[7]);
+            $availbenchArray[$i]['handled'] = intval($row[8]);
+            $availbenchArray[$i]['availtime_summary'] = intval($row[9]);
+            $availbenchArray[$i]['availtime_sec'] = intval($row[10]);
+            $availbenchArray[$i]['handling_time_sec'] = intval($row[11]);
+            $availbenchArray[$i]['availtime_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[12])));
+            $availbenchArray[$i]['forecast_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[13])));
+            $availbenchArray[$i]['avail_bench'] = floatval(str_replace(',', '.', str_replace('.', '', $row[14])));
+            $availbenchArray[$i]['idp_done'] = intval($row[15]);
+            $availbenchArray[$i]['number_payed_calls'] = floatval(str_replace(',', '.', str_replace('.', '', $row[16])));
+            $availbenchArray[$i]['price'] = floatval(str_replace(',', '.', str_replace('.', '', $row[17])));
+            $availbenchArray[$i]['aht'] = floatval(str_replace(',', '.', str_replace('.', '', $row[18])));
+            $availbenchArray[$i]['productive_minutes'] = floatval(str_replace(',', '.', str_replace('.', '', $row[19])));
+            $availbenchArray[$i]['malus_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[20])));
+            $availbenchArray[$i]['malus_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[21])));
+            $availbenchArray[$i]['acceptance_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[22])));
+            $availbenchArray[$i]['total_costs_per_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[23])));
+            $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
+  
+            if ($minDate == null) {
+              $minDate = $availbenchArray[$i]['date_date'];
+            } else if ($availbenchArray[$i]['date_date'] < $minDate){
+              $minDate = $availbenchArray[$i]['date_date'];
+            }
+  
+            if ($maxDate == null) {
+              $maxDate = $availbenchArray[$i]['date_date'];
+            } else if ($availbenchArray[$i]['date_date'] > $maxDate){
+              $maxDate = $availbenchArray[$i]['date_date'];
+            }
+  
+            $i++;
           }
-
-          if ($maxDate == null) {
-            $maxDate = $availbenchArray[$i]['date_date'];
-          } else if ($availbenchArray[$i]['date_date'] > $maxDate){
-            $maxDate = $availbenchArray[$i]['date_date'];
-          }
-
-          $i++;
         }
       }
 
