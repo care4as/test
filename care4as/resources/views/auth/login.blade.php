@@ -67,7 +67,7 @@
                             <div>
                                 <button type="submit" class="logbut" style="border-radius: 7px; font-size: 1.1rem">
                                   <span class="material-icons" style="font-size: 1.5em; color: #fd7e14; vertical-align:top;">
-                                    login
+                                  input
                                     </span>
                                 </button>
 
