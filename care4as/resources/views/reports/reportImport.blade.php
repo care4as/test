@@ -411,8 +411,8 @@
                     <button type="submit">Hochladen</button>
                 </form>
             </div> -->
-            <div id="app">
-                <div class="tab-pane">
+            <!-- <div id="app">
+                 <div class="tab-pane">
                     <div class="nav-tabs-navigation">
                         <div class="nav-tabs-wrapper">
                             <ul class="nav nav-tabs" data-tabs="tabs">
@@ -426,7 +426,7 @@
                         </div>
                     </div>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="availbenchCare4as">
+                        <div class="tab-pane active" id="availbenchCare4as"> -->
                             <div class="modal-body" style="font-size: 14px;">
                                 <div style="width: 100%; font-size: 16px; font-weight: 600;">
                                     Dateiformat
@@ -455,7 +455,7 @@
                                     </div>
                                 </form>
                             </div>
-                        <div class="tab-pane" id="availbenchKdw">
+                        <!-- <div class="tab-pane" id="availbenchKdw">
                             <div class="modal-body" style="font-size: 14px;">
                                 <div style="width: 100%; font-size: 16px; font-weight: 600;">
                                     Dateiformat
@@ -483,10 +483,10 @@
                                         <button type="button" id="availbenchKdwDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                                     </div>
                                 </form>
-                        </div>
-                    </div>
+                        </div> 
+                    </div> 
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -823,6 +823,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <!-- Debug
+                <form action="{{route('excel.test')}}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                    <input type="file" name="file" id="">
+                    <button type="submit">Hochladen</button>
+                </form> -->
             <div id="app">
                 <div class="modal-body" style="font-size: 14px;">
                 <div style="width: 100%; font-size: 16px; font-weight: 600;">
@@ -851,7 +857,7 @@
                         </div>
                         <div style="display: grid; grid-template-columns: auto 1fr; grid-gap: 5px;">
                             <div style="padding-right: 5px; align-self: center;">Blatt:</div>
-                            <div><input type="text" class="form-control" name="sheet" placeholder="Wert..." style="color: black;" value="1"></div>
+                            <div><input type="text" class="form-control" name="sheet" placeholder="Wert..." style="color: black;" value="6"></div>
                             <div style="padding-right: 5px; align-self: center;">Zeile:</div>
                             <div><input type="text" class="form-control" name="fromRow" placeholder="Wert..." style="color: black;" value="2"></div>
                         </div>
