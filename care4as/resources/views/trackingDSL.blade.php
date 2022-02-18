@@ -155,22 +155,23 @@ function roundUp($calls,$quotient)
                     <div style="text-align: center; font-weight: bold;">CR</div>
                     <div>Retention Access</div>
                     <div>
-                        <div style="display: flex; width: min-content; margin: auto;">
-                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 0])}}" role="button">-</a>
-                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">{{ $Calls = 20}}</div>
-                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
-                        </div>
+                      <div style="display: flex; width: min-content; margin: auto;">
+                        <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 5, 'updown' => 0])}}" role="button">-</a>
+                        <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',5)->first()){{ $RetentionCalls = $trackcalls->where('category',5)->first()->calls}} @else 0 @endif</div>
+                        <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 5, 'updown' => 1])}}" role="button">+</a>
+                      </div>
                     </div>
-                    <div style="text-align: center">{{$Saves = 10}}</div>
-                    <div style="text-align: center">{{roundUp($Calls,$Saves)}}%</div>
+                    <div style="text-align: center">{{$SavesRet = $history->where('event_category','Save')->where('product_category', 'Retention')->count()}}</div>
+                    <div style="text-align: center">{{roundUp($allCallsD,$Saves = $SavesRet + $SavesPrev = $history->where('event_category','Save')->where('product_category', 'Prevention')->count())}}%</div>
                     <div>Prevention</div>
                     <div>
-                        <div style="display: flex; width: min-content; margin: auto;">
-                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 0])}}" role="button">-</a>
-                            <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if($trackcalls->where('category',4)->first()) {{$trackcalls->where('category',4)->first()->calls}} @else 0   @endif</div>
-                            <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 4, 'updown' => 1])}}" role="button">+</a>
-                        </div>
+                      <div style="display: flex; width: min-content; margin: auto;">
+                        <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 6, 'updown' => 0])}}" role="button">-</a>
+                        <div style="padding: 0 5px; min-width: 50px; text-align: center; margin: auto;">@if( $trackcalls->where('category',6)->first()) {{$preventioncalls = $trackcalls->where('category',6)->first()->calls}} @else 0   @endif</div>
+                        <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 6, 'updown' => 1])}}" role="button">+</a>
+                      </div>
                     </div>
+                      <div style="text-align: center">{{$SavesPrev }}</div>
                 </div>
             </div>
             <div class="max-main-container" style="margin-top: 40px">
@@ -181,7 +182,7 @@ function roundUp($calls,$quotient)
                     <div style="font-weight: bold;">Bezeichnung</div>
                     <div style="text-align: center; font-weight: bold;">Wert</div>
                     <div>RLZ+24 Anteil</div>
-                    <div style="text-align: center">{{roundUP($Saves, $Calls)}}%</i></div>
+                    <div style="text-align: center">{{roundUP($Saves, $allCallsD)}}%</i></div>
                     <div>OptIn Quote</div>
                     <div style="text-align: center">{{roundUp($allCallsD,$history->where('optin',1)->count())}}%</i></div>
                 </div>
@@ -196,20 +197,20 @@ function roundUp($calls,$quotient)
                         Saves
                     </div>
                     <div class="tracking_container">
-                        <div class="tracking_description">Vertragsnummer</div>
-                        <input type="text" class="form-control" id="contract_number" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
-                        <div class="tracking_errormessage" id="contract_number_errormessage" style="display: none;">
-                            <div style="margin: auto; padding: 0 5px;"><i class="far fa-times-circle"></i><small>Bitte trage eine gültige Vertragsnummer ohne Buchstaben, Leer- oder Sonderzeichen ein</small></div>
-                        </div>
+                      <div class="tracking_description">Vertragsnummer</div>
+                      <input type="text" class="form-control" id="contract_number" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
+                      <div class="tracking_errormessage" id="contract_number_errormessage" style="display: none;">
+                          <div style="margin: auto; padding: 0 5px;"><i class="far fa-times-circle"></i><small>Bitte trage eine gültige Vertragsnummer ohne Buchstaben, Leer- oder Sonderzeichen ein</small></div>
+                      </div>
                     </div>
-                    <input type="hidden" class="btn-check" name="product_category" value="DSL" id="product_category1" autocomplete="off" onchange="tracking_input()">
+                    <!-- <input type="hidden" class="btn-check" name="product_category" value="DSL" id="product_category1" autocomplete="off" onchange="tracking_input()"> -->
                     <div class="tracking_container">
                         <div class="tracking_description">Queue</div>
                         <div class="btn-group-container">
                             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="product_category" value="SSC" id="product_category1" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary first-btn-group-element" for="product_category1">Retention</label>
-                                <input type="radio" class="btn-check" name="product_category" value="BSC" id="product_category2" autocomplete="off" onchange="tracking_input()">
+                                <input type="radio" class="btn-check" name="product_category" value="Retention" id="product_category1" autocomplete="off" onchange="tracking_input()">
+                                <label class="btn btn-outline-primary " for="product_category1">Retention</label>
+                                <input type="radio" class="btn-check" name="product_category" value="Prevention" id="product_category2" autocomplete="off" onchange="tracking_input()">
                                 <label class="btn btn-outline-primary" for="product_category2">Prevention</label>
                             </div>
                         </div>
@@ -220,16 +221,12 @@ function roundUp($calls,$quotient)
                             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                 <input type="radio" class="btn-check" name="event_category" value="Save" id="event_category1" autocomplete="off" onchange="tracking_input()">
                                 <label class="btn btn-outline-primary first-btn-group-element" for="event_category1">Save</label>
-
                                 <input type="radio" class="btn-check" name="event_category" value="Cancel" id="event_category2" autocomplete="off" onchange="tracking_input()">
                                 <label class="btn btn-outline-primary" for="event_category2">Cancel</label>
-
                                 <input type="radio" class="btn-check" name="event_category" value="Service" id="event_category3" autocomplete="off" onchange="tracking_input()">
                                 <label class="btn btn-outline-primary" for="event_category3">Service</label>
-
                                 <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
                                 <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
-
                                 <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
                                 <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">Umzug</label>
                                 <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">

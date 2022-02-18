@@ -93,11 +93,13 @@
         <div class="row m-0 w-100" style="min-height: 45vh;">
           <div class="col-md bg-white shadow" style="transform: rotateY(-15deg);">
             <div class="row center_items">
-              <h5>Liveticker Teamquote</h5>
+              <h5>Liveticker Teamquote1</h5>
             </div>
-            <div class="row h-75">
-              <div class="col-12 center_items " id="chartcontainer" style="width: 90%;">
-                <canvas id="dailyQuota" style="height: 90% !important; width: 90%;"></canvas>
+            <div class="wrapper h-75">
+              <div class="row center_items">
+                <div class="d-flex center_items " id="chartcontainer" style="width: 90%;height: 400px;">
+                  <canvas id="dailyQuota" style="width: 90%;"></canvas>
+                </div>
               </div>
             </div>
           </div>

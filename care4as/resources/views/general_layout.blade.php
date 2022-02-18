@@ -134,8 +134,10 @@
                 @if(in_array('1u1_db',Auth()->user()->getRights()))
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
                   <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
-                  <li><a href="{{route('dsl.tracking.agents',['department' => 2])}}">Tracking DSL</a> </li>
+                  <li><a href="{{route('dsl.tracking.admin',['department' => 'DSL'])}}">Admin Tracking DSL</a> </li>
+
                 @endif
+                <li><a href="{{route('dsl.tracking.agents',['department' => 2])}}">Tracking DSL</a> </li>
               </ul>
             </li>
           @endif

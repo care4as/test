@@ -80,14 +80,6 @@ class AgentTrackingController extends Controller
           'backoffice' => 'required',
         ]);
 
-        // $request->contract_number= 1312123;
-        // $request->product_category= 'SSC';
-        // $request->event_category= 'Cancel';
-        // $request->optin= 1;
-        // $request->runtime= 1;
-        // $request->backoffice= 1;
-        // $request->target_tarif= 'testtarif';
-
         $trackevent = new TrackEvent;
         $additionalProperties = array('created_by' => Auth()->id());
         $tranformed = request()->except(['_token']);
@@ -107,36 +99,38 @@ class AgentTrackingController extends Controller
         // dd($trackevent);
         return redirect()->back();
     }
-    public function AdminIndex()
+    public function AdminIndex($department = 'Mobile')
     {
+      if($department == 'DSL')
+      {
+        $department ='1und1 DSL Retention';
+      }
+      elseif ($department == 'Mobile') {
+        $department == '1und1 Retention';
+      }
+      else {
+        $department == 'all';
+      }
+      $users = User::with('TrackingToday','TrackingCallsToday')
+      ->where('status', 1)
+      ->where('project',$department)
+      ->where('department','Agenten')
+      ->get();
 
-      $department ='Mobile';
-
+      // $ids = $users->pluck('id');
       $history = TrackEvent::with('createdBy')
+      // ->whereIn('created_by', $ids)
       ->orderBy('created_at','DESC')
       ->get();
 
-      if(false)
+      if($department == '1und1 DSL Retention')
       {
-        $department ='1und1 DSL Retention';
-
-        $users = User::with('TrackingToday','TrackingCallsToday')
-        ->where('status', 1)
-        ->where('project',$department)
-        ->where('department','Agenten')
-        ->get();
+        return view('trackingDSLAdmin', compact('history', 'users'));
       }
       else {
-        $users = User::with('TrackingToday','TrackingCallsToday')
-        ->where('status', 1)
-        ->where('project','1und1 Retention')
-        ->where('department','Agenten')
-        ->get();
-      }
-        // $trackcalls = TrackCalls::all();
 
-      // dd($users, $users[34]);
       return view('trackingMobileAdmin', compact('history', 'users'));
+      }
     }
 
     public function TrackingJson()
@@ -352,6 +346,14 @@ class AgentTrackingController extends Controller
     public function trackCall($type, $updown)
     {
       // dd($type);
+
+      // categories
+      // 1 = SSC Calls
+      // 2 = BSC Calls
+      // 3 = Portal Calls
+      // 4 = Sonstige Calls
+      // 5 = Rentention Calls
+      // 6 = Prevention Calls
 
       if (TrackCalls::where('user_id', Auth()->id())->where('category', $type)->whereDate('created_at', Carbon::today())->exists())
       {

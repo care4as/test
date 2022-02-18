@@ -353,6 +353,7 @@ Route::group(['middleware' => 'auth'], function () {
 
   //DSL
   Route::get('/dsl/tracking/{department}',  'AgentTrackingController@userIndex')->name('dsl.tracking.agents')->middleware('auth');
+  Route::get('/dsl/tracking/admin/{department}',  'AgentTrackingController@AdminIndex')->name('dsl.tracking.admin')->middleware('auth');
   Route::post('/dsl/tracking/update',  'AgentTrackingController@edit')->name('dsl.tracking.agents.update')->middleware('auth');
   Route::post('/dsl/tracking/post', 'AgentTrackingController@store')->name('dsl.tracking.agents.post');
   //End DSL
