@@ -138,7 +138,7 @@
                                             <td>Keine Daten verfügbar</td>
                                         @endif
                                         <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentModal">Importieren</button></td>
-                                        <td></td>
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyAgentExportModal">Exportieren</button></td>
                                     </tr>
                                     <tr id="optin">
                                         <td style="text-align: left; font-weight: 600;">1u1 OptIn</td>
@@ -403,16 +403,16 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div id="debug_div" style="font-size: 12px">
-                    Debug
-                    <form action="{{route('availbenchKdw.upload')}}" enctype="multipart/form-data" method="POST">
-                        @csrf
-                        <input type="file" name="file" id="">
-                        <button type="submit">Hochladen</button>
-                    </form>
-                </div>
-            <div id="app">
-                <div class="tab-pane">
+            <!-- <div id="debug_div" style="font-size: 12px">
+                Debug
+                <form action="{{route('availbenchKdw.upload')}}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                    <input type="file" name="file" id="">
+                    <button type="submit">Hochladen</button>
+                </form>
+            </div> -->
+            <!-- <div id="app">
+                 <div class="tab-pane">
                     <div class="nav-tabs-navigation">
                         <div class="nav-tabs-wrapper">
                             <ul class="nav nav-tabs" data-tabs="tabs">
@@ -426,7 +426,7 @@
                         </div>
                     </div>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="availbenchCare4as">
+                        <div class="tab-pane active" id="availbenchCare4as"> -->
                             <div class="modal-body" style="font-size: 14px;">
                                 <div style="width: 100%; font-size: 16px; font-weight: 600;">
                                     Dateiformat
@@ -455,7 +455,7 @@
                                     </div>
                                 </form>
                             </div>
-                        <div class="tab-pane" id="availbenchKdw">
+                        <!-- <div class="tab-pane" id="availbenchKdw">
                             <div class="modal-body" style="font-size: 14px;">
                                 <div style="width: 100%; font-size: 16px; font-weight: 600;">
                                     Dateiformat
@@ -483,10 +483,10 @@
                                         <button type="button" id="availbenchKdwDropZoneSubmitter" class="btn btn-primary">Speichern</button>
                                     </div>
                                 </form>
-                        </div>
-                    </div>
+                        </div> 
+                    </div> 
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -595,6 +595,165 @@
     </div>
 </div>
 
+<!-- Daily Agent Export -->
+<div class="modal fade" id="dailyAgentExportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="z-index: 500000;">
+        <div class="modal-content">
+            <div class="loaderDiv" id="loaderDiv2">
+                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="modal-header ">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1.45em;">Daily Agent Export</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload();">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{route('dailyAgent.exportXlsx')}}"  style="padding: 0;" onformchange="">
+                @csrf
+                <div class="modal-body" style="font-size: 14px;">
+                    <div style="width:100%">
+                        Hinweis: Aufgrund des Datenumfangs und entsprechender Größe der Exportdatei sollte der Exportzeitraum einen Monat nicht überschreiten!
+                    </div>
+                    <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 5px; margin-top: 16px;">
+                        <p style="margin: auto 0 auto auto;">Startdatum:</p>
+                        <input type="date" id="dailyAgentStartDate" name="dailyAgentStartDate" class="form-control" placeholder="" style="color:black;" onchange="enableExportButton('dailyAgentStartDate', 'dailyAgentEndDate', 'dailyAgentExportButton')">
+                        <p style="margin: auto 0 auto auto;">Enddatum:</p>
+                        <input type="date" id="dailyAgentEndDate" name="dailyAgentEndDate" class="form-control" placeholder="" style="color:black;" onchange="enableExportButton('dailyAgentStartDate', 'dailyAgentEndDate', 'dailyAgentExportButton')">
+                        <p style="text-align:center;margin-bottom:0;grid-column:1/-1;">Status:</p>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;grid-column:1/-1;font-size:12px;">
+                            <!-- Initizialized -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus1" value="true">Initialized<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Logged Out -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus2" value="true">Logged Out<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Available -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus3" value="true">Available<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Comm Fault -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus4" value="true">Comm Fault<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- In Call -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus5" value="true">In Call<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- On Hold -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus6" value="true">On Hold<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Ringing -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus7" value="true">Ringing<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Wrap Up -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus8" value="true">Wrap Up<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (01_screen break) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus9" value="true">Released (01_screen break)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (02_lunch break) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus10" value="true">Released (02_lunch break)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (03_away) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus11" value="true">Released (03_away)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (04_offline work) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus12" value="true">Released (04_offline work)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (05_occupied) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus13" value="true">Released (05_occupied)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (06_practice) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus14" value="true">Released (06_practice)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (07_meeting) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus15" value="true">Released (07_meeting)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (08_organization) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus16" value="true">Released (08_organization)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (09_outbound) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus17" value="true">Released (09_outbound)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                            <!-- Released (no code) -->
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" checked name="dailyAgentStatus18" value="true">Released (no code)<span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <p style="margin: auto 0 auto auto;">Weiterer Filter:</p>
+                        <select name="dailyAgentFilter" id="dailyAgentFilter" class="form-control" onchange="dailyAgentExportFilter()">
+                            <option value="false">Nein</option>
+                            <option value="agent_group_name">Agent Group</option>
+                            <option value="agent_id">Agent ID</option>
+                        </select>
+                        <p style="margin: auto 0 auto auto; display: none;" id="dailyAgentAgentGroupNameTitle">Agent Group:</p>
+                        <select name="dailyAgentAgentGroupName" id="dailyAgentAgentGroupNameInput" class="form-control" style="display: none;">
+                            <option value="DE_KDW_Retention_Mobile_Flensburg">DE_KDW_Retention_Mobile_Flensburg</option>
+                            <option value="DE_care4as_RT_DSL_Eggebek">DE_care4as_RT_DSL_Eggebek</option>
+                        </select>
+                        <p style="margin: auto 0 auto auto; display: none;" id="dailyAgentAgentIdTitle">Agent ID:</p>
+                        <input type="number" name="dailyAgentAgentId" id="dailyAgentAgentIdInput" class="form-control" style="display: none;">
+                    </div>
+                </div>
+                <div class="modal-footer" style="font-size: 14px;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Schließen</button>
+                    <button type="submit" class="btn btn-primary" id="dailyAgentExportButton" disabled>Exportieren</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- OptIn -->
 <div class="modal fade" id="optinModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="z-index: 500000;">
@@ -664,6 +823,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <!-- Debug
+                <form action="{{route('excel.test')}}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                    <input type="file" name="file" id="">
+                    <button type="submit">Hochladen</button>
+                </form> -->
             <div id="app">
                 <div class="modal-body" style="font-size: 14px;">
                 <div style="width: 100%; font-size: 16px; font-weight: 600;">
@@ -692,7 +857,7 @@
                         </div>
                         <div style="display: grid; grid-template-columns: auto 1fr; grid-gap: 5px;">
                             <div style="padding-right: 5px; align-self: center;">Blatt:</div>
-                            <div><input type="text" class="form-control" name="sheet" placeholder="Wert..." style="color: black;" value="1"></div>
+                            <div><input type="text" class="form-control" name="sheet" placeholder="Wert..." style="color: black;" value="6"></div>
                             <div style="padding-right: 5px; align-self: center;">Zeile:</div>
                             <div><input type="text" class="form-control" name="fromRow" placeholder="Wert..." style="color: black;" value="2"></div>
                         </div>
@@ -1215,6 +1380,60 @@ $(function(){
     $('#debugroute').toggle()
   }
 })})
+</script>
+
+
+<!-- Export Buttons aktivieren, wenn Zeitraum ordentlich gesetzt ist -->
+<script>
+
+    function enableExportButton(startDateId, endDateId, buttonId){
+        var startDate = document.getElementById(startDateId).value;
+        var endDate = document.getElementById(endDateId).value;
+
+        if(startDate != "" && endDate != "" && startDate <= endDate){
+            document.getElementById(buttonId).disabled = false;
+        } else {
+            document.getElementById(buttonId).disabled = true;
+        }
+    }
+</script>
+
+<!-- Filter Funktionen Umsetzen -->
+<script>
+
+    // Daily Agent
+    function dailyAgentExportFilter(){
+        var filter = document.getElementById('dailyAgentFilter').value;
+
+        // Alle Elemente zurücksetzten
+        document.getElementById('dailyAgentAgentGroupNameInput').value = null;
+        document.getElementById('dailyAgentAgentIdInput').value = null;
+
+        switch (filter){
+            case 'false':
+                document.getElementById('dailyAgentAgentGroupNameTitle').style.display = 'none';
+                document.getElementById('dailyAgentAgentGroupNameInput').style.display = 'none';
+                document.getElementById('dailyAgentAgentIdTitle').style.display = 'none';
+                document.getElementById('dailyAgentAgentIdInput').style.display = 'none';
+            break;
+
+            case 'agent_group_name':
+                document.getElementById('dailyAgentAgentGroupNameTitle').style.display = 'block';
+                document.getElementById('dailyAgentAgentGroupNameInput').style.display = 'block';
+                document.getElementById('dailyAgentAgentIdTitle').style.display = 'none';
+                document.getElementById('dailyAgentAgentIdInput').style.display = 'none';
+            break;
+
+            case 'agent_id':
+                document.getElementById('dailyAgentAgentGroupNameTitle').style.display = 'none';
+                document.getElementById('dailyAgentAgentGroupNameInput').style.display = 'none';
+                document.getElementById('dailyAgentAgentIdTitle').style.display = 'block';
+                document.getElementById('dailyAgentAgentIdInput').style.display = 'block';
+            break;
+        }
+
+    }
+
 </script>
 
 @endsection

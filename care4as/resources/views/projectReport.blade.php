@@ -71,7 +71,8 @@
 
 </style>
 @endsection
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/fh-3.2.1/datatables.css"/>
+ 
 <div>
     <div class="row">
         <div class="col-md-12">
@@ -131,7 +132,7 @@
                                         </select>
                                     </div>
                                 <div style="display:flex;">
-                                        <button class="btn btn-primary btn-sm" style="margin: 5px auto;" type="submit">Bericht erzeugen</button>
+                                        <button class="btn btn-primary btn-sm" style="margin: 5px auto 0px auto;" type="submit">Bericht erzeugen</button>
                                     </div>
                                 </div>
                             </div>
@@ -291,7 +292,7 @@
                 </div>
                 <div class="max-panel-content">
                     <div style="width: 100%;">
-                        <table class="max-table" id="dslMaTable" style="width:100%">
+                        <table class="max-table" id="dslMaTable" style="width:100%;" >
                             <thead>
                                 <tr>
                                     <th style="border-right: 0px;">Name</th>
@@ -668,6 +669,7 @@
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
 <script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
+<script src="https://cdn.datatables.net/v/dt/fh-3.2.1/datatables.min.js"></script>
 <script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script>
 <script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -698,7 +700,7 @@
         },
         "lengthMenu": [ [-1, 3, 5, 10, 25, 50, 100], ["alle", 3, 5, 10, 25, 50, 100] ],
         scrollX: true,
-        scrollCollapse: true,
+        scrollCollapse: true,  
         fixedColumns: true,
         select: true,
         dom: 'Blfrtip',
@@ -734,21 +736,7 @@
                     },
                 },
             ],
-    });
-    table.rows().every( function () {
-        var rowNode = this.node();
-        var rowIndex = this.index();
-        $(rowNode).attr( 'data-dt-row', rowIndex );
-        $('tr').hover(function () {
-            var thisNode = $( this );
-            var rowIdx = thisNode.attr( 'data-dt-row' );
-            $( "tr" ).removeClass("hoverRow"); // remove all shading
-            $( "tr[data-dt-row='" + rowIdx + "']" ).addClass("hoverRow"); // shade only the hovered row
-        });
-    });
-    document.getElementById('userListContainer').style.display = "block";
-    $($.fn.dataTable.tables(true)).DataTable()
-      .columns.adjust();
+    });    
 })
 
 $(document).ready(function(){
@@ -794,6 +782,7 @@ $(document).ready(function(){
 
 
                     // ---------- MULTI ROW HEADER ----------
+                    // Im folgenden ist jede Merged Cell einzeln deklariert. Dabei wird zwischen DSL und Mobile unterschieden.
                     // MERGED CELL 1
                     rows[0].appendChild(_createNode(sheet, 'c', {
                         attr: {
@@ -832,7 +821,7 @@ $(document).ready(function(){
                             row: _createNode(sheet, 'is', {
                                 children: {
                                     row: _createNode(sheet, 't', {
-                                        text: 'Stunden'
+                                        text: "Stunden"
                                     })
                                 }
                             })
@@ -848,10 +837,277 @@ $(document).ready(function(){
 
                     mergeCells.attr('count', mergeCells.attr('count') + 1);
 
+                    // MERGED CELL 3
+                    if ("{{$defaultVariablesArray['project']}}" == '1u1_dsl_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                        attr: {
+                            t: 'inlineStr',
+                            r: 'J1', //address of new cell
+                            s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                        },
+                        children: {
+                            row: _createNode(sheet, 'is', {
+                                children: {
+                                    row: _createNode(sheet, 't', {
+                                        text: "Calls"
+                                    })
+                                }
+                            })
+                        }
+                    }))
+                    } else if ("{{$defaultVariablesArray['project']}}" == '1u1_mobile_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                            attr: {
+                                t: 'inlineStr',
+                                r: 'J1', //address of new cell
+                                s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                            },
+                            children: {
+                                row: _createNode(sheet, 'is', {
+                                    children: {
+                                        row: _createNode(sheet, 't', {
+                                            text: "Calls"
+                                        })
+                                    }
+                                })
+                            }
+                        }))
+
+                        // set new cell merged
+                        mergeCells[0].appendChild(_createNode(sheet, 'mergeCell', {
+                            attr: {
+                                ref: 'J1:L1' // merge address
+                            }
+                        }))
+
+                        mergeCells.attr('count', mergeCells.attr('count') + 1);
+                    }
+
+                    // MERGED CELL 4
+                    if ("{{$defaultVariablesArray['project']}}" == '1u1_dsl_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                            attr: {
+                                t: 'inlineStr',
+                                r: 'K1', //address of new cell
+                                s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                            },
+                            children: {
+                                row: _createNode(sheet, 'is', {
+                                    children: {
+                                        row: _createNode(sheet, 't', {
+                                            text: "GeVo Saves"
+                                        })
+                                    }
+                                })
+                            }
+                        }))
+                    } else if ("{{$defaultVariablesArray['project']}}" == '1u1_mobile_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                            attr: {
+                                t: 'inlineStr',
+                                r: 'M1', //address of new cell
+                                s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                            },
+                            children: {
+                                row: _createNode(sheet, 'is', {
+                                    children: {
+                                        row: _createNode(sheet, 't', {
+                                            text: "GeVo Saves"
+                                        })
+                                    }
+                                })
+                            }
+                        }))
+
+                        // set new cell merged
+                        mergeCells[0].appendChild(_createNode(sheet, 'mergeCell', {
+                            attr: {
+                                ref: 'M1:O1' // merge address
+                            }
+                        }))
+
+                        mergeCells.attr('count', mergeCells.attr('count') + 1);
+                    }
+
+                    // MERGED CELL 5
+                    if ("{{$defaultVariablesArray['project']}}" == '1u1_dsl_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                            attr: {
+                                t: 'inlineStr',
+                                r: 'L1', //address of new cell
+                                s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                            },
+                            children: {
+                                row: _createNode(sheet, 'is', {
+                                    children: {
+                                        row: _createNode(sheet, 't', {
+                                            text: "CR"
+                                        })
+                                    }
+                                })
+                            }
+                        }))
+                    } else if ("{{$defaultVariablesArray['project']}}" == '1u1_mobile_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                            attr: {
+                                t: 'inlineStr',
+                                r: 'P1', //address of new cell
+                                s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                            },
+                            children: {
+                                row: _createNode(sheet, 'is', {
+                                    children: {
+                                        row: _createNode(sheet, 't', {
+                                            text: "CR"
+                                        })
+                                    }
+                                })
+                            }
+                        }))
+
+                        // set new cell merged
+                        mergeCells[0].appendChild(_createNode(sheet, 'mergeCell', {
+                            attr: {
+                                ref: 'P1:R1' // merge address
+                            }
+                        }))
+
+                        mergeCells.attr('count', mergeCells.attr('count') + 1);
+                    }
+
+                    // MERGED CELL 6
+                    if ("{{$defaultVariablesArray['project']}}" == '1u1_dsl_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                            attr: {
+                                t: 'inlineStr',
+                                r: 'M1', //address of new cell
+                                s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                            },
+                            children: {
+                                row: _createNode(sheet, 'is', {
+                                    children: {
+                                        row: _createNode(sheet, 't', {
+                                            text: "OptIn"
+                                        })
+                                    }
+                                })
+                            }
+                        }))
+
+                        // set new cell merged
+                        mergeCells[0].appendChild(_createNode(sheet, 'mergeCell', {
+                            attr: {
+                                ref: 'M1:N1' // merge address
+                            }
+                        }))
+
+                        mergeCells.attr('count', mergeCells.attr('count') + 1);
+                    } else if ("{{$defaultVariablesArray['project']}}" == '1u1_mobile_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                            attr: {
+                                t: 'inlineStr',
+                                r: 'S1', //address of new cell
+                                s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                            },
+                            children: {
+                                row: _createNode(sheet, 'is', {
+                                    children: {
+                                        row: _createNode(sheet, 't', {
+                                            text: "OptIn"
+                                        })
+                                    }
+                                })
+                            }
+                        }))
+
+                        // set new cell merged
+                        mergeCells[0].appendChild(_createNode(sheet, 'mergeCell', {
+                            attr: {
+                                ref: 'S1:T1' // merge address
+                            }
+                        }))
+
+                        mergeCells.attr('count', mergeCells.attr('count') + 1);
+                    }
+
+                    // MERGED CELL 7
+                    if ("{{$defaultVariablesArray['project']}}" == '1u1_dsl_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                            attr: {
+                                t: 'inlineStr',
+                                r: 'O1', //address of new cell
+                                s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                            },
+                            children: {
+                                row: _createNode(sheet, 'is', {
+                                    children: {
+                                        row: _createNode(sheet, 't', {
+                                            text: "Umsatz"
+                                        })
+                                    }
+                                })
+                            }
+                        }))
+
+                        mergeCells[0].appendChild(_createNode(sheet, 'mergeCell', {
+                            attr: {
+                                ref: 'O1:Q1' // merge address
+                            }
+                        }))
+
+                        mergeCells.attr('count', mergeCells.attr('count') + 1);
+                    } else if ("{{$defaultVariablesArray['project']}}" == '1u1_mobile_ret') {
+                        rows[0].appendChild(_createNode(sheet, 'c', {
+                            attr: {
+                                t: 'inlineStr',
+                                r: 'U1', //address of new cell
+                                s: 51 // center style - https://www.datatables.net/reference/button/excelHtml5
+                            },
+                            children: {
+                                row: _createNode(sheet, 'is', {
+                                    children: {
+                                        row: _createNode(sheet, 't', {
+                                            text: "Umsatz"
+                                        })
+                                    }
+                                })
+                            }
+                        }))
+
+                        // set new cell merged
+                        mergeCells[0].appendChild(_createNode(sheet, 'mergeCell', {
+                            attr: {
+                                ref: 'U1:W1' // merge address
+                            }
+                        }))
+
+                        mergeCells.attr('count', mergeCells.attr('count') + 1);
+                    }
 
 
                     multiRowFooter();
 
+
+
+                    // ---------- STYLING ----------
+                    for (let i = 1; i <= 2; i++){
+                        $('row:nth-child('+i+') c', sheet).attr('s', '32');
+                        $('row:nth-child('+i+') c', sheet).attr('s', '32');
+                    }
+
+                    footerIndex = $('sheetData row', sheet).length - 1;
+
+                    for (let i = 3; i <= footerIndex; i++){
+                        $('row:nth-child('+i+') c', sheet).attr('s', '25');
+                    }
+
+                    for (let i = footerIndex; i <= footerIndex + 1; i++) {
+                        $('row:nth-child('+i+') c', sheet).attr('s', '32');
+                    }
+
+
+
+                    
                     // ---------- FUNCTIONS ----------
 
                     function multiRowFooter(){
@@ -873,7 +1129,7 @@ $(document).ready(function(){
                             $('sheetData', sheet).append(`
                                 <row r="${footerIndex}">
                                 ${$footerRowCols.map((index, el) => `
-                                    <c t="inlineStr" r="${String.fromCharCode(65 + index)}${footerIndex}" s="2">
+                                    <c t="inlineStr" r="${String.fromCharCode(65 + index)}${footerIndex}" s="32">
                                     <is>
                                         <t xml:space="preserve">${$(el).text()}</t>
                                     </is>

@@ -104,6 +104,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/report/availbench', 'ExcelEditorController@availbenchReport')->name('availbench.upload')->middleware('hasRight:importReports');
   Route::post('/report/availbenchKdw', 'ExcelEditorController@availbenchReportKdw')->name('availbenchKdw.upload')->middleware('hasRight:importReports');
   Route::post('/report/dailyAgentCsvUpload', 'ExcelEditorController@dailyAgentCsvUpload')->name('dailyAgent.uploadCsv')->middleware('hasRight:importReports');
+  Route::get('/report//export/availbench/xlsx', 'ExcelEditorController@availbenchExportXlsx')->name('availbench.exportXlsx')->middleware('hasRight:importReports'); // EXPORT RECHT?
+  Route::get('/report//export/dailyagent/xlsx', 'ExcelEditorController@dailyAgentExportXlsx')->name('dailyAgent.exportXlsx')->middleware('hasRight:importReports'); // EXPORT RECHT?
+  Route::get('/report//export/optin/xlsx', 'ExcelEditorController@optinExportXlsx')->name('optin.exportXlsx')->middleware('hasRight:importReports'); // EXPORT RECHT?
+  Route::get('/report//export/retentiondetails/xlsx', 'ExcelEditorController@retentiondetailsExportXlsx')->name('retentiondetails.exportXlsx')->middleware('hasRight:importReports'); // EXPORT RECHT?
+  Route::get('/report//export/sas/xlsx', 'ExcelEditorController@sasExportXlsx')->name('sas.exportXlsx')->middleware('hasRight:importReports'); // EXPORT RECHT?
 
   // Route::post('/report/dailyAgentUpload/Queue', 'ExcelEditorController@dailyAgentUploadQueue')->name('excel.dailyAgent.upload.queue')->middleware('hasRight:importReports');
   Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');

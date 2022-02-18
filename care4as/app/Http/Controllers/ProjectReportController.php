@@ -171,9 +171,11 @@ class ProjectReportController extends Controller
     public function get1u1DslRetSum($defaultVariablesArray, $finalArray){
         /** Hier wird der Projektumsatz durch den Availbench berechnet */
         $availbenchData = $this->getAvailbench($defaultVariablesArray, 'DE_1u1_RT_Access_1st');     // Datenbankabfrage um alle relevanten Availbenchdaten zu ziehen
+        $finalArray['sum']['availbench_calls'] = 0;
         $finalArray['sum']['revenue_availbench'] = 0;                                               // Umsatz Availbench mit 0 initialisieren
         foreach($availbenchData as $key => $entry){                                                 // Das Availbencharray durchlaufen
             $finalArray['sum']['revenue_availbench'] += $entry['total_costs_per_interval'];         // Für jeden Eintrag den Umsatz auf die Summe addieren
+            $finalArray['sum']['availbench_calls'] += $entry['handled'];                            // Für jeden Eintrag die handled Calls auf die Summe addieren
         }
 
         /** Hier werden die globalen Variablen jeweils mit 0 initialisiert */
@@ -229,6 +231,13 @@ class ProjectReportController extends Controller
             $finalArray['sum']['rlz_minus'] += $entry['rlz_minus'];
             $finalArray['sum']['rlz_plus'] += $entry['rlz_plus'];
             $finalArray['sum']['hours_speedretention'] += $entry['hours_speedretention'];
+        }
+
+         // Wichtig: Dieser Abschnitt teil die Availbench Daten zwischen KDW und C4A
+         if ($finalArray['sum']['availbench_calls'] > 0){
+            $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['dsl_calls'] / $finalArray['sum']['availbench_calls']));
+        } else {
+            $finalArray['sum']['revenue_availbench'] = 0;
         }
 
         /** Hier wird der Umsatz durch Speedretention berechnet */
@@ -504,11 +513,15 @@ class ProjectReportController extends Controller
             $finalArray['sum']['hours_speedretention'] += $entry['hours_speedretention'];
         }
 
+
+        // Wichtig: Dieser Abschnitt teil die Availbench Daten zwischen KDW und C4A
         if ($finalArray['sum']['availbench_calls'] > 0){
             $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['mobile_calls_sum'] / $finalArray['sum']['availbench_calls']));
         } else {
             $finalArray['sum']['revenue_availbench'] = 0;
         }
+
+        //dd($finalArray);
 
         /** Hier wird der Umsatz durch Speedretention berechnet */
         $finalArray['sum']['revenue_speedretention'] =

@@ -14,6 +14,10 @@ use App\CapacitySuitReport;
 use App\RetentionDetail;
 use App\Hoursreport;
 
+use App\Exports\DailyAgentExport;
+
+use \DateTime;
+
 class ExcelEditorController extends Controller
 {
     public function dailyAgentView($value='') {
@@ -894,9 +898,10 @@ class ExcelEditorController extends Controller
       if($request->sheet)
       {
         $sheet = $request->sheet;
+        $sheet = $sheet - 1;
       }
       else {
-        $sheet = 3;
+        $sheet = 5;
       }
 
       if($request->fromRow)
@@ -908,7 +913,9 @@ class ExcelEditorController extends Controller
         $fromRow = 2;
       }
 
-      $data = Excel::ToArray(new DataImport, request()->file('file'))[0];
+      $data = Excel::ToArray(new DataImport, request()->file('file'))[$sheet];
+
+      //dd($data);
 
       // dd($data);
 
@@ -1210,45 +1217,47 @@ class ExcelEditorController extends Controller
 
       foreach($fileArray as $row) {
         if(count($header) == count($row)) {
-          $availbenchArray[$i]['date_key'] = intval($row[0]);
-          $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
-          $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i:s', $row[2]); //timestamp
-          $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
-          $availbenchArray[$i]['call_forecast_issue'] = $row[4];
-          $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
-          $availbenchArray[$i]['call_forecast_owner'] = $row[6];
-          $availbenchArray[$i]['forecast'] = intval($row[7]);
-          $availbenchArray[$i]['handled'] = intval($row[8]);
-          $availbenchArray[$i]['availtime_summary'] = intval($row[9]);
-          $availbenchArray[$i]['availtime_sec'] = intval($row[10]);
-          $availbenchArray[$i]['handling_time_sec'] = intval($row[11]);
-          $availbenchArray[$i]['availtime_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[12])));
-          $availbenchArray[$i]['forecast_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[13])));
-          $availbenchArray[$i]['avail_bench'] = floatval(str_replace(',', '.', str_replace('.', '', $row[14])));
-          $availbenchArray[$i]['idp_done'] = intval($row[15]);
-          $availbenchArray[$i]['number_payed_calls'] = floatval(str_replace(',', '.', str_replace('.', '', $row[16])));
-          $availbenchArray[$i]['price'] = floatval(str_replace(',', '.', str_replace('.', '', $row[17])));
-          $availbenchArray[$i]['aht'] = floatval(str_replace(',', '.', str_replace('.', '', $row[18])));
-          $availbenchArray[$i]['productive_minutes'] = floatval(str_replace(',', '.', str_replace('.', '', $row[19])));
-          $availbenchArray[$i]['malus_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[20])));
-          $availbenchArray[$i]['malus_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[21])));
-          $availbenchArray[$i]['acceptance_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[22])));
-          $availbenchArray[$i]['total_costs_per_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[23])));
-          $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
-
-          if ($minDate == null) {
-            $minDate = $availbenchArray[$i]['date_date'];
-          } else if ($availbenchArray[$i]['date_date'] < $minDate){
-            $minDate = $availbenchArray[$i]['date_date'];
+          if(intval($row[3]) == 53 || intval($row[3]) == 54){
+            $availbenchArray[$i]['date_key'] = intval($row[0]);
+            $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
+            $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i:s', $row[2]); //timestamp
+            $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
+            $availbenchArray[$i]['call_forecast_issue'] = $row[4];
+            $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
+            $availbenchArray[$i]['call_forecast_owner'] = $row[6];
+            $availbenchArray[$i]['forecast'] = intval($row[7]);
+            $availbenchArray[$i]['handled'] = intval($row[8]);
+            $availbenchArray[$i]['availtime_summary'] = intval($row[9]);
+            $availbenchArray[$i]['availtime_sec'] = intval($row[10]);
+            $availbenchArray[$i]['handling_time_sec'] = intval($row[11]);
+            $availbenchArray[$i]['availtime_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[12])));
+            $availbenchArray[$i]['forecast_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[13])));
+            $availbenchArray[$i]['avail_bench'] = floatval(str_replace(',', '.', str_replace('.', '', $row[14])));
+            $availbenchArray[$i]['idp_done'] = intval($row[15]);
+            $availbenchArray[$i]['number_payed_calls'] = floatval(str_replace(',', '.', str_replace('.', '', $row[16])));
+            $availbenchArray[$i]['price'] = floatval(str_replace(',', '.', str_replace('.', '', $row[17])));
+            $availbenchArray[$i]['aht'] = floatval(str_replace(',', '.', str_replace('.', '', $row[18])));
+            $availbenchArray[$i]['productive_minutes'] = floatval(str_replace(',', '.', str_replace('.', '', $row[19])));
+            $availbenchArray[$i]['malus_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[20])));
+            $availbenchArray[$i]['malus_percent'] = floatval(str_replace(',', '.', str_replace('.', '', $row[21])));
+            $availbenchArray[$i]['acceptance_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[22])));
+            $availbenchArray[$i]['total_costs_per_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[23])));
+            $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
+  
+            if ($minDate == null) {
+              $minDate = $availbenchArray[$i]['date_date'];
+            } else if ($availbenchArray[$i]['date_date'] < $minDate){
+              $minDate = $availbenchArray[$i]['date_date'];
+            }
+  
+            if ($maxDate == null) {
+              $maxDate = $availbenchArray[$i]['date_date'];
+            } else if ($availbenchArray[$i]['date_date'] > $maxDate){
+              $maxDate = $availbenchArray[$i]['date_date'];
+            }
+  
+            $i++;
           }
-
-          if ($maxDate == null) {
-            $maxDate = $availbenchArray[$i]['date_date'];
-          } else if ($availbenchArray[$i]['date_date'] > $maxDate){
-            $maxDate = $availbenchArray[$i]['date_date'];
-          }
-
-          $i++;
         }
       }
 
@@ -1321,8 +1330,8 @@ class ExcelEditorController extends Controller
       $fileArray = array(); //initialize array
 
       foreach ($file as $key => $line) {
-        // $fileArray[$key] = str_getcsv($line, "\t"); <-- für Tabstop
-        $fileArray[$key] = str_getcsv($line, ";");
+        $fileArray[$key] = str_getcsv($line, "\t"); // <-- für Tabstop
+        // $fileArray[$key] = str_getcsv($line, ";"); // Für Simikolon
       };
 
       //dd($fileArray);
@@ -1355,7 +1364,8 @@ class ExcelEditorController extends Controller
           if(intval($row[3]) == 54){
             $availbenchArray[$i]['date_key'] = intval($row[0]);
             $availbenchArray[$i]['date_date'] = date_create_from_format('d.m.Y', $row[1]); //Date
-            $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i:s', $row[2]); //timestamp
+            $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:i', $row[2]); //timestamp
+            // $availbenchArray[$i]['call_date_interval_start_time'] = date_create_from_format('d.m.Y H:is', $row[2]); // Für Simikolon
             $availbenchArray[$i]['call_forecast_issue_key'] = intval($row[3]);
             $availbenchArray[$i]['call_forecast_issue'] = $row[4];
             $availbenchArray[$i]['call_forecast_owner_key'] = intval($row[5]);
@@ -1537,6 +1547,110 @@ class ExcelEditorController extends Controller
 
       }
       return redirect()->back();
+    }
+
+    public function dailyAgentExportXlsx(){
+      //turn off the query log to save some time
+      DB::disableQueryLog();
+      //sets off the limitation of memory an request can handle, bc of the large amount of data
+      ini_set('memory_limit', '-1');
+      // since the request can last to several minutes, i had to turn off the execution time
+      ini_set('max_execution_time', '0'); // for infinite time of execution
+      date_default_timezone_set('Europe/Berlin');
+      // $modul = 'Userübersicht';
+
+      $startDateString = request('dailyAgentStartDate');
+      $endDateString = request('dailyAgentEndDate'); 
+      $filter = request('dailyAgentFilter');
+      $groupName = request('dailyAgentAgentGroupName');
+      $agentId = request('dailyAgentAgentId');
+
+      $startDate = new DateTime($startDateString);
+      $startDate->setTime(0,0);
+
+      $endDate = new DateTime($endDateString);
+      $endDate->setTime(23,59);
+
+      // Array für alle Status erstellen
+      $statusArray = array();
+
+      if(request('dailyAgentStatus1') == 'true'){
+        array_push($statusArray, 'Initialized');
+      }
+      if(request('dailyAgentStatus2') == 'true'){
+        array_push($statusArray, 'Logged Out');
+      }
+      if(request('dailyAgentStatus3') == 'true'){
+        array_push($statusArray, 'Available');
+      }
+      if(request('dailyAgentStatus4') == 'true'){
+        array_push($statusArray, 'Comm Fault');
+      }
+      if(request('dailyAgentStatus5') == 'true'){
+        array_push($statusArray, 'In Call');
+      }
+      if(request('dailyAgentStatus6') == 'true'){
+        array_push($statusArray, 'On Hold');
+      }
+      if(request('dailyAgentStatus7') == 'true'){
+        array_push($statusArray, 'Ringing');
+      }
+      if(request('dailyAgentStatus8') == 'true'){
+        array_push($statusArray, 'Wrap Up');
+      }
+      if(request('dailyAgentStatus9') == 'true'){
+        array_push($statusArray, 'Released (01_screen break)');
+      }
+      if(request('dailyAgentStatus10') == 'true'){
+        array_push($statusArray, 'Released (02_lunch break)');
+      }
+      if(request('dailyAgentStatus11') == 'true'){
+        array_push($statusArray, 'Released (03_away)');
+      }
+      if(request('dailyAgentStatus12') == 'true'){
+        array_push($statusArray, 'Released (04_offline work)');
+      }
+      if(request('dailyAgentStatus13') == 'true'){
+        array_push($statusArray, 'Released (05_occupied)');
+      }
+      if(request('dailyAgentStatus14') == 'true'){
+        array_push($statusArray, 'Released (06_practice)');
+      }
+      if(request('dailyAgentStatus15') == 'true'){
+        array_push($statusArray, 'Released (07_meeting)');
+      }
+      if(request('dailyAgentStatus16') == 'true'){
+        array_push($statusArray, 'Released (08_organization)');
+      }
+      if(request('dailyAgentStatus17') == 'true'){
+        array_push($statusArray, 'Released (09_outbound)');
+      }
+      if(request('dailyAgentStatus18') == 'true'){
+        array_push($statusArray, 'Released (no code)');
+      }
+
+      switch ($filter){
+        case 'false':
+          return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->download('DailyAgentExport.xlsx');
+        break;
+
+        case 'agent_group_name':
+          if($groupName == null){
+            return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->download('DailyAgentExport.xlsx');
+          } else {
+            return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->whereGroupName($groupName)->download('DailyAgentExport.xlsx');
+          }
+        break;
+
+        case 'agent_id':
+          if($agentId == null){
+            return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->download('DailyAgentExport.xlsx');
+          } else {
+            return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->whereAgentId(intval($agentId))->download('DailyAgentExport.xlsx');
+          }
+        break;
+  
+      }
     }
 
 }
