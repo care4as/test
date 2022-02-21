@@ -106,13 +106,17 @@ class AgentTrackingController extends Controller
         $department ='1und1 DSL Retention';
       }
       elseif ($department == 'Mobile') {
-        $department == '1und1 Retention';
+        $department = '1und1 Retention';
+        // dd($department);
       }
       else {
         $department == 'all';
       }
+
+      // dd($department);
       $users = User::with('TrackingToday','TrackingCallsToday')
       ->where('status', 1)
+      // ->where('project','1und1 Retention')
       ->where('project',$department)
       ->where('department','Agenten')
       ->get();
@@ -123,12 +127,13 @@ class AgentTrackingController extends Controller
       ->orderBy('created_at','DESC')
       ->get();
 
+
       if($department == '1und1 DSL Retention')
       {
         return view('trackingDSLAdmin', compact('history', 'users'));
       }
       else {
-
+        // dd($users);
       return view('trackingMobileAdmin', compact('history', 'users'));
       }
     }
