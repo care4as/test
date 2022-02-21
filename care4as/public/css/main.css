@@ -137,7 +137,6 @@ body
     :checked + label[for="dsl"] {
       color:white;
     }
-
     .center_items
     {
       display: flex;
@@ -155,7 +154,10 @@ body
     color: black;
     position: relative;
     }
-
+    .shadow-white
+    {
+      box-shadow: 0px 0px 9px rgba(255,255,255, 0.9);
+    }
     .readabilitysuperior
     {
       font-size: 1.1em;

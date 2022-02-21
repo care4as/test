@@ -30,6 +30,22 @@
 
     <style media="screen" >
 
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+      }
+      .goldentext
+      {
+        color: #D5AD6D;
+        background: -webkit-linear-gradient(transparent, transparent), -webkit-linear-gradient(top, rgba(213,173,109,1) 0%, rgba(213,173,109,1) 26%, rgba(226,186,120,1) 35%, rgba(163,126,67,1) 45%, rgba(145,112,59,1) 61%, rgba(213,173,109,1) 100%);
+            background-clip: border-box, border-box;
+        background: -o-linear-gradient(transparent, transparent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
       .logbut
       {
         padding: 6px 40px;

@@ -44,8 +44,6 @@ export default {
       // console.log('test')
     }
 
-
-
     const ctx = document.getElementById(chartId).getContext("2d");
 
     var gradient = ctx.createLinearGradient(0, 0, 0, 400);

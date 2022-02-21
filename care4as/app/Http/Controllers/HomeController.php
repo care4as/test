@@ -57,10 +57,10 @@ class HomeController extends Controller
         ->pluck('person_id')
         ->toArray();
 
-        // $users = User::whereIn('1u1_person_id', $userids)->orderBy('name')->get();
+        $users = User::whereIn('1u1_person_id', $userids)->orderBy('name')->get();
 
         // testdata
-        $users = User::where('status',1)->orderBy('name')->limit(5)->get();
+        // $users = User::where('status',1)->orderBy('name')->limit(5)->get();
       }
 
       $mobileTeamids = DB::table('users')
