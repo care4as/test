@@ -178,6 +178,8 @@ class ProjectReportController extends Controller
             $finalArray['sum']['availbench_calls'] += $entry['handled'];                            // Für jeden Eintrag die handled Calls auf die Summe addieren
         }
 
+        //dd($finalArray);
+
         /** Hier werden die globalen Variablen jeweils mit 0 initialisiert */
         $finalArray['sum']['fte'] = 0;
         $finalArray['sum']['work_hours'] = 0;                   // Bezahlte Stunden initialisieren
@@ -234,11 +236,11 @@ class ProjectReportController extends Controller
         }
 
          // Wichtig: Dieser Abschnitt teil die Availbench Daten zwischen KDW und C4A
-         if ($finalArray['sum']['availbench_calls'] > 0){
-            $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['dsl_calls'] / $finalArray['sum']['availbench_calls']));
-        } else {
-            $finalArray['sum']['revenue_availbench'] = 0;
-        }
+        //  if ($finalArray['sum']['availbench_calls'] > 0){
+        //     $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['dsl_calls'] / $finalArray['sum']['availbench_calls']));
+        // } else {
+        //     $finalArray['sum']['revenue_availbench'] = 0;
+        // }
 
         /** Hier wird der Umsatz durch Speedretention berechnet */
         $finalArray['sum']['revenue_speedretention'] = 
@@ -1665,7 +1667,7 @@ class ProjectReportController extends Controller
         ->where('date_date', '>=', $defaultVariablesArray['startDate']) // Datum muss größergleich dem Startdatum sein
         ->where('date_date', '<=', $defaultVariablesArray['endDate'])   // Datum muss kleinergleich dem Enddatum sein
         ->where('call_forecast_issue', '=', $department)                // Der Forecast wird auf das übergebene Department gefiltert
-        ->where('forecast', '>', 0)                                     // Nur Forecast mit einem Wert >0 werden berücksichtigt
+        //->where('forecast', '>', 0)                                     // Nur Forecast mit einem Wert >0 werden berücksichtigt
         ->get()                                                         // Tabelle wird unter berücksichtigung der Filter geholt
         ->toArray();                                                    // Objekt wird in Array gewandelt
 
