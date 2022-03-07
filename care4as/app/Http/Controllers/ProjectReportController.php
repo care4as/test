@@ -517,11 +517,11 @@ class ProjectReportController extends Controller
 
 
         // Wichtig: Dieser Abschnitt teil die Availbench Daten zwischen KDW und C4A
-        if ($finalArray['sum']['availbench_calls'] > 0){
-            $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['mobile_calls_sum'] / $finalArray['sum']['availbench_calls']));
-        } else {
-            $finalArray['sum']['revenue_availbench'] = 0;
-        }
+        // if ($finalArray['sum']['availbench_calls'] > 0){
+        //     $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['mobile_calls_sum'] / $finalArray['sum']['availbench_calls']));
+        // } else {
+        //     $finalArray['sum']['revenue_availbench'] = 0;
+        // }
 
         //dd($finalArray);
 
