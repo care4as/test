@@ -124,6 +124,21 @@ function roundUp($calls,$quotient)
 @endsection
 
 <div style="font-size: 1em;">
+
+    @if(Auth::user()->name == 's.reimer')
+    <!-- Line Situation -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="max-main-container">
+                <div style="margin: 10px">
+                    <div>Administrator Einstellungen</div>
+                    <div style="font-size: medium;">Line Situation: Gute Line</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- START TRACKING -->
     <div class="row">
         <div class="col-sm-12">
