@@ -113,7 +113,7 @@ class AgentTrackingController extends Controller
         $department == 'all';
       }
 
-      // dd($department);
+
       $users = User::with('TrackingToday','TrackingCallsToday')
       ->where('status', 1)
       // ->where('project','1und1 Retention')
@@ -122,12 +122,21 @@ class AgentTrackingController extends Controller
       ->get();
 
       // $ids = $users->pluck('id');
-      $history = TrackEvent::with('createdBy')
+      
+      $history = TrackEvent::
+      // with(['createdBy' => function($q) use ($department){
+      //   $q->where('project',$department);
+      //
+      //   }])
+      // ->whereHas('project')
+      whereHas('createdBy' , function ($createdBy) use($department){
+        $createdBy->where('project',$department);
+      })
       // ->whereIn('created_by', $ids)
       ->orderBy('created_at','DESC')
       ->get();
 
-
+      // dd($history[2], $history);
       if($department == '1und1 DSL Retention')
       {
         return view('trackingDSLAdmin', compact('history', 'users'));
