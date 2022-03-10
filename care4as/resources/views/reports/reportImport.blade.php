@@ -504,13 +504,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div id="debug_daily_agent">
+            <!-- <div id="debug_daily_agent">
                 <form action="{{route('dailyAgent.uploadCsv')}}" enctype="multipart/form-data" method="POST">
                 @csrf
                     <input type="file" name="file" id="">
                     <button type="submit">Hochladen</button>
                 </form>
-            </div>
+            </div> -->
             <div id="app">
                 <div class="tab-pane">
                     <div class="nav-tabs-navigation">
