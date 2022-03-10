@@ -480,4 +480,5 @@ Route::group(['middleware' => 'auth'], function () {
   })->name('test');
 
   Route::get('/test2', 'AgentTrackingController@AdminIndex')->name('test');
+
 });
