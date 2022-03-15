@@ -182,6 +182,9 @@
                 @if(in_array('controlling_revenuereport',Auth()->user()->getRights()))
                   <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
                 @endif
+                <!-- @if(in_array('controlling_revenuereport',Auth()->user()->getRights()))
+                  <li><a href="{{route('revenuereport.master')}}">Umsatzmeldung2</a></li>
+                @endif -->
                 @if(in_array('controlling_projectreport',Auth()->user()->getRights()))
                   <li><a href="{{route('projectReport')}}">Projektmeldung</a></li>
                 @endif
@@ -207,6 +210,21 @@
                   <li><a href="{{route('inventory.list')}}">HW Liste</a> </li>
                   <li><a href="{{route('inventory.add')}}">HW hinzufügen</a> </li>
                 @endif
+              </ul>
+            </div>
+          </li>
+          @endif
+
+          <!-- WFM -->
+          @if(in_array('controlling_base',Auth()->user()->getRights()))
+          <li>
+            <a class="" data-toggle="collapse" href="#collapseWFM" role="button" aria-expanded="false" aria-controls="collapseWFM">
+            <i class="fab fa-earlybirds"></i>
+              <p><b>WFM</b></p>
+            </a>
+            <div class="collapse" id="collapseWFM" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+                  <li><a href="{{route('wfm.master')}}">Startzeiten</a></li>
               </ul>
             </div>
           </li>
