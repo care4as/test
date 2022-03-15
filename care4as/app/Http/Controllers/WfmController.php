@@ -66,8 +66,13 @@ class WfmController extends Controller
         $i = 0;
 
         foreach ($chronWork as $key => $entry){
-            $status = $chronBook->where('MA_id', $entry->MA_id);
+            $status = $chronBook->where('MA_id', $entry->MA_id)->values();
             $employee = $empData->where('ds_id', $entry->MA_id)->first();
+
+            /**
+             * ACD: 2 == Verfügabr
+             * BookTime Status 2 - Status 1, wenn Status 2 == ACD 2
+             */
 
             $data[$i]['name'] = $employee->lastname . ', '. $employee->surname;
             $data[$i]['ma_id'] = $entry->MA_id;
@@ -76,6 +81,21 @@ class WfmController extends Controller
             $data[$i]['work_beginn_kdw'] = $entry->work_time_begin;
             $data[$i]['work_end_kdw'] = $entry->work_time_end;
             $data[$i]['work_duration'] = $entry->work_hours;
+
+            $data[$i]['work_duration_available'] = 0;
+            $j = 0;
+            foreach($status as $statusList => $statusEentry){
+                if ($status[$j]->acd_state_id == 2 && isset($status[$j+1])){
+                    $data[$i]['work_duration_available'] += (strtotime($status[$j + 1]->book_time) - strtotime($status[$j]->book_time)) / 3600;
+                };
+                $j++;
+            }
+
+            $data[$i]['work_duration_not_available'] = round($data[$i]['work_duration'] - $data[$i]['work_duration_available'], 3);
+            if($data[$i]['work_duration_not_available'] <= 0|| $data[$i]['work_duration_not_available'] == -0){
+                $data[$i]['work_duration_not_available'] = 0 ;
+            }
+
             $data[$i]['lunch_break_beginn'] = $status->whereIn('acd_state_id', [5, 29])->first()->book_time ?? null;
 
             if($data[$i]['lunch_break_beginn'] == null) {
@@ -95,6 +115,7 @@ class WfmController extends Controller
         }
 
         asort($data);
+        // dd($data);
 
         return $data;
 

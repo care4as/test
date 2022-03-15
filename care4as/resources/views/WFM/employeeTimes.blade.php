@@ -138,6 +138,7 @@
                                                 <th>Beginn KDW</th>
                                                 <th>Ende KDW</th>
                                                 <th>Dauer Schicht</th>
+                                                <th>Dauer nicht Verfügbar</th>
                                                 <th>Beginn Langpause</th>
                                                 <th>Ende Langpause</th>
                                                 <th>Dauer Langpause</th>
@@ -155,6 +156,7 @@
                                                 <td>{{$entry['work_beginn_kdw']}}</td>
                                                 <td>{{$entry['work_end_kdw']}}</td>
                                                 <td>{{$entry['work_duration']}}</td>
+                                                <td>{{$entry['work_duration_not_available']}}</td>
                                                 <td>{{$entry['lunch_break_beginn']}}</td>
                                                 <td>{{$entry['lunch_break_end']}}</td>
                                                 <td>{{$entry['lunch_break_duration']}}</td>
