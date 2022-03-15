@@ -217,6 +217,7 @@
         },
         "lengthMenu": [ [-1, 3, 5, 10, 25, 50, 100], ["alle", 3, 5, 10, 25, 50, 100] ],
         select: true,
+        scrollX: true,
         dom: 'Blfrtip',
             buttons: [{
                     extend: 'csv',
