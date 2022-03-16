@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Jobs\sendIntermediateMail;
 use App\Jobs\sendSichknessMail;
 use App\Jobs\Intermediate;
+use App\Jobs\sendInters;
 
 class Configcontroller extends Controller
 {
@@ -221,5 +222,9 @@ class Configcontroller extends Controller
       );
 
       return redirect()->back();
+    }
+    public function sendInters($value='')
+    {
+        sendInters::dispatch()->onConnection('sync');
     }
 }

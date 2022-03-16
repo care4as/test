@@ -203,7 +203,7 @@ function roundUp($calls,$quotient)
                                         <thead>
                                             <tr>
                                                 <th class="bg-dark text-white"style="border-right: 2px solid grey">Name</th>
-                                                <th style="border-right: 2px solid grey">Calls Retention</th>
+                                                <th style="border-right: 2px solid grey">Calls</th>
                                                 <th style="border-right: 2px solid grey">Saves</th>
                                                 <th>Gesamt CR</th>
                                                 <th>GeVo CR</th>
@@ -211,42 +211,38 @@ function roundUp($calls,$quotient)
                                                 <th>Retention Service</th>
                                                 <th>Retention Cancel</th>
                                                 <th>CR Retention</th>
-                                                <th style="border-right: 2px solid grey">Calls Pretention</th>
                                                 <th>Prevention Save</th>
                                                 <th>Prevention Service</th>
                                                 <th>Prevention Cancel</th>
                                                 <th style="border-right: 2px solid grey">CR Prevention</th>
-                                                <th >KüRüs</th>
-                                                <th >NV DSL</th>
-                                                <th >NV Mob</th>
-                                                <th  style="border-right: 2px solid grey">Umzüge</th>
+                                                <th>KüRüs</th>
+                                                <th>NV DSL</th>
+                                                <th>NV Mob</th>
+                                                <th style="border-right: 2px solid grey">Umzüge</th>
                                                 <th>Angebote</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($users as $user)
                                           <tr>
-
                                             <td class="bg-dark text-white"style="border-right: 2px solid grey">{{$user->name}}</td>
                                             <td>{{$calls = $user->TrackingCallsToday->sum('calls')}}</td>
-                                            <td>{{$cancels = $user->TrackingToday->where('event_category','Cancel')->count()}}</td>
-                                            <td style="border-right: 2px solid grey">{{$user->TrackingToday->where('event_category','Service')->count()}}</td>
-                                            <td>{{$sscCalls=$user->TrackingCallsToday->where('category',1)->sum('calls')}}</td>
-                                            <td>@php $sscSaves = $user->TrackingToday->where('product_category','SSC')->where('event_category','Save')@endphp {{ $sscSaves->count()}}</td>
-                                            <td>{{$sscSaves_NBO = $sscSaves->where('backoffice',0)->count()}}</td>
-                                            <td>{{$sscSaves_PBO = $sscSaves->where('backoffice',1)->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','SSC')->where('event_category','KüRü')->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','SSC')->where('event_category','Cancel')->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','SSC')->where('event_category','Service')->count()}}</td>
-                                            <td>{{roundUp($sscCalls,$sscSaves_NBO)}}%</td>
-                                            <td style="border-right: 2px solid grey">{{roundUp($sscCalls,$sscSaves->count())}}%</td>
-                                            <td>{{$bscCalls = $user->TrackingCallsToday->where('category',2)->sum('calls')}}</td>
-                                            <td>@php $bscSaves = $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')@endphp {{ $bscSaves->count()}}</td>
-                                            <td>{{$bscSaves_NBO = $bscSaves->where('backoffice',0)->count()}}</td>
-                                            <td>{{$bscSaves_PBO = $bscSaves->where('backoffice',1)->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','KüRü')->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','Cancel')->count()}}</td>
-
+                                            <td>{{$Allsaves = $user->TrackingToday->where('event_category','Save')->count() + $kuerue= $user->TrackingToday->where('event_category','KüRü')->count()}}</td>
+                                            <td style="border-right: 2px solid grey">{{roundUp($calls,$Allsaves)}}%</td>
+                                            <td>{{roundUp($calls,$user->TrackingToday->where('event_category','Save')->count())}}%</td>
+                                            <td>{{$retSaves = $user->TrackingToday->where('product_category','Retention')->where('event_category','Save')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('product_category','Retention')->where('event_category','Service')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('product_category','Retention')->where('event_category','Cancel')->count()}}</td>
+                                            <td>{{roundUp($retcalls = $user->TrackingCallsToday->where('Category','5')->sum('calls'), $retSaves)}}%</td>
+                                            <td>{{$prevSaves = $user->TrackingToday->where('product_category','Prevention')->where('event_category','Save')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('product_category','Prevention')->where('event_category','Service')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('product_category','Prevention')->where('event_category','Cancel')->count()}}</td>
+                                            <td style="border-right: 2px solid grey">{{roundUp($prevcalls = $user->TrackingCallsToday->where('Category','6')->sum('calls'), $prevSaves)}}%</td>
+                                            <td>{{$kuerue}}</td>
+                                            <td>{{$user->TrackingToday->where('event_category','NV_DSL')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('event_category','NV_Mobile')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('event_category','Umzug')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('event_category','Angebot')->count()}}</td>
                                           </tr>
                                           @endforeach
                                         </tbody>
@@ -258,91 +254,61 @@ function roundUp($calls,$quotient)
                                                     })
                                                   }}</td>
                                                 <td>
-                                                  {{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('event_category','Cancel')->count();
+                                                  {{$allSaves = $users->sum(function ($user) {
+                                                      return $user->TrackingToday->where('event_category','Save')->count() + $kuerue= $user->TrackingToday->where('event_category','KüRü')->count();
                                                     })
                                                   }}
                                                   </td>
                                                 <td style="border-right: 2px solid grey">
-                                                  {{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('event_category','Service')->count();
+                                                  {{roundUp($allCalls,$allSaves)}}%
+                                                </td>
+                                                <td>
+                                                  {{  roundUp($allCalls, $users->sum(function ($user) {
+                                                    return $user->TrackingToday->where('product_category','Retention')->where('event_category','Save')->count();
+                                                  }))}}%
+                                                </td>
+                                                <td>
+                                                  {{$allRetSaves = $users->sum(function ($user) {
+                                                        return $user->TrackingToday->where('product_category','Retention')->where('event_category','Save')->count();
                                                     })
                                                   }}
                                                 </td>
                                                 <td>
-                                                  {{$allSSCCalls = $users->sum(function ($user) {
-                                                      return $user->TrackingCallsToday->where('category',1)->sum('calls');
+                                                  {{$allRetServices = $users->sum(function ($user) {
+                                                      return $user->TrackingToday->where('product_category','Retention')->where('event_category','Service')->count();
                                                     })
                                                   }}
                                                 </td>
                                                 <td>
-                                                  {{$allSSCSaves = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','SSC')->where('event_category','Save')->count();
+                                                  {{$allRetCancels = $users->sum(function ($user) {
+                                                      return $user->TrackingToday->where('product_category','Retention')->where('event_category','Cancel')->count();
                                                     })
                                                   }}
+                                                </td>
+                                                <td>
+                                                  {{roundUp($calls, $allRetSaves)}}%
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
 
                                                 </td>
-                                                <td>{{$allSSCSaves_NBO = $users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','SSC')->where('event_category','Save')->where('backoffice',0)->count();
-                                                  })
-                                                }}</td>
+                                                <td></td>
+                                                <td style="border-right: 2px solid grey"></td>
                                                 <td>
-                                                  {{$allSSCSaves_PBO = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','SSC')->where('event_category','Save')->where('backoffice',1)->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>
-                                                  {{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','SSC')->where('event_category','KüRü')->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>{{$users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','SSC')->where('event_category','Cancel')->count();
-                                                  })
-                                                }}</td>
-                                                  <td>{{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','SSC')->where('event_category','Service')->count();
-                                                    })
-                                                  }}
-                                                  </td>
-                                                <td>{{roundUp($allSSCCalls,$allSSCSaves_NBO)}}%</td>
-                                                <td style="border-right: 2px solid grey">{{roundUp($allSSCCalls,$allSSCSaves)}}%</td>
-                                                <td>
-                                                  {{$allBSCCalls = $users->sum(function ($user) {
-                                                      return $user->TrackingCallsToday->where('category',2)->sum('calls');
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>
-                                                  {{$allBSCSaves = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')->count();
-                                                    })
-                                                  }}
 
                                                 </td>
-                                                <td>{{$allBSCSaves_NBO = $users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')->where('backoffice',0)->count();
-                                                  })
-                                                }}</td>
                                                 <td>
-                                                  {{$allBSCSaves_PBO = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')->where('backoffice',1)->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>
-                                                  {{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','BSC')->where('event_category','KüRü')->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>{{$users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','BSC')->where('event_category','Cancel')->count();
-                                                  })
-                                                }}</td>
 
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+
+                                                </td>
+                                                <td>
+
+                                                </td>
                                             </tr>
                                         </tfoot>
                                     </table>

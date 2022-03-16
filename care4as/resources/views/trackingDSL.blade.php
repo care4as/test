@@ -152,7 +152,7 @@ function roundUp($calls,$quotient)
                     <div style="font-weight: bold;">Queue</div>
                     <div style="text-align: center; font-weight: bold;">Calls</div>
                     <div style="text-align: center; font-weight: bold;">Saves</div>
-                    <div style="text-align: center; font-weight: bold;">CR</div>
+                    <div style="text-align: center; font-weight: bold;">CR (ohne KüRüs)</div>
                     <div>Retention Access</div>
                     <div>
                       <div style="display: flex; width: min-content; margin: auto;">
@@ -216,7 +216,7 @@ function roundUp($calls,$quotient)
                         </div>
                     </div>
                     <div class="tracking_container">
-                        <div class="tracking_description">Bearbeitung</div>
+                        <div class="tracking_description">Ergebnis</div>
                         <div class="btn-group-container">
                             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                 <input type="radio" class="btn-check" name="event_category" value="Save" id="event_category1" autocomplete="off" onchange="tracking_input()">
@@ -227,10 +227,19 @@ function roundUp($calls,$quotient)
                                 <label class="btn btn-outline-primary" for="event_category3">Service</label>
                                 <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
                                 <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
-                                <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
+                            </div>
+                          </div>
+                          <div class="tracking_description mt-2">Sonderfälle</div>
+                          <div class="btn-group-container ">
+                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                <input type="radio" class="btn-check" name="event_category" value="Umzug" id="event_category5" autocomplete="off" onchange="tracking_input()">
                                 <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">Umzug</label>
-                                <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">Angebot</label>
+                                <input type="radio" class="btn-check" name="event_category" value="NV_DSL" id="event_category6" autocomplete="off" onchange="tracking_input()">
+                                <label class="btn btn-outline-primary last-btn-group-element" for="event_category6">NV DSL</label>
+                                <input type="radio" class="btn-check" name="event_category" value="NV_Mobile" id="event_category7" autocomplete="off" onchange="tracking_input()">
+                                <label class="btn btn-outline-primary last-btn-group-element" for="event_category7">NV Mobile</label>
+                                <input type="radio" class="btn-check" name="event_category" value="Angebot" id="event_category8" autocomplete="off" onchange="tracking_input()">
+                                <label class="btn btn-outline-primary last-btn-group-element" for="event_category8">Angebot</label>
                             </div>
                         </div>
                     </div>
