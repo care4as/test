@@ -17,6 +17,7 @@ use App\Hoursreport;
 use App\Exports\DailyAgentExport;
 
 use \DateTime;
+use mysqli;
 
 class ExcelEditorController extends Controller
 {
@@ -1465,11 +1466,28 @@ class ExcelEditorController extends Controller
       ]);
 
       $file = request()->file('file');  //save $request in variable
+      $file = file_get_contents($file);
+      $file = utf8_encode($file);
+      $file = str_replace('"', '', $file);
+      $file = str_replace(', ', '.', $file);
+      $file = str_replace(',', ';', $file);
+      $file = str_replace('.', ', ', $file);
+      $file = preg_split("/\R/", $file);
 
-      $csv = array_map('str_getcsv', file($file));
+      //$csv = array_map('str_getcsv', $file);
+
+      $csv = array_map(function($func){
+        return str_getcsv($func, ";");
+      }, $file);
+
       $csv[0][0] = 'mydate';
 
-      // dd($csv[0]);
+      foreach($csv as $key => $entry){
+        if ($entry[0] == null){
+          unset($csv[$key]);
+        }
+      }
+
       array_pop($csv);
       array_walk($csv, function(&$a) use ($csv) {
         $a = array_combine($csv[0], $a);

@@ -341,6 +341,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/userlist/updaterole', 'UserListController@updateUserRole')->name('userlist.updateUserRole')->middleware('hasRight:users_change_role');
   Route::get('/projectReport', 'ProjectReportController@load')->name('projectReport')->middleware('hasRight:controlling');
   Route::get('/attainment', 'AttainmentController@queryHandler')->name('attainment')->middleware('hasRight:controlling');
+
+  Route::get('/controlling/revenuereport', 'RevenueReportController@master')->name('revenuereport.master')->middleware('hasRight:controlling'); //RECHT != WFM
   //End Controlling Routes
 
   //START MOBILE TRACKING
@@ -391,6 +393,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/shipz/createUser', 'ShipsController@createAvatar')->name('ships.createUser');//RECHT FEHLT
   Route::get('/shipz/checkUser/{id}', 'ShipsController@checkUser')->name('ships.createUser');//RECHT FEHLT
   //end
+  
+  //START WFM
+  Route::get('/wfm/employee/times', 'WfmController@master')->name('wfm.master')->middleware('hasRight:controlling'); //RECHT != WFM
+
+  //END WFM
 
   Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');
   Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');

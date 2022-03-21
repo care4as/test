@@ -41,7 +41,7 @@ class AgentTrackingController extends Controller
       $userVacation = DB::connection('mysqlkdw')
       ->table('chronology_work')
       ->where('MA_id',Auth()->user()->ds_id)
-      ->where('state_id',2)
+      ->whereIn('state_id', [2, 11])
       ->where('work_date','>', $startOfMonth)
       ->sum('work_hours');
       // dd($userVacation->sum('work_hours'));

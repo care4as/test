@@ -420,7 +420,7 @@ function roundUp($calls,$quotient)
                                 <abbr title="SSC Save: +0,50€&#013;BSC Save: +0,50€&#013;Portale Save: +0,50€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" value="" id="attainment2" onchange="calcProvision()">
-                                    Ziel 2: OptIn Quote >= 15,00%
+                                    Ziel 2: OptIn Quote >= 13,50%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -694,6 +694,7 @@ function roundUp($calls,$quotient)
     var optinCr = document.getElementById('optinCr').innerText
     var careCoinShould = document.getElementById('careCoinShould').innerText
     var careCoinIs = document.getElementById('careCoinIs').innerText
+    var careCoinDifference = document.getElementById('careCoinDifference').innerText
 
     $(document).ready(function() {
         checkAttainment();
@@ -702,17 +703,17 @@ function roundUp($calls,$quotient)
 
     function checkAttainment(){
         //Attainment 1
-        if(careCoinIs >= careCoinShould){
+        if(careCoinDifference <= 0){
             document.getElementById('attainment1').checked = true;
         } else {
             document.getElementById('attainment1').checked = false;
         }
 
         //Attainment 2
-        if(optinCr >= 15){
-            document.getElementById('attainment2').checked = true;
-        } else {
+        if(optinCr >= 0){
             document.getElementById('attainment2').checked = false;
+        } else {
+            document.getElementById('attainment2').checked = true;
         }
 
         //Attainment 3
