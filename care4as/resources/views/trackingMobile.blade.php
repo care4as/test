@@ -430,7 +430,7 @@ function roundUp($calls,$quotient)
                                 <abbr title="SSC Save: +1,25€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" value="" id="attainment3" onchange="calcProvision()">
-                                    Ziel 3: SSC CR >= 50,00%
+                                    Ziel 3: SSC CR >= 51,50%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -440,7 +440,7 @@ function roundUp($calls,$quotient)
                                 <abbr title="BSC Save: +0,75€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" value="" id="attainment4" onchange="calcProvision()">
-                                    Ziel 4: BSC CR >= 17,00%
+                                    Ziel 4: BSC CR >= 18,50%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -450,7 +450,7 @@ function roundUp($calls,$quotient)
                                 <abbr title="Portale Save: +0,75€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" value="" id="attainment5" onchange="calcProvision()">
-                                    Ziel 5: Portale CR >= 64,00%
+                                    Ziel 5: Portale CR >= 68,00%
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -717,21 +717,21 @@ function roundUp($calls,$quotient)
         }
 
         //Attainment 3
-        if(sscCr >= 50){
+        if(sscCr >= 51.5){
             document.getElementById('attainment3').checked = true;
         } else {
             document.getElementById('attainment3').checked = false;
         }
 
         //Attainment 4
-        if(bscCr >= 17){
+        if(bscCr >= 18.5){
             document.getElementById('attainment4').checked = true;
         } else {
             document.getElementById('attainment4').checked = false;
         }
 
         //Attainment 5
-        if(portaleCr >= 64){
+        if(portaleCr >= 68){
             document.getElementById('attainment5').checked = true;
         } else {
             document.getElementById('attainment5').checked = false;
