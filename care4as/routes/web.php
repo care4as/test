@@ -236,6 +236,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config');
   Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config');
   Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
+  Route::get('/config/activateDSLGeVoMail', 'Configcontroller@activateDSLGeVoMail')->name('config.activateDSL15Min')->middleware('hasRight:config');
+  Route::get('/config/deactivateDSLGeVoMail', 'Configcontroller@deactivateDSLGeVoMail')->name('config.deactivateDSL15Min')->middleware('hasRight:config');
   Route::get('/config/activateSiMa', 'Configcontroller@activateSicknessMail')->name('config.activateSiMa')->middleware('hasRight:config');
   Route::get('/config/deactivateSiMa', 'Configcontroller@deactivateSicknessMail')->name('config.deactivateSiMa')->middleware('hasRight:config');
   Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
@@ -387,6 +389,7 @@ Route::group(['middleware' => 'auth'], function () {
 
   //shipingGames routes
   Route::post('/shipz/createUser', 'ShipsController@createAvatar')->name('ships.createUser');//RECHT FEHLT
+  Route::get('/shipz/checkUser/{id}', 'ShipsController@checkUser')->name('ships.createUser');//RECHT FEHLT
   //end
 
   Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');

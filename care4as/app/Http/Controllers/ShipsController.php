@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Image;
+use App\User;
 
 class ShipsController extends Controller
 {
@@ -18,6 +19,19 @@ class ShipsController extends Controller
         //
     }
 
+    public function checkUser($id)
+    {
+      $avatar = DB::table('ships_users')->where('userid',$id)->first();
+
+      if($avatar)
+      {
+        return response()->JSON($avatar);
+      }
+      else {
+        //2 stands for an empty user reponse
+        return(2);
+      }
+    }
     public function createAvatar(Request $request)
     {
       // return response()->JSON($request);
@@ -28,16 +42,26 @@ class ShipsController extends Controller
         'motto' => 'required',
       ]);
 
+      if(DB::table('ships_users')->where('userid', Auth()->id())->exists())
+      {
+        //if the user already exists
+        return response()->JSON(2);
+      }
+
       if($file = request('file'))
       {
         $filename = time().'.'.$file->getClientOriginalExtension();
         $file->move(public_path('Avatarimages'), $filename);
       }
+      else {
+        $filename = false;
+      }
 
       $avatar = DB::table('ships_users')->insert([
         'name' => $request->name,
         'motto' => $request->motto,
-        'url' => $filename,
+        'url' => "Avatarimages/".$filename,
+        'userid' => Auth()->id(),
       ]);
 
       // return response()->JSON($avatar);
@@ -53,7 +77,7 @@ class ShipsController extends Controller
         // return response()->JSON(3);
       }
 
-      return response()->JSON(1);
+      return response()->JSON($avatar);
     }
     /**
      * Show the form for creating a new resource.

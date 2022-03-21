@@ -3224,7 +3224,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (typeof chart != 'undefined' || chart != null) {
         document.getElementById(chartId).remove();
-        $('#chartcontainer').append('<canvas id="' + chartId + '" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>'); // console.log('test')
+        $('#chartcontainer').append('<canvas id="' + chartId + '" width="" height="" style="max-width: 90%;"></canvas>'); // console.log('test')
       }
 
       var ctx = document.getElementById(chartId);
@@ -3334,11 +3334,243 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['user', 'admin'],
   data: function data() {
     return {
-      user: '',
       data: null,
+      letters: [0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
       isHidden: false,
       timer: '',
       avatar: 0,
@@ -3350,14 +3582,16 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var self = this;
     console.log('Ships Component mounted.');
-    setInterval(function () {}, 100);
+    this.checkAvatar(this.user);
+    setInterval(function () {// self.checkAvatar()
+    }, 500);
   },
   methods: {
     createUser: function createUser() {
       var _this = this;
 
       var host = window.location.host;
-      console.log('createuser');
+      var self = this;
       var formData = new FormData();
       formData.append('name', this.name);
       formData.append('motto', this.motto);
@@ -3373,9 +3607,10 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (response) {
-        _this.avatar = 1;
+        _this.checkAvatar(_this.user);
       })["catch"](function (error) {
-        console.error(error.response);
+        console.log(error.response);
+        console.log(error);
       });
     },
     loadPreview: function loadPreview(event) {
@@ -3387,6 +3622,24 @@ __webpack_require__.r(__webpack_exports__);
       preview.onload = function () {
         URL.revokeObjectURL(output.src); // free memory
       };
+    },
+    checkAvatar: function checkAvatar(id) {
+      var _this2 = this;
+
+      axios.get('http://' + this.host + '/care4as/care4as/public/shipz/checkUser/' + id + '').then(function (response) {
+        console.log(response.data);
+
+        if (response.data != 2) {
+          _this2.avatar = response.data;
+        }
+      })["catch"](function (err) {
+        console.log('error checkAvatar'); // console.log(testdata)
+
+        console.log(err);
+      });
+    },
+    setShips: function setShips() {
+      $('#menumodal').show();
     }
   }
 });
@@ -24018,6 +24271,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n.engulfingRow\n{\n  overflow: scroll;\n  width:auto;\n}\n.columOffer\n{\n  min-width: 250px;\n  background-color: ;\n}\n.btn-button1\n{\n  background-color: white;\n  border: 2px solid blue;\n  color: blue;\n  height: 40px;\n  width: 40px;\n  align-self: center;\n}\n.hwbutton\n{\n  background-color: white !important;\n  width: 95%;\n  height: 50px;\n  border: 1px dotted grey;\n  border-radius: 15px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ships.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ships.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.outerField {\n  border: 1px black solid;\n  border-radius: 5px;\n  height: 50px;\n  width: 50px;\n  background-color: orange;\n  margin: 2px;\n}\n.innerField,.innerField2{\n  border: 1px black solid;\n  border-radius: 5px;\n  margin: 2px;\n  height: 50px;\n  width: 50px;\n}\n.innerField:hover\n{\n  background-color: lightgrey;\n}\n.innerField2\n{\n  width: 102px;\n}\n\n", ""]);
 
 // exports
 
@@ -80352,6 +80624,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ships.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ships.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./ships.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ships.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -82949,11 +83251,11 @@ var staticRenderFns = [
       },
       [
         _c("div", { staticClass: "row center_items" }, [
-          _c("h5", [_vm._v("Liveticker Teamquote1")])
+          _c("h5", [_vm._v("Liveticker Teamquote")])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "wrapper h-75" }, [
-          _c("div", { staticClass: "row center_items" }, [
+          _c("div", { staticClass: "row h-100 center_items" }, [
             _c(
               "div",
               {
@@ -83022,129 +83324,209 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container unit-translucent p-2" }, [
-    this.avatar != 0
-      ? _c("div", { staticClass: "row justify-content-center" }, [_vm._m(0)])
-      : _c("div", { staticClass: "row justify-content-center" }, [
-          _vm._m(1),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-8" }, [
-            _c(
-              "div",
-              {
-                staticClass: "row center_items",
-                staticStyle: { height: "auto" }
-              },
-              [
-                _c("div", { staticClass: "col-12 center_items" }, [
-                  _c("div", { staticClass: "wrapper1" }, [
-                    _c("label", { attrs: { for: "name" } }, [
-                      _vm._v("\n                Name")
-                    ]),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.name,
-                          expression: "name"
-                        }
-                      ],
-                      attrs: {
-                        type: "text",
-                        name: "Name",
-                        value: "",
-                        id: "name"
-                      },
-                      domProps: { value: _vm.name },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.name = $event.target.value
-                        }
-                      }
-                    }),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("label", { attrs: { for: "motto" } }, [_vm._v("Motto")]),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.motto,
-                          expression: "motto"
-                        }
-                      ],
-                      attrs: {
-                        type: "motto",
-                        name: "Motto",
-                        value: "",
-                        id: "motto"
-                      },
-                      domProps: { value: _vm.motto },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.motto = $event.target.value
-                        }
-                      }
-                    })
-                  ])
-                ]),
+    !this.admin
+      ? _c("div", { staticClass: "row justify-content-center" }, [
+          this.avatar
+            ? _c("div", { staticClass: "col-md-12" }, [
+                _vm._m(0),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-12 center_items " }, [
-                  _c("div", { staticClass: "wrapper1 p-4" }, [
-                    _vm._m(2),
+                _c("hr", { attrs: { clas: "w-50" } }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "row center_items",
+                    attrs: { id: "boardRow" }
+                  },
+                  [
+                    _c("div", { staticClass: "col-3 center_items" }, [
+                      _c(
+                        "div",
+                        { staticClass: "card bg-light text-dark p-2" },
+                        [
+                          _c("div", { staticClass: "w-100 center_items" }, [
+                            _c("img", {
+                              staticClass:
+                                "img-fluid rounded-circle border border-dark",
+                              attrs: { src: _vm.avatar.url, alt: "AvatarImage" }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "center_items" }, [
+                            _vm._v(
+                              "\n                " +
+                                _vm._s(_vm.avatar.name) +
+                                "\n              "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "center_items" }, [
+                            _vm._v(
+                              "\n                " +
+                                _vm._s(_vm.avatar.motto) +
+                                "\n              "
+                            )
+                          ])
+                        ]
+                      )
+                    ]),
                     _vm._v(" "),
-                    _c("input", {
-                      staticStyle: { display: "none" },
-                      attrs: {
-                        type: "file",
-                        name: "Picture",
-                        value: "",
-                        id: "pic",
-                        accept: ".png,.jpg,.jpeg"
+                    _vm._m(1)
+                  ]
+                )
+              ])
+            : _c("div", { staticClass: "col-12 center_items" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-8" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row center_items",
+                        staticStyle: { height: "auto" }
                       },
-                      on: {
-                        change: function($event) {
-                          return _vm.loadPreview($event)
-                        }
-                      }
-                    })
+                      [
+                        _c("div", { staticClass: "col-12 center_items" }, [
+                          _c("div", { staticClass: "wrapper1" }, [
+                            _c("label", { attrs: { for: "name" } }, [
+                              _vm._v("\n                      Name")
+                            ]),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.name,
+                                  expression: "name"
+                                }
+                              ],
+                              attrs: {
+                                type: "text",
+                                name: "Name",
+                                value: "",
+                                id: "name"
+                              },
+                              domProps: { value: _vm.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.name = $event.target.value
+                                }
+                              }
+                            }),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("label", { attrs: { for: "motto" } }, [
+                              _vm._v("Motto")
+                            ]),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.motto,
+                                  expression: "motto"
+                                }
+                              ],
+                              attrs: {
+                                type: "motto",
+                                name: "Motto",
+                                value: "",
+                                id: "motto"
+                              },
+                              domProps: { value: _vm.motto },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.motto = $event.target.value
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-12 center_items " }, [
+                          _c("div", { staticClass: "wrapper1 p-4" }, [
+                            _vm._m(3),
+                            _vm._v(" "),
+                            _c("input", {
+                              staticStyle: { display: "none" },
+                              attrs: {
+                                type: "file",
+                                name: "Picture",
+                                value: "",
+                                id: "pic",
+                                accept: ".png,.jpg,.jpeg"
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.loadPreview($event)
+                                }
+                              }
+                            })
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row align-self-center" }, [
+                      _c("div", { staticClass: "col-12 center_items " }, [
+                        _c("div", { staticClass: "wrapper1" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn-primary btn-sm btn-block p-2",
+                              attrs: { type: "button", name: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.createUser()
+                                }
+                              }
+                            },
+                            [_vm._v("Daten absenden")]
+                          )
+                        ])
+                      ])
+                    ])
                   ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "row align-self-center" }, [
-              _c("div", { staticClass: "col-12 center_items " }, [
-                _c("div", { staticClass: "wrapper1" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn-primary btn-sm btn-block p-2",
-                      attrs: { type: "button", name: "button" },
-                      on: {
-                        click: function($event) {
-                          return _vm.createUser()
-                        }
-                      }
-                    },
-                    [_vm._v("Daten absenden")]
-                  )
                 ])
               ])
+        ])
+      : _c("div", { staticClass: "row" }, [
+          _vm._m(4),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-10 center-items" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                attrs: { type: "button", name: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.setShips()
+                  }
+                }
+              },
+              [_vm._v("Schiffe setzen")]
+            ),
+            _vm._v(" "),
+            _c("button", { attrs: { type: "button", name: "button" } }, [
+              _vm._v("xxy")
             ])
           ])
-        ])
+        ]),
+    _vm._v(" "),
+    _vm._m(6)
   ])
 }
 var staticRenderFns = [
@@ -83152,9 +83534,1165 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-8" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("h5", [_vm._v("Schiffe versenken")])
+    return _c("div", { staticClass: "row center_items" }, [
+      _c("h5", [_vm._v("Schiffe versenken")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-9 center_items p-0" }, [
+      _c("div", { staticClass: "wrapper1" }, [
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                0\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                A\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                B\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                C\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                D\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                E\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                F\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                G\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                H\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                I\n              ")]
+          ),
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "" } },
+            [_vm._v("\n                J\n              ")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "1" } },
+            [_vm._v("\n                1\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/1" } },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "btn",
+                  attrs: { type: "button", name: "button" }
+                },
+                [_vm._v("1")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "1/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ]),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "2" } },
+            [_vm._v("\n                2\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/1" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "2/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ]),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "3" } },
+            [_vm._v("\n                3\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/1" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "3/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ]),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "4" } },
+            [_vm._v("\n                4\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/1" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "4/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ]),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "5" } },
+            [_vm._v("\n                5\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/1" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "5/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ]),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "6" } },
+            [_vm._v("\n                6\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/1" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "6/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ]),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "7" } },
+            [_vm._v("\n                7\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/1" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "7/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ]),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "8" } },
+            [_vm._v("\n                8\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/1" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "8/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ]),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "9" } },
+            [_vm._v("\n                9\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/1" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "9/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ]),
+        _c("div", { staticClass: "d-flex bg-light" }, [
+          _c(
+            "div",
+            { staticClass: "outerField center_items", attrs: { id: "10" } },
+            [_vm._v("\n                10\n              ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/1" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/2" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/3" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/4" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/5" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/6" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/7" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/8" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/9" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "innerField center_items", attrs: { id: "10/10" } },
+            [
+              _c("button", {
+                staticClass: "btn",
+                attrs: { type: "button", name: "button" }
+              })
+            ]
+          )
+        ])
       ])
     ])
   },
@@ -83162,7 +84700,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-8 center_items" }, [
+    return _c("div", { staticClass: "row" }, [
       _c("h5", [_vm._v("Erstelle deinen Avatar")])
     ])
   },
@@ -83195,6 +84733,750 @@ var staticRenderFns = [
         ]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-2" }, [
+      _c("h5", [_vm._v("Spiel erstellen")]),
+      _vm._v(" "),
+      _c("ul", [
+        _c("li", [
+          _vm._v("2er "),
+          _c("img", {
+            staticClass: "img-fluid",
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Submarine_Vepr_by_Ilya_Kurganov_crop.jpg/300px-Submarine_Vepr_by_Ilya_Kurganov_crop.jpg",
+              alt: "Uboot"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("img", {
+            staticClass: "img-fluid",
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Submarine_Vepr_by_Ilya_Kurganov_crop.jpg/300px-Submarine_Vepr_by_Ilya_Kurganov_crop.jpg",
+              alt: "Uboot"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("img", {
+            staticClass: "img-fluid",
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Submarine_Vepr_by_Ilya_Kurganov_crop.jpg/300px-Submarine_Vepr_by_Ilya_Kurganov_crop.jpg",
+              alt: "Uboot"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("img", {
+            staticClass: "img-fluid",
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Submarine_Vepr_by_Ilya_Kurganov_crop.jpg/300px-Submarine_Vepr_by_Ilya_Kurganov_crop.jpg",
+              alt: "Uboot"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _vm._v("3er "),
+          _c("img", {
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/French_destroyer_Forbin_%28D620%29_underway_in_the_Arabian_Sea_on_31_May_2009_%28090531-N-9988F-406%29.jpg/220px-French_destroyer_Forbin_%28D620%29_underway_in_the_Arabian_Sea_on_31_May_2009_%28090531-N-9988F-406%29.jpg",
+              alt: "Destroyer"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("img", {
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/French_destroyer_Forbin_%28D620%29_underway_in_the_Arabian_Sea_on_31_May_2009_%28090531-N-9988F-406%29.jpg/220px-French_destroyer_Forbin_%28D620%29_underway_in_the_Arabian_Sea_on_31_May_2009_%28090531-N-9988F-406%29.jpg",
+              alt: "Destroyer"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("img", {
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/French_destroyer_Forbin_%28D620%29_underway_in_the_Arabian_Sea_on_31_May_2009_%28090531-N-9988F-406%29.jpg/220px-French_destroyer_Forbin_%28D620%29_underway_in_the_Arabian_Sea_on_31_May_2009_%28090531-N-9988F-406%29.jpg",
+              alt: "Destroyer"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _vm._v("4er "),
+          _c("img", {
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/4/4b/USS_Port_Royal_CG-73.jpg",
+              alt: "Cruiser"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("img", {
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/4/4b/USS_Port_Royal_CG-73.jpg",
+              alt: "Cruiser"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _vm._v("5er "),
+          _c("img", {
+            attrs: {
+              src:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Japanese_battleship_Yamato_running_trials_in_Sukumo_Bay%2C_30_October_1941_%2880-G-704702%29.jpg/220px-Japanese_battleship_Yamato_running_trials_in_Sukumo_Bay%2C_30_October_1941_%2880-G-704702%29.jpg",
+              alt: "Battleship"
+            }
+          })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "wrapper1" }, [
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          0\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          A\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          B\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          C\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          D\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          E\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          F\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          G\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          H\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          I\n        ")]
+        ),
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "" } },
+          [_vm._v("\n          J\n        ")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "1" } },
+          [_vm._v("\n          1\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "innerField2 center_items", attrs: { id: "1/1" } },
+          [
+            _c("img", {
+              attrs: {
+                src:
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Submarine_Vepr_by_Ilya_Kurganov_crop.jpg/300px-Submarine_Vepr_by_Ilya_Kurganov_crop.jpg",
+                alt: ""
+              }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "1/2" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "1/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "1/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "1/5" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "1/6" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "1/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "1/8" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "1/9" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "1/10" }
+        })
+      ]),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "2" } },
+          [_vm._v("\n          2\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/1" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/2" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/5" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/6" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/8" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/9" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "2/10" }
+        })
+      ]),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "3" } },
+          [_vm._v("\n          3\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/1" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/2" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/5" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/6" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/8" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/9" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "3/10" }
+        })
+      ]),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "4" } },
+          [_vm._v("\n          4\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/1" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/2" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/5" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/6" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/8" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/9" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "4/10" }
+        })
+      ]),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "5" } },
+          [_vm._v("\n          5\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/1" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/2" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/5" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/6" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/8" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/9" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "5/10" }
+        })
+      ]),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "6" } },
+          [_vm._v("\n          6\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/1" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/2" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/5" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/6" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/8" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/9" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "6/10" }
+        })
+      ]),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "7" } },
+          [_vm._v("\n          7\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/1" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/2" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/5" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/6" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/8" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/9" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "7/10" }
+        })
+      ]),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "8" } },
+          [_vm._v("\n          8\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/1" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/2" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/5" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/6" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/8" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/9" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "8/10" }
+        })
+      ]),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "9" } },
+          [_vm._v("\n          9\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/1" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/2" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/5" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/6" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/8" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/9" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "9/10" }
+        })
+      ]),
+      _c("div", { staticClass: "d-flex bg-light" }, [
+        _c(
+          "div",
+          { staticClass: "outerField center_items", attrs: { id: "10" } },
+          [_vm._v("\n          10\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/1" }
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/2" }
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/3" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/4" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/5" }
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/6" }
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/7" }
+        }),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/8" }
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/9" }
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "innerField center_items",
+          attrs: { id: "10/10" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal",
+        attrs: { id: "menumodal", tabindex: "-1", role: "dialog" }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h5", { staticClass: "modal-title" }, [
+                  _vm._v("Modal title")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("p", [_vm._v("Modal body text goes here.")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
+                  [_vm._v("Save changes")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -95906,7 +98188,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ships_vue_vue_type_template_id_bdb3da08___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ships.vue?vue&type=template&id=bdb3da08& */ "./resources/js/components/ships.vue?vue&type=template&id=bdb3da08&");
 /* harmony import */ var _ships_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ships.vue?vue&type=script&lang=js& */ "./resources/js/components/ships.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _ships_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ships.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/ships.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -95914,7 +98198,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _ships_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _ships_vue_vue_type_template_id_bdb3da08___WEBPACK_IMPORTED_MODULE_0__["render"],
   _ships_vue_vue_type_template_id_bdb3da08___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -95943,6 +98227,22 @@ component.options.__file = "resources/js/components/ships.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ships_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ships.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ships.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ships_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ships.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/ships.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ships_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./ships.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ships.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ships_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ships_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ships_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ships_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
 
 /***/ }),
 

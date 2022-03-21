@@ -223,8 +223,14 @@ class Configcontroller extends Controller
 
       return redirect()->back();
     }
-    public function sendInters($value='')
+    public function activateDSLGeVoMail($value='')
     {
         sendInters::dispatch()->onConnection('sync');
+    }
+    public function deactivateDSLGeVoMail()
+    {
+      DB::table('jobs')->where('queue','sendInters')->delete();
+
+      return response()->json('success');
     }
 }

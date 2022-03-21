@@ -798,7 +798,7 @@
       })
       .catch(function (err) {
         console.log('error Memocheck')
-        console.log(err.response);
+        // console.log(err.response);
       });
     }, 1000*300);
     </script>

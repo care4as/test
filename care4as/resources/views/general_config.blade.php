@@ -31,7 +31,7 @@ td{
 
 @section('content')
 
-<div class="container-fluid bg-light" style="width: 75vw; border-radius: 15px; overflow:scroll;">
+<div class="container-fluid bg-light" style="width: 75vw; margin-top: 15px;border-radius: 15px; overflow:scroll;">
 
 <div class="row">
   <div class="nav-tabs-navigation">
@@ -148,6 +148,16 @@ td{
             </td>
             <td>jeden Tag wird eine Mail mit den Kranken zugesendet</td>
           </tr>
+          <tr>
+            <td>DSL Rene's Ding</td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="DSLGeVo"  @if(DB::table('jobs')->where('queue','sendInters')->exists()) checked @else unchecked @endif>
+                <label class="custom-control-label" for="DSLGeVo">Aktiv</label>
+              </div>
+            </td>
+            <td>Gevo Saves und Calls alle 15 Minuten</td>
+          </tr>
         </table>
       </div>
     </div>
@@ -159,7 +169,7 @@ td{
           <thead class="thead-dark">
             <tr>
               <th>Prozess</th>
-              <th>Wird fällig zu</th>
+              <th>ausgeführt zu</th>
               <th>Status/Optionen</th>
               <th>Optionen</th>
             </tr>
@@ -167,13 +177,7 @@ td{
           <tbody>
             @foreach($processes as $process)
               <tr>
-                @if($process->queue == 'intermediate')
-                  <td>Zwischenstand laden</td>
-                @elseif($process->queue == 'MailMobile')
-                  <td>Zwischenstandsmail Mobile versenden</td>
-                @elseif($process->queue == 'MailDSL')
-                  <td>Zwischenstandsmail DSL versenden</td>
-                @endif
+                <td>{{$process->queue}}</td>
                 <td> {{$process->duedate}}</td>
                 <td><a href="{{route('config.deleteProcess', ['id' => $process->id])}}" class="btn btn-danger rounded-circle">X</a></td>
 
@@ -303,10 +307,8 @@ $('#customSwitchSiMa').click(function(){
 
   if(this.checked == true)
   {
-
     var host = window.location.host;
     //axios.get('http://'+host+'/care4as/care4as/public/config/activateSiMa')
-
     axios.get('http://'+host+'/config/activateSiMa')
     .then(response => {
       alert('Krankenstand wird automatisch gesendet')
@@ -318,15 +320,11 @@ $('#customSwitchSiMa').click(function(){
     })
   }
   else {
-
     var host = window.location.host;
-
     axios.get('http://'+host+'/config/deactivateSiMa')
     //axios.get('http://'+host+'/care4as/care4as/pu7blic/config/deactivateSiMa')
-
     .then(response => {
       alert('automatischer Krankenstand deaktiviert')
-
       })
     .catch(function (err) {
       console.log('error')
@@ -334,17 +332,13 @@ $('#customSwitchSiMa').click(function(){
     })
   }})
 $('#customSwitch2').click(function(){
-
   if(this.checked == true)
   {
-
     var host = window.location.host;
     //axios.get('http://'+host+'/care4as/care4as/public/config/activateSiMa')
-
     axios.get('http://'+host+'/config/activateAutomaticIntermediate')
     .then(response => {
       alert('Zwischenstand wird automatisch gezogen')
-
       })
     .catch(function (err) {
       console.log('error')
@@ -352,15 +346,37 @@ $('#customSwitch2').click(function(){
     })
   }
   else {
-
     var host = window.location.host;
-
     axios.get('http://'+host+'/config/deactivateAutomaticIntermediate')
     //axios.get('http://'+host+'/care4as/care4as/pu7blic/config/deactivateSiMa')
-
     .then(response => {
       alert('automatischer Zwischenstand deaktiviert')
-
+      })
+    .catch(function (err) {
+      console.log('error')
+      console.log(err.response);
+    })
+  }})
+$('#DSLGeVo').click(function(){
+  if(this.checked == true)
+  {
+    var host = window.location.host;
+    // axios.get('http://'+host+'/care4as/care4as/public/config/activateDSLGeVoMail')
+    axios.get('http://'+host+'/config/activateDSLGeVoMail')
+    .then(response => {
+      alert('Rene activated')
+      })
+    .catch(function (err) {
+      console.log('error')
+      console.log(err.response);
+    })
+  }
+  else {
+    var host = window.location.host;
+    axios.get('http://'+host+'/config/deactivateDSLGeVoMail')
+    // axios.get('http://'+host+'/care4as/care4as/public/config/deactivateDSLGeVoMail')
+    .then(response => {
+      alert('Rene deaktiviert')
       })
     .catch(function (err) {
       console.log('error')

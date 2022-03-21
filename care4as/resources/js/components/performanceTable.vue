@@ -93,10 +93,10 @@
         <div class="row m-0 w-100" style="min-height: 45vh;">
           <div class="col-md bg-white shadow" style="transform: rotateY(-15deg);">
             <div class="row center_items">
-              <h5>Liveticker Teamquote1</h5>
+              <h5>Liveticker Teamquote</h5>
             </div>
             <div class="wrapper h-75">
-              <div class="row center_items">
+              <div class="row h-100 center_items">
                 <div class="d-flex center_items " id="chartcontainer" style="width: 90%;height: 400px;">
                   <canvas id="dailyQuota" style="width: 90%;"></canvas>
                 </div>
@@ -130,7 +130,7 @@
                     <td>{{user.orders}}</td>
                   </tr>
                 </table>
-                <table class="max-table" style="width: 100%;"v-else>
+                <table class="max-table" style="width: 100%;" v-else>
                   <tr class="">
                     <th @click="sorted('name')" style="cursor:pointer" >User </th>
                     <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
@@ -355,12 +355,14 @@
 
             })
           },
+
         createChart(chartId, chartData) {
         let chart = document.getElementById(chartId);
+        
         if (typeof chart != 'undefined' || chart != null )
         {
           document.getElementById(chartId).remove()
-          $('#chartcontainer').append('<canvas id="'+chartId+'" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>')
+          $('#chartcontainer').append('<canvas id="'+chartId+'" width="" height="" style="max-width: 90%;"></canvas>')
           // console.log('test')
         }
         const ctx = document.getElementById(chartId);

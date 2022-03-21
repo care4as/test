@@ -10,8 +10,9 @@
 @endsection
 
 @section('content')
-<div class="container p-2" id="app">
-<ships> </ships>
+<div  class="container p-2" id="app">
+
+<ships :admin="1" :user="{{Auth()->id()}}"> </ships>
 </div>
-  
+
 @endsection
