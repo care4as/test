@@ -69,7 +69,7 @@
           </div>
         </div>
         <div class="row m-0" v-else>
-          <div class="col-md-5 rotated bg-light p-2 " v-bind:class= "[this.optinQuota > 15 ? 'bg-success' : 'bg-danger text-white']">
+          <div class="col-md-5 rotated bg-light p-2 " v-bind:class= "[this.optinQuota > 42 ? 'bg-success' : 'bg-danger text-white']">
             <div class="row m-1">
               CR:
             </div>
@@ -130,14 +130,14 @@
                     <td>{{user.orders}}</td>
                   </tr>
                 </table>
-                <table class="max-table" style="width: 100%;" v-else>
-                  <tr class="">
+                <table class="max-table text-dark" style="width: 100%;" v-else>
+                  <tr class="" >
                     <th @click="sorted('name')" style="cursor:pointer" >User </th>
                     <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
-                    <th @click="sorted('calls')" style="cursor:pointer">SSC_Calls</th>
-                    <th @click="sorted('orders')" style="cursor:pointer">SSC_Saves</th>
+                    <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
+                    <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
                   </tr >
-                  <tr class="unit-translucent" v-for="user in sortedUsers">
+                  <tr class="" v-bind:class= "[user.dslqouta > 42 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
                     <td>{{user.name}}</td>
                     <td>{{user.dslqouta}}%</td>
                     <td>{{user.calls}}</td>
@@ -325,14 +325,17 @@
           this.department = dep
           this.getUserData(dep)
           this.getDailyQouta(dep)
+
           clearInterval(this.timer)
           this.timer =
+
           setInterval(function()
           {
             this.getUserData(dep)
             this.getDailyQouta(dep)
           }.bind(this), 60000);
 
+          console.log(this.department)
         },
         getDailyQouta(dep){
 
@@ -358,7 +361,7 @@
 
         createChart(chartId, chartData) {
         let chart = document.getElementById(chartId);
-        
+
         if (typeof chart != 'undefined' || chart != null )
         {
           document.getElementById(chartId).remove()
