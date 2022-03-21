@@ -122,7 +122,7 @@ class AgentTrackingController extends Controller
       ->get();
 
       // $ids = $users->pluck('id');
-      
+
       $history = TrackEvent::
       // with(['createdBy' => function($q) use ($department){
       //   $q->where('project',$department);
@@ -134,6 +134,7 @@ class AgentTrackingController extends Controller
       })
       // ->whereIn('created_by', $ids)
       ->orderBy('created_at','DESC')
+      ->limit('3000')
       ->get();
 
       // dd($history[2], $history);
