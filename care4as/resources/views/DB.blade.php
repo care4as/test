@@ -191,11 +191,9 @@ tfoot td
           </button>
         </div>
       </div>
-
       <div class="col-2 offset-5">
         <div class="row h-100 center_items mr-2">
           <p style="font-size: 20px; font-weight: bold;">  Wähle die Daten:</p>
-
         </div>
       </div>
       <div class="col-1 ">
@@ -244,15 +242,14 @@ tfoot td
           </label>
         </div>
         <div class="row">
-
-            <input class="form-check-input" type="checkbox" value="" id="DataSick">
-            <label class="label" for="DataSick">
-              <div class="center_items w-100 h-100">
-                Krankheit
-              </div>
-            </label>
+          <input class="form-check-input" type="checkbox" value="" id="DataSick">
+          <label class="label" for="DataSick">
+          <div class="center_items w-100 h-100">
+            Krankheit
           </div>
+          </label>
         </div>
+      </div>
       <div class="col-1">
         <div class="row">
           <input class="form-check-input" type="checkbox" value="" id="DataPS">
@@ -280,7 +277,6 @@ tfoot td
     </div>
   </div>
   <div class="max-main-container">
-
     <div class="max-panel-content">
       <div class="row m-2 mt-4 justify-content-center align-self-center" >
         <div class="col p-1">
@@ -294,11 +290,8 @@ tfoot td
               $pricepersave = 15;
             }
           @endphp
-
           <table class="max-table" id="tableoverview">
-
             <thead class="thead">
-
               <tr class="">
                 <th># </th>
                 <th>Name</th>
@@ -361,7 +354,6 @@ tfoot td
                   <td data-order="0">0%</td>
                 @endif
                 <!-- /1&1 Produktivquote -->
-
                 <!-- Calls per hour-->
                 @if($user->salesdata['workedHours'] != 0)
                   <td data-order="{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}">{{round($user->salesdata['calls'] / $user->salesdata['workedHours'],2)}}</td>
@@ -369,7 +361,6 @@ tfoot td
                   <td data-order="0">0</td>
                 @endif
                 <!-- /Calls per hour-->
-
                 <!-- Saves/h -->
                 @if($user->salesdata['workedHours'] != 0)
                   @if($user->department == '1&1 DSL Retention')
@@ -406,11 +397,9 @@ tfoot td
                   </div>
                 </td>
                 <!-- /GeVo SAVES -->
-
                 <!-- All SSE Saves -->
                 <td data-order="{{$user->salesdata['ssesaves']}}">{{$user->salesdata['ssesaves']}}</td>
                 <!-- All SSE Saves -->
-
                 <!-- All RD Calls -->
                 <td data-order="{{$user->salesdata['calls']}}">{{$user->salesdata['calls']}}</td>
                 <!-- /All RD Calls -->
@@ -421,7 +410,7 @@ tfoot td
                 @if($user->department == '1&1 DSL Retention')
                   <td data-order="{{$user->salesdata['orders']}}">{{$user->salesdata['orders']}}</td>
                 @else
-                  <td data-order="{{$user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{$sumSaves}}</td>
+                  <td data-order="{{$sumSaves = $user->salesdata['sscOrders'] + $user->salesdata['bscOrders'] + $user->salesdata['portalOrders']}}">{{$sumSaves}}</td>
                 @endif
                 <!-- /Gesamtsaves -->
                 <td data-order="{{$user->salesdata['sscOrders']}}">{{$user->salesdata['sscOrders']}}</td>

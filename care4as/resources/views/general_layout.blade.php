@@ -56,8 +56,8 @@
   </div> -->
 
   <div class="wrapper ">
-    <div class="sidebar" id='sidebar'>
-      <div class="sidebar-wrapper" id="sidebar-wrapper" style="overflow-y: scroll; height: 100%">
+    <div class="sidebar " id='sidebar'>
+      <div class="sidebar-wrapper bg-primary2" id="sidebar-wrapper" style="height: 100%">
         @php
           Auth()->user()->getRights();
         @endphp
@@ -74,14 +74,14 @@
           <!-- Dashboard -->
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
-            <a @if(Auth::User()->ds_id == '333') href="{{route('scrum.itkanbanboard')}} @elseif(Auth::User()->role == 'Agent') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
+            <a @if(Auth::User()->department == 'Agenten') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
               <i class="fas fa-table"></i>
               <p><b>Dashboard</b></p>
             </a>
           </li>
           @endif
 
-          @if(1)
+          @if(in_array('write_memos',Auth()->user()->getRights()))
           <li class="">
             <a class="" data-toggle="collapse" href="#collapseMemoranda" role="button" aria-expanded="false" aria-controls="collapseMemoranda">
               <i class="fas fa-pen"></i>
@@ -134,7 +134,10 @@
                 @if(in_array('1u1_db',Auth()->user()->getRights()))
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
                   <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
+                  <li><a href="{{route('dsl.tracking.admin',['department' => 'DSL'])}}">Admin Tracking DSL</a> </li>
+
                 @endif
+                <li><a href="{{route('dsl.tracking.agents',['department' => 2])}}">Tracking DSL</a> </li>
               </ul>
             </li>
           @endif
@@ -492,14 +495,17 @@
                 </div>
               </li>
               <li class="nav-item dropdown m-2" > -->
+              <li class="nav-item dropdown center_items text-white mr-4" style="margin-right: 10px;cursor: pointer;">
+                <a href="{{route('dashboard')}} " class="center_items">
+                  <i class="far fa-bell" style="font-size: 1.5em !important;"></i>
+                  <span class="badge badge-success" id="news"></span>
+                  </a>
+              </li>
               @if(in_array('controlling_base',Auth()->user()->getRights()))
               <?php $dataTables = \DB::table('datatables_timespan')->get() ?>
               <li class="nav-item dropdown" style="margin-right: 10px; cursor: pointer;">
                 <a class="nav-link dropdown-toggle" id="dataDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i style="font-size: 25px; top: 4px; position: relative;" class="fas fa-tasks"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block"> </span>
-                  </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                   <div class="d-flex justify-content-center">
@@ -610,7 +616,7 @@
                       @endif
                     </div>
                   </div>
-                  <!-- SaS -->  
+                  <!-- SaS -->
                   <div class="dropdown-item" style="display: flex; justify-content: space-between;">
                     <div>
                       @if($dataTables->where('data_table', 'sas_report')->min('max_date') && strtotime(date('Y-m-d', strtotime(' -1 day'))) == strtotime($dataTables->where('data_table', 'sas_report')->min('max_date')))
@@ -663,11 +669,11 @@
         <!-- <canvas id="bigDashboardChart"></canvas> -->
         <!-- "Overflow-y: auto" entfernt. Overflow sollte in column-container stattfinden -->
         <div class="content bg-cool" style="position: relative; height: calc(100vh - 66.5px); margin-top: 66.5px; box-shadow: black 0em 1em 1em -1em inset; overflow-y: auto; overflow-x: hidden;">
-          
+
         <!-- <video autoplay muted loop id="myVideo">
           <source src="{{asset('videos/OMSBG12.mov')}}" type="video/mp4">
         </video> -->
-        
+
         @yield('content')
         </div>
         <!-- <div class="container bg-white">
@@ -771,14 +777,56 @@
     <script>
       $('#errorModal').modal('show');
     </script>
-
   @endif
-  @if($news = 0 == 1)
-    <script>
-      $('#newsModal').modal('show');
+  <script>
+    let host = window.location.host;
+    // axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
+    axios.get('http://'+host+'/memo/checkMeMos/')
+    .then(response => {
+
+      if(response.data > 0)
+      {
+        $('#news').html(response.data)
+        $('#news').css('display','flex')
+      }
+      else {
+
+        $('#news').css('display','none')
+      }
+    })
+    .catch(function (err) {
+      console.log('error Memocheck')
+      console.log(err.response);
+    });
+
+    setInterval(function()
+    {
+      let host = window.location.host;
+      // axios.get('http://'+host+'/care4as/care4as/public/memo/checkMeMos/')
+      axios.get('http://'+host+'/memo/checkMeMos/')
+      .then(response => {
+
+        if(response.data > 0)
+        {
+          $('#news').html(response.data)
+          $('#news').css('display','flex')
+        }
+        else {
+
+          $('#news').css('display','none')
+        }
+
+
+      })
+      .catch(function (err) {
+        console.log('error Memocheck')
+        console.log(err.response);
+      });
+    }, 1000*300);
+
 
     </script>
-  @endif
+
   @yield('additional_js')
 </body>
 

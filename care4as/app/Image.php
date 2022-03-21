@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends ExtendedModel
 {
-    use HasFactory;
+    // use HasFactory;
     protected $table = 'image';
 }

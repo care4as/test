@@ -30,15 +30,13 @@ class AgentTrackingController extends Controller
     {
         //
     }
-    public function userIndex()
+    public function userIndex($department=1)
     {
 
-      // $monthSP = TrackEvent::where('created_by',Auth()->id())->get();
       //get userdata from kdw tool
       $userdata = DB::connection('mysqlkdw')->table('MA')->where('ds_id',Auth()->user()->ds_id)->first();
       //get vacation days within this month
       $startOfMonth = new \Carbon\Carbon('first day of this month');
-
 
       $userVacation = DB::connection('mysqlkdw')
       ->table('chronology_work')
@@ -46,8 +44,6 @@ class AgentTrackingController extends Controller
       ->whereIn('state_id', [2, 11])
       ->where('work_date','>', $startOfMonth)
       ->sum('work_hours');
-
-
       // dd($userVacation->sum('work_hours'));
 
       $monthSP = Auth()->user()->load('TrackingOverall')->TrackingOverall;
@@ -57,7 +53,14 @@ class AgentTrackingController extends Controller
       $history = Auth()->user()->load('TrackingToday')->TrackingToday;
       // $history = $monthSP->where('created_at', Carbon::today());
       // dd($monthSP->where('event_category','Save'));
-      return view('trackingMobile', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+
+      if ($department != 1) {
+        return view('trackingDSL', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+      }
+      else {
+        return view('trackingMobile', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+      }
+
     }
     /**
      * Store a newly created resource in storage.
@@ -77,22 +80,12 @@ class AgentTrackingController extends Controller
           'backoffice' => 'required',
         ]);
 
-        // $request->contract_number= 1312123;
-        // $request->product_category= 'SSC';
-        // $request->event_category= 'Cancel';
-        // $request->optin= 1;
-        // $request->runtime= 1;
-        // $request->backoffice= 1;
-        // $request->target_tarif= 'testtarif';
-
         $trackevent = new TrackEvent;
-
         $additionalProperties = array('created_by' => Auth()->id());
-
         $tranformed = request()->except(['_token']);
         // dd($tranformed);
-
         $trackevent->TranformRequestToModel($tranformed,$additionalProperties);
+
         // $trackevent->contract_number = $request->contract_number;
         // $trackevent->product_category = $request->product_category;
         // $trackevent->event_category = $request->event_category;
@@ -106,27 +99,43 @@ class AgentTrackingController extends Controller
         // dd($trackevent);
         return redirect()->back();
     }
-    public function AdminIndex()
+    public function AdminIndex($department = 'Mobile')
     {
+      if($department == 'DSL')
+      {
+        $department ='1und1 DSL Retention';
+      }
+      elseif ($department == 'Mobile') {
+        $department = '1und1 Retention';
+        // dd($department);
+      }
+      else {
+        $department == 'all';
+      }
+
+      // dd($department);
+      $users = User::with('TrackingToday','TrackingCallsToday')
+      ->where('status', 1)
+      // ->where('project','1und1 Retention')
+      ->where('project',$department)
+      ->where('department','Agenten')
+      ->get();
+
+      // $ids = $users->pluck('id');
       $history = TrackEvent::with('createdBy')
+      // ->whereIn('created_by', $ids)
       ->orderBy('created_at','DESC')
       ->get();
 
-      $users = User::with('TrackingToday','TrackingCallsToday')
-      ->where('status', 1)
-      ->where('project','1und1 Retention')
-      ->get();
 
-      foreach ($users as $key => $user) {
-        if ($user->id == 408) {
-          // dd($user);
-        }
-
+      if($department == '1und1 DSL Retention')
+      {
+        return view('trackingDSLAdmin', compact('history', 'users'));
       }
-      // $trackcalls = TrackCalls::all();
-
-      // dd($users, $users[34]);
+      else {
+        // dd($users);
       return view('trackingMobileAdmin', compact('history', 'users'));
+      }
     }
 
     public function TrackingJson()
@@ -342,6 +351,14 @@ class AgentTrackingController extends Controller
     public function trackCall($type, $updown)
     {
       // dd($type);
+
+      // categories
+      // 1 = SSC Calls
+      // 2 = BSC Calls
+      // 3 = Portal Calls
+      // 4 = Sonstige Calls
+      // 5 = Rentention Calls
+      // 6 = Prevention Calls
 
       if (TrackCalls::where('user_id', Auth()->id())->where('category', $type)->whereDate('created_at', Carbon::today())->exists())
       {

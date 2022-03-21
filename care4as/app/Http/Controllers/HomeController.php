@@ -58,6 +58,9 @@ class HomeController extends Controller
         ->toArray();
 
         $users = User::whereIn('1u1_person_id', $userids)->orderBy('name')->get();
+
+        // testdata
+        // $users = User::where('status',1)->orderBy('name')->limit(5)->get();
       }
 
       $mobileTeamids = DB::table('users')
@@ -107,11 +110,8 @@ class HomeController extends Controller
         {
           $spectrumend = $timestamp->copy()->addMinutes(5)->format('Y-m-d H:i:s');
           $spectrumstart = $timestamp->copy()->subMinutes(5)->format('Y-m-d H:i:s');
-
           // return $spectrumstart;
           $ivdata = $data->where('date','>', $spectrumstart)->where('date','<',$spectrumend);
-
-
           $orders = $ivdata->sum('Orders');
           $calls = $ivdata->sum('Calls');
 

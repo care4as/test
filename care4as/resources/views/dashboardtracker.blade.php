@@ -104,18 +104,18 @@ td,tr,table
 @section('content')
 
 <div class="container-fluid m-1 " id="app">
-  <div class="row bg-light">
-    <div class="nav-tabs-navigation">
-      <div class="nav-tabs-wrapper">
+  <div class="row center_items m-2">
+    <div class="nav-tabs-navigation ">
+      <div class="nav-tabs-wrapper center_items bg-dark">
         <ul class="nav nav-tabs" data-tabs="tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#currentTracking" data-toggle="tab">Tageswerte</a>
+            <li class="nav-item ">
+                <a class="nav-link active goldentext" href="#currentTracking" data-toggle="tab">Tageswerte</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#agents" data-toggle="tab">Agents</a>
+            <li class="nav-item ">
+                <a class="nav-link goldentext" href="#agents" data-toggle="tab">Agents</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#history" data-toggle="tab">CR Verlauf der letzten 5 Tage</a>
+            <li class="nav-item ">
+                <a class="nav-link goldentext" href="#history" data-toggle="tab">CR Verlauf der letzten 5 Tage</a>
             </li>
             <!-- <li class="nav-item">
                 <a class="nav-link" href="#history" data-toggle="tab">Weitere Funktion</a>
@@ -126,7 +126,7 @@ td,tr,table
   </div>
   <div class="tab-content">
     <div id="currentTracking" class="tab-pane fade in show active">
-      <div class="row m-3 bg-cool borders-roundedlight">
+      <div class="row m-3 borders-roundedlight">
         <div class="col">
           <div class="row">
               <ptable> </ptable>
@@ -135,59 +135,48 @@ td,tr,table
           </div>
         </div>
       <div id="agents" class="tab-pane fade in">
-        <div class="row bg-cool p-2 justify-content-center w-100 borders-roundedlight">
-          <div class="w-100" id="accordion1">
-            <div class="col-12 unit-translucent">
-              <div class="row shadow m-1 borders-roundedlight" id="filtermenu">
-                <div class="w-100" id="accordion">
-                  <div class="col-12 d-flex justify-content-center align-self-center">
-                    <h5><a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor:pointer;">
-                      Filtermenü
-                      <span class="material-icons">
-                        expand_more
-                        </span>
-                    </a></h5>
-                  </div>
-                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="col-12">
-                      <form class="mt-2 w-100" action="{{route('dashboard.admin')}}" method="get">
-                        <div class="row m-0 justify-content-center">
-                          <div class="col-8 p-0" style="">
-                            <div class="row m-2 justify-content-center">
-                              <div class="col-4 ml-1 p-0">
-                                <label for="department">Abteilung:</label>
-                                <select class="form-control" name="department" id="department" style="width:218px;">
-                                  <option value="" selected disabled>Wähle die Abteilung</option>
-                                  <option value="1&1 DSL Retention">1&1 DSL Retention</option>
-                                  <option value="1&1 Mobile Retention" >1&1 Mobile Retention</option>
-                                </select>
-                              </div>
-                              <div class="col-4 p-0 mr-2">
-                                <label for="department">Welche MA:</label>
-                                <select multiple class="form-control" name="employees[]" id="employees" style="height: 150px; overflow:scroll;">
-                                </select>
-                              </div>
-                            </div>
-                            <div class="row m-2 justify-content-center">
-                              <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                </div>
-                </form>
+        <div class="bg-light d-flex" style="position: absolute; right: 5px; top: 50%; z-index:10;">
+          <div class="bg-info position-relative center_items" style="min-height: 100%;">
+            <button type="button" name="button" onclick="openFiltermenu()">
+              <span class="material-icons">
+                arrow_back
+                </span>
               </div>
+            </button>
+          <div class="col-12 d-none">
+            <form class="w-100" action="{{route('dashboard.admin')}}" method="get">
+              <div class="row m-0 justify-content-center">
+                <div class="col p-2">
+                  <label for="department">Abteilung:</label>
+                  <select class="form-control" name="department" id="department" style="width:218px;">
+                    <option value="" selected disabled>Wähle die Abteilung</option>
+                    <option value="1&1 DSL Retention">1&1 DSL Retention</option>
+                    <option value="1&1 Mobile Retention" >1&1 Mobile Retention</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col p-0 mr-2">
+                  <label for="department">Welche MA:</label>
+                  <select multiple class="form-control" name="employees[]" id="employees" style="height: 150px; overflow:scroll;">
+                  </select>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                    <button type="submit" name="button" class="btn-sm btn-success">Filter</button>
               </div>
             </div>
-            <div class="col-12">
-              <h5>Userdash</h5>
+          </div>
+          <div class="row p-2 justify-content-center w-100 borders-roundedlight">
+            <div class="col-12 center_items">
+              <h5 class="goldentext">Userdash</h5>
             </div>
             <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
               <div class="col-12">
-                <div class="row">
+                <div class="row center_items">
                   @foreach($users as $user)
-                    <div class="col-designed m-3 p-1 border unit-translucent rounded shadow">
-                      <h5>{{$user->name}}
+                    <div class="col-10 col-md-5 m-1 bg-dark shadow-white">
+                      <h5 class="goldentext">{{$user->name}}
                           <a class="align-items-center" href="{{route('user.stats',['id' => $user->id])}}">
                             <span class="material-icons">
                             preview
@@ -202,113 +191,116 @@ td,tr,table
           </div>
         </div>
       </div>
-    </div>
-  <div id="history" class="tab-pane fade in">
-    <div class="row unit-translucent p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
-      <div class="w-100" id="accordion2">
-        <div class="col-12" >
-          <h5>
-            <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
-            <span style="">Teamübersicht 1&1 Retention Mobile</span>
-            <span class="material-icons">
-              expand_more
-              </span>
-          </a></h5>
-        </div>
-        <div id="collapseTeamDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion2">
-        <div class="col-12">
-          <div class="row">
-            <p>Verlauf der letzten 5 Tage</p>
-          </div>
-          <div class="row justify-content-center repeater1" >
-            @for($i = 1; $i<=5; $i++)
-              <div class="col-designed-carousel m-2" style="height: 500px; opacity: 0.4;">
-              <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
-              <div class="d-flex mt-4">
-                <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
-                  <caption> Axes Example #5 </caption>
-                  <thead>
-                    <tr>
-                      <th scope="col"> Year </th>
-                      <th scope="col"> Progress </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($quotas[Carbon\Carbon::today()->subdays($i)->Format('Y-m-d')] as $key => $data)
-                      <tr><th scope="row"> {{$key}} </th> <td style="--size:{{$data['cr']}};--color: blue; color:white;">{{$data['cr']*100}}%</td></tr>
-                    @endforeach
-                  </tbody>
-                </table>
+      <div id="history" class="tab-pane fade in">
+        <div class="row unit-translucent p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
+          <div class="w-100" id="accordion2">
+            <div class="col-12" >
+              <h5>
+                <a data-toggle="collapse" data-target="#collapseTeamDash" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
+                  <span style="">Teamübersicht 1&1 Retention Mobile</span>
+                  <span class="material-icons">
+                    expand_more
+                    </span>
+                  </a>
+                </h5>
+                </div>
+              <div id="collapseTeamDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion2">
+                <div class="col-12" style="height: 75vh;">
+                  <div class="row justify-content-center h-25">
+                    <p>Verlauf der letzten 5 Tage</p>
+                  </div>
+                  <div class="row h-50 repeater1">
+                    @for($i = 1; $i<=5; $i++)
+                    <div class="col-12" style="">
+                      <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
+                      <div class="d-flex mt-4">
+                        <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
+                          <caption> Axes Example #5 </caption>
+                          <thead>
+                            <tr>
+                            <th scope="col"> Year </th>
+                            <th scope="col"> Progress </th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          @foreach($quotas[Carbon\Carbon::today()->subdays($i)->Format('Y-m-d')] as $key => $data)
+                            <tr>
+                              <th scope="row"> {{$key}} </th> <td style="--size:{{$data['cr']}};--color: blue; color:white;">{{$data['cr']*100}}%</td>
+                            </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  @endfor
+                </div>
+                <div class="row  h-25 justify-content-center">
+                <div class="col-6 center_items">
+                  <button type="button" name="button" id="nextButton" class="btn-primary">Vorheriger Tag</button>
+                </div>
+                <div class="col-6 center_items">
+                  <button type="button" name="button" id="prevButton" class="btn-primary">Nächster Tag</button>
                 </div>
               </div>
-            @endfor
-          </div>
-          <div class="row justify-content-center">
-            <div class="col-6 center_items">
-              <button type="button" name="button" id="nextButton" class="btn-primary">Vorheriger Tag</button>
-            </div>
-            <div class="col-6 center_items">
-              <button type="button" name="button" id="prevButton" class="btn-primary">Nächster Tag</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="row unit-translucent p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
-    <div class="w-100" id="accordion2">
-      <div class="col-12" >
-        <h5>
-          <a data-toggle="collapse" data-target="#collapseTeamDash1" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
-          <span style="">Teamübersicht 1&1 Retention DSL</span>
-          <span class="material-icons">
-            expand_more
-            </span>
-        </a></h5>
-      </div>
-      <div id="collapseTeamDash1" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion2">
-      <div class="col-12">
-        <div class="row">
-          <p>Verlauf der letzten 5 Tage</p>
-        </div>
-        <div class="row justify-content-center repeater2" >
-          @for($i = 1; $i<=5; $i++)
-            <div class="col-designed-carousel m-2" style="height: 500px; opacity: 0.4;">
-            <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
-            <div class="d-flex mt-4">
-              <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
-                <caption> Axes Example #5 </caption>
-                <thead>
-                  <tr>
-                    <th scope="col"> Year </th>
-                    <th scope="col"> Progress </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($quotasDSL[Carbon\Carbon::today()->subdays($i)->Format('Y-m-d')] as $key => $data)
-                    <tr><th scope="row"> {{$key}} </th> <td style="--size:{{$data['cr']}};--color: blue; color:white;">{{$data['cr']*100}}%</td></tr>
-                  @endforeach
-                </tbody>
-              </table>
+      <div class="row unit-translucent p-2 justify-content-center w-100 bg-light mt-3 borders-roundedlight" style="font-size: 1.5em; font-weight: 700;">
+        <div class="w-100" id="accordion2">
+          <div class="col-12" >
+            <h5>
+              <a data-toggle="collapse" data-target="#collapseTeamDash1" aria-expanded="true" aria-controls="collapseTeamDash" style="cursor:pointer;">
+              <span style="">Teamübersicht 1&1 Retention DSL</span>
+              <span class="material-icons">
+                expand_more
+                </span>
+            </a></h5>
+          </div>
+          <div id="collapseTeamDash1" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion2">
+          <div class="col-12">
+            <div class="row">
+              <p>Verlauf der letzten 5 Tage</p>
+            </div>
+            <div class="row justify-content-center repeater2" >
+              @for($i = 1; $i<=5; $i++)
+                <div class="col-designed-carousel m-2" style="height: 500px; opacity: 0.4;">
+                <span style="font-size: 1.3em;"></span>{{Carbon\Carbon::today()->subdays($i)->Format('d.m.Y')}}
+                <div class="d-flex mt-4">
+                  <table id="" class="charts-css column show-labels show-primary-axis chart" style="font-size: 0.5em; font-weight: 200;">
+                    <caption> Axes Example #5 </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col"> Year </th>
+                        <th scope="col"> Progress </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($quotasDSL[Carbon\Carbon::today()->subdays($i)->Format('Y-m-d')] as $key => $data)
+                        <tr><th scope="row"> {{$key}} </th> <td style="--size:{{$data['cr']}};--color: blue; color:white;">{{$data['cr']*100}}%</td></tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                  </div>
+                </div>
+              @endfor
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-6 center_items">
+                <button type="button" name="button" id="nextButton2" class="btn-primary">Vorheriger Tag</button>
+              </div>
+              <div class="col-6 center_items">
+                <button type="button" name="button" id="prevButton2" class="btn-primary">Nächster Tag</button>
+              </div>
+
+                </div>
               </div>
             </div>
-          @endfor
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-6 center_items">
-            <button type="button" name="button" id="nextButton2" class="btn-primary">Vorheriger Tag</button>
-          </div>
-          <div class="col-6 center_items">
-            <button type="button" name="button" id="prevButton2" class="btn-primary">Nächster Tag</button>
-          </div>
-
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 @endsection
 
 @section('additional_modal')
@@ -328,15 +320,21 @@ td,tr,table
 @section('additional_js')
 <script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
+
 $(document).ready(function(){
   $('.repeater1').slick({
+
     fade: true,
     prevArrow: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
     nextArrow: $('#nextButton'),
     prevArrow: $('#prevButton')
   });
   $('.repeater2').slick({
     fade: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
     prevArrow: false,
     nextArrow: $('#nextButton2'),
     prevArrow: $('#prevButton2')

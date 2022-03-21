@@ -138,6 +138,8 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::view('/memos/create', 'createMemo')->name('memo.create');
   Route::post('/memos/store', 'MemorandaController@store')->name('memo.store');
+  Route::get('/memo/read/{id}', 'MemorandaController@read')->name('memo.read');
+  Route::get('/memo/checkMeMos', 'MemorandaController@checkMemos')->name('memo.check');
   //end Memos
 
   //AHTReport
@@ -355,6 +357,13 @@ Route::group(['middleware' => 'auth'], function () {
     //   return view('trackingMobileAdmin');
     // })->name('mobile.tracking.admin');//RECHT FEHLT
   // END MOBILE TRACKING
+
+  //DSL
+  Route::get('/dsl/tracking/{department}',  'AgentTrackingController@userIndex')->name('dsl.tracking.agents')->middleware('auth');
+  Route::get('/dsl/tracking/admin/{department}',  'AgentTrackingController@AdminIndex')->name('dsl.tracking.admin')->middleware('auth');
+  Route::post('/dsl/tracking/update',  'AgentTrackingController@edit')->name('dsl.tracking.agents.update')->middleware('auth');
+  Route::post('/dsl/tracking/post', 'AgentTrackingController@store')->name('dsl.tracking.agents.post');
+  //End DSL
 
   //START Scrum
   Route::get('/scrum', 'ScrumController@init')->name('scrum.itkanbanboard');//RECHT FEHLT

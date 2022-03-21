@@ -59,7 +59,7 @@
     .paginate_button:hover{
         border: none !important;
     }
-    
+
     .page-link:hover{
         border-color: #FA7A50;
     }
@@ -76,7 +76,7 @@
 <div>
     <div class="row">
         <div class="col-md-12">
-            <form action="{{route('projectReport')}}" method="get()"> 
+            <form action="{{route('projectReport')}}" method="get()">
             @csrf
                 <div class="max-main-container">
                     <div class="row">
@@ -142,13 +142,13 @@
                         </div>
                     </div>
                 </div>
-            </form>  
-        </div>    
+            </form>
+        </div>
     </div>
 @if($defaultVariablesArray['report'] == 'projektmeldung')
 <!-- START PROJECT: DSL -->
     @if($defaultVariablesArray['project'] == '1u1_dsl_ret')
-    <div class="row">  
+    <div class="row">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="max-panel-title">
@@ -273,18 +273,18 @@
                                     <!--U. Delta-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_delta'], 2,",",".")}}€</td>
                                     </tr>
                             </tfoot>
-                        </table>    
+                        </table>
                     </div>
-                </div>           
+                </div>
             </div>
         </div>
     </div>
-    @endif     
+    @endif
 <!-- END PROJECT: DSL -->
 
 <!-- START PROJECT: MOBILE -->
     @if($defaultVariablesArray['project'] == '1u1_mobile_ret')
-    <div class="row">  
+    <div class="row">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="max-panel-title">
@@ -433,16 +433,16 @@
                                     <!--U. Delta-->     <td style="text-align: right;">{{number_format($dataArray['sum']['revenue_delta'], 2,",",".")}}€</td>
                                     </tr>
                             </tfoot>
-                        </table>    
+                        </table>
                     </div>
-                </div>           
+                </div>
             </div>
         </div>
     </div>
-    @endif     
+    @endif
 <!-- END PROJECT: MOBILE -->
 @elseif($defaultVariablesArray['report'] == 'teamscan')
-    <div class="row">  
+    <div class="row">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="max-panel-title">
@@ -652,9 +652,9 @@
                                     <td style="text-align: right;">{{number_format($dataArray['project']['sum']['revenue_per_hour_productive'], 2,",",".")}}€</td>
                                 </tr>
                             </tfoot>
-                        </table>    
+                        </table>
                     </div>
-                </div>           
+                </div>
             </div>
         </div>
     </div>
@@ -774,7 +774,7 @@ $(document).ready(function(){
                     let footerIndex = $('sheetData row', sheet).length;
                     let $footerRows = $('tr', dataTable.footer());
                     var mergeCells = $('mergeCells', sheet);
-                    
+
 
                     mergeCells[0].children[0].remove(); // remove merge cell 1st row
                     var rows = $('row', sheet);
@@ -1114,7 +1114,7 @@ $(document).ready(function(){
                         // If there are more than one footer rows
                         if ($footerRows.length > 1) {
                             // First header row is already present, so we start from the second row (i = 1)
-                        
+
                             for (let i = 1; i < $footerRows.length; i++) {
                             // Get the current footer row
                             let $footerRow = $footerRows[i];
@@ -1139,9 +1139,9 @@ $(document).ready(function(){
                             `);
                             }
                         }
-                    }  
+                    }
 
-                    function _createNode(doc, nodeName, opts) { 
+                    function _createNode(doc, nodeName, opts) {
                         var tempNode = doc.createElement(nodeName);
 
                         if (opts) {
@@ -1177,7 +1177,7 @@ $(document).ready(function(){
                             data = $('<p>' + data + '</p>').text();
                             return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
                         }
-                    }     
+                    }
                 },
             },
         ],
@@ -1189,8 +1189,8 @@ $(document).ready(function(){
         updateTeamSelection()
     });
     var teamList = <?php echo json_encode($defaultVariablesArray['projectData']) ?>;
-    var selectedTeam = 
-        <?php 
+    var selectedTeam =
+        <?php
             if(isset($defaultVariablesArray['team'])){
                 echo $defaultVariablesArray['team'];
             }
@@ -1202,7 +1202,7 @@ $(document).ready(function(){
     function updateTeamSelection(){
         selectedProject = document.getElementById('projectSelection').value;
         teamSelection = document.getElementById('teamSelection');
-        
+
         var child = teamSelection.lastElementChild;
         while (child){
             teamSelection.removeChild(child);
@@ -1224,7 +1224,7 @@ $(document).ready(function(){
             }
 
             teamSelection.appendChild(newOption);
-        }        
+        }
     }
 </script>
 

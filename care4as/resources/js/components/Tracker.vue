@@ -19,13 +19,13 @@ export default {
       data: null,
       isHidden: false,
       timer: '',
+      testdata: [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:01","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]],
     }
   },
   mounted() {
       var self = this;
       console.log('Tracker Component mounted.')
       this.getUserData(this.userid)
-
       setInterval(function()
       {
         self.getUserData(self.userid)
@@ -44,7 +44,12 @@ export default {
       // console.log('test')
     }
 
-    const ctx = document.getElementById(chartId);
+    const ctx = document.getElementById(chartId).getContext("2d");
+
+    var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(240, 152, 25, 0.7)');
+    gradient.addColorStop(1, 'rgba(255, 81, 47, 0)');
+
     const myChart = new Chart(ctx, {
       type: 'bar',
 
@@ -53,9 +58,10 @@ export default {
            type: 'line',
            label: 'CR',
            data: chartData[1],
-           fill: false,
-           backgroundColor: 'rgba(41, 241, 195, 1)',
-           borderColor: 'rgba(41, 241, 195, 1)',
+           // data: chartData[1],
+           fill: true,
+           backgroundColor: gradient,
+           borderColor: '#f09819',
            borderWidth: 1
        },
        {
@@ -99,23 +105,26 @@ export default {
     })
 
     var host = window.location.host;
-
     // axios.get('http://'+host+'/care4as/care4as/public/user/getTracking/'+this.userid)
+    let testdata = this.testdata
     axios.get('http://'+host+'/user/getTracking/'+this.userid)
     .then(response => {
       // console.log(response)
       if(response.data[0][0])
       {
-        // console.log(response.data)
+        console.log(response.data[0][0])
         this.createChart('myChart' + this.userid,response.data)
       }
       else
       {
+        this.createChart('myChart' + this.userid, this.testdata)
         console.log('No Data avaiable')
       }
       })
-    .catch(function (err) {
-      console.log('error')
+    .catch(err => {
+      this.createChart('myChart' + this.userid, testdata)
+      console.log('error Tracker11')
+      console.log(testdata)
       console.log(err);
     })
   },

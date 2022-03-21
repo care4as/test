@@ -199,68 +199,34 @@ function roundUp($calls,$quotient)
                         <div class="tab-content">
                             <div class="tab-pane active" id="overview">
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
-
                                     <table class="tracking-table" id="AdminTrackingTable">
                                         <thead>
                                             <tr>
-                                                <th rowspan="3" class="bg-dark text-white"style="border-right: 2px solid grey">Name</th>
-                                                <th colspan="3" style="border-right: 2px solid grey">Gesamt</th>
-                                                <th colspan="9" style="border-right: 2px solid grey">SSC</th>
-                                                <th colspan="9" style="border-right: 2px solid grey">BSC</th>
-                                                <th colspan="9" style="border-right: 2px solid grey">Portal</th>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="2">Calls</th>
-                                                <th rowspan="2">Cancel</th>
-                                                <th rowspan="2" style="border-right: 2px solid grey">Service</th>
-                                                <th rowspan="2">Calls</th>
-                                                <th colspan="4">Saves</th>
-                                                <th colspan="2">Negativ</th>
-                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
-                                                <th rowspan="2">Calls</th>
-                                                <th colspan="4">Saves</th>
-                                                <th colspan="2">Negativ</th>
-                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
-                                                <th rowspan="2">Calls</th>
-                                                <th colspan="4">Saves</th>
-                                                <th colspan="2">Negativ</th>
-                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
-                                                <th>Sonstige</th>
-                                                <th colspan="2">OptIn</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Σ GeVo Saves</th>
-                                                <th>← Gebucht</th>
-                                                <th>← Nacharbeit</th>
-                                                <th>KüRü</th>
-                                                <th>Cancel</th>
-                                                <th>Service</th>
-                                                <th>Gebucht</th>
-                                                <th style="border-right: 2px solid grey">Gesamt</th>
-                                                <th>Σ GeVo Saves</th>
-                                                <th>← Gebucht</th>
-                                                <th>← Nacharbeit</th>
-                                                <th>KüRü</th>
-                                                <th>Cancel</th>
-                                                <th>Service</th>
-                                                <th>Gebucht</th>
-                                                <th style="border-right: 2px solid grey">Gesamt</th>
-                                                <th>Σ GeVo Saves</th>
-                                                <th>← Gebucht</th>
-                                                <th>← Nacharbeit</th>
-                                                <th>KüRü</th>
-                                                <th>Cancel</th>
-                                                <th>Service</th>
-                                                <th>Gebucht</th>
-                                                <th style="border-right: 2px solid grey">Gesamt</th>
-                                                <th>Calls</th>
-                                                <th>Anzahl</th>
-                                                <th>Quote</th>
+                                                <th class="bg-dark text-white"style="border-right: 2px solid grey">Name</th>
+                                                <th style="border-right: 2px solid grey">Calls Retention</th>
+                                                <th style="border-right: 2px solid grey">Saves</th>
+                                                <th>Gesamt CR</th>
+                                                <th>GeVo CR</th>
+                                                <th style="border-right: 2px solid grey">Retention Save</th>
+                                                <th>Retention Service</th>
+                                                <th>Retention Cancel</th>
+                                                <th>CR Retention</th>
+                                                <th style="border-right: 2px solid grey">Calls Pretention</th>
+                                                <th>Prevention Save</th>
+                                                <th>Prevention Service</th>
+                                                <th>Prevention Cancel</th>
+                                                <th style="border-right: 2px solid grey">CR Prevention</th>
+                                                <th >KüRüs</th>
+                                                <th >NV DSL</th>
+                                                <th >NV Mob</th>
+                                                <th  style="border-right: 2px solid grey">Umzüge</th>
+                                                <th>Angebote</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          <tr>
                                             @foreach($users as $user)
+                                          <tr>
+
                                             <td class="bg-dark text-white"style="border-right: 2px solid grey">{{$user->name}}</td>
                                             <td>{{$calls = $user->TrackingCallsToday->sum('calls')}}</td>
                                             <td>{{$cancels = $user->TrackingToday->where('event_category','Cancel')->count()}}</td>
@@ -280,23 +246,9 @@ function roundUp($calls,$quotient)
                                             <td>{{$bscSaves_PBO = $bscSaves->where('backoffice',1)->count()}}</td>
                                             <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','KüRü')->count()}}</td>
                                             <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','Cancel')->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','Service')->count()}}</td>
-                                            <td>{{roundUp($bscCalls,$bscSaves_NBO)}}%</td>
-                                            <td style="border-right: 2px solid grey">{{roundUp($bscCalls,$bscSaves->count())}}</td>
-                                            <td>{{$portalCalls = $user->TrackingCallsToday->where('category',3)->sum('calls')}}</td>
-                                            <td>@php $portalSaves = $user->TrackingToday->where('product_category','Portale')->where('event_category','Save')@endphp {{ $portalSaves->count()}}</td>
-                                            <td>{{$portalSaves_NBO = $portalSaves->where('backoffice',0)->count()}}</td>
-                                            <td>{{$portalSaves_PBO = $portalSaves->where('backoffice',1)->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','Portale')->where('event_category','KüRü')->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','Portale')->where('event_category','Cancel')->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','Portale')->where('event_category','Service')->count()}}</td>
-                                            <td>{{roundUp($portalCalls,$portalSaves_NBO)}}%</td>
-                                            <td style="border-right: 2px solid grey">{{roundUp($portalCalls,$portalSaves->count())}}</td>
-                                            <td>{{$sonstige = $user->TrackingCallsToday->where('category',4)->sum('calls')}}</td>
-                                            <td>{{$optins = $user->TrackingToday->where('optin',1)->count()}}</td>
-                                            <td>{{roundUp($calls,$optins)}}%</td>
+
                                           </tr>
-                                            @endforeach
+                                          @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -390,64 +342,7 @@ function roundUp($calls,$quotient)
                                                     return $user->TrackingToday->where('product_category','BSC')->where('event_category','Cancel')->count();
                                                   })
                                                 }}</td>
-                                                  <td>{{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','BSC')->where('event_category','Service')->count();
-                                                    })
-                                                  }}</td>
-                                                <td>{{roundUp($allBSCCalls,$allBSCSaves_NBO)}}%</td>
-                                                <td style="border-right: 2px solid grey">{{roundUp($allBSCCalls,$allBSCSaves)}}%</td>
-                                                <td>
-                                                  {{$allPortalCalls = $users->sum(function ($user) {
-                                                      return $user->TrackingCallsToday->where('category',3)->sum('calls');
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>
-                                                  {{$allPortalSaves = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','Portale')->where('event_category','Save')->count();
-                                                    })
-                                                  }}
 
-                                                </td>
-                                                <td>{{$allPortalSaves_NBO = $users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','Portale')->where('event_category','Save')->where('backoffice',0)->count();
-                                                  })
-                                                }}</td>
-                                                <td>
-                                                  {{$allPortalSaves_PBO = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','Portale')->where('event_category','Save')->where('backoffice',1)->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>
-                                                  {{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','Portale')->where('event_category','KüRü')->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>{{$users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','Portale')->where('event_category','Cancel')->count();
-                                                  })
-                                                }}</td>
-                                                  <td>{{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','Portale')->where('event_category','Service')->count();
-                                                    })
-                                                  }}</td>
-                                                <td>{{roundUp($allPortalCalls,$allPortalSaves_NBO)}}%</td>
-                                                <td style="border-right: 2px solid grey">{{roundUp($allPortalCalls,$allPortalSaves)}}%</td>
-                                                <td>
-                                                  {{$allETCCalls = $users->sum(function ($user) {
-                                                      return $user->TrackingCallsToday->where('category',4)->sum('calls');
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>
-                                                  {{$allOptins = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('optin',1)->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>{{roundUp($allCalls,$allOptins)}}%</td>
                                             </tr>
                                         </tfoot>
                                     </table>

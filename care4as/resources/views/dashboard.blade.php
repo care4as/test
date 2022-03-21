@@ -6,6 +6,20 @@
   {
     background-color: transparent !important;
   }
+  *{
+   scrollbar-width: thin;
+  }
+  ::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 20px;
+  border: transparent;
+}
   .active
   {
     display: block;
@@ -126,21 +140,21 @@
           <i class="far fa-newspaper"></i>
           Neuigkeiten
         </div>
-        <div class="row">
-          <div id="memo-sidebar" class="col-sm-12 col-lg-4">
+        <div class="row" style="height: 80%; ">
+          <div id="memo-sidebar " class="col-sm-12 col-lg-4 h-100" style="overflow:hide;">
             <div id="memo-toggle" class="btn-group-container">
               <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="backoffice" value="1" id="backoffice1" autocomplete="off" checked>
+                <input type="radio" class="btn-check" name="backoffice" onclick="showNewMemos(1)" value="1" id="backoffice1" autocomplete="off" checked>
                 <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Neu</label>
-                <input type="radio" class="btn-check" name="backoffice" value="0" id="backoffice2" autocomplete="off">
+                <input type="radio" class="btn-check" name="backoffice" value="0" onclick="showNewMemos(2)" id="backoffice2" autocomplete="off">
                 <label class="btn btn-outline-primary last-btn-group-element" for="backoffice2">Gelesen</label>
               </div>
             </div>
             <div id="memo-search">
               <input type="text" class="form-control" style="max-width: 200px; margin: 0 auto;" placeholder="Suche...">
             </div>
-            <div id="memo-new">
-              @foreach($memos as $memo)
+            <div id="memo-new" style="overflow-y:scroll;">
+              @foreach($unread as $memo)
                 <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
                   @if($memo->has_image)
                     <div class="col-4 p-1 h-100 center_items">
@@ -153,15 +167,14 @@
                     </div>
                     <hr class="w-50 m-2 mt-3">
                     <div class="row m-0 h-25 ">
-                      <p>{!!$memo->content !!}</p>
                       <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
                     </div>
                   </div>
                 </div>
               @endforeach
             </div>
-            <div id="memo-old">
-            @foreach($memos as $memo)
+            <div id="memo-old" class="inactive h-100" style="overflow-y: scroll;">
+            @foreach($read as $memo)
               <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
                 @if($memo->has_image)
                   <div class="col-4 p-1 h-100 center_items">
@@ -174,7 +187,6 @@
                   </div>
                   <hr class="w-50 m-2 mt-3">
                   <div class="row m-0 h-25">
-                    <p>{!!$memo->content !!}</p> 
                     <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
                   </div>
                 </div>
@@ -182,26 +194,36 @@
             @endforeach
             </div>
           </div>
-          <div id="memo-content" class="coll-sm-12 col-lg-7">
-          @foreach($memos as $memo)
+          <div id="memo-content" class="col-sm-12 col-lg-7 h-100" style="overflow-y: scroll;">
+          @foreach($unread->merge($read) as $memo)
             <div class="inactive" id="memoContent{{$memo->id}}">
-            @if($memo->has_image)
-            <div>
-              <img class="contentimg" src="{{asset($memo->path)}}" alt="Bild">
-            </div>
-            @endif
-            
-            <div>
-              {{$memo->title}}
-            </div>
-            <div>
-              Name, Datum
-            </div>
-            <div>
-              {!!$memo->content !!}
-            </div>
+              @if($memo->has_image)
+              <div class="row center_items">
+                <img class="contentimg" src="{{asset($memo->path)}}" alt="Bild">
+              </div>
+              @endif
+              <div class="row center_items">
+                <h3 class="text-center">{{$memo->title}}</h3>
+              </div>
+              <div class="row">
+                @if($memo->creator)
+                <div class="col-6 d-flex justify-content-start">
+                  <small><span class="">{{$memo->creator->surname}} {{$memo->creator->lastname}}</span></small>
+                  <!-- <small><span class="">test123</span></small> -->
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                  <small> <span class="align-self-end">erstellt: {{$memo->created_at}}</span></small>
+                </div>
+                @else
+                  <small>erstellt:Ersteller nicht gefunden {{$memo->created_at}}</small>
+                @endif
+              </div>
+              <hr class="w-50">
+              <div class="row" >
+                {!!$memo->content !!}
 
-
+              </div>
+            </div>
           @endforeach
           </div>
         </div>
@@ -238,7 +260,7 @@
     <div class="col-3 p-2 h-100">
       <span>Ungelesen</span>
       <div class="row thumbnails d-block" style="overflow-y:scroll;">
-        @foreach($memos as $memo)
+        @foreach($unread as $memo)
           <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
             @if($memo->has_image)
               <div class="col-4 p-1 h-100 center_items">
@@ -261,7 +283,7 @@
       <hr class="w-50">
       <h5>Gelesen</h5>
       <div class="row thumbnails d-block" style="overflow-y:scroll;">
-        @foreach($memos as $memo)
+        @foreach($read as $memo)
           <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
             @if($memo->has_image)
               <div class="col-4 p-1 h-100 center_items">
@@ -274,7 +296,7 @@
               </div>
               <hr class="w-50 m-2 mt-3">
             <div class="row m-0 h-25">
-                   <p>{!!$memo->content !!}</p> 
+                   <p>{!!$memo->content !!}</p>
                   <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
               </div>
           </div>
@@ -284,7 +306,7 @@
     </div>
     <div class="col-9 p-2 h-100">
       <div class="newscontent" style="overflow-y:scroll;">
-        @foreach($memos as $memo)
+        @foreach($unread->merge($read) as $memo)
         <div class="inactive" id="memoContent{{$memo->id}}">
           <div class="row m-0 center_items">
             <h5>{{$memo->title}}</h5>
@@ -314,6 +336,16 @@
 <script>
 function showMemo(id)
 {
+  let host = window.location.host;
+  // axios.get('http://'+host+'/care4as/care4as/public/memo/read/'+id)
+  axios.get('http://'+host+'/memo/read/'+id)
+  .then(response => {
+
+  })
+  .catch(function (err) {
+    console.log('error Memo')
+    console.log(err.response);
+  });
 
   let element = $('#memoContent'+ id)
 
@@ -336,6 +368,19 @@ function showMemo(id)
     element.removeClass('active')
     element.addClass('inactive')
 
+  }
+
+}
+function showNewMemos(mode)
+{
+  if(mode== 1)
+  {
+    $('#memo-new').toggle()
+    $('#memo-old').toggle()
+  }
+  else {
+    $('#memo-new').toggle()
+    $('#memo-old').toggle()
   }
 
 }
