@@ -185,9 +185,9 @@
                 @if(in_array('controlling_revenuereport',Auth()->user()->getRights()))
                   <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
                 @endif
-                @if(in_array('controlling_revenuereport',Auth()->user()->getRights()))
+                <!-- @if(in_array('controlling_revenuereport',Auth()->user()->getRights()))
                   <li><a href="{{route('revenuereport.master')}}">Umsatzmeldung2</a></li>
-                @endif
+                @endif -->
                 @if(in_array('controlling_projectreport',Auth()->user()->getRights()))
                   <li><a href="{{route('projectReport')}}">Projektmeldung</a></li>
                 @endif
