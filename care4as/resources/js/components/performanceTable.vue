@@ -116,18 +116,18 @@
                     <th @click="sorted('ssc_quota')" style="cursor:pointer">SSC-CR</th>
                     <th @click="sorted('ssc_calls')" style="cursor:pointer">SSC-Calls</th>
                     <th @click="sorted('ssc_orders')" style="cursor:pointer">SSC-Saves</th>
-                    <th @click="sorted('cr')" style="cursor:pointer">CR</th>
-                    <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
-                    <th @click="sorted('orders')" style="cursor:pointer">Orders</th>
+                    <th @click="sorted('cr')" style="cursor:pointer">BSC-CR</th>
+                    <th @click="sorted('calls')" style="cursor:pointer">BSC-Calls</th>
+                    <th @click="sorted('orders')" style="cursor:pointer">BSC-Orders</th>
                   </tr>
                   <tr class="" v-bind:class= "[user.ssc_quota > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
                     <td>{{user.name}}</td>
                     <td>{{user.ssc_quota}}%</td>
                     <td>{{user.ssc_calls}}</td>
                     <td>{{user.ssc_orders}}</td>
-                    <td>{{user.cr}}%</td>
-                    <td>{{user.calls}}</td>
-                    <td>{{user.orders}}</td>
+                    <td>{{user.bsccr}}%</td>
+                    <td>{{user.bsc_calls}}</td>
+                    <td>{{user.bsc_orders}}</td>
                   </tr>
                 </table>
                 <table class="max-table text-dark" style="width: 100%;" v-else>

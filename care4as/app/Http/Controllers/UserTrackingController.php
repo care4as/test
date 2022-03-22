@@ -121,6 +121,7 @@ class UserTrackingController extends Controller
           }
 
           $user->cr = $this->getQuota($user->calls, $user->orders);
+          $user->bsccr = $this->getQuota($user->bsc_calls, $user->bsc_orders);
         }
         //the users in the dsl department
         else {
