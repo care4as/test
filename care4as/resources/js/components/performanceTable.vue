@@ -194,10 +194,8 @@
       mounted() {
         var self = this;
         console.log('ptable Component mounted.')
-
         self.getUserData('Mobile')
         self.getDailyQouta('Mobile')
-
         this.timer =
         setInterval(function()
         {
@@ -253,7 +251,6 @@
         },
         sscCR: function(){
           if (this.sscCalls != 0) {
-
             return Math.round((this.sscSaves*100/this.sscCalls)*100)/100
           }
           else {
@@ -335,7 +332,7 @@
             this.getDailyQouta(dep)
           }.bind(this), 60000);
 
-          console.log(this.department)
+          // console.log(this.department)
         },
         getDailyQouta(dep){
 
