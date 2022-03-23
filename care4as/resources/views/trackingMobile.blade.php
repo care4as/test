@@ -710,10 +710,10 @@ function roundUp($calls,$quotient)
         }
 
         //Attainment 2
-        if(optinCr >= 0){
-            document.getElementById('attainment2').checked = false;
-        } else {
+        if(optinCr >= 13.5){
             document.getElementById('attainment2').checked = true;
+        } else {
+            document.getElementById('attainment2').checked = false;
         }
 
         //Attainment 3
