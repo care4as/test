@@ -139,8 +139,8 @@
                   + currentdate.getSeconds();
 
             axios.get
-            ('http://'+host+'/care4as/care4as/public/users/getTracking/Mobile')
-            // ('http://'+host+'/users/getTracking/Mobile')
+            // ('http://'+host+'/care4as/care4as/public/users/getTracking/Mobile')
+            ('http://'+host+'/users/getTracking/Mobile')
             .then(response => {
               if(response.data)
               {
