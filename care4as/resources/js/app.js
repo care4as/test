@@ -29,6 +29,7 @@ Vue.component('ptable', require('./components/performanceTable.vue').default);
 Vue.component('ptool', require('./components/pausetracker.vue').default);
 Vue.component('timetracker', require('./components/TimeTracking.vue').default);
 Vue.component('ships', require('./components/ships.vue').default);
+Vue.component('dbmonitor', require('./components/dashboardMonitor.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
