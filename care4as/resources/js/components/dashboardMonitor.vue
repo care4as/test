@@ -76,7 +76,7 @@
         this.timer =
         setInterval(function()
         {
-          // self.getUserData('Mobile')
+          self.getUserData()
           // self.getDailyQouta('Mobile')
         }, 60000);
       },
@@ -150,7 +150,7 @@
 
                 if(this.department == 'Mobile')
                 {
-                  this.users = response.data[0]
+                  // this.users = response.data[0]
                   this.sscCalls = response.data[1]['ssc_calls']
                   this.sscSaves = response.data[1]['ssc_saves']
                   this.bscSaves = response.data[1]['bsc_saves']
