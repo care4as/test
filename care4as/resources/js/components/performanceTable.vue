@@ -173,7 +173,6 @@
       data(){
         return{
           users: [1,2,3],
-          timer: '',
           currentSort:'ssc_quota',
           currentSortDir:'desc',
           SscGeVoCr: 0,
