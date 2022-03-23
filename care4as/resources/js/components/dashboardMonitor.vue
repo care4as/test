@@ -147,25 +147,16 @@
                 console.log(response.data)
                 var currentdate = new Date();
                 console.log('update: '+timestamp)
-
-                if(this.department == 'Mobile')
-                {
                   // this.users = response.data[0]
-                  this.sscCalls = response.data[1]['ssc_calls']
-                  this.sscSaves = response.data[1]['ssc_saves']
-                  this.bscSaves = response.data[1]['bsc_saves']
-                  this.bscCalls = response.data[1]['bsc_calls']
-                  this.portalCalls = response.data[1]['portal_calls']
-                  this.portalSaves = response.data[1]['portal_saves']
-                  this.calls = response.data[1]['calls']
-                  this.saves = response.data[1]['orders']
-                  this.optins = response.data[1]['optins']
-                }
-                else {
-                  this.users = response.data[0]
-                  this.calls = response.data[1]['calls']
-                  this.saves = response.data[1]['orders']
-                }
+                this.sscCalls = response.data[1]['ssc_calls']
+                this.sscSaves = response.data[1]['ssc_saves']
+                this.bscSaves = response.data[1]['bsc_saves']
+                this.bscCalls = response.data[1]['bsc_calls']
+                this.portalCalls = response.data[1]['portal_calls']
+                this.portalSaves = response.data[1]['portal_saves']
+                this.calls = response.data[1]['calls']
+                this.saves = response.data[1]['orders']
+                this.optins = response.data[1]['optins']
               }
               else
               {
