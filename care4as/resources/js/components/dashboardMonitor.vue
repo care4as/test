@@ -1,6 +1,6 @@
 <template>
   <div class="row h-100 w-100 justify-content-center align-bottom m-2">
-    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.sscCR > 15 ? 'bg-success' : 'bg-danger text-white']">
+    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.sscCR > 51 ? 'bg-success' : 'bg-danger text-white']">
       <div class="">
         <div class="row m-1 text-center">
           SSC-CR:
@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.bscCR > 15 ? 'bg-success' : 'bg-danger text-white']">
+    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.bscCR > 20 ? 'bg-success' : 'bg-danger text-white']">
       <div class="">
         <div class="row m-1 text-center">
           BSC-CR:
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.portalCR > 15 ? 'bg-success' : 'bg-danger text-white']">
+    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.portalCR > 80 ? 'bg-success' : 'bg-danger text-white']">
       <div class="">
         <div class="row m-1 text-center">
           Portal-CR:
