@@ -70,12 +70,15 @@
                                     <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 5px;">
                                         <label for="month" style="margin: auto 0 auto auto;">Monat:</label>
                                         <select id="month" class="form-control" style="color:black;" name="month">
-                                                <option value="february">Februar</option>
-                                                <option value="march">März</option>
+                                            @foreach($dateSelection['month'] as $key => $entry)
+                                                <option value="{{$key}}" @if($key == $param['month']) selected @endif>{{$entry}}</option>
+                                            @endforeach
                                         </select>
                                         <label for="year" style="margin: auto 0 auto auto;">Jahr:</label>
                                         <select id="year" class="form-control" style="color:black;" name="year">
-                                                <option value="2022">2022</option>
+                                            @foreach($dateSelection['year'] as $key => $entry)
+                                                <option value="{{$key}}" @if($key == $param['year']) selected @endif>{{$entry}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>

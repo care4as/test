@@ -20,8 +20,7 @@ class RevenueReportController extends Controller
     public function master(){
 
         $param = $this->getParam();
-
-        $dateSelection = null;
+        $dateSelection = $this->calcDateSelection();
 
         if($param['comp'] == true){
             $data = $this->getData($param);
@@ -96,6 +95,32 @@ class RevenueReportController extends Controller
 
         return $constants;
 
+    }
+
+    public function calcDateSelection(){
+        $data = array();
+
+        $difYear = date('Y') - 2022;
+        
+        for ($i = 0; $i <= $difYear; $i++){
+            $data['year'][2022 + $i] = 2022 + $i;
+        }
+
+        $data['month'] = array(
+            'january' => 'Januar',
+            'february' => 'Februar',
+            'march' => 'März',
+            'april' => 'April',
+            'may' => 'Mai',
+            'june' => 'Juni',
+            'july' => 'Juli',
+            'august' => 'August',
+            'september' => 'September',
+            'october' => 'Oktober',
+            'november' => 'November',
+            'december' => 'Dezember',
+        );
+        return $data;
     }
 
     public function getData($param){
