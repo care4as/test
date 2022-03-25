@@ -37,6 +37,18 @@
       text-align: center;
 
     }
+    .nicEdit-main
+    {
+      border-style: none !important;
+      border-color: Transparent !important;
+      overflow: auto;
+      box-shadow: 0px 0px 25px rgba(0,0,0,0.5);
+    }
+    #editor1
+    {
+      width: 100%;
+      height: 100%;
+    }
     #app
     {
       position:fixed;
@@ -47,20 +59,26 @@
     }
     .col-md-5
     {
-      height: 45%;
+      height: 40%;
       border-radius: 25px;
     }
   </style>
 </head>
 <body class="bg-primary" >
   <div class="row text-dark h-100 justify-content-center" id="app">
-    <div class="col-md-5 h-100">
-      <textarea name="content" id="editor1" style="width: 100%; height: 100%;">
-          Text zum editieren
-      </textarea>
+    <div class="col-md-7 h-100">
+      <div class="h-100 p-2">
+        <textarea name="content" id="editor1" style="">
+            Text zum editieren
+        </textarea>
+      </div>
+
     </div>
-    <div class="col-md-5 h-100 center_items" id="">
-      <dbMonitor></dbMonitor>
+    <div class="col-md-4 h-100 center_items" id="">
+      <div class="h-100 p-2">
+        <dbMonitor></dbMonitor>
+      </div>
+
     </div>
   </div>
   <script src="{{asset('js/app.js')}}"></script>
