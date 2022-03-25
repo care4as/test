@@ -1,49 +1,49 @@
 <template>
   <div class="row h-100 w-100 justify-content-center align-bottom m-2">
-    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.sscCR > 51 ? 'bg-success' : 'bg-danger text-white']">
+    <div class="col-md-5  m-1 p-2 center_items" v-bind:class= "[this.sscCR > 52 ? 'bg-success' : 'bg-danger text-white']">
       <div class="">
         <div class="row m-1 text-center">
           SSC-CR:
         </div>
         <div class="row m-1">
           <div class="col-6">
-            <p>{{this.sscCR}}<i class="fa-solid fa-arrow-trend-down"></i></p>
+            <p>{{this.sscCR}}%<i class="fa-solid fa-arrow-trend-down"></i></p>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.bscCR > 20 ? 'bg-success' : 'bg-danger text-white']">
+    <div class="col-md-5  m-1 p-2 center_items" v-bind:class= "[this.bscCR > 20 ? 'bg-success' : 'bg-danger text-white']">
       <div class="">
         <div class="row m-1 text-center">
           BSC-CR:
         </div>
         <div class="row m-1">
           <div class="col-6">
-            <p>{{this.bscCR}} <i class="fa-solid fa-arrow-trend-down"></i></p>
+            <p>{{this.bscCR}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.portalCR > 80 ? 'bg-success' : 'bg-danger text-white']">
+    <div class="col-md-5  m-1 p-2 center_items" v-bind:class= "[this.portalCR > 68 ? 'bg-success' : 'bg-danger text-white']">
       <div class="">
         <div class="row m-1 text-center">
           Portal-CR:
         </div>
         <div class="row m-1">
           <div class="col-6">
-            <p>{{this.portalCR}}<i class="fa-solid fa-arrow-trend-down"></i></p>
+            <p>{{this.portalCR}}%<i class="fa-solid fa-arrow-trend-down"></i></p>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-5 h-50 m-1 p-2 center_items" v-bind:class= "[this.optinQuota > 15 ? 'bg-success' : 'bg-danger text-white']">
+    <div class="col-md-5  m-1 p-2 center_items" v-bind:class= "[this.optinQuota > 13.5 ? 'bg-success' : 'bg-danger text-white']">
       <div class="">
         <div class="row m-1 text-center">
           Optinquote:
         </div>
         <div class="row m-1">
           <div class="col-6">
-            <p>{{this.optinQuota}} <i class="fa-solid fa-arrow-trend-down"></i></p>
+            <p>{{this.optinQuota}}% <i class="fa-solid fa-arrow-trend-down"></i></p>
           </div>
         </div>
       </div>
