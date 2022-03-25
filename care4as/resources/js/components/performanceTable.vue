@@ -69,7 +69,7 @@
           </div>
         </div>
         <div class="row m-0" v-else>
-          <div class="col-md-5 rotated bg-light p-2 " v-bind:class= "[this.optinQuota > 15 ? 'bg-success' : 'bg-danger text-white']">
+          <div class="col-md-5 rotated bg-light p-2 " v-bind:class= "[this.optinQuota > 42 ? 'bg-success' : 'bg-danger text-white']">
             <div class="row m-1">
               CR:
             </div>
@@ -93,10 +93,10 @@
         <div class="row m-0 w-100" style="min-height: 45vh;">
           <div class="col-md bg-white shadow" style="transform: rotateY(-15deg);">
             <div class="row center_items">
-              <h5>Liveticker Teamquote1</h5>
+              <h5>Liveticker Teamquote</h5>
             </div>
             <div class="wrapper h-75">
-              <div class="row center_items">
+              <div class="row h-100 center_items">
                 <div class="d-flex center_items " id="chartcontainer" style="width: 90%;height: 400px;">
                   <canvas id="dailyQuota" style="width: 90%;"></canvas>
                 </div>
@@ -116,28 +116,28 @@
                     <th @click="sorted('ssc_quota')" style="cursor:pointer">SSC-CR</th>
                     <th @click="sorted('ssc_calls')" style="cursor:pointer">SSC-Calls</th>
                     <th @click="sorted('ssc_orders')" style="cursor:pointer">SSC-Saves</th>
-                    <th @click="sorted('cr')" style="cursor:pointer">CR</th>
-                    <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
-                    <th @click="sorted('orders')" style="cursor:pointer">Orders</th>
+                    <th @click="sorted('cr')" style="cursor:pointer">BSC-CR</th>
+                    <th @click="sorted('calls')" style="cursor:pointer">BSC-Calls</th>
+                    <th @click="sorted('orders')" style="cursor:pointer">BSC-Orders</th>
                   </tr>
                   <tr class="" v-bind:class= "[user.ssc_quota > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
                     <td>{{user.name}}</td>
                     <td>{{user.ssc_quota}}%</td>
                     <td>{{user.ssc_calls}}</td>
                     <td>{{user.ssc_orders}}</td>
-                    <td>{{user.cr}}%</td>
-                    <td>{{user.calls}}</td>
-                    <td>{{user.orders}}</td>
+                    <td>{{user.bsccr}}%</td>
+                    <td>{{user.bsc_calls}}</td>
+                    <td>{{user.bsc_orders}}</td>
                   </tr>
                 </table>
-                <table class="max-table" style="width: 100%;"v-else>
-                  <tr class="">
+                <table class="max-table text-dark" style="width: 100%;" v-else>
+                  <tr class="" >
                     <th @click="sorted('name')" style="cursor:pointer" >User </th>
                     <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
-                    <th @click="sorted('calls')" style="cursor:pointer">SSC_Calls</th>
-                    <th @click="sorted('orders')" style="cursor:pointer">SSC_Saves</th>
+                    <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
+                    <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
                   </tr >
-                  <tr class="unit-translucent" v-for="user in sortedUsers">
+                  <tr class="" v-bind:class= "[user.dslqouta > 42 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
                     <td>{{user.name}}</td>
                     <td>{{user.dslqouta}}%</td>
                     <td>{{user.calls}}</td>
@@ -173,7 +173,6 @@
       data(){
         return{
           users: [1,2,3],
-          timer: '',
           currentSort:'ssc_quota',
           currentSortDir:'desc',
           SscGeVoCr: 0,
@@ -194,10 +193,8 @@
       mounted() {
         var self = this;
         console.log('ptable Component mounted.')
-
         self.getUserData('Mobile')
         self.getDailyQouta('Mobile')
-
         this.timer =
         setInterval(function()
         {
@@ -253,7 +250,6 @@
         },
         sscCR: function(){
           if (this.sscCalls != 0) {
-
             return Math.round((this.sscSaves*100/this.sscCalls)*100)/100
           }
           else {
@@ -325,14 +321,17 @@
           this.department = dep
           this.getUserData(dep)
           this.getDailyQouta(dep)
+
           clearInterval(this.timer)
           this.timer =
+
           setInterval(function()
           {
             this.getUserData(dep)
             this.getDailyQouta(dep)
           }.bind(this), 60000);
 
+          // console.log(this.department)
         },
         getDailyQouta(dep){
 
@@ -355,12 +354,14 @@
 
             })
           },
+
         createChart(chartId, chartData) {
         let chart = document.getElementById(chartId);
+
         if (typeof chart != 'undefined' || chart != null )
         {
           document.getElementById(chartId).remove()
-          $('#chartcontainer').append('<canvas id="'+chartId+'" width="" height=""style="height: 60vh; max-width: 90%;"></canvas>')
+          $('#chartcontainer').append('<canvas id="'+chartId+'" width="" height="" style="max-width: 90%;"></canvas>')
           // console.log('test')
         }
         const ctx = document.getElementById(chartId);

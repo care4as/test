@@ -113,7 +113,7 @@ class AgentTrackingController extends Controller
         $department == 'all';
       }
 
-      // dd($department);
+
       $users = User::with('TrackingToday','TrackingCallsToday')
       ->where('status', 1)
       // ->where('project','1und1 Retention')
@@ -122,12 +122,22 @@ class AgentTrackingController extends Controller
       ->get();
 
       // $ids = $users->pluck('id');
-      $history = TrackEvent::with('createdBy')
+
+      $history = TrackEvent::
+      // with(['createdBy' => function($q) use ($department){
+      //   $q->where('project',$department);
+      //
+      //   }])
+      // ->whereHas('project')
+      whereHas('createdBy' , function ($createdBy) use($department){
+        $createdBy->where('project',$department);
+      })
       // ->whereIn('created_by', $ids)
       ->orderBy('created_at','DESC')
+      ->limit('3000')
       ->get();
 
-
+      // dd($history[2], $history);
       if($department == '1und1 DSL Retention')
       {
         return view('trackingDSLAdmin', compact('history', 'users'));
@@ -151,8 +161,6 @@ class AgentTrackingController extends Controller
       if (request('end')) {
         $end = request('end');
       }
-
-
       $users = User::
       with(['TrackingAllCalls' => function($q) use ($start,$end){
         // $q->select(['id','person_id','calls','time_in_state','call_date']);
@@ -188,9 +196,8 @@ class AgentTrackingController extends Controller
           {
             $q->where('created_at','<=',$end);
           }
-        }
+        }}])
 
-        }])
       ->where('status', 1)
       ->where('project','1und1 Retention')
       ->get();
@@ -330,9 +337,6 @@ class AgentTrackingController extends Controller
         );
 
       $finalarray['footer'] = $footerdata;
-      // $trackcalls = TrackCalls::all();
-
-      // dd($users, $users[34]);
       return response()->json($finalarray);
     }
     function roundUp($calls,$quotient)
@@ -345,9 +349,9 @@ class AgentTrackingController extends Controller
       {
         $quota = round($quotient*100/$calls, 2);
       }
-
       return $quota;
     }
+
     public function trackCall($type, $updown)
     {
       // dd($type);
@@ -369,14 +373,10 @@ class AgentTrackingController extends Controller
       }
       else {
         $trackcalls = new TrackCalls;
-
         $trackcalls->category = $type;
         $trackcalls->calls = 0;
         $trackcalls->user_id = Auth()->id();
-
       }
-
-      // dd($trackcalls,$type, $updown);
 
       if($updown == '1')
       {
@@ -389,9 +389,7 @@ class AgentTrackingController extends Controller
           $trackcalls->calls = $trackcalls->calls-1;
           $trackcalls->save();
         }
-
       }
-
 
       return redirect()->back();
       }
@@ -418,9 +416,6 @@ class AgentTrackingController extends Controller
     {
         // dd($request);
         $model = TrackEvent::where('id',$request->trackid)->first();
-
-        // dd($model);
-
         $requestX =  request()->except(['_token','trackid']);
         $model->TranformRequestToModel($requestX);
         $model->save();

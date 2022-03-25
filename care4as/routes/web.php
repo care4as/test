@@ -23,9 +23,6 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth')->name('user.logout');//RECHT FEHLT
 
-
-
-
   Route::get('/messageOfTheDay', function()
   {
     return view('messageOfTheDay');
@@ -135,7 +132,6 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/report/nettozeitenreport/', 'ExcelEditorController@nettozeitenImport')->name('reports.nettozeiten.upload')->middleware('hasRight:importReports');
 
   //Memos
-
   Route::view('/memos/create', 'createMemo')->name('memo.create');
   Route::post('/memos/store', 'MemorandaController@store')->name('memo.store');
   Route::get('/memo/read/{id}', 'MemorandaController@read')->name('memo.read');
@@ -240,6 +236,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config');
   Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config');
   Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
+  Route::get('/config/activateDSLGeVoMail', 'Configcontroller@activateDSLGeVoMail')->name('config.activateDSL15Min')->middleware('hasRight:config');
+  Route::get('/config/deactivateDSLGeVoMail', 'Configcontroller@deactivateDSLGeVoMail')->name('config.deactivateDSL15Min')->middleware('hasRight:config');
   Route::get('/config/activateSiMa', 'Configcontroller@activateSicknessMail')->name('config.activateSiMa')->middleware('hasRight:config');
   Route::get('/config/deactivateSiMa', 'Configcontroller@deactivateSicknessMail')->name('config.deactivateSiMa')->middleware('hasRight:config');
   Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
@@ -249,6 +247,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
   Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config');
   Route::post('/config/telefonica/changePauseConfig', 'Configcontroller@changePIPTelefonica')->name('telefonica.changePausePeople')->middleware('hasRight:telefonica_config');
+  Route::get('/config/sendIntermail', 'Configcontroller@sendInters')->name('intersmail.rene');
+
   //endconfig
 
   //roles and rights
@@ -256,6 +256,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/role/show/{id}', 'RolesController@show')->name('role.show')->middleware('hasRight:changeRole');
     Route::post('/roles/save', 'RolesController@store')->name('role.save')->middleware('hasRight:createRole');
     Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete')->middleware('hasRight:createRole');
+    Route::get('/roles/pdf', 'RolesController@pdfRoles')->name('role.delete')->middleware('hasRight:createRole');
 
     Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update')->middleware('hasRight:changeRole');
 
@@ -388,6 +389,11 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');//RECHT FEHLT
   //endoffers
 
+  //shipingGames routes
+  Route::post('/shipz/createUser', 'ShipsController@createAvatar')->name('ships.createUser');//RECHT FEHLT
+  Route::get('/shipz/checkUser/{id}', 'ShipsController@checkUser')->name('ships.createUser');//RECHT FEHLT
+  //end
+  
   //START WFM
   Route::get('/wfm/employee/times', 'WfmController@master')->name('wfm.master')->middleware('hasRight:controlling'); //RECHT != WFM
 
@@ -400,100 +406,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/user/getUsersByIM/{department}', 'UserController@getUsersIntermediate')->name('user.byIM')->middleware('hasRight:dashboardAdmin');
 
   Route::get('/test', function(){
-
-    $start_date= 1;
-    $end_date= 1;
-
-    $ids=array(606,603,602);
-
-    $users = App\User::
-    where('department','Agenten')
-    ->where('status',1)
-    ->whereIn('id', $ids)
-    ->select('id','1u1_person_id','1u1_agent_id','project','ds_id')
-    ->with(['dailyagent' => function($q) use ($start_date,$end_date){
-      $q->select(['id','agent_id','status','time_in_state','date']);
-      if($start_date !== 1)
-      {
-        $datemod = Carbon::parse($start_date)->setTime(2,0,0);
-        $q->where('date','>=',$datemod);
-      }
-      if($end_date !== 1)
-      {
-        $datemod2 = Carbon::parse($end_date)->setTime(23,59,59);
-        $q->where('date','<=',$datemod2);
-      }
-      }])
-    ->with(['retentionDetails' => function($q) use ($start_date,$end_date){
-      // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
-      if($start_date !== 1)
-      {
-        $q->where('call_date','>=',$start_date);
-      }
-      if($end_date !== 1)
-      {
-        $q->where('call_date','<=',$end_date);
-      }
-      }])
-      ->with(['hoursReport' => function($q) use ($start_date,$end_date){
-
-        if($start_date !== 1)
-        {
-          $q->where('work_date','>=',$start_date);
-        }
-        if($end_date !== 1)
-        {
-          $q->where('work_date','<=',$end_date);
-        }
-        }])
-      ->with(['SSETracking' => function($q) use ($start_date,$end_date){
-        if($start_date != 1)
-        {
-          $q->where('trackingdate','>=',$start_date);
-        }
-        if($end_date != 1)
-        {
-          $q->where('trackingdate','<=',$end_date);
-        }
-      }])
-      ->with(['SAS' => function($q) use ($start_date,$end_date){
-        if($start_date != 1)
-        {
-          $q->where('date','>=',$start_date);
-        }
-        if($end_date != 1)
-        {
-          $q->where('date','<=',$end_date);
-        }
-      }])
-      ->with(['gevo' => function($q) use ($start_date,$end_date){
-        // $q->select(['id','1u1_person_id','calls','time_in_state','call_date']);
-        if($start_date !== 1)
-        {
-          $q->where('date','>=',$start_date);
-        }
-        if($end_date !== 1)
-        {
-          $q->where('date','<=',$end_date);
-        }
-        }])
-      ->with(['Optin' => function($q) use ($start_date,$end_date){
-        if($start_date != 1)
-        {
-          $q->where('date','>=',$start_date);
-        }
-        if($end_date != 1)
-        {
-          $q->where('date','<=',$end_date);
-        }
-      }])
-    // ->limit(10)
-    ->get();
-
-    dd($users);
-
+    return view('test');
   })->name('test');
 
-  Route::get('/test2', 'AgentTrackingController@AdminIndex')->name('test');
-
+  // Route::get('/test2', 'AgentTrackingController@AdminIndex')->name('test');
 });

@@ -35,11 +35,11 @@ function roundUp($calls,$quotient)
 #AdminTrackingTable_length label
 {
   display: flex;
+  margin: 25px;
 }
-#AdminTrackingTable_length label select
+#AdminTrackingTable_filter
 {
-  margin-left: 5px;
-  margin-right: 5px;
+  padding: 5px;
 }
 
 .dt-buttons
@@ -50,17 +50,19 @@ function roundUp($calls,$quotient)
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 25px;
 }
 .toolbar
 {
   float: left;
   width: 20%;
+  margin: 25px;
 }
 .dataTables_filter
 {
   float: left;
   width: 24%;
-  margin: 5px;
+  margin: 25px;
 
 }
 .dataTables_filter label
@@ -174,7 +176,9 @@ function roundUp($calls,$quotient)
     }
 </style>
 @endsection
-
+<div class="loader" >
+  test
+</div>
 <div style="font-size: 1em">
     <!-- START MAIN-->
     <div class="row">
@@ -203,7 +207,7 @@ function roundUp($calls,$quotient)
                                         <thead>
                                             <tr>
                                                 <th class="bg-dark text-white"style="border-right: 2px solid grey">Name</th>
-                                                <th style="border-right: 2px solid grey">Calls Retention</th>
+                                                <th style="border-right: 2px solid grey">Calls</th>
                                                 <th style="border-right: 2px solid grey">Saves</th>
                                                 <th>Gesamt CR</th>
                                                 <th>GeVo CR</th>
@@ -211,42 +215,38 @@ function roundUp($calls,$quotient)
                                                 <th>Retention Service</th>
                                                 <th>Retention Cancel</th>
                                                 <th>CR Retention</th>
-                                                <th style="border-right: 2px solid grey">Calls Pretention</th>
                                                 <th>Prevention Save</th>
                                                 <th>Prevention Service</th>
                                                 <th>Prevention Cancel</th>
                                                 <th style="border-right: 2px solid grey">CR Prevention</th>
-                                                <th >KüRüs</th>
-                                                <th >NV DSL</th>
-                                                <th >NV Mob</th>
-                                                <th  style="border-right: 2px solid grey">Umzüge</th>
+                                                <th>KüRüs</th>
+                                                <th>NV DSL</th>
+                                                <th>NV Mob</th>
+                                                <th style="border-right: 2px solid grey">Umzüge</th>
                                                 <th>Angebote</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($users as $user)
                                           <tr>
-
                                             <td class="bg-dark text-white"style="border-right: 2px solid grey">{{$user->name}}</td>
                                             <td>{{$calls = $user->TrackingCallsToday->sum('calls')}}</td>
-                                            <td>{{$cancels = $user->TrackingToday->where('event_category','Cancel')->count()}}</td>
-                                            <td style="border-right: 2px solid grey">{{$user->TrackingToday->where('event_category','Service')->count()}}</td>
-                                            <td>{{$sscCalls=$user->TrackingCallsToday->where('category',1)->sum('calls')}}</td>
-                                            <td>@php $sscSaves = $user->TrackingToday->where('product_category','SSC')->where('event_category','Save')@endphp {{ $sscSaves->count()}}</td>
-                                            <td>{{$sscSaves_NBO = $sscSaves->where('backoffice',0)->count()}}</td>
-                                            <td>{{$sscSaves_PBO = $sscSaves->where('backoffice',1)->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','SSC')->where('event_category','KüRü')->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','SSC')->where('event_category','Cancel')->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','SSC')->where('event_category','Service')->count()}}</td>
-                                            <td>{{roundUp($sscCalls,$sscSaves_NBO)}}%</td>
-                                            <td style="border-right: 2px solid grey">{{roundUp($sscCalls,$sscSaves->count())}}%</td>
-                                            <td>{{$bscCalls = $user->TrackingCallsToday->where('category',2)->sum('calls')}}</td>
-                                            <td>@php $bscSaves = $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')@endphp {{ $bscSaves->count()}}</td>
-                                            <td>{{$bscSaves_NBO = $bscSaves->where('backoffice',0)->count()}}</td>
-                                            <td>{{$bscSaves_PBO = $bscSaves->where('backoffice',1)->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','KüRü')->count()}}</td>
-                                            <td>{{$user->TrackingToday->where('product_category','BSC')->where('event_category','Cancel')->count()}}</td>
-
+                                            <td>{{$Allsaves = $user->TrackingToday->where('event_category','Save')->count() + $kuerue= $user->TrackingToday->where('event_category','KüRü')->count()}}</td>
+                                            <td style="border-right: 2px solid grey">{{roundUp($calls,$Allsaves)}}%</td>
+                                            <td>{{roundUp($calls,$user->TrackingToday->where('event_category','Save')->count())}}%</td>
+                                            <td>{{$retSaves = $user->TrackingToday->where('product_category','Retention')->where('event_category','Save')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('product_category','Retention')->where('event_category','Service')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('product_category','Retention')->where('event_category','Cancel')->count()}}</td>
+                                            <td>{{roundUp($retcalls = $user->TrackingCallsToday->where('Category','5')->sum('calls'), $retSaves)}}%</td>
+                                            <td>{{$prevSaves = $user->TrackingToday->where('product_category','Prevention')->where('event_category','Save')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('product_category','Prevention')->where('event_category','Service')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('product_category','Prevention')->where('event_category','Cancel')->count()}}</td>
+                                            <td style="border-right: 2px solid grey">{{roundUp($prevcalls = $user->TrackingCallsToday->where('Category','6')->sum('calls'), $prevSaves)}}%</td>
+                                            <td>{{$kuerue}}</td>
+                                            <td>{{$user->TrackingToday->where('event_category','NV_DSL')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('event_category','NV_Mobile')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('event_category','Umzug')->count()}}</td>
+                                            <td>{{$user->TrackingToday->where('event_category','Angebot')->count()}}</td>
                                           </tr>
                                           @endforeach
                                         </tbody>
@@ -258,91 +258,61 @@ function roundUp($calls,$quotient)
                                                     })
                                                   }}</td>
                                                 <td>
-                                                  {{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('event_category','Cancel')->count();
+                                                  {{$allSaves = $users->sum(function ($user) {
+                                                      return $user->TrackingToday->where('event_category','Save')->count() + $kuerue= $user->TrackingToday->where('event_category','KüRü')->count();
                                                     })
                                                   }}
                                                   </td>
                                                 <td style="border-right: 2px solid grey">
-                                                  {{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('event_category','Service')->count();
+                                                  {{roundUp($allCalls,$allSaves)}}%
+                                                </td>
+                                                <td>
+                                                  {{  roundUp($allCalls, $users->sum(function ($user) {
+                                                    return $user->TrackingToday->where('product_category','Retention')->where('event_category','Save')->count();
+                                                  }))}}%
+                                                </td>
+                                                <td>
+                                                  {{$allRetSaves = $users->sum(function ($user) {
+                                                        return $user->TrackingToday->where('product_category','Retention')->where('event_category','Save')->count();
                                                     })
                                                   }}
                                                 </td>
                                                 <td>
-                                                  {{$allSSCCalls = $users->sum(function ($user) {
-                                                      return $user->TrackingCallsToday->where('category',1)->sum('calls');
+                                                  {{$allRetServices = $users->sum(function ($user) {
+                                                      return $user->TrackingToday->where('product_category','Retention')->where('event_category','Service')->count();
                                                     })
                                                   }}
                                                 </td>
                                                 <td>
-                                                  {{$allSSCSaves = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','SSC')->where('event_category','Save')->count();
+                                                  {{$allRetCancels = $users->sum(function ($user) {
+                                                      return $user->TrackingToday->where('product_category','Retention')->where('event_category','Cancel')->count();
                                                     })
                                                   }}
+                                                </td>
+                                                <td>
+                                                  {{roundUp($calls, $allRetSaves)}}%
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
 
                                                 </td>
-                                                <td>{{$allSSCSaves_NBO = $users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','SSC')->where('event_category','Save')->where('backoffice',0)->count();
-                                                  })
-                                                }}</td>
+                                                <td></td>
+                                                <td style="border-right: 2px solid grey"></td>
                                                 <td>
-                                                  {{$allSSCSaves_PBO = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','SSC')->where('event_category','Save')->where('backoffice',1)->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>
-                                                  {{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','SSC')->where('event_category','KüRü')->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>{{$users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','SSC')->where('event_category','Cancel')->count();
-                                                  })
-                                                }}</td>
-                                                  <td>{{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','SSC')->where('event_category','Service')->count();
-                                                    })
-                                                  }}
-                                                  </td>
-                                                <td>{{roundUp($allSSCCalls,$allSSCSaves_NBO)}}%</td>
-                                                <td style="border-right: 2px solid grey">{{roundUp($allSSCCalls,$allSSCSaves)}}%</td>
-                                                <td>
-                                                  {{$allBSCCalls = $users->sum(function ($user) {
-                                                      return $user->TrackingCallsToday->where('category',2)->sum('calls');
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>
-                                                  {{$allBSCSaves = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')->count();
-                                                    })
-                                                  }}
 
                                                 </td>
-                                                <td>{{$allBSCSaves_NBO = $users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')->where('backoffice',0)->count();
-                                                  })
-                                                }}</td>
                                                 <td>
-                                                  {{$allBSCSaves_PBO = $users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','BSC')->where('event_category','Save')->where('backoffice',1)->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>
-                                                  {{$users->sum(function ($user) {
-                                                      return $user->TrackingToday->where('product_category','BSC')->where('event_category','KüRü')->count();
-                                                    })
-                                                  }}
-                                                </td>
-                                                <td>{{$users->sum(function ($user) {
-                                                    return $user->TrackingToday->where('product_category','BSC')->where('event_category','Cancel')->count();
-                                                  })
-                                                }}</td>
 
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+
+                                                </td>
+                                                <td>
+
+                                                </td>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -402,105 +372,103 @@ function roundUp($calls,$quotient)
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+              <div class="modal-body" style="font-size: 14px;">
+                <div class="row">
+                  <form class="w-100" action="{{route('mobile.tracking.agents.update')}}" method="post">
+                    @csrf
+                      <div class="max-main-container">
+                          <div class="tracking_title">
+                              Saves
+                          </div>
+                          <input type="hidden" name="trackid" id="trackid" value="">
+                          <div class="tracking_container">
+                              <div class="tracking_description">Vertragsnummer</div>
+                              <input type="text" class="form-control" name="contract_number" id="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()">
+                          </div>
+                          <div class="tracking_container">
+                              <div class="tracking_description">Produktgruppe</div>
+                              <div class="btn-group-container">
+                                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                      <input type="radio" class="btn-check" name="product_category" value="SSC" id="product_category1" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary first-btn-group-element" for="product_category1">SSC</label>
+                                      <input type="radio" class="btn-check" name="product_category" value="BSC" id="product_category2" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary" for="product_category2">BSC</label>
 
-                <div class="modal-body" style="font-size: 14px;">
-                    <div class="row">
-                      <form class="w-100" action="{{route('mobile.tracking.agents.update')}}" method="post">
-                        @csrf
-                          <div class="max-main-container">
-                              <div class="tracking_title">
-                                  Saves
-                              </div>
-                              <input type="hidden" name="trackid" id="trackid" value="">
-                              <div class="tracking_container">
-                                  <div class="tracking_description">Vertragsnummer</div>
-                                  <input type="text" class="form-control" name="contract_number" id="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()">
-                              </div>
-                              <div class="tracking_container">
-                                  <div class="tracking_description">Produktgruppe</div>
-                                  <div class="btn-group-container">
-                                      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                          <input type="radio" class="btn-check" name="product_category" value="SSC" id="product_category1" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary first-btn-group-element" for="product_category1">SSC</label>
-                                          <input type="radio" class="btn-check" name="product_category" value="BSC" id="product_category2" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary" for="product_category2">BSC</label>
-
-                                          <input type="radio" class="btn-check" name="product_category" value="Portale" id="product_category3" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary last-btn-group-element" for="product_category3">Portal</label>
-                                      </div>
+                                      <input type="radio" class="btn-check" name="product_category" value="Portale" id="product_category3" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary last-btn-group-element" for="product_category3">Portal</label>
                                   </div>
-                              </div>
-                              <div class="tracking_container">
-                                  <div class="tracking_description">Bearbeitung</div>
-                                  <div class="btn-group-container">
-                                      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                          <input type="radio" class="btn-check" name="event_category" value="Save" id="event_category1" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary first-btn-group-element" for="event_category1">Save</label>
-
-                                          <input type="radio" class="btn-check" name="event_category" value="Cancel" id="event_category2" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary" for="event_category2">Cancel</label>
-
-                                          <input type="radio" class="btn-check" name="event_category" value="Service" id="event_category3" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary" for="event_category3">Service</label>
-
-                                          <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
-                                          <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">NaBu</label>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="tracking_container">
-                                  <div class="tracking_description">Zieltarif</div>
-                                  <input type="text" class="form-control" id="target_tariff" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" disabled>
-                              </div>
-                              <div class="tracking_container">
-                                  <div class="tracking_description">OptIn gesetzt</div>
-                                  <div class="btn-group-container">
-                                      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                          <input type="radio" class="btn-check" name="optin" value="1" id="optin1" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary first-btn-group-element" for="optin1">Ja</label>
-
-                                          <input type="radio" class="btn-check" name="optin" value="0" id="optin2" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary last-btn-group-element" for="optin2">Nein</label>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="tracking_container">
-                                  <div class="tracking_description">Restlaufzeit+24</div>
-                                  <div class="btn-group-container">
-                                      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                          <input type="radio" class="btn-check" name="runtime" value="1" id="runtime1" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary first-btn-group-element" for="runtime1">Ja</label>
-
-                                          <input type="radio" class="btn-check" name="runtime" value="0" id="runtime2" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary last-btn-group-element" for="runtime2">Nein</label>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="tracking_container">
-                                  <div class="tracking_description">An Nacharbeit</div>
-                                  <div class="btn-group-container">
-                                      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                          <input type="radio" class="btn-check" name="backoffice" value="1" id="backoffice1" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Ja</label>
-
-                                          <input type="radio" class="btn-check" name="backoffice" value="0" id="backoffice2" autocomplete="off" onchange="tracking_input()">
-                                          <label class="btn btn-outline-primary last-btn-group-element" for="backoffice2">Nein</label>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="tracking_container" style="display: flex;">
-                                  <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;" id="submit_tracking">
                               </div>
                           </div>
-                      </div>
+                          <div class="tracking_container">
+                              <div class="tracking_description">Bearbeitung</div>
+                              <div class="btn-group-container">
+                                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                      <input type="radio" class="btn-check" name="event_category" value="Save" id="event_category1" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary first-btn-group-element" for="event_category1">Save</label>
 
-                      </form>
-                    </div>
-                </div>
+                                      <input type="radio" class="btn-check" name="event_category" value="Cancel" id="event_category2" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary" for="event_category2">Cancel</label>
+
+                                      <input type="radio" class="btn-check" name="event_category" value="Service" id="event_category3" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary" for="event_category3">Service</label>
+
+                                      <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
+                                      <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">NaBu</label>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="tracking_container">
+                              <div class="tracking_description">Zieltarif</div>
+                              <input type="text" class="form-control" id="target_tariff" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" disabled>
+                          </div>
+                          <div class="tracking_container">
+                              <div class="tracking_description">OptIn gesetzt</div>
+                              <div class="btn-group-container">
+                                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                      <input type="radio" class="btn-check" name="optin" value="1" id="optin1" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary first-btn-group-element" for="optin1">Ja</label>
+
+                                      <input type="radio" class="btn-check" name="optin" value="0" id="optin2" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary last-btn-group-element" for="optin2">Nein</label>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="tracking_container">
+                              <div class="tracking_description">Restlaufzeit+24</div>
+                              <div class="btn-group-container">
+                                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                      <input type="radio" class="btn-check" name="runtime" value="1" id="runtime1" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary first-btn-group-element" for="runtime1">Ja</label>
+
+                                      <input type="radio" class="btn-check" name="runtime" value="0" id="runtime2" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary last-btn-group-element" for="runtime2">Nein</label>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="tracking_container">
+                              <div class="tracking_description">An Nacharbeit</div>
+                              <div class="btn-group-container">
+                                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                      <input type="radio" class="btn-check" name="backoffice" value="1" id="backoffice1" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Ja</label>
+
+                                      <input type="radio" class="btn-check" name="backoffice" value="0" id="backoffice2" autocomplete="off" onchange="tracking_input()">
+                                      <label class="btn btn-outline-primary last-btn-group-element" for="backoffice2">Nein</label>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="tracking_container" style="display: flex;">
+                              <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;" id="submit_tracking">
+                          </div>
+                      </div>
+                  </div>
+                </form>
               </div>
             </div>
+          </div>
+        </div>
             @endsection
 
 @section('additional_js')
@@ -587,11 +555,9 @@ let table2 = $('#history-table').DataTable({
         params: {
           start: start.format('Y-MM-DD'),
           end: end.format('Y-MM-DD'),
-        }
-        })
+      }})
       .then(response => {
-
-        console.log(response)
+        // console.log(response)
         table.clear();
         table.rows.add(response.data.trackingdata);
 
@@ -611,10 +577,7 @@ let table2 = $('#history-table').DataTable({
         $('#failModal').modal('show')
         // $('#loaderDiv').css('display','none');
       })
-
-
     };
-
     $('#reportrange').daterangepicker({
       startDate: start,
       endDate: end,

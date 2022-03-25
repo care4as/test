@@ -85,4 +85,8 @@ class RolesController extends Controller
 
       return redirect()->back();
     }
+    public function pdfRoles($value='')
+    {
+      return view('Rolez');
+    }
 }

@@ -54,7 +54,6 @@
   <!-- <div class="toggler">
     <button type="button" name="button" class="unit-translucent" onclick="toggleMobileMenu()" style="">Menu</button>
   </div> -->
-
   <div class="wrapper ">
     <div class="sidebar " id='sidebar'>
       <div class="sidebar-wrapper bg-primary2" id="sidebar-wrapper" style="height: 100%">
@@ -66,7 +65,7 @@
         </div>
         <ul class="nav" style="margin-bottom: 15px;">
           <li><div class="logo bg-white m-2" style="border-radius: 20px;">
-            <a href="text-muted" class="simple-text logo-normal">
+            <a href="{{route('dashboard')}}" class="simple-text logo-normal">
               <img src="{{asset('images/Logo_Care4as_2 - Kopie.png')}}" alt="" style="max-width: 100%; margin-top: 10px; height: 12%">
             </a>
           </div>
@@ -135,7 +134,6 @@
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
                   <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
                   <li><a href="{{route('dsl.tracking.admin',['department' => 'DSL'])}}">Admin Tracking DSL</a> </li>
-
                 @endif
                 <li><a href="{{route('dsl.tracking.agents',['department' => 2])}}">Tracking DSL</a> </li>
               </ul>
@@ -815,16 +813,12 @@
 
           $('#news').css('display','none')
         }
-
-
       })
       .catch(function (err) {
         console.log('error Memocheck')
-        console.log(err.response);
+        // console.log(err.response);
       });
     }, 1000*300);
-
-
     </script>
 
   @yield('additional_js')

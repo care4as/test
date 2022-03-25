@@ -174,7 +174,9 @@ function roundUp($calls,$quotient)
     }
 </style>
 @endsection
-
+<div class="loader" id="loader" style="display:none;position: absolute; top: 50%; left:50%; transform: translate(-50%,-50%); z-index: 50;">
+  test
+</div>
 <div style="font-size: 1em">
     <!-- START MAIN-->
     <div class="row">
@@ -680,7 +682,8 @@ let table2 = $('#history-table').DataTable({
   function cb(start, end) {
 
       $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-
+      $('#loader').css('display','block')
+      
       let params = new URLSearchParams();
 
       params.append("start", start);
@@ -704,11 +707,13 @@ let table2 = $('#history-table').DataTable({
           $(table.column(i).footer() ).html('<b>'+response.data.footer[i-1]+'</b>');
           }
         table.draw();
+        $('#loader').css('display','none')
         // console.log(response.data)
       })
       .catch(function (err) {
 
         // $('#loaderDiv').css('display','none')
+        $('#loader').css('display','none')
         console.log(err);
         $('#failContent').html('Fehler: '+ err.response.data.message)
         $('#failFile').html('Datei: '+ err.response.data.file)

@@ -1,126 +1,93 @@
-@extends('general_layout')
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Care4as Software-Tool</title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=yes' name='viewport' />
+  <link rel="shortcut icon" type="image/x-icon" href="{{asset('images/favicon.ico')}}">
+  <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/js/core/popper.min.js')}}"></script> -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+  <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/js/demos.js')}}"></script> -->
 
-@section('additional_css')
-<style media="screen">
-.max-table
-{
-  text-align: center;
-}
-</style>
-@endsection
+  <!--     Fonts and icons     -->
+  <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"> -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{{asset('css/now-ui-dashboard-master/assets/css/bootstrap.min.css')}}" rel="stylesheet" />
+  <link href="{{asset('css/now-ui-dashboard-master/assets/css/now-ui-dashboard.css?v=1.5.0')}}" rel="stylesheet" />
 
-@section('content')
-  <div class="container-fluid">
-    <div class="row bg-light m-2" id="content">
-      <div class="col-12 text-center">
-        <h4>Projekt-Report Mobile Retention {{Carbon\Carbon::today()->subDays(1)->format('d.m.Y')}}</h4>
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <!-- <link href="{{asset('css/now-ui-dashboard-master/assets/demo/demo.css')}}" rel="stylesheet" /> -->
+  <link href="{{asset('css/main.css')}}" rel="stylesheet" />
+  <!-- <script src="//cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script> -->
+  <script src="{{asset('js/nicEdit.js')}}"></script>
+
+  <script type="text/javascript" src="//js.nicedit.com/nicEdit-latest.js"></script>
+
+  <style media="screen">
+    body
+    {
+      font-size: 2.5em;
+      font-weight: 900;
+    }
+    .max-table
+    {
+      text-align: center;
+
+    }
+    .nicEdit-main
+    {
+      border-style: none !important;
+      border-color: Transparent !important;
+      overflow: auto;
+      box-shadow: 0px 0px 25px rgba(0,0,0,0.5);
+    }
+    #editor1
+    {
+      width: 100%;
+      height: 100%;
+    }
+    #app
+    {
+      position:fixed;
+      height: 100vh;
+      width: 100vw;
+      margin: 0px;
+      background-color: white;
+    }
+    .col-md-5
+    {
+      height: 40%;
+      border-radius: 25px;
+    }
+  </style>
+</head>
+<body class="bg-primary" >
+  <div class="row text-dark h-100 justify-content-center" id="app">
+    <div class="col-md-7 h-100">
+      <div class="h-100 p-2">
+        <textarea name="content" id="editor1" style="">
+            Text zum editieren
+        </textarea>
       </div>
-      <hr>
-      <div class="col-md-6">
 
-        <div class="row m-2">
-          <h5>Performance</h5>
-          <hr>
-        </div>
-        <div class="row m-2">
-          <div class="col bg-white shadow rounded">
-            <div class="max-main-container">
-                <div class="max-panel-content">
-                    <div style="width: 100%;">
-                        <table class="max-table" id="xxx" style="width: 100%;">
-                            <tr>
-                              <th>Saves</th>
-                              <th>199</th>
-                            </tr>
-                            <tr>
-                              <td>-SSC</td>
-                              <td>129</td>
-                            </tr>
-                            <tr>
-                              <td>-BSC</td>
-                              <td>29</td>
-                            </tr>
-                            <tr>
-                              <td>-Portale</td>
-                              <td>29</td>
-                            </tr>
-                            <tr>
-                              <th>Calls</th>
-                              <th>199</th>
-                            </tr>
-                            <tr>
-                              <td>-SSC</td>
-                              <td>129</td>
-                            </tr>
-                            <tr>
-                              <td>-BSC</td>
-                              <td>29</td>
-                            </tr>
-                            <tr>
-                              <td>-Portale</td>
-                              <td>29</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-              </div>
-          </div>
-        </div>
+    </div>
+    <div class="col-md-4 h-100 center_items" id="">
+      <div class="h-100 p-2">
+        <dbMonitor></dbMonitor>
       </div>
-      <div class="col-md-6">
-        <div class="row m-2">
-          <h5>Quoten</h5>
-          <hr>
-        </div>
-        <div class="row m-2">
-          <div class="col bg-white shadow rounded">
-            <div class="max-main-container">
-                <div class="max-panel-content">
-                    <div style="width: 100%;">
-                        <table class="max-table" id="xxx" style="width: 100%;">
-                            <tr>
-                              <th>CR</th>
-                              <th>50%</th>
-                            </tr>
-                            <tr>
-                              <th>SSC</th>
-                              <th>53%</th>
-                            </tr>
-                            <tr>
-                              <th>BSC</th>
-                              <th>21%</th>
-                            </tr>
-                            <tr>
-                              <th>Portale</th>
-                              <th>83%</th>
-                            </tr>
-                            <tr>
-                              <th>Optins</th>
-                              <th>11%</th>
-                            </tr>
-                            <tr>
-                              <td>RLZ+</td>
-                              <td>89%</td>
-                            </tr>
-                            <tr>
-                              <th>KQ</th>
-                              <th>23%</th>
-                            </tr>
-                            <tr>
-                              <th>Produktivität</th>
-                              <th>87%</th>
-                            </tr>
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-              </div>
-          </div>
-        </div>
-
-      </div>
     </div>
   </div>
-@endsection
+  <script src="{{asset('js/app.js')}}"></script>
+  <script>
+
+    // new nicEditor({iconsPath : '../nicEditorIcons.gif'}).panelInstance('editor1');
+
+  </script>
+  <script type="text/javascript">
+    new nicEditor({fullPanel : true}).panelInstance('editor1');
+  </script>
+</body>

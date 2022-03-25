@@ -112,7 +112,7 @@ export default {
       // console.log(response)
       if(response.data[0][0])
       {
-        console.log(response.data[0][0])
+        // console.log(response.data[0][0])
         this.createChart('myChart' + this.userid,response.data)
       }
       else
