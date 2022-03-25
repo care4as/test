@@ -25,6 +25,16 @@
         background-color:aliceblue;
     }
 
+    .heads{
+        display: none;
+        background-color:aliceblue;
+    }
+
+    .fte{
+        display: none;
+        background-color:aliceblue;
+    }
+
     tr:hover td{
         background-color: #ddd !important;
     }
@@ -61,6 +71,7 @@
                                         <label for="month" style="margin: auto 0 auto auto;">Monat:</label>
                                         <select id="month" class="form-control" style="color:black;" name="month">
                                                 <option value="february">Februar</option>
+                                                <option value="march">März</option>
                                         </select>
                                         <label for="year" style="margin: auto 0 auto auto;">Jahr:</label>
                                         <select id="year" class="form-control" style="color:black;" name="year">
@@ -99,7 +110,12 @@
                                         <thead>
                                             <tr>
                                                 <th>Datum</th>
-                                                <th>FTE Bestand</th>
+                                                <th><abbr title="Nur bezahlte MA ohne: Krank o.Lfz, Elternzeit, Beschäftigungsverbot, Krank Quarantäne">FTE Bestand <button onclick="changeDisplay('fte', 'fte_button')"><i id="fte_button" class="fas fa-caret-right"></i></button></abbr></th>
+                                                    <th class="fte">KB</th>
+                                                    <th class="fte">OVH</th>
+                                                <th><abbr title="Nur bezahlte MA ohne: Krank o.Lfz, Elternzeit, Beschäftigungsverbot, Krank Quarantäne">Köpfe Bestand <button onclick="changeDisplay('heads', 'heads_button')"><i id="heads_button" class="fas fa-caret-right"></i></button></abbr></th>
+                                                    <th class="heads">KB</th>
+                                                    <th class="heads">OVH</th>
                                                 <th>Std. bezahlt</th>
                                                 <th>Umsatz IST <button onclick="changeDisplay('umsatz', 'umsatz_ist_button')"><i id="umsatz_ist_button" class="fas fa-caret-right"></i></button></th>
                                                     <th class="umsatz">CPO <button onclick="changeDisplay('cpo', 'cpo_button')"><i id="cpo_button" class="fas fa-caret-right"></i></button></th>
@@ -135,8 +151,13 @@
                                         <tbody>
                                             @foreach($data['daily'] as $key => $entry)
                                             <tr>
-                                                <td>{{$key}}</td>
-                                                <td>FTE Bestand</td> 
+                                                <td>{{date('d.m.Y', strtotime($key))}}</td>
+                                                <td>FTE Bestand</td>
+                                                    <td class="fte">KB</td>
+                                                    <td class="fte">OVH</td>
+                                                <td>FTE Köpfe</td>
+                                                    <td class="heads">KB</td>
+                                                    <td class="heads">OVH</td>
                                                 <td>Std.bezahlt</td>
                                                 <td>Umsatz IST</td>
                                                     <td class="umsatz" style="text-align: right;">{{number_format($entry['details']['revenue'],2, ',', '.')}} €</td>
@@ -215,7 +236,12 @@
                                         <tfoot>
                                             <tr style="font-weight: bold; background-color: #ddd;">
                                                 <td>Summe</td>
-                                                <td>FTE Bestand</td> 
+                                                <td><abbr title="Zeitgewichteter Mittelwert">FTE Bestand</abbr></td>
+                                                    <td class="fte">KB</td>
+                                                    <td class="fte">OVH</td>
+                                                <td><abbr title="Zeitgewichteter Mittelwert">FTE Köpfe</abbr></td>
+                                                    <td class="heads">KB</td>
+                                                    <td class="heads">OVH</td>
                                                 <td>Std.bezahlt</td>
                                                 <td>Umsatz IST</td>
                                                     <td class="umsatz" style="text-align: right;background-color: #ddd;">{{number_format($data['sum']['details']['revenue'],2, ',', '.')}} €</td>

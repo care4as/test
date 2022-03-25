@@ -21,13 +21,15 @@ class RevenueReportController extends Controller
 
         $param = $this->getParam();
 
+        $dateSelection = null;
+
         if($param['comp'] == true){
             $data = $this->getData($param);
         } else {
             $data = null;
         }
 
-        return view('controlling.revenueReport', compact('param', 'data'));
+        return view('controlling.revenueReport', compact('param', 'data', 'dateSelection'));
 
     }
 
@@ -144,6 +146,21 @@ class RevenueReportController extends Controller
 
     }
 
+    public function calcFteDaily(){
+        // Kundenberater bezahlt
+        // Kundenberater gesamt
+        // Overhead
+
+        // Köpfe und FTE Berechnen
+
+        // Auffälligkeiten
+            // Statusänderungen, Eintritte und Austritte
+    }
+
+    public function calcFteSum(){
+
+    }
+
     public function calcOptinDaily(){
 
     }
@@ -255,6 +272,7 @@ class RevenueReportController extends Controller
             $data['malus_interval'] = $availbench->where('date_date', $date)->sum('malus_interval');
             $data['malus_incentive'] = 0;
                 // Berechnung malus_incentive
+            if($data['total_costs_per_interval'] != 0){
                 $malusPercentage = $data['malus_interval'] / $data['total_costs_per_interval'];
                 if($malusPercentage <= 0.005){
                     $data['malus_incentive'] = $data['malus_interval'];
@@ -267,6 +285,9 @@ class RevenueReportController extends Controller
                 } else if ($malusPercentage <= 0.015){
                     $data['malus_incentive'] = 0.05 * $data['malus_interval'];
                 }
+            } else {
+                $malusPercentage = 0;
+            }
             $data['aht_zielmanagement'] = 0;
                 // Berechnung aht_zielmanagement
                 foreach($availbench->where('date_date', $date) as $key2 => $entry2){
@@ -284,18 +305,22 @@ class RevenueReportController extends Controller
         $data['malus_interval'] = $availbench->sum('malus_interval');
         $data['malus_incentive'] = 0;
             // Berechnung malus_incentive
-            $malusPercentage = $data['malus_interval'] / $data['total_costs_per_interval'];
+            if($data['total_costs_per_interval'] != 0){
+                $malusPercentage = $data['malus_interval'] / $data['total_costs_per_interval'];
                 if($malusPercentage <= 0.005){
-                    $data['malus_incentive'] =  $data['malus_interval'];
+                    $data['malus_incentive'] = $data['malus_interval'];
                 } else if ($malusPercentage <= 0.0075){
                     $data['malus_incentive'] = 0.5 * $data['malus_interval'];
                 } else if ($malusPercentage <= 0.01){
                     $data['malus_incentive'] = 0.25 * $data['malus_interval'];
                 } else if ($malusPercentage <= 0.0125){
-                    $data['malus_incentive'] = 0.1 * $data['malus_interval'];
+                    $data['malus_incentive'] = 0.10 * $data['malus_interval'];
                 } else if ($malusPercentage <= 0.015){
                     $data['malus_incentive'] = 0.05 * $data['malus_interval'];
                 }
+            } else {
+                $malusPercentage = 0;
+            }
         $data['aht_zielmanagement'] = 0;
             // Berechnung aht_zielmanagement
             foreach($availbench as $key2 => $entry2){
