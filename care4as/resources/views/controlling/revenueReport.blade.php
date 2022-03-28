@@ -113,12 +113,12 @@
                                         <thead>
                                             <tr>
                                                 <th>Datum</th>
-                                                <th><abbr title="Nur bezahlte MA ohne: Krank o.Lfz, Elternzeit, Beschäftigungsverbot, Krank Quarantäne">FTE Bestand <button onclick="changeDisplay('fte', 'fte_button')"><i id="fte_button" class="fas fa-caret-right"></i></button></abbr></th>
-                                                    <th class="fte">KB</th>
-                                                    <th class="fte">OVH</th>
-                                                <th><abbr title="Nur bezahlte MA ohne: Krank o.Lfz, Elternzeit, Beschäftigungsverbot, Krank Quarantäne">Köpfe Bestand <button onclick="changeDisplay('heads', 'heads_button')"><i id="heads_button" class="fas fa-caret-right"></i></button></abbr></th>
-                                                    <th class="heads">KB</th>
-                                                    <th class="heads">OVH</th>
+                                                <th><abbr title="Nur bezahlte MA ohne:&#010;- Krank o.Lfz.&#010;- Kindkrank o.Lfz.&#010;- Elternzeit&#010;- Beschäftigungsverbot&#010;- Krank Quarantäne&#010;- Fehlt Unentschuldigt&#010;Der zugrundeliegende Status lässt sich an den jeweiligen Tagen nachvollziehen">FTE Bestand <button onclick="changeDisplay('fte', 'fte_button')"><i id="fte_button" class="fas fa-caret-right"></i></button></abbr></th>
+                                                    <th class="fte"><abbr title="Alle eingestellten Kundenberater unabhängig von nicht bezahlten Status">KB</abbr></th>
+                                                    <th class="fte"><abbr title="Alle eingestellten Overheads unabhängig von nicht bezahlten Status">OVH</abbr></th>
+                                                <th><abbr title="Nur bezahlte MA ohne:&#010;- Krank o.Lfz.&#010;- Kindkrank o.Lfz.&#010;- Elternzeit&#010;- Beschäftigungsverbot&#010;- Krank Quarantäne&#010;- Fehlt Unentschuldigt&#010;Der zugrundeliegende Status lässt sich an den jeweiligen Tagen nachvollziehen">Köpfe Bestand <button onclick="changeDisplay('heads', 'heads_button')"><i id="heads_button" class="fas fa-caret-right"></i></button></abbr></th>
+                                                    <th class="heads"><abbr title="Alle eingestellten Kundenberater unabhängig von nicht bezahlten Status">KB</abbr></th>
+                                                    <th class="heads"><abbr title="Alle eingestellten Overheads unabhängig von nicht bezahlten Status">OVH</abbr></th>
                                                 <th>Std. bezahlt</th>
                                                 <th>Umsatz IST <button onclick="changeDisplay('umsatz', 'umsatz_ist_button')"><i id="umsatz_ist_button" class="fas fa-caret-right"></i></button></th>
                                                     <th class="umsatz">CPO <button onclick="changeDisplay('cpo', 'cpo_button')"><i id="cpo_button" class="fas fa-caret-right"></i></button></th>
@@ -155,12 +155,16 @@
                                             @foreach($data['daily'] as $key => $entry)
                                             <tr>
                                                 <td>{{date('d.m.Y', strtotime($key))}}</td>
-                                                <td>FTE Bestand</td>
-                                                    <td class="fte">KB</td>
-                                                    <td class="fte">OVH</td>
-                                                <td>FTE Köpfe</td>
-                                                    <td class="heads">KB</td>
-                                                    <td class="heads">OVH</td>
+                                                @if(isset($entry['fte']['information'][0]))
+                                                    <td style="text-align: center;"><abbr title="@foreach($entry['fte']['information'] as $status => $description){{$description}}&#010;@endforeach">{{number_format($entry['fte']['payed_kb_fte'], 3, ',', '.')}}</abbr></td>
+                                                @else
+                                                    <td style="text-align: center;">{{number_format($entry['fte']['payed_kb_fte'], 3, ',', '.')}}</td>
+                                                @endif
+                                                    <td style="text-align: center;" class="fte">{{number_format($entry['fte']['all_kb_fte'], 3, ',', '.')}}</td>
+                                                    <td style="text-align: center;" class="fte">{{number_format($entry['fte']['all_ovh_fte'], 3, ',', '.')}}</td>
+                                                <td style="text-align: center;">{{$entry['fte']['payed_kb_heads']}}</td>
+                                                    <td style="text-align: center;" class="heads">{{$entry['fte']['all_kb_heads']}}</td>
+                                                    <td style="text-align: center;" class="heads">{{$entry['fte']['all_ovh_heads']}}</td>
                                                 <td>Std.bezahlt</td>
                                                 <td>Umsatz IST</td>
                                                     <td class="umsatz" style="text-align: right;">{{number_format($entry['details']['revenue'],2, ',', '.')}} €</td>
@@ -239,12 +243,12 @@
                                         <tfoot>
                                             <tr style="font-weight: bold; background-color: #ddd;">
                                                 <td>Summe</td>
-                                                <td><abbr title="Zeitgewichteter Mittelwert">FTE Bestand</abbr></td>
-                                                    <td class="fte">KB</td>
-                                                    <td class="fte">OVH</td>
-                                                <td><abbr title="Zeitgewichteter Mittelwert">FTE Köpfe</abbr></td>
-                                                    <td class="heads">KB</td>
-                                                    <td class="heads">OVH</td>
+                                                <td style="text-align: center;"><abbr title="Zeitgewichteter Mittelwert">{{number_format($data['sum']['fte']['payed_kb_fte'],3, ',', '.')}}</abbr></td>
+                                                    <td style="text-align: center;background-color: #ddd;" class="fte">{{number_format($data['sum']['fte']['all_kb_fte'],3, ',', '.')}}</td>
+                                                    <td style="text-align: center;background-color: #ddd;" class="fte">{{number_format($data['sum']['fte']['all_ovh_fte'],3, ',', '.')}}</td>
+                                                <td style="text-align: center;"><abbr title="Zeitgewichteter Mittelwert">{{number_format($data['sum']['fte']['payed_kb_heads'],3, ',', '.')}}</abbr></td>
+                                                    <td style="text-align: center;background-color: #ddd;" class="heads">{{$data['sum']['fte']['all_kb_heads']}}</td>
+                                                    <td style="text-align: center;background-color: #ddd;" class="heads">{{$data['sum']['fte']['all_ovh_heads']}}</td>
                                                 <td>Std.bezahlt</td>
                                                 <td>Umsatz IST</td>
                                                     <td class="umsatz" style="text-align: right;background-color: #ddd;">{{number_format($data['sum']['details']['revenue'],2, ',', '.')}} €</td>

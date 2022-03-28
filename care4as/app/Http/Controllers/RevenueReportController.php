@@ -175,6 +175,7 @@ class RevenueReportController extends Controller
         $data['sum']['availbench'] = $this->calcAvailbenchSum($param, $rawdata['availbench']);
         $data['sum']['details'] = $this->calcDetailsSum($param, $rawdata['details']);
         $data['sum']['speedretention'] = $this->calcSpeedRetentionSum($data);
+        $data['sum']['fte'] = $this->calcFteSum($data, $rawdata['history_state'], $rawdata['states_description'], $rawdata['ma'], $param);
 
         dd($data);
         // dd($param);
@@ -185,14 +186,22 @@ class RevenueReportController extends Controller
 
     public function calcFteDaily($date, $ma, $history, $states){
         $data = array();
+
+        $ma = $ma->where('eintritt', '<=', $date);
         
         // Alle Mitarbeiter
-        $data['all_employee_hours'] = $ma->sum('soll_h_day');
-        $data['all_employee_heads'] = $ma->count();
+        $data['all_employee_hours'] = $ma->where('austritt', null)->sum('soll_h_day');
+        $data['all_employee_hours'] += $ma->where('austritt', '>=', $date)->sum('soll_h_day');
+        $data['all_employee_heads'] = $ma->where('austritt', null)->count();
+        $data['all_employee_heads'] += $ma->where('austritt', '>=', $date)->count();
 
         // Alle Kundenberater
-        $data['all_kb_hours'] = $ma->where('abteilung_id', 10)->sum('soll_h_day');
-        $data['all_kb_heads'] = $ma->where('abteilung_id', 10)->count();
+        $data['all_kb_hours'] = $ma->where('abteilung_id', 10)->where('austritt', null)->sum('soll_h_day');
+        $data['all_kb_hours'] += $ma->where('abteilung_id', 10)->where('austritt', '>=', $date)->sum('soll_h_day');
+        $data['all_kb_heads'] = $ma->where('abteilung_id', 10)->where('austritt', null)->count();
+        $data['all_kb_heads'] += $ma->where('abteilung_id', 10)->where('austritt', '>=', $date)->count();
+
+
         $data['all_kb_fte'] = $data['all_kb_hours'] / 8;
 
         // Alle OVH
@@ -213,52 +222,71 @@ class RevenueReportController extends Controller
 
         foreach($ma->where('abteilung_id', 10) as $key => $entry){
             if($entry->eintritt == $date){
-                $data['information'][] = 'Eintritt ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->agent_id;
+                $data['information'][] = 'Eintritt ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->vorname . ' ' . $entry->familienname;
             }
             if($entry->austritt == $date){
-                $data['information'][] = 'Austritt ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->agent_id;
+                $data['information'][] = 'Austritt ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->vorname . ' ' . $entry->familienname;
             }
         }
         
         // Start nicht bezahlter Status
         foreach($ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_begin', $date)->pluck('agent_ds_id')) as $key => $entry){
-            $data['information'][] = 'Start ' . $states->where('ds_id', $history->where('date_begin', $date)->where('agent_ds_id', $entry->ds_id)->first()->state_id)->first()->description . ' ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->agent_id;
+            $data['information'][] = 'Start ' . $states->where('ds_id', $history->where('date_begin', $date)->where('agent_ds_id', $entry->ds_id)->first()->state_id)->first()->description . ' ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->vorname . ' ' . $entry->familienname;
         } 
 
         // Ende nicht bezahlter Status
         foreach($ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_end', $date)->pluck('agent_ds_id')) as $key => $entry){
-            $data['information'][] = 'Ende ' . $states->where('ds_id', $history->where('date_end', $date)->where('agent_ds_id', $entry->ds_id)->first()->state_id)->first()->description . ' ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->agent_id;
+            $data['information'][] = 'Ende ' . $states->where('ds_id', $history->where('date_end', $date)->where('agent_ds_id', $entry->ds_id)->first()->state_id)->first()->description . ' ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->vorname . ' ' . $entry->familienname;
         } 
         
         return $data;
     }
 
-    public function calcFteSum(){
-        $data = array();
+    public function calcFteSum($allData, $history, $states, $ma, $param){
+        $data = array(
+            'payed_kb_hours' => 0,
+            'payed_kb_heads' => 0,
+        );
 
-        // Alle Mitarbeiter
-        $data['all_employee_hours'] = null;
-        $data['all_employee_heads'] = null;
+        foreach($allData['daily'] as $key => $entry){
+            $data['payed_kb_hours'] += $entry['fte']['payed_kb_hours'];
+            $data['payed_kb_heads'] += $entry['fte']['payed_kb_heads'];
+        }
 
-        // Alle Kundenberater
-        $data['all_kb_hours'] = null;
-        $data['all_kb_heads'] = null;
-        $data['all_kb_fte'] = null;
+        $numDays = sizeof($allData['daily']);
 
-        // Alle OVH
-        $data['all_ovh_hours'] = null;
-        $data['all_ovh_heads'] = null;
-        $data['all_ovh_fte'] = null;
+        $data['payed_kb_hours'] = $data['payed_kb_hours'] / $numDays;
+        $data['payed_kb_heads'] = $data['payed_kb_heads'] / $numDays;
+        $data['payed_kb_fte'] = $data['payed_kb_hours'] / 8;
 
-        // Alle nicht bezahlten Kundenberater
-        $data['unpayed_kb_hours'] = null;
-        $data['unpayed_kb_heads'] = null;
-        $data['unpayed_kb_fte'] = null;
+        $data['all_kb_fte'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_kb_fte'];
+        $data['all_kb_heads'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_kb_heads'];
+        $data['all_ovh_fte'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_ovh_fte'];
+        $data['all_ovh_heads'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_ovh_heads'];
 
-        // Alle bezahlten Kundenberater
-        $data['payed_kb_hours'] = null;
-        $data['payed_kb_heads'] = null;
-        $data['payed_kb_fte'] = null;
+        // Status
+        // dd($history);
+        foreach($history->sortBy('date_begin')->sortBy('state_id') as $key => $entry){
+            $data['information']['status'][$states->where('ds_id', $entry->state_id)->first()->description][] = date_format(date_create($entry->date_begin), 'd.m.Y') . ' - ' . date_format(date_create($entry->date_end), 'd.m.Y') . ': ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->familienname;
+        }
+
+
+        // Start nicht bezahlter Status
+        foreach($ma->sortBy('eintritt') as $key => $entry){
+            if($entry->eintritt >= $param['start_date']){
+                $data['information']['incoming'][] = 'Eintritt ' . date_format(date_create($entry->eintritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
+            }
+        }
+
+        foreach($ma->sortBy('austritt') as $key => $entry){
+            if($entry->austritt != null){
+                if($entry->austritt <= $param['end_date']){
+                    $data['information']['outgoing'][] = 'Austritt ' . date_format(date_create($entry->austritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
+                }
+            }
+        }
+
+
 
         return $data;
     }
