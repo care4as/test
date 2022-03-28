@@ -55,8 +55,7 @@ class RevenueReportController extends Controller
             $param['department_desc'] = 'KDW Retention Mobile Flensburg';
         }
 
-        
-        
+                
         /** Check if all Parameters are filled */
         foreach($param as $key => $entry){
             if($entry == null){
@@ -66,7 +65,15 @@ class RevenueReportController extends Controller
         
         if($param['comp'] == true){
             $param['constants'] = $this->getConstants();
+
+
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $param['month_num'], $param['year']);
+            //strtotime date
+            $param['start_date'] = date('Y-m-d', strtotime($param['year'] . '-' . $param['month_num'] . '-01'));
+            $param['end_date'] = date('Y-m-d', strtotime($param['year'] . '-' . $param['month_num'] . '-' . $daysInMonth));;
         }
+
+        // dd($param);
         
         return $param;
 
@@ -132,6 +139,8 @@ class RevenueReportController extends Controller
             'details' => $this->getRetentionDetails($param),
             'chronBook' => $this->getChronologyBook($param, $personIds),
             'optin' => null,
+            'ma' => $this->getKdwMa($param),
+            'history_state' => $this->getHistoryState($param),
         );
 
         $data = $this->combineData($param, $rawdata);
@@ -157,6 +166,8 @@ class RevenueReportController extends Controller
             $data['daily'][$entry['date']]['details'] = $this->calcDetailsDaily($param, $entry['date'], $rawdata['details']);
             $data['daily'][$entry['date']]['speedretention'] = $this->calcSpeedRetentionDaily($entry['date'], $rawdata['chronBook'], $param);
             $data['daily'][$entry['date']]['optin'] = $this->calcOptinDaily();
+            $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state']);
+            
         }
 
         /** Summen Berechnung */
@@ -171,7 +182,41 @@ class RevenueReportController extends Controller
 
     }
 
-    public function calcFteDaily(){
+    public function calcFteDaily($date, $ma, $history){
+        $data = array();
+
+        // Alle Mitarbeiter
+        $data['all_employee_hours'] = $ma->sum('soll_h_day');
+        $data['all_employee_heads'] = $ma->count();
+
+        // Alle Kundenberater
+        $data['all_kb_hours'] = $ma->where('abteilung_id', 10)->sum('soll_h_day');
+        $data['all_kb_heads'] = $ma->where('abteilung_id', 10)->count();
+        $data['all_kb_fte'] = $data['all_kb_hours'] / 8;
+
+        // Alle OVH
+        $data['all_ovh_hours'] = $data['all_employee_hours'] - $data['all_kb_hours'];
+        $data['all_ovh_heads'] = $data['all_employee_heads'] - $data['all_kb_heads'];
+        $data['all_ovh_fte'] = $data['all_ovh_hours'] / 8;
+
+        // Alle nicht bezahlten Kundenberater (nur für Berechnung)
+        $data['unpayed_kb_hours'] = null;
+        $data['unpayed_kb_heads'] = null;
+
+        // Alle bezahlten Kundenberater
+        $data['payed_kb_hours'] = null;
+        $data['payed_kb_heads'] = null;
+        $data['payed_kb_fte'] = null;
+
+        dd($history);
+        dd($data);
+        dd($ma);
+        /** 
+         * 1. ChronologyWork -> Liste der eingestellten MA im Zeitraum
+         */
+
+        
+        
         // Kundenberater bezahlt
         // Kundenberater gesamt
         // Overhead
@@ -180,10 +225,37 @@ class RevenueReportController extends Controller
 
         // Auffälligkeiten
             // Statusänderungen, Eintritte und Austritte
+        return $data;
     }
 
     public function calcFteSum(){
+        $data = array();
 
+        // Alle Mitarbeiter
+        $data['all_employee_hours'] = null;
+        $data['all_employee_heads'] = null;
+
+        // Alle Kundenberater
+        $data['all_kb_hours'] = null;
+        $data['all_kb_heads'] = null;
+        $data['all_kb_fte'] = null;
+
+        // Alle OVH
+        $data['all_ovh_hours'] = null;
+        $data['all_ovh_heads'] = null;
+        $data['all_ovh_fte'] = null;
+
+        // Alle nicht bezahlten Kundenberater
+        $data['unpayed_kb_hours'] = null;
+        $data['unpayed_kb_heads'] = null;
+        $data['unpayed_kb_fte'] = null;
+
+        // Alle bezahlten Kundenberater
+        $data['payed_kb_hours'] = null;
+        $data['payed_kb_heads'] = null;
+        $data['payed_kb_fte'] = null;
+
+        return $data;
     }
 
     public function calcOptinDaily(){
@@ -466,6 +538,43 @@ class RevenueReportController extends Controller
 
         // dd($data);
 
+        return $data;
+    }
+
+    public function getKdwMa($param){
+        $data =  DB::connection('mysqlkdw')                            
+        ->table('MA')
+        ->where('projekt_id', $param['project'])
+        ->where('eintritt', '<=', $param['end_date'])
+        ->where(function($query) use ($param){
+            $query
+            ->where('austritt', null)
+            ->orWhere('austritt', '>=', $param['start_date']); // Hier können Filter auf die ID gesetzt werden (Urlaub, Krank usw.)
+        })
+        ->get(['ds_id', 'agent_id', 'vorname', 'familienname', 'abteilung_id', 'projekt_id', 'eintritt', 'austritt', 'soll_h_day']);
+
+        return $data;
+    }
+
+    public function getHistoryState($param){
+        $data =  DB::connection('mysqlkdw')                            
+        ->table('history_state')
+        ->where('project_id', $param['project'])
+        ->where('date_begin', '<=', $param['end_date'])
+        ->where('date_end', '>=', $param['start_date'])
+        ->whereIn('state_id', [13, 15, 23, 24, 33, 34])
+        ->get(['agent_id', 'agent_ds_id', 'date_begin', 'date_end', 'state_id']);
+
+        /** 
+         * Beschreibung 'state_id'
+         * 13: Krank o. Lfz.
+         * 15: Mutterschutz
+         * 23: Fehlt unentschuldig
+         * 24: Beschäftigungsverbot
+         * 33: Kindkrank o. Lfz.
+         * 34: Krank Quarantäne
+         */
+        
         return $data;
     }
         
