@@ -141,6 +141,7 @@ class RevenueReportController extends Controller
             'optin' => null,
             'ma' => $this->getKdwMa($param),
             'history_state' => $this->getHistoryState($param),
+            'states_description' => $this->getStatesDesc(),
         );
 
         $data = $this->combineData($param, $rawdata);
@@ -166,7 +167,7 @@ class RevenueReportController extends Controller
             $data['daily'][$entry['date']]['details'] = $this->calcDetailsDaily($param, $entry['date'], $rawdata['details']);
             $data['daily'][$entry['date']]['speedretention'] = $this->calcSpeedRetentionDaily($entry['date'], $rawdata['chronBook'], $param);
             $data['daily'][$entry['date']]['optin'] = $this->calcOptinDaily();
-            $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state']);
+            $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state'], $rawdata['states_description']);
             
         }
 
@@ -175,16 +176,16 @@ class RevenueReportController extends Controller
         $data['sum']['details'] = $this->calcDetailsSum($param, $rawdata['details']);
         $data['sum']['speedretention'] = $this->calcSpeedRetentionSum($data);
 
-        // dd($data);
+        dd($data);
         // dd($param);
 
         return $data;
 
     }
 
-    public function calcFteDaily($date, $ma, $history){
+    public function calcFteDaily($date, $ma, $history, $states){
         $data = array();
-
+        
         // Alle Mitarbeiter
         $data['all_employee_hours'] = $ma->sum('soll_h_day');
         $data['all_employee_heads'] = $ma->count();
@@ -200,31 +201,35 @@ class RevenueReportController extends Controller
         $data['all_ovh_fte'] = $data['all_ovh_hours'] / 8;
 
         // Alle nicht bezahlten Kundenberater (nur für Berechnung)
-        $data['unpayed_kb_hours'] = null;
-        $data['unpayed_kb_heads'] = null;
+        $data['unpayed_kb_hours'] = $ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_begin', '<=', $date)->where('date_end', '>=', $date)->pluck('agent_ds_id'))->sum('soll_h_day');
+        $data['unpayed_kb_heads'] = $ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_begin', '<=', $date)->where('date_end', '>=', $date)->pluck('agent_ds_id'))->count();
 
         // Alle bezahlten Kundenberater
-        $data['payed_kb_hours'] = null;
-        $data['payed_kb_heads'] = null;
-        $data['payed_kb_fte'] = null;
-
-        dd($history);
-        dd($data);
-        dd($ma);
-        /** 
-         * 1. ChronologyWork -> Liste der eingestellten MA im Zeitraum
-         */
-
+        $data['payed_kb_hours'] = $data['all_kb_hours'] - $data['unpayed_kb_hours'];
+        $data['payed_kb_heads'] = $data['all_kb_heads'] - $data['unpayed_kb_heads'];
+        $data['payed_kb_fte'] = $data['payed_kb_hours'] / 8;
         
+        $data['information'] = array();
+
+        foreach($ma->where('abteilung_id', 10) as $key => $entry){
+            if($entry->eintritt == $date){
+                $data['information'][] = 'Eintritt ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->agent_id;
+            }
+            if($entry->austritt == $date){
+                $data['information'][] = 'Austritt ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->agent_id;
+            }
+        }
         
-        // Kundenberater bezahlt
-        // Kundenberater gesamt
-        // Overhead
+        // Start nicht bezahlter Status
+        foreach($ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_begin', $date)->pluck('agent_ds_id')) as $key => $entry){
+            $data['information'][] = 'Start ' . $states->where('ds_id', $history->where('date_begin', $date)->where('agent_ds_id', $entry->ds_id)->first()->state_id)->first()->description . ' ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->agent_id;
+        } 
 
-        // Köpfe und FTE Berechnen
-
-        // Auffälligkeiten
-            // Statusänderungen, Eintritte und Austritte
+        // Ende nicht bezahlter Status
+        foreach($ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_end', $date)->pluck('agent_ds_id')) as $key => $entry){
+            $data['information'][] = 'Ende ' . $states->where('ds_id', $history->where('date_end', $date)->where('agent_ds_id', $entry->ds_id)->first()->state_id)->first()->description . ' ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->agent_id;
+        } 
+        
         return $data;
     }
 
@@ -574,7 +579,15 @@ class RevenueReportController extends Controller
          * 33: Kindkrank o. Lfz.
          * 34: Krank Quarantäne
          */
-        
+
+        return $data;
+    }
+
+    public function getStatesDesc(){
+        $data =  DB::connection('mysqlkdw')                            
+        ->table('states_MA')
+        ->get(['ds_id', 'description']);
+
         return $data;
     }
         
