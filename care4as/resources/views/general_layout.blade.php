@@ -111,12 +111,12 @@
                   <li><a href="{{route('userlist')}}">Mitarbeiterliste</a></li>
                 @endif
                 <!-- {{-- @if(in_array('createUser',Auth()->user()->getRights()))
-                  <li><a href="{{route('user.create')}}">User anlegen</a></li>
-                  @if(Auth()->user()->role == "superadmin")
-                    <li><a href="{{route('user.startEnd')}}">MA Daten</a></li>
+                    <li><a href="{{route('user.create')}}">User anlegen</a></li>
+                    @if(Auth()->user()->role == "superadmin")
+                      <li><a href="{{route('user.startEnd')}}">MA Daten</a></li>
+                    @endif
                   @endif
-                @endif
-                  <li><a href="{{route('user.index')}}">User Index</a></li> --}} -->
+                <li><a href="{{route('user.index')}}">User Index</a></li> --}} -->
               </ul>
             </div>
           </li>
@@ -150,24 +150,11 @@
                 <ul class="list-group list-group-flush" style="list-style-type: none;">
                   @if(in_array('1u1_db',Auth()->user()->getRights()))
                   <li><a href="{{route('1u1_deckungsbeitrag')}}">Deckungsbeitrag</a></li>
-                  <li><a href="{{route('mobileTrackingDifference')}}">Tracking Differenz</a></li>
+                  <!-- <li><a href="{{route('mobileTrackingDifference')}}">Tracking Differenz</a></li> -->
                   <li><a href="{{route('feedback.showfeedback')}}">Feedbackgespräche</a> </li>
                   <li><a href="{{route('mobile.tracking.admin')}}">Mobile Tracking Admin</a></li>
                   @endif
                   <li><a href="{{route('mobile.tracking.agents')}}">Mobile Tracking</a></li>
-              </ul>
-            </li>
-          @endif
-          <!-- Telefonica -->
-          @if(in_array('telefonica_base',Auth()->user()->getRights()))
-            <li>
-              <a class="" data-toggle="collapse" href="#collapseTelefonica" role="button" aria-expanded="false" aria-controls="collapseCancel">
-                <i class="fas fa-project-diagram"></i>
-                <p><b>Telefonica</b></p>
-              </a>
-              <div class="collapse" id="collapseTelefonica" style="margin-left:50px;">
-                <ul class="list-group list-group-flush" style="list-style-type: none;">
-                <li><a href="{{route('pausetool')}}">Pausentool</b></a></li>
               </ul>
             </li>
           @endif
@@ -183,9 +170,9 @@
                 @if(in_array('controlling_revenuereport',Auth()->user()->getRights()))
                   <li><a href="{{route('umsatzmeldung')}}">Umsatzmeldung</a></li>
                 @endif
-                <!-- @if(in_array('controlling_revenuereport',Auth()->user()->getRights()))
+                @if(in_array('controlling_revenuereport',Auth()->user()->getRights()))
                   <li><a href="{{route('revenuereport.master')}}">Umsatzmeldung2</a></li>
-                @endif -->
+                @endif
                 @if(in_array('controlling_projectreport',Auth()->user()->getRights()))
                   <li><a href="{{route('projectReport')}}">Projektmeldung</a></li>
                 @endif
@@ -217,7 +204,7 @@
           @endif
 
           <!-- WFM -->
-          @if(in_array('controlling_base',Auth()->user()->getRights()))
+          @if(in_array('wfm_base',Auth()->user()->getRights()))
           <li>
             <a class="" data-toggle="collapse" href="#collapseWFM" role="button" aria-expanded="false" aria-controls="collapseWFM">
             <i class="fab fa-earlybirds"></i>
@@ -232,31 +219,32 @@
           @endif
 
           <!-- {{-- Alter Link zu DB
-          @if(in_array('statistics',Auth()->user()->getRights()))
-          <li>
-            <a class="" href="{{route('1u1_deckungsbeitrag')}}">
-              <i class="far fa-file-powerpoint"></i>
-              <p><b>DB1</b></p>
-            </a>
-          </li>
-          @endif
-          -->
-          <!-- @if(in_array('indexMabel',Auth()->user()->getRights()))
-          <li>
-            <a class="" data-toggle="collapse" href="#collapseMable" role="button" aria-expanded="false" aria-controls="collapseUser">
-              <i class="fas fa-hammer"></i>
-              <p><b>Mabelgründe</b></p>
-            </a>
-            <div class="collapse" id="collapseMable" style="margin-left:50px;">
-              <ul class="list-group list-group-flush" style="list-style-type: none;">
-                  <li><a href="{{route('mabelcause.create')}}">Mabelgrund aufnehmen</a></li>
-                  <li><a href="{{route('mabelcause.index')}}">alle Mabelgründe</a></li>
-              </ul>
-            </div>
-          </li>
+            @if(in_array('statistics',Auth()->user()->getRights()))
+            <li>
+              <a class="" href="{{route('1u1_deckungsbeitrag')}}">
+                <i class="far fa-file-powerpoint"></i>
+                <p><b>DB1</b></p>
+              </a>
+            </li>
+            @endif
+            -->
+            <!-- @if(in_array('indexMabel',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapseMable" role="button" aria-expanded="false" aria-controls="collapseUser">
+                <i class="fas fa-hammer"></i>
+                <p><b>Mabelgründe</b></p>
+              </a>
+              <div class="collapse" id="collapseMable" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                    <li><a href="{{route('mabelcause.create')}}">Mabelgrund aufnehmen</a></li>
+                    <li><a href="{{route('mabelcause.index')}}">alle Mabelgründe</a></li>
+                </ul>
+              </div>
+            </li>
           @endif --}} -->
+
           @if(in_array('reports_base',Auth()->user()->getRights()))
-          <li>
+          <!-- <li>
             <a class="" data-toggle="collapse" href="#collapseReport" role="button" aria-expanded="false" aria-controls="collapseCancel">
               <i class="fas fa-upload"></i>
               <p><b>Daten Import</b></p>
@@ -270,112 +258,115 @@
                 <li><a href="{{route('reports.gevotracking')}}">GeVo Tracking Import</a></li>
                 <li><a href="{{route('reports.reportHours.view')}}">Stundenreport</a></li>
                 <li><a href="{{route('ssetracking.view')}}">SSE Tracking Import</a></li>
-                  <!-- {{--
+                  {{--
                 <li><a href="{{route('excel.dailyAgent.import')}}">Daily Agent Import</a></li>
                 <li><a href="{{route('reports.provision.view')}}">Provision</a></li>
                 <li><a href="{{route('reports.SAS')}}">SAS Import</a></li>
                 <li><a href="{{route('reports.OptIn')}}">OptIn Import</a></li>
-                --}} -->
+                --}}
                 <li><a href="{{route('reports.nettozeiten')}}">Nettozeiten Import</a></li>
                 @endif
               </ul>
             </div>
-          </li>
+          </li> -->
+          <li><a href="{{route('reportImport')}}"><i class="fas fa-upload"></i><b>Reporting</b></a> </li>
           @endif
-          <!-- {{-- @if(in_array('importReports',Auth()->user()->getRights()))
-          <li>
-            <a class="" data-toggle="collapse" href="#collapseEmail" role="button" aria-expanded="false" aria-controls="collapseCancel">
-            <i class="fas fa-mail-bulk"></i>
-              <p><b>Email Versand</b></p>
-            </a>
-            <div class="collapse" id="collapseEmail" style="margin-left:50px;">
-              <ul class="list-group list-group-flush" style="list-style-type: none;">
-                <li><a href="{{route('eobmail')}}">Feierabendmail </a></li>
-              <li><a href="">Top/Worst Report</a></li>
-              </ul>
-            </div>
-          </li>
-          @endif
-          @if(in_array('indexSurvey',Auth()->user()->getRights()))
-          <li>
-            <a class="" data-toggle="collapse" href="#collapseSurvey" role="button" aria-expanded="false" aria-controls="collapseSurvey">
-              <i class="fas fa-poll-h"></i>
-              <p><b>Mitarbeiterumfragen</b></p>
-            </a>
-            <div class="collapse" id="collapseSurvey" style="margin-left:50px;">
-              <ul class="list-group list-group-flush" style="list-style-type: none;">
-                @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
-                <li><a href="{{route('question.create')}}">Frage erstellen</a></li>
-                <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
-                <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
-                <li><a href="{{route('reports.report')}}">Mitarbeiterumfrage auswerten</a></li>
-                @else
-                  <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
-                @endif
-              </ul>
-            </div>
-          </li>
-          @endif -->
-          <!-- @if(in_array('indexFeedback',Auth()->user()->getRights()))
-          <li>
-            <a class="" data-toggle="collapse" href="#collapseFeedback" role="button" aria-expanded="false" aria-controls="collapseFeedback">
-              <i class="far fa-comments"></i>
-              <p><b>Feedbackgespräche</b></p>
-            </a>
-            <div class="collapse" id="collapseFeedback" style="margin-left:50px;">
-              <ul class="list-group list-group-flush" style="list-style-type: none;">
-              <li><a href="{{route('feedback.print')}}">Feedbackgespräche zum Ausdrucken</a> </li>
-              <li><a href="{{route('feedback.view')}}">Feedbackgespräche zum Speichern</a> </li>
-              <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li>
-            </ul>
-            </div>
-          </li>
-          @endif --}} -->
-          @if(in_array('reports_send',Auth()->user()->getRights()))
-          <li>
-            <a class="" data-toggle="collapse" href="#collapseReports" role="button" aria-expanded="false" aria-controls="collapseFeedback">
-              <i class="material-icons">
-                assessment
-              </i>
-              <b>Reporte</b>
-            </a>
-            <div class="collapse" id="collapseReports" style="margin-left:50px;">
-              <ul class="list-group list-group-flush" style="list-style-type: none;">
-                <li><a href="{{route('reports.choose')}}">Top/Worst Report</a> </li>
-                <li><a href="{{route('report.joyce')}}">Joyce Report</a> </li>
-                <li><a href="{{route('reports.AHTdaily')}}">AHT Report</a> </li>
-                <li><a href="{{route('reports.capacitysuite')}}">Capacity Report </a> </li>
-                <li><a href="{{route('user.daDetex.index')}}">Nachverfolgung Dailyagent</a></li>
-              </ul>
-            </div>
-          </li>
-          @endif
-          <!-- {{-- @if(in_array('1u1_deckungsbeitrag',Auth()->user()->getRights()))
-            <li>
-            <a class="" href="{{route('1u1_deckungsbeitrag')}}">
-              <i class="far fa-file-powerpoint"></i>
-              <p><b>Präsentation</b></p>
-            </a>
-          </li>
-          @endif -->
 
-          <!-- @if(in_array('changeConfig',Auth()->user()->getRights()))
-          <li class="">
-            <a class="" data-toggle="collapse" href="#collapseConfiguration" role="button" aria-expanded="false" aria-controls="collapseFeedback">
-              <i class="material-icons">
-                brightness_high
-              </i>
-              <b>Konfiguration</b>
-            </a>
-            <div class="collapse" id="collapseConfiguration" style="margin-left:50px;">
-              <ul class="list-group list-group-flush" style="list-style-type: none;">
-              <li><a href="{{route('roles.index')}}">Rollen</a> </li>
-              <li><a href="{{route('feedback.view')}}">Rollen und Rechte</a> </li>
-              <li><a href="{{route('config.view')}}">allgemeine Einstellungen</a> </li>
-            </ul>
-            </div>
-          </li>
+          <!-- {{-- @if(in_array('importReports',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapseEmail" role="button" aria-expanded="false" aria-controls="collapseCancel">
+              <i class="fas fa-mail-bulk"></i>
+                <p><b>Email Versand</b></p>
+              </a>
+              <div class="collapse" id="collapseEmail" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                  <li><a href="{{route('eobmail')}}">Feierabendmail </a></li>
+                <li><a href="">Top/Worst Report</a></li>
+                </ul>
+              </div>
+            </li>
+            @endif
+            @if(in_array('indexSurvey',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapseSurvey" role="button" aria-expanded="false" aria-controls="collapseSurvey">
+                <i class="fas fa-poll-h"></i>
+                <p><b>Mitarbeiterumfragen</b></p>
+              </a>
+              <div class="collapse" id="collapseSurvey" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                  @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
+                  <li><a href="{{route('question.create')}}">Frage erstellen</a></li>
+                  <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
+                  <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
+                  <li><a href="{{route('reports.report')}}">Mitarbeiterumfrage auswerten</a></li>
+                  @else
+                    <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
+                  @endif
+                </ul>
+              </div>
+            </li>
+            @endif -->
+            <!-- @if(in_array('indexFeedback',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapseFeedback" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+                <i class="far fa-comments"></i>
+                <p><b>Feedbackgespräche</b></p>
+              </a>
+              <div class="collapse" id="collapseFeedback" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('feedback.print')}}">Feedbackgespräche zum Ausdrucken</a> </li>
+                <li><a href="{{route('feedback.view')}}">Feedbackgespräche zum Speichern</a> </li>
+                <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li>
+              </ul>
+              </div>
+            </li>
+            @endif --}} -->
+            <!-- @if(in_array('reports_send',Auth()->user()->getRights()))
+            <li>
+              <a class="" data-toggle="collapse" href="#collapseReports" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+                <i class="material-icons">
+                  assessment
+                </i>
+                <b>Reporte</b>
+              </a>
+              <div class="collapse" id="collapseReports" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                  <li><a href="{{route('reports.choose')}}">Top/Worst Report</a> </li>
+                  <li><a href="{{route('report.joyce')}}">Joyce Report</a> </li>
+                  <li><a href="{{route('reports.AHTdaily')}}">AHT Report</a> </li>
+                  <li><a href="{{route('reports.capacitysuite')}}">Capacity Report </a> </li>
+                  <li><a href="{{route('user.daDetex.index')}}">Nachverfolgung Dailyagent</a></li>
+                </ul>
+              </div>
+            </li>
+            @endif -->
+            <!-- {{-- @if(in_array('1u1_deckungsbeitrag',Auth()->user()->getRights()))
+              <li>
+              <a class="" href="{{route('1u1_deckungsbeitrag')}}">
+                <i class="far fa-file-powerpoint"></i>
+                <p><b>Präsentation</b></p>
+              </a>
+            </li>
+            @endif -->
+
+            <!-- @if(in_array('changeConfig',Auth()->user()->getRights()))
+            <li class="">
+              <a class="" data-toggle="collapse" href="#collapseConfiguration" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+                <i class="material-icons">
+                  brightness_high
+                </i>
+                <b>Konfiguration</b>
+              </a>
+              <div class="collapse" id="collapseConfiguration" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('roles.index')}}">Rollen</a> </li>
+                <li><a href="{{route('feedback.view')}}">Rollen und Rechte</a> </li>
+                <li><a href="{{route('config.view')}}">allgemeine Einstellungen</a> </li>
+              </ul>
+              </div>
+            </li>
           @endif --}} -->
+
           @if(in_array('config_base',Auth()->user()->getRights()))
           <li class="">
             <a class="" data-toggle="collapse" href="#collapseConfiguration" role="button" aria-expanded="false" aria-controls="collapseFeedback">
@@ -397,30 +388,31 @@
             </div>
           </li>
           @endif
+
           <!-- {{-- @if(in_array('trainings',Auth()->user()->getRights()))
-          <li>
-            <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
-              <i class="fas fa-running"></i>
-              <p><b>Trainings</b></p>
-            </a>
-            <div class="collapse" id="collapseTrainings" style="margin-left:50px;">
-              <ul class="list-group list-group-flush" style="list-style-type: none;">
-              <li><a href="{{route('trainings')}}">Angebots Simulator</a> </li>
-              @if(Auth()->user()->role != 'Agent')
-                <li><a href="{{route('offers.create')}}">Angebote einspielen</a> </li>
-              @endif
-              <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li>
-            </ul>
-          </li>
-          @endif -->
-          <!-- @if(in_array('telefonicapause',Auth()->user()->getRights()))
-          <li>
-           <a class="" data-toggle="collapse" href="#collapseTelefonicaPause" role="button" aria-expanded="false" aria-controls="collapseFeedback">
-            <a href="{{route('pausetool')}}">
-              <i class="fas fa-running"></i>
-              <p><b>Pausentool <br>Telefonica</b></p>
-            </a>
-          </li>
+            <li>
+              <a class="" data-toggle="collapse" href="#collapseTrainings" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+                <i class="fas fa-running"></i>
+                <p><b>Trainings</b></p>
+              </a>
+              <div class="collapse" id="collapseTrainings" style="margin-left:50px;">
+                <ul class="list-group list-group-flush" style="list-style-type: none;">
+                <li><a href="{{route('trainings')}}">Angebots Simulator</a> </li>
+                @if(Auth()->user()->role != 'Agent')
+                  <li><a href="{{route('offers.create')}}">Angebote einspielen</a> </li>
+                @endif
+                <li><a href="{{route('feedback.myIndex')}}">geführte Feedbackgespräche</a> </li>
+              </ul>
+            </li>
+            @endif -->
+            <!-- @if(in_array('telefonicapause',Auth()->user()->getRights()))
+            <li>
+            <a class="" data-toggle="collapse" href="#collapseTelefonicaPause" role="button" aria-expanded="false" aria-controls="collapseFeedback">
+              <a href="{{route('pausetool')}}">
+                <i class="fas fa-running"></i>
+                <p><b>Pausentool <br>Telefonica</b></p>
+              </a>
+            </li>
           @endif --}} -->
 
         </ul>

@@ -20,6 +20,7 @@ class RevenueReportController extends Controller
     public function master(){
 
         $param = $this->getParam();
+        $dateSelection = $this->calcDateSelection();
 
         if($param['comp'] == true){
             $data = $this->getData($param);
@@ -27,7 +28,7 @@ class RevenueReportController extends Controller
             $data = null;
         }
 
-        return view('controlling.revenueReport', compact('param', 'data'));
+        return view('controlling.revenueReport', compact('param', 'data', 'dateSelection'));
 
     }
 
@@ -54,8 +55,7 @@ class RevenueReportController extends Controller
             $param['department_desc'] = 'KDW Retention Mobile Flensburg';
         }
 
-        
-        
+                
         /** Check if all Parameters are filled */
         foreach($param as $key => $entry){
             if($entry == null){
@@ -65,7 +65,15 @@ class RevenueReportController extends Controller
         
         if($param['comp'] == true){
             $param['constants'] = $this->getConstants();
+
+
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $param['month_num'], $param['year']);
+            //strtotime date
+            $param['start_date'] = date('Y-m-d', strtotime($param['year'] . '-' . $param['month_num'] . '-01'));
+            $param['end_date'] = date('Y-m-d', strtotime($param['year'] . '-' . $param['month_num'] . '-' . $daysInMonth));;
         }
+
+        // dd($param);
         
         return $param;
 
@@ -96,6 +104,32 @@ class RevenueReportController extends Controller
 
     }
 
+    public function calcDateSelection(){
+        $data = array();
+
+        $difYear = date('Y') - 2022;
+        
+        for ($i = 0; $i <= $difYear; $i++){
+            $data['year'][2022 + $i] = 2022 + $i;
+        }
+
+        $data['month'] = array(
+            'january' => 'Januar',
+            'february' => 'Februar',
+            'march' => 'März',
+            'april' => 'April',
+            'may' => 'Mai',
+            'june' => 'Juni',
+            'july' => 'Juli',
+            'august' => 'August',
+            'september' => 'September',
+            'october' => 'Oktober',
+            'november' => 'November',
+            'december' => 'Dezember',
+        );
+        return $data;
+    }
+
     public function getData($param){
         $personIds = $this->getPersonId($param);
 
@@ -105,6 +139,9 @@ class RevenueReportController extends Controller
             'details' => $this->getRetentionDetails($param),
             'chronBook' => $this->getChronologyBook($param, $personIds),
             'optin' => null,
+            'ma' => $this->getKdwMa($param),
+            'history_state' => $this->getHistoryState($param),
+            'states_description' => $this->getStatesDesc(),
         );
 
         $data = $this->combineData($param, $rawdata);
@@ -130,18 +167,128 @@ class RevenueReportController extends Controller
             $data['daily'][$entry['date']]['details'] = $this->calcDetailsDaily($param, $entry['date'], $rawdata['details']);
             $data['daily'][$entry['date']]['speedretention'] = $this->calcSpeedRetentionDaily($entry['date'], $rawdata['chronBook'], $param);
             $data['daily'][$entry['date']]['optin'] = $this->calcOptinDaily();
+            $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state'], $rawdata['states_description']);
+            
         }
 
         /** Summen Berechnung */
         $data['sum']['availbench'] = $this->calcAvailbenchSum($param, $rawdata['availbench']);
         $data['sum']['details'] = $this->calcDetailsSum($param, $rawdata['details']);
         $data['sum']['speedretention'] = $this->calcSpeedRetentionSum($data);
+        $data['sum']['fte'] = $this->calcFteSum($data, $rawdata['history_state'], $rawdata['states_description'], $rawdata['ma'], $param);
 
-        // dd($data);
+        dd($data);
         // dd($param);
 
         return $data;
 
+    }
+
+    public function calcFteDaily($date, $ma, $history, $states){
+        $data = array();
+
+        $ma = $ma->where('eintritt', '<=', $date);
+        
+        // Alle Mitarbeiter
+        $data['all_employee_hours'] = $ma->where('austritt', null)->sum('soll_h_day');
+        $data['all_employee_hours'] += $ma->where('austritt', '>=', $date)->sum('soll_h_day');
+        $data['all_employee_heads'] = $ma->where('austritt', null)->count();
+        $data['all_employee_heads'] += $ma->where('austritt', '>=', $date)->count();
+
+        // Alle Kundenberater
+        $data['all_kb_hours'] = $ma->where('abteilung_id', 10)->where('austritt', null)->sum('soll_h_day');
+        $data['all_kb_hours'] += $ma->where('abteilung_id', 10)->where('austritt', '>=', $date)->sum('soll_h_day');
+        $data['all_kb_heads'] = $ma->where('abteilung_id', 10)->where('austritt', null)->count();
+        $data['all_kb_heads'] += $ma->where('abteilung_id', 10)->where('austritt', '>=', $date)->count();
+
+
+        $data['all_kb_fte'] = $data['all_kb_hours'] / 8;
+
+        // Alle OVH
+        $data['all_ovh_hours'] = $data['all_employee_hours'] - $data['all_kb_hours'];
+        $data['all_ovh_heads'] = $data['all_employee_heads'] - $data['all_kb_heads'];
+        $data['all_ovh_fte'] = $data['all_ovh_hours'] / 8;
+
+        // Alle nicht bezahlten Kundenberater (nur für Berechnung)
+        $data['unpayed_kb_hours'] = $ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_begin', '<=', $date)->where('date_end', '>=', $date)->pluck('agent_ds_id'))->sum('soll_h_day');
+        $data['unpayed_kb_heads'] = $ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_begin', '<=', $date)->where('date_end', '>=', $date)->pluck('agent_ds_id'))->count();
+
+        // Alle bezahlten Kundenberater
+        $data['payed_kb_hours'] = $data['all_kb_hours'] - $data['unpayed_kb_hours'];
+        $data['payed_kb_heads'] = $data['all_kb_heads'] - $data['unpayed_kb_heads'];
+        $data['payed_kb_fte'] = $data['payed_kb_hours'] / 8;
+        
+        $data['information'] = array();
+
+        foreach($ma->where('abteilung_id', 10) as $key => $entry){
+            if($entry->eintritt == $date){
+                $data['information'][] = 'Eintritt ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->vorname . ' ' . $entry->familienname;
+            }
+            if($entry->austritt == $date){
+                $data['information'][] = 'Austritt ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->vorname . ' ' . $entry->familienname;
+            }
+        }
+        
+        // Start nicht bezahlter Status
+        foreach($ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_begin', $date)->pluck('agent_ds_id')) as $key => $entry){
+            $data['information'][] = 'Start ' . $states->where('ds_id', $history->where('date_begin', $date)->where('agent_ds_id', $entry->ds_id)->first()->state_id)->first()->description . ' ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->vorname . ' ' . $entry->familienname;
+        } 
+
+        // Ende nicht bezahlter Status
+        foreach($ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_end', $date)->pluck('agent_ds_id')) as $key => $entry){
+            $data['information'][] = 'Ende ' . $states->where('ds_id', $history->where('date_end', $date)->where('agent_ds_id', $entry->ds_id)->first()->state_id)->first()->description . ' ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->vorname . ' ' . $entry->familienname;
+        } 
+        
+        return $data;
+    }
+
+    public function calcFteSum($allData, $history, $states, $ma, $param){
+        $data = array(
+            'payed_kb_hours' => 0,
+            'payed_kb_heads' => 0,
+        );
+
+        foreach($allData['daily'] as $key => $entry){
+            $data['payed_kb_hours'] += $entry['fte']['payed_kb_hours'];
+            $data['payed_kb_heads'] += $entry['fte']['payed_kb_heads'];
+        }
+
+        $numDays = sizeof($allData['daily']);
+
+        $data['payed_kb_hours'] = $data['payed_kb_hours'] / $numDays;
+        $data['payed_kb_heads'] = $data['payed_kb_heads'] / $numDays;
+        $data['payed_kb_fte'] = $data['payed_kb_hours'] / 8;
+
+        $data['all_kb_fte'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_kb_fte'];
+        $data['all_kb_heads'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_kb_heads'];
+        $data['all_ovh_fte'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_ovh_fte'];
+        $data['all_ovh_heads'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_ovh_heads'];
+
+        // Status
+        // dd($history);
+        foreach($history->sortBy('date_begin')->sortBy('state_id') as $key => $entry){
+            $data['information']['status'][$states->where('ds_id', $entry->state_id)->first()->description][] = date_format(date_create($entry->date_begin), 'd.m.Y') . ' - ' . date_format(date_create($entry->date_end), 'd.m.Y') . ': ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->familienname;
+        }
+
+
+        // Start nicht bezahlter Status
+        foreach($ma->sortBy('eintritt') as $key => $entry){
+            if($entry->eintritt >= $param['start_date']){
+                $data['information']['incoming'][] = 'Eintritt ' . date_format(date_create($entry->eintritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
+            }
+        }
+
+        foreach($ma->sortBy('austritt') as $key => $entry){
+            if($entry->austritt != null){
+                if($entry->austritt <= $param['end_date']){
+                    $data['information']['outgoing'][] = 'Austritt ' . date_format(date_create($entry->austritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
+                }
+            }
+        }
+
+
+
+        return $data;
     }
 
     public function calcOptinDaily(){
@@ -255,6 +402,7 @@ class RevenueReportController extends Controller
             $data['malus_interval'] = $availbench->where('date_date', $date)->sum('malus_interval');
             $data['malus_incentive'] = 0;
                 // Berechnung malus_incentive
+            if($data['total_costs_per_interval'] != 0){
                 $malusPercentage = $data['malus_interval'] / $data['total_costs_per_interval'];
                 if($malusPercentage <= 0.005){
                     $data['malus_incentive'] = $data['malus_interval'];
@@ -267,6 +415,9 @@ class RevenueReportController extends Controller
                 } else if ($malusPercentage <= 0.015){
                     $data['malus_incentive'] = 0.05 * $data['malus_interval'];
                 }
+            } else {
+                $malusPercentage = 0;
+            }
             $data['aht_zielmanagement'] = 0;
                 // Berechnung aht_zielmanagement
                 foreach($availbench->where('date_date', $date) as $key2 => $entry2){
@@ -284,18 +435,22 @@ class RevenueReportController extends Controller
         $data['malus_interval'] = $availbench->sum('malus_interval');
         $data['malus_incentive'] = 0;
             // Berechnung malus_incentive
-            $malusPercentage = $data['malus_interval'] / $data['total_costs_per_interval'];
+            if($data['total_costs_per_interval'] != 0){
+                $malusPercentage = $data['malus_interval'] / $data['total_costs_per_interval'];
                 if($malusPercentage <= 0.005){
-                    $data['malus_incentive'] =  $data['malus_interval'];
+                    $data['malus_incentive'] = $data['malus_interval'];
                 } else if ($malusPercentage <= 0.0075){
                     $data['malus_incentive'] = 0.5 * $data['malus_interval'];
                 } else if ($malusPercentage <= 0.01){
                     $data['malus_incentive'] = 0.25 * $data['malus_interval'];
                 } else if ($malusPercentage <= 0.0125){
-                    $data['malus_incentive'] = 0.1 * $data['malus_interval'];
+                    $data['malus_incentive'] = 0.10 * $data['malus_interval'];
                 } else if ($malusPercentage <= 0.015){
                     $data['malus_incentive'] = 0.05 * $data['malus_interval'];
                 }
+            } else {
+                $malusPercentage = 0;
+            }
         $data['aht_zielmanagement'] = 0;
             // Berechnung aht_zielmanagement
             foreach($availbench as $key2 => $entry2){
@@ -415,6 +570,51 @@ class RevenueReportController extends Controller
         ->get();
 
         // dd($data);
+
+        return $data;
+    }
+
+    public function getKdwMa($param){
+        $data =  DB::connection('mysqlkdw')                            
+        ->table('MA')
+        ->where('projekt_id', $param['project'])
+        ->where('eintritt', '<=', $param['end_date'])
+        ->where(function($query) use ($param){
+            $query
+            ->where('austritt', null)
+            ->orWhere('austritt', '>=', $param['start_date']); // Hier können Filter auf die ID gesetzt werden (Urlaub, Krank usw.)
+        })
+        ->get(['ds_id', 'agent_id', 'vorname', 'familienname', 'abteilung_id', 'projekt_id', 'eintritt', 'austritt', 'soll_h_day']);
+
+        return $data;
+    }
+
+    public function getHistoryState($param){
+        $data =  DB::connection('mysqlkdw')                            
+        ->table('history_state')
+        ->where('project_id', $param['project'])
+        ->where('date_begin', '<=', $param['end_date'])
+        ->where('date_end', '>=', $param['start_date'])
+        ->whereIn('state_id', [13, 15, 23, 24, 33, 34])
+        ->get(['agent_id', 'agent_ds_id', 'date_begin', 'date_end', 'state_id']);
+
+        /** 
+         * Beschreibung 'state_id'
+         * 13: Krank o. Lfz.
+         * 15: Mutterschutz
+         * 23: Fehlt unentschuldig
+         * 24: Beschäftigungsverbot
+         * 33: Kindkrank o. Lfz.
+         * 34: Krank Quarantäne
+         */
+
+        return $data;
+    }
+
+    public function getStatesDesc(){
+        $data =  DB::connection('mysqlkdw')                            
+        ->table('states_MA')
+        ->get(['ds_id', 'description']);
 
         return $data;
     }
