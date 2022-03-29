@@ -43,6 +43,7 @@
       border-color: Transparent !important;
       overflow: auto;
       box-shadow: 0px 0px 25px rgba(0,0,0,0.5);
+      font-size: 45px;
     }
     #editor1
     {

@@ -97,7 +97,8 @@ class RightsSeeder extends Seeder
       'users_update', // Berechtigung Mitarbeiterdaten zu ändern
       'users_change_role', // Berechtigung Mitarbeiterrollen zu ändern
       'users_reset_password', // Möglichkeit Mitarbeiterpasswörter zurückzusetzen
-      'write_memos' //Möglichkeit Memorandas zu verfassen
+      'write_memos', //Möglichkeit Memorandas zu verfassen
+      'wfm_base',
 
     );
     $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
