@@ -145,76 +145,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('reports/RDDataStatus', 'ReportController@RDDataStatus')->name('reports.RDDataStatus')->middleware('hasRight:sendReports');
   Route::get('reports/SASStatus', 'ReportController@SASStatus')->name('reports.SASStatus')->middleware('hasRight:sendReports');
   Route::get('reports/OptinStatus', 'ReportController@OptinStatus')->name('reports.OptinStatus')->middleware('hasRight:sendReports');
-  //endreport
-  // Route::get('/retentiondetails/removeDuplicates', function(){
-  //   DB::statement(
-  //   '
-  //   DELETE FROM retention_details
-  //     WHERE id IN (
-  //       SELECT calc_id FROM (
-  //       SELECT MAX(id) AS calc_id
-  //       FROM retention_details
-  //       GROUP BY call_date, person_id
-  //       HAVING COUNT(id) > 1
-  //       ) temp)
-  //       '
-  //     );
-  //       // return 1;
-  //     return redirect()->back();
-  // })->name('retentiondetails.removeDuplicates')->middleware('hasRight:importReports');
-  //
-  // Route::get('/dailyagent/removeDuplicates', function(){
-  //
-  //   DB::disableQueryLog();
-  //   ini_set('memory_limit', '-1');
-  //   ini_set('max_execution_time', '0');
-  //
-  //   DB::statement(
-  //     '
-  //     DELETE t1 FROM dailyagent t1
-  //       INNER JOIN dailyagent t2
-  //       WHERE t1.id > t2.id
-  //       AND t1.start_time = t2.start_time
-  //       AND t1.agent_id = t2.agent_id
-  //       AND t1.status = t2.status
-  //   ');
-  //
-  //     return redirect()->back();
-  // })->name('dailyagent.removeDuplicates')->middleware('hasRight:importReports');
-  //
-  // Route::get('/hoursreport/removeDuplicates', function(){
-  //   DB::statement(
-  //   '
-  //   DELETE FROM hoursreport
-  //     WHERE id IN (
-  //       SELECT calc_id FROM (
-  //       SELECT MAX(id) AS calc_id
-  //       FROM hoursreport
-  //       GROUP BY name,date
-  //       HAVING COUNT(id) > 1
-  //       ) temp)
-  //       '
-  //     );
-  //       // return 1;
-  //     return redirect()->back();
-  // })->name('hoursreport.removeDuplicates')->middleware('hasRight:importReports');
-  //
-  // Route::get('/hoursreport/sync', function(){
-  //
-  //   $users = App\User::all();
-  //
-  //   foreach($users as $user)
-  //   {
-  //     $updates = DB::table('hoursreport')
-  //     ->where('name',$user->lastname.', '.$user->surname)
-  //     ->update(
-  //       [
-  //         'user_id' => $user->id,
-  //       ]);
-  //   }
-  //   return redirect()->route('reports.reportHours.view');
-  //
-  // })->name('hoursreport.sync')->middleware('hasRight:importReports');
+
 
   Route::view('/reports', 'reports')->name('reports.choose');
   //ssetracking
@@ -393,7 +324,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('/shipz/createUser', 'ShipsController@createAvatar')->name('ships.createUser');//RECHT FEHLT
   Route::get('/shipz/checkUser/{id}', 'ShipsController@checkUser')->name('ships.createUser');//RECHT FEHLT
   //end
-  
+
   //START WFM
   Route::get('/wfm/employee/times', 'WfmController@master')->name('wfm.master')->middleware('hasRight:controlling'); //RECHT != WFM
 
