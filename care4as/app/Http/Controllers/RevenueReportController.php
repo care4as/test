@@ -39,6 +39,7 @@ class RevenueReportController extends Controller
             'project' => request('project'),
             'month' => request('month'),
             'year' => request('year'),
+            'format' => request('format'),
             'comp' => true,
         );
 
@@ -89,6 +90,7 @@ class RevenueReportController extends Controller
                 'cpo_dsl' => 16,
                 'cpo_kuerue' => 5,
                 'speedretention' => 38,
+                'target_sick_percentage' => 8,
             ),
             7 => array(// Mobile
                 'availbench_ziel_aht' => 700,
@@ -97,6 +99,7 @@ class RevenueReportController extends Controller
                 'cpo_portale' => 16,
                 'cpo_kuerue' => 5,
                 'speedretention' => 38,
+                'target_sick_percentage' => 8,
             ) 
         );
 
@@ -142,6 +145,7 @@ class RevenueReportController extends Controller
             'ma' => $this->getKdwMa($param),
             'history_state' => $this->getHistoryState($param),
             'states_description' => $this->getStatesDesc(),
+            'chronology_work' => $this->getChronologyWork($param, $personIds),
         );
 
         $data = $this->combineData($param, $rawdata);
@@ -150,8 +154,6 @@ class RevenueReportController extends Controller
 
         return $data;
     }
-
-    
 
     public function combineData($param, $rawdata){
         /** Wie Funktion aufbauen, damit diese auch von anderen Projekten verwendet werden kann?
@@ -168,6 +170,7 @@ class RevenueReportController extends Controller
             $data['daily'][$entry['date']]['speedretention'] = $this->calcSpeedRetentionDaily($entry['date'], $rawdata['chronBook'], $param);
             $data['daily'][$entry['date']]['optin'] = $this->calcOptinDaily();
             $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state'], $rawdata['states_description']);
+            $data['daily'][$entry['date']]['worktime'] = $this->calcWorktimeDaily($rawdata['chronology_work'], $entry['date']);
             
         }
 
@@ -176,12 +179,67 @@ class RevenueReportController extends Controller
         $data['sum']['details'] = $this->calcDetailsSum($param, $rawdata['details']);
         $data['sum']['speedretention'] = $this->calcSpeedRetentionSum($data);
         $data['sum']['fte'] = $this->calcFteSum($data, $rawdata['history_state'], $rawdata['states_description'], $rawdata['ma'], $param);
+        $data['sum']['worktime'] = $this->calcWorktimeSum($rawdata['chronology_work']);
 
-        dd($data);
+        // dd($data);
         // dd($param);
 
         return $data;
 
+    }
+
+    public function calcOptinDaily(){
+
+    }
+
+    public function calcOptinSum(){
+
+    }
+
+    public function calcWorktimeDaily($chronWork, $date){
+        $data = array();
+
+        $chronWork = $chronWork->where('work_date', $date);
+
+        $data['all_hours'] = $chronWork->sum('work_hours');
+        $data['unpayed_hours'] = $chronWork->whereIn('state_id', [13, 15, 23, 24, 33, 34])->sum('work_hours');
+        $data['payed_hours'] = $data['all_hours'] - $data['unpayed_hours'];
+        $data['sick_hours_netto'] = $chronWork->whereIn('state_id', [1, 7])->sum('work_hours');
+        if($data['sick_hours_netto'] > 0){
+            $data['sick_percentage_netto'] = ($data['sick_hours_netto'] / $data['payed_hours']) * 100;
+        } else {
+            $data['sick_percentage_netto'] = 0;
+        }
+        $data['sick_hours_brutto'] = $chronWork->whereIn('state_id', [1, 7, 8])->sum('work_hours');
+        if($data['sick_hours_brutto'] > 0){
+            $data['sick_percentage_brutto'] = ($data['sick_hours_brutto'] / $data['payed_hours']) * 100;
+        } else {
+            $data['sick_percentage_brutto'] = 0;
+        }
+
+        return $data;
+    }
+
+    public function calcWorktimeSum($chronWork){
+        $data = array();
+
+        $data['all_hours'] = $chronWork->sum('work_hours');
+        $data['unpayed_hours'] = $chronWork->whereIn('state_id', [13, 15, 23, 24, 33, 34])->sum('work_hours');
+        $data['payed_hours'] = $data['all_hours'] - $data['unpayed_hours'];
+        $data['sick_hours_netto'] = $chronWork->whereIn('state_id', [1, 7])->sum('work_hours');
+        if($data['sick_hours_netto'] > 0){
+            $data['sick_percentage_netto'] = ($data['sick_hours_netto'] / $data['payed_hours']) * 100;
+        } else {
+            $data['sick_percentage_netto'] = 0;
+        }
+        $data['sick_hours_brutto'] = $chronWork->whereIn('state_id', [1, 7, 8])->sum('work_hours');
+        if($data['sick_hours_brutto'] > 0){
+            $data['sick_percentage_brutto'] = ($data['sick_hours_brutto'] / $data['payed_hours']) * 100;
+        } else {
+            $data['sick_percentage_brutto'] = 0;
+        }
+
+        return $data;
     }
 
     public function calcFteDaily($date, $ma, $history, $states){
@@ -264,39 +322,26 @@ class RevenueReportController extends Controller
         $data['all_ovh_fte'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_ovh_fte'];
         $data['all_ovh_heads'] = $allData['daily'][array_key_last($allData['daily'])]['fte']['all_ovh_heads'];
 
-        // Status
-        // dd($history);
-        foreach($history->sortBy('date_begin')->sortBy('state_id') as $key => $entry){
-            $data['information']['status'][$states->where('ds_id', $entry->state_id)->first()->description][] = date_format(date_create($entry->date_begin), 'd.m.Y') . ' - ' . date_format(date_create($entry->date_end), 'd.m.Y') . ': ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->familienname;
-        }
-
-
         // Start nicht bezahlter Status
         foreach($ma->sortBy('eintritt') as $key => $entry){
             if($entry->eintritt >= $param['start_date']){
-                $data['information']['incoming'][] = 'Eintritt ' . date_format(date_create($entry->eintritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
+                $data['information']['Eintritt'][] = 'Eintritt ' . date_format(date_create($entry->eintritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
             }
         }
 
         foreach($ma->sortBy('austritt') as $key => $entry){
             if($entry->austritt != null){
                 if($entry->austritt <= $param['end_date']){
-                    $data['information']['outgoing'][] = 'Austritt ' . date_format(date_create($entry->austritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
+                    $data['information']['Austritt'][] = 'Austritt ' . date_format(date_create($entry->austritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
                 }
             }
         }
 
-
+        foreach($history->sortBy('date_begin')->sortBy('state_id') as $key => $entry){
+            $data['information'][$states->where('ds_id', $entry->state_id)->first()->description][] = date_format(date_create($entry->date_begin), 'd.m.Y') . ' - ' . date_format(date_create($entry->date_end), 'd.m.Y') . ': ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->familienname;
+        }
 
         return $data;
-    }
-
-    public function calcOptinDaily(){
-
-    }
-
-    public function calcOptinSum(){
-
     }
 
     public function calcSpeedRetentionDaily($date, $chronBook, $param){
@@ -509,28 +554,25 @@ class RevenueReportController extends Controller
         return $personIds;
     }
 
-    public function getChronologyWork($date, $personIds){
-        /** Gibt ein Objekt zurück, welches die Arbeitszeiten von Mitarbeitern beinhaltet.
-         * Folgende Filter werden berücksichtigt:
-         * - Datum
-         * - Projekt
-         * - Anwesenheit
+    public function getChronologyWork($param, $personIds){
+        /** 
+         * Beschreibung 'state_id'
+         * 13: Krank o. Lfz.
+         * 15: Mutterschutz
+         * 23: Fehlt unentschuldig
+         * 24: Beschäftigungsverbot
+         * 33: Kindkrank o. Lfz.
+         * 34: Krank Quarantäne
          */
-        
+
         $chronWork =  DB::connection('mysqlkdw')                            
         ->table('chronology_work')                                      
-        ->where('work_date', '>=', $date) 
-        ->where('work_date', '<=', $date)
-        ->where(function($query){
-            $query
-            ->where('state_id', null)
-            ->orWhereNotIn('state_id', array(1, 2, 8, 13, 15, 16, 24, 34)); // Hier können Filter auf die ID gesetzt werden (Urlaub, Krank usw.)
-        })
+        ->where('work_date', '>=', $param['start_date']) 
+        ->where('work_date', '<=', $param['end_date'])
         ->where(function ($query) use ($personIds){
             $query
             ->whereIn('MA_id', $personIds);
         })
-        ->where('work_hours', '>', 0)
         ->get();
 
         return $chronWork;
