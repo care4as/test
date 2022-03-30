@@ -159,12 +159,9 @@ class HomeController extends Controller
       $allDAProdHours = 0;
       //all the hours the agent was on one of the productive states
       $allDAProductiveHours = 0;
-
       $allDailyAgentCalls =0;
-
       $allGeVoSaves =0;
       $allSSETRackingSaves =0;
-
       $allSSCCalls = 0;
       $allSSCSaves = 0;
       $allBSCCalls = 0;
@@ -237,6 +234,7 @@ class HomeController extends Controller
               $q->where('work_date','<=',$end_date);
             }
             }])
+
           ->with(['SSETracking' => function($q) use ($start_date,$end_date){
             if($start_date != 1)
             {
@@ -381,6 +379,18 @@ class HomeController extends Controller
 
         // dd($department);
         // return \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
+        $hours =  DB::connection('mysqlkdw')                            // Verbindung zur externen Datenbanl 'mysqlkdw' wird hergestellt
+        ->table("chronology_work")                                      // Aus der Datenbank soll auf die Tabelle 'chronology_work' zugegriffen werden
+        ->where('work_date', '>=', '2021-01-01')                        // Datum muss größergleich dem Startdatum sein
+        ->where('work_date', '<=', '2022-04-01')                        // Datum muss kleinergleich dem Enddatum sein
+        ->where(function($query){                                       // Unbezahlte Status sollen nicht berücksichtigt werden
+            $query
+            ->where('state_id', null)                                   // Status 'null' soll berücksichtigt werden (häufigster Eintrag)
+            ->orWhereNotIn('state_id', array(13, 15, 16, 24));          // Status 13, 15, 16 und 24 sind unbezahlt und sollen nicht berücksichtigt werden
+        })
+        ->get();
+
+        // dd($hours[71233]);
         $users = User::where('department','Agenten')
         ->where('status',1)
         ->where('project', $department)
