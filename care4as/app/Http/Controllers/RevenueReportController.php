@@ -51,9 +51,11 @@ class RevenueReportController extends Controller
         /** Zusätzliche Parameter festlegen */
         if($param['project'] == 10){ //DSL
             $param['department_desc'] = 'Care4as Retention DSL Eggebek';
+            $param['forecast_issue'] = 'DE_1u1_RT_Access_1st';
 
         } else if ($param['project'] == 7){ // Mobile
             $param['department_desc'] = 'KDW Retention Mobile Flensburg';
+            $param['forecast_issue'] = 'DE_1u1_RT_Mobile_1st';
         }
 
                 
@@ -574,15 +576,14 @@ class RevenueReportController extends Controller
 
     }
 
-    /** WICHTIG ANPASSEN */
     public function getAvailbench($param){
         
         /** ANPASSEN DYNAMSICHE PARAMETER whereMonth, whereYear, call_forecast_issue */
 
         $availbench = DB::table('availbench_report')
-        ->whereMonth('date_date', '02')
-        ->whereYear('date_date', '2022')
-        ->where('call_forecast_issue', 'DE_1u1_RT_Access_1st')
+        ->whereMonth('date_date', $param['month_num'])
+        ->whereYear('date_date', $param['year'])
+        ->where('call_forecast_issue', $param['forecast_issue'])
         ->where('total_costs_per_interval', '>', 0)
         ->get(['date_date', 'call_date_interval_start_time', 'call_forecast_issue', 'total_costs_per_interval', 'malus_interval', 'number_payed_calls', 'price', 'aht']);
 
