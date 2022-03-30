@@ -328,7 +328,6 @@ Route::group(['middleware' => 'auth'], function () {
   // Ende  SONSTIGES
 
   //dashboard
-  Route::view('/dashboardMonitor', 'dashBoardMonitor');
+  Route::view('/dashboardMonitor', 'dashBoardMonitor')->middleware('hasRight:dashboardAdmin');
   //
 });
-Route::view('/dashboardMonitor', 'dashBoardMonitor');
