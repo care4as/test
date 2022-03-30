@@ -176,10 +176,10 @@
                                     <th>∑ GeVo Saves</th>
                                     <th>← CR</th>
                                     <th>∑ KüRü</th>
-                                    <th>∑ bez. OptIn</th>
-                                    <th>∑ OptIn</th>
+                                    <th><abbr title="Abrechnungsrelevante Optin. Hier können bis zu 4 pro Call gesetzt werden:&#010;- Call&#010;- Mail&#010;- Print&#010;- SMS">∑ bez. OptIn</abbr></th>
+                                    <th><abbr title="Quotenrelevante Optin. Hier erscheint pro Call nur 1 unabhängig ob ggf. mehrere gesetzt wurden.">∑ OptIn</abbr></th>
                                     <th>← in %</th>
-                                    <th>∑ Mögliche OptIn</th>
+                                    <th><abbr title="Quotenrelevante Optin. Die 1und1 lässt uns Daten darüber zukommen, bei wie vielen der bearbeiteten Kunden ein Optin möglich gewesen wäre.">∑ Mögliche OptIn</abbr></th>
                                     <th>← in %</th>
                                     <th>∑ SaS</th>
                                     <th>← in ‰</th>
@@ -320,10 +320,10 @@
                                     <th>← CR</th>
                                     <th>∑ KüRü</th>
                                     <th>∑ Saves</th>
-                                    <th>∑ bez. OptIn</th>
-                                    <th>∑ OptIn</th>
+                                    <th><abbr title="Abrechnungsrelevante Optin. Hier können bis zu 4 pro Call gesetzt werden:&#010;- Call&#010;- Mail&#010;- Print&#010;- SMS">∑ bez. OptIn</abbr></th>
+                                    <th><abbr title="Quotenrelevante Optin. Hier erscheint pro Call nur 1 unabhängig ob ggf. mehrere gesetzt wurden.">∑ OptIn</abbr></th>
                                     <th>← in %</th>
-                                    <th>∑ Mögliche OptIn</th>
+                                    <th><abbr title="Quotenrelevante Optin. Die 1und1 lässt uns Daten darüber zukommen, bei wie vielen der bearbeiteten Kunden ein Optin möglich gewesen wäre.">∑ Mögliche OptIn</abbr></th>
                                     <th>← in %</th>
                                     <th>∑ SaS</th>
                                     <th>← in ‰</th>
