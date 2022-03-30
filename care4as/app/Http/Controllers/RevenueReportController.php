@@ -170,7 +170,7 @@ class RevenueReportController extends Controller
             $data['daily'][$entry['date']]['speedretention'] = $this->calcSpeedRetentionDaily($entry['date'], $rawdata['chronBook'], $param);
             $data['daily'][$entry['date']]['optin'] = $this->calcOptinDaily();
             $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state'], $rawdata['states_description']);
-            $data['daily'][$entry['date']]['worktime'] = $this->calcWorktimeDaily($rawdata['chronology_work'], $entry['date']);
+            $data['daily'][$entry['date']]['worktime'] = $this->calcWorktimeDaily($rawdata['chronology_work'], $entry['date'], $rawdata['states_description'], $rawdata['ma']);
             
         }
 
@@ -196,13 +196,28 @@ class RevenueReportController extends Controller
 
     }
 
-    public function calcWorktimeDaily($chronWork, $date){
+    public function calcWorktimeDaily($chronWork, $date, $states, $ma){
         $data = array();
+
+        /** 
+         * Beschreibung 'state_id'
+         * 08: Krank??? <-- Ausgenommen weil bezahlt!!!
+         * 13: Krank o. Lfz.
+         * 14: Unbezahlt Krank
+         * 15: Mutterschutz
+         * 23: Fehlt unentschuldig
+         * 24: Beschäftigungsverbot
+         * 26: Erziehungsurlaub
+         * 30: Krank bei Eintritt
+         * 33: Kindkrank o. Lfz.
+         * 34: Krank Quarantäne
+         * 35: Kind Corona
+         */
 
         $chronWork = $chronWork->where('work_date', $date);
 
         $data['all_hours'] = $chronWork->sum('work_hours');
-        $data['unpayed_hours'] = $chronWork->whereIn('state_id', [13, 15, 23, 24, 33, 34])->sum('work_hours');
+        $data['unpayed_hours'] = $chronWork->whereIn('state_id', [13, 14, 15, 23, 24, 26, 30, 33, 34, 35])->sum('work_hours');
         $data['payed_hours'] = $data['all_hours'] - $data['unpayed_hours'];
         $data['sick_hours_netto'] = $chronWork->whereIn('state_id', [1, 7])->sum('work_hours');
         if($data['sick_hours_netto'] > 0){
@@ -210,12 +225,29 @@ class RevenueReportController extends Controller
         } else {
             $data['sick_percentage_netto'] = 0;
         }
-        $data['sick_hours_brutto'] = $chronWork->whereIn('state_id', [1, 7, 8])->sum('work_hours');
+        $data['sick_hours_brutto'] = $chronWork->whereIn('state_id', [1, 7, 8, 13, 14, 30, 34, 35])->sum('work_hours');
         if($data['sick_hours_brutto'] > 0){
-            $data['sick_percentage_brutto'] = ($data['sick_hours_brutto'] / $data['payed_hours']) * 100;
+            $data['sick_percentage_brutto'] = ($data['sick_hours_brutto'] / $data['all_hours']) * 100;
         } else {
             $data['sick_percentage_brutto'] = 0;
         }
+
+        // dd($chronWork->whereIn('state_id', [1, 7])->sortBy('state_id'));
+
+        $data['information']['netto']['count_employees'] = sizeof($chronWork->whereIn('state_id', [1, 7])->where('work_hours', '>', 0));
+        if($data['information']['netto']['count_employees'] > 0){
+            foreach($chronWork->whereIn('state_id', [1, 7])->sortBy('state_id')->where('work_hours', '>', 0) as $key => $entry){
+                $data['information']['netto']['entries'][] = $states->where('ds_id', $entry->state_id)->first()->description . ' ' . $ma->where('ds_id', $entry->MA_id)->first()->soll_h_day . ' Std.: ' . $ma->where('ds_id', $entry->MA_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->MA_id)->first()->familienname;
+            }
+        }
+
+        $data['information']['brutto']['count_employees'] = sizeof($chronWork->whereIn('state_id', [1, 7, 8, 13, 14, 30, 34, 35])->where('work_hours', '>', 0));
+        if($data['information']['brutto']['count_employees'] > 0){
+            foreach($chronWork->whereIn('state_id', [1, 7, 8, 13, 14, 30, 34, 35])->sortBy('state_id')->where('work_hours', '>', 0) as $key => $entry){
+                $data['information']['brutto']['entries'][] = $states->where('ds_id', $entry->state_id)->first()->description . ' ' . $ma->where('ds_id', $entry->MA_id)->first()->soll_h_day . ' Std.: ' . $ma->where('ds_id', $entry->MA_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->MA_id)->first()->familienname;
+            }
+        }
+        
 
         return $data;
     }
@@ -224,7 +256,7 @@ class RevenueReportController extends Controller
         $data = array();
 
         $data['all_hours'] = $chronWork->sum('work_hours');
-        $data['unpayed_hours'] = $chronWork->whereIn('state_id', [13, 15, 23, 24, 33, 34])->sum('work_hours');
+        $data['unpayed_hours'] = $chronWork->whereIn('state_id', [13, 14, 15, 23, 24, 26, 30, 33, 34, 35])->sum('work_hours');
         $data['payed_hours'] = $data['all_hours'] - $data['unpayed_hours'];
         $data['sick_hours_netto'] = $chronWork->whereIn('state_id', [1, 7])->sum('work_hours');
         if($data['sick_hours_netto'] > 0){
@@ -232,9 +264,9 @@ class RevenueReportController extends Controller
         } else {
             $data['sick_percentage_netto'] = 0;
         }
-        $data['sick_hours_brutto'] = $chronWork->whereIn('state_id', [1, 7, 8])->sum('work_hours');
+        $data['sick_hours_brutto'] = $chronWork->whereIn('state_id', [1, 7, 8, 13, 14, 30, 34, 35])->sum('work_hours');
         if($data['sick_hours_brutto'] > 0){
-            $data['sick_percentage_brutto'] = ($data['sick_hours_brutto'] / $data['payed_hours']) * 100;
+            $data['sick_percentage_brutto'] = ($data['sick_hours_brutto'] / $data['all_hours']) * 100;
         } else {
             $data['sick_percentage_brutto'] = 0;
         }
@@ -244,6 +276,23 @@ class RevenueReportController extends Controller
 
     public function calcFteDaily($date, $ma, $history, $states){
         $data = array();
+
+        /** 
+         * Beschreibung 'state_id'
+         * 08: Krank??? <-- Ausgenommen weil bezahlt!!!
+         * 13: Krank o. Lfz.
+         * 14: Unbezahlt Krank
+         * 15: Mutterschutz
+         * 26: Erziehungsurlaub
+         * 23: Fehlt unentschuldig
+         * 24: Beschäftigungsverbot
+         * 30: Krank bei Eintritt
+         * 33: Kindkrank o. Lfz.
+         * 34: Krank Quarantäne
+         * 35: Kind Corona
+         */
+
+        $history = $history->whereIn('state_id', [13, 14, 15, 16, 23, 24, 30, 33, 34, 35]);
 
         $ma = $ma->where('eintritt', '<=', $date);
         
@@ -305,6 +354,8 @@ class RevenueReportController extends Controller
             'payed_kb_hours' => 0,
             'payed_kb_heads' => 0,
         );
+
+        $history = $history->whereIn('state_id', [13, 14, 15, 16, 23, 24, 30, 33, 34, 35]);
 
         foreach($allData['daily'] as $key => $entry){
             $data['payed_kb_hours'] += $entry['fte']['payed_kb_hours'];
@@ -523,6 +574,7 @@ class RevenueReportController extends Controller
 
     }
 
+    /** WICHTIG ANPASSEN */
     public function getAvailbench($param){
         
         /** ANPASSEN DYNAMSICHE PARAMETER whereMonth, whereYear, call_forecast_issue */
@@ -555,16 +607,6 @@ class RevenueReportController extends Controller
     }
 
     public function getChronologyWork($param, $personIds){
-        /** 
-         * Beschreibung 'state_id'
-         * 13: Krank o. Lfz.
-         * 15: Mutterschutz
-         * 23: Fehlt unentschuldig
-         * 24: Beschäftigungsverbot
-         * 33: Kindkrank o. Lfz.
-         * 34: Krank Quarantäne
-         */
-
         $chronWork =  DB::connection('mysqlkdw')                            
         ->table('chronology_work')                                      
         ->where('work_date', '>=', $param['start_date']) 
@@ -637,17 +679,22 @@ class RevenueReportController extends Controller
         ->where('project_id', $param['project'])
         ->where('date_begin', '<=', $param['end_date'])
         ->where('date_end', '>=', $param['start_date'])
-        ->whereIn('state_id', [13, 15, 23, 24, 33, 34])
+        ->whereIn('state_id', [8, 13, 14, 15, 16, 23, 24, 30, 33, 34, 35])
         ->get(['agent_id', 'agent_ds_id', 'date_begin', 'date_end', 'state_id']);
 
         /** 
          * Beschreibung 'state_id'
+         * 08: Krank???
          * 13: Krank o. Lfz.
+         * 14: Unbezahlt Krank
          * 15: Mutterschutz
+         * 26: Erziehungsurlaub
          * 23: Fehlt unentschuldig
          * 24: Beschäftigungsverbot
+         * 30: Krank bei Eintritt
          * 33: Kindkrank o. Lfz.
          * 34: Krank Quarantäne
+         * 35: Kind Corona
          */
 
         return $data;

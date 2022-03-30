@@ -123,22 +123,24 @@
                         <div class="col-md-12">
                             <div class="max-panel">
                                 <div class="max-panel-title">Auswertung</div>
-                                <div class="max-panel-content">
+                                <div class="max-panel-content" style="overflow-x: scroll;">
                                     <table class="max-table" id="datatable" style="width: 100%;">
                                         <thead>
                                             <tr>
                                                 <th>Datum</th>
-                                                <th><abbr title="Nur bezahlte MA ohne:&#010;- Krank o.Lfz.&#010;- Kindkrank o.Lfz.&#010;- Elternzeit&#010;- Beschäftigungsverbot&#010;- Krank Quarantäne&#010;- Fehlt Unentschuldigt&#010;Der zugrundeliegende Status lässt sich an den jeweiligen Tagen nachvollziehen">FTE Bestand <button onclick="changeDisplay('fte', 'fte_button')"><i id="fte_button" class="fas fa-caret-right"></i></button></abbr></th>
+                                                <th><abbr title="Nur bezahlte Kundenberater und Backoffice ohne:&#010;- Krank o. Lfz.&#010;- Unbezahlt krank&#010;- Mutterschutz&#010;- Erziehungsurlaub&#010;- Fehlt unentschuldigt&#010;- Beschäftigungsverbot&#010;- Krank bei Eintritt&#010;- Kindkrank o. Lfz.&#010;- Krank Quarantäne&#010;- Kind Corona&#010;Der zugrundeliegende Status lässt sich an den jeweiligen Tagen nachvollziehen">FTE Bestand <button onclick="changeDisplay('fte', 'fte_button')"><i id="fte_button" class="fas fa-caret-right"></i></button></abbr></th>
                                                     <th class="fte"><abbr title="Alle eingestellten Kundenberater unabhängig von nicht bezahlten Status">KB</abbr></th>
                                                     <th class="fte"><abbr title="Alle eingestellten Overheads unabhängig von nicht bezahlten Status">OVH</abbr></th>
-                                                <th><abbr title="Nur bezahlte MA ohne:&#010;- Krank o.Lfz.&#010;- Kindkrank o.Lfz.&#010;- Elternzeit&#010;- Beschäftigungsverbot&#010;- Krank Quarantäne&#010;- Fehlt Unentschuldigt&#010;Der zugrundeliegende Status lässt sich an den jeweiligen Tagen nachvollziehen">Köpfe Bestand <button onclick="changeDisplay('heads', 'heads_button')"><i id="heads_button" class="fas fa-caret-right"></i></button></abbr></th>
+                                                <th><abbr title="Nur bezahlte Kundenberater und Backoffice ohne:&#010;- Krank o. Lfz.&#010;- Unbezahlt krank&#010;- Mutterschutz&#010;- Erziehungsurlaub&#010;- Fehlt unentschuldigt&#010;- Beschäftigungsverbot&#010;- Krank bei Eintritt&#010;- Kindkrank o. Lfz.&#010;- Krank Quarantäne&#010;- Kind Corona&#010;Der zugrundeliegende Status lässt sich an den jeweiligen Tagen nachvollziehen">Köpfe Bestand <button onclick="changeDisplay('heads', 'heads_button')"><i id="heads_button" class="fas fa-caret-right"></i></button></abbr></th>
                                                     <th class="heads"><abbr title="Alle eingestellten Kundenberater unabhängig von nicht bezahlten Status">KB</abbr></th>
                                                     <th class="heads"><abbr title="Alle eingestellten Overheads unabhängig von nicht bezahlten Status">OVH</abbr></th>
                                                 <th><abbr title="Berücksichtigt werden bezahlte Kundenberater und Backoffice.&#010;Die Kriterien sind identisch zum FTE Bestand.">Std. bezahlt <button onclick="changeDisplay('worktime', 'worktime_button')"><i id="worktime_button" class="fas fa-caret-right"></i></button></abbr></th>
                                                     <th class="worktime">Alle Std.</th>
                                                     <th class="worktime">← davon in unbezahlten Status</th>
-                                                <th><abbr title="Netto Krankenquote:&#010;(Krank + Kindkrank) / Std. bezahlt&#010;&#010;Zielwert: ≤ {{number_format($param['constants'][$param['project']]['target_sick_percentage'], 2, ',', '.')}} %">Krankenquote <button onclick="changeDisplay('sick', 'sick_button')"><i id="sick_button" class="fas fa-caret-right"></i></button></abbr></th>
-                                                    <th class="sick">Std. krank</th>
+                                                <th><abbr title="Netto Krankenquote:&#010;Std. krank (N) / Std. bezahlt&#010;&#010;Zielwert: ≤ {{number_format($param['constants'][$param['project']]['target_sick_percentage'], 2, ',', '.')}} %">Krankenquote (N) <button onclick="changeDisplay('sick', 'sick_button')"><i id="sick_button" class="fas fa-caret-right"></i></button></abbr></th>
+                                                    <th class="sick"><abbr title="Berücksichtigt werden:&#010;- Krank&#010;- Kindkrank">Std. krank (N)</abbr></th>
+                                                    <th class="sick"><abbr title="Brutto Krankenquote:&#010;Std. krank (B) / Alle std.">Krankenquote (B)</abbr></th>
+                                                    <th class="sick"><abbr title="Berücksichtigt werden:&#010;- Krank&#010;- Kindkrank&#010;- Krank???&#010;- Krank o. Lfz.&#010;- Unbezahlt krank&#010;- Krank bei Eintritt&#010;- Krank Quarantäne&#010;- Kind Corona">Std. krank (B)</abbr></th>
                                                 <th>Umsatz IST <button onclick="changeDisplay('umsatz', 'umsatz_ist_button')"><i id="umsatz_ist_button" class="fas fa-caret-right"></i></button></th>
                                                     <th class="umsatz">CPO <button onclick="changeDisplay('cpo', 'cpo_button')"><i id="cpo_button" class="fas fa-caret-right"></i></button></th>
                                                         @if($param['project'] == 10)
@@ -211,7 +213,17 @@
                                                     @else
                                                     <td style="text-align: center;">{{number_format($entry['worktime']['sick_percentage_netto'], 2, ',', '.')}} %</td>
                                                 @endif
-                                                    <td style="text-align: center;" class="sick">{{number_format($entry['worktime']['sick_hours_netto'], 2, ',', '.')}}</td>
+                                                    @if($entry['worktime']['information']['netto']['count_employees'] > 0)
+                                                        <td style="text-align: center;" class="sick"><abbr title="Köpfe Krank: {{$entry['worktime']['information']['netto']['count_employees']}}&#010;@foreach($entry['worktime']['information']['netto']['entries'] as $sickKey => $sickEntry){{$sickEntry}}&#010;@endforeach">{{number_format($entry['worktime']['sick_hours_netto'], 2, ',', '.')}}</abbr></td>
+                                                    @else
+                                                        <td style="text-align: center;" class="sick">{{number_format($entry['worktime']['sick_hours_netto'], 2, ',', '.')}}</td>
+                                                    @endif                                                    
+                                                    <td style="text-align: center;" class="sick">{{number_format($entry['worktime']['sick_percentage_brutto'], 2, ',', '.')}} %</td>
+                                                    @if($entry['worktime']['information']['brutto']['count_employees'] > 0)
+                                                        <td style="text-align: center;" class="sick"><abbr title="Köpfe Krank: {{$entry['worktime']['information']['brutto']['count_employees']}}&#010;@foreach($entry['worktime']['information']['brutto']['entries'] as $sickKey => $sickEntry){{$sickEntry}}&#010;@endforeach">{{number_format($entry['worktime']['sick_hours_brutto'], 2, ',', '.')}}</abbr></td>
+                                                    @else
+                                                        <td style="text-align: center;" class="sick">{{number_format($entry['worktime']['sick_hours_brutto'], 2, ',', '.')}}</td>
+                                                    @endif  
                                                 <td>Umsatz IST</td>
                                                     <td class="umsatz" style="text-align: right;">{{number_format($entry['details']['revenue'],2, ',', '.')}} €</td>
                                                         @if($param['project'] == 10)    
@@ -300,6 +312,8 @@
                                                     <td style="text-align: center; background-color: #ddd;" class="worktime">{{number_format($data['sum']['worktime']['unpayed_hours'],2, ',', '.')}}</td>
                                                 <td style="text-align:center;">{{number_format($data['sum']['worktime']['sick_percentage_netto'],2, ',', '.')}} % </td>
                                                     <td style="text-align: center; background-color: #ddd;" class="sick">{{number_format($data['sum']['worktime']['sick_hours_netto'],2, ',', '.')}}</td>
+                                                    <td style="text-align: center; background-color: #ddd;" class="sick">{{number_format($data['sum']['worktime']['sick_percentage_brutto'],2, ',', '.')}} % </td>
+                                                    <td style="text-align: center; background-color: #ddd;" class="sick">{{number_format($data['sum']['worktime']['sick_hours_brutto'],2, ',', '.')}}</td>
                                                 <td>Umsatz IST</td>
                                                     <td class="umsatz" style="text-align: right;background-color: #ddd;">{{number_format($data['sum']['details']['revenue'],2, ',', '.')}} €</td>
                                                         @if($param['project'] == 10)    
