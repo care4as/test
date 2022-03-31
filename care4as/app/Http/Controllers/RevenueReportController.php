@@ -198,7 +198,7 @@ class RevenueReportController extends Controller
         $data['sum']['fte'] = $this->calcFteSum($data, $rawdata['history_state'], $rawdata['states_description'], $rawdata['ma'], $param, $rawdata['chronology_work']);
         $data['sum']['worktime'] = $this->calcWorktimeSum($rawdata['chronology_work']);
         $data['sum']['sas'] = $this->calcSasSum($rawdata['sas']);
-        $data['sum']['revenue'] = $this->calcRevenueSum($data['sum'], $param);
+        $data['sum']['revenue'] = $this->calcRevenueSum($data['sum'], $param, $data['daily']);
 
         // dd($data);
         // dd($param);
@@ -242,7 +242,7 @@ class RevenueReportController extends Controller
         return $data;
     }
 
-    public function calcRevenueSum($allData, $param){
+    public function calcRevenueSum($allData, $param, $dailyData){
         $data = array();
 
         $data['revenue'] = 
@@ -258,8 +258,10 @@ class RevenueReportController extends Controller
             $data['revenue_paid_hour'] = 0;
         }
 
-
-        $data['revenue_target'] = $allData['worktime']['payed_hours'] * $param['constants'][$param['project']]['target_revenue_paid_hour'];
+        $data['revenue_target'] = 0;
+        foreach($dailyData as $key => $entry){
+            $data['revenue_target'] += $entry['revenue']['revenue_target'];
+        }
             
         if($data['revenue_target'] > 0){
             $data['revenue_attainment_percent'] = ($data['revenue'] / $data['revenue_target']) * 100;
