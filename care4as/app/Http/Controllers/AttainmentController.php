@@ -92,6 +92,7 @@ class AttainmentController extends Controller
                 $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['forecast_calls'] = $dataEntry['forecast'];
                 $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['handled_calls'] = $dataEntry['handled'];
 
+                // NEU: AUF ANFRAGE VON WFM
                 if($dataEntry['handled'] < $dataEntry['forecast']){
                     if($dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['fulfilled'] == 'yes'){
                         $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['handled_calls'] = $dataEntry['forecast'];

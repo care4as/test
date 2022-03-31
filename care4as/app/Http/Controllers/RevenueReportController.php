@@ -46,10 +46,12 @@ class RevenueReportController extends Controller
         if($param['project'] == 10){ //DSL
             $param['department_desc'] = 'Care4as Retention DSL Eggebek';
             $param['forecast_issue'] = 'DE_1u1_RT_Access_1st';
+            $param['serviceprovider'] = 'Care4As_Flensburg';
 
         } else if ($param['project'] == 7){ // Mobile
             $param['department_desc'] = 'KDW Retention Mobile Flensburg';
             $param['forecast_issue'] = 'DE_1u1_RT_Mobile_1st';
+            $param['serviceprovider'] = 'KDW_Flensburg';
         }
 
                 
@@ -93,6 +95,7 @@ class RevenueReportController extends Controller
                 'optin_usage' => 0.4,
                 'speedretention' => 38,
                 'target_sick_percentage' => 8,
+                'target_revenue_paid_hour' => 36.41,
             ),
             7 => array(// Mobile
                 'availbench_ziel_aht' => 700,
@@ -108,6 +111,7 @@ class RevenueReportController extends Controller
                 'optin_usage' => 0.4,
                 'speedretention' => 38,
                 'target_sick_percentage' => 8,
+                'target_revenue_paid_hour' => 36.99,
             ) 
         );
 
@@ -154,6 +158,7 @@ class RevenueReportController extends Controller
             'history_state' => $this->getHistoryState($param),
             'states_description' => $this->getStatesDesc(),
             'chronology_work' => $this->getChronologyWork($param, $personIds),
+            'sas' => $this->getSas($param),
         );
 
         $data = $this->combineData($param, $rawdata);
@@ -179,7 +184,10 @@ class RevenueReportController extends Controller
             $data['daily'][$entry['date']]['optin'] = $this->calcOptinDaily($entry['date'], $rawdata['optin'], $param['constants'][$param['project']]);
             $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state'], $rawdata['states_description']);
             $data['daily'][$entry['date']]['worktime'] = $this->calcWorktimeDaily($rawdata['chronology_work'], $entry['date'], $rawdata['states_description'], $rawdata['ma']);
+            $data['daily'][$entry['date']]['sas'] = $this->calcSasDaily($entry['date'], $rawdata['sas']);
             
+            // Umsatzberechnung als letztes
+            $data['daily'][$entry['date']]['revenue'] = $this->calcRevenueDaily($data['daily'][$entry['date']], $param, $entry['date']);
         }
 
         /** Summen Berechnung */
@@ -187,14 +195,99 @@ class RevenueReportController extends Controller
         $data['sum']['details'] = $this->calcDetailsSum($param, $rawdata['details']);
         $data['sum']['speedretention'] = $this->calcSpeedRetentionSum($data);
         $data['sum']['optin'] = $this->calcOptinSum($data, $param['constants'][$param['project']]);
-        $data['sum']['fte'] = $this->calcFteSum($data, $rawdata['history_state'], $rawdata['states_description'], $rawdata['ma'], $param);
+        $data['sum']['fte'] = $this->calcFteSum($data, $rawdata['history_state'], $rawdata['states_description'], $rawdata['ma'], $param, $rawdata['chronology_work']);
         $data['sum']['worktime'] = $this->calcWorktimeSum($rawdata['chronology_work']);
+        $data['sum']['sas'] = $this->calcSasSum($rawdata['sas']);
+        $data['sum']['revenue'] = $this->calcRevenueSum($data['sum'], $param);
 
         // dd($data);
         // dd($param);
 
         return $data;
 
+    }
+
+    public function calcRevenueDaily($allData, $param, $date){
+        $data = array();
+
+        $data['revenue'] = 
+              $allData['availbench']['revenue']
+            + $allData['details']['revenue']
+            + $allData['speedretention']['revenue']
+            + $allData['optin']['revenue']
+            + $allData['sas']['revenue'];
+
+        if($allData['worktime']['payed_hours'] > 0){
+            $data['revenue_paid_hour'] = $data['revenue'] / $allData['worktime']['payed_hours'];
+        } else {
+            $data['revenue_paid_hour'] = 0;
+        }
+
+        $dayNum = date('N', strtotime($date));
+        if ($dayNum >= 6){
+            $data['revenue_target'] = 0;
+            $data['revenue_attainment_percent'] = 0;
+        } else {
+            $data['revenue_target'] = $allData['worktime']['payed_hours'] * $param['constants'][$param['project']]['target_revenue_paid_hour'];
+            
+            if($data['revenue_target'] > 0){
+                $data['revenue_attainment_percent'] = ($data['revenue'] / $data['revenue_target']) * 100;
+            } else {
+                $data['revenue_attainment_percent'] = 0;
+            }           
+        }
+
+        $data['revenue_attainment'] = $data['revenue'] - $data['revenue_target'];
+
+        return $data;
+    }
+
+    public function calcRevenueSum($allData, $param){
+        $data = array();
+
+        $data['revenue'] = 
+              $allData['availbench']['revenue']
+            + $allData['details']['revenue']
+            + $allData['speedretention']['revenue']
+            + $allData['optin']['revenue']
+            + $allData['sas']['revenue'];
+
+        if($allData['worktime']['payed_hours'] > 0){
+            $data['revenue_paid_hour'] = $data['revenue'] / $allData['worktime']['payed_hours'];
+        } else {
+            $data['revenue_paid_hour'] = 0;
+        }
+
+
+        $data['revenue_target'] = $allData['worktime']['payed_hours'] * $param['constants'][$param['project']]['target_revenue_paid_hour'];
+            
+        if($data['revenue_target'] > 0){
+            $data['revenue_attainment_percent'] = ($data['revenue'] / $data['revenue_target']) * 100;
+        } else {
+            $data['revenue_attainment_percent'] = 0;
+        }           
+        
+        $data['revenue_attainment'] = $data['revenue'] - $data['revenue_target'];
+
+        return $data;
+    }
+
+    public function calcSasDaily($date, $sas){
+        $data = array(
+            'sas_count' => $sas->where('date', $date)->count(),
+            'revenue' => $sas->where('date', $date)->sum('GO_Prov'),
+        );
+
+        return $data;
+    }
+
+    public function calcSasSum($sas){
+        $data = array(
+            'sas_count' => $sas->count(),
+            'revenue' => $sas->sum('GO_Prov'),
+        );
+
+        return $data;
     }
 
     public function calcOptinDaily($date, $optin, $constants){
@@ -305,6 +398,9 @@ class RevenueReportController extends Controller
                 $data['information']['brutto']['entries'][] = $states->where('ds_id', $entry->state_id)->first()->description . ' ' . $ma->where('ds_id', $entry->MA_id)->first()->soll_h_day . ' Std.: ' . $ma->where('ds_id', $entry->MA_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->MA_id)->first()->familienname;
             }
         }
+
+        
+
         
 
         return $data;
@@ -407,7 +503,7 @@ class RevenueReportController extends Controller
         return $data;
     }
 
-    public function calcFteSum($allData, $history, $states, $ma, $param){
+    public function calcFteSum($allData, $history, $states, $ma, $param, $chronWork){
         $data = array(
             'payed_kb_hours' => 0,
             'payed_kb_heads' => 0,
@@ -449,6 +545,20 @@ class RevenueReportController extends Controller
         foreach($history->sortBy('date_begin')->sortBy('state_id') as $key => $entry){
             $data['information'][$states->where('ds_id', $entry->state_id)->first()->description][] = date_format(date_create($entry->date_begin), 'd.m.Y') . ' - ' . date_format(date_create($entry->date_end), 'd.m.Y') . ': ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->familienname;
         }
+
+        // Berechnen wie viele Tage MA im Berichtszeitraum krank waren
+        $sickEntries = $chronWork->whereIn('state_id', [1, 7]);
+        foreach($sickEntries as $key => $entry){
+            $entryName = $ma->where('ds_id', $entry->MA_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->MA_id)->first()->familienname;
+
+            if(isset($data['sick_entries'][$entryName])){
+                $data['sick_entries'][$entryName] += 1;
+            } else {
+                $data['sick_entries'][$entryName] = 1;
+            }
+        }
+
+        arsort($data['sick_entries']);
 
         return $data;
     }
@@ -771,6 +881,17 @@ class RevenueReportController extends Controller
         ->where('date', '>=', $param['start_date'])
         ->where('date', '<=', $param['end_date'])
         ->get(['date', 'Anzahl_Call_OptIn', 'Anzahl_Email_OptIn', 'Anzahl_Print_OptIn', 'Anzahl_SMS_OptIn', 'Anzahl_Nutzungsdaten_OptIn', 'Anzahl_Verkehrsdaten_OptIn']);
+
+        return $data;
+    }
+
+    public function getSas($param){
+        $data = DB::table('sas')
+        ->where('date', '>=', $param['start_date'])
+        ->where('date', '<=', $param['end_date'])
+        ->where('serviceprovider_place', $param['serviceprovider'])
+        ->where('GO_Prov', '>', 0)
+        ->get(['date', 'GO_Prov']);
 
         return $data;
     }
