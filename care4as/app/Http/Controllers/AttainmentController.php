@@ -83,11 +83,21 @@ class AttainmentController extends Controller
                 if($dataEntry['malus_interval'] == 0){
                     $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['fulfilled'] = 'yes';
                 } else {
-                    $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['fulfilled'] = 'no';
+                    if($dataEntry['availtime_percent'] >= 0.15){
+                        $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['fulfilled'] = 'yes';
+                    } else {
+                        $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['fulfilled'] = 'no';
+                    }
                 }
                 $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['forecast_calls'] = $dataEntry['forecast'];
                 $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['handled_calls'] = $dataEntry['handled'];
-            }            
+
+                if($dataEntry['handled'] < $dataEntry['forecast']){
+                    if($dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['fulfilled'] == 'yes'){
+                        $dateList['interval_list'][$currentDate]['intervals'][$dataEntry['call_date_interval_start_time']]['handled_calls'] = $dataEntry['forecast'];
+                    }
+                }
+            }                  
         }
         return $dateList;
     }
