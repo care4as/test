@@ -389,7 +389,7 @@ function roundUp($calls,$quotient)
                             <div  style="text-align: left;">Ist</div>
                             <div id="careCoinIs">{{$CCState = $Allsaves * 20}}</div>
                             <div style="text-align: left;">Differenz</div>
-                            <div id="careCoinDifference">{{$CCTreshold - $CCState}} </div>
+                            <div id="careCoinDifference">{{$CCState - $CCTreshold}} </div>
                         </div>
                     </div>
                 </div>
@@ -703,7 +703,7 @@ function roundUp($calls,$quotient)
 
     function checkAttainment(){
         //Attainment 1
-        if(careCoinDifference <= 0){
+        if(careCoinDifference >= 0){
             document.getElementById('attainment1').checked = true;
         } else {
             document.getElementById('attainment1').checked = false;
