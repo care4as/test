@@ -355,13 +355,43 @@
                                                         <td class="availbench" style="text-align: right;background-color: #ddd;">-{{number_format($data['sum']['availbench']['malus_interval'],2, ',', '.')}} €</td>
                                                         <td class="availbench" style="text-align: right;background-color: #ddd;">{{number_format($data['sum']['availbench']['malus_incentive'],2, ',', '.')}} €</td>
                                                         <td class="availbench" style="text-align: right;background-color: #ddd;">{{number_format($data['sum']['availbench']['aht_zielmanagement'],2, ',', '.')}} €</td>
-                                                    <td class="umsatz" style="text-align: right;background-color: #ddd;">Optin</td>
-                                                        <td class="optin" style="text-align: right;background-color: #ddd;">Call</td>
-                                                        <td class="optin" style="text-align: right;background-color: #ddd;">E-Mail</td>
-                                                        <td class="optin" style="text-align: right;background-color: #ddd;">Print</td>
-                                                        <td class="optin" style="text-align: right;background-color: #ddd;">SMS</td>
-                                                        <td class="optin" style="text-align: right;background-color: #ddd;">Verkehrsdaten</td>
-                                                        <td class="optin" style="text-align: right;background-color: #ddd;">Nutzungsdaten</td>
+                                                    <td class="umsatz" style="text-align: right;background-color: #ddd;">{{number_format($data['sum']['optin']['revenue'],2, ',', '.')}} €</td>
+                                                        <td class="optin" style="text-align: right;background-color: #ddd;">
+                                                            <div style="display:flex">
+                                                                <div style="margin-right: 15px;"></div>
+                                                                <div style="margin-left:auto"></div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="optin" style="text-align: right;background-color: #ddd;">
+                                                            <div style="display:flex">
+                                                                <div style="margin-right: 15px;"></div>
+                                                                <div style="margin-left:auto"></div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="optin" style="text-align: right;background-color: #ddd;">
+                                                            <div style="display:flex">
+                                                                <div style="margin-right: 15px;"></div>
+                                                                <div style="margin-left:auto"></div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="optin" style="text-align: right;background-color: #ddd;">
+                                                            <div style="display:flex">
+                                                                <div style="margin-right: 15px;"></div>
+                                                                <div style="margin-left:auto"></div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="optin" style="text-align: right;background-color: #ddd;">
+                                                            <div style="display:flex">
+                                                                <div style="margin-right: 15px;"></div>
+                                                                <div style="margin-left:auto"></div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="optin" style="text-align: right;background-color: #ddd;">
+                                                            <div style="display:flex">
+                                                                <div style="margin-right: 15px;"></div>
+                                                                <div style="margin-left:auto"></div>
+                                                            </div>
+                                                        </td>
                                                     <td class="umsatz" style="text-align: right;background-color: #ddd;">SaS</td>
                                                     <td class="umsatz" style="text-align: right;background-color: #ddd;">
                                                         <div style="display:flex">

@@ -10,12 +10,6 @@ use SebastianBergmann\Diff\Diff;
 
 class RevenueReportController extends Controller
 {
-
-    /** ÜBERLEGUNG: Wie kann der Controller für mehrere Views verwendet werden? 
-     *  Kann Paramerer als Switch übergeben werden?
-     *  Verschiedene Funktionsaufrufe, die seperart einen Aufruf an master machen? 
-     * 
-     * Ziel: Tracking Differenz sollte sich auch schnell mit einbinden lassen.*/
     
     public function master(){
 
@@ -51,9 +45,11 @@ class RevenueReportController extends Controller
         /** Zusätzliche Parameter festlegen */
         if($param['project'] == 10){ //DSL
             $param['department_desc'] = 'Care4as Retention DSL Eggebek';
+            $param['forecast_issue'] = 'DE_1u1_RT_Access_1st';
 
         } else if ($param['project'] == 7){ // Mobile
             $param['department_desc'] = 'KDW Retention Mobile Flensburg';
+            $param['forecast_issue'] = 'DE_1u1_RT_Mobile_1st';
         }
 
                 
@@ -89,6 +85,12 @@ class RevenueReportController extends Controller
                 'availbench_ziel_aht' => 580,
                 'cpo_dsl' => 16,
                 'cpo_kuerue' => 5,
+                'optin_call' => 1.2,
+                'optin_mail' => 0.3,
+                'optin_print' => 0.1,
+                'optin_sms' => 0.1,
+                'optin_trafic' => 0.4,
+                'optin_usage' => 0.4,
                 'speedretention' => 38,
                 'target_sick_percentage' => 8,
             ),
@@ -98,6 +100,12 @@ class RevenueReportController extends Controller
                 'cpo_bsc' => 12,
                 'cpo_portale' => 16,
                 'cpo_kuerue' => 5,
+                'optin_call' => 1.2,
+                'optin_mail' => 0.3,
+                'optin_print' => 0.1,
+                'optin_sms' => 0.1,
+                'optin_trafic' => 0.4,
+                'optin_usage' => 0.4,
                 'speedretention' => 38,
                 'target_sick_percentage' => 8,
             ) 
@@ -141,7 +149,7 @@ class RevenueReportController extends Controller
             'availbench' => $this->getAvailbench($param),
             'details' => $this->getRetentionDetails($param),
             'chronBook' => $this->getChronologyBook($param, $personIds),
-            'optin' => null,
+            'optin' => $this->getOptin($param),
             'ma' => $this->getKdwMa($param),
             'history_state' => $this->getHistoryState($param),
             'states_description' => $this->getStatesDesc(),
@@ -168,7 +176,7 @@ class RevenueReportController extends Controller
             $data['daily'][$entry['date']]['availbench'] = $this->calcAvailbenchDaily($param, $rawdata['availbench'], $entry['date']);
             $data['daily'][$entry['date']]['details'] = $this->calcDetailsDaily($param, $entry['date'], $rawdata['details']);
             $data['daily'][$entry['date']]['speedretention'] = $this->calcSpeedRetentionDaily($entry['date'], $rawdata['chronBook'], $param);
-            $data['daily'][$entry['date']]['optin'] = $this->calcOptinDaily();
+            $data['daily'][$entry['date']]['optin'] = $this->calcOptinDaily($entry['date'], $rawdata['optin'], $param['constants'][$param['project']]);
             $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state'], $rawdata['states_description']);
             $data['daily'][$entry['date']]['worktime'] = $this->calcWorktimeDaily($rawdata['chronology_work'], $entry['date'], $rawdata['states_description'], $rawdata['ma']);
             
@@ -178,6 +186,7 @@ class RevenueReportController extends Controller
         $data['sum']['availbench'] = $this->calcAvailbenchSum($param, $rawdata['availbench']);
         $data['sum']['details'] = $this->calcDetailsSum($param, $rawdata['details']);
         $data['sum']['speedretention'] = $this->calcSpeedRetentionSum($data);
+        $data['sum']['optin'] = $this->calcOptinSum($data, $param['constants'][$param['project']]);
         $data['sum']['fte'] = $this->calcFteSum($data, $rawdata['history_state'], $rawdata['states_description'], $rawdata['ma'], $param);
         $data['sum']['worktime'] = $this->calcWorktimeSum($rawdata['chronology_work']);
 
@@ -188,12 +197,61 @@ class RevenueReportController extends Controller
 
     }
 
-    public function calcOptinDaily(){
+    public function calcOptinDaily($date, $optin, $constants){
+        $data = array();
 
+        // Parameter auf Report zuschneiden
+        $date = date('Y-m-d H:i:s', strtotime($date));
+        $optin = $optin->where('date', $date);
+
+        $data['optin_call_count'] = $optin->sum('Anzahl_Call_OptIn');
+        $data['optin_mail_count'] = $optin->sum('Anzahl_Email_OptIn');
+        $data['optin_print_count'] = $optin->sum('Anzahl_Print_OptIn');
+        $data['optin_sms_count'] = $optin->sum('Anzahl_SMS_OptIn');
+        $data['optin_trafic_count'] = $optin->sum('Anzahl_Nutzungsdaten_OptIn');
+        $data['optin_usage_count'] = $optin->sum('Anzahl_Verkehrsdaten_OptIn');
+
+        $data['optin_call_revenue'] = $data['optin_call_count'] * $constants['optin_call'];
+        $data['optin_mail_revenue'] = $data['optin_mail_count'] * $constants['optin_mail'];
+        $data['optin_print_revenue'] = $data['optin_print_count'] * $constants['optin_print'];
+        $data['optin_sms_revenue'] = $data['optin_sms_count'] * $constants['optin_sms'];
+        $data['optin_trafic_revenue'] = $data['optin_trafic_count'] * $constants['optin_trafic'];
+        $data['optin_usage_revenue'] = $data['optin_usage_count'] * $constants['optin_usage'];
+
+        $data['revenue'] = $data['optin_call_revenue'] + $data['optin_mail_revenue'] + $data['optin_print_revenue'] + $data['optin_sms_revenue'] + $data['optin_trafic_revenue'] + $data['optin_usage_revenue']; 
+
+        return $data;
     }
 
-    public function calcOptinSum(){
+    public function calcOptinSum($allData, $constants){
+        $data = array(
+            'optin_call_count' => 0,
+            'optin_mail_count' => 0,
+            'optin_print_count' => 0,
+            'optin_sms_count' => 0,
+            'optin_trafic_count' => 0,
+            'optin_usage_count' => 0,
+        );
 
+        foreach($allData['daily'] as $key => $entry){
+            $data['optin_call_count'] += $entry['optin']['optin_call_count'];
+            $data['optin_mail_count'] += $entry['optin']['optin_mail_count'];
+            $data['optin_print_count'] += $entry['optin']['optin_print_count'];
+            $data['optin_sms_count'] += $entry['optin']['optin_sms_count'];
+            $data['optin_trafic_count'] += $entry['optin']['optin_trafic_count'];
+            $data['optin_usage_count'] += $entry['optin']['optin_usage_count'];
+        }
+
+        $data['optin_call_revenue'] = $data['optin_call_count'] * $constants['optin_call'];
+        $data['optin_mail_revenue'] = $data['optin_mail_count'] * $constants['optin_mail'];
+        $data['optin_print_revenue'] = $data['optin_print_count'] * $constants['optin_print'];
+        $data['optin_sms_revenue'] = $data['optin_sms_count'] * $constants['optin_sms'];
+        $data['optin_trafic_revenue'] = $data['optin_trafic_count'] * $constants['optin_trafic'];
+        $data['optin_usage_revenue'] = $data['optin_usage_count'] * $constants['optin_usage'];
+
+        $data['revenue'] = $data['optin_call_revenue'] + $data['optin_mail_revenue'] + $data['optin_print_revenue'] + $data['optin_sms_revenue'] + $data['optin_trafic_revenue'] + $data['optin_usage_revenue']; 
+
+        return $data;
     }
 
     public function calcWorktimeDaily($chronWork, $date, $states, $ma){
@@ -574,15 +632,14 @@ class RevenueReportController extends Controller
 
     }
 
-    /** WICHTIG ANPASSEN */
     public function getAvailbench($param){
         
         /** ANPASSEN DYNAMSICHE PARAMETER whereMonth, whereYear, call_forecast_issue */
 
         $availbench = DB::table('availbench_report')
-        ->whereMonth('date_date', '02')
-        ->whereYear('date_date', '2022')
-        ->where('call_forecast_issue', 'DE_1u1_RT_Access_1st')
+        ->whereMonth('date_date', $param['month_num'])
+        ->whereYear('date_date', $param['year'])
+        ->where('call_forecast_issue', $param['forecast_issue'])
         ->where('total_costs_per_interval', '>', 0)
         ->get(['date_date', 'call_date_interval_start_time', 'call_forecast_issue', 'total_costs_per_interval', 'malus_interval', 'number_payed_calls', 'price', 'aht']);
 
@@ -704,6 +761,16 @@ class RevenueReportController extends Controller
         $data =  DB::connection('mysqlkdw')                            
         ->table('states_MA')
         ->get(['ds_id', 'description']);
+
+        return $data;
+    }
+
+    public function getOptin($param){
+        $data = DB::table('optin')
+        ->where('department', $param['department_desc'])
+        ->where('date', '>=', $param['start_date'])
+        ->where('date', '<=', $param['end_date'])
+        ->get(['date', 'Anzahl_Call_OptIn', 'Anzahl_Email_OptIn', 'Anzahl_Print_OptIn', 'Anzahl_SMS_OptIn', 'Anzahl_Nutzungsdaten_OptIn', 'Anzahl_Verkehrsdaten_OptIn']);
 
         return $data;
     }
