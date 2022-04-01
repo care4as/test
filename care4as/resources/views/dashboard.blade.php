@@ -219,7 +219,7 @@
                     <h3 class="text-center">{{$memo->title}}</h3>
                   </div>
                   <div class="row center_items">
-                    @if($memo->creator->surname)
+                    @if($memo->creator)
                       <div class="col-6 d-flex justify-content-start">
                         <small><span class="">{{$memo->creator->surname}} {{$memo->creator->lastname}}</span></small>
                         <!-- <small><span class="">test123</span></small> -->
