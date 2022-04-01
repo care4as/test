@@ -20,6 +20,10 @@
   border-radius: 20px;
   border: transparent;
 }
+.modal-backdrop
+{
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
   .active
   {
     display: block;
@@ -64,11 +68,15 @@
   .contentimg
   {
     border-radius: 15px;
-    border: 2px solid black;
-    object-fit: cover;
-    margin: 15px;
-    max-width: 80%;
-    max-height: 80%;
+    /* border: 2px solid black; */
+    object-fit: contain;
+    padding: 12px;
+    height:100%;
+    border-right: 3px solid white;
+    border-bottom: 3px solid white;
+    /* margin: 15px; */
+    /* max-width: 80%; */
+    /* max-height: 80%; */
   }
   .btn-check {
     position: absolute;
@@ -194,34 +202,42 @@
             @endforeach
             </div>
           </div>
-          <div id="memo-content" class="col-sm-12 col-lg-7 h-100" style="overflow-y: scroll;">
+          <div id="memo-content w-100" class="col-sm-12 col-lg-7 h-100" style="position:relative; height: 70vh; overflow-x: hidden; overflow-y:scroll;">
           @foreach($unread->merge($read) as $memo)
-            <div class="inactive" id="memoContent{{$memo->id}}">
-              @if($memo->has_image)
-              <div class="row center_items">
-                <img class="contentimg" src="{{asset($memo->path)}}" alt="Bild">
-              </div>
-              @endif
-              <div class="row center_items">
-                <h3 class="text-center">{{$memo->title}}</h3>
-              </div>
-              <div class="row">
-                @if($memo->creator)
-                <div class="col-6 d-flex justify-content-start">
-                  <small><span class="">{{$memo->creator->surname}} {{$memo->creator->lastname}}</span></small>
-                  <!-- <small><span class="">test123</span></small> -->
+            <div class="inactive" id="memoContent{{$memo->id}}" style="position: absolute;width:100%; height: 100%; top: 0%; left: 0%;">
+              <div class="row center_items bg-secondary text-white" style="">
+                @if($memo->has_image)
+                <div class="col-4 p-2 h-100 center_items position-relative" onClick="enlargeIMG('{{ (asset($memo->path)) }}')">
+                  <img class="contentimg" src="{{asset($memo->path)}}" alt="Bild">
+                  <div class="position-absolute" style="background: rgba(255,255,255, 0.5);">
+                    <h5 class="text-dark text-bold">klicken zum vergrößern</h5>
+                  </div>
                 </div>
-                <div class="col-6 d-flex justify-content-end">
-                  <small> <span class="align-self-end">erstellt: {{$memo->created_at}}</span></small>
-                </div>
-                @else
-                  <small>erstellt:Ersteller nicht gefunden {{$memo->created_at}}</small>
                 @endif
+                <div class="col-8 p-0 h-100">
+                  <div class="row center_items">
+                    <h3 class="text-center">{{$memo->title}}</h3>
+                  </div>
+                  <div class="row center_items">
+                    @if($memo->creator->surname)
+                      <div class="col-6 d-flex justify-content-start">
+                        <small><span class="">{{$memo->creator->surname}} {{$memo->creator->lastname}}</span></small>
+                        <!-- <small><span class="">test123</span></small> -->
+                      </div>
+                      <div class="col-6 d-flex justify-content-end">
+                        <small> <span class="align-self-end">erstellt: {{$memo->created_at}}</span></small>
+                      </div>
+                    @else
+                      <small>erstellt von:Ersteller nicht gefunden {{$memo->created_at}}</small>
+                    @endif
+                  </div>
+                </div>
               </div>
               <hr class="w-50">
-              <div class="row" >
-                {!!$memo->content !!}
-
+              <div class="row center_items">
+                <div class="col-12" >
+                  {!!$memo->content !!}
+                </div>
               </div>
             </div>
           @endforeach
@@ -328,12 +344,37 @@
     </div>
   </div>
 </div> -->
+@endsection
 
+@section('additional_modal')
+<div class="modal" id="pictureModal" tabindex="-1"  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content" style="background: none;">
+      <div class="modal-body position-relative">
+        <button type="button " class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Close" onClick="closePicModal()">X</button>
+        <img src="" class="img-fluid w-100" alt="vergrößertes Bild" id="biggerPic">
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('additional_js')
 <script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
 <script>
+function enlargeIMG(src)
+{
+  console.log(src)
+  $('#pictureModal').toggle()
+  $('<div class="modal-backdrop"></div>').appendTo(document.body);
+  $('#biggerPic').attr('src',src)
+}
+function closePicModal()
+{
+  $('#pictureModal').toggle()
+  $('.modal-backdrop').remove()
+}
+
 function showMemo(id)
 {
   let host = window.location.host;
