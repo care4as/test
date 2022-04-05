@@ -180,7 +180,7 @@ function roundUp($calls,$quotient)
                             <a class="btn btn-primary btn-tracking-change" href="{{route('mobile.tracking.call.track',[ 'type'=> 1, 'updown' => 1])}}" role="button">+</a>
                         </div>
                     </div>
-                    <div style="text-align: center">{{$sscSaves = $history->where('product_category','SSC')->where('event_category', 'Save')->count()}}</div>
+                    <div style="text-align: center">{{$sscSaves = $history->where('product_category','SSC')->where('event_category', 'Save')->where('created_at','>', Carbon\Carbon::today())->count()}}</div>
                     <div style="text-align: center">{{roundUp($sscCalls,$sscSaves)}}%</div>
                     <div>BSC</div>
                     <div>
