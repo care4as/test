@@ -50,7 +50,9 @@ class AgentTrackingController extends Controller
       $trackcalls = Auth()->user()->load('TrackingCallsToday')->TrackingCallsToday;
       $trackcallsM = Auth()->user()->load('TrackingCallsMonth')->TrackingCallsMonth;
 
-      $history = Auth()->user()->load('TrackingToday')->TrackingToday;
+      $history = TrackEvent::where('created_by',Auth()->user()->id)->limit(1000)->get() ;
+
+      // dd($history);
       // $history = $monthSP->where('created_at', Carbon::today());
       // dd($monthSP->where('event_category','Save'));
 

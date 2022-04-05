@@ -661,7 +661,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                   <div class="d-flex justify-content-center">
-                    <p class="">{{Auth::user()->name}}</p>
+                    <p class="">{{Auth::user()->surname}}</p>
                   </div>
                   <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Profileinstellungen</a>
