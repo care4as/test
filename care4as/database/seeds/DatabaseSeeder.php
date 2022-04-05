@@ -99,10 +99,14 @@ class RightsSeeder extends Seeder
       'users_reset_password', // Möglichkeit Mitarbeiterpasswörter zurückzusetzen
       'write_memos', //Möglichkeit Memorandas zu verfassen
       'wfm_base',
+      'surveys',
+      'survey_create',
 
     );
     $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
 
+    DB::table('rights')->truncate();
+    
     foreach ($rightsarray as  $right) {
 
     if(!\DB::table('rights')->where('name', $right)->exists())

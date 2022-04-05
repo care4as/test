@@ -128,13 +128,18 @@
     <div class="col-md-12">
       <div class="max-main-container" style="text-align: center; padding: 10px;">
         <div>
-          Hallo {{Auth()->user()->surname}} {{Auth()->user()->lastname}},
+          Hallo {{$surname= Auth()->user()->surname}}; {{Auth()->user()->lastname}},
         </div>
         <div>
           @php
+          $hearts = mb_convert_encoding('&#128150;&#128150;&#128150;','UTF-16','HTML-ENTITIES').$surname.mb_convert_encoding('&#128150;&#128150;&#128150;','UTF-16','HTML-ENTITIES');
+          $htmlHearts = mb_convert_encoding($hearts,'utf-8', 'utf-16');
+
           $greetings = array('Schön dass du da bist!',
           'Wir haben dich vermisst!',
           'Ohne dich ist es nur halb so lustig!',
+          'Du bist der/die Beste, dass sag ich nicht zu jedem ',
+          $htmlHearts
           );
           $image =false;
           @endphp
