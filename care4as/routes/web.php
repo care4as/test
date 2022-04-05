@@ -65,6 +65,9 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:indexUser');
       Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:indexUser');
       Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:indexUser');
+
+    // STAMMDATENÄNDERUNG
+      Route::get('/user/basedata', 'BaseDataController@main')->name('basedata.get')->middleware('hasRight:users_userlist');
   // Ende  VERWALTUNG
 
   // Start DASHBOARD
