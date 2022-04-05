@@ -25,6 +25,25 @@
   min-width: 100%;
   min-height: 100%;
 }
+#news{
+  animation: pulse 1s linear infinite;
+}
+@keyframes pulse {
+    0% {
+     transform: scale(1, 1);
+     opacity: 1;
+    }
+
+    50% {
+     transform: scale(1.5, 1.5);
+     opacity: 0.2;
+    }
+
+    100% {
+    transform: scale(1, 1);
+    opacity: 1;
+    }
+}
 </style>
 <head>
   <meta charset="utf-8" />
@@ -90,7 +109,6 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 @if(1)
                   <li><a href="{{route('memo.create')}}">
-
                     Memoranda verfassen</a>
                   </li>
                 @endif
@@ -271,7 +289,25 @@
           </li> -->
           <li><a href="{{route('reportImport')}}"><i class="fas fa-upload"></i><b>Reporting</b></a> </li>
           @endif
-
+          @if(in_array('surveys',Auth()->user()->getRights()))
+          <li>
+            <a class="" data-toggle="collapse" href="#collapseSurvey" role="button" aria-expanded="false" aria-controls="collapseSurvey">
+              <i class="fas fa-poll-h"></i>
+              <p><b>Mitarbeiterumfragen</b></p>
+            </a>
+            <div class="collapse" id="collapseSurvey" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+              @if(in_array('survey_create',Auth()->user()->getRights()))
+                <li><a href="{{route('question.create')}}">Frage erstellen</a></li>
+                <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
+                <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
+                <li><a href="{{route('reports.report')}}">Mitarbeiterumfrage auswerten</a></li>
+              @endif
+                <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
+              </ul>
+            </div>
+          </li>
+          @endif
           <!-- {{-- @if(in_array('importReports',Auth()->user()->getRights()))
             <li>
               <a class="" data-toggle="collapse" href="#collapseEmail" role="button" aria-expanded="false" aria-controls="collapseCancel">
@@ -286,26 +322,9 @@
               </div>
             </li>
             @endif
-            @if(in_array('indexSurvey',Auth()->user()->getRights()))
-            <li>
-              <a class="" data-toggle="collapse" href="#collapseSurvey" role="button" aria-expanded="false" aria-controls="collapseSurvey">
-                <i class="fas fa-poll-h"></i>
-                <p><b>Mitarbeiterumfragen</b></p>
-              </a>
-              <div class="collapse" id="collapseSurvey" style="margin-left:50px;">
-                <ul class="list-group list-group-flush" style="list-style-type: none;">
-                  @if(Auth()->user()->role == 'overhead' or Auth()->user()->role == 'superadmin')
-                  <li><a href="{{route('question.create')}}">Frage erstellen</a></li>
-                  <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
-                  <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
-                  <li><a href="{{route('reports.report')}}">Mitarbeiterumfrage auswerten</a></li>
-                  @else
-                    <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
-                  @endif
-                </ul>
-              </div>
-            </li>
-            @endif -->
+            -->
+
+
             <!-- @if(in_array('indexFeedback',Auth()->user()->getRights()))
             <li>
               <a class="" data-toggle="collapse" href="#collapseFeedback" role="button" aria-expanded="false" aria-controls="collapseFeedback">

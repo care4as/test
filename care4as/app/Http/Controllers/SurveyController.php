@@ -97,15 +97,19 @@ class SurveyController extends Controller
     public function show($id)
     {
         $survey = Survey::where('id',$id)->with('Questions')->first();
+
+        // dd($allowedQs = $survey->Questions->pluck('question_id'));
         $alreadyUsedIds = array();
+        $allowedQs = $survey->Questions->pluck('question_id');
 
         foreach ($survey->Questions as $key => $value) {
           $alreadyUsedIds[] = $value->question->id;
         }
-
         // $freequestions = Question::whereNotIn('id',$alreadyUsedIds)->get();
-        $questions = Question::all();
-        $freequestions = $questions->whereNotIn('id',$alreadyUsedIds);
+        $questions = Question::whereIn('id',$allowedQs)->get();
+
+        // dd($questions);
+        $freequestions = Question::whereNotIn('id',$allowedQs)->get();
         $results = Survey::where('id',$id)->with('answeredQuestions')->first();
         // dd($alreadyUsedIds);
         return view('SurveyShow', compact('survey', 'questions','results','freequestions'));

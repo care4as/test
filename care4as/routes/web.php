@@ -219,12 +219,12 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/config/sendIntermail', 'Configcontroller@sendInters')->name('intersmail.rene');
 
     // ROLLEN UND RECHTE
-      Route::get('/roles/index', 'RolesController@index')->name('roles.index')->middleware('hasRight:createRole');
-      Route::get('/role/show/{id}', 'RolesController@show')->name('role.show')->middleware('hasRight:changeRole');
-      Route::post('/roles/save', 'RolesController@store')->name('role.save')->middleware('hasRight:createRole');
-      Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete')->middleware('hasRight:createRole');
-      Route::get('/roles/pdf', 'RolesController@pdfRoles')->name('role.delete')->middleware('hasRight:createRole');
-      Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update')->middleware('hasRight:changeRole');
+      Route::get('/roles/index', 'RolesController@index')->name('roles.index')->middleware('hasRight:config_create_role');
+      Route::get('/role/show/{id}', 'RolesController@show')->name('role.show')->middleware('hasRight:config_create_role');
+      Route::post('/roles/save', 'RolesController@store')->name('role.save')->middleware('hasRight:config_create_role');
+      Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete')->middleware('hasRight:config_create_role');
+      Route::get('/roles/pdf', 'RolesController@pdfRoles')->name('role.delete')->middleware('hasRight:config_create_role');
+      Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update')->middleware('hasRight:config_create_role');
   // Ende  KONFIGURATION
 
   // Start SONSTIGES
@@ -233,17 +233,17 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/shipz/checkUser/{id}', 'ShipsController@checkUser')->name('ships.createUser');//RECHT FEHLT
 
     // UMFRAGEN
-      Route::get('/question/create', 'QuestionController@create')->name('question.create')->middleware('hasRight:createSurvey');
-      Route::get('/survey/create', 'SurveyController@create')->name('survey.create')->middleware('hasRight:createSurvey');
-      Route::post('/question/create/post', 'QuestionController@store')->name('question.create.post')->middleware('hasRight:createSurvey');
-      Route::post('/survey/create/post', 'SurveyController@store')->name('survey.create.post')->middleware('hasRight:createSurvey');
-      Route::post('/survey/edit/post', 'SurveyController@addQuestions')->name('survey.edit.post')->middleware('hasRight:createSurvey');
-      Route::get('/survey/index', 'SurveyController@index')->name('surveys.index')->middleware('hasRight:indexSurvey');
-      Route::get('/survey/show/{id}', 'SurveyController@show')->name('survey.show')->middleware('hasRight:indexSurvey');
-      Route::get('/survey/attendSurvey', 'SurveyController@attendSurvey')->name('survey.attend')->middleware('hasRight:indexSurvey');
-      Route::post('/survey/attend', 'SurveyController@attend')->name('survey.user.post')->middleware('hasRight:attendSurvey');
-      Route::get('/survey/deleteQuestion/{surveyid}/{questionid}', 'SurveyController@deleteQuestionFromSurvey')->name('survey.delete.question')->middleware('hasRight:createSurvey');
-      Route::get('/survey/changeStatus/{action}/{id}', 'SurveyController@changeStatus')->name('survey.changeStatus')->middleware('hasRight:createSurvey');
+      Route::get('/question/create', 'QuestionController@create')->name('question.create')->middleware('hasRight:survey_create');
+      Route::get('/survey/create', 'SurveyController@create')->name('survey.create')->middleware('hasRight:survey_create');
+      Route::post('/question/create/post', 'QuestionController@store')->name('question.create.post')->middleware('hasRight:survey_create');
+      Route::post('/survey/create/post', 'SurveyController@store')->name('survey.create.post')->middleware('hasRight:survey_create');
+      Route::post('/survey/edit/post', 'SurveyController@addQuestions')->name('survey.edit.post')->middleware('hasRight:survey_create');
+      Route::get('/survey/index', 'SurveyController@index')->name('surveys.index')->middleware('hasRight:survey_create');
+      Route::get('/survey/show/{id}', 'SurveyController@show')->name('survey.show')->middleware('hasRight:survey_create');
+      Route::get('/survey/attendSurvey', 'SurveyController@attendSurvey')->name('survey.attend')->middleware('hasRight:surveys');
+      Route::post('/survey/attend', 'SurveyController@attend')->name('survey.user.post')->middleware('hasRight:surveys');
+      Route::get('/survey/deleteQuestion/{surveyid}/{questionid}', 'SurveyController@deleteQuestionFromSurvey')->name('survey.delete.question')->middleware('hasRight:survey_create');
+      Route::get('/survey/changeStatus/{action}/{id}', 'SurveyController@changeStatus')->name('survey.changeStatus')->middleware('hasRight:survey_create');
 
     // BESONDERE REPORTE
       Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');
@@ -331,3 +331,6 @@ Route::group(['middleware' => 'auth'], function () {
   Route::view('/dashboardMonitor', 'dashBoardMonitor')->middleware('hasRight:dashboardAdmin');
   //
 });
+Route::get('/test', function(){
+  return view('test');
+})->name('test');
