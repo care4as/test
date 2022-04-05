@@ -533,7 +533,7 @@ function roundUp($calls,$quotient)
                     Historie
                 </div>
                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
-                    <table class="tracking-table" id="historyTracking">
+                    <table class="tracking-table" id="history">
                         <thead>
                             <th>Erstellt</th>
                             <th>Vertragsnummer</th>
@@ -569,7 +569,7 @@ function roundUp($calls,$quotient)
 @endsection
 
 @section('additional_js')
-<!-- <script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<!-- <script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>b
 <script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
 <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
@@ -661,7 +661,7 @@ function roundUp($calls,$quotient)
 </script>
 
 <script>
-    $('#historyTracking').DataTable()
+    $('#history').Datatable()
 
     var trackingContainer = document.getElementById('tracking_container');
     var monthContainer = document.getElementById('month_container');
