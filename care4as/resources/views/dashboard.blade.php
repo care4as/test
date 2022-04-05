@@ -128,7 +128,7 @@
     <div class="col-md-12">
       <div class="max-main-container" style="text-align: center; padding: 10px;">
         <div>
-          Hallo {{$surname= Auth()->user()->surname}}; {{Auth()->user()->lastname}},
+          Hallo {{$surname= Auth()->user()->surname}} {{Auth()->user()->lastname}},
         </div>
         <div>
           @php
