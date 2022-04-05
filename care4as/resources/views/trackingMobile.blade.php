@@ -661,7 +661,6 @@ function roundUp($calls,$quotient)
 </script>
 
 <script>
-    $('#history').Datatable()
 
     var trackingContainer = document.getElementById('tracking_container');
     var monthContainer = document.getElementById('month_container');
