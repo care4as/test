@@ -201,21 +201,21 @@ Route::group(['middleware' => 'auth'], function () {
 
   // Start KONFIGURATION
     // REPORTING
-      Route::get('/config/app', 'Configcontroller@index')->name('config.view')->middleware('hasRight:config');
-      Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config');
-      Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config');
-      Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
-      Route::get('/config/activateDSLGeVoMail', 'Configcontroller@activateDSLGeVoMail')->name('config.activateDSL15Min')->middleware('hasRight:config');
-      Route::get('/config/deactivateDSLGeVoMail', 'Configcontroller@deactivateDSLGeVoMail')->name('config.deactivateDSL15Min')->middleware('hasRight:config');
-      Route::get('/config/activateSiMa', 'Configcontroller@activateSicknessMail')->name('config.activateSiMa')->middleware('hasRight:config');
-      Route::get('/config/deactivateSiMa', 'Configcontroller@deactivateSicknessMail')->name('config.deactivateSiMa')->middleware('hasRight:config');
-      Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
-      Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config');
-      Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config');
-      Route::get('/config/deactivateIntervallMailDSL', 'Configcontroller@deactivateIntermediateMailDSL')->name('config.deactivateIntermediateMail.dsl')->middleware('hasRight:config');
-      Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
-      Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config');
-      Route::post('/config/telefonica/changePauseConfig', 'Configcontroller@changePIPTelefonica')->name('telefonica.changePausePeople')->middleware('hasRight:telefonica_config');
+      Route::get('/config/app', 'Configcontroller@index')->name('config.view')->middleware('hasRight:config_base');
+      Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config_base');
+      Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config_base');
+      Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config_base');
+      Route::get('/config/activateDSLGeVoMail', 'Configcontroller@activateDSLGeVoMail')->name('config.activateDSL15Min')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateDSLGeVoMail', 'Configcontroller@deactivateDSLGeVoMail')->name('config.deactivateDSL15Min')->middleware('hasRight:config_base');
+      Route::get('/config/activateSiMa', 'Configcontroller@activateSicknessMail')->name('config.activateSiMa')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateSiMa', 'Configcontroller@deactivateSicknessMail')->name('config.deactivateSiMa')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config_base');
+      Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateIntervallMailDSL', 'Configcontroller@deactivateIntermediateMailDSL')->name('config.deactivateIntermediateMail.dsl')->middleware('hasRight:config_base');
+      Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config_base');
+      Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config_base');
+      // Route::post('/config/telefonica/changePauseConfig', 'Configcontroller@changePIPTelefonica')->name('telefonica.changePausePeople')->middleware('hasRight:config_base');
       Route::get('/config/sendIntermail', 'Configcontroller@sendInters')->name('intersmail.rene');
 
     // ROLLEN UND RECHTE
