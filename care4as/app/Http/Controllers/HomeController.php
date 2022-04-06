@@ -476,7 +476,7 @@ class HomeController extends Controller
         })
       ->when($end_date, function ($query, $end_date)
         {
-          $query->where('work_date', '>=', Carbon::parse($end_date)->format('Y-m-d'));
+          $query->where('work_date', '<=', Carbon::parse($end_date)->format('Y-m-d'));
         })
       ->whereIn('MA_id',$userids)
       ->where(function($query){                                       // Unbezahlte Status sollen nicht berücksichtigt werden
