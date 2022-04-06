@@ -335,7 +335,7 @@ tfoot td
             @foreach($users as $user)
               <tr class="">
                 <td data-order="{{$user->id}}" class="fixedCol" style="width: auto;  background-color: rgba(0,0,0,1);">{{$user->id}}</td>
-                <td data-order="{{$user->name}}" class="fixedCol" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->name}} </span></td>
+                <td data-order="{{$user->name}}" class="fixedCol" style="text-align: left; background-color: rgba(0,0,0,1); "><span>{{$user->surname}} {{$user->lastname}} </span></td>
                 <td data-order="{{$user->salesdata['aht']}}" style= "font-size: 900; color: @if($user->salesdata['aht'] < 750 && $user->salesdata['aht'] != 0) green @else red @endif;">
                   {{$user->salesdata['aht']}}
                 </td>
