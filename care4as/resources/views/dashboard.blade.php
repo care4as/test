@@ -215,13 +215,13 @@
                 <div class="col-4 p-2 h-100 center_items position-relative" onClick="enlargeIMG('{{ (asset($memo->path)) }}')">
                   <img class="contentimg" src="{{asset($memo->path)}}" alt="Bild">
                   <div class="position-absolute" style="background: rgba(255,255,255, 0.5);">
-                    <h5 class="text-dark text-bold">klicken zum vergrößern</h5>
+                    <span class="text-dark text-bold">klicken zum vergrößern</span>
                   </div>
                 </div>
                 @endif
                 <div class="col-8 p-0 h-100">
                   <div class="row center_items">
-                    <h3 class="text-center">{{$memo->title}}</h3>
+                    <span class="text-center" style="font-size: 1.5em;">{{$memo->title}}</span>
                   </div>
                   <div class="row center_items">
                     @if($memo->creator)
@@ -252,103 +252,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
-<!-- <div class="container bg-white text-dark mt-4" style="width: 75vw; height: 85vh; font-size: 1.2em;">
-  <div class="row p-2 center_items h-25">
-    <div class="col-12-md">
-      <p>
-        <h3>&#128075; &#128075; &#128075; Hallo {{Auth()->user()->surname}} {{Auth()->user()->lastname}}, &#128075;&#128075;&#128075;</h3>
-      </p>
-
-        <p class="text-center"id="weLoveU">
-          @php
-          $greetings = array('Schön dass du da bist!!',
-          'Herzlich Willkommen, wir haben dich vermisst!',
-          'Ohne dich ist es nur halb so lustig',
-          );
-          $image =false;
-          @endphp
-          <b>&#127881;	&#127881;	&#127881; {{$greetings[rand(0,count($greetings)-1)]}}	&#127881;	&#127881;	&#127881;</b>
-      </p>
-    </div>
-  </div>
-  <div class="row m-1 h-75">
-    <div class="col-3 p-2 h-100">
-      <span>Ungelesen</span>
-      <div class="row thumbnails d-block" style="overflow-y:scroll;">
-        @foreach($unread as $memo)
-          <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
-            @if($memo->has_image)
-              <div class="col-4 p-1 h-100 center_items">
-                <img class="thumbimg" src="{{asset($memo->path)}}" alt="Bild">
-              </div>
-            @endif
-            <div class="  @if($memo->has_image) col-8 @else col-12 @endif h-100">
-              <div class="row m-0 h-25 ">
-                <h5 class="text-truncate">{{$memo->title}}</h5>
-              </div>
-              <hr class="w-50 m-2 mt-3">
-            <div class="row m-0 h-25 ">
-                   <p>{!!$memo->content !!}</p>
-                  <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
-              </div>
-          </div>
-        </div>
-        @endforeach
-      </div>
-      <hr class="w-50">
-      <h5>Gelesen</h5>
-      <div class="row thumbnails d-block" style="overflow-y:scroll;">
-        @foreach($read as $memo)
-          <div class="row thumbitem" onclick="showMemo({{$memo->id}})">
-            @if($memo->has_image)
-              <div class="col-4 p-1 h-100 center_items">
-                <img class="thumbimg" src="{{asset($memo->path)}}" alt="Bild">
-              </div>
-            @endif
-            <div class="  @if($memo->has_image) col-8 @else col-12 @endif h-100">
-              <div class="row m-0 h-25">
-                <h5 class="text-truncate">{{$memo->title}}</h5>
-              </div>
-              <hr class="w-50 m-2 mt-3">
-            <div class="row m-0 h-25">
-                   <p>{!!$memo->content !!}</p>
-                  <p class="text-truncate">{{ strip_tags(html_entity_decode($memo->content))}}</p>
-              </div>
-          </div>
-        </div>
-        @endforeach
-    </div>
-    </div>
-    <div class="col-9 p-2 h-100">
-      <div class="newscontent" style="overflow-y:scroll;">
-        @foreach($unread->merge($read) as $memo)
-        <div class="inactive" id="memoContent{{$memo->id}}">
-          <div class="row m-0 center_items">
-            <h5>{{$memo->title}}</h5>
-          </div>
-          @if($memo->has_image)
-          <div class="row m-0 center_items">
-            <img class="contentimg" src="{{asset($memo->path)}}" alt="Bild">
-          </div>
-            @endif
-          <hr style="width: 50%;">
-          <div class="row m-0 center_items p-2">
-            <p>
-              <p>{!!$memo->content !!}</p>
-            </p>
-          </div>
-        </div>
-        @endforeach
-      </div>
-    </div>
-  </div>
-</div> -->
 @endsection
 
 @section('additional_modal')
