@@ -198,7 +198,7 @@ class HomeController extends Controller
         where('department','Agenten')
         ->where('status',1)
         ->whereIn('id', $request->employees)
-        ->select('id','1u1_person_id','1u1_agent_id','project','ds_id')
+        ->select('id','name','surname','lastname','1u1_person_id','1u1_agent_id','project','ds_id')
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
           if($start_date !== 1)
@@ -286,7 +286,7 @@ class HomeController extends Controller
         $users = User::where('department','Agenten')
         ->where('status',1)
         ->where('team', $request->team)
-        ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
+        ->select('id','name','surname','lastname','1u1_person_id','1u1_agent_id','project','ds_id')
         ->where('1u1_agent_id','!=',null)
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
@@ -383,7 +383,7 @@ class HomeController extends Controller
         $users = User::where('department','Agenten')
         ->where('status',1)
         ->where('project', $department)
-        ->select('id','name','1u1_person_id','1u1_agent_id','project','ds_id')
+        ->select('id','name','surname','lastname','1u1_person_id','1u1_agent_id','project','ds_id')
         // ->where('1u1_agent_id','!=',null)
         ->with(['dailyagent' => function($q) use ($start_date,$end_date){
           $q->select(['id','agent_id','status','time_in_state','date']);
