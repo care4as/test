@@ -223,17 +223,17 @@ class HomeController extends Controller
             $q->where('call_date','<=',$end_date);
           }
           }])
-          ->with(['hoursReport' => function($q) use ($start_date,$end_date){
-
-            if($start_date !== 1)
-            {
-              $q->where('work_date','>=',$start_date);
-            }
-            if($end_date !== 1)
-            {
-              $q->where('work_date','<=',$end_date);
-            }
-            }])
+          // ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+          //
+          //   if($start_date !== 1)
+          //   {
+          //     $q->where('work_date','>=',$start_date);
+          //   }
+          //   if($end_date !== 1)
+          //   {
+          //     $q->where('work_date','<=',$end_date);
+          //   }
+          //   }])
 
           ->with(['SSETracking' => function($q) use ($start_date,$end_date){
             if($start_date != 1)
@@ -323,17 +323,17 @@ class HomeController extends Controller
             $q->where('date','<=',$end_date);
           }
           }])
-          ->with(['hoursReport' => function($q) use ($start_date,$end_date){
-
-            if($start_date !== 1)
-            {
-              $q->where('work_date','>=',$start_date);
-            }
-            if($end_date !== 1)
-            {
-              $q->where('work_date','<=',$end_date);
-            }
-            }])
+          // ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+          //
+          //   if($start_date !== 1)
+          //   {
+          //     $q->where('work_date','>=',$start_date);
+          //   }
+          //   if($end_date !== 1)
+          //   {
+          //     $q->where('work_date','<=',$end_date);
+          //   }
+          //   }])
           ->with(['SSETracking' => function($q) use ($start_date,$end_date){
             if($start_date != 1)
             {
@@ -379,18 +379,7 @@ class HomeController extends Controller
 
         // dd($department);
         // return \Carbon\Carbon::parse($start_date)->setTime(2,0,0);
-        $hours =  DB::connection('mysqlkdw')                            // Verbindung zur externen Datenbanl 'mysqlkdw' wird hergestellt
-        ->table("chronology_work")                                      // Aus der Datenbank soll auf die Tabelle 'chronology_work' zugegriffen werden
-        ->where('work_date', '>=', '2021-01-01')                        // Datum muss größergleich dem Startdatum sein
-        ->where('work_date', '<=', '2022-04-01')                        // Datum muss kleinergleich dem Enddatum sein
-        ->where(function($query){                                       // Unbezahlte Status sollen nicht berücksichtigt werden
-            $query
-            ->where('state_id', null)                                   // Status 'null' soll berücksichtigt werden (häufigster Eintrag)
-            ->orWhereNotIn('state_id', array(13, 15, 16, 24));          // Status 13, 15, 16 und 24 sind unbezahlt und sollen nicht berücksichtigt werden
-        })
-        ->get();
 
-        // dd($hours[71233]);
         $users = User::where('department','Agenten')
         ->where('status',1)
         ->where('project', $department)
@@ -431,16 +420,16 @@ class HomeController extends Controller
             $q->where('date','<=',$end_date);
           }
           }])
-        ->with(['hoursReport' => function($q) use ($start_date,$end_date){
-          if($start_date !== 1)
-          {
-            $q->where('work_date','>=',$start_date);
-          }
-          if($end_date !== 1)
-          {
-            $q->where('work_date','<=',$end_date);
-          }
-          }])
+        // ->with(['hoursReport' => function($q) use ($start_date,$end_date){
+        //   if($start_date !== 1)
+        //   {
+        //     $q->where('work_date','>=',$start_date);
+        //   }
+        //   if($end_date !== 1)
+        //   {
+        //     $q->where('work_date','<=',$end_date);
+        //   }
+        //   }])
         ->with(['SSETracking' => function($q) use ($start_date,$end_date){
           if($start_date != 1)
           {
@@ -475,8 +464,33 @@ class HomeController extends Controller
         ->get();
       }
 
-      // dd($users);
+      // dd($start_date);
+      $userids = $users->pluck('ds_id');
 
+      $hours =  DB::connection('mysqlkdw')                            // Verbindung zur externen Datenbanl 'mysqlkdw' wird hergestellt
+      ->table("chronology_work")
+      ->when($start_date, function ($query, $start_date)
+        {
+          // dd($start_date);
+          $query->where('work_date', '>=', Carbon::parse($start_date)->format('Y-m-d'));
+        })
+      ->when($end_date, function ($query, $end_date)
+        {
+          $query->where('work_date', '>=', Carbon::parse($end_date)->format('Y-m-d'));
+        })
+      ->whereIn('MA_id',$userids)
+      ->where(function($query){                                       // Unbezahlte Status sollen nicht berücksichtigt werden
+          $query
+          ->where('state_id', null)                                   // Status 'null' soll berücksichtigt werden (häufigster Eintrag)
+          ->orWhereNotIn('state_id', array(13, 15, 16, 24));          // Status 13, 15, 16 und 24 sind unbezahlt und sollen nicht berücksichtigt werden
+      })
+      ->get();
+
+      // dd($hours);
+      foreach ($users as $key => $user) {
+        $user->hoursReport = $hours->where('MA_id',$user->ds_id);
+      }
+      // dd($users[1]);
       //the days without holiday and weekends and sickdays stuff
       if($start_date != 1)
       {
@@ -544,7 +558,6 @@ class HomeController extends Controller
         $sicknessquota = '';
         // dd($user);
         $reports = $user->retentionDetails;
-
         $sumorders = $reports->sum('orders');
         // sum of all calls during the timespan
         $sumcalls = $reports->sum('calls');
