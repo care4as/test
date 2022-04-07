@@ -79,99 +79,81 @@ function roundUp($calls,$quotient)
     white-space: nowrap;
     border: 2px solid grey;
 }
-
-    .tracking-table th, td{
-        border: 1px solid grey;
-        padding: 0 5px;
-    }
-
-    .tracking-table th{
-        text-align: center;
-    }
-    .tracking_container{
-        padding: 10px;
-    }
-
-    .tracking_description{
-        font-size: 0.8em;
-        text-align: center;
-    }
-
-    .tracking_title{
-        border-bottom: 1px solid gray;
-        text-align: center;
-        padding: 10px 0;
-        font-size: 1.3rem;
-    }
-
-    .tracking-table{
-        white-space: nowrap;
-        width:100%;
-    }
-
-    .tracking-table th, td{
-        border: 1px solid black;
-        padding: 0 5px;
-    }
-
-    .tracking-table th{
-        text-align: center;
-    }
-
-    .btn-check {
-    position: absolute;
-    clip: rect(0,0,0,0);
-    pointer-events: none;
-    }
-
-    .btn-outline-primary:hover{
-        color: white;
-        background-color: #f96332;;
-    }
-
-    .btn-check:checked + label{
-    color: white;
-    background-color: #f96332;;
-    border: 1px solid #f96332;
-    }
-
-    .first-btn-group-element{
-        border-top-left-radius: 5px !important;
-        border-bottom-left-radius: 5px !important;
-    }
-
-    .last-btn-group-element{
-        border-top-right-radius: 5px !important;
-        border-bottom-right-radius: 5px !important;
-    }
-
-    .btn-group > .btn:not(:first-child){
-        margin-left: -2px;
-    }
-
-    .btn{
-        padding: 5px 10px !important;
-        margin-top: 0;
-        margin-bottom: 0;
-        min-width: 75px;
-    }
-
-    .btn-group-container{
-        display: flex;
-        justify-content: center;
-    }
-
-    .btn-tracking-change{
-        min-width: 50px;
-    }
-
-    .form-control[disabled]{
-        cursor: default;
-    }
-
-    .tr {
-        background-color:  black !important;
-    }
+.tracking-table th, td{
+    border: 1px solid grey;
+    padding: 0 5px;
+}
+.tracking-table th{
+  text-align: center;
+}
+.tracking_container{
+  padding: 10px;
+}
+.tracking_description{
+  font-size: 0.8em;
+  text-align: center;
+}
+.tracking_title{
+  border-bottom: 1px solid gray;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 1.3rem;
+}
+.tracking-table{
+  white-space: nowrap;
+  width:100%;
+}
+.tracking-table th, td{
+  border: 1px solid black;
+  padding: 0 5px;
+}
+.tracking-table th{
+  text-align: center;
+}
+.btn-check {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  pointer-events: none;
+}
+.btn-outline-primary:hover{
+  color: white;
+  background-color: #f96332;;
+}
+.btn-check:checked + label{
+  color: white;
+  background-color: #f96332;;
+  border: 1px solid #f96332;
+}
+.first-btn-group-element{
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+}
+.last-btn-group-element{
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+}
+.btn-group > .btn:not(:first-child){
+  margin-left: -2px;
+}
+.btn{
+  padding: 5px 10px !important;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-width: 75px;
+}
+.btn-group-container{
+  display: flex;
+  justify-content: center;
+}
+.btn-tracking-change{
+  min-width: 50px;
+}
+.form-control[disabled]{
+  cursor: default;
+}
+.tr {
+  background-color:  black !important;
+}
 </style>
 @endsection
 <div class="loader" id="loader" style="display:none;position: absolute; top: 50%; left:50%; transform: translate(-50%,-50%); z-index: 50;">
@@ -468,6 +450,7 @@ function roundUp($calls,$quotient)
                                             <th>OptIn</th>
                                             <th>RLZ+24</th>
                                             <th>Nacharbeit</th>
+                                            <th>Kommentar</th>
                                             <th>Optionen</th>
                                         </thead>
                                         <tbody>
@@ -482,6 +465,7 @@ function roundUp($calls,$quotient)
                                             <td>@if($record->optin == 1) ja @else nein @endif</td>
                                             <td>@if($record->runtime == 1) ja @else nein @endif</td>
                                             <td>@if($record->backoffice == 1) ja @else nein @endif</td>
+                                            <td>{{$record->comment}}</td>
                                             <td><a onclick="loadModalWithData({{$record->id}})"><button type="button" class="EditButton" name="button"><i class="far fa-edit"></i></button>  </a><a href="{{route('tracking.delete.admin', ['id' => $record->id])}}"><button type="button" class="DeleteButton" name="button"><i class="far fa-trash-alt"></i></button> </a></td>
                                           </tr>
                                           @endforeach
@@ -683,7 +667,7 @@ let table2 = $('#history-table').DataTable({
 
       $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
       $('#loader').css('display','block')
-      
+
       let params = new URLSearchParams();
 
       params.append("start", start);
