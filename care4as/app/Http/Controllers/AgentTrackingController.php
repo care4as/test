@@ -52,10 +52,16 @@ class AgentTrackingController extends Controller
 
       $history = Auth()->user()->load('TrackingToday')->TrackingToday;
 
-      $history2 = TrackEvent::where('created_by',Auth()->user()->id)->limit(1000)->get();
+      $history2 = TrackEvent::where('created_by',Auth()
+      ->user()->id)
+      ->orderBy('created_at','Desc')
+      ->limit(1000)
+      ->get();
+
       // $history = $monthSP->where('created_at', Carbon::today());
       // dd($monthSP->where('event_category','Save'));
 
+      dd($history2[1]);
       if ($department != 1) {
         return view('trackingDSL', compact('history','history2','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
       }
