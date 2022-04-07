@@ -99,14 +99,14 @@ Route::group(['middleware' => 'auth'], function () {
 
   // Start 1U1 MOBILE RETENTION
     // TRACKING
-      Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents')->middleware('auth');
-      Route::post('/mobile/tracking/update',  'AgentTrackingController@edit')->name('mobile.tracking.agents.update')->middleware('auth');
-      Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post');
-      Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track');
-      Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin');
-      Route::get('/mobile/tracking/admin/json', 'AgentTrackingController@TrackingJson')->name('mobile.tracking.admin.json');
-      Route::get('/mobile/tracking/delete/{id}', 'AgentTrackingController@destroy')->name('tracking.delete.admin');
-      Route::get('/mobile/tracking/json/{id}', 'AgentTrackingController@show')->name('tracking.show.admin');
+      Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents')->middleware('hasRight:1u1_mobile_base');
+      Route::post('/mobile/tracking/update',  'AgentTrackingController@edit')->name('mobile.tracking.agents.update')->middleware('hasRight:1u1_db');
+      Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post')->middleware('hasRight:1u1_mobile_base');
+      Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track')->middleware('hasRight:1u1_mobile_base');
+      Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin')->middleware('hasRight:1u1_db');
+      Route::get('/mobile/tracking/admin/json', 'AgentTrackingController@TrackingJson')->name('mobile.tracking.admin.json')->middleware('hasRight:1u1_db');
+      Route::get('/mobile/tracking/delete/{id}', 'AgentTrackingController@destroy')->name('tracking.delete.admin')->middleware('hasRight:1u1_db');
+      Route::get('/mobile/tracking/json/{id}', 'AgentTrackingController@show')->name('tracking.show.admin')->middleware('hasRight:1u1_db');
 
     // REPORTING
       Route::get('/1u1/mobileRetenion/trackingDifference', 'TrackingDifferenceController@load')->name('mobileTrackingDifference');//RECHT FEHLT
