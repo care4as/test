@@ -22,7 +22,7 @@ function roundUp($calls,$quotient)
 @section('content')
 @section('additional_css')
 <style>
-    
+
     .tracking_container{
         padding: 10px;
     }
@@ -132,7 +132,11 @@ function roundUp($calls,$quotient)
             <div class="max-main-container">
                 <div style="margin: 10px">
                     <div>Administrator Einstellungen</div>
-                    <div style="font-size: medium;">Line Situation: Gute Line</div>
+                    @if(rand(1,10) >= 8)
+                      <div style="font-size: medium;">Line Situation: Gute Line</div>
+                    @else
+                      <div style="font-size: medium;">Line Situation: Schlechte Line</div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -141,21 +145,20 @@ function roundUp($calls,$quotient)
 
     <!-- START TRACKING -->
     <div class="row">
-        <div class="col-sm-12">
-            <div class="max-main-container">
-                <div class="btn-group-container" style="margin: 20px auto">
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="show_container" value="show_tracking_container" id="show_tracking_container" autocomplete="off" onchange="updateShowContainer()" checked>
-                        <label class="btn btn-outline-primary first-btn-group-element" for="show_tracking_container" style="min-width: 150px;" >Tracking</label>
-                        <input type="radio" class="btn-check" name="show_container" value="show_history_container" id="show_history_container" autocomplete="off" onchange="updateShowContainer()">
-                        <label class="btn btn-outline-primary" for="show_history_container" style="min-width: 150px;">Historie</label>
-
-                        <input type="radio" class="btn-check" name="show_container" value="show_month_container" id="show_month_container" autocomplete="off" onchange="updateShowContainer()">
-                        <label class="btn btn-outline-primary last-btn-group-element" for="show_month_container" style="min-width: 150px;">Monatsübersicht</label>
-                    </div>
-                </div>
+      <div class="col-sm-12">
+        <div class="max-main-container">
+          <div class="btn-group-container" style="margin: 20px auto">
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+              <input type="radio" class="btn-check" name="show_container" value="show_tracking_container" id="show_tracking_container" autocomplete="off" onchange="updateShowContainer()" checked>
+              <label class="btn btn-outline-primary first-btn-group-element" for="show_tracking_container" style="min-width: 150px;" >Tracking</label>
+              <input type="radio" class="btn-check" name="show_container" value="show_history_container" id="show_history_container" autocomplete="off" onchange="updateShowContainer()">
+              <label class="btn btn-outline-primary" for="show_history_container" style="min-width: 150px;">Historie</label>
+              <input type="radio" class="btn-check" name="show_container" value="show_month_container" id="show_month_container" autocomplete="off" onchange="updateShowContainer()">
+              <label class="btn btn-outline-primary last-btn-group-element" for="show_month_container" style="min-width: 150px;">Monatsübersicht</label>
             </div>
+          </div>
         </div>
+      </div>
     </div>
     <div class="row" id="tracking_container">
         <div class="col-xl-6 col-lg-12">
@@ -252,76 +255,84 @@ function roundUp($calls,$quotient)
                         </div>
                     </div>
                     <div class="tracking_container">
-                        <div class="tracking_description">Bearbeitung</div>
+                      <div class="tracking_description">Bearbeitung</div>
                         <div class="btn-group-container">
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="event_category" value="Save" id="event_category1" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary first-btn-group-element" for="event_category1">Save</label>
+                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="event_category" value="Save" id="event_category1" autocomplete="off" onchange="tracking_input()">
+                            <label class="btn btn-outline-primary first-btn-group-element" for="event_category1">Save</label>
 
-                                <input type="radio" class="btn-check" name="event_category" value="Cancel" id="event_category2" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary" for="event_category2">Cancel</label>
+                            <input type="radio" class="btn-check" name="event_category" value="Cancel" id="event_category2" autocomplete="off" onchange="tracking_input()">
+                            <label class="btn btn-outline-primary" for="event_category2">Cancel</label>
 
-                                <input type="radio" class="btn-check" name="event_category" value="Service" id="event_category3" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary" for="event_category3">Service</label>
+                            <input type="radio" class="btn-check" name="event_category" value="Service" id="event_category3" autocomplete="off" onchange="tracking_input()">
+                            <label class="btn btn-outline-primary" for="event_category3">Service</label>
 
-                                <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
+                            <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
+                            <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
 
-                                <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">NaBu</label>
-                            </div>
+                            <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
+                            <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">NaBu</label>
+                          </div>
                         </div>
+                      </div>
+                    <div class="tracking_container">
+                      <div class="tracking_description">Zieltarif</div>
+                      <input type="text" class="form-control" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()" disabled>
+                    </div>
+                    <div class="tracking_container center_items">
+                      <div class="wrapper1 w-75">
+                        <div class="tracking_description ">
+                          <label for="exampleFormControlTextarea1">Kommentar (optional)</label>
+                        </div>
+                        <textarea class="form-control shadow p-2" id="exampleFormControlTextarea1" rows="3" name="comment"></textarea>
+                      </div>
                     </div>
                     <div class="tracking_container">
-                        <div class="tracking_description">Zieltarif</div>
-                        <input type="text" class="form-control" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()" disabled>
-                    </div>
-                    <div class="tracking_container">
-                        <div class="tracking_description">OptIn gesetzt</div>
+                      <div class="tracking_description">OptIn gesetzt</div>
                         <div class="btn-group-container">
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="optin" value="1" id="optin1" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary first-btn-group-element" for="optin1">Ja</label>
+                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="optin" value="1" id="optin1" autocomplete="off" onchange="tracking_input()">
+                            <label class="btn btn-outline-primary first-btn-group-element" for="optin1">Ja</label>
 
-                                <input type="radio" class="btn-check" name="optin" value="0" id="optin2" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary last-btn-group-element" for="optin2">Nein</label>
-                            </div>
+                            <input type="radio" class="btn-check" name="optin" value="0" id="optin2" autocomplete="off" onchange="tracking_input()">
+                            <label class="btn btn-outline-primary last-btn-group-element" for="optin2">Nein</label>
+                          </div>
                         </div>
-                    </div>
-                    <div class="tracking_container">
+                      </div>
+                      <div class="tracking_container">
                         <div class="tracking_description">Restlaufzeit+24</div>
                         <div class="btn-group-container">
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="runtime" value="1" id="runtime1" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary first-btn-group-element" for="runtime1">Ja</label>
+                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="runtime" value="1" id="runtime1" autocomplete="off" onchange="tracking_input()">
+                            <label class="btn btn-outline-primary first-btn-group-element" for="runtime1">Ja</label>
 
-                                <input type="radio" class="btn-check" name="runtime" value="0" id="runtime2" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary last-btn-group-element" for="runtime2">Nein</label>
-                            </div>
+                            <input type="radio" class="btn-check" name="runtime" value="0" id="runtime2" autocomplete="off" onchange="tracking_input()">
+                            <label class="btn btn-outline-primary last-btn-group-element" for="runtime2">Nein</label>
+                          </div>
                         </div>
-                    </div>
+                      </div>
                     <div class="tracking_container">
-                        <div class="tracking_description">An Nacharbeit</div>
+                      <div class="tracking_description">An Nacharbeit</div>
                         <div class="btn-group-container">
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="backoffice" value="1" id="backoffice1" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Ja</label>
+                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                              <input type="radio" class="btn-check" name="backoffice" value="1" id="backoffice1" autocomplete="off" onchange="tracking_input()">
+                              <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Ja</label>
 
-                                <input type="radio" class="btn-check" name="backoffice" value="0" id="backoffice2" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary last-btn-group-element" for="backoffice2">Nein</label>
-                            </div>
+                              <input type="radio" class="btn-check" name="backoffice" value="0" id="backoffice2" autocomplete="off" onchange="tracking_input()">
+                              <label class="btn btn-outline-primary last-btn-group-element" for="backoffice2">Nein</label>
+                          </div>
                         </div>
+                      </div>
+                      <div class="tracking_container" style="display: flex;">
+                          <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;" id="submit_tracking" disabled>
+                      </div>
                     </div>
-                    <div class="tracking_container" style="display: flex;">
-                        <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;" id="submit_tracking" disabled>
-                    </div>
-                </div>
+                  </div>
+                </form>
               </div>
-            </form>
-        </div>
-    </div>
+            </div>
     <!-- END ORDERS -->
-    <div class="row" id="month_container" style="display: none;">
+      <div class="row" id="month_container" style="display: none;">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
@@ -372,7 +383,6 @@ function roundUp($calls,$quotient)
                             <div style="font-weight: bold; grid-column: 1 / span 2;">CareCoins</div>
                             <div style="text-align: left;">Soll</div>
                               <div id="careCoinShould">
-
                                 @if($userdata)
                                   @if($userdata->soll_h_day == 8) {{$CCTreshold = 5000 -($userVacation*28.5)}}
                                     @elseif($userdata->soll_h_day == 7) {{$CCTreshold = 4375 -($userVacation*28.5)}}
@@ -526,31 +536,33 @@ function roundUp($calls,$quotient)
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
-                    Historie
+                  Historie
                 </div>
                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
-                    <table class="tracking-table">
+                    <table class="tracking-table" id="historyNews">
                         <thead>
-                            <th>Erstellt</th>
-                            <th>Vertragsnummer</th>
-                            <th>Produktgruppe</th>
-                            <th>Bearbeitung</th>
-                            <th>Zieltarif</th>
-                            <th>OptIn</th>
-                            <th>RLZ+24</th>
-                            <th>Nacharbeit</th>
+                          <th>Erstellt</th>
+                          <th>Vertragsnummer</th>
+                          <th>Produktgruppe</th>
+                          <th>Bearbeitung</th>
+                          <th>Zieltarif</th>
+                          <th>OptIn</th>
+                          <th>RLZ+24</th>
+                          <th>Nacharbeit</th>
+                          <th>Kommentar</th>
                         </thead>
                         <tbody>
-                        @foreach($history as $record)
+                        @foreach($history2 as $record)
                         <tr>
-                            <td>{{$record->created_at}}</td>
-                            <td>{{$record->contract_number}}</td>
-                            <td>{{$record->product_category}}</td>
-                            <td>{{$record->event_category}}</td>
-                            <td>{{$record->target_tariff}}</td>
-                            <td>@if($record->optin == 1) Ja @else Nein @endif</td>
-                            <td>@if($record->runtime == 1) Ja @else Nein @endif</td>
-                            <td>@if($record->backoffice == 1) Ja @else Nein @endif</td>
+                          <td>{{$record->created_at}}</td>
+                          <td>{{$record->contract_number}}</td>
+                          <td>{{$record->product_category}}</td>
+                          <td>{{$record->event_category}}</td>
+                          <td>{{$record->target_tariff}}</td>
+                          <td>@if($record->optin == 1) Ja @else Nein @endif</td>
+                          <td>@if($record->runtime == 1) Ja @else Nein @endif</td>
+                          <td>@if($record->backoffice == 1) Ja @else Nein @endif</td>
+                          <td>{{$record->comment}} </td>
                         </tr>
                         @endforeach
                         </tbody>
@@ -565,21 +577,22 @@ function roundUp($calls,$quotient)
 @endsection
 
 @section('additional_js')
-<!-- <script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>b
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
-<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
-<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
-<script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
-<script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script> -->
+<!-- <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script> -->
+<!-- <script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script> -->
+<!-- <script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script> -->
+<!-- <script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script> -->
+<!-- <script src='https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js'></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script> -->
 
 <script>
+
     function tracking_input(){
         var contract_field = document.querySelector('input[name="contract_number"]').value;
         var product_category_field = document.querySelector('input[name="product_category"]:checked')?.value;
@@ -589,8 +602,6 @@ function roundUp($calls,$quotient)
         var runtime = document.querySelector('input[name="runtime"]:checked')?.value;
         var backoffice = document.querySelector('input[name="backoffice"]:checked')?.value;
 
-
-
         if(event_category_field == 'Save'){
             document.querySelector('input[name="target_tariff"]').disabled = false;
         } else {
@@ -599,8 +610,6 @@ function roundUp($calls,$quotient)
         }
 
         var error_counter = 0;
-
-
         let errorDiv = document.getElementById('contract_number_errormessage')
         let contractnumber = $("#contract_number");
 
@@ -612,9 +621,7 @@ function roundUp($calls,$quotient)
           contractnumber.css("border","1px solid #f96332")
             errorDiv.style.display = 'none';
         } else {
-
-
-            console.log(contractnumber)
+            // console.log(contractnumber)
             // contractnumber.css('border-width', '0');
             contractnumber.css("border","3px solid red")
             errorDiv.style.display = 'flex';
@@ -650,9 +657,7 @@ function roundUp($calls,$quotient)
         } else {
             document.getElementById('submit_tracking').disabled = true;
         }
-
     }
-
 </script>
 
 <script>
@@ -699,6 +704,9 @@ function roundUp($calls,$quotient)
     $(document).ready(function() {
         checkAttainment();
         calcProvision();
+        $('#historyNews').DataTable({
+           "order": [[ 0, "desc" ]]
+        })
     });
 
     function checkAttainment(){
@@ -758,7 +766,6 @@ function roundUp($calls,$quotient)
             document.getElementById('attainment8').checked = false;
         }
     }
-
 
     function calcProvision(){
         var sscSaveSum = 0.00;

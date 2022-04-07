@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
       // Route::post('/user/changeData', 'UserController@changeUserData')->name('change.user.post')->middleware('hasRight:updateUser');
       // Route::get('/user/analytics/{id}', 'UserController@AgentAnalytica')->name('user.stats');
       // Route::post('/user/update/{id}', 'UserController@update')->name('user.update')->middleware('hasRight:updateUser');
-    
+
     // TELEFONICA
       // Route::get('/telefonica/pause', 'PauseController@show')->name('pausetool')->middleware('auth');
       // Route::get('/telefonica/getIntoPause', 'PauseController@getIntoPause')->name('getIntoPause');
@@ -61,13 +61,10 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/user/kdw/syncUserData', 'UserController@connectUsersToKDW')->name('user.connectUsersToKDW')->middleware('hasRight:reports_import');
       Route::post('/user/getAht', 'UserController@getAHTbetweenDates');
       Route::get('/user/salesdataDates', 'UserController@getSalesperformanceBetweenDates');
-      Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
-      Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:indexUser');
-      Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:indexUser');
-      Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:indexUser');
-
-    // STAMMDATENÄNDERUNG
-      Route::get('/user/basedata', 'BaseDataController@main')->name('basedata.get')->middleware('hasRight:users_userlist');
+      Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:changeUser');
+      Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:users_update');
+      Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:users_update');
+      Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:users_update');
   // Ende  VERWALTUNG
 
   // Start DASHBOARD
@@ -97,24 +94,24 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/dsl/tracking/admin/{department}',  'AgentTrackingController@AdminIndex')->name('dsl.tracking.admin')->middleware('auth');
       Route::post('/dsl/tracking/update',  'AgentTrackingController@edit')->name('dsl.tracking.agents.update')->middleware('auth');
       Route::post('/dsl/tracking/post', 'AgentTrackingController@store')->name('dsl.tracking.agents.post');
-    
+
   // Ende  1U1 DSL RETENTION
 
   // Start 1U1 MOBILE RETENTION
     // TRACKING
-      Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents')->middleware('auth');
-      Route::post('/mobile/tracking/update',  'AgentTrackingController@edit')->name('mobile.tracking.agents.update')->middleware('auth');
-      Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post');
-      Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track');
-      Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin');
-      Route::get('/mobile/tracking/admin/json', 'AgentTrackingController@TrackingJson')->name('mobile.tracking.admin.json');
-      Route::get('/mobile/tracking/delete/{id}', 'AgentTrackingController@destroy')->name('tracking.delete.admin');
-      Route::get('/mobile/tracking/json/{id}', 'AgentTrackingController@show')->name('tracking.show.admin');
+      Route::get('/mobile/tracking',  'AgentTrackingController@userIndex')->name('mobile.tracking.agents')->middleware('hasRight:1u1_mobile_base');
+      Route::post('/mobile/tracking/update',  'AgentTrackingController@edit')->name('mobile.tracking.agents.update')->middleware('hasRight:1u1_db');
+      Route::post('/mobile/tracking/post', 'AgentTrackingController@store')->name('mobile.tracking.agents.post')->middleware('hasRight:1u1_mobile_base');
+      Route::get('/mobile/tracking/call/{type}/{updown}', 'AgentTrackingController@trackCall')->name('mobile.tracking.call.track')->middleware('hasRight:1u1_mobile_base');
+      Route::get('/mobile/tracking/admin', 'AgentTrackingController@AdminIndex')->name('mobile.tracking.admin')->middleware('hasRight:1u1_db');
+      Route::get('/mobile/tracking/admin/json', 'AgentTrackingController@TrackingJson')->name('mobile.tracking.admin.json')->middleware('hasRight:1u1_db');
+      Route::get('/mobile/tracking/delete/{id}', 'AgentTrackingController@destroy')->name('tracking.delete.admin')->middleware('hasRight:1u1_db');
+      Route::get('/mobile/tracking/json/{id}', 'AgentTrackingController@show')->name('tracking.show.admin')->middleware('hasRight:1u1_db');
 
     // REPORTING
       Route::get('/1u1/mobileRetenion/trackingDifference', 'TrackingDifferenceController@load')->name('mobileTrackingDifference');//RECHT FEHLT
 
-      
+
   // Ende  1U1 MOBILE RETENTION
 
   // Start CONTROLLING
@@ -126,7 +123,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/controlling/revenuereport', 'RevenueReportController@master')->name('revenuereport.master')->middleware('hasRight:controlling_revenuereport');
   // Ende  CONTROLLING
 
-  // Start IT 
+  // Start IT
     // INVENTAR
       Route::get('/inventory/add', 'HardwareController@add')->name('inventory.add');//RECHT FEHLT
       Route::post('/inventory/add', 'HardwareController@store')->name('inventory.store');//RECHT FEHLT
@@ -160,7 +157,7 @@ Route::group(['middleware' => 'auth'], function () {
       Route::view('/report/SAS/', 'reports.SASReport')->name('reports.SAS')->middleware('hasRight:reports_import');
       Route::post('/report/SAS/', 'ExcelEditorController@SASupload')->name('reports.SAS.upload')->middleware('hasRight:reports_import');
       Route::get('/report/export/sas/xlsx', 'ExcelEditorController@sasExportXlsx')->name('sas.exportXlsx')->middleware('hasRight:reports_import'); // EXPORT RECHT?
-    
+
     // OPTIN
       Route::view('/report/optin/', 'reports.OptInReport')->name('reports.OptIn')->middleware('hasRight:reports_import'); //?
       Route::get('/report/optin/debug', 'ReportController@debugOptin')->name('optin.debug')->middleware('hasRight:reports_import');
@@ -175,7 +172,7 @@ Route::group(['middleware' => 'auth'], function () {
       Route::view('/report/retention/', 'reports.RetentionDetailsReport')->name('reports.report')->middleware('hasRight:reports_import');
       Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:reports_import');
       Route::get('/report/export/retentiondetails/xlsx', 'ExcelEditorController@retentiondetailsExportXlsx')->name('retentiondetails.exportXlsx')->middleware('hasRight:reports_import'); // EXPORT RECHT?
-    
+
     // NETTOZEITEN
       Route::view('/report/nettozeitenreport/', 'reports.nettozeiten')->name('reports.nettozeiten')->middleware('hasRight:reports_import');
       Route::post('/report/nettozeitenreport/', 'ExcelEditorController@nettozeitenImport')->name('reports.nettozeiten.upload')->middleware('hasRight:reports_import');
@@ -190,7 +187,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // STUNDENREPORT
       Route::get('/report/hoursreport/update', 'ReportController@updateHoursReport')->name('reports.reportHours.update')->middleware('hasRight:reports_import');
-      Route::get('/report/hoursreport', function(){$usersNotSynced = App\User::where('ds_id', null)->where('role','agent')->get(); return view('reports.reportHours', compact('usersNotSynced'));})->name('reports.reportHours.view')->middleware('hasRight:reports_import');   
+      Route::get('/report/hoursreport', function(){$usersNotSynced = App\User::where('ds_id', null)->where('role','agent')->get(); return view('reports.reportHours', compact('usersNotSynced'));})->name('reports.reportHours.view')->middleware('hasRight:reports_import');
 
     // SSE
       Route::view('/report/ssetracking','reports.sseTracking')->name('ssetracking.view')->middleware('hasRight:reports_import');
@@ -204,30 +201,30 @@ Route::group(['middleware' => 'auth'], function () {
 
   // Start KONFIGURATION
     // REPORTING
-      Route::get('/config/app', 'Configcontroller@index')->name('config.view')->middleware('hasRight:config');
-      Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config');
-      Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config');
-      Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
-      Route::get('/config/activateDSLGeVoMail', 'Configcontroller@activateDSLGeVoMail')->name('config.activateDSL15Min')->middleware('hasRight:config');
-      Route::get('/config/deactivateDSLGeVoMail', 'Configcontroller@deactivateDSLGeVoMail')->name('config.deactivateDSL15Min')->middleware('hasRight:config');
-      Route::get('/config/activateSiMa', 'Configcontroller@activateSicknessMail')->name('config.activateSiMa')->middleware('hasRight:config');
-      Route::get('/config/deactivateSiMa', 'Configcontroller@deactivateSicknessMail')->name('config.deactivateSiMa')->middleware('hasRight:config');
-      Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config');
-      Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config');
-      Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config');
-      Route::get('/config/deactivateIntervallMailDSL', 'Configcontroller@deactivateIntermediateMailDSL')->name('config.deactivateIntermediateMail.dsl')->middleware('hasRight:config');
-      Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config');
-      Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config');
-      Route::post('/config/telefonica/changePauseConfig', 'Configcontroller@changePIPTelefonica')->name('telefonica.changePausePeople')->middleware('hasRight:telefonica_config');
+      Route::get('/config/app', 'Configcontroller@index')->name('config.view')->middleware('hasRight:config_base');
+      Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config_base');
+      Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config_base');
+      Route::get('/config/activateAutomaticIntermediate', 'Configcontroller@activateAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config_base');
+      Route::get('/config/activateDSLGeVoMail', 'Configcontroller@activateDSLGeVoMail')->name('config.activateDSL15Min')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateDSLGeVoMail', 'Configcontroller@deactivateDSLGeVoMail')->name('config.deactivateDSL15Min')->middleware('hasRight:config_base');
+      Route::get('/config/activateSiMa', 'Configcontroller@activateSicknessMail')->name('config.activateSiMa')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateSiMa', 'Configcontroller@deactivateSicknessMail')->name('config.deactivateSiMa')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateAutomaticIntermediate', 'Configcontroller@deleteAutomaticeIntermediate')->name('config.activateAutomaticeIntermediate')->middleware('hasRight:config_base');
+      Route::get('/config/sendIntermediateMail', 'Configcontroller@sendIntermediateMail')->name('config.sendIntermediateMail')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config_base');
+      Route::get('/config/deactivateIntervallMailDSL', 'Configcontroller@deactivateIntermediateMailDSL')->name('config.deactivateIntermediateMail.dsl')->middleware('hasRight:config_base');
+      Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config_base');
+      Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config_base');
+      Route::post('/config/telefonica/changePauseConfig', 'Configcontroller@changePIPTelefonica')->name('telefonica.changePausePeople')->middleware('hasRight:config_base');
       Route::get('/config/sendIntermail', 'Configcontroller@sendInters')->name('intersmail.rene');
 
     // ROLLEN UND RECHTE
-      Route::get('/roles/index', 'RolesController@index')->name('roles.index')->middleware('hasRight:createRole');
-      Route::get('/role/show/{id}', 'RolesController@show')->name('role.show')->middleware('hasRight:changeRole');
-      Route::post('/roles/save', 'RolesController@store')->name('role.save')->middleware('hasRight:createRole');
-      Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete')->middleware('hasRight:createRole');
-      Route::get('/roles/pdf', 'RolesController@pdfRoles')->name('role.delete')->middleware('hasRight:createRole');
-      Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update')->middleware('hasRight:changeRole');
+      Route::get('/roles/index', 'RolesController@index')->name('roles.index')->middleware('hasRight:config_create_role');
+      Route::get('/role/show/{id}', 'RolesController@show')->name('role.show')->middleware('hasRight:config_create_role');
+      Route::post('/roles/save', 'RolesController@store')->name('role.save')->middleware('hasRight:config_create_role');
+      Route::get('/roles/delete/{id}', 'RolesController@delete')->name('role.delete')->middleware('hasRight:config_create_role');
+      Route::get('/roles/pdf', 'RolesController@pdfRoles')->name('role.delete')->middleware('hasRight:config_create_role');
+      Route::post('/roles/update/{id}', 'RolesController@update')->name('role.update')->middleware('hasRight:config_create_role');
   // Ende  KONFIGURATION
 
   // Start SONSTIGES
@@ -236,18 +233,18 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/shipz/checkUser/{id}', 'ShipsController@checkUser')->name('ships.createUser');//RECHT FEHLT
 
     // UMFRAGEN
-      Route::get('/question/create', 'QuestionController@create')->name('question.create')->middleware('hasRight:createSurvey');
-      Route::get('/survey/create', 'SurveyController@create')->name('survey.create')->middleware('hasRight:createSurvey');
-      Route::post('/question/create/post', 'QuestionController@store')->name('question.create.post')->middleware('hasRight:createSurvey');
-      Route::post('/survey/create/post', 'SurveyController@store')->name('survey.create.post')->middleware('hasRight:createSurvey');
-      Route::post('/survey/edit/post', 'SurveyController@addQuestions')->name('survey.edit.post')->middleware('hasRight:createSurvey');
-      Route::get('/survey/index', 'SurveyController@index')->name('surveys.index')->middleware('hasRight:indexSurvey');
-      Route::get('/survey/show/{id}', 'SurveyController@show')->name('survey.show')->middleware('hasRight:indexSurvey');
-      Route::get('/survey/attendSurvey', 'SurveyController@attendSurvey')->name('survey.attend')->middleware('hasRight:indexSurvey');
-      Route::post('/survey/attend', 'SurveyController@attend')->name('survey.user.post')->middleware('hasRight:attendSurvey');
-      Route::get('/survey/deleteQuestion/{surveyid}/{questionid}', 'SurveyController@deleteQuestionFromSurvey')->name('survey.delete.question')->middleware('hasRight:createSurvey');
-      Route::get('/survey/changeStatus/{action}/{id}', 'SurveyController@changeStatus')->name('survey.changeStatus')->middleware('hasRight:createSurvey');
-    
+      Route::get('/question/create', 'QuestionController@create')->name('question.create')->middleware('hasRight:survey_create');
+      Route::get('/survey/create', 'SurveyController@create')->name('survey.create')->middleware('hasRight:survey_create');
+      Route::post('/question/create/post', 'QuestionController@store')->name('question.create.post')->middleware('hasRight:survey_create');
+      Route::post('/survey/create/post', 'SurveyController@store')->name('survey.create.post')->middleware('hasRight:survey_create');
+      Route::post('/survey/edit/post', 'SurveyController@addQuestions')->name('survey.edit.post')->middleware('hasRight:survey_create');
+      Route::get('/survey/index', 'SurveyController@index')->name('surveys.index')->middleware('hasRight:survey_create');
+      Route::get('/survey/show/{id}', 'SurveyController@show')->name('survey.show')->middleware('hasRight:survey_create');
+      Route::get('/survey/attendSurvey', 'SurveyController@attendSurvey')->name('survey.attend')->middleware('hasRight:surveys');
+      Route::post('/survey/attend', 'SurveyController@attend')->name('survey.user.post')->middleware('hasRight:surveys');
+      Route::get('/survey/deleteQuestion/{surveyid}/{questionid}', 'SurveyController@deleteQuestionFromSurvey')->name('survey.delete.question')->middleware('hasRight:survey_create');
+      Route::get('/survey/changeStatus/{action}/{id}', 'SurveyController@changeStatus')->name('survey.changeStatus')->middleware('hasRight:survey_create');
+
     // BESONDERE REPORTE
       Route::get('/report/dailyAgentImport/', 'ExcelEditorController@dailyAgentView')->name('excel.dailyAgent.import')->middleware('hasRight:importReports');
       Route::get('/report/capacitysuitreport', 'ExcelEditorController@capacitysuitReport')->name('reports.capacitysuitreport')->middleware('hasRight:importReports');
@@ -304,10 +301,10 @@ Route::group(['middleware' => 'auth'], function () {
       Route::post('/feedback/update', 'FeedbackController@update')->name('feedback.update');//RECHT FEHLT
       Route::get('/feedback/show/{id}', 'FeedbackController@show')->name('feedback.show');//RECHT FEHLT
       Route::post('/feedback/fill', 'FeedbackController@store')->name('feedback.store');//RECHT FEHLT
- 
+
     // RÜCKRUFGRÜNDE
       Route::post('/callbackcauses', 'CallbackController@store')->name('callback.save');//RECHT FEHLT
-  
+
     // TRAINIGNS
       Route::get('/trainings/offers', function(){return view('TrainingOffers');})->name('trainings');
 
@@ -321,7 +318,7 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/offer/JSON/{id}', 'OfferController@OfferInJSON')->name('offer.inJSON');//RECHT FEHLT
       Route::get('/offers/JSON/category/{category}', 'OfferController@OffersByCategoryInJSON')->name('offer.category.inJSON');//RECHT FEHLT
 
-    // TRACKING 
+    // TRACKING
       Route::get('/trackEvent/{action}/{division}/{type}/{operator}', 'UserTrackingController@trackEvent')->name('user.trackEvent')->middleware('hasRight:dashboard');
       Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');
       Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');
@@ -330,4 +327,10 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/user/getUsersByIM/{department}', 'UserController@getUsersIntermediate')->name('user.byIM')->middleware('hasRight:dashboardAdmin');
   // Ende  SONSTIGES
 
+  //dashboard
+  Route::view('/dashboardMonitor', 'dashBoardMonitor')->middleware('hasRight:dashboardAdmin');
+  //
 });
+Route::get('/test', function(){
+  return view('test');
+})->name('test');

@@ -3,7 +3,7 @@
     <div class="row center_items mt-2">
       <div class="col-10 p-0">
         <div class="row m-0" v-if="department=='Mobile'">
-          <div class="col-md rotated  p-2" v-bind:class= "[this.sscCR > 50 ? 'bg-success' : 'bg-danger text-white']">
+          <div class="col-md rotated  p-2" v-bind:class= "[this.sscCR > 51.7 ? 'bg-success' : 'bg-danger text-white']">
             <div class="row m-1 text-center">
               SSC-CR:
             </div>
@@ -118,7 +118,7 @@
                     <th @click="sorted('ssc_orders')" style="cursor:pointer">SSC-Saves</th>
                     <th @click="sorted('cr')" style="cursor:pointer">BSC-CR</th>
                     <th @click="sorted('calls')" style="cursor:pointer">BSC-Calls</th>
-                    <th @click="sorted('orders')" style="cursor:pointer">BSC-Orders</th>
+                    <th @click="sorted('orders')" style="cursor:pointer">BSC-Saves</th>
                   </tr>
                   <tr class="" v-bind:class= "[user.ssc_quota > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
                     <td>{{user.name}}</td>

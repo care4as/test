@@ -176,7 +176,7 @@ function roundUp($calls,$quotient)
     }
 </style>
 @endsection
-<div class="loader" >
+<div class="loader" style="display: none;">
   test
 </div>
 <div style="font-size: 1em">

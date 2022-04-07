@@ -13,7 +13,7 @@
           <th>Mitarbeiterumfrage</th>
           <th>aktiv</th>
           <th>aktivieren/deaktiveren</th>
-          <th>Fragen ansehen</th>
+          <th>Auswertung</th>
         </tr>
           @foreach($surveys as $survey)
           <tr>

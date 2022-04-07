@@ -51,14 +51,22 @@ class AgentTrackingController extends Controller
       $trackcallsM = Auth()->user()->load('TrackingCallsMonth')->TrackingCallsMonth;
 
       $history = Auth()->user()->load('TrackingToday')->TrackingToday;
+
+      $history2 = TrackEvent::where('created_by',Auth()
+      ->user()->id)
+      ->orderBy('created_at','Desc')
+      ->limit(1000)
+      ->get();
+
       // $history = $monthSP->where('created_at', Carbon::today());
       // dd($monthSP->where('event_category','Save'));
 
+      // dd($history2[1]);
       if ($department != 1) {
-        return view('trackingDSL', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+        return view('trackingDSL', compact('history','history2','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
       }
       else {
-        return view('trackingMobile', compact('history','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+        return view('trackingMobile', compact('history','history2','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
       }
 
     }
@@ -444,7 +452,6 @@ class AgentTrackingController extends Controller
     public function destroy($id)
     {
         Trackevent::where('id',$id)->delete();
-
         return redirect()->back();
     }
 }

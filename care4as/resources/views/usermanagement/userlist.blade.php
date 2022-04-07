@@ -12,7 +12,10 @@ Mitarbeiterverwaltung: Mitarbeiterliste
         color: black;
 
     }
-
+    div .DTFC_LeftFootWrapper
+    {
+      display: none;
+    }
     table.dataTable tbody td,
     table.dataTable tfoot td,
     table.dataTable thead th {
@@ -45,7 +48,7 @@ Mitarbeiterverwaltung: Mitarbeiterliste
 
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
         background: transparent;
-    }    
+    }
 
     .form-control[readonly] {
         cursor: default;
@@ -559,7 +562,10 @@ Mitarbeiterverwaltung: Mitarbeiterliste
             ],
             scrollX: true,
             scrollCollapse: false,
-            fixedColumns: false,
+            // fixedColumns: true,
+            fixedColumns: {
+                leftColumns: 3,
+              },
             select: true,
             order: [
                 [1, "asc"]
