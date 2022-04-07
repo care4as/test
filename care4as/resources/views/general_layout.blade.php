@@ -69,7 +69,6 @@
   @yield('additional_css')
 </head>
 <body class="bg-primary">
-
   <!-- <div class="toggler">
     <button type="button" name="button" class="unit-translucent" onclick="toggleMobileMenu()" style="">Menu</button>
   </div> -->
@@ -79,9 +78,9 @@
         @php
           Auth()->user()->getRights();
         @endphp
-        <div id="time-container" style="width: 100%">
+        <!-- <div id="time-container" style="width: 100%">
 
-        </div>
+        </div> -->
         <ul class="nav" style="margin-bottom: 15px;">
           <li><div class="logo bg-white m-2" style="border-radius: 20px;">
             <a href="{{route('dashboard')}}" class="simple-text logo-normal">
@@ -92,7 +91,7 @@
           <!-- Dashboard -->
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
-            <a @if(Auth::User()->department == 'Agenten') href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
+            <a @if(Auth::User()->department == 'Agenten' && str_contains(Auth::User()->role,'Agent')) href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
               <i class="fas fa-table"></i>
               <p><b>Dashboard</b></p>
             </a>
