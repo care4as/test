@@ -707,7 +707,7 @@ function roundUp($calls,$quotient)
         checkAttainment();
         calcProvision();
         $('#historyNews').DataTable({
-          
+           "order": [[ 0, "desc" ]]
         })
     });
 
