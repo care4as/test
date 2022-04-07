@@ -61,7 +61,7 @@ class AgentTrackingController extends Controller
       // $history = $monthSP->where('created_at', Carbon::today());
       // dd($monthSP->where('event_category','Save'));
 
-      dd($history2[1]);
+      // dd($history2[1]);
       if ($department != 1) {
         return view('trackingDSL', compact('history','history2','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
       }
