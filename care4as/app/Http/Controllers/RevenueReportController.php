@@ -842,6 +842,20 @@ class RevenueReportController extends Controller
         return $data;
     }
 
+    public function getAllKdwMa($param){
+        $data =  DB::connection('mysqlkdw')                            
+        ->table('MA')
+        ->where('eintritt', '<=', $param['end_date'])
+        ->where(function($query) use ($param){
+            $query
+            ->where('austritt', null)
+            ->orWhere('austritt', '>=', $param['start_date']); // Hier können Filter auf die ID gesetzt werden (Urlaub, Krank usw.)
+        })
+        ->get(['ds_id', 'agent_id', 'vorname', 'familienname', 'abteilung_id', 'projekt_id', 'eintritt', 'austritt', 'soll_h_day']);
+
+        return $data;
+    }
+
     public function getHistoryState($param){
         $data =  DB::connection('mysqlkdw')                            
         ->table('history_state')

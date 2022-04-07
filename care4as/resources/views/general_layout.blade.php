@@ -126,6 +126,7 @@
               <ul class="list-group list-group-flush" style="list-style-type: none;">
                 @if(in_array('users_userlist',Auth()->user()->getRights()))
                   <li><a href="{{route('userlist')}}">Mitarbeiterliste</a></li>
+                  <li><a href="{{route('basedata.get')}}">Stammdatenänderung</a></li>
                 @endif
                 <!-- {{-- @if(in_array('createUser',Auth()->user()->getRights()))
                     <li><a href="{{route('user.create')}}">User anlegen</a></li>
