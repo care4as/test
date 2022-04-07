@@ -300,7 +300,7 @@
                 <li><a href="{{route('question.create')}}">Frage erstellen</a></li>
                 <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
                 <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
-                <li><a href="{{route('reports.report')}}">Mitarbeiterumfrage auswerten</a></li>
+              
               @endif
                 <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
               </ul>
