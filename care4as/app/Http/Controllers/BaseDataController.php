@@ -14,6 +14,7 @@ class BaseDataController extends Controller
         
         $data = array();
         $data['employees'] = $this->getAllEmployees();
+        $data['projects'] = $this->getAllProjects();
 
         return view('usermanagement.baseDataChange', compact('data'));
     }
@@ -22,6 +23,10 @@ class BaseDataController extends Controller
         $data = array();
 
         return $data;
+    }
+
+    public function saveEntry(){
+        $entries = array();
     }
 
     public function getAllEmployees(){
@@ -34,6 +39,16 @@ class BaseDataController extends Controller
         })
         ->get(['ds_id', 'vorname', 'familienname'])
         ->sortBy('familienname');
+
+        return $data;
+    }
+
+    public function getAllProjects(){
+        $data =  DB::connection('mysqlkdw')                            
+        ->table('projekte')
+        ->where('in_progress', 1)
+        ->get(['ds_id', 'bezeichnung'])
+        ->sortBy('bezeichnung');
 
         return $data;
     }

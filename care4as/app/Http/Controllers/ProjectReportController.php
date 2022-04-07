@@ -99,7 +99,7 @@ class ProjectReportController extends Controller
             }
         }
 
-        //dd($dataArray);
+        // dd($dataArray);
         //dd($defaultVariablesArray);
         return view('projectReport', compact('defaultVariablesArray', 'dataArray'));
     }
@@ -235,12 +235,15 @@ class ProjectReportController extends Controller
             $finalArray['sum']['hours_speedretention'] += $entry['hours_speedretention'];
         }
 
-         // Wichtig: Dieser Abschnitt teil die Availbench Daten zwischen KDW und C4A
-        //  if ($finalArray['sum']['availbench_calls'] > 0){
-        //     $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['dsl_calls'] / $finalArray['sum']['availbench_calls']));
-        // } else {
-        //     $finalArray['sum']['revenue_availbench'] = 0;
-        // }
+        // Availbench auf Team splitten
+        if ($defaultVariablesArray['team'] != 'all'){
+            if ($finalArray['sum']['availbench_calls'] > 0){
+                $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['dsl_calls'] / $finalArray['sum']['availbench_calls']));
+            } else {
+                $finalArray['sum']['revenue_availbench'] = 0;
+            }
+        }
+        
 
         /** Hier wird der Umsatz durch Speedretention berechnet */
         $finalArray['sum']['revenue_speedretention'] =
@@ -515,13 +518,14 @@ class ProjectReportController extends Controller
             $finalArray['sum']['hours_speedretention'] += $entry['hours_speedretention'];
         }
 
-
-        // Wichtig: Dieser Abschnitt teil die Availbench Daten zwischen KDW und C4A
-        // if ($finalArray['sum']['availbench_calls'] > 0){
-        //     $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['mobile_calls_sum'] / $finalArray['sum']['availbench_calls']));
-        // } else {
-        //     $finalArray['sum']['revenue_availbench'] = 0;
-        // }
+        // Availbench auf Team splitten
+        if ($defaultVariablesArray['team'] != 'all'){
+            if ($finalArray['sum']['availbench_calls'] > 0){
+                $finalArray['sum']['revenue_availbench'] = ($finalArray['sum']['revenue_availbench'] * ($finalArray['sum']['mobile_calls_sum'] / $finalArray['sum']['availbench_calls']));
+            } else {
+                $finalArray['sum']['revenue_availbench'] = 0;
+            }
+        }
 
         //dd($finalArray);
 

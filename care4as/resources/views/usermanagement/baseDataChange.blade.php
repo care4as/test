@@ -85,6 +85,21 @@ Mitarbeiterverwaltung: Stammdatenänderungen
         margin: 5px auto;
     }
 
+    #value_selector_project{
+        display: none;
+    }
+    #value_selector_contract_hours{
+        display: none;
+    }
+
+    #value_selector_project{
+        display: none;
+    }
+    #value_selector_contract_hours{
+        display: none;
+    }
+
+
 </style>
 @endsection
 @section('content')
@@ -102,12 +117,14 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                                         <label for="project" style="margin: auto 0 auto auto;">Datum:</label>
                                         <input type="date" id="date" name="date" class="form-control" placeholder="" style="color:black;" value="">
                                         <label for="project" style="margin: auto 0 auto auto;">Typ:</label>
-                                        <select id="project" class="form-control" name="project" style="color:black;">
+                                        <select id="project" class="form-control" name="project" style="color:black;" onchange="changeValueSelector()">
+                                            <option value="false" disabled selected>Bitte wählen</option>
                                             <option value="project">Projektwechsel</option>
                                             <option value="contract_hours">Vertragsstunden</option>
                                         </select>
                                         <label for="project" style="margin: auto 0 auto auto;">Mitarbeiter:</label>
                                         <select id="project" class="form-control" name="project" style="color:black;">
+                                            <option value="false" disabled selected>Bitte wählen</option>
                                             @foreach($data['employees'] as $key => $entry)
                                             <option value="{{$entry->ds_id}}">{{$entry->familienname}}, {{$entry->vorname}}</option>
                                             @endforeach
@@ -120,14 +137,46 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                             <div class="max-panel">
                                 <div class="max-panel-title">Änderungen</div>
                                 <div class="max-panel-content">
-                                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 5px;">
-                                        <label for="value_old" style="margin: auto 0 auto auto;">Auswahl:</label>
+                                    <div style="grid-template-columns: auto 1fr; gap: 5px;" id="value_selector_project">
+                                        <label for="value_old" style="margin: auto 0 auto auto;">Alt:</label>
                                         <select id="value_old" class="form-control" name="value_old" style="color:black;">
-                                            <option value="active">Aktivierte Mitarbeiter</option>
+                                            <option value="false" disabled selected>Bitte wählen</option>
+                                            @foreach($data['projects'] as $key => $entry)
+                                                <option value="{{$entry->ds_id}}">{{$entry->bezeichnung}}</option>
+                                            @endforeach
                                         </select>
-                                        <label for="value_new" style="margin: auto 0 auto auto;">Auswahl:</label>
+                                        <label for="value_new" style="margin: auto 0 auto auto;">Neu:</label>
                                         <select id="value_new" class="form-control" name="value_new" style="color:black;">
-                                            <option value="active">Aktivierte Mitarbeiter</option>
+                                            <option value="false" disabled selected>Bitte wählen</option>
+                                            @foreach($data['projects'] as $key => $entry)
+                                                <option value="{{$entry->ds_id}}">{{$entry->bezeichnung}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div style="grid-template-columns: auto 1fr; gap: 5px;" id="value_selector_contract_hours">
+                                        <label for="value_old" style="margin: auto 0 auto auto;">Alt:</label>
+                                        <select id="value_old" class="form-control" name="value_old" style="color:black;">
+                                            <option value="false" disabled selected>Bitte wählen</option>
+                                            <option value="40" >40</option>
+                                            <option value="35" >35</option>
+                                            <option value="30" >30</option>
+                                            <option value="25" >25</option>
+                                            <option value="20" >20</option>
+                                            <option value="15" >15</option>
+                                            <option value="10" >10</option>
+                                            <option value="5" >5</option>
+                                        </select>
+                                        <label for="value_new" style="margin: auto 0 auto auto;">Neu:</label>
+                                        <select id="value_new" class="form-control" name="value_new" style="color:black;">
+                                            <option value="false" disabled selected>Bitte wählen</option>
+                                            <option value="40" >40</option>
+                                            <option value="35" >35</option>
+                                            <option value="30" >30</option>
+                                            <option value="25" >25</option>
+                                            <option value="20" >20</option>
+                                            <option value="15" >15</option>
+                                            <option value="10" >10</option>
+                                            <option value="5" >5</option>
                                         </select>
                                     </div>
                                 </div>
@@ -251,5 +300,22 @@ Mitarbeiterverwaltung: Stammdatenänderungen
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();
     })
+</script>
+
+<!-- Funktion zur Anzeige der Statusänderung -->
+<script type="text/javascript">
+    function changeValueSelector(){
+        var selector = document.getElementById('project').value;
+        console.log(selector);
+
+        if (selector == 'project'){
+            document.getElementById('value_selector_contract_hours').style.display = 'none';
+            document.getElementById('value_selector_project').style.display = '';     
+        } else if (selector == 'contract_hours'){
+            document.getElementById('value_selector_contract_hours').style.display = 'grid';
+            document.getElementById('value_selector_project').style.display = 'none';       
+        }
+    }
+
 </script>
 @endsection
