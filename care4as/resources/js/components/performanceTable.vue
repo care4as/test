@@ -119,15 +119,18 @@
                     <th @click="sorted('cr')" style="cursor:pointer">BSC-CR</th>
                     <th @click="sorted('calls')" style="cursor:pointer">BSC-Calls</th>
                     <th @click="sorted('orders')" style="cursor:pointer">BSC-Saves</th>
+                    <th @click="sorted('orders')" style="cursor:pointer">online</th>
                   </tr>
                   <tr class="" v-bind:class= "[user.ssc_quota > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
-                    <td>{{user.name}}</td>
+                    <td>{{user.surname}} {{user.lastname}}</td>
                     <td>{{user.ssc_quota}}%</td>
                     <td>{{user.ssc_calls}}</td>
                     <td>{{user.ssc_orders}}</td>
                     <td>{{user.bsccr}}%</td>
                     <td>{{user.bsc_calls}}</td>
                     <td>{{user.bsc_orders}}</td>
+                    <td class="bg-white center_items" v-if="checkIfOnline(user.online_till)"><div class="dot-green"></div></td>
+                    <td class="bg-white center_items" v-else><div class="dot-red"></div></td>
                   </tr>
                 </table>
                 <table class="max-table text-dark" style="width: 100%;" v-else>
@@ -278,8 +281,8 @@
                 + currentdate.getSeconds();
 
           axios.get
-          // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
-          ('http://'+host+'/users/getTracking/'+department)
+          ('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
+          // ('http://'+host+'/users/getTracking/'+department)
           .then(response => {
             if(response.data)
             {
@@ -339,8 +342,8 @@
           let department = dep
           let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:01","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
           this.createChart('dailyQuota', testarray)
-          // axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
-          axios.get('http://'+host+'/kdw/getQuotas/'+department)
+          axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          // axios.get('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             // console.log('dailyQoutas')
@@ -408,12 +411,46 @@
            }
            }
         });
-      }
+      },
+      checkIfOnline(online_till)
+      {
+        let onlinetill = online_till
+
+        if(onlinetill)
+        {
+          var t2 = onlinetill.split(/[- :]/);
+          let onlinetill2 = new Date(t2[0],t2[1]-1,t2[2],t2[3]||0,t2[4]||0,t2[5]||0);
+          if(  Date.now() <  Date.parse(onlinetill2))
+          {
+            // console.log('alles gut');
+            return true;
+          }
+          else {
+            // console.log(online_since);
+              return false
+          }
+        }
+        else {
+             // console.log('online_till fehler')
+            return false;
+          }
+        },
       }
     }
 </script>
 
 <style media="screen">
-
-
+.dot-green, .dot-red {
+    height: 25px;
+    width: 25px;
+    background-color: green;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dot-green{
+  background-color: green;
+}
+.dot-red{
+  background-color: red;
+}
 </style>

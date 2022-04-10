@@ -183,64 +183,63 @@ function roundUp($calls,$quotient)
                         <div class="tab-content">
                             <div class="tab-pane active" id="overview">
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
-
                                     <table class="tracking-table" id="AdminTrackingTable">
                                         <thead>
-                                            <tr>
-                                                <th rowspan="3" class="bg-dark text-white"style="border-right: 2px solid grey">Name</th>
-                                                <th colspan="3" style="border-right: 2px solid grey">Gesamt</th>
-                                                <th colspan="9" style="border-right: 2px solid grey">SSC</th>
-                                                <th colspan="9" style="border-right: 2px solid grey">BSC</th>
-                                                <th colspan="9" style="border-right: 2px solid grey">Portal</th>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="2">Calls</th>
-                                                <th rowspan="2">Cancel</th>
-                                                <th rowspan="2" style="border-right: 2px solid grey">Service</th>
-                                                <th rowspan="2">Calls</th>
-                                                <th colspan="4">Saves</th>
-                                                <th colspan="2">Negativ</th>
-                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
-                                                <th rowspan="2">Calls</th>
-                                                <th colspan="4">Saves</th>
-                                                <th colspan="2">Negativ</th>
-                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
-                                                <th rowspan="2">Calls</th>
-                                                <th colspan="4">Saves</th>
-                                                <th colspan="2">Negativ</th>
-                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
-                                                <th>Sonstige</th>
-                                                <th colspan="2">OptIn</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Σ GeVo Saves</th>
-                                                <th>← Gebucht</th>
-                                                <th>← Nacharbeit</th>
-                                                <th>KüRü</th>
-                                                <th>Cancel</th>
-                                                <th>Service</th>
-                                                <th>Gebucht</th>
-                                                <th style="border-right: 2px solid grey">Gesamt</th>
-                                                <th>Σ GeVo Saves</th>
-                                                <th>← Gebucht</th>
-                                                <th>← Nacharbeit</th>
-                                                <th>KüRü</th>
-                                                <th>Cancel</th>
-                                                <th>Service</th>
-                                                <th>Gebucht</th>
-                                                <th style="border-right: 2px solid grey">Gesamt</th>
-                                                <th>Σ GeVo Saves</th>
-                                                <th>← Gebucht</th>
-                                                <th>← Nacharbeit</th>
-                                                <th>KüRü</th>
-                                                <th>Cancel</th>
-                                                <th>Service</th>
-                                                <th>Gebucht</th>
-                                                <th style="border-right: 2px solid grey">Gesamt</th>
-                                                <th>Calls</th>
-                                                <th>Anzahl</th>
-                                                <th>Quote</th>
-                                            </tr>
+                                          <tr>
+                                            <th rowspan="3" class="bg-dark text-white"style="border-right: 2px solid grey">Name</th>
+                                            <th colspan="3" style="border-right: 2px solid grey">Gesamt</th>
+                                            <th colspan="9" style="border-right: 2px solid grey">SSC</th>
+                                            <th colspan="9" style="border-right: 2px solid grey">BSC</th>
+                                            <th colspan="9" style="border-right: 2px solid grey">Portal</th>
+                                          </tr>
+                                          <tr>
+                                            <th rowspan="2">Calls</th>
+                                            <th rowspan="2">Cancel</th>
+                                            <th rowspan="2" style="border-right: 2px solid grey">Service</th>
+                                            <th rowspan="2">Calls</th>
+                                            <th colspan="4">Saves</th>
+                                            <th colspan="2">Negativ</th>
+                                            <th colspan="2" style="border-right: 2px solid grey">CR</th>
+                                            <th rowspan="2">Calls</th>
+                                            <th colspan="4">Saves</th>
+                                            <th colspan="2">Negativ</th>
+                                            <th colspan="2" style="border-right: 2px solid grey">CR</th>
+                                            <th rowspan="2">Calls</th>
+                                            <th colspan="4">Saves</th>
+                                            <th colspan="2">Negativ</th>
+                                            <th colspan="2" style="border-right: 2px solid grey">CR</th>
+                                            <th>Sonstige</th>
+                                            <th colspan="2">OptIn</th>
+                                          </tr>
+                                          <tr>
+                                            <th>Σ GeVo Saves</th>
+                                            <th>← Gebucht</th>
+                                            <th>← Nacharbeit</th>
+                                            <th>KüRü</th>
+                                            <th>Cancel</th>
+                                            <th>Service</th>
+                                            <th>Gebucht</th>
+                                            <th style="border-right: 2px solid grey">Gesamt</th>
+                                            <th>Σ GeVo Saves</th>
+                                            <th>← Gebucht</th>
+                                            <th>← Nacharbeit</th>
+                                            <th>KüRü</th>
+                                            <th>Cancel</th>
+                                            <th>Service</th>
+                                            <th>Gebucht</th>
+                                            <th style="border-right: 2px solid grey">Gesamt</th>
+                                            <th>Σ GeVo Saves</th>
+                                            <th>← Gebucht</th>
+                                            <th>← Nacharbeit</th>
+                                            <th>KüRü</th>
+                                            <th>Cancel</th>
+                                            <th>Service</th>
+                                            <th>Gebucht</th>
+                                            <th style="border-right: 2px solid grey">Gesamt</th>
+                                            <th>Calls</th>
+                                            <th>Anzahl</th>
+                                            <th>Quote</th>
+                                          </tr>
                                         </thead>
                                         <tbody>
                                           <tr>
