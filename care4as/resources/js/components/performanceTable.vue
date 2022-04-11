@@ -119,7 +119,7 @@
                     <th @click="sorted('cr')" style="cursor:pointer">BSC-CR</th>
                     <th @click="sorted('calls')" style="cursor:pointer">BSC-Calls</th>
                     <th @click="sorted('orders')" style="cursor:pointer">BSC-Saves</th>
-                    <th @click="sorted('orders')" style="cursor:pointer">online</th>
+                    <th @click="sorted('name')" style="cursor:pointer">online</th>
                   </tr>
                   <tr class="" v-bind:class= "[user.ssc_quota > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
                     <td>{{user.surname}} {{user.lastname}}</td>
@@ -139,14 +139,17 @@
                     <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
                     <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
                     <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
-                    <td class="bg-white center_items" v-if="checkIfOnline(user.online_till)"><div class="dot-green"></div></td>
-                    <td class="bg-white center_items" v-else><div class="dot-red"></div></td>
+                    <th @click="sorted('name')" style="cursor:pointer">Online</th>
+
                   </tr >
                   <tr class="" v-bind:class= "[user.dslqouta > 42 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
                     <td>{{user.name}}</td>
                     <td>{{user.dslqouta}}%</td>
                     <td>{{user.calls}}</td>
                     <td>{{user.orders}}</td>
+                    <td class="bg-white center_items" v-if="checkIfOnline(user.online_till)"><div class="dot-green"></div></td>
+                    <td class="bg-white center_items" v-else><div class="dot-red"></div></td>
+                    
                   </tr>
                   </table>
                 </div>
