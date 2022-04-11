@@ -460,7 +460,7 @@ function roundUp($calls,$quotient)
                                             <td>{{$record->contract_number}}</td>
                                             <td>{{$record->product_category}}</td>
                                             <td>{{$record->event_category}}</td>
-                                            <td>@if(strlen($record->target_tariff)>10) <span onclick="alert('{{$record->comment}}')" style="cursor: pointer;"> {{substr($record->target_tariff,0,10)}}...</span> @else  {{$record->comment}}@endif</td>
+                                            <td>@if(strlen($record->target_tariff)>10) <span onclick="alert('{{$record->target_tariff}}')" style="cursor: pointer;"> {{substr($record->target_tariff,0,10)}}...</span> @else  {{$record->target_tariff}}@endif</td>
                                             <td>@if($record->optin == 1) ja @else nein @endif</td>
                                             <td>@if($record->runtime == 1) ja @else nein @endif</td>
                                             <td>@if($record->backoffice == 1) ja @else nein @endif</td>
