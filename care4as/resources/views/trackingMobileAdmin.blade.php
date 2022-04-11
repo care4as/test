@@ -244,7 +244,7 @@ function roundUp($calls,$quotient)
                                         <tbody>
                                           <tr>
                                             @foreach($users as $user)
-                                            <td class="bg-dark text-white"style="border-right: 2px solid grey">{{$user->name}}</td>
+                                            <td class="bg-dark text-white"style="border-right: 2px solid grey">{{$user->surname}} {{$user->lastname}}</td>
                                             <td>{{$calls = $user->TrackingCallsToday->sum('calls')}}</td>
                                             <td>{{$cancels = $user->TrackingToday->where('event_category','Cancel')->count()}}</td>
                                             <td style="border-right: 2px solid grey">{{$user->TrackingToday->where('event_category','Service')->count()}}</td>
@@ -456,7 +456,7 @@ function roundUp($calls,$quotient)
                                           @foreach($history as $record)
                                           <tr>
                                             <td>{{$record->created_at}}</td>
-                                            <td>@if($record->createdBy){{$record->createdBy->name}} @else Fehler Ersteller @endif</td>
+                                            <td>@if($record->createdBy){{$record->createdBy->surname}} {{$record->createdBy->lastname}}@else Fehler Ersteller @endif</td>
                                             <td>{{$record->contract_number}}</td>
                                             <td>{{$record->product_category}}</td>
                                             <td>{{$record->event_category}}</td>

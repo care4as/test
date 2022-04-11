@@ -119,7 +119,7 @@
                     <th @click="sorted('cr')" style="cursor:pointer">BSC-CR</th>
                     <th @click="sorted('calls')" style="cursor:pointer">BSC-Calls</th>
                     <th @click="sorted('orders')" style="cursor:pointer">BSC-Saves</th>
-                    <th @click="sorted('name')" style="cursor:pointer">online</th>
+                    <th @click="sorted('online')" style="cursor:pointer">online</th>
                   </tr>
                   <tr class="" v-bind:class= "[user.ssc_quota > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
                     <td>{{user.surname}} {{user.lastname}}</td>
@@ -139,7 +139,7 @@
                     <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
                     <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
                     <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
-                    <th @click="sorted('name')" style="cursor:pointer">Online</th>
+                    <th @click="sorted('online')" style="cursor:pointer">online</th>
 
                   </tr >
                   <tr class="" v-bind:class= "[user.dslqouta > 42 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
@@ -149,7 +149,7 @@
                     <td>{{user.orders}}</td>
                     <td class="bg-white center_items" v-if="checkIfOnline(user.online_till)"><div class="dot-green"></div></td>
                     <td class="bg-white center_items" v-else><div class="dot-red"></div></td>
-                    
+
                   </tr>
                   </table>
                 </div>
@@ -286,8 +286,8 @@
                 + currentdate.getSeconds();
 
           axios.get
-          // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
-          ('http://'+host+'/users/getTracking/'+department)
+          ('http://'+host+'/care4as/care4as/public/users/getTracking/'+department)
+          // ('http://'+host+'/users/getTracking/'+department)
           .then(response => {
             if(response.data)
             {
@@ -347,8 +347,8 @@
           let department = dep
           let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:01","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
           this.createChart('dailyQuota', testarray)
-          // axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
-          axios.get('http://'+host+'/kdw/getQuotas/'+department)
+          axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department)
+          // axios.get('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             // console.log('dailyQoutas')
