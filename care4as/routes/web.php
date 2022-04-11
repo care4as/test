@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // STAMMDATENÄNDERUNG
       Route::get('/user/basedata', 'BaseDataController@main')->name('basedata.get')->middleware('hasRight:users_userlist');
+      Route::get('/user/basedata/new_entry', 'BaseDataController@newEntry')->name('basedata.new_entry')->middleware('hasRight:users_userlist');
+      Route::get('/user/basedata/delete_entry/{id}', 'BaseDataController@deleteEntry')->name('basedata.delete_entry')->middleware('hasRight:users_userlist');
 
   // Ende  VERWALTUNG
 

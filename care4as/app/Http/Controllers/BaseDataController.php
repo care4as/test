@@ -15,6 +15,7 @@ class BaseDataController extends Controller
         $data = array();
         $data['employees'] = $this->getAllEmployees();
         $data['projects'] = $this->getAllProjects();
+        $data['entries'] = $this->getDbEntries($data['employees'], $data['projects']);
 
         return view('usermanagement.baseDataChange', compact('data'));
     }
@@ -25,8 +26,35 @@ class BaseDataController extends Controller
         return $data;
     }
 
-    public function saveEntry(){
-        $entries = array();
+    public function newEntry(){
+        $date = request('date');
+        $type = request('type');
+        $employee = request('employee');
+        if ($type == 'project_change'){
+            $valueOld = request('value_old_project');
+            $valueNew = request('value_new_project');
+        } else if ($type == 'contract_hours'){
+            $valueOld = request('value_old_contract');
+            $valueNew = request('value_new_contract');
+        }
+
+        DB::table('basedatachange')->insert(
+            [
+            'date' => $date,
+            'ds_id' => $employee,
+            'type' => $type,
+            'value_old' => $valueOld,
+            'value_new' => $valueNew,
+            ]
+        );
+
+        return redirect()->back();
+    }
+
+    public function deleteEntry($id)
+    {
+        DB::table('basedatachange')->where('id', $id)->delete();
+        return redirect()->back();
     }
 
     public function getAllEmployees(){
@@ -49,6 +77,27 @@ class BaseDataController extends Controller
         ->where('in_progress', 1)
         ->get(['ds_id', 'bezeichnung'])
         ->sortBy('bezeichnung');
+
+        return $data;
+    }
+
+    public function getDbEntries($employees, $projects){
+        $data =  DB::table('basedatachange')
+        ->get();      
+
+        // Werte lesbar machen
+        foreach($data as $key => $entry){
+            if($entry->type == 'contract_hours'){
+                $entry->type = 'Wechsel: Vertragsstunden';
+            } else if($entry->type == 'project_change'){
+                $entry->type = 'Wechsel: Projekt';
+
+                $entry->value_old = $projects->where('ds_id', $entry->value_old)->first()->bezeichnung;
+                $entry->value_new = $projects->where('ds_id', $entry->value_new)->first()->bezeichnung;
+            }
+            $entry->ds_id = $employees->where('ds_id', $entry->ds_id)->first()->familienname . ', ' . $employees->where('ds_id', $entry->ds_id)->first()->vorname;
+        }
+
 
         return $data;
     }

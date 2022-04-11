@@ -104,7 +104,7 @@ Mitarbeiterverwaltung: Stammdatenänderungen
 @endsection
 @section('content')
 <div>
-    <form action="{{route('userlist')}}" method="get()">
+    <form action="{{route('basedata.new_entry')}}" >
         <div class="row">
             <div class="col-md-12">
                 <div class="max-main-container">
@@ -114,16 +114,16 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                                 <div class="max-panel-title">Auswahl</div>
                                 <div class="max-panel-content">
                                     <div style="display: grid; grid-template-columns: auto 1fr; gap:5px">
-                                        <label for="project" style="margin: auto 0 auto auto;">Datum:</label>
-                                        <input type="date" id="date" name="date" class="form-control" placeholder="" style="color:black;" value="">
-                                        <label for="project" style="margin: auto 0 auto auto;">Typ:</label>
-                                        <select id="project" class="form-control" name="project" style="color:black;" onchange="changeValueSelector()">
+                                        <label for="date" style="margin: auto 0 auto auto;">Datum:</label>
+                                        <input type="date" id="date" name="date" class="form-control" placeholder="" style="color:black;" value="" onchange="checkInputs()">
+                                        <label for="type" style="margin: auto 0 auto auto;">Typ:</label>
+                                        <select id="type" class="form-control" name="type" style="color:black;" onchange="checkInputs()">
                                             <option value="false" disabled selected>Bitte wählen</option>
-                                            <option value="project">Projektwechsel</option>
+                                            <option value="project_change">Projektwechsel</option>
                                             <option value="contract_hours">Vertragsstunden</option>
                                         </select>
-                                        <label for="project" style="margin: auto 0 auto auto;">Mitarbeiter:</label>
-                                        <select id="project" class="form-control" name="project" style="color:black;">
+                                        <label for="employee" style="margin: auto 0 auto auto;">Mitarbeiter:</label>
+                                        <select id="employee" class="form-control" name="employee" style="color:black;"  onchange="checkInputs()">
                                             <option value="false" disabled selected>Bitte wählen</option>
                                             @foreach($data['employees'] as $key => $entry)
                                             <option value="{{$entry->ds_id}}">{{$entry->familienname}}, {{$entry->vorname}}</option>
@@ -138,15 +138,15 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                                 <div class="max-panel-title">Änderungen</div>
                                 <div class="max-panel-content">
                                     <div style="grid-template-columns: auto 1fr; gap: 5px;" id="value_selector_project">
-                                        <label for="value_old" style="margin: auto 0 auto auto;">Alt:</label>
-                                        <select id="value_old" class="form-control" name="value_old" style="color:black;">
+                                        <label for="value_old_project" style="margin: auto 0 auto auto;">Alt:</label>
+                                        <select id="value_old_project" class="form-control" name="value_old_project" style="color:black;" onchange="checkInputs()">
                                             <option value="false" disabled selected>Bitte wählen</option>
                                             @foreach($data['projects'] as $key => $entry)
                                                 <option value="{{$entry->ds_id}}">{{$entry->bezeichnung}}</option>
                                             @endforeach
                                         </select>
-                                        <label for="value_new" style="margin: auto 0 auto auto;">Neu:</label>
-                                        <select id="value_new" class="form-control" name="value_new" style="color:black;">
+                                        <label for="value_new_project" style="margin: auto 0 auto auto;">Neu:</label>
+                                        <select id="value_new_project" class="form-control" name="value_new_project" style="color:black;" onchange="checkInputs()">
                                             <option value="false" disabled selected>Bitte wählen</option>
                                             @foreach($data['projects'] as $key => $entry)
                                                 <option value="{{$entry->ds_id}}">{{$entry->bezeichnung}}</option>
@@ -154,8 +154,8 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                                         </select>
                                     </div>
                                     <div style="grid-template-columns: auto 1fr; gap: 5px;" id="value_selector_contract_hours">
-                                        <label for="value_old" style="margin: auto 0 auto auto;">Alt:</label>
-                                        <select id="value_old" class="form-control" name="value_old" style="color:black;">
+                                        <label for="value_old_contract" style="margin: auto 0 auto auto;">Alt:</label>
+                                        <select id="value_old_contract" class="form-control" name="value_old_contract" style="color:black;" onchange="checkInputs()">
                                             <option value="false" disabled selected>Bitte wählen</option>
                                             <option value="40" >40</option>
                                             <option value="35" >35</option>
@@ -166,8 +166,8 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                                             <option value="10" >10</option>
                                             <option value="5" >5</option>
                                         </select>
-                                        <label for="value_new" style="margin: auto 0 auto auto;">Neu:</label>
-                                        <select id="value_new" class="form-control" name="value_new" style="color:black;">
+                                        <label for="value_new_contract" style="margin: auto 0 auto auto;">Neu:</label>
+                                        <select id="value_new_contract" class="form-control" name="value_new_contract" style="color:black;" onchange="checkInputs()">
                                             <option value="false" disabled selected>Bitte wählen</option>
                                             <option value="40" >40</option>
                                             <option value="35" >35</option>
@@ -186,7 +186,7 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                             <div class="max-panel">
                                 <div class="max-panel-title">Funktionen</div>
                                 <div class="max-panel-content" style="display: flex; justify-content: space-around;">
-                                    <button type="submit" class="btn btn-primary btn-small" style="padding-top: 8px; padding-bottom: 8px; margin-top: 0; margin-bottom: 0;">Eintrag speichern</button>
+                                    <button disabled id="new_entry_button" type="submit" class="btn btn-primary btn-small" style="padding-top: 8px; padding-bottom: 8px; margin-top: 0; margin-bottom: 0;">Eintrag speichern</button>
                                 </div>
                             </div>
                         </div>
@@ -210,16 +210,24 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                                 <th>Name</th>
                                 <th>Wert ALT</th>
     	                        <th>Wert NEU</th>
+                                <th>Eintrag löschen</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($data['entries'] as $key => $entry)
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{date('d.m.Y', strtotime($entry->date))}}</td>
+                                <td>{{$entry->type}}</td>
+                                <td>{{$entry->ds_id}}</td>
+                                <td style="text-align:center">{{$entry->value_old}}</td>
+                                <td style="text-align:center">{{$entry->value_new}}</td>
+                                <td style="text-align: center;">
+                                    <a href="{{route('basedata.delete_entry', ['id' => $entry->id])}}">
+                                        <button type="button" class="btn btn-primary btn-small" name="button" style="margin-top: 4px; margin-bottom: 4px; padding-top: 4px; padding-bottom: 4px"><i class="far fa-trash-alt"></i></button>
+                                    </a>
+                                </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -266,15 +274,15 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                 },
             },
             "lengthMenu": [
-                [-1, 3, 5, 10, 25, 50, 100],
-                ["alle", 3, 5, 10, 25, 50, 100]
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Alle']
             ],
             scrollX: true,
             scrollCollapse: false,
             fixedColumns: false,
             select: true,
             order: [
-                [1, "asc"]
+                [0, "desc"]
             ],
             dom: 'Blfrtip',
             buttons: [{
@@ -305,17 +313,56 @@ Mitarbeiterverwaltung: Stammdatenänderungen
 <!-- Funktion zur Anzeige der Statusänderung -->
 <script type="text/javascript">
     function changeValueSelector(){
-        var selector = document.getElementById('project').value;
-        console.log(selector);
+        var selector = document.getElementById('type').value;
 
-        if (selector == 'project'){
+        if (selector == 'project_change'){
             document.getElementById('value_selector_contract_hours').style.display = 'none';
-            document.getElementById('value_selector_project').style.display = '';     
+            document.getElementById('value_selector_project').style.display = 'grid';     
         } else if (selector == 'contract_hours'){
             document.getElementById('value_selector_contract_hours').style.display = 'grid';
             document.getElementById('value_selector_project').style.display = 'none';       
         }
     }
 
+    function checkInputs(){
+        changeValueSelector();
+
+        var falseCounter = 0;
+
+        if(document.getElementById('date').value == ''){
+            falseCounter += 1;
+        } 
+        if (document.getElementById('type').value == 'false'){
+            falseCounter += 1;
+        } else {
+            if (document.getElementById('type').value == 'contract_hours'){
+                if (document.getElementById('value_old_contract').value == 'false'){
+                    falseCounter += 1;
+                }
+                if (document.getElementById('value_new_contract').value == 'false'){
+                    falseCounter += 1;
+                }
+            } else if (document.getElementById('type').value == 'project_change'){
+                if (document.getElementById('value_old_project').value == 'false'){
+                    falseCounter += 1;
+                }
+                if (document.getElementById('value_new_project').value == 'false'){
+                    falseCounter += 1;
+                }
+            }
+        }
+        if (document.getElementById('employee').value == 'false'){
+            falseCounter += 1;
+        } 
+
+        if (falseCounter == 0){
+            document.getElementById('new_entry_button').disabled = false;
+        } else {
+            document.getElementById('new_entry_button').disabled = true;
+        }
+    }
+
 </script>
+
+
 @endsection
