@@ -84,7 +84,7 @@ class RevenueReportController extends Controller
         
         $constants = array(
             10 => array(    // DSL
-                'availbench_ziel_aht' => 580,
+                'availbench_ziel_aht' => 610,
                 'cpo_dsl' => 16,
                 'cpo_kuerue' => 5,
                 'optin_call' => 1.2,
@@ -146,7 +146,8 @@ class RevenueReportController extends Controller
     }
 
     public function getData($param){
-        $personIds = $this->getPersonId($param);
+        $basedataProjctChanges = $this->getBaseDataProjectChanges($param);
+        $personIds = $this->getPersonId($param, $basedataProjctChanges);
 
         $rawdata = array(
             'dates' => $this->getDateList($param),
@@ -154,11 +155,15 @@ class RevenueReportController extends Controller
             'details' => $this->getRetentionDetails($param),
             'chronBook' => $this->getChronologyBook($param, $personIds),
             'optin' => $this->getOptin($param),
-            'ma' => $this->getKdwMa($param),
-            'history_state' => $this->getHistoryState($param),
+            'ma' => $this->getKdwMa($param, $basedataProjctChanges),
+            'person_ids' => $personIds,
+            'history_state' => $this->getHistoryState($param, $basedataProjctChanges),
             'states_description' => $this->getStatesDesc(),
+            'project_description' => $this->getProjectDesc(),
             'chronology_work' => $this->getChronologyWork($param, $personIds),
             'sas' => $this->getSas($param),
+            'basedata_project_changes' => $basedataProjctChanges,
+            'basedata_contract_changes' => $this->getBaseDataContractChanges($param),
         );
 
         $data = $this->combineData($param, $rawdata);
@@ -180,26 +185,28 @@ class RevenueReportController extends Controller
         foreach($rawdata['dates'] as $key => $entry){      
             $data['daily'][$entry['date']]['availbench'] = $this->calcAvailbenchDaily($param, $rawdata['availbench'], $entry['date']);
             $data['daily'][$entry['date']]['details'] = $this->calcDetailsDaily($param, $entry['date'], $rawdata['details']);
-            $data['daily'][$entry['date']]['speedretention'] = $this->calcSpeedRetentionDaily($entry['date'], $rawdata['chronBook'], $param);
+            //SPEEDRETENTION KOMPLETT RAUS?
+            $data['daily'][$entry['date']]['speedretention'] = $this->calcSpeedRetentionDaily($entry['date'], $rawdata['chronBook'], $param);//ANPASSEN AUF STAMMDATEN
             $data['daily'][$entry['date']]['optin'] = $this->calcOptinDaily($entry['date'], $rawdata['optin'], $param['constants'][$param['project']]);
-            $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state'], $rawdata['states_description']);
-            $data['daily'][$entry['date']]['worktime'] = $this->calcWorktimeDaily($rawdata['chronology_work'], $entry['date'], $rawdata['states_description'], $rawdata['ma']);
+            $data['daily'][$entry['date']]['fte'] = $this->calcFteDaily($entry['date'], $rawdata['ma'], $rawdata['history_state'], $rawdata['states_description'], $rawdata['basedata_project_changes'], $param, $rawdata['project_description'], $rawdata['basedata_contract_changes']);//ANPASSEN AUF STAMMDATEN
+            $data['daily'][$entry['date']]['worktime'] = $this->calcWorktimeDaily($rawdata['chronology_work'], $entry['date'], $rawdata['states_description'], $rawdata['ma'], $param, $rawdata['basedata_project_changes']);//ANPASSEN AUF STAMMDATEN
             $data['daily'][$entry['date']]['sas'] = $this->calcSasDaily($entry['date'], $rawdata['sas']);
             
             // Umsatzberechnung als letztes
-            $data['daily'][$entry['date']]['revenue'] = $this->calcRevenueDaily($data['daily'][$entry['date']], $param, $entry['date']);
+            $data['daily'][$entry['date']]['revenue'] = $this->calcRevenueDaily($data['daily'][$entry['date']], $param, $entry['date']);//ANPASSEN AUF STAMMDATEN
         }
 
         /** Summen Berechnung */
         $data['sum']['availbench'] = $this->calcAvailbenchSum($param, $rawdata['availbench']);
         $data['sum']['details'] = $this->calcDetailsSum($param, $rawdata['details']);
-        $data['sum']['speedretention'] = $this->calcSpeedRetentionSum($data);
+        $data['sum']['speedretention'] = $this->calcSpeedRetentionSum($data);//ANPASSEN AUF STAMMDATEN
         $data['sum']['optin'] = $this->calcOptinSum($data, $param['constants'][$param['project']]);
-        $data['sum']['fte'] = $this->calcFteSum($data, $rawdata['history_state'], $rawdata['states_description'], $rawdata['ma'], $param, $rawdata['chronology_work']);
-        $data['sum']['worktime'] = $this->calcWorktimeSum($rawdata['chronology_work']);
+        $data['sum']['fte'] = $this->calcFteSum($data, $rawdata['history_state'], $rawdata['states_description'], $rawdata['ma'], $param, $rawdata['chronology_work'], $rawdata['basedata_project_changes'], $rawdata['project_description'], $rawdata['basedata_contract_changes'], $rawdata['person_ids']);//ANPASSEN AUF STAMMDATEN
+        $data['sum']['worktime'] = $this->calcWorktimeSum($data['daily']);//ANPASSEN AUF STAMMDATEN
         $data['sum']['sas'] = $this->calcSasSum($rawdata['sas']);
-        $data['sum']['revenue'] = $this->calcRevenueSum($data['sum'], $param, $data['daily']);
+        $data['sum']['revenue'] = $this->calcRevenueSum($data['sum'], $param, $data['daily']);//ANPASSEN AUF STAMMDATEN
 
+        // dd($rawdata['basedata_contract_changes']);
         // dd($data);
         // dd($param);
 
@@ -349,25 +356,18 @@ class RevenueReportController extends Controller
         return $data;
     }
 
-    public function calcWorktimeDaily($chronWork, $date, $states, $ma){
+    public function calcWorktimeDaily($chronWork, $date, $states, $ma, $param, $basedataProjectChanges){
         $data = array();
 
-        /** 
-         * Beschreibung 'state_id'
-         * 08: Krank??? <-- Ausgenommen weil bezahlt!!!
-         * 13: Krank o. Lfz.
-         * 14: Unbezahlt Krank
-         * 15: Mutterschutz
-         * 23: Fehlt unentschuldig
-         * 24: Beschäftigungsverbot
-         * 26: Erziehungsurlaub
-         * 30: Krank bei Eintritt
-         * 33: Kindkrank o. Lfz.
-         * 34: Krank Quarantäne
-         * 35: Kind Corona
-         */
+        $excludedMa = array();
 
-        $chronWork = $chronWork->where('work_date', $date);
+        foreach($basedataProjectChanges as $key => $entry){ 
+            if (($entry->value_old == $param['project'] && $entry->date < $date) || ($entry->value_new == $param['project'] && $entry->date > $date)){
+                $excludedMa[] = $entry->ds_id;
+            }
+        }
+
+        $chronWork = $chronWork->where('work_date', $date)->whereNotIn('MA_id', $excludedMa);
 
         $data['all_hours'] = $chronWork->sum('work_hours');
         $data['unpayed_hours'] = $chronWork->whereIn('state_id', [13, 14, 15, 23, 24, 26, 30, 33, 34, 35])->sum('work_hours');
@@ -401,26 +401,29 @@ class RevenueReportController extends Controller
             }
         }
 
-        
-
-        
-
         return $data;
     }
 
-    public function calcWorktimeSum($chronWork){
+    public function calcWorktimeSum($rawdata){
         $data = array();
+        $data['all_hours'] = 0;
+        $data['unpayed_hours'] = 0;
+        $data['sick_hours_netto'] = 0;
+        $data['sick_hours_brutto'] = 0;
 
-        $data['all_hours'] = $chronWork->sum('work_hours');
-        $data['unpayed_hours'] = $chronWork->whereIn('state_id', [13, 14, 15, 23, 24, 26, 30, 33, 34, 35])->sum('work_hours');
+        foreach($rawdata as $key => $entry){
+            $data['all_hours'] += $entry['worktime']['all_hours'];
+            $data['unpayed_hours'] += $entry['worktime']['unpayed_hours'];
+            $data['sick_hours_netto'] += $entry['worktime']['sick_hours_netto'];
+            $data['sick_hours_brutto'] += $entry['worktime']['sick_hours_brutto'];
+        }
+
         $data['payed_hours'] = $data['all_hours'] - $data['unpayed_hours'];
-        $data['sick_hours_netto'] = $chronWork->whereIn('state_id', [1, 7])->sum('work_hours');
         if($data['sick_hours_netto'] > 0){
             $data['sick_percentage_netto'] = ($data['sick_hours_netto'] / $data['payed_hours']) * 100;
         } else {
             $data['sick_percentage_netto'] = 0;
         }
-        $data['sick_hours_brutto'] = $chronWork->whereIn('state_id', [1, 7, 8, 13, 14, 30, 34, 35])->sum('work_hours');
         if($data['sick_hours_brutto'] > 0){
             $data['sick_percentage_brutto'] = ($data['sick_hours_brutto'] / $data['all_hours']) * 100;
         } else {
@@ -430,27 +433,37 @@ class RevenueReportController extends Controller
         return $data;
     }
 
-    public function calcFteDaily($date, $ma, $history, $states){
+    public function calcFteDaily($date, $ma, $history, $states, $basedataProjectChanges, $param, $projectDescription, $basedataContractChanges){
         $data = array();
 
-        /** 
-         * Beschreibung 'state_id'
-         * 08: Krank??? <-- Ausgenommen weil bezahlt!!!
-         * 13: Krank o. Lfz.
-         * 14: Unbezahlt Krank
-         * 15: Mutterschutz
-         * 26: Erziehungsurlaub
-         * 23: Fehlt unentschuldig
-         * 24: Beschäftigungsverbot
-         * 30: Krank bei Eintritt
-         * 33: Kindkrank o. Lfz.
-         * 34: Krank Quarantäne
-         * 35: Kind Corona
+        /** Stammdatenänderungen Anpassen
+         * Rückgabewert: Liste aller MA-ID, die an gegebenen Tag NICHT in Projekt aktiv waren!
+         * Diese ID's dann aus den MA-Bestand herausfiltern
+         * -> Es bleiben nur aktive MA!
          */
+        $excludedMa = array();
 
-        $history = $history->whereIn('state_id', [13, 14, 15, 16, 23, 24, 30, 33, 34, 35]);
+        foreach($basedataProjectChanges as $key => $entry){ 
+            if (($entry->value_old == $param['project'] && $entry->date < $date) || ($entry->value_new == $param['project'] && $entry->date > $date)){
+                $excludedMa[] = $entry->ds_id;
+            }
+        }
 
-        $ma = $ma->where('eintritt', '<=', $date);
+        $history = $history->whereIn('state_id', [13, 14, 15, 16, 23, 24, 30, 33, 34, 35])->whereNotIn('agent_ds_id', $excludedMa);
+
+        $ma = $ma->where('eintritt', '<=', $date)->whereNotIn('ds_id', $excludedMa);
+        $maDsIds = $ma->pluck('ds_id');
+
+        // Anpassung der Vertragsstunden für den jeweiligen Tag
+        foreach($basedataContractChanges->whereIn('ds_id', $maDsIds) as $key => $entry){
+            if ($entry->date <= $date){
+                $ma->where('ds_id', $entry->ds_id)->first()->soll_h_day = $basedataContractChanges->whereIn('ds_id', $maDsIds)->where('date', '<=', $date)->last()->value_new / 5;
+            } else if($entry->date > $date){
+                $ma->where('ds_id', $entry->ds_id)->first()->soll_h_day = $basedataContractChanges->where('ds_id', $entry->ds_id)->where('date', '>', $date)->first()->value_old / 5;
+            } else {
+                $ma->where('ds_id', $entry->ds_id)->first()->soll_h_day = $basedataContractChanges->where('ds_id', $entry->ds_id)->last()->value_new / 5;
+            }
+        }
         
         // Alle Mitarbeiter
         $data['all_employee_hours'] = $ma->where('austritt', null)->sum('soll_h_day');
@@ -491,6 +504,20 @@ class RevenueReportController extends Controller
                 $data['information'][] = 'Austritt ' . number_format($entry->soll_h_day / 8, 3, ',', '.') . ' FTE: ' . $entry->vorname . ' ' . $entry->familienname;
             }
         }
+
+        // Stammdatenänderung
+        foreach($basedataProjectChanges as $key => $entry){ 
+            if ($entry->value_old == $param['project'] && $entry->date == $date){
+                $data['information'][] = 'Projektwechsel ' . number_format($ma->where('ds_id', $entry->ds_id)->first()->soll_h_day / 8, 3, ',', '.') . ' FTE zu ' . $projectDescription->where('ds_id', $entry->value_new)->first()->bezeichnung . ': ' . $ma->where('ds_id', $entry->ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->ds_id)->first()->familienname;
+            } else if($entry->value_new == $param['project'] && $entry->date == $date){
+                $data['information'][] = 'Projektwechsel ' . number_format($ma->where('ds_id', $entry->ds_id)->first()->soll_h_day / 8, 3, ',', '.') . ' FTE von ' . $projectDescription->where('ds_id', $entry->value_old)->first()->bezeichnung . ': ' . $ma->where('ds_id', $entry->ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->ds_id)->first()->familienname;
+            }
+        }
+
+        // Änderung Vertragsstunden
+        foreach($basedataContractChanges->where('date', $date)->whereIn('ds_id', $maDsIds) as $key => $entry){
+            $data['information'][] = 'Änderung Vertragsstunden ' . number_format($entry->value_old / 40, 3, ',', '.') . ' FTE zu ' . number_format($entry->value_new / 40, 3, ',', '.') . ' FTE: ' . $ma->where('ds_id', $entry->ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->ds_id)->first()->familienname;
+        }
         
         // Start nicht bezahlter Status
         foreach($ma->where('abteilung_id', 10)->whereIn('ds_id', $history->where('date_begin', $date)->pluck('agent_ds_id')) as $key => $entry){
@@ -505,13 +532,22 @@ class RevenueReportController extends Controller
         return $data;
     }
 
-    public function calcFteSum($allData, $history, $states, $ma, $param, $chronWork){
+    public function calcFteSum($allData, $history, $states, $ma, $param, $chronWork, $basedataProjectChanges, $projectDescription, $basedataContractChanges, $personIds){
         $data = array(
             'payed_kb_hours' => 0,
             'payed_kb_heads' => 0,
         );
 
-        $history = $history->whereIn('state_id', [13, 14, 15, 16, 23, 24, 30, 33, 34, 35]);
+        $excludedMa = array();
+
+
+        foreach($basedataProjectChanges as $key => $entry){ 
+            if (($entry->value_old == $param['project'] && $entry->date == $param['start_date'])){
+                $excludedMa[] = $entry->ds_id;
+            }
+        }
+
+        $history = $history->whereIn('state_id', [13, 14, 15, 16, 23, 24, 30, 33, 34, 35])->whereNotIn('agent_ds_id', $excludedMa);
 
         foreach($allData['daily'] as $key => $entry){
             $data['payed_kb_hours'] += $entry['fte']['payed_kb_hours'];
@@ -532,15 +568,34 @@ class RevenueReportController extends Controller
         // Start nicht bezahlter Status
         foreach($ma->sortBy('eintritt') as $key => $entry){
             if($entry->eintritt >= $param['start_date']){
-                $data['information']['Eintritt'][] = 'Eintritt ' . date_format(date_create($entry->eintritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
+                $data['information']['Eintritt'][] = date_format(date_create($entry->eintritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
             }
         }
 
         foreach($ma->sortBy('austritt') as $key => $entry){
             if($entry->austritt != null){
                 if($entry->austritt <= $param['end_date']){
-                    $data['information']['Austritt'][] = 'Austritt ' . date_format(date_create($entry->austritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
+                    $data['information']['Austritt'][] = date_format(date_create($entry->austritt), 'd.m.Y') . ': ' . $entry->vorname . ' ' . $entry->familienname;
                 }
+            }
+        }
+
+        // Projektwechsel
+        foreach($basedataProjectChanges as $key => $entry){
+            if($entry->date >= $param['start_date'] && $entry->date <= $param['end_date']){
+                if($entry->value_old == $param['project']){
+                    $data['information']['Projektabgang'][] = date_format(date_create($entry->date), 'd.m.Y') . ': ' . $ma->where('ds_id', $entry->ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->ds_id)->first()->familienname . ' zu ' . $projectDescription->where('ds_id', $entry->value_new)->first()->bezeichnung;
+                } else if ($entry->value_new == $param['project']){
+                    $data['information']['Projektzugang'][] = date_format(date_create($entry->date), 'd.m.Y') . ': ' . $ma->where('ds_id', $entry->ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->ds_id)->first()->familienname . ' von ' . $projectDescription->where('ds_id', $entry->value_old)->first()->bezeichnung;
+                }
+            }
+        }
+    
+        // Vertragswechsel
+        // WICHTIG DSID MUSS IN MA SEIN!
+        foreach($basedataContractChanges->whereIn('ds_id', $personIds) as $key => $entry){
+            if($entry->date >= $param['start_date'] && $entry->date <= $param['end_date']){
+                $data['information']['Vertragswechsel'][] = date_format(date_create($entry->date), 'd.m.Y') . ': ' . $ma->where('ds_id', $entry->ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->ds_id)->first()->familienname . ' von ' . number_format($entry->value_old / 40, 3, ',', '.') . ' FTE zu ' . number_format($entry->value_new / 40, 3, ',', '.') . ' FTE';
             }
         }
 
@@ -759,17 +814,24 @@ class RevenueReportController extends Controller
 
     }
 
-    public function getPersonId($param){
+    public function getPersonId($param, $basedataProjectChanges){
         /** Gibt ein Array zurück in dem alle IDs der MA eines Projekts sind */
 
         $personIds = DB::connection('mysqlkdw')
         ->table('MA')
-        ->where(function($query) {
+        ->where(function($query){
             $query
             ->where('abteilung_id', '=', 10)
             ->orWhere('abteilung_id', '=', 19);
         })
-        ->where('projekt_id',  $param['project'])
+        ->where(function($query) use ($param, $basedataProjectChanges){
+            $query
+            ->where('projekt_id',  $param['project'])
+            ->orWhere(function($query) use ($basedataProjectChanges) {    //STAMMDATENÄNDERUNG
+                $query
+                ->whereIn('ds_id', $basedataProjectChanges->pluck('ds_id'));
+            });
+        })
         ->pluck('ds_id');
 
         return $personIds;
@@ -827,15 +889,22 @@ class RevenueReportController extends Controller
         return $data;
     }
 
-    public function getKdwMa($param){
+    public function getKdwMa($param, $basedataProjectChanges){
         $data =  DB::connection('mysqlkdw')                            
         ->table('MA')
-        ->where('projekt_id', $param['project'])
+        ->where(function($query) use ($param, $basedataProjectChanges){
+            $query
+            ->where('projekt_id',  $param['project'])
+            ->orWhere(function($query) use ($basedataProjectChanges) {    //STAMMDATENÄNDERUNG
+                $query
+                ->whereIn('ds_id', $basedataProjectChanges->pluck('ds_id'));
+            });
+        })
         ->where('eintritt', '<=', $param['end_date'])
         ->where(function($query) use ($param){
             $query
             ->where('austritt', null)
-            ->orWhere('austritt', '>=', $param['start_date']); // Hier können Filter auf die ID gesetzt werden (Urlaub, Krank usw.)
+            ->orWhere('austritt', '>=', $param['start_date']);
         })
         ->get(['ds_id', 'agent_id', 'vorname', 'familienname', 'abteilung_id', 'projekt_id', 'eintritt', 'austritt', 'soll_h_day']);
 
@@ -856,10 +925,17 @@ class RevenueReportController extends Controller
         return $data;
     }
 
-    public function getHistoryState($param){
+    public function getHistoryState($param, $basedataProjectChanges){
         $data =  DB::connection('mysqlkdw')                            
         ->table('history_state')
-        ->where('project_id', $param['project'])
+        ->where(function($query) use ($param, $basedataProjectChanges){
+            $query
+            ->where('project_id',  $param['project'])
+            ->orWhere(function($query) use ($basedataProjectChanges) {    //STAMMDATENÄNDERUNG
+                $query
+                ->whereIn('agent_ds_id', $basedataProjectChanges->pluck('ds_id'));
+            });
+        })
         ->where('date_begin', '<=', $param['end_date'])
         ->where('date_end', '>=', $param['start_date'])
         ->whereIn('state_id', [8, 13, 14, 15, 16, 23, 24, 30, 33, 34, 35])
@@ -891,6 +967,14 @@ class RevenueReportController extends Controller
         return $data;
     }
 
+    public function getProjectDesc(){
+        $data =  DB::connection('mysqlkdw')                            
+        ->table('projekte')
+        ->get(['ds_id', 'bezeichnung']);
+
+        return $data;
+    }
+
     public function getOptin($param){
         $data = DB::table('optin')
         ->where('department', $param['department_desc'])
@@ -902,12 +986,35 @@ class RevenueReportController extends Controller
     }
 
     public function getSas($param){
-        $data = DB::table('sas')
+        return DB::table('sas')
         ->where('date', '>=', $param['start_date'])
         ->where('date', '<=', $param['end_date'])
         ->where('serviceprovider_place', $param['serviceprovider'])
         ->where('GO_Prov', '>', 0)
         ->get(['date', 'GO_Prov']);
+    }
+
+    public function getBaseDataProjectChanges($param){
+        $data =  DB::table('basedatachange')
+        ->where('date', '>=', $param['start_date'])
+        ->where('type', 'project_change')
+        ->where(function($query) use ($param){
+            $query
+            ->where('value_old', $param['project'])
+            ->orWhere('value_new', $param['project']); 
+        })
+        ->get(['date', 'ds_id', 'type', 'value_old', 'value_new'])
+        ->sortBy('date');
+
+        return $data;
+    }
+
+    public function getBaseDataContractChanges($param){
+        $data =  DB::table('basedatachange')
+        ->where('date', '>=', $param['start_date'])
+        ->where('type', 'contract_hours')
+        ->get(['date', 'ds_id', 'type', 'value_old', 'value_new'])
+        ->sortBy('date');
 
         return $data;
     }
