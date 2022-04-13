@@ -22,6 +22,14 @@ class hasRight
         {
           abort(403,'Nicht authoriziert! Dir fehlt das Recht: '.$right);
         }
+
+        \DB::table('users')
+        ->where('id', $user->id)
+        ->update([
+          'online_till' =>\Carbon\Carbon::now()->add('30 Minutes')
+        ]);
+
+        // dd(\Carbon\Carbon::now()->add('30 Minutes'));
         return $next($request);
     }
 }

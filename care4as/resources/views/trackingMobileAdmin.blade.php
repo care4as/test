@@ -183,69 +183,68 @@ function roundUp($calls,$quotient)
                         <div class="tab-content">
                             <div class="tab-pane active" id="overview">
                                 <div style="margin: 10px 2px 10px 10px; overflow: scroll;">
-
                                     <table class="tracking-table" id="AdminTrackingTable">
                                         <thead>
-                                            <tr>
-                                                <th rowspan="3" class="bg-dark text-white"style="border-right: 2px solid grey">Name</th>
-                                                <th colspan="3" style="border-right: 2px solid grey">Gesamt</th>
-                                                <th colspan="9" style="border-right: 2px solid grey">SSC</th>
-                                                <th colspan="9" style="border-right: 2px solid grey">BSC</th>
-                                                <th colspan="9" style="border-right: 2px solid grey">Portal</th>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="2">Calls</th>
-                                                <th rowspan="2">Cancel</th>
-                                                <th rowspan="2" style="border-right: 2px solid grey">Service</th>
-                                                <th rowspan="2">Calls</th>
-                                                <th colspan="4">Saves</th>
-                                                <th colspan="2">Negativ</th>
-                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
-                                                <th rowspan="2">Calls</th>
-                                                <th colspan="4">Saves</th>
-                                                <th colspan="2">Negativ</th>
-                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
-                                                <th rowspan="2">Calls</th>
-                                                <th colspan="4">Saves</th>
-                                                <th colspan="2">Negativ</th>
-                                                <th colspan="2" style="border-right: 2px solid grey">CR</th>
-                                                <th>Sonstige</th>
-                                                <th colspan="2">OptIn</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Σ GeVo Saves</th>
-                                                <th>← Gebucht</th>
-                                                <th>← Nacharbeit</th>
-                                                <th>KüRü</th>
-                                                <th>Cancel</th>
-                                                <th>Service</th>
-                                                <th>Gebucht</th>
-                                                <th style="border-right: 2px solid grey">Gesamt</th>
-                                                <th>Σ GeVo Saves</th>
-                                                <th>← Gebucht</th>
-                                                <th>← Nacharbeit</th>
-                                                <th>KüRü</th>
-                                                <th>Cancel</th>
-                                                <th>Service</th>
-                                                <th>Gebucht</th>
-                                                <th style="border-right: 2px solid grey">Gesamt</th>
-                                                <th>Σ GeVo Saves</th>
-                                                <th>← Gebucht</th>
-                                                <th>← Nacharbeit</th>
-                                                <th>KüRü</th>
-                                                <th>Cancel</th>
-                                                <th>Service</th>
-                                                <th>Gebucht</th>
-                                                <th style="border-right: 2px solid grey">Gesamt</th>
-                                                <th>Calls</th>
-                                                <th>Anzahl</th>
-                                                <th>Quote</th>
-                                            </tr>
+                                          <tr>
+                                            <th rowspan="3" class="bg-dark text-white"style="border-right: 2px solid grey">Name</th>
+                                            <th colspan="3" style="border-right: 2px solid grey">Gesamt</th>
+                                            <th colspan="9" style="border-right: 2px solid grey">SSC</th>
+                                            <th colspan="9" style="border-right: 2px solid grey">BSC</th>
+                                            <th colspan="9" style="border-right: 2px solid grey">Portal</th>
+                                          </tr>
+                                          <tr>
+                                            <th rowspan="2">Calls</th>
+                                            <th rowspan="2">Cancel</th>
+                                            <th rowspan="2" style="border-right: 2px solid grey">Service</th>
+                                            <th rowspan="2">Calls</th>
+                                            <th colspan="4">Saves</th>
+                                            <th colspan="2">Negativ</th>
+                                            <th colspan="2" style="border-right: 2px solid grey">CR</th>
+                                            <th rowspan="2">Calls</th>
+                                            <th colspan="4">Saves</th>
+                                            <th colspan="2">Negativ</th>
+                                            <th colspan="2" style="border-right: 2px solid grey">CR</th>
+                                            <th rowspan="2">Calls</th>
+                                            <th colspan="4">Saves</th>
+                                            <th colspan="2">Negativ</th>
+                                            <th colspan="2" style="border-right: 2px solid grey">CR</th>
+                                            <th>Sonstige</th>
+                                            <th colspan="2">OptIn</th>
+                                          </tr>
+                                          <tr>
+                                            <th>Σ GeVo Saves</th>
+                                            <th>← Gebucht</th>
+                                            <th>← Nacharbeit</th>
+                                            <th>KüRü</th>
+                                            <th>Cancel</th>
+                                            <th>Service</th>
+                                            <th>Gebucht</th>
+                                            <th style="border-right: 2px solid grey">Gesamt</th>
+                                            <th>Σ GeVo Saves</th>
+                                            <th>← Gebucht</th>
+                                            <th>← Nacharbeit</th>
+                                            <th>KüRü</th>
+                                            <th>Cancel</th>
+                                            <th>Service</th>
+                                            <th>Gebucht</th>
+                                            <th style="border-right: 2px solid grey">Gesamt</th>
+                                            <th>Σ GeVo Saves</th>
+                                            <th>← Gebucht</th>
+                                            <th>← Nacharbeit</th>
+                                            <th>KüRü</th>
+                                            <th>Cancel</th>
+                                            <th>Service</th>
+                                            <th>Gebucht</th>
+                                            <th style="border-right: 2px solid grey">Gesamt</th>
+                                            <th>Calls</th>
+                                            <th>Anzahl</th>
+                                            <th>Quote</th>
+                                          </tr>
                                         </thead>
                                         <tbody>
                                           <tr>
                                             @foreach($users as $user)
-                                            <td class="bg-dark text-white"style="border-right: 2px solid grey">{{$user->name}}</td>
+                                            <td class="bg-dark text-white"style="border-right: 2px solid grey">{{$user->surname}} {{$user->lastname}}</td>
                                             <td>{{$calls = $user->TrackingCallsToday->sum('calls')}}</td>
                                             <td>{{$cancels = $user->TrackingToday->where('event_category','Cancel')->count()}}</td>
                                             <td style="border-right: 2px solid grey">{{$user->TrackingToday->where('event_category','Service')->count()}}</td>
@@ -457,15 +456,15 @@ function roundUp($calls,$quotient)
                                           @foreach($history as $record)
                                           <tr>
                                             <td>{{$record->created_at}}</td>
-                                            <td>@if($record->createdBy){{$record->createdBy->name}} @else Fehler Ersteller @endif</td>
+                                            <td>@if($record->createdBy){{$record->createdBy->surname}} {{$record->createdBy->lastname}}@else Fehler Ersteller @endif</td>
                                             <td>{{$record->contract_number}}</td>
                                             <td>{{$record->product_category}}</td>
                                             <td>{{$record->event_category}}</td>
-                                            <td>{{$record->target_tariff}}</td>
+                                            <td>@if(strlen($record->target_tariff)>10) <span onclick="alert('{{$record->target_tariff}}')" style="cursor: pointer;"> {{substr($record->target_tariff,0,10)}}...</span> @else  {{$record->target_tariff}}@endif</td>
                                             <td>@if($record->optin == 1) ja @else nein @endif</td>
                                             <td>@if($record->runtime == 1) ja @else nein @endif</td>
                                             <td>@if($record->backoffice == 1) ja @else nein @endif</td>
-                                            <td>{{$record->comment}}</td>
+                                            <td class="">@if(strlen($record->comment)>10) <span onclick="alert('{{$record->comment}}')" style="cursor: pointer;"> {{substr($record->comment,0,10)}}...</span> @else  {{$record->comment}}@endif</td>
                                             <td><a onclick="loadModalWithData({{$record->id}})"><button type="button" class="EditButton" name="button"><i class="far fa-edit"></i></button>  </a><a href="{{route('tracking.delete.admin', ['id' => $record->id])}}"><button type="button" class="DeleteButton" name="button"><i class="far fa-trash-alt"></i></button> </a></td>
                                           </tr>
                                           @endforeach

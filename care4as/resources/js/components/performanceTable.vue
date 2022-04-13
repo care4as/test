@@ -119,15 +119,18 @@
                     <th @click="sorted('cr')" style="cursor:pointer">BSC-CR</th>
                     <th @click="sorted('calls')" style="cursor:pointer">BSC-Calls</th>
                     <th @click="sorted('orders')" style="cursor:pointer">BSC-Saves</th>
+                    <th @click="sorted('online')" style="cursor:pointer">online</th>
                   </tr>
                   <tr class="" v-bind:class= "[user.ssc_quota > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
-                    <td>{{user.name}}</td>
+                    <td>{{user.surname}} {{user.lastname}}</td>
                     <td>{{user.ssc_quota}}%</td>
                     <td>{{user.ssc_calls}}</td>
                     <td>{{user.ssc_orders}}</td>
                     <td>{{user.bsccr}}%</td>
                     <td>{{user.bsc_calls}}</td>
                     <td>{{user.bsc_orders}}</td>
+                    <td class="bg-white center_items" v-if="checkIfOnline(user.online_till)"><div class="dot-green"></div></td>
+                    <td class="bg-white center_items" v-else><div class="dot-red"></div></td>
                   </tr>
                 </table>
                 <table class="max-table text-dark" style="width: 100%;" v-else>
@@ -136,12 +139,17 @@
                     <th @click="sorted('dslqouta')" style="cursor:pointer">CR</th>
                     <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
                     <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
+                    <th @click="sorted('online')" style="cursor:pointer">online</th>
+
                   </tr >
                   <tr class="" v-bind:class= "[user.dslqouta > 42 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
                     <td>{{user.name}}</td>
                     <td>{{user.dslqouta}}%</td>
                     <td>{{user.calls}}</td>
                     <td>{{user.orders}}</td>
+                    <td class="bg-white center_items" v-if="checkIfOnline(user.online_till)"><div class="dot-green"></div></td>
+                    <td class="bg-white center_items" v-else><div class="dot-red"></div></td>
+
                   </tr>
                   </table>
                 </div>
@@ -408,12 +416,46 @@
            }
            }
         });
-      }
+      },
+      checkIfOnline(online_till)
+      {
+        let onlinetill = online_till
+
+        if(onlinetill)
+        {
+          var t2 = onlinetill.split(/[- :]/);
+          let onlinetill2 = new Date(t2[0],t2[1]-1,t2[2],t2[3]||0,t2[4]||0,t2[5]||0);
+          if(  Date.now() <  Date.parse(onlinetill2))
+          {
+            // console.log('alles gut');
+            return true;
+          }
+          else {
+            // console.log(online_since);
+              return false
+          }
+        }
+        else {
+             // console.log('online_till fehler')
+            return false;
+          }
+        },
       }
     }
 </script>
 
 <style media="screen">
-
-
+.dot-green, .dot-red {
+    height: 30px;
+    width: 30px;
+    /* background-color: green; */
+    border-radius: 5px;
+    /* display: inline-block; */
+}
+.dot-green{
+  background-color: green;
+}
+.dot-red{
+  background-color: red;
+}
 </style>

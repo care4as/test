@@ -142,7 +142,6 @@ function roundUp($calls,$quotient)
         </div>
     </div>
     @endif
-
     <!-- START TRACKING -->
     <div class="row">
       <div class="col-sm-12">

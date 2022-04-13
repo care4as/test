@@ -183,6 +183,9 @@ Route::group(['middleware' => 'auth'], function () {
       Route::post('/report/test', 'ExcelEditorController@RetentionDetailsReport')->name('excel.test')->middleware('hasRight:reports_import');
       Route::get('/report/export/retentiondetails/xlsx', 'ExcelEditorController@retentiondetailsExportXlsx')->name('retentiondetails.exportXlsx')->middleware('hasRight:reports_import'); // EXPORT RECHT?
 
+    // STAMMDATENÄNDERUNG
+      Route::get('/user/basedata', 'BaseDataController@main')->name('basedata.get')->middleware('hasRight:users_userlist');
+
     // NETTOZEITEN
       Route::view('/report/nettozeitenreport/', 'reports.nettozeiten')->name('reports.nettozeiten')->middleware('hasRight:reports_import');
       Route::post('/report/nettozeitenreport/', 'ExcelEditorController@nettozeitenImport')->name('reports.nettozeiten.upload')->middleware('hasRight:reports_import');
