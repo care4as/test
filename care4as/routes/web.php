@@ -65,11 +65,6 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:users_update');
       Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:users_update');
       Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:users_update');
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 263968182a3a428eaa64de635164f5842f52dc79
       Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
       Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:indexUser');
       Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:indexUser');
@@ -80,10 +75,6 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/user/basedata/new_entry', 'BaseDataController@newEntry')->name('basedata.new_entry')->middleware('hasRight:users_userlist');
       Route::get('/user/basedata/delete_entry/{id}', 'BaseDataController@deleteEntry')->name('basedata.delete_entry')->middleware('hasRight:users_userlist');
 
-<<<<<<< HEAD
->>>>>>> 1e65fc728d4309ca84140932a5d5176d770ebe16
-=======
->>>>>>> 263968182a3a428eaa64de635164f5842f52dc79
   // Ende  VERWALTUNG
 
   // Start DASHBOARD
