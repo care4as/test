@@ -342,7 +342,6 @@
           // console.log(this.department)
         },
         getDailyQouta(dep){
-
           var host = window.location.host;
           let department = dep
           let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:01","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
@@ -359,10 +358,8 @@
             function (err) {
               console.log('error DQ')
               console.log(err.response);
-
             })
           },
-
         createChart(chartId, chartData) {
         let chart = document.getElementById(chartId);
 
