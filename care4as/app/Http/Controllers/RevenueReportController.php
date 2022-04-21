@@ -22,7 +22,12 @@ class RevenueReportController extends Controller
             $data = null;
         }
 
-        return view('controlling.revenueReport', compact('param', 'data', 'dateSelection'));
+        $constants = array(
+            'all_constants' => $this->getConstantsOverview(),
+        );
+        // dd($constants['all_constants']);
+
+        return view('controlling.revenueReport', compact('param', 'data', 'dateSelection', 'constants'));
 
     }
 
@@ -1017,6 +1022,26 @@ class RevenueReportController extends Controller
         ->sortBy('date');
 
         return $data;
+    }
+
+    // Zielwerte
+    public function getConstantsOverview(){
+        $data = DB::table('project_constants_overview')
+        ->get();
+
+        return $data;
+    }
+    
+    public function getConstantsEntries(){
+
+    }
+
+    public function newConstant(){
+
+    }
+
+    public function newConstantEntry(){
+
     }
         
 }

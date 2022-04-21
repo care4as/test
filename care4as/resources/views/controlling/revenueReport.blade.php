@@ -97,7 +97,7 @@
                                 <div class="max-panel-content" style="display: flex; justify-content: space-around; flex-direction: column; gap: 5px">
                                     <button type="submit" class="btn btn-primary btn-small" style="padding-top: 8px; padding-bottom: 8px; margin-top: 0; margin-bottom: 0;">Liste anzeigen</button>
                                     <button class="btn btn-primary btn-small" style="padding-top: 8px; padding-bottom: 8px; margin-top: 0; margin-bottom: 0;">Sonderposten hinzufügen</button>
-                                    <button class="btn btn-primary btn-small" style="padding-top: 8px; padding-bottom: 8px; margin-top: 0; margin-bottom: 0;">Werte anpassen</button>
+                                    <button type="button" class="btn btn-primary btn-small" style="padding-top: 8px; padding-bottom: 8px; margin-top: 0; margin-bottom: 0;" data-toggle="modal" data-target="#costants_modal">Zielwerte</button>
                                 </div>
                             </div>
                         </div>
@@ -512,14 +512,138 @@
     @endif
 
 
+</div>
+@endsection
 
-
-
-
-
-
-
-
+<!-- Modals -->
+@section('additional_modal')
+<div class="modal fade" id="costants_modal" tabindex="-1" role="dialog" aria-labelledby="costants_modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="z-index: 500000;">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title" id="costants_modal" style="font-size: 1.45em;">Projekt Zielwerte</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="nav-tabs-navigation">
+                <div class="nav-tabs-wrapper">
+                    <ul class="nav nav-tabs" data-tabs="tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#overview" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Übersicht</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#all_entries" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Alle Einträge</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#new_entry" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Neuer Eintrag</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#all_constants" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Alle Zielwerte</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#new_constant" data-toggle="tab" style="font-size: 16px; font-weight: bold;">Neuer Zielwert</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <!-- Übersicht -->
+                <div class="tab-pane active" id="overview">
+                    <div class="modal-body" style="font-size: 14px;">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr;grid-column-gap: 25px;">
+                            <!-- Projekttitel -->
+                            <h5>DSL</h5>
+                            <h5>Mobile</h5>
+                            <!-- DSL -->
+                            <div style="display:grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px; height:min-content">
+                                @if($constants['all_constants']->where('project_id', 7)->where('category', 'Projekt')->count() > 0)
+                                    <div style="grid-column: 1 / -1"><b>Projekt Ziele</b></div>
+                                    @foreach($constants['all_constants']->where('project_id', 7)->where('category', 'Projekt') as $key => $entry)
+                                        <div style="margin-top: auto; margin-bottom: auto">{{$entry->name}}:</div>
+                                        <div><input class="form-control" id="disabledInput" type="text" readonly="" value="test" ></div>
+                                    @endforeach
+                                @endif
+                                @if($constants['all_constants']->where('project_id', 7)->where('category', 'Umsatz')->count() > 0)
+                                    <div style="grid-column: 1 / -1"><b>Umsatz Ziele</b></div>
+                                    @foreach($constants['all_constants']->where('project_id', 7)->where('category', 'Umsatz') as $key => $entry)
+                                        <div style="margin-top: auto; margin-bottom: auto">{{$entry->name}}:</div>
+                                        <div><input class="form-control" id="disabledInput" type="text" readonly="" value="test" ></div>
+                                    @endforeach
+                                @endif
+                                @if($constants['all_constants']->where('project_id', 7)->where('category', 'Quote')->count() > 0)
+                                    <div style="grid-column: 1 / -1"><b>Quoten Ziele</b></div>
+                                    @foreach($constants['all_constants']->where('project_id', 7)->where('category', 'Quote') as $key => $entry)
+                                        <div style="margin-top: auto; margin-bottom: auto">{{$entry->name}}:</div>
+                                        <div><input class="form-control" id="disabledInput" type="text" readonly="" value="test" ></div>
+                                    @endforeach
+                                @endif
+                            </div>
+                            <!-- Mobile -->
+                            <div style="display:grid; grid-template-columns: auto 1fr; grid-column-gap: 25px; grid-row-gap: 5px;height:min-content">
+                                @if($constants['all_constants']->where('project_id', 10)->where('category', 'Projekt')->count() > 0)
+                                    <div style="grid-column: 1 / -1"><b>Projekt Ziele</b></div>
+                                    @foreach($constants['all_constants']->where('project_id', 10)->where('category', 'Projekt') as $key => $entry)
+                                        <div style="margin-top: auto; margin-bottom: auto">{{$entry->name}}:</div>
+                                        <div><input class="form-control" id="disabledInput" type="text" readonly="" value="test" ></div>
+                                    @endforeach
+                                @endif
+                                @if($constants['all_constants']->where('project_id', 10)->where('category', 'Umsatz')->count() > 0)
+                                    <div style="grid-column: 1 / -1"><b>Umsatz Ziele</b></div>
+                                    @foreach($constants['all_constants']->where('project_id', 10)->where('category', 'Umsatz') as $key => $entry)
+                                        <div style="margin-top: auto; margin-bottom: auto">{{$entry->name}}:</div>
+                                        <div><input class="form-control" id="disabledInput" type="text" readonly="" value="test" ></div>
+                                    @endforeach
+                                @endif
+                                @if($constants['all_constants']->where('project_id', 10)->where('category', 'Quote')->count() > 0)
+                                    <div style="grid-column: 1 / -1"><b>Quoten Ziele</b></div>
+                                    @foreach($constants['all_constants']->where('project_id', 10)->where('category', 'Quote') as $key => $entry)
+                                        <div style="margin-top: auto; margin-bottom: auto">{{$entry->name}}:</div>
+                                        <div><input class="form-control" id="disabledInput" type="text" readonly="" value="test" ></div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="font-size: 14px;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                    </div>
+                </div>
+                <div class="tab-pane" id="all_entries">
+                    <div class="modal-body" style="font-size: 14px;">
+                        test2
+                    </div>
+                    <div class="modal-footer" style="font-size: 14px;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                    </div>
+                </div>
+                <div class="tab-pane" id="new_entry">
+                    <div class="modal-body" style="font-size: 14px;">
+                        test3
+                    </div>
+                    <div class="modal-footer" style="font-size: 14px;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                    </div>
+                </div>
+                <div class="tab-pane" id="all_constants">
+                    <div class="modal-body" style="font-size: 14px;">
+                        <b>Keine Änderung vornehmen, wenn du nicht ganz genau weißt, was du tust!</b>
+                    </div>
+                    <div class="modal-footer" style="font-size: 14px;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                    </div>
+                </div>
+                <div class="tab-pane" id="new_constant">
+                    <div class="modal-body" style="font-size: 14px;">
+                        <b>Keine Änderung vornehmen, wenn du nicht ganz genau weißt, was du tust!</b>
+                    </div>
+                    <div class="modal-footer" style="font-size: 14px;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 

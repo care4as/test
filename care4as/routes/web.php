@@ -65,42 +65,47 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:users_update');
       Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:users_update');
       Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:users_update');
+      Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:indexUser');
+      Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:indexUser');
+      Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:indexUser');
+      Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:indexUser');
 
     // STAMMDATENÄNDERUNG
       Route::get('/user/basedata', 'BaseDataController@main')->name('basedata.get')->middleware('hasRight:users_userlist');
       Route::get('/user/basedata/new_entry', 'BaseDataController@newEntry')->name('basedata.new_entry')->middleware('hasRight:users_userlist');
       Route::get('/user/basedata/delete_entry/{id}', 'BaseDataController@deleteEntry')->name('basedata.delete_entry')->middleware('hasRight:users_userlist');
-    // Ende  VERWALTUNG
 
-    // Start DASHBOARD
-      Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard')->middleware('hasRight:dashboard');
-      Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
-      Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin')->middleware('hasRight:dashboardAdmin');
-    // Ende  DASHBOARD
+  // Ende  VERWALTUNG
 
-    // Start MEMORANDA
-      Route::view('/memos/create', 'createMemo')->name('memo.create');
-      Route::post('/memos/store', 'MemorandaController@store')->name('memo.store');
-      Route::get('/memo/read/{id}', 'MemorandaController@read')->name('memo.read');
-      Route::get('/memo/checkMeMos', 'MemorandaController@checkMemos')->name('memo.check');
-    // Ende  MEMORANDA
+  // Start DASHBOARD
+    Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard')->middleware('hasRight:dashboard');
+    Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
+    Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin')->middleware('hasRight:dashboardAdmin');
+  // Ende  DASHBOARD
 
-    // Start MITARBEITER
-      Route::get('/mitarbeiterliste', 'UserListController@load')->name('userlist')->middleware('hasRight:users_userlist');
-      Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync')->middleware('hasRight:users_userlist');
-      Route::get('/userlist/updateuser', 'UserListController@updateUser')->name('userlist.updateuser')->middleware('hasRight:users_update');
-      Route::get('/userlist/resetpassword', 'UserListController@updateUserPassword')->name('userlist.updateUserPassword')->middleware('hasRight:users_reset_password');
-      Route::get('/userlist/updaterole', 'UserListController@updateUserRole')->name('userlist.updateUserRole')->middleware('hasRight:users_change_role');
-    // Ende  MITARBEITER
+  // Start MEMORANDA
+    Route::view('/memos/create', 'createMemo')->name('memo.create');
+    Route::post('/memos/store', 'MemorandaController@store')->name('memo.store');
+    Route::get('/memo/read/{id}', 'MemorandaController@read')->name('memo.read');
+    Route::get('/memo/checkMeMos', 'MemorandaController@checkMemos')->name('memo.check');
+  // Ende  MEMORANDA
 
-    // Start 1U1 DSL RETENTION
-      // TRACKING
-        Route::get('/dsl/tracking/{department}',  'AgentTrackingController@userIndex')->name('dsl.tracking.agents')->middleware('auth');
-        Route::get('/dsl/tracking/admin/{department}',  'AgentTrackingController@AdminIndex')->name('dsl.tracking.admin')->middleware('auth');
-        Route::post('/dsl/tracking/update',  'AgentTrackingController@edit')->name('dsl.tracking.agents.update')->middleware('auth');
-        Route::post('/dsl/tracking/post', 'AgentTrackingController@store')->name('dsl.tracking.agents.post');
+  // Start MITARBEITER
+    Route::get('/mitarbeiterliste', 'UserListController@load')->name('userlist')->middleware('hasRight:users_userlist');
+    Route::get('/userlist/sync', 'UserListController@syncUserlistKdw')->name('userlist.sync')->middleware('hasRight:users_userlist');
+    Route::get('/userlist/updateuser', 'UserListController@updateUser')->name('userlist.updateuser')->middleware('hasRight:users_update');
+    Route::get('/userlist/resetpassword', 'UserListController@updateUserPassword')->name('userlist.updateUserPassword')->middleware('hasRight:users_reset_password');
+    Route::get('/userlist/updaterole', 'UserListController@updateUserRole')->name('userlist.updateUserRole')->middleware('hasRight:users_change_role');
+  // Ende  MITARBEITER
 
-    // Ende  1U1 DSL RETENTION
+  // Start 1U1 DSL RETENTION
+    // TRACKING
+      Route::get('/dsl/tracking/{department}',  'AgentTrackingController@userIndex')->name('dsl.tracking.agents')->middleware('auth');
+      Route::get('/dsl/tracking/admin/{department}',  'AgentTrackingController@AdminIndex')->name('dsl.tracking.admin')->middleware('auth');
+      Route::post('/dsl/tracking/update',  'AgentTrackingController@edit')->name('dsl.tracking.agents.update')->middleware('auth');
+      Route::post('/dsl/tracking/post', 'AgentTrackingController@store')->name('dsl.tracking.agents.post');
+
+  // Ende  1U1 DSL RETENTION
 
   // Start 1U1 MOBILE RETENTION
     // TRACKING

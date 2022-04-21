@@ -216,7 +216,7 @@ Mitarbeiterverwaltung: Stammdatenänderungen
                         <tbody>
                             @foreach($data['entries'] as $key => $entry)
                             <tr>
-                                <td>{{date('d.m.Y', strtotime($entry->date))}}</td>
+                                <td>{{$entry->date}}</td>
                                 <td>{{$entry->type}}</td>
                                 <td>{{$entry->ds_id}}</td>
                                 <td style="text-align:center">{{$entry->value_old}}</td>
