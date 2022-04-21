@@ -11,13 +11,14 @@ class PC extends Model
 
     protected $table = 'pc_info';
 
-    public function storePC($brandpc,$cpufamily,$cpu,$displayports,$speed)
+    public function storePC($brandpc,$cpufamily,$cpu,$displayports,$speed,$teamviewerid)
     {
       $this->cpu_family = $cpufamily;
       $this->cpu = $cpu;
       $this->port = $displayports;
       $this->speed = $speed;
       $this->brand = $brandpc;
+      $this->teamviewerid = $teamviewerid;
 
       $this->save();
     }

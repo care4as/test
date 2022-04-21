@@ -95,9 +95,12 @@
                   Display Port
                 </label>
               </div>
-
             </div>
-
+            <div class="form-group col-md-6">
+                <label for="teamviewerid">TeamviewerID</label>
+                <input type="text" name="teamviewerid" id="teamviewerid" class="form-control"></textarea>
+            </div>
+            </div>
           </div>
         </div>
         <div class="container p-0" id="monitormenu">

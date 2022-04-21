@@ -13,7 +13,7 @@ class AddTeamvieweridToPc extends Migration
      */
     public function up()
     {
-        Schema::table('hardware_inventory', function (Blueprint $table) {
+        Schema::table('pc_info', function (Blueprint $table) {
             $table->text('teamviewerid')->nullable();
         });
     }

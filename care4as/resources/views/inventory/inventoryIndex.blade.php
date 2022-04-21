@@ -221,6 +221,11 @@
                     <td>{{$item->devicePC->speed}}</td>
                     <td><input type="text" name="speed" class="form-control" value="{{ $item->devicePC->speed}}"> </td>
                   </tr>
+                  <tr>
+                    <th>Teamviewerid</th>
+                    <td>{{$item->devicePC->teamviewerid}}</td>
+                    <td><input type="text" name="teamviewerid" class="form-control" value="{{ $item->devicePC->teamviewerid}}"> </td>
+                  </tr>
                   @elseif( $item->type_id == 2)
                   <tr>
                       <th>Modell</th>
@@ -256,7 +261,6 @@
                           Display Port
                         </label>
                       </div>
-
                     </td>
                     @else
                     <th>Videoanschlüsse</th>

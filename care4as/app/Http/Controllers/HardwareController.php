@@ -64,7 +64,7 @@ class HardwareController extends Controller
       switch ($device) {
         case 1:
             $pc = new PC;
-            $pc->storePC($request->brandpc,$request->cpufamily,$request->cpu,json_encode($request->portspc),$request->speed);
+            $pc->storePC($request->brandpc,$request->cpufamily,$request->cpu,json_encode($request->portspc),$request->speed, $request->teamviewerid);
 
             $device_id = $pc->id;
             $typeid = 1;
@@ -111,9 +111,7 @@ class HardwareController extends Controller
     {
       // dd($request);
       $item = Hardwareitem::find($id);
-
       $item->name = $request->name;
-
       $item->place = $request->place;
       $item->comment = $request->comment;
       $item->description = $request->description;
@@ -128,8 +126,10 @@ class HardwareController extends Controller
             $item2->brand = $request->brand;
             $item2->cpu = $request->cpu;
             $item2->speed = $request->speed;
+            $item2->teamviewerid = $request->teamviewerid;
             $item2->port = json_encode($request->portspc);
 
+            // dd($request->teamviewerid);
             $item2->save();
           break;
 
@@ -154,8 +154,6 @@ class HardwareController extends Controller
       $item->type_id = $request->devicetype;
       $item->save();
       return redirect()->back();
-
-
     }
     public function delete($id)
     {
