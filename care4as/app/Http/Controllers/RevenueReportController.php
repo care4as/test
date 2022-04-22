@@ -103,7 +103,7 @@ class RevenueReportController extends Controller
                 'target_revenue_paid_hour' => 36.41,
             ),
             7 => array(// Mobile
-                'availbench_ziel_aht' => 700,
+                'availbench_ziel_aht' => 730,
                 'cpo_ssc' => 16,
                 'cpo_bsc' => 12,
                 'cpo_portale' => 16,
