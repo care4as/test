@@ -604,7 +604,7 @@ class RevenueReportController extends Controller
             }
         }
 
-        foreach($history->sortBy('date_begin')->sortBy('state_id') as $key => $entry){
+        foreach($history->sortBy('date_begin')->sortBy('state_id')->whereIn('agent_ds_id', $personIds) as $key => $entry){
             $data['information'][$states->where('ds_id', $entry->state_id)->first()->description][] = date_format(date_create($entry->date_begin), 'd.m.Y') . ' - ' . date_format(date_create($entry->date_end), 'd.m.Y') . ': ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->vorname . ' ' . $ma->where('ds_id', $entry->agent_ds_id)->first()->familienname;
         }
 
