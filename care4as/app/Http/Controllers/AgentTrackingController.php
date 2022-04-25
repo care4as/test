@@ -76,37 +76,37 @@ class AgentTrackingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-      // dd($request);
-        $request->validate([
-          'contract_number' => 'required',
-          'product_category' => 'required',
-          'event_category' => 'required',
-          'optin' => 'required',
-          'runtime' => 'required',
-          'backoffice' => 'required',
-        ]);
+    public function store(Request $request) {
+      $request->validate([
+        'contract_number' => 'required',
+        'product_category' => 'required',
+        'event_category' => 'required',
+        'optin' => 'required',
+        'runtime' => 'required',
+        'backoffice' => 'required',
+      ]);
 
-        $trackevent = new TrackEvent;
-        $additionalProperties = array('created_by' => Auth()->id());
-        $tranformed = request()->except(['_token']);
-        // dd($tranformed);
-        $trackevent->TranformRequestToModel($tranformed,$additionalProperties);
+      $trackevent = new TrackEvent;
+      $additionalProperties = array('created_by' => Auth()->id());
+      // dd(request()->except(['_token']));
+      $tranformed = request()->except(['_token']);
+      // dd($tranformed);
+      $trackevent->TranformRequestToModel($tranformed,$additionalProperties);
 
-        // $trackevent->contract_number = $request->contract_number;
-        // $trackevent->product_category = $request->product_category;
-        // $trackevent->event_category = $request->event_category;
-        // $trackevent->optin = $request->optin;
-        // $trackevent->runtime = $request->runtime;
-        // $trackevent->backoffice = $request->backoffice;
-        // $trackevent->target_tariff = $request->target_tariff;
-        // $trackevent->created_by = Auth()->id();
-        // $trackevent->save();
+      // $trackevent->contract_number = $request->contract_number;
+      // $trackevent->product_category = $request->product_category;
+      // $trackevent->event_category = $request->event_category;
+      // $trackevent->optin = $request->optin;
+      // $trackevent->runtime = $request->runtime;
+      // $trackevent->backoffice = $request->backoffice;
+      // $trackevent->target_tariff = $request->target_tariff;
+      // $trackevent->created_by = Auth()->id();
+      // $trackevent->save();
 
-        // dd($trackevent);
-        return redirect()->back();
+      // dd($trackevent);
+      return redirect()->back();
     }
+
     public function AdminIndex($department = 'Mobile')
     {
       if($department == 'DSL')

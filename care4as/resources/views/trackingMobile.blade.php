@@ -225,110 +225,158 @@ function roundUp($calls,$quotient)
             </div>
         </div>
         <!-- START ORDERS -->
-          <div class="col-xl-6 col-lg-12">
-            <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
-              @csrf
-                <div class="max-main-container">
-                    <div class="tracking_title">
-                        Saves
-                    </div>
-                    <div class="tracking_container">
-                        <div class="tracking_description">Vertragsnummer</div>
-                        <input type="text" class="form-control" id="contract_number" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
-                        <div class="tracking_errormessage" id="contract_number_errormessage" style="display: none;">
-                            <div style="margin: auto; padding: 0 5px;"><i class="far fa-times-circle"></i><small>Bitte trage eine gültige Vertragsnummer ohne Buchstaben, Leer- oder Sonderzeichen ein</small></div>
+            <div class="col-xl-6 col-lg-12">
+                <form class="" action="{{route('mobile.tracking.agents.post')}}" method="post">
+                @csrf
+                    <div class="max-main-container">
+                        <div class="tracking_title">
+                            Saves
                         </div>
-                    </div>
-                    <div class="tracking_container">
-                        <div class="tracking_description">Produktgruppe</div>
-                        <div class="btn-group-container">
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="product_category" value="SSC" id="product_category1" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary first-btn-group-element" for="product_category1">SSC</label>
-                                <input type="radio" class="btn-check" name="product_category" value="BSC" id="product_category2" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary" for="product_category2">BSC</label>
-
-                                <input type="radio" class="btn-check" name="product_category" value="Portale" id="product_category3" autocomplete="off" onchange="tracking_input()">
-                                <label class="btn btn-outline-primary last-btn-group-element" for="product_category3">Portal</label>
+                        <div class="tracking_container">
+                            <div class="tracking_description">Vertragsnummer</div>
+                            <input type="text" class="form-control" id="contract_number" name="contract_number" style="max-width: 300px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
+                            <div>
+                                <div class="tracking_errormessage collapse" id="contract_number_errormessage">
+                                    <div style="margin: auto; padding: 0 5px;"><i class="far fa-times-circle"></i><small>Bitte trage eine gültige Vertragsnummer ohne Buchstaben, Leer- oder Sonderzeichen ein</small></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tracking_container">
-                      <div class="tracking_description">Bearbeitung</div>
-                        <div class="btn-group-container">
-                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="event_category" value="Save" id="event_category1" autocomplete="off" onchange="tracking_input()">
-                            <label class="btn btn-outline-primary first-btn-group-element" for="event_category1">Save</label>
 
-                            <input type="radio" class="btn-check" name="event_category" value="Cancel" id="event_category2" autocomplete="off" onchange="tracking_input()">
-                            <label class="btn btn-outline-primary" for="event_category2">Cancel</label>
+                        <div class="collapse" id="product_category_container">
+                            <div class="tracking_container">
+                                <div class="tracking_description">Produktgruppe</div>
+                                <div class="btn-group-container">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="product_category" value="SSC" id="product_category1" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary first-btn-group-element" for="product_category1">SSC</label>
+                                        <input type="radio" class="btn-check" name="product_category" value="BSC" id="product_category2" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary" for="product_category2">BSC</label>
 
-                            <input type="radio" class="btn-check" name="event_category" value="Service" id="event_category3" autocomplete="off" onchange="tracking_input()">
-                            <label class="btn btn-outline-primary" for="event_category3">Service</label>
-
-                            <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
-                            <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
-
-                            <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
-                            <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">NaBu</label>
-                          </div>
+                                        <input type="radio" class="btn-check" name="product_category" value="Portale" id="product_category3" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary last-btn-group-element" for="product_category3">Portal</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                    <div class="tracking_container">
-                      <div class="tracking_description">Zieltarif</div>
-                      <input type="text" class="form-control" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()" disabled>
-                    </div>
-                    <div class="tracking_container center_items">
-                      <div class="wrapper1 w-75">
-                        <div class="tracking_description ">
-                          <label for="exampleFormControlTextarea1">Kommentar (optional)</label>
-                        </div>
-                        <textarea class="form-control shadow p-2" id="exampleFormControlTextarea1" rows="3" name="comment"></textarea>
-                      </div>
-                    </div>
-                    <div class="tracking_container">
-                      <div class="tracking_description">OptIn gesetzt</div>
-                        <div class="btn-group-container">
-                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="optin" value="1" id="optin1" autocomplete="off" onchange="tracking_input()">
-                            <label class="btn btn-outline-primary first-btn-group-element" for="optin1">Ja</label>
 
-                            <input type="radio" class="btn-check" name="optin" value="0" id="optin2" autocomplete="off" onchange="tracking_input()">
-                            <label class="btn btn-outline-primary last-btn-group-element" for="optin2">Nein</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="tracking_container">
-                        <div class="tracking_description">Restlaufzeit+24</div>
-                        <div class="btn-group-container">
-                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="runtime" value="1" id="runtime1" autocomplete="off" onchange="tracking_input()">
-                            <label class="btn btn-outline-primary first-btn-group-element" for="runtime1">Ja</label>
+                        <div class="collapse" id="tracking_description_container">
+                            <div class="tracking_container">
+                                <div class="tracking_description">Bearbeitung</div>
+                                <div class="btn-group-container">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="event_category" value="Save" id="event_category1" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary first-btn-group-element" for="event_category1">Save</label>
 
-                            <input type="radio" class="btn-check" name="runtime" value="0" id="runtime2" autocomplete="off" onchange="tracking_input()">
-                            <label class="btn btn-outline-primary last-btn-group-element" for="runtime2">Nein</label>
-                          </div>
-                        </div>
-                      </div>
-                    <div class="tracking_container">
-                      <div class="tracking_description">An Nacharbeit</div>
-                        <div class="btn-group-container">
-                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                              <input type="radio" class="btn-check" name="backoffice" value="1" id="backoffice1" autocomplete="off" onchange="tracking_input()">
-                              <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Ja</label>
+                                        <input type="radio" class="btn-check" name="event_category" value="Cancel" id="event_category2" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary" for="event_category2">Cancel</label>
 
-                              <input type="radio" class="btn-check" name="backoffice" value="0" id="backoffice2" autocomplete="off" onchange="tracking_input()">
-                              <label class="btn btn-outline-primary last-btn-group-element" for="backoffice2">Nein</label>
-                          </div>
+                                        <input type="radio" class="btn-check" name="event_category" value="Service" id="event_category3" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary" for="event_category3">Service</label>
+
+                                        <input type="radio" class="btn-check" name="event_category" value="KüRü" id="event_category4" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary" for="event_category4">KüRü</label>
+
+                                        <input type="radio" class="btn-check" name="event_category" value="NaBu" id="event_category5" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary last-btn-group-element" for="event_category5">NaBu</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      <div class="tracking_container" style="display: flex;">
-                          <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;" id="submit_tracking" disabled>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
+                        
+                        <div class="collapse" id="al_group_container">
+                            <div class="tracking_container">
+                                <div class="tracking_description">Angebotsleiter</div>
+                                <div class="btn-group-container">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="al_group" value="0" id="al_group0" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary first-btn-group-element" for="al_group0">Keine</label>
+
+                                        <input type="radio" class="btn-check" name="al_group" value="1" id="al_group1" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary" for="al_group1">1</label>
+
+                                        <input type="radio" class="btn-check" name="al_group" value="2" id="al_group2" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary" for="al_group2">2</label>
+
+                                        <input type="radio" class="btn-check" name="al_group" value="3" id="al_group3" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary" for="al_group3">3</label>
+
+                                        <input type="radio" class="btn-check" name="al_group" value="4" id="al_group4" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary" for="al_group4">4</label>
+
+                                        <input type="radio" class="btn-check" name="al_group" value="5" id="al_group5" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary last-btn-group-element" for="al_group5">5</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapse" id="target_tariff_container">
+                            <div class="tracking_container">
+                                <div class="tracking_description">Zieltarif</div>
+                                <input type="text" class="form-control" name="target_tariff" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
+                            </div>
+                        </div>
+
+                        <div class="collapse" id="comment_container">
+                            <div class="tracking_container">
+                                <div class="tracking_description">Kommentar (optional)</div>
+                                <input type="text" class="form-control" name="comment" style="max-width: 600px; margin: 0 auto;" onchange="tracking_input()" onkeyup="tracking_input()">
+                            </div>
+                        </div>
+                        
+                        <div class="collapse" id="optin_container">
+                            <div class="tracking_container">
+                                <div class="tracking_description">OptIn gesetzt</div>
+                                <div class="btn-group-container">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="optin" value="1" id="optin1" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary first-btn-group-element" for="optin1">Ja</label>
+
+                                        <input type="radio" class="btn-check" name="optin" value="0" id="optin2" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary last-btn-group-element" for="optin2">Nein</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="collapse" id="rlz_container">
+                            <div class="tracking_container">
+                                <div class="tracking_description">Restlaufzeit+24</div>
+                                <div class="btn-group-container">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="runtime" value="1" id="runtime1" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary first-btn-group-element" for="runtime1">Ja</label>
+
+                                        <input type="radio" class="btn-check" name="runtime" value="0" id="runtime2" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary last-btn-group-element" for="runtime2">Nein</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="collapse" id="bo_container">
+                            <div class="tracking_container">
+                                <div class="tracking_description">An Nacharbeit</div>
+                                <div class="btn-group-container">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="backoffice" value="1" id="backoffice1" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary first-btn-group-element" for="backoffice1">Ja</label>
+
+                                        <input type="radio" class="btn-check" name="backoffice" value="0" id="backoffice2" autocomplete="off" onchange="tracking_input()">
+                                        <label class="btn btn-outline-primary last-btn-group-element" for="backoffice2">Nein</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tracking_container" style="display: flex;">
+                            <input type="submit" value="Speichern" class="btn btn-primary" style="margin: 0 auto; min-width: 150px;" id="submit_tracking" disabled>
+                        </div>
+
+                        </div>
+                        </div>
+                    </form>
+                </div>
             </div>
     <!-- END ORDERS -->
       <div class="row" id="month_container" style="display: none;">
@@ -593,63 +641,119 @@ function roundUp($calls,$quotient)
 <script>
 
     function tracking_input(){
-        var contract_field = document.querySelector('input[name="contract_number"]').value;
-        var product_category_field = document.querySelector('input[name="product_category"]:checked')?.value;
-        var event_category_field = document.querySelector('input[name="event_category"]:checked')?.value;
-        var target_tariff_field = document.querySelector('input[name="target_tariff"]').value;
-        var optin = document.querySelector('input[name="optin"]:checked')?.value;
-        var runtime = document.querySelector('input[name="runtime"]:checked')?.value;
-        var backoffice = document.querySelector('input[name="backoffice"]:checked')?.value;
 
-        if(event_category_field == 'Save'){
-            document.querySelector('input[name="target_tariff"]').disabled = false;
-        } else {
-            document.querySelector('input[name="target_tariff"]').value = '';
-            document.querySelector('input[name="target_tariff"]').disabled = true;
-        }
-
+        // Fehler Counter
         var error_counter = 0;
         let errorDiv = document.getElementById('contract_number_errormessage')
         let contractnumber = $("#contract_number");
 
+        // Vertragsnummer
+        var contract_field = document.querySelector('input[name="contract_number"]').value;
         if(contract_field == ''){
-            errorDiv.style.display = 'none';
             contractnumber.css("border","1px solid #f96332")
             error_counter += 1;
+            $('#product_category_container').collapse("hide");
+            $('#contract_number_errormessage').collapse("hide");
+            $('input[name="product_category"]').prop("checked", false);
         } else if (Math.floor(contract_field) == contract_field) {
           contractnumber.css("border","1px solid #f96332")
-            errorDiv.style.display = 'none';
+            $('#product_category_container').collapse("show");
+            $('#contract_number_errormessage').collapse("hide");
         } else {
-            // console.log(contractnumber)
-            // contractnumber.css('border-width', '0');
-            contractnumber.css("border","3px solid red")
-            errorDiv.style.display = 'flex';
+            contractnumber.css("border","1px solid red")
             error_counter += 1;
+            $('#product_category_container').collapse("hide");
+            $('#contract_number_errormessage').collapse("show");
         }
 
+        // Produktgruppe
+        var product_category_field = document.querySelector('input[name="product_category"]:checked')?.value;
         if(product_category_field == undefined){
             error_counter += 1;
+            $('#tracking_description_container').collapse("hide");
+            $('input[name="event_category"]').prop("checked", false);
+        } else {
+            $('#tracking_description_container').collapse("show");
         }
 
+        // Bearbeitung
+        var event_category_field = document.querySelector('input[name="event_category"]:checked')?.value;
         if(event_category_field == undefined){
             error_counter += 1;
-        } else if (event_category_field == 'Save'){
+            $('input[name="al_group"]').prop("checked", false);
+            document.querySelector('input[name="comment"]').value = '';
+            $('#al_group_container').collapse("hide"); 
+            $('#target_tariff_container').collapse("hide");
+            document.querySelector('input[name="target_tariff"]').value = '';
+            $('#comment_container').collapse("hide");
+        } else if (event_category_field == 'Save' || event_category_field == 'NaBu'){
+            $('#al_group_container').collapse("show");
+            $('#comment_container').collapse("hide");
+            document.querySelector('input[name="comment"]').value = '';
+
+            // AL Stufe
+            var al_group_field = document.querySelector('input[name="al_group"]:checked')?.value;
+            if(al_group_field == undefined){
+                error_counter += 1;
+                $('#target_tariff_container').collapse("hide");
+            } else {
+                $('#target_tariff_container').collapse("show");
+            }
+
+            // Zieltarif
+            var target_tariff_field = document.querySelector('input[name="target_tariff"]').value;
             if (target_tariff_field == ''){
                 error_counter += 1;
             }
+
+        } else {
+            $('#target_tariff_container').collapse("hide");
+            document.querySelector('input[name="target_tariff"]').value = '';
+            $('input[name="al_group"]').prop("checked", false);
+            $('#al_group_container').collapse("hide");
+            $('#comment_container').collapse("show");
         }
+
+        // Optin
+        if(error_counter == 0){
+            $('#optin_container').collapse("show");
+        } else {
+            $('#optin_container').collapse("hide");
+            $('input[name="optin"]').prop("checked", false);
+        }
+
+        var optin = document.querySelector('input[name="optin"]:checked')?.value;
 
         if(optin == undefined){
             error_counter += 1;
+        } 
+
+        // RLZ
+        if(error_counter == 0){
+            $('#rlz_container').collapse("show");
+        } else {
+            $('#rlz_container').collapse("hide");
+            $('input[name="runtime"]').prop("checked", false);
         }
 
+        var runtime = document.querySelector('input[name="runtime"]:checked')?.value;
         if(runtime == undefined){
             error_counter += 1;
+        } 
+
+        // Backoddice
+        if(error_counter == 0){
+            $('#bo_container').collapse("show");
+        } else {
+            $('#bo_container').collapse("hide");
+            $('input[name="backoffice"]').prop("checked", false);
         }
 
+        var backoffice = document.querySelector('input[name="backoffice"]:checked')?.value;
         if(backoffice == undefined){
             error_counter += 1;
-        }
+        } 
+
 
         if(error_counter == 0){
             document.getElementById('submit_tracking').disabled = false;
