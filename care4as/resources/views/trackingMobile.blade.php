@@ -230,7 +230,7 @@ function roundUp($calls,$quotient)
                 @csrf
                     <div class="max-main-container">
                         <div class="tracking_title">
-                            Saves
+                            Save eintragen
                         </div>
                         <div class="tracking_container">
                             <div class="tracking_description">Vertragsnummer</div>
@@ -741,7 +741,7 @@ function roundUp($calls,$quotient)
             error_counter += 1;
         } 
 
-        // Backoddice
+        // Backoffice
         if(error_counter == 0){
             $('#bo_container').collapse("show");
         } else {
