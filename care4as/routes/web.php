@@ -61,14 +61,14 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/user/kdw/syncUserData', 'UserController@connectUsersToKDW')->name('user.connectUsersToKDW')->middleware('hasRight:reports_import');
       Route::post('/user/getAht', 'UserController@getAHTbetweenDates');
       Route::get('/user/salesdataDates', 'UserController@getSalesperformanceBetweenDates');
-      Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:changeUser');
+      Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:users_update');
       Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:users_update');
       Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:users_update');
       Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:users_update');
-      Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:changeUser');
-      Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:changeUser');
-      Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:changeUser');
-      Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:changeUser');
+      Route::get('/user/startEnd/', 'UserController@startEnd')->name('user.startEnd')->middleware('hasRight:users_update');
+      Route::get('/user/status/{id}/{status}', 'UserController@changeStatus')->name('user.changeStatus')->middleware('hasRight:users_update');
+      Route::get('/user/dailyAgentDetective/index', 'UserTrackingController@dailyAgentDetectiveIndex')->name('user.daDetex.index')->middleware('hasRight:users_update');
+      Route::get('/user/dailyAgent/single/{id}', 'UserTrackingController@dailyAgentDetectiveSingle')->name('user.daDetex.single')->middleware('hasRight:users_update');
 
     // STAMMDATENÄNDERUNG
       Route::get('/user/basedata', 'BaseDataController@main')->name('basedata.get')->middleware('hasRight:users_userlist');
