@@ -102,12 +102,13 @@
             </thead>
             <tbody>
               @foreach($hardware as $item)
+
               <tr class="unit-translucent">
                 <td>{{$item->id}}</td>
                 <td>@if($item->type_id == 1) PC @elseif($item->type_id == 2) Monitor @endif</td>
                 <td>{{$item->place}}</td>
                 <td>{{$item->name}}</td>
-                <td>@if($item->type_id == 1) {{$item->devicePC->teamviewerid}} @else keine Info @endif</td>
+                <td>@if($item->type_id == 1 && $item->devicePC) {{$item->devicePC->teamviewerid}} @else keine Info @endif</td>
                 <td>{{$item->comment}}</td>
                 <td>{{$item->description}}</td>
                 <td>{{$item->created_at}}</td>
