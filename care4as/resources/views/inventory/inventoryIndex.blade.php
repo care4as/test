@@ -177,7 +177,7 @@
                     </select>
                    </td>
                 </tr>
-                @if( $item->type_id == 1)
+                @if( $item->type_id == 1 && item->devicePC)
                   <tr>
                     <th>Modell</th>
                     <td>{{ $item->devicePC->brand}}</td>
