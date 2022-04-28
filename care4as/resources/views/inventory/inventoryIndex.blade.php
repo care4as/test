@@ -188,36 +188,39 @@
                     <td>{{ $item->devicePC->cpu}}</td>
                     <td><input type="text" name="cpu" class="form-control" value="{{ $item->devicePC->cpu}}"> </td>
                   </tr>
-                  <tr>
-                    <th>Anschlüsse Video</th>
-                    <td>@foreach(json_decode( $item->devicePC->port) as $port) {{$port}} @endforeach</td>
-                    <td>
-                      <div class="form-check-inline">
-                        <input class="form-check-input" name="portspc[]" type="checkbox" value="vga" id="vga" @if(in_array('vga',json_decode( $item->devicePC->port))) checked @endif>
-                        <label class="form-check-label" for="vga">
-                          VGA
-                        </label>
-                      </div>
-                      <div class="form-check-inline">
-                        <input class="form-check-input" name="portspc[]" type="checkbox" value="dvi" id="dvi" @if(in_array('dvi',json_decode( $item->devicePC->port))) checked @endif>
-                        <label class="form-check-label" for="dvi">
-                          DVI
-                        </label>
-                      </div>
-                      <div class="form-check-inline">
-                        <input class="form-check-input" name="portspc[]" type="checkbox" value="hdmi" id="hdmi" @if(in_array('hdmi',json_decode( $item->devicePC->port))) checked @endif>
-                        <label class="form-check-label" for="hdmi">
-                          HDMI
-                        </label>
-                      </div>
-                      <div class=" form-check-inline">
-                        <input class="form-check-input" name="portspc[]" type="checkbox" value="displayport" id="displayport" @if(in_array('displayport',json_decode( $item->devicePC->port))) checked @endif>
-                        <label class="form-check-label" for="displayport">
-                          Display Port
-                        </label>
-                      </div>
 
-                    </td>
+                  <tr>
+
+                    <th>Anschlüsse Video</th>
+                    @if($item->devicePC->port)
+                      <td>@foreach(json_decode( $item->devicePC->port) as $port) {{$port}} @endforeach</td>
+                      <td>
+                        <div class="form-check-inline">
+                          <input class="form-check-input" name="portspc[]" type="checkbox" value="vga" id="vga" @if(in_array('vga',json_decode( $item->devicePC->port))) checked @endif>
+                          <label class="form-check-label" for="vga">
+                            VGA
+                          </label>
+                        </div>
+                        <div class="form-check-inline">
+                          <input class="form-check-input" name="portspc[]" type="checkbox" value="dvi" id="dvi" @if(in_array('dvi',json_decode( $item->devicePC->port))) checked @endif>
+                          <label class="form-check-label" for="dvi">
+                            DVI
+                          </label>
+                        </div>
+                        <div class="form-check-inline">
+                          <input class="form-check-input" name="portspc[]" type="checkbox" value="hdmi" id="hdmi" @if(in_array('hdmi',json_decode( $item->devicePC->port))) checked @endif>
+                          <label class="form-check-label" for="hdmi">
+                            HDMI
+                          </label>
+                        </div>
+                        <div class=" form-check-inline">
+                          <input class="form-check-input" name="portspc[]" type="checkbox" value="displayport" id="displayport" @if(in_array('displayport',json_decode( $item->devicePC->port))) checked @endif>
+                          <label class="form-check-label" for="displayport">
+                            Display Port
+                          </label>
+                        </div>
+                        </td>
+                      @endif
                   </tr>
                   <tr>
                     <th>Geschwindigkeit</th>
