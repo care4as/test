@@ -57,7 +57,7 @@ class UserTrackingController extends Controller
 
       return redirect()->route('dashboard');
     }
-    public function getCurrentTracking($dep= 'Mobile')
+    public function getCurrentTrackingAlt($dep= 'Mobile')
     {
       // return $dep;
       $dslSalesSata = '';
@@ -188,6 +188,114 @@ class UserTrackingController extends Controller
       return response()->json($data);
 
     }
+
+    public function getCurrentTracking($data){
+      $data = json_decode($data);
+
+      $dep = $data[0]->project;
+      $team = $data[0]->team;
+
+      $dslSalesSata = '';
+      $mobileSalesSata = '';
+      $users = '';
+      $project = '';
+
+      if($dep == 'Mobile'){
+        $project = '1und1 Retention';
+      } else {
+        $project = '1und1 DSL Retention';
+      }
+      
+      $trackCalls = DB::table('track_calls')
+        ->whereDate('created_at', '=', Carbon::today())
+        ->get();
+
+      $trackEvents = DB::table('track_events')
+        ->whereDate('created_at', '=', Carbon::today())
+        ->get();
+
+      if($team == 'all') {
+        $users = User::whereIn('id', $trackCalls->pluck('user_id')->unique()->toArray())
+        ->where('project', $project)
+        ->whereIn('department', ['Agenten', 'Backoffice', 'Qualitätsmanagement'])
+        ->get();
+      } else {
+        $users = User::whereIn('id', $trackCalls->pluck('user_id')->unique()->toArray())
+        ->where('project', $project)
+        ->where('team', $team)
+        ->whereIn('department', ['Agenten', 'Backoffice', 'Qualitätsmanagement'])
+        ->get();
+      }
+      
+
+      foreach($users as $key => $user){
+        $user->calls = $trackCalls->where('user_id', $user->id)->sum('calls');
+        $user->ssc_calls = $trackCalls->where('user_id', $user->id)->where('category', 1)->sum('calls');
+        $user->bsc_calls = $trackCalls->where('user_id', $user->id)->where('category', 2)->sum('calls');
+        $user->portal_calls = $trackCalls->where('user_id', $user->id)->where('category', 3)->sum('calls');
+        $user->orders = $trackEvents->where('created_by', $user->id)->where('event_category', 'Save')->count();
+        $user->ssc_orders = $trackEvents->where('created_by', $user->id)->where('event_category', 'Save')->where('product_category', 'SSC')->count();
+        $user->bsc_orders = $trackEvents->where('created_by', $user->id)->where('event_category', 'Save')->where('product_category', 'BSC')->count();
+        $user->portal_orders = $trackEvents->where('created_by', $user->id)->where('event_category', 'Save')->where('product_category', 'Portale')->count();
+        $user->optin = $trackEvents->where('created_by', $user->id)->where('optin', 1)->count();
+        $user->optin_cr = $this->getQuota($user->calls, $user->optin);
+        $user->cr = $this->getQuota($user->calls, $user->orders);
+        $user->ssc_cr = $this->getQuota($user->ssc_calls, $user->ssc_orders);
+        $user->bsc_cr = $this->getQuota($user->bsc_calls, $user->bsc_orders);
+        $user->portal_cr = $this->getQuota($user->portal_calls, $user->portal_orders);
+        $user->al_0 = $trackEvents->where('created_by', $user->id)->where('al_group', 0)->count();
+        $user->al_1 = $trackEvents->where('created_by', $user->id)->where('al_group', 1)->count();
+        $user->al_2 = $trackEvents->where('created_by', $user->id)->where('al_group', 2)->count();
+        $user->al_3 = $trackEvents->where('created_by', $user->id)->where('al_group', 3)->count();
+        $user->al_4 = $trackEvents->where('created_by', $user->id)->where('al_group', 4)->count();
+        $user->al_5 = $trackEvents->where('created_by', $user->id)->where('al_group', 5)->count();
+      }
+
+      //Sum SSC Calls and Saves 
+      $sumSscCalls = $users->sum('ssc_calls');
+      $sumSscOrders = $users->sum('ssc_orders');
+
+      foreach($users as $key => $user){
+        if($sumSscCalls > 0){
+          $teamSscCr = ($sumSscOrders / $sumSscCalls) * 100;
+          if($sumSscCalls - $user->ssc_calls != 0){
+            $teamSscCrWithoutUser = (($sumSscOrders - $user->ssc_orders) / ($sumSscCalls - $user->ssc_calls)) * 100;
+          } else {
+            $teamSscCrWithoutUser = 0;
+          }
+          $user->ssc_impact = $teamSscCr - $teamSscCrWithoutUser;
+        } else {
+          $user->ssc_impact = 0;
+        }
+
+      }
+
+      $data[] = $users;
+
+      // Projectdata
+      $data[] = array(
+        'calls' => $users->sum('calls'),
+        'ssc_calls' => $sumSscCalls,
+        'bsc_calls' => $users->sum('bsc_calls'),
+        'portal_calls' => $users->sum('portal_calls'),
+        'orders' => $users->sum('orders'),
+        'ssc_orders' => $sumSscOrders,
+        'bsc_orders' => $users->sum('bsc_orders'),
+        'portal_orders' => $users->sum('portal_orders'),
+        'optin' => $users->sum('optin'),
+        'al_0' => $users->sum('al_0'),
+        'al_1' => $users->sum('al_1'),
+        'al_2' => $users->sum('al_2'),
+        'al_3' => $users->sum('al_3'),
+        'al_4' => $users->sum('al_4'),
+        'al_5' => $users->sum('al_5'),
+      );
+
+      $data[] = $users->sortByDesc('ssc_impact')->slice(0, 5)->values()->toArray();
+
+      return response()->json($data);
+    }
+
     public function getTracking($id='')
     {
       $timestamparray = array();
@@ -408,7 +516,6 @@ class UserTrackingController extends Controller
         abort(403, 'keine Daten in diesem Zeitraum im DA');
       }
     }
-
     public function dailyAgentDetectiveSingle($id)
     {
       if (request('start_date')) {

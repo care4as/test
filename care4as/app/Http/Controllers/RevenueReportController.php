@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 use SebastianBergmann\Diff\Diff;
 
 class RevenueReportController extends Controller
@@ -1037,7 +1038,15 @@ class RevenueReportController extends Controller
     }
 
     public function newConstant(){
+        DB::table('project_constants_overview')->insert(
+            [
+            'project_id' => request('new_constant_project_id'),
+            'category' => request('new_constant_category'),
+            'name' => request('new_constant_name'),
+            ]
+        );
 
+        return redirect()->back();
     }
 
     public function newConstantEntry(){

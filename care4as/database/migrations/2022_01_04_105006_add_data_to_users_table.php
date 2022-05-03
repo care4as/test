@@ -14,8 +14,6 @@ class AddDataToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-          $table->text('surname')->nullable();
-          $table->text('lastname')->nullable();
           $table->float('contract_hours')->nullable();
         });
     }
