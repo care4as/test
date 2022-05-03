@@ -6,8 +6,7 @@
 
 require('./bootstrap');
 import axios from 'axios'
-
-window.Vue = require('vue');
+import Vue from 'vue'
 window.Dropzone = require('dropzone');
 
 /**
