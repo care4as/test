@@ -23,7 +23,6 @@ td,tr,table
 
 #dailyQuota
 {
-  height: 90% !important;
   color:white !important;
 }
 .f1{
@@ -51,41 +50,41 @@ td,tr,table
 {
   border-radius: 15px;
 }
-    .header{
-        position:sticky;
-        top: 0 ;
-    }
-    .col
-    {
-      padding: 0px;
-    }
-    .row
-    {
-      margin-right: 0px !important;
-      margin-left: 0px !important;
-    }
-    .col-designed
-    {
-      position: relative;
-      width: 100%;
-      flex: 0 0 30%;
-      max-width:30%;
-    }
-    .bg-care4as-light
-    {
-      background-color: rgba(255,127,80, 0.2);
-      opacity: 1;
-    }
-    .accordion
-    {
-      width: 100%;
-    }
-    #axes-example-7 {
-  height: 200px;
-  max-width: 300px;
-  margin: 0 auto;
+.header{
+    position:sticky;
+    top: 0 ;
 }
-#chart1.line {
+.col
+{
+  padding: 0px;
+}
+.row
+{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+.col-designed
+{
+  position: relative;
+  width: 100%;
+  flex: 0 0 30%;
+  max-width:30%;
+}
+.bg-care4as-light
+{
+  background-color: rgba(255,127,80, 0.2);
+  opacity: 1;
+}
+.accordion
+{
+  width: 100%;
+}
+#axes-example-7 {
+height: 200px;
+max-width: 300px;
+margin: 0 auto;
+}
+/* #chart1.line {
   height: 350px;
   width: 75%;
   margin: 0 auto;
@@ -96,26 +95,57 @@ td,tr,table
   max-width: 100%;
   margin: 0 auto;
 
+} */
+
+.nav-tabs{
+  border: none;
 }
 
+.nav-item{
+  margin: 15px !important; 
+}
+
+.nav-link{
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-family: 'Radio Canada', sans-serif;
+  font-size: 1.4rem;
+  color: #495057;
+}
+
+.nav-link:hover{
+ border: 1px solid transparent;;
+ box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+ color: black !important;
+ background-color: white;
+}
+
+.nav-link.active {
+ border: 1px solid transparent;
+ box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+ font-weight: bold;
+ color: black !important;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Radio+Canada:wght@300;400;500;600;700&display=swap');
 </style>
 @endsection
 
 @section('content')
 
-<div class="container-fluid m-1 " id="app">
-  <div class="row center_items m-2">
+<div class="container-fluid " id="app">
+  <div class="row center_items mt-4">
     <div class="nav-tabs-navigation ">
-      <div class="nav-tabs-wrapper center_items bg-dark">
+      <div class="nav-tabs-wrapper center_items bg-light" style="border-radius: 5px;">
         <ul class="nav nav-tabs" data-tabs="tabs">
             <li class="nav-item ">
-                <a class="nav-link active goldentext" href="#currentTracking" data-toggle="tab">Tageswerte</a>
+                <a class="nav-link active" href="#currentTracking" data-toggle="tab">Tageswerte</a>
             </li>
             <li class="nav-item ">
-                <a class="nav-link goldentext" href="#agents" data-toggle="tab">Agents</a>
+                <a class="nav-link" href="#agents" data-toggle="tab">Agents</a>
             </li>
             <li class="nav-item ">
-                <a class="nav-link goldentext" href="#history" data-toggle="tab">CR Verlauf der letzten 5 Tage</a>
+                <a class="nav-link" href="#history" data-toggle="tab">CR Verlauf</a>
             </li>
             <!-- <li class="nav-item">
                 <a class="nav-link" href="#history" data-toggle="tab">Weitere Funktion</a>
@@ -126,10 +156,10 @@ td,tr,table
   </div>
   <div class="tab-content">
     <div id="currentTracking" class="tab-pane fade in show active">
-      <div class="row m-3 borders-roundedlight">
+      <div class="row m-4 borders-roundedlight">
         <div class="col">
           <div class="row">
-              <ptable> </ptable>
+              <ptable></ptable>
               </div>
             </div>
           </div>
@@ -318,10 +348,12 @@ td,tr,table
 </div>
 @endsection
 @section('additional_js')
+<script src="/js/app.js"></script>
 <script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
 
 $(document).ready(function(){
+  Chart.defaults.global.defaultFontFamily = 'Radio Canada';
   $('.repeater1').slick({
 
     fade: true,
