@@ -57,8 +57,8 @@ class RightsSeeder extends Seeder
     }
 
     $rightsarray = array(
-      'dashboard',
-      'dashboardAdmin',
+      'dashboard', //das Userdashboard für den Agenten
+      'dashboardAdmin', //das Userdashboard für alle ab der Hierarchieebene FAP
       //'indexCancels',
       //'createCancels',
       //'deleteCancels',
@@ -105,10 +105,11 @@ class RightsSeeder extends Seeder
     );
     $superadminid = DB::table('roles')->where('name','superadmin')->value('id');
 
+    //Delete the old rights table, so the superuser doesnt have old rights
     DB::table('rights')->truncate();
-    
-    foreach ($rightsarray as  $right) {
 
+    //inserts all the rights form the rightsarray into the database table rights and gives the right to the superadmin
+    foreach ($rightsarray as  $right) {
     if(!\DB::table('rights')->where('name', $right)->exists())
     {
       $right = \DB::table('rights')->insert(

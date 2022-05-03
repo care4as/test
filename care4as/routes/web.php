@@ -131,6 +131,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     //NEUER LINK IN ARBEIT
     Route::get('/controlling/revenuereport', 'RevenueReportController@master')->name('revenuereport.master')->middleware('hasRight:controlling_revenuereport');
+    Route::get('/controlling/new_constant', 'RevenueReportController@newConstant')->name('revenuereport.new_constant')->middleware('hasRight:controlling_revenuereport');
+
+
   // Ende  CONTROLLING
 
   // Start IT

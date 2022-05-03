@@ -40,6 +40,87 @@
     tr:hover td{
         background-color: #ddd;
     }
+
+    table.dataTable {
+        border-collapse: collapse;
+    }
+
+    .form-control {
+        color: black;
+
+    }
+
+    table.dataTable tbody td,
+    table.dataTable tfoot td,
+    table.dataTable thead th {
+        padding: 0px 15px;
+    }
+
+    .sorting_desc,
+    .sorting_asc {
+        background-blend-mode: luminosity;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        width: 65px;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+    }
+
+    .DTFC_LeftBodyLiner {
+        overflow-x: hidden;
+    }
+
+    .hoverRow {
+        background-color: #ddd !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: transparent;
+    }    
+
+    .form-control[readonly] {
+        cursor: default;
+    }
+
+    .dataTables_filter{
+        width: 300px;
+    }
+
+    .dataTables_length{
+        width: max-content;
+    }
+
+    .page-item.active .page-link {
+        background-color: #FA7A50;
+        border-color: #FA7A50;
+    }
+
+    .page-item:hover{
+        border-color: #FA7A50;
+    }
+
+    .page-link{
+        margin: 5px !important;
+    }
+
+    .paginate_button:hover{
+        border: none !important;
+    }
+
+    .page-link:hover{
+        border-color: #FA7A50;
+    }
+
+    .pagination{
+        width: min-content;
+        margin: 5px auto;
+    }
 </style>
 @endsection
 
@@ -589,7 +670,7 @@
                                     @endforeach
                                 @endif
                                 @if($constants['all_constants']->where('project_id', 10)->where('category', 'Umsatz')->count() > 0)
-                                    <div style="grid-column: 1 / -1"><b>Umsatz Ziele</b></div>
+                                    <div style="grid-column: 1 / -1"><b>Umsatz pr. Stk.</b></div>
                                     @foreach($constants['all_constants']->where('project_id', 10)->where('category', 'Umsatz') as $key => $entry)
                                         <div style="margin-top: auto; margin-bottom: auto">{{$entry->name}}:</div>
                                         <div><input class="form-control" id="disabledInput" type="text" readonly="" value="test" ></div>
@@ -619,7 +700,19 @@
                 </div>
                 <div class="tab-pane" id="new_entry">
                     <div class="modal-body" style="font-size: 14px;">
-                        test3
+                        <div>
+                            <b>Keine Änderung vornehmen, wenn du nicht ganz genau weißt, was du tust!</b>
+                        </div>
+                        <div>
+
+                        </div>
+                        <div>
+                            <i>Information: Werte <u>ohne</u> Modifikatoren (%, €, usw.) eintragen!</i>
+                            <ul>
+                                <li><i>100% = 1</i></li>
+                                <li>1% = 0.01</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="modal-footer" style="font-size: 14px;">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
@@ -627,19 +720,86 @@
                 </div>
                 <div class="tab-pane" id="all_constants">
                     <div class="modal-body" style="font-size: 14px;">
-                        <b>Keine Änderung vornehmen, wenn du nicht ganz genau weißt, was du tust!</b>
+                        <div>
+                            <b>Keine Änderung vornehmen, wenn du nicht ganz genau weißt, was du tust!</b>
+                        </div>
+                        <div>
+                            <i>Information: Übersicht der vorhandenen Zielwerte. Über die Buttons können diese gelöscht werden.</i>
+                        </div>
+                        <div id="projectTableContainer">
+                            <table class="max-table" id="projectTable" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Projekt</th>
+                                        <th>Kategorie</th>
+                                        <th>Zielwerte</th>
+                                        <th>Eintrag löschen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($constants['all_constants'] as $key => $entry)
+                                    <tr>
+                                        <td style="text-align: center;">{{$entry->id}}</td>
+                                        @if($entry->project_id == 7)
+                                            <td>1u1 Mobile Retention</td>
+                                        @elseif($entry->project_id == 10)
+                                            <td>1u1 DSL Retention</td>
+                                        @endif
+                                        <td>{{$entry->category}}</td>
+                                        <td>{{$entry->name}}</td>
+                                        <td style="text-align: center;">
+                                            <a href="">
+                                                <button type="button" class="btn btn-primary btn-small" name="button" style="margin-top: 4px; margin-bottom: 4px; padding-top: 4px; padding-bottom: 4px"><i class="far fa-trash-alt"></i></button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="modal-footer" style="font-size: 14px;">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
                     </div>
                 </div>
                 <div class="tab-pane" id="new_constant">
-                    <div class="modal-body" style="font-size: 14px;">
-                        <b>Keine Änderung vornehmen, wenn du nicht ganz genau weißt, was du tust!</b>
-                    </div>
-                    <div class="modal-footer" style="font-size: 14px;">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
-                    </div>
+                    <form action="{{route('revenuereport.new_constant')}}" method="get">
+                        <div class="modal-body" style="font-size: 14px;">
+                            <div>
+                                <b>Keine Änderung vornehmen, wenn du nicht ganz genau weißt, was du tust!</b>
+                            </div>
+                            <div>
+                                <i>Information: Hier kann ein neuer Zielwert angelegt werden (Vergütung SSC Save, Umsatz Soll, Quotenziel, usw.). Ein Wert wird noch nicht festgelegt, dies erfolgt über einen neuen Eintrag.</i>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 10px; column-gap: 15px;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <label for="new_constant_project_id" style="margin-left: auto; margin-right: auto;">Projekt:</label>
+                                    <select name="new_constant_project_id" id="new_constant_project_id" class="form-control" style="color:black;">
+                                        <option value="7">1u1 DSL Retention</option>
+                                        <option value="10">1u1 Mobile Retention</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; flex-direction: column;">
+                                    <label for="new_constant_category" style="margin-left: auto; margin-right: auto;">Kategorie:</label>
+                                    <select name="new_constant_category" id="new_constant_category" class="form-control" style="color:black;">
+                                        <option value="Projekt">Projekt</option>
+                                        <option value="Quote">Quote</option>
+                                        <option value="Umsatz">Umsatz</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; flex-direction: column;">
+                                    <label for="new_constant_name" style="margin-left: auto; margin-right: auto;">Bezeichnung:</label>
+                                    <input type="text" name="new_constant_name" id="new_constant_name" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer" style="font-size: 14px;">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+                            <button type="submit" class="btn btn-primary">Speichern</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -648,6 +808,13 @@
 @endsection
 
 @section('additional_js')
+<script src='https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js'></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js'></script>
+<script src='https://cdn.datatables.net/plug-ins/1.10.24/api/average().js'></script>
+<script src='https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js'></script>
+<script src='https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.min.js'></script>
+
 <script>
     function changeDisplay(classname, buttonId){
         var collection = document.getElementsByClassName(classname);
@@ -671,5 +838,42 @@
             button.className = 'fas fa-caret-right';
         }
     }
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        let table = $('#projectTable').DataTable({
+            "language": {
+                "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+                "zeroRecords": "Keinen Eintrag gefunden",
+                "info": "Seite _PAGE_ von _PAGES_",
+                "infoEmpty": "Keinen Eintrag gefunden",
+                "infoFiltered": "(gefiltert von _MAX_ total Einträgen)",
+                "loadingRecords": "Lädt...",
+                "processing": "Lädt...",
+                "search": "<p style='margin-bottom: 0; margin-right: 5px;'>Suche:</p>",
+                "paginate": {
+                    "first": "Erste",
+                    "last": "Letzte",
+                    "next": "Nächste",
+                    "previous": "Zurück"
+                },
+            },
+            "lengthMenu": [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Alle']
+            ],
+            scrollCollapse: false,
+            fixedColumns: false,
+            select: true,
+            order: [
+                [0, "desc"]
+            ],
+            dom: 'Blfrtip',
+            
+        });
+        document.getElementById('projectTableContainer').style.display = "block";
+        $($.fn.dataTable.tables(true)).DataTable()
+            .columns.adjust();
+    })
 </script>
 @endsection
