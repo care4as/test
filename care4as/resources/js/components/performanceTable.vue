@@ -14,7 +14,7 @@
                 <option value="all" style="font-size: 1rem;">Projekt</option>
                 <option value="Daniel" style="font-size: 1rem;">Team Daniel</option>
                 <option value="Frank" style="font-size: 1rem;">Team Frank</option>
-                <option value="Sandra" style="font-size: 1rem;">Team Sandra</option>              
+                <option value="Sandra" style="font-size: 1rem;">Team Sandra</option>
             </select>
           </div>
         </div>
@@ -44,12 +44,12 @@
                       <div style="margin: auto; font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.2em;">
                         {{sscCR = sscCR.toFixed(1).replace(".", ',')}}%
                       </div>
-                    </div>  
+                    </div>
                 </div>
               </div>
             </div>
           </div>
-          
+
 
           <!-- bsc cr -->
           <div class="col-md-3 p-0">
@@ -70,12 +70,12 @@
                       <div style="margin: auto; font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.2em;">
                         {{bscCR = bscCR.toFixed(1).replace(".", ',')}}%
                       </div>
-                    </div>  
+                    </div>
                 </div>
               </div>
             </div>
           </div>
-          
+
 
           <!-- portale cr -->
           <div class="col-md-3 p-0">
@@ -96,12 +96,12 @@
                       <div style="margin: auto; font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.2em;">
                         {{portalCR = portalCR.toFixed(1).replace(".", ',')}}%
                       </div>
-                    </div>  
+                    </div>
                 </div>
               </div>
             </div>
           </div>
-        
+
           <!-- optin quote -->
           <div class="col-md-3 p-0">
             <div class="shadow" style="border-radius: 5px; margin: 15px; padding: 15px; background-color: #ffffff;">
@@ -121,7 +121,7 @@
                       <div style="margin: auto; font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.2em;">
                         {{optinQuota = optinQuota.toFixed(1).replace(".", ',')}}%
                       </div>
-                    </div>  
+                    </div>
                 </div>
               </div>
             </div>
@@ -139,7 +139,7 @@
                 <div class="d-flex center_items " id="aglchartcontainer" style="width: 100%;height: 300px; margin: 15px;">
                   <canvas id="aglChart" style="width: 100%;"></canvas>
                 </div>
-              </div> 
+              </div>
             </div>
           </div>
 
@@ -155,7 +155,7 @@
                   <div style="color: #AD8A56; text-shadow: -1px -1px 0 #000, 0 -1px 0 #000, 1px -1px 0 #000, 1px 0 0 #000, 1px 1px 0 #000, 0 1px 0 #000, -1px 1px 0 #000, -1px 0 0 #000; font-size: 1.8rem" v-if="this.top5user.length > 2"><i class="fas fa-trophy"></i> {{top5user[2]['surname']}} {{top5user[2]['lastname']}} ({{top5user[2]['ssc_impact'].toFixed(1).replace(".", ',')}}%)</div>
                   <div style="color: #4ca1af; text-shadow: -1px -1px 0 #000, 0 -1px 0 #000, 1px -1px 0 #000, 1px 0 0 #000, 1px 1px 0 #000, 0 1px 0 #000, -1px 1px 0 #000, -1px 0 0 #000; font-size: 1.5rem" v-if="this.top5user.length > 3"><i class="fas fa-medal"></i> {{top5user[3]['surname']}} {{top5user[3]['lastname']}} ({{top5user[3]['ssc_impact'].toFixed(1).replace(".", ',')}}%)</div>
                   <div style="color: #4ca1af; text-shadow: -1px -1px 0 #000, 0 -1px 0 #000, 1px -1px 0 #000, 1px 0 0 #000, 1px 1px 0 #000, 0 1px 0 #000, -1px 1px 0 #000, -1px 0 0 #000; font-size: 1.5rem" v-if="this.top5user.length > 4"><i class="fas fa-medal"></i> {{top5user[4]['surname']}} {{top5user[4]['lastname']}} ({{top5user[4]['ssc_impact'].toFixed(1).replace(".", ',')}}%)</div>
-              </div> 
+              </div>
             </div>
           </div>
 
@@ -175,10 +175,10 @@
             <div class="d-flex center_items " id="chartcontainer" style="width: 100%; height: 400px; margin:15px;">
               <canvas id="dailyQuota" style="width: 100%; height: 100% !important"></canvas>
             </div>
-          </div> 
+          </div>
         </div>
       </div>
-        
+
       <!-- performance table -->
       <div class="col-10 p-0 bg-light center_items " style="border-radius: 5px; margin-top:1.5rem;">
         <div class="col-md bg-white shadow " style="margin: 15px; border-radius: 5px;">
@@ -205,7 +205,7 @@
                   <th @click="sorted('bsc_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
                   <th @click="sorted('bsc_orders')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Saves</th>
                   <th @click="sorted('portal_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
-                  <th @click="sorted('portal_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>                  
+                  <th @click="sorted('portal_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
                   <th @click="sorted('portal_orders')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Saves</th>
                   <th @click="sorted('optin_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Quote</th>
                   <th @click="sorted('optin')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Stück</th>
@@ -264,7 +264,7 @@
             </div>
           </div>
         </div>
-        
+
       </div>
     </div>
   <!-- <div class="row mt-4 center_items">
@@ -398,13 +398,13 @@
           var host = window.location.host;
           var department = this.department;
           var team = document.getElementById('team_selection').value;
-          
+
           var parameters = [];
           parameters.push({
             "project" : department,
             "team" : team
           });
-          parameters = JSON.stringify(parameters);  
+          parameters = JSON.stringify(parameters);
 
           console.log(parameters);
           var currentdate = new Date();
@@ -416,15 +416,15 @@
                 + currentdate.getSeconds();
 
           axios.get
-          ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
-          //('http://'+host+'/users/getTracking/'+department)
+          // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
+          ('http://'+host+'/users/getTracking/'+department)
           .then(response => {
             if(response.data)
             {
               // console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
-              
+
 
               if(this.department == 'Mobile')
               {
@@ -446,7 +446,7 @@
                 this.agl5stk = response.data[2]['al_5']
                 this.top5user = response.data[3]
               }
-              
+
               this.createAglChart();
 
             }
@@ -482,8 +482,8 @@
           let department = dep
           let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
           this.createChart('dailyQuota', testarray)
-          // axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department) // Richtige Daten
-          axios.get('http://'+host+'/kdw/getQuotas/'+department)  
+          axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department) // Richtige Daten
+          // axios.get('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             // console.log('dailyQoutas')
@@ -581,7 +581,7 @@
               label: 'Stück',
               fill: true,
               data: [this.agl0stk, this.agl1stk, this.agl2stk, this.agl3stk, this.agl4stk, this.agl5stk],
-              backgroundColor: 
+              backgroundColor:
                 [
                   'rgba(132,220,149,0.5)',
                   'rgba(194,237,153,0.6)',
@@ -631,8 +631,8 @@
 
                 var count = data['datasets'][0]['data'][tooltipItem['index']];
                 var percentage = (count / total) * 100;
-                
-                  
+
+
                 return 'Anteil: ' + percentage.toFixed(2).replace(".", ',') + '%';
               }
             }
@@ -689,13 +689,13 @@
 
 .good-cr{
   background-color: rgb(132,220,149,0.5);
-  border: 5px solid rgb(0,97,0); 
+  border: 5px solid rgb(0,97,0);
   color: rgb(0,97,0);
 }
 
 .bad-cr{
   background-color: rgb(255,91,111,0.35);
-  border: 5px solid rgb(156,0,6); 
+  border: 5px solid rgb(156,0,6);
   color: rgb(156,0,6);
 }
 
@@ -721,10 +721,10 @@ tr:hover {
 }
 
 .custom_select{
-  font-family: 'Radio Canada', sans-serif !important; 
-  background-color: #f8f9fa; 
-  border: 1px; 
-  -webkit-appearance: none; 
+  font-family: 'Radio Canada', sans-serif !important;
+  background-color: #f8f9fa;
+  border: 1px;
+  -webkit-appearance: none;
   -moz-appearance: none;
   transition: all 300ms ease 0s;
 }
@@ -732,7 +732,7 @@ tr:hover {
 .custom_select:hover{
   color: black !important;
   cursor: pointer;
-  background-color: white; 
+  background-color: white;
   border-radius: 5px;
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
 }
