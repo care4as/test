@@ -204,7 +204,7 @@ margin: 0 auto;
             <div id="collapseUserDash" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordion1">
               <div class="col-12">
                 <div class="row center_items">
-                  <!-- @foreach($users as $user)
+                  @foreach($users as $user)
                     <div class="col-10 col-md-5 m-1 bg-dark shadow-white">
                       <h5 class="goldentext">{{$user->name}}
                           <a class="align-items-center" href="{{route('user.stats',['id' => $user->id])}}">
@@ -215,7 +215,7 @@ margin: 0 auto;
                         </h5>
                       <trackchart :userid="{{$user->id}}"> </trackchart>
                     </div>
-                  @endforeach -->
+                  @endforeach
                 </div>
             </div>
           </div>
@@ -354,58 +354,58 @@ margin: 0 auto;
 
 $(document).ready(function(){
   Chart.defaults.global.defaultFontFamily = 'Radio Canada';
-  // $('.repeater1').slick({
+  $('.repeater1').slick({
 
-  //   fade: true,
-  //   prevArrow: false,
-  //   slidesToShow: 1,
-  //   slidesToScroll: 1,
-  //   nextArrow: $('#nextButton'),
-  //   prevArrow: $('#prevButton')
-  // });
-  // $('.repeater2').slick({
-  //   fade: true,
-  //   slidesToShow: 1,
-  //   slidesToScroll: 1,
-  //   prevArrow: false,
-  //   nextArrow: $('#nextButton2'),
-  //   prevArrow: $('#prevButton2')
-  // });
+    fade: true,
+    prevArrow: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: $('#nextButton'),
+    prevArrow: $('#prevButton')
+  });
+  $('.repeater2').slick({
+    fade: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    prevArrow: false,
+    nextArrow: $('#nextButton2'),
+    prevArrow: $('#prevButton2')
+  });
 });
 
-  // $('#department').change(function() {
+  $('#department').change(function() {
 
-  //   $('#employees').empty()
+    $('#employees').empty()
 
-  //   let dep = this.value
-  //   // console.log(dep)
-  //   var host = window.location.host;
+    let dep = this.value
+    // console.log(dep)
+    var host = window.location.host;
 
-  //   axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
-  //   // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
-  //   .then(response => {
-  //     // console.log(response)
-  //     let users = response.data
+    axios.get('http://'+host+'/user/getUsersByDep/'+ dep)
+    // axios.get('http://'+host+'/care4as/care4as/public/user/getUsersByDep/'+ dep)
+    .then(response => {
+      // console.log(response)
+      let users = response.data
 
-  //     users.forEach(function(user){
-  //       let option = document.createElement("option");
-  //       let name = user.surname + ' ' + user.lastname;
+      users.forEach(function(user){
+        let option = document.createElement("option");
+        let name = user.surname + ' ' + user.lastname;
 
-  //       option.value = user.id;
-  //       option.innerHTML = name;
+        option.value = user.id;
+        option.innerHTML = name;
 
-  //       $('#employees').append(option);
-  //       // console.log(option)
-  //       })
-  //     })
-  //   .catch(function (err) {
+        $('#employees').append(option);
+        // console.log(option)
+        })
+      })
+    .catch(function (err) {
 
-  //     $('#failContent').html('Fehler: '+ err.response.data.message)
-  //     $('#failFile').html('Datei: '+ err.response.data.file)
-  //     $('#failLine').html('Line: '+ err.response.data.line)
-  //     $('#failModal').modal('show')
-  //     console.log(err.response);
-  //   })
-  // })
+      $('#failContent').html('Fehler: '+ err.response.data.message)
+      $('#failFile').html('Datei: '+ err.response.data.file)
+      $('#failLine').html('Line: '+ err.response.data.line)
+      $('#failModal').modal('show')
+      console.log(err.response);
+    })
+  })
 </script>
 @endsection
