@@ -3586,12 +3586,12 @@ __webpack_require__.r(__webpack_exports__);
       axios.get // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
       ('http://' + host + '/users/getTracking/' + parameters).then(function (response) {
         if (response.data) {
-          console.log(response.data);
+          // console.log(response.data)
           var currentdate = new Date();
           console.log('update: ' + timestamp);
 
           if (_this3.department == 'Mobile') {
-            console.log(response.data[1]);
+            // console.log(response.data[1])
             _this3.users = response.data[1];
             _this3.sscCalls = response.data[2]['ssc_calls'];
             _this3.sscSaves = response.data[2]['ssc_orders'];
@@ -90665,7 +90665,9 @@ var render = function () {
                                   [
                                     _c("div", [_vm._v("Calls:")]),
                                     _vm._v(" "),
-                                    _c("div", [_vm._v(_vm._s(_vm.sscCalls))]),
+                                    _c("div", [
+                                      _vm._v(_vm._s(_vm.sscCalls) + "a"),
+                                    ]),
                                     _vm._v(" "),
                                     _c("div", [_vm._v("Saves:")]),
                                     _vm._v(" "),

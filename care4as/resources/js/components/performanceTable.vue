@@ -33,7 +33,7 @@
                   <div style="font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.6rem;">SSC</div>
                   <div style="font-family: 'Radio Canada', sans-serif; font-size: 1.3rem; font-weight: 300; display: grid; grid-template-columns: auto 1fr; column-gap: 15px; margin-top: auto; margin-bottom: auto;">
                     <div>Calls:</div>
-                    <div>{{sscCalls}}</div>
+                    <div>{{sscCalls}}a</div>
                     <div>Saves:</div>
                     <div>{{sscSaves}}</div>
                   </div>
@@ -421,14 +421,12 @@
           .then(response => {
             if(response.data)
             {
-              console.log(response.data)
+              // console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
-
-
               if(this.department == 'Mobile')
               {
-                console.log(response.data[1])
+                // console.log(response.data[1])
                 this.users = response.data[1]
                 this.sscCalls = response.data[2]['ssc_calls']
                 this.sscSaves = response.data[2]['ssc_orders']
