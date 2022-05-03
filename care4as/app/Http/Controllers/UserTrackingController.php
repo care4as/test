@@ -243,12 +243,12 @@ class UserTrackingController extends Controller
         $user->ssc_cr = $this->getQuota($user->ssc_calls, $user->ssc_orders);
         $user->bsc_cr = $this->getQuota($user->bsc_calls, $user->bsc_orders);
         $user->portal_cr = $this->getQuota($user->portal_calls, $user->portal_orders);
-        $user->al_0 = $trackEvents->where('created_by', $user->id)->where('al_group', 0)->count();
-        $user->al_1 = $trackEvents->where('created_by', $user->id)->where('al_group', 1)->count();
-        $user->al_2 = $trackEvents->where('created_by', $user->id)->where('al_group', 2)->count();
-        $user->al_3 = $trackEvents->where('created_by', $user->id)->where('al_group', 3)->count();
-        $user->al_4 = $trackEvents->where('created_by', $user->id)->where('al_group', 4)->count();
-        $user->al_5 = $trackEvents->where('created_by', $user->id)->where('al_group', 5)->count();
+        $user->al_0 = $trackEvents->where('created_by', $user->id)->where('al_group', 0)->where('product_category', 'SSC')->where('event_category', 'Save')->count();
+        $user->al_1 = $trackEvents->where('created_by', $user->id)->where('al_group', 1)->where('product_category', 'SSC')->where('event_category', 'Save')->count();
+        $user->al_2 = $trackEvents->where('created_by', $user->id)->where('al_group', 2)->where('product_category', 'SSC')->where('event_category', 'Save')->count();
+        $user->al_3 = $trackEvents->where('created_by', $user->id)->where('al_group', 3)->where('product_category', 'SSC')->where('event_category', 'Save')->count();
+        $user->al_4 = $trackEvents->where('created_by', $user->id)->where('al_group', 4)->where('product_category', 'SSC')->where('event_category', 'Save')->count();
+        $user->al_5 = $trackEvents->where('created_by', $user->id)->where('al_group', 5)->where('product_category', 'SSC')->where('event_category', 'Save')->count();
       }
 
       //Sum SSC Calls and Saves 
