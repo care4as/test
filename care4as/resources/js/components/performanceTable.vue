@@ -421,13 +421,14 @@
           .then(response => {
             if(response.data)
             {
-              // console.log(response.data)
+              console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
 
 
               if(this.department == 'Mobile')
               {
+                console.log(response.data[1])
                 this.users = response.data[1]
                 this.sscCalls = response.data[2]['ssc_calls']
                 this.sscSaves = response.data[2]['ssc_orders']
@@ -482,8 +483,8 @@
           let department = dep
           let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
           this.createChart('dailyQuota', testarray)
-          axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department) // Richtige Daten
-          // axios.get('http://'+host+'/kdw/getQuotas/'+department)
+          // axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department) // Richtige Daten
+          axios.get('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
           {
             // console.log('dailyQoutas')
