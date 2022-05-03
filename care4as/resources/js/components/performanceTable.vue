@@ -417,7 +417,7 @@
 
           axios.get
           // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
-          ('http://'+host+'/users/getTracking/'+department)
+          ('http://'+host+'/users/getTracking/'+parameters)
           .then(response => {
             if(response.data)
             {
