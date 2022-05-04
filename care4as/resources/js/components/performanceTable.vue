@@ -252,7 +252,7 @@
                   <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
                   <th @click="sorted('online')" style="cursor:pointer">Online</th>
                 </tr >
-                <tr v-bind:class= "[user.cr > 42 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
+                <tr v-bind:class= "[user.cr > 42 ? 'bg-success' : 'bg-danger text-white']" v-for="user in users">
                   <td></td>
                   <td>{{user.cr}}%</td>
                   <td>{{user.calls}}</td>
