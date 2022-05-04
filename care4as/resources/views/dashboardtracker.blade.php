@@ -102,7 +102,7 @@ margin: 0 auto;
 }
 
 .nav-item{
-  margin: 15px !important; 
+  margin: 15px !important;
 }
 
 .nav-link{
@@ -213,7 +213,7 @@ margin: 0 auto;
                             </span>
                           </a>
                         </h5>
-                      <trackchart :userid="{{$user->id}}"> </trackchart>
+                      <!-- <trackchart :userid="{{$user->id}}"> </trackchart> -->
                     </div>
                   @endforeach
                 </div>
