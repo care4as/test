@@ -210,7 +210,7 @@
                   <th @click="sorted('optin_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Quote</th>
                   <th @click="sorted('optin')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Stück</th>
                 </tr>
-                <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in sortedUsers">
+                <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in users">
                   <td style="text-align: left; border-right: 2px dotted #2c3e50;">{{user.surname}} {{user.lastname}}</td>
                   <td>{{parseFloat(user.ssc_cr).toFixed(1).replace(".", ',')}}%</td>
                   <td>{{user.ssc_calls}}</td>
@@ -406,7 +406,7 @@
           });
           parameters = JSON.stringify(parameters);
 
-          console.log(parameters);
+          // console.log(parameters);
           var currentdate = new Date();
           let timestamp = "Last Sync: " + currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/"
@@ -421,7 +421,7 @@
           .then(response => {
             if(response.data)
             {
-              // console.log(response.data)
+              console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
               if(this.department == 'Mobile')
@@ -445,7 +445,7 @@
                 this.agl5stk = response.data[2]['al_5']
                 this.top5user = response.data[3]
               }
-
+              console.log(this.users)
               this.createAglChart();
 
             }
