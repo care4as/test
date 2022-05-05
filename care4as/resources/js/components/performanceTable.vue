@@ -195,34 +195,35 @@
                   <th rowspan="2" @click="sorted('online')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Online</th>
                 </tr>
                 <tr style="background-color: #4ca1af; color: #2c3e50">
-                  <th @click="sorted('ssc_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
+                  <th @click="sorted('ssccr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
                   <th @click="sorted('ssc_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
                   <th @click="sorted('ssc_orders')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Saves</th>
                   <th @click="sorted('ssc_impact')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Impact</th>
-                  <th @click="sorted('bsc_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
+                  <th @click="sorted('bsccr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
                   <th @click="sorted('bsc_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
                   <th @click="sorted('bsc_orders')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Saves</th>
-                  <th @click="sorted('portal_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
+                  <th @click="sorted('portalcr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
                   <th @click="sorted('portal_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
                   <th @click="sorted('portal_orders')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Saves</th>
-                  <th @click="sorted('optin_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Quote</th>
-                  <th @click="sorted('optin')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Stück</th>
+                  <th @click="sorted('optincr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Quote</th>
+                  <th @click="sorted('optins')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Stück</th>
                 </tr>
-                <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in users">
+                <tr v-bind:class= "[user.ssccr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in sortedUsers">
                   <!-- <td>test1</td> -->
                   <td style="text-align: left; border-right: 2px dotted #2c3e50;">{{user.surname}} {{user.lastname}}</td>
-                  <td>{{parseFloat(user.ssc_cr).toFixed(1).replace(".", ',')}}%</td>
+                  <td>{{parseFloat(user.ssccr).toFixed(1).replace(".", ',')}}%</td>
                   <td>{{user.ssc_calls}}</td>
                   <td>{{user.ssc_orders}}</td>
-                  <td style="border-right: 2px dotted #2c3e50;">{{parseFloat(user.ssc_impact).toFixed(1).replace(".", ',')}}%</td>
-                  <td>{{parseFloat(user.bsc_cr).toFixed(1).replace(".", ',')}}%</td>
+                  <td style="border-right: 2px dotted #2c3e50;">test</td>
+                  <!-- <td style="border-right: 2px dotted #2c3e50;">{{parseFloat(user.ssc_impact).toFixed(1).replace(".", ',')}}%</td> -->
+                  <td>{{parseFloat(user.bsccr).toFixed(1).replace(".", ',')}}%</td>
                   <td>{{user.bsc_calls}}</td>
                   <td style="border-right: 2px dotted #2c3e50;">{{user.bsc_orders}}</td>
-                  <td>{{parseFloat(user.portal_cr).toFixed(1).replace(".", ',')}}%</td>
+                  <td>{{parseFloat(user.portalcr).toFixed(1).replace(".", ',')}}%</td>
                   <td>{{user.portal_calls}}</td>
                   <td style="border-right: 2px dotted #2c3e50;">{{user.portal_orders}}</td>
-                  <td>{{parseFloat(user.optin_cr).toFixed(1).replace(".", ',')}}%</td>
-                  <td style="border-right: 2px dotted #2c3e50;">{{user.optin}}</td>
+                  <td>{{parseFloat(user.optincr).toFixed(1).replace(".", ',')}}%</td>
+                  <td style="border-right: 2px dotted #2c3e50;">{{user.optins}}</td>
                   <td v-if="checkIfOnline(user.online_till)" style="color: #2c3e50"><i class="fas fa-check-circle"></i></td>
                   <td v-else><i class="fas fa-times-circle"  style="color: #2c3e50"></i></td>
                 </tr>
@@ -402,9 +403,10 @@
           axios.get
           // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
           // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
-          ('http://'+host+'/users/getTracking/'+parameters)
-          // ('http://'+host+'/users/getTrackingAlt/'+parameters)
+          // ('http://'+host+'/users/getTracking/'+parameters)
+          ('http://'+host+'/users/getTrackingAlt/'+dep)
           .then(response => {
+            // console.log(response.data)
             if(response.data)
             {
               console.log(response.data)
@@ -413,23 +415,23 @@
               if(this.department == 'Mobile')
               {
                 // console.log(response.data[1])
-                this.users = response.data[1]
-                this.sscCalls = response.data[2]['ssc_calls']
-                this.sscSaves = response.data[2]['ssc_orders']
-                this.bscSaves = response.data[2]['bsc_orders']
-                this.bscCalls = response.data[2]['bsc_calls']
-                this.portalCalls = response.data[2]['portal_calls']
-                this.portalSaves = response.data[2]['portal_orders']
-                this.calls = response.data[2]['calls']
-                this.saves = response.data[2]['orders']
-                this.optin = response.data[2]['optin']
-                this.agl0stk = response.data[2]['al_0']
-                this.agl1stk = response.data[2]['al_1']
-                this.agl2stk = response.data[2]['al_2']
-                this.agl3stk = response.data[2]['al_3']
-                this.agl4stk = response.data[2]['al_4']
-                this.agl5stk = response.data[2]['al_5']
-                this.top5user = response.data[3]
+                this.users = response.data[0]
+                this.sscCalls = response.data[1]['ssc_calls']
+                this.sscSaves = response.data[1]['ssc_saves']
+                this.bscSaves = response.data[1]['bsc_saves']
+                this.bscCalls = response.data[1]['bsc_calls']
+                this.portalCalls = response.data[1]['portal_calls']
+                this.portalSaves = response.data[1]['portal_saves']
+                this.calls = response.data[1]['calls']
+                this.saves = response.data[1]['orders']
+                this.optin = response.data[1]['optins']
+                // this.agl0stk = response.data[2]['al_0']
+                // this.agl1stk = response.data[2]['al_1']
+                // this.agl2stk = response.data[2]['al_2']
+                // this.agl3stk = response.data[2]['al_3']
+                // this.agl4stk = response.data[2]['al_4']
+                // this.agl5stk = response.data[2]['al_5']
+                // this.top5user = response.data[3]
 
 
               }
@@ -462,14 +464,13 @@
             this.getUserData(dep)
             this.getDailyQouta(dep)
           }.bind(this), 60000);
-
           // console.log(this.department)
         },
         getDailyQouta(dep){
           var host = window.location.host;
           let department = dep
-          let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
-          this.createChart('dailyQuota', testarray)
+          // let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
+          // this.createChart('dailyQuota', testarray)
           // axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department) // Richtige Daten
           axios.get('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
@@ -557,9 +558,6 @@
           $('#aglchartcontainer').append('<canvas id="'+chartId+'" width="" height="" style="max-width: 100%;"></canvas>')
           // console.log('test')
         }
-
-
-
       const ctx = document.getElementById(chartId);
       let myChart = new Chart(ctx, {
         type: 'doughnut',

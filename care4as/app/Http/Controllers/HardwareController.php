@@ -63,6 +63,11 @@ class HardwareController extends Controller
 
       switch ($device) {
         case 1:
+            if(!$request->portspc)
+            {
+              abort(403,'Es fehlen die Display Connections');
+              return redirect()->back();
+            }
             $pc = new PC;
             $pc->storePC($request->brandpc,$request->cpufamily,$request->cpu,json_encode($request->portspc),$request->speed, $request->teamviewerid);
 
@@ -70,6 +75,11 @@ class HardwareController extends Controller
             $typeid = 1;
           break;
         case 2:
+            if(!$request->portsmonitor)
+            {
+              abort(403,'Es fehlen die Display Connections');
+              return redirect()->back();
+            }
             $monitor = new Monitor;
             // storeMonitor($brandmonitor,$size,$ports)
             $monitor->storeMonitor($request->brandmonitor,$request->size,json_encode($request->portsmonitor));

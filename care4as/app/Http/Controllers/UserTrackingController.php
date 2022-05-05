@@ -112,16 +112,12 @@ class UserTrackingController extends Controller
           $user->orders = $user->ssc_orders + $user->bsc_orders + $user->portal_orders;
           $user->optins = $user->salesdata->optin;
 
-          if($user->ssc_calls != 0)
-          {
-            $user->ssc_quota = round(($user->ssc_orders*100/$user->ssc_calls),2);
-          }
-          else {
-            $user->ssc_quota = 0;
-          }
 
+          $user->ssccr = $this->getQuota($user->ssc_calls, $user->ssc_orders);
           $user->cr = $this->getQuota($user->calls, $user->orders);
           $user->bsccr = $this->getQuota($user->bsc_calls, $user->bsc_orders);
+          $user->portalcr = $this->getQuota($user->portal_calls, $user->portal_orders);
+          $user->optincr = $this->getQuota($user->calls, $user->optins);
         }
         //the users in the dsl department
         else {
@@ -227,7 +223,7 @@ class UserTrackingController extends Controller
         ->get();
       }
 
-      
+
       foreach($users as $key => $user){
         $user->calls = $trackCalls->where('user_id', $user->id)->sum('calls');
         $user->ssc_calls = $trackCalls->where('user_id', $user->id)->where('category', 1)->sum('calls');
