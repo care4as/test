@@ -407,22 +407,22 @@
           .then(response => {
             if(response.data)
             {
-              // console.log(response.data)
+              console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
               if(this.department == 'Mobile')
               {
                 // console.log(response.data[1])
-                this.users = response.data[0]
-                this.sscCalls = response.data[1]['ssc_calls']
-                this.sscSaves = response.data[1]['ssc_orders']
-                this.bscSaves = response.data[1]['bsc_orders']
-                this.bscCalls = response.data[1]['bsc_calls']
-                this.portalCalls = response.data[1]['portal_calls']
-                this.portalSaves = response.data[1]['portal_orders']
-                this.calls = response.data[1]['calls']
-                this.saves = response.data[1]['orders']
-                this.optin = response.data[1]['optin']
+                this.users = response.data[1]
+                this.sscCalls = response.data[2]['ssc_calls']
+                this.sscSaves = response.data[2]['ssc_orders']
+                this.bscSaves = response.data[2]['bsc_orders']
+                this.bscCalls = response.data[2]['bsc_calls']
+                this.portalCalls = response.data[2]['portal_calls']
+                this.portalSaves = response.data[2]['portal_orders']
+                this.calls = response.data[2]['calls']
+                this.saves = response.data[2]['orders']
+                this.optin = response.data[2]['optin']
                 this.agl0stk = response.data[2]['al_0']
                 this.agl1stk = response.data[2]['al_1']
                 this.agl2stk = response.data[2]['al_2']
