@@ -349,6 +349,7 @@ margin: 0 auto;
 @endsection
 @section('additional_js')
 <script src="/js/app.js"></script>
+<script type="text/javascript" src="/js/app.js?v=2.4.1"></script>
 <script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
 

@@ -301,7 +301,7 @@
                 <li><a href="{{route('question.create')}}">Frage erstellen</a></li>
                 <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
                 <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
-              
+
               @endif
                 <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
               </ul>
@@ -774,7 +774,7 @@
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript')}}"></script> -->
   <script src="{{asset('js/app.js')}}"></script>
-
+  <script type="text/javascript" src="/js/app.js?v=2.4.1"></script>
   <script type="text/javascript">
 
   function showWTConsole() {
