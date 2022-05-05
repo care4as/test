@@ -3,7 +3,7 @@
 @section('additional_css')
 <link rel="stylesheet" type="text/css" href="{{asset('slick/slick/slick.css')}}"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
-
+<script src="{{asset('js/app.js?v='.time())}}" ></script>
 <style>
 td,tr,table
 {
