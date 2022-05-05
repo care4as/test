@@ -139,15 +139,15 @@
                   + currentdate.getSeconds();
 
             axios.get
-            // ('http://'+host+'/care4as/care4as/public/users/getTracking/Mobile')
-            ('http://'+host+'/users/getTracking/Mobile')
+            // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/Mobile'
+            ('http://'+host+'/users/getTrackingAlt/Mobile')
             .then(response => {
               if(response.data)
               {
-                console.log(response.data)
+                // console.log(response.data)
                 var currentdate = new Date();
                 console.log('update: '+timestamp)
-                  // this.users = response.data[0]
+                // this.users = response.data[0]
                 this.sscCalls = response.data[1]['ssc_calls']
                 this.sscSaves = response.data[1]['ssc_saves']
                 this.bscSaves = response.data[1]['bsc_saves']

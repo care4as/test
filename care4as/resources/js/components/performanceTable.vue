@@ -23,9 +23,7 @@
 
     <div class="row center_items mt-4">
       <div class="col-10 m-0 p-0 bg-light" style="border-radius: 5px">
-        <div class="row m-0" v-if="department=='Mobile'">
-
-          <!-- ssc cr -->
+        <div class="row m-0">
           <div class="col-md-3 p-0">
             <div class="shadow" style="border-radius: 5px; margin: 15px; padding: 15px; background-color: #ffffff;">
               <div style="display:flex; height: 120px">
@@ -187,7 +185,7 @@
           </div>
           <div class="row center_items">
             <div style="width: 100%;">
-              <table style="width: 100%; margin-top: 15px; margin-bottom: 15px;font-family: 'Radio Canada', sans-serif; text-align: center; border-collapse: collapse !important; border-radius: 0pxb; !important; border: 2px solid #2c3e50; font-weight: 300; font-size: 1.3rem" id="ptable" v-if="this.department == 'Mobile'">
+              <table style="width: 100%; margin-top: 15px; margin-bottom: 15px;font-family: 'Radio Canada', sans-serif; text-align: center; border-collapse: collapse !important; border-radius: 0pxb; !important; border: 2px solid #2c3e50; font-weight: 300; font-size: 1.3rem" id="ptable">
                 <tr style="background-color: #4ca1af; color: #2c3e50">
                   <th @click="sorted('surname')"  rowspan="2" style="cursor:pointer; text-align: left; border-bottom: 2px solid #2c3e50; border-right: 2px dotted #2c3e50;">Benutzer</th>
                   <th colspan="4" style="border-right: 2px dotted #2c3e50;">Smallscreen</th>
@@ -210,7 +208,8 @@
                   <th @click="sorted('optin_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Quote</th>
                   <th @click="sorted('optin')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Stück</th>
                 </tr>
-                <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in users">
+                <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in sortedUsers">
+                  <!-- <td>test1</td> -->
                   <td style="text-align: left; border-right: 2px dotted #2c3e50;">{{user.surname}} {{user.lastname}}</td>
                   <td>{{parseFloat(user.ssc_cr).toFixed(1).replace(".", ',')}}%</td>
                   <td>{{user.ssc_calls}}</td>
@@ -244,23 +243,7 @@
                   <td></td>
                 </tr>
               </table>
-              <table class="max-table text-dark" style="width: 100%;" v-else>
-                <tr class="" >
-                  <th>Benutzer</th>
-                  <th @click="sorted('cr')" style="cursor:pointer">CR</th>
-                  <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
-                  <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
-                  <th @click="sorted('online')" style="cursor:pointer">Online</th>
-                </tr >
-                <tr v-bind:class= "[user.cr > 42 ? 'bg-success' : 'bg-danger text-white']" v-for="user in users">
-                  <td></td>
-                  <td>{{user.cr}}%</td>
-                  <td>{{user.calls}}</td>
-                  <td>{{user.orders}}</td>
-                  <td class="bg-white center_items" v-if="checkIfOnline(user.online_till)"><div class="dot-green"></div></td>
-                  <td class="bg-white center_items" v-else><div class="dot-red"></div></td>
-                </tr>
-              </table>
+
             </div>
           </div>
         </div>
@@ -317,6 +300,7 @@
       mounted() {
         var self = this;
         console.log('ptable Component mounted.')
+
         self.getUserData('Mobile')
         self.getDailyQouta('Mobile')
         this.timer =
@@ -416,27 +400,29 @@
                 + currentdate.getSeconds();
 
           axios.get
+          // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
           // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
           ('http://'+host+'/users/getTracking/'+parameters)
+          // ('http://'+host+'/users/getTrackingAlt/'+parameters)
           .then(response => {
             if(response.data)
             {
-              console.log(response.data)
+              // console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
               if(this.department == 'Mobile')
               {
                 // console.log(response.data[1])
-                this.users = response.data[1]
-                this.sscCalls = response.data[2]['ssc_calls']
-                this.sscSaves = response.data[2]['ssc_orders']
-                this.bscSaves = response.data[2]['bsc_orders']
-                this.bscCalls = response.data[2]['bsc_calls']
-                this.portalCalls = response.data[2]['portal_calls']
-                this.portalSaves = response.data[2]['portal_orders']
-                this.calls = response.data[2]['calls']
-                this.saves = response.data[2]['orders']
-                this.optin = response.data[2]['optin']
+                this.users = response.data[0]
+                this.sscCalls = response.data[1]['ssc_calls']
+                this.sscSaves = response.data[1]['ssc_orders']
+                this.bscSaves = response.data[1]['bsc_orders']
+                this.bscCalls = response.data[1]['bsc_calls']
+                this.portalCalls = response.data[1]['portal_calls']
+                this.portalSaves = response.data[1]['portal_orders']
+                this.calls = response.data[1]['calls']
+                this.saves = response.data[1]['orders']
+                this.optin = response.data[1]['optin']
                 this.agl0stk = response.data[2]['al_0']
                 this.agl1stk = response.data[2]['al_1']
                 this.agl2stk = response.data[2]['al_2']
@@ -444,7 +430,10 @@
                 this.agl4stk = response.data[2]['al_4']
                 this.agl5stk = response.data[2]['al_5']
                 this.top5user = response.data[3]
+
+
               }
+              console.log("User:")
               console.log(this.users)
               this.createAglChart();
 

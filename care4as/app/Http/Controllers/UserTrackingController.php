@@ -227,7 +227,7 @@ class UserTrackingController extends Controller
         ->get();
       }
 
-
+      
       foreach($users as $key => $user){
         $user->calls = $trackCalls->where('user_id', $user->id)->sum('calls');
         $user->ssc_calls = $trackCalls->where('user_id', $user->id)->where('category', 1)->sum('calls');
