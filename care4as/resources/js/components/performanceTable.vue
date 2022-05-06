@@ -187,7 +187,7 @@
               <table style="width: 100%; margin-top: 15px; margin-bottom: 15px;font-family: 'Radio Canada', sans-serif; text-align: center; border-collapse: collapse !important; border-radius: 0pxb; !important; border: 2px solid #2c3e50; font-weight: 300; font-size: 1.3rem" id="ptable" v-if="this.department == 'Mobile'">
                <tr style="background-color: #4ca1af; color: #2c3e50">
                  <th @click="sorted('surname')"  rowspan="2" style="cursor:pointer; text-align: left; border-bottom: 2px solid #2c3e50; border-right: 2px dotted #2c3e50;">Benutzer</th>
-                 <th colspan="4" style="border-right: 2px dotted #2c3e50;">Smallscreen</th>
+                 <th colspan="4" style="border-right: 2px dotted #2c3e50;">Smallscreen11</th>
                  <th colspan="3" style="border-right: 2px dotted #2c3e50;">Bigscreen</th>
                  <th colspan="3" style="border-right: 2px dotted #2c3e50;">Portale</th>
                  <th colspan="2" style="border-right: 2px dotted #2c3e50;">Optin</th>
@@ -207,7 +207,7 @@
                  <th @click="sorted('optin_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Quote</th>
                  <th @click="sorted('optin')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Stück</th>
                </tr>
-               <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in sortedUsers">
+               <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in users">
                  <td style="text-align: left; border-right: 2px dotted #2c3e50;">{{user.surname}} {{user.lastname}}</td>
                  <td>{{parseFloat(user.ssc_cr).toFixed(1).replace(".", ',')}}%</td>
                  <td>{{user.ssc_calls}}</td>
@@ -363,11 +363,11 @@
         },
       },
       methods:{
-        reload() {
-          this.state = false;
-          this.value++;
-          this.$nextTick(() => this.state = true);
-        },
+        // reload() {
+        //   this.state = false;
+        //   this.value++;
+        //   this.$nextTick(() => this.state = true);
+        // },
         sorted(s) {
           //if s == current sort, reverse
           if(s === this.currentSort) {
@@ -406,11 +406,11 @@
             // console.log(response.data)
             if(response.data)
             {
-              // console.log(response.data)
+              console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
                 // console.log(response.data[1])
-                this.users = response.data[1]
+                // this.users = response.data[1]
                 this.sscCalls = response.data[2]['ssc_calls']
                 this.sscSaves = response.data[2]['ssc_saves']
                 this.bscSaves = response.data[2]['bsc_saves']
@@ -430,6 +430,7 @@
 
               // this.top5user = response.data[4]
                 this.createAglChart();
+
                 this.setUsers(response.data[1])
 
             }
