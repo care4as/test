@@ -209,7 +209,7 @@
                </tr>
                <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in users">
                  <td style="text-align: left; border-right: 2px dotted #2c3e50;">{{user.surname}} {{user.lastname}}</td>
-                 <td>{{parseFloat(user.ssc_cr).toFixed(1).replace(".", ',')}}%</td>
+                 <td>{{user.ssc_cr)}}%</td>
                  <td>{{user.ssc_calls}}</td>
                  <td>{{user.ssc_orders}}</td>
                  <td style="border-right: 2px dotted #2c3e50;">{{parseFloat(user.ssc_impact).toFixed(1).replace(".", ',')}}%</td>
@@ -389,13 +389,13 @@
           parameters = JSON.stringify(parameters);
 
           // console.log(parameters);
-          var currentdate = new Date();
-          let timestamp = "Last Sync: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
-                + currentdate.getFullYear() + " @ "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
+          // var currentdate = new Date();
+          // let timestamp = "Last Sync: " + currentdate.getDate() + "/"
+          //       + (currentdate.getMonth()+1)  + "/"
+          //       + currentdate.getFullYear() + " @ "
+          //       + currentdate.getHours() + ":"
+          //       + currentdate.getMinutes() + ":"
+          //       + currentdate.getSeconds();
 
           axios.get
           // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
@@ -403,6 +403,8 @@
           ('http://'+host+'/users/getTracking/'+parameters)
           // ('http://'+host+'/users/getTrackingAlt/'+dep)
           .then(response => {
+
+            this.setUsers(response.data[1])
             // console.log(response.data)
             if(response.data)
             {
@@ -410,7 +412,7 @@
               var currentdate = new Date();
               console.log('update: '+timestamp)
                 // console.log(response.data[1])
-                // this.users = response.data[1]
+                this.users = response.data[1]
                 this.sscCalls = response.data[2]['ssc_calls']
                 this.sscSaves = response.data[2]['ssc_saves']
                 this.bscSaves = response.data[2]['bsc_saves']
@@ -432,11 +434,11 @@
                 this.createAglChart();
 
                 this.setUsers(response.data[1])
-                this.setUsers(response.data[1])
-                this.setUsers(response.data[1])
-                this.setUsers(response.data[1])
-                this.setUsers(response.data[1])
-                this.setUsers(response.data[1])
+                // this.setUsers(response.data[1])
+                // this.setUsers(response.data[1])
+                // this.setUsers(response.data[1])
+                // this.setUsers(response.data[1])
+                // this.setUsers(response.data[1])
 
             }
             else
