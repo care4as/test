@@ -207,19 +207,19 @@
                  <th @click="sorted('optin_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Quote</th>
                  <th @click="sorted('optin')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Stück</th>
                </tr>
-               <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in users">
+               <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in sortedUsers">
                  <td style="text-align: left; border-right: 2px dotted #2c3e50;">{{user.surname}} {{user.lastname}}</td>
-                 <td>{{parseFloat(user.ssc_cr).toFixed(1).replace(".", ',')}}%</td>
+                 <td>{{user.ssc_cr}}%</td>
                  <td>{{user.ssc_calls}}</td>
                  <td>{{user.ssc_orders}}</td>
                  <td style="border-right: 2px dotted #2c3e50;">{{parseFloat(user.ssc_impact).toFixed(1).replace(".", ',')}}%</td>
-                 <td>{{parseFloat(user.bsc_cr).toFixed(1).replace(".", ',')}}%</td>
+                 <td>{{user.bsc_cr}}%</td>
                  <td>{{user.bsc_calls}}</td>
                  <td style="border-right: 2px dotted #2c3e50;">{{user.bsc_orders}}</td>
-                 <td>{{parseFloat(user.portal_cr).toFixed(1).replace(".", ',')}}%</td>
+                 <td>{{user.portal_cr}}%</td>
                  <td>{{user.portal_calls}}</td>
                  <td style="border-right: 2px dotted #2c3e50;">{{user.portal_orders}}</td>
-                 <td>{{parseFloat(user.optin_cr).toFixed(1).replace(".", ',')}}%</td>
+                 <td>{{user.optin_cr}}%</td>
                  <td style="border-right: 2px dotted #2c3e50;">{{user.optin}}</td>
                  <td v-if="checkIfOnline(user.online_till)" style="color: #2c3e50"><i class="fas fa-check-circle"></i></td>
                  <td v-else><i class="fas fa-times-circle"  style="color: #2c3e50"></i></td>
@@ -389,13 +389,13 @@
           parameters = JSON.stringify(parameters);
 
           // console.log(parameters);
-          var currentdate = new Date();
-          let timestamp = "Last Sync: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
-                + currentdate.getFullYear() + " @ "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
+          // var currentdate = new Date();
+          // let timestamp = "Last Sync: " + currentdate.getDate() + "/"
+          //       + (currentdate.getMonth()+1)  + "/"
+          //       + currentdate.getFullYear() + " @ "
+          //       + currentdate.getHours() + ":"
+          //       + currentdate.getMinutes() + ":"
+          //       + currentdate.getSeconds();
 
           axios.get
           // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
@@ -404,21 +404,14 @@
           // ('http://'+host+'/users/getTrackingAlt/'+dep)
           .then(response => {
 
-            this.setUsers(response.data[1])
-            // console.log(response.data)
-            if(response.data)
-            {
-              console.log(response.data)
-              var currentdate = new Date();
-              console.log('update: '+timestamp)
-                // console.log(response.data[1])
-                this.users = response.data[1]
-                this.sscCalls = response.data[2]['ssc_calls']
-                this.sscSaves = response.data[2]['ssc_saves']
-                this.bscSaves = response.data[2]['bsc_saves']
-                this.bscCalls = response.data[2]['bsc_calls']
-                this.portalCalls = response.data[2]['portal_calls']
-                this.portalSaves = response.data[2]['portal_saves']
+            // this.setUsers(response.data[1])
+            this.users = response.data[1]
+            this.sscCalls = response.data[2]['ssc_calls']
+            this.sscSaves = response.data[2]['ssc_saves']
+            this.bscSaves = response.data[2]['bsc_saves']
+            this.bscCalls = response.data[2]['bsc_calls']
+            this.portalCalls = response.data[2]['portal_calls']
+            this.portalSaves = response.data[2]['portal_saves']
                 this.calls = response.data[2]['calls']
                 this.saves = response.data[2]['orders']
                 this.optin = response.data[2]['optins']
@@ -433,23 +426,21 @@
               // this.top5user = response.data[4]
                 this.createAglChart();
 
-                this.setUsers(response.data[1])
+                // this.setUsers(response.data[1])
                 // this.setUsers(response.data[1])
                 // this.setUsers(response.data[1])
                 // this.setUsers(response.data[1])
                 // this.setUsers(response.data[1])
                 // this.setUsers(response.data[1])
 
-            }
-            else
-            {
-              console.log('No Data avaiable')
-            }
             })
           .catch(function (err) {
             console.log('Error fetching Performance Table data')
             console.log(err.response);
           })
+          .finally((response) => {
+                    this.setUsers(response.data[1])
+                });
         },
         setUsers(userob)
         {
