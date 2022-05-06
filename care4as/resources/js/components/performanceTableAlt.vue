@@ -84,7 +84,7 @@
                       <th @click="sorted('orders')" style="cursor:pointer">BSC-Saves</th>
                       <th @click="sorted('online')" style="cursor:pointer">online</th>
                     </tr>
-                    <tr class="" v-bind:class= "[user.ssccr > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
+                    <tr class="" v-bind:class= "[user.ssccr > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers" :key="sortedUsers.id">
                       <td>{{user.surname}} {{user.lastname}}</td>
                       <td>{{user.ssccr}}%</td>
                       <td>{{user.ssc_calls}}</td>
@@ -120,11 +120,12 @@
           </template>
 
 <script>
+import Chart from 'chart.js';
     export default {
       data(){
         return{
           users: [1,2,3],
-          currentSort:'ssc_cr',
+          currentSort:'ssccr',
           currentSortDir:'desc',
           SscGeVoCr: 0,
           sscCalls: 0,

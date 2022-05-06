@@ -765,7 +765,7 @@
   <!--  Google Maps Plugin    -->
   <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
   <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script> -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
   <!-- <script src='bootstrap.bundle.min.js'></script> -->
   <!-- Chart JS -->
   <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/plugins/chartjs.min.js')}}"></script> -->
@@ -773,7 +773,7 @@
   <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/plugins/bootstrap-notify.js')}}"></script> -->
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript')}}"></script> -->
-  <script src="{{asset('js/app.js')}}?v=2.4.1"></script>
+  <script src="{{asset('js/app.js')}}"></script>
   <!-- <script type="text/javascript" src="app.js?v=2.4.1"></script> -->
   <script type="text/javascript">
 

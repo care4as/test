@@ -3,7 +3,7 @@
 @section('additional_css')
 <link rel="stylesheet" type="text/css" href="{{asset('slick/slick/slick.css')}}"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
-<script src="{{asset('js/app.js?v='.time())}}" ></script>
+<!-- <script src="{{asset('js/app.js?v='.time())}}" ></script> -->
 <style>
 td,tr,table
 {
@@ -348,8 +348,8 @@ margin: 0 auto;
 </div>
 @endsection
 @section('additional_js')
-<script src="/js/app.js"></script>
-<script type="text/javascript" src="/js/app.js?v=2.4.1"></script>
+<!-- <script src="/js/app.js"></script> -->
+<!-- <script type="text/javascript" src="/js/app.js?v=2.4.1"></script> -->
 <script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
 
