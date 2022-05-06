@@ -64,7 +64,7 @@
                 </div>
               </div>
               <div class="row m-1">
-                <p>Calls: {{calls}} / {{optins}}: </p>
+                <p>Calls: {{calls}} / {{optin}}: </p>
               </div>
             </div>
             </div>
@@ -260,7 +260,7 @@
             // console.log(response.data)
             if(response.data)
             {
-              console.log(response.data)
+              // console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
               if(this.department == 'Mobile')
@@ -524,32 +524,6 @@
   width: 100%;
 }
 
-.good-cr{
-  background-color: rgb(132,220,149,0.5);
-  border: 5px solid rgb(0,97,0);
-  color: rgb(0,97,0);
-}
-
-.bad-cr{
-  background-color: rgb(255,91,111,0.35);
-  border: 5px solid rgb(156,0,6);
-  color: rgb(156,0,6);
-}
-
-.good-bg{
-  border-radius: 0;
-  border-collapse: collapse;
-  background-color: rgb(132,220,149,0.5);
-  color: rgb(0,97,0);
-}
-
-
-.bad-bg{
-  border-radius: 0;
-  border-collapse: collapse;
-  background-color: rgb(255,91,111,0.35);
-  color: rgb(156,0,6);
-}
 
 tr:hover {
     background-color: #4ca1af;
@@ -557,24 +531,5 @@ tr:hover {
     border-collapse: collapse;
 }
 
-.custom_select{
-  font-family: 'Radio Canada', sans-serif !important;
-  background-color: #f8f9fa;
-  border: 1px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  transition: all 300ms ease 0s;
-}
 
-.custom_select:hover{
-  color: black !important;
-  cursor: pointer;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
-}
-
-
-
-@import url('https://fonts.googleapis.com/css2?family=Radio+Canada:wght@300;400;500;600;700&display=swap');
 </style>
