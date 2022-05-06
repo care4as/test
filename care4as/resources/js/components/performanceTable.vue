@@ -406,7 +406,7 @@
             // console.log(response.data)
             if(response.data)
             {
-              console.log(response.data)
+              // console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
                 // console.log(response.data[1])
@@ -433,7 +433,9 @@
 
                 this.users = response.data[1]
               // this.top5user = response.data[4]
-              this.createAglChart();
+                this.createAglChart();
+                this.users = response.data[1]
+                this.top5user = response.data[3]
 
             }
             else
