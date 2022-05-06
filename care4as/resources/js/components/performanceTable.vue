@@ -432,6 +432,11 @@
                 this.createAglChart();
 
                 this.setUsers(response.data[1])
+                this.setUsers(response.data[1])
+                this.setUsers(response.data[1])
+                this.setUsers(response.data[1])
+                this.setUsers(response.data[1])
+                this.setUsers(response.data[1])
 
             }
             else

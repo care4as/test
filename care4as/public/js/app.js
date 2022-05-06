@@ -3591,6 +3591,16 @@ __webpack_require__.r(__webpack_exports__);
           _this2.createAglChart();
 
           _this2.setUsers(response.data[1]);
+
+          _this2.setUsers(response.data[1]);
+
+          _this2.setUsers(response.data[1]);
+
+          _this2.setUsers(response.data[1]);
+
+          _this2.setUsers(response.data[1]);
+
+          _this2.setUsers(response.data[1]);
         } else {
           console.log('No Data avaiable');
         }
