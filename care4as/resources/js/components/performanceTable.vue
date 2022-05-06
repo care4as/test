@@ -275,8 +275,8 @@
           currentSort:'ssc_cr',
           currentSortDir:'desc',
           SscGeVoCr: 0,
-          sscCalls: 0,
-          bscCalls: 0,
+          sscCalls: 11,
+          bscCalls: 11,
           bscSaves: 0,
           portalCalls: 0,
           portalSaves: 0,
@@ -400,10 +400,10 @@
                 + currentdate.getSeconds();
 
           axios.get
-          // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
+          ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
           // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
           // ('http://'+host+'/users/getTracking/'+parameters)
-          ('http://'+host+'/users/getTrackingAlt/'+dep)
+          // ('http://'+host+'/users/getTrackingAlt/'+dep)
           .then(response => {
             // console.log(response.data)
             if(response.data)

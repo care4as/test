@@ -127,13 +127,13 @@ import Chart from 'chart.js';
           users: [1,2,3],
           currentSort:'ssccr',
           currentSortDir:'desc',
-          SscGeVoCr: 0,
-          sscCalls: 0,
+          SscGeVoCr: 11,
+          sscCalls: 11,
           bscCalls: 0,
           bscSaves: 0,
           portalCalls: 0,
           portalSaves: 0,
-          sscSaves: 0,
+          sscSaves: 5,
           calls:0,
           saves:0,
           optin: 0,
@@ -264,8 +264,6 @@ import Chart from 'chart.js';
               // console.log(response.data)
               var currentdate = new Date();
               console.log('update: '+timestamp)
-              if(this.department == 'Mobile')
-              {
                 // console.log(response.data[1])
                 this.users = response.data[0]
                 this.sscCalls = response.data[1]['ssc_calls']
@@ -285,12 +283,10 @@ import Chart from 'chart.js';
                 // this.agl5stk = response.data[2]['al_5']
                 // this.top5user = response.data[3]
 
-
-              }
               console.log("User:")
               console.log(this.users)
               // this.createAglChart();
-
+              this.users = response.data[0]
             }
             else
             {
