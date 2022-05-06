@@ -428,14 +428,9 @@
                 this.agl5stk = response.data[2]['al_5']
                 this.top5user = response.data[3]
 
-                console.log("User:")
-                console.log(this.users)
-
-                this.users = response.data[1]
               // this.top5user = response.data[4]
                 this.createAglChart();
-                this.users = response.data[1]
-                this.top5user = response.data[3]
+                this.setUsers(response.data[1])
 
             }
             else
@@ -447,6 +442,11 @@
             console.log('Error fetching Performance Table data')
             console.log(err.response);
           })
+        },
+        setUsers(userob)
+        {
+          this.users = userob
+          return 0
         },
         changeDepartment(dep)
         {
