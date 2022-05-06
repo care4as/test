@@ -4000,15 +4000,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    reload: function reload() {
-      var _this2 = this;
-
-      this.state = false;
-      this.value++;
-      this.$nextTick(function () {
-        return _this2.state = true;
-      });
-    },
+    // reload() {
+    //   this.state = false;
+    //   this.value++;
+    //   this.$nextTick(() => this.state = true);
+    // },
     sorted: function sorted(s) {
       //if s == current sort, reverse
       if (s === this.currentSort) {
@@ -4018,7 +4014,7 @@ __webpack_require__.r(__webpack_exports__);
       this.currentSort = s;
     },
     getUserData: function getUserData(dep) {
-      var _this3 = this;
+      var _this2 = this;
 
       var host = window.location.host;
       var department = this.department; // var team = document.getElementById('team_selection').value;
@@ -4042,18 +4038,18 @@ __webpack_require__.r(__webpack_exports__);
           var currentdate = new Date();
           console.log('update: ' + timestamp);
 
-          if (_this3.department == 'Mobile') {
+          if (_this2.department == 'Mobile') {
             // console.log(response.data[1])
-            _this3.users = response.data[0];
-            _this3.sscCalls = response.data[1]['ssc_calls'];
-            _this3.sscSaves = response.data[1]['ssc_saves'];
-            _this3.bscSaves = response.data[1]['bsc_saves'];
-            _this3.bscCalls = response.data[1]['bsc_calls'];
-            _this3.portalCalls = response.data[1]['portal_calls'];
-            _this3.portalSaves = response.data[1]['portal_saves'];
-            _this3.calls = response.data[1]['calls'];
-            _this3.saves = response.data[1]['orders'];
-            _this3.optin = response.data[1]['optins']; // this.agl0stk = response.data[2]['al_0']
+            _this2.users = response.data[0];
+            _this2.sscCalls = response.data[1]['ssc_calls'];
+            _this2.sscSaves = response.data[1]['ssc_saves'];
+            _this2.bscSaves = response.data[1]['bsc_saves'];
+            _this2.bscCalls = response.data[1]['bsc_calls'];
+            _this2.portalCalls = response.data[1]['portal_calls'];
+            _this2.portalSaves = response.data[1]['portal_saves'];
+            _this2.calls = response.data[1]['calls'];
+            _this2.saves = response.data[1]['orders'];
+            _this2.optin = response.data[1]['optins']; // this.agl0stk = response.data[2]['al_0']
             // this.agl1stk = response.data[2]['al_1']
             // this.agl2stk = response.data[2]['al_2']
             // this.agl3stk = response.data[2]['al_3']
@@ -4063,7 +4059,7 @@ __webpack_require__.r(__webpack_exports__);
           }
 
           console.log("User:");
-          console.log(_this3.users); // this.createAglChart();
+          console.log(_this2.users); // this.createAglChart();
         } else {
           console.log('No Data avaiable');
         }
@@ -4083,7 +4079,7 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this), 60000); // console.log(this.department)
     },
     getDailyQouta: function getDailyQouta(dep) {
-      var _this4 = this;
+      var _this3 = this;
 
       var host = window.location.host;
       var department = dep; // let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
@@ -4093,7 +4089,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('http://' + host + '/kdw/getQuotas/' + department).then(function (response) {
         // console.log('dailyQoutas')
         // console.log(response.data)
-        _this4.createChart('dailyQuota', response.data);
+        _this3.createChart('dailyQuota', response.data);
       })["catch"](function (err) {
         console.log('Error fetching Daily Quota:');
         console.log(err.response);

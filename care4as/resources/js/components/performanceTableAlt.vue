@@ -217,11 +217,11 @@
         },
       },
       methods:{
-        reload() {
-          this.state = false;
-          this.value++;
-          this.$nextTick(() => this.state = true);
-        },
+        // reload() {
+        //   this.state = false;
+        //   this.value++;
+        //   this.$nextTick(() => this.state = true);
+        // },
         sorted(s) {
           //if s == current sort, reverse
           if(s === this.currentSort) {
@@ -306,10 +306,8 @@
           this.department = dep
           this.getUserData(dep)
           this.getDailyQouta(dep)
-
           clearInterval(this.timer)
           this.timer =
-
           setInterval(function()
           {
             this.getUserData(dep)
