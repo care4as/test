@@ -252,10 +252,10 @@
                 + currentdate.getSeconds();
 
           axios.get
-          ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
+          // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
           // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
           // ('http://'+host+'/users/getTracking/'+parameters)
-          // ('http://'+host+'/users/getTrackingAlt/'+dep)
+          ('http://'+host+'/users/getTrackingAlt/'+dep)
           .then(response => {
             // console.log(response.data)
             if(response.data)
