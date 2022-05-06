@@ -86,6 +86,59 @@ class HomeController extends Controller
 
       return view('dashboardtracker',compact('users', 'times','quotas','quotasDSL'));
     }
+    public function dashboardAdminAlt()
+    {
+      $teamquotas = array();
+      $trend = '';
+
+      if(request('employees'))
+      {
+        // dd(request('employees'));
+        $userids = DB::table('intermediate_status')
+        ->whereDate('date', Carbon::today())
+        ->pluck('1u1_person_id')
+        ->toArray();
+
+        $users = User::whereIN('id',request('employees'))
+        ->whereIN('1u1_person_id', $userids)
+        ->orderBy('name')
+        ->get();
+      }
+      else {
+        $userids = DB::table('intermediate_status')
+        ->whereDate('date', Carbon::today())
+        ->pluck('person_id')
+        ->toArray();
+
+        $users = User::whereIn('1u1_person_id', $userids)->orderBy('name')->get();
+
+        // testdata
+        // $users = User::where('status',1)->orderBy('name')->limit(5)->get();
+      }
+
+      $mobileTeamids = DB::table('users')
+      ->where('project', '1und1 Retention')
+      ->where('status',1)
+      ->pluck('1u1_person_id')
+      ->toArray();
+
+      $DSLTeamids = DB::table('users')
+      ->where('project', '1und1 DSL Retention')
+      ->where('status',1)
+      ->pluck('1u1_person_id')
+      ->toArray();
+
+
+      $dataMobile= $this->getIVDataPerDay(5,$mobileTeamids);
+      // $dataDSL= $this->getIVDataPerDay(5,$DSLTeamids);
+
+      $quotas = $dataMobile[0];
+      $times= $dataMobile[1];
+
+      $quotasDSL = $this->getIVDataPerDay(5,$DSLTeamids)[0];
+
+      return view('dashboardtrackerAlt',compact('users', 'times','quotas','quotasDSL'));
+    }
 
     public function getIVDataPerDay($days=5, $employeeIDs)
     {

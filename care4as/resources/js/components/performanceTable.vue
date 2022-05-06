@@ -162,7 +162,6 @@
     </div>
 
     <div class="row mt-4 center_items " style="">
-
       <!-- liveticker -->
       <div class="col-10 p-0 bg-light center_items " style="border-radius: 5px;">
         <div class="col-md bg-white shadow" style="margin: 15px; border-radius: 5px;">
@@ -401,10 +400,10 @@
                 + currentdate.getSeconds();
 
           axios.get
-          // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
+          ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
           // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
           // ('http://'+host+'/users/getTracking/'+parameters)
-          ('http://'+host+'/users/getTrackingAlt/'+dep)
+          // ('http://'+host+'/users/getTrackingAlt/'+dep)
           .then(response => {
             // console.log(response.data)
             if(response.data)

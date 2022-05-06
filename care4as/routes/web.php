@@ -81,6 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard')->middleware('hasRight:dashboard');
     Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
     Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin')->middleware('hasRight:dashboardAdmin');
+    Route::get('/dashboard/adminAlt', 'HomeController@dashboardAdminAlt')->middleware('auth')->name('dashboard.adminAlt')->middleware('hasRight:dashboardAdmin');
   // Ende  DASHBOARD
 
   // Start MEMORANDA
