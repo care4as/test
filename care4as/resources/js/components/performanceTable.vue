@@ -30,7 +30,7 @@
                 <div style="flex-grow:1; display: flex; flex-direction: column;">
                   <div style="font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.6rem;">SSC</div>
                   <div style="font-family: 'Radio Canada', sans-serif; font-size: 1.3rem; font-weight: 300; display: grid; grid-template-columns: auto 1fr; column-gap: 15px; margin-top: auto; margin-bottom: auto;">
-                    <div>Calls:</div>
+                    <div>Calls1:</div>
                     <div>{{sscCalls}}</div>
                     <div>Saves:</div>
                     <div>{{sscSaves}}</div>
@@ -209,7 +209,7 @@
                </tr>
                <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in users">
                  <td style="text-align: left; border-right: 2px dotted #2c3e50;">{{user.surname}} {{user.lastname}}</td>
-                 <td>{{user.ssc_cr)}}%</td>
+                 <td>{{parseFloat(user.ssc_cr).toFixed(1).replace(".", ',')}}%</td>
                  <td>{{user.ssc_calls}}</td>
                  <td>{{user.ssc_orders}}</td>
                  <td style="border-right: 2px dotted #2c3e50;">{{parseFloat(user.ssc_impact).toFixed(1).replace(".", ',')}}%</td>
@@ -389,13 +389,13 @@
           parameters = JSON.stringify(parameters);
 
           // console.log(parameters);
-          // var currentdate = new Date();
-          // let timestamp = "Last Sync: " + currentdate.getDate() + "/"
-          //       + (currentdate.getMonth()+1)  + "/"
-          //       + currentdate.getFullYear() + " @ "
-          //       + currentdate.getHours() + ":"
-          //       + currentdate.getMinutes() + ":"
-          //       + currentdate.getSeconds();
+          var currentdate = new Date();
+          let timestamp = "Last Sync: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
 
           axios.get
           // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
