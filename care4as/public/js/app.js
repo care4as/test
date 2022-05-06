@@ -3445,7 +3445,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      users: [1, 2, 3],
+      users: [],
       currentSort: 'ssc_cr',
       currentSortDir: 'desc',
       SscGeVoCr: 0,
@@ -3601,7 +3601,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     setUsers: function setUsers(userob) {
       this.users = userob;
-      return 0;
+      console.log(this.users);
     },
     changeDepartment: function changeDepartment(dep) {
       this.department = dep;

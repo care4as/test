@@ -269,7 +269,7 @@
     export default {
       data(){
         return{
-          users: [1,2,3],
+          users: [],
           currentSort:'ssc_cr',
           currentSortDir:'desc',
           SscGeVoCr: 0,
@@ -447,7 +447,7 @@
         setUsers(userob)
         {
           this.users = userob
-          return 0
+          console.log(this.users)
         },
         changeDepartment(dep)
         {
