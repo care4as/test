@@ -91,13 +91,30 @@
           <!-- Dashboard -->
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
-            <a @if(Auth::User()->department == 'Agenten' && str_contains(Auth::User()->role,'Agent')) href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
+            @if(Auth::User()->department == 'Agenten' && str_contains(Auth::User()->role,'Agent'))
+            <a  href="{{route('dashboard')}} ">
               <i class="fas fa-table"></i>
               <p><b>Dashboard</b></p>
             </a>
+            @else
+            <a class="" data-toggle="collapse" href="#collapseAdminDashboard" role="button" aria-expanded="false" aria-controls="collapseAdminDashboard">
+              <i class="fas fa-table"></i>
+              <p><b>Dashboard</b></p>
+            </a>
+            <div class="collapse" id="collapseAdminDashboard" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+                @if(1)
+                  <li>  <a href="{{route('dashboard.admin')}}">
+                    Dashboard neu (Max)</a>
+                  </li>
+                  <li>  <a href="{{route('dashboard.adminAlt')}}">
+                    Dashboard alt (Andreas)</a>
+                  </li>
+                @endif
+            </div>
+            @endif
           </li>
           @endif
-
           @if(in_array('write_memos',Auth()->user()->getRights()))
           <li class="">
             <a class="" data-toggle="collapse" href="#collapseMemoranda" role="button" aria-expanded="false" aria-controls="collapseMemoranda">

@@ -404,7 +404,7 @@
           // ('http://'+host+'/users/getTrackingAlt/'+dep)
           .then(response => {
 
-            // this.setUsers(response.data[1])
+            this.users = response.data[1]
             this.users = response.data[1]
             this.sscCalls = response.data[2]['ssc_calls']
             this.sscSaves = response.data[2]['ssc_saves']
@@ -412,21 +412,20 @@
             this.bscCalls = response.data[2]['bsc_calls']
             this.portalCalls = response.data[2]['portal_calls']
             this.portalSaves = response.data[2]['portal_saves']
-                this.calls = response.data[2]['calls']
-                this.saves = response.data[2]['orders']
-                this.optin = response.data[2]['optins']
-                this.agl0stk = response.data[2]['al_0']
-                this.agl1stk = response.data[2]['al_1']
-                this.agl2stk = response.data[2]['al_2']
-                this.agl3stk = response.data[2]['al_3']
-                this.agl4stk = response.data[2]['al_4']
-                this.agl5stk = response.data[2]['al_5']
-                this.top5user = response.data[3]
+            this.calls = response.data[2]['calls']
+            this.saves = response.data[2]['orders']
+            this.optin = response.data[2]['optins']
+                // this.agl0stk = response.data[2]['al_0']
+                // this.agl1stk = response.data[2]['al_1']
+                // this.agl2stk = response.data[2]['al_2']
+                // this.agl3stk = response.data[2]['al_3']
+                // this.agl4stk = response.data[2]['al_4']
+                // this.agl5stk = response.data[2]['al_5']
+                // this.top5user = response.data[3]
 
-              // this.top5user = response.data[4]
                 this.createAglChart();
 
-                // this.setUsers(response.data[1])
+                this.setUsers(response.data[1])
                 // this.setUsers(response.data[1])
                 // this.setUsers(response.data[1])
                 // this.setUsers(response.data[1])
@@ -438,9 +437,7 @@
             console.log('Error fetching Performance Table data')
             console.log(err.response);
           })
-          .finally((response) => {
-                    this.setUsers(response.data[1])
-                });
+
         },
         setUsers(userob)
         {
