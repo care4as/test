@@ -464,7 +464,7 @@ function roundUp($calls,$quotient)
                                             <td>@if($record->optin == 1) ja @else nein @endif</td>
                                             <td>@if($record->runtime == 1) ja @else nein @endif</td>
                                             <td>@if($record->backoffice == 1) ja @else nein @endif</td>
-                                            <td class="">@if(strlen($record->comment)>10) <span onclick="alert('{{$record->comment}}')" style="cursor: pointer;"> {{substr($record->comment,0,10)}}...</span> @else  {{$record->comment}}@endif</td>
+                                            <td class="">{{$record->comment}}</td>
                                             <td><a onclick="loadModalWithData({{$record->id}})"><button type="button" class="EditButton" name="button"><i class="far fa-edit"></i></button>  </a><a href="{{route('tracking.delete.admin', ['id' => $record->id])}}"><button type="button" class="DeleteButton" name="button"><i class="far fa-trash-alt"></i></button> </a></td>
                                           </tr>
                                           @endforeach
