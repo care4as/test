@@ -81,6 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', 'UserController@dashboard')->middleware('auth')->name('dashboard')->middleware('hasRight:dashboard');
     Route::get('/home', 'Auth\LoginController@loginview')->name('dashboard')->middleware('hasRight:dashboard');
     Route::get('/dashboard/admin', 'HomeController@dashboardAdmin')->middleware('auth')->name('dashboard.admin')->middleware('hasRight:dashboardAdmin');
+    Route::get('/dashboard/adminAlt', 'HomeController@dashboardAdminAlt')->middleware('auth')->name('dashboard.adminAlt');
   // Ende  DASHBOARD
 
   // Start MEMORANDA
@@ -337,8 +338,9 @@ Route::group(['middleware' => 'auth'], function () {
     // TRACKING
       Route::get('/trackEvent/{action}/{division}/{type}/{operator}', 'UserTrackingController@trackEvent')->name('user.trackEvent')->middleware('hasRight:dashboard');
       Route::get('/user/getTracking/{id}', 'UserTrackingController@getTracking')->middleware('hasRight:dashboardAdmin');
+      Route::get('/users/getTrackingAlt/{dep}', 'UserTrackingController@getCurrentTrackingAlt');
       Route::get('/users/getTracking/{dep}', 'UserTrackingController@getCurrentTracking')->middleware('hasRight:dashboardAdmin');
-      Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas')->middleware('hasRight:dashboardAdmin');
+      Route::get('/kdw/getQuotas/{dep}', 'UserTrackingController@getDailyQuotas');
       Route::get('/user/getUsersByDep/{department}', 'UserController@getUsersbyDep')->name('user.byDep')->middleware('hasRight:dashboardAdmin');
       Route::get('/user/getUsersByIM/{department}', 'UserController@getUsersIntermediate')->name('user.byIM')->middleware('hasRight:dashboardAdmin');
   // Ende  SONSTIGES

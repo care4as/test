@@ -52,13 +52,13 @@
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=yes' name='viewport' />
   <link rel="shortcut icon" type="image/x-icon" href="{{asset('images/favicon.ico')}}">
   <script src="{{asset('css/now-ui-dashboard-master/assets/js/core/popper.min.js')}}"></script>
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/js/demos.js')}}"></script> -->
 
   <!--     Fonts and icons     -->
   <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"> -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="{{asset('css/now-ui-dashboard-master/assets/css/bootstrap.min.css')}}" rel="stylesheet" />
   <link href="{{asset('css/now-ui-dashboard-master/assets/css/now-ui-dashboard.css?v=1.5.0')}}" rel="stylesheet" />
@@ -91,13 +91,30 @@
           <!-- Dashboard -->
           @if(in_array('dashboard',Auth()->user()->getRights()))
           <li class="">
-            <a @if(Auth::User()->department == 'Agenten' && str_contains(Auth::User()->role,'Agent')) href="{{route('dashboard')}} @else href="{{route('dashboard.admin')}}@endif">
+            @if(Auth::User()->department == 'Agenten' && str_contains(Auth::User()->role,'Agent'))
+            <a  href="{{route('dashboard')}} ">
               <i class="fas fa-table"></i>
               <p><b>Dashboard</b></p>
             </a>
+            @else
+            <a class="" data-toggle="collapse" href="#collapseAdminDashboard" role="button" aria-expanded="false" aria-controls="collapseAdminDashboard">
+              <i class="fas fa-table"></i>
+              <p><b>Dashboard</b></p>
+            </a>
+            <div class="collapse" id="collapseAdminDashboard" style="margin-left:50px;">
+              <ul class="list-group list-group-flush" style="list-style-type: none;">
+                @if(1)
+                  <li>  <a href="{{route('dashboard.admin')}}">
+                    Dashboard neu (Max)</a>
+                  </li>
+                  <li>  <a href="{{route('dashboard.adminAlt')}}">
+                    Dashboard alt (Andreas)</a>
+                  </li>
+                @endif
+            </div>
+            @endif
           </li>
           @endif
-
           @if(in_array('write_memos',Auth()->user()->getRights()))
           <li class="">
             <a class="" data-toggle="collapse" href="#collapseMemoranda" role="button" aria-expanded="false" aria-controls="collapseMemoranda">
@@ -301,7 +318,7 @@
                 <li><a href="{{route('question.create')}}">Frage erstellen</a></li>
                 <li><a href="{{route('surveys.index')}}">Mitarbeiterumfragen Index</a></li>
                 <li><a href="{{route('survey.create')}}">Mitarbeiterumfrage erstellen</a></li>
-              
+
               @endif
                 <li><a href="{{route('survey.attend')}}">an der Mitarbeiterumfrage teilnehmen</a></li>
               </ul>
@@ -765,7 +782,7 @@
   <!--  Google Maps Plugin    -->
   <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
   <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script> -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
   <!-- <script src='bootstrap.bundle.min.js'></script> -->
   <!-- Chart JS -->
   <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/plugins/chartjs.min.js')}}"></script> -->
@@ -774,7 +791,7 @@
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <!-- <script src="{{asset('css/now-ui-dashboard-master/assets/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript')}}"></script> -->
   <script src="{{asset('js/app.js')}}"></script>
-
+  <!-- <script type="text/javascript" src="app.js?v=2.4.1"></script> -->
   <script type="text/javascript">
 
   function showWTConsole() {

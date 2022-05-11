@@ -23,16 +23,14 @@
 
     <div class="row center_items mt-4">
       <div class="col-10 m-0 p-0 bg-light" style="border-radius: 5px">
-        <div class="row m-0" v-if="department=='Mobile'">
-
-          <!-- ssc cr -->
+        <div class="row m-0">
           <div class="col-md-3 p-0">
             <div class="shadow" style="border-radius: 5px; margin: 15px; padding: 15px; background-color: #ffffff;">
               <div style="display:flex; height: 120px">
                 <div style="flex-grow:1; display: flex; flex-direction: column;">
                   <div style="font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.6rem;">SSC</div>
                   <div style="font-family: 'Radio Canada', sans-serif; font-size: 1.3rem; font-weight: 300; display: grid; grid-template-columns: auto 1fr; column-gap: 15px; margin-top: auto; margin-bottom: auto;">
-                    <div>Calls:</div>
+                    <div>Calls1:</div>
                     <div>{{sscCalls}}</div>
                     <div>Saves:</div>
                     <div>{{sscSaves}}</div>
@@ -42,7 +40,7 @@
                     <svg viewBox="0 0 1 1" style="width: 100%; height: 100%;"></svg>
                     <div v-bind:class= "[this.sscCR > 51.7 ? 'good-cr' : 'bad-cr']" style="border-radius: 100px; text-align: center; position: absolute; top:0; left:0; bottom:0; right:0; display: flex;">
                       <div style="margin: auto; font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.2em;">
-                        {{sscCR = sscCR.toFixed(1).replace(".", ',')}}%
+                        {{sscCR }}%
                       </div>
                     </div>
                 </div>
@@ -68,7 +66,7 @@
                     <svg viewBox="0 0 1 1" style="width: 100%; height: 100%;"></svg>
                     <div v-bind:class= "[this.bscCR > 20 ? 'good-cr' : 'bad-cr']" style="border-radius: 100px; text-align: center; position: absolute; top:0; left:0; bottom:0; right:0; display: flex;">
                       <div style="margin: auto; font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.2em;">
-                        {{bscCR = bscCR.toFixed(1).replace(".", ',')}}%
+                        {{bscCR}}%
                       </div>
                     </div>
                 </div>
@@ -94,7 +92,7 @@
                     <svg viewBox="0 0 1 1" style="width: 100%; height: 100%;"></svg>
                     <div v-bind:class= "[this.portalCR > 60 ? 'good-cr' : 'bad-cr']" style="border-radius: 100px; text-align: center; position: absolute; top:0; left:0; bottom:0; right:0; display: flex;">
                       <div style="margin: auto; font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.2em;">
-                        {{portalCR = portalCR.toFixed(1).replace(".", ',')}}%
+                        {{portalCR}}%
                       </div>
                     </div>
                 </div>
@@ -119,7 +117,7 @@
                     <svg viewBox="0 0 1 1" style="width: 100%; height: 100%;"></svg>
                     <div v-bind:class= "[this.optinQuota > 51.7 ? 'good-cr' : 'bad-cr']" style="border-radius: 100px; text-align: center; position: absolute; top:0; left:0; bottom:0; right:0; display: flex;">
                       <div style="margin: auto; font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.2em;">
-                        {{optinQuota = optinQuota.toFixed(1).replace(".", ',')}}%
+                        {{optinQuota}}%
                       </div>
                     </div>
                 </div>
@@ -164,7 +162,6 @@
     </div>
 
     <div class="row mt-4 center_items " style="">
-
       <!-- liveticker -->
       <div class="col-10 p-0 bg-light center_items " style="border-radius: 5px;">
         <div class="col-md bg-white shadow" style="margin: 15px; border-radius: 5px;">
@@ -188,79 +185,63 @@
           <div class="row center_items">
             <div style="width: 100%;">
               <table style="width: 100%; margin-top: 15px; margin-bottom: 15px;font-family: 'Radio Canada', sans-serif; text-align: center; border-collapse: collapse !important; border-radius: 0pxb; !important; border: 2px solid #2c3e50; font-weight: 300; font-size: 1.3rem" id="ptable" v-if="this.department == 'Mobile'">
-                <tr style="background-color: #4ca1af; color: #2c3e50">
-                  <th @click="sorted('surname')"  rowspan="2" style="cursor:pointer; text-align: left; border-bottom: 2px solid #2c3e50; border-right: 2px dotted #2c3e50;">Benutzer</th>
-                  <th colspan="4" style="border-right: 2px dotted #2c3e50;">Smallscreen</th>
-                  <th colspan="3" style="border-right: 2px dotted #2c3e50;">Bigscreen</th>
-                  <th colspan="3" style="border-right: 2px dotted #2c3e50;">Portale</th>
-                  <th colspan="2" style="border-right: 2px dotted #2c3e50;">Optin</th>
-                  <th rowspan="2" @click="sorted('online')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Online</th>
-                </tr>
-                <tr style="background-color: #4ca1af; color: #2c3e50">
-                  <th @click="sorted('ssc_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
-                  <th @click="sorted('ssc_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
-                  <th @click="sorted('ssc_orders')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Saves</th>
-                  <th @click="sorted('ssc_impact')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Impact</th>
-                  <th @click="sorted('bsc_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
-                  <th @click="sorted('bsc_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
-                  <th @click="sorted('bsc_orders')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Saves</th>
-                  <th @click="sorted('portal_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
-                  <th @click="sorted('portal_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
-                  <th @click="sorted('portal_orders')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Saves</th>
-                  <th @click="sorted('optin_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Quote</th>
-                  <th @click="sorted('optin')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Stück</th>
-                </tr>
-                <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in sortedUsers">
-                  <td style="text-align: left; border-right: 2px dotted #2c3e50;">{{user.surname}} {{user.lastname}}</td>
-                  <td>{{parseFloat(user.ssc_cr).toFixed(1).replace(".", ',')}}%</td>
-                  <td>{{user.ssc_calls}}</td>
-                  <td>{{user.ssc_orders}}</td>
-                  <td style="border-right: 2px dotted #2c3e50;">{{parseFloat(user.ssc_impact).toFixed(1).replace(".", ',')}}%</td>
-                  <td>{{parseFloat(user.bsc_cr).toFixed(1).replace(".", ',')}}%</td>
-                  <td>{{user.bsc_calls}}</td>
-                  <td style="border-right: 2px dotted #2c3e50;">{{user.bsc_orders}}</td>
-                  <td>{{parseFloat(user.portal_cr).toFixed(1).replace(".", ',')}}%</td>
-                  <td>{{user.portal_calls}}</td>
-                  <td style="border-right: 2px dotted #2c3e50;">{{user.portal_orders}}</td>
-                  <td>{{parseFloat(user.optin_cr).toFixed(1).replace(".", ',')}}%</td>
-                  <td style="border-right: 2px dotted #2c3e50;">{{user.optin}}</td>
-                  <td v-if="checkIfOnline(user.online_till)" style="color: #2c3e50"><i class="fas fa-check-circle"></i></td>
-                  <td v-else><i class="fas fa-times-circle"  style="color: #2c3e50"></i></td>
-                </tr>
-                <tr style="font-weight: bold; background-color: #4ca1af; color: #2c3e50; border-top: 2px solid #2c3e50;">
-                  <td style="text-align: left; border-right: 2px dotted #2c3e50;">Projekt</td>
-                  <td>{{sscCR = sscCR.toFixed(1).replace(".", ',')}}%</td>
-                  <td>{{sscCalls}}</td>
-                  <td>{{sscSaves}}</td>
-                  <td style="border-right: 2px dotted #2c3e50;"></td>
-                  <td>{{bscCR = bscCR.toFixed(1).replace(".", ',')}}%</td>
-                  <td>{{bscCalls}}</td>
-                  <td style="border-right: 2px dotted #2c3e50;">{{bscSaves}}</td>
-                  <td>{{portalCR = portalCR.toFixed(1).replace(".", ',')}}%</td>
-                  <td>{{portalCalls}}</td>
-                  <td style="border-right: 2px dotted #2c3e50;">{{portalSaves}}</td>
-                  <td>{{optinQuota = optinQuota.toFixed(1).replace(".", ',')}}%</td>
-                  <td style="border-right: 2px dotted #2c3e50;">{{optin}}</td>
-                  <td></td>
-                </tr>
-              </table>
-              <table class="max-table text-dark" style="width: 100%;" v-else>
-                <tr class="" >
-                  <th>Benutzer</th>
-                  <th @click="sorted('cr')" style="cursor:pointer">CR</th>
-                  <th @click="sorted('calls')" style="cursor:pointer">Calls</th>
-                  <th @click="sorted('orders')" style="cursor:pointer">Saves</th>
-                  <th @click="sorted('online')" style="cursor:pointer">Online</th>
-                </tr >
-                <tr v-bind:class= "[user.cr > 42 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers">
-                  <td></td>
-                  <td>{{user.cr}}%</td>
-                  <td>{{user.calls}}</td>
-                  <td>{{user.orders}}</td>
-                  <td class="bg-white center_items" v-if="checkIfOnline(user.online_till)"><div class="dot-green"></div></td>
-                  <td class="bg-white center_items" v-else><div class="dot-red"></div></td>
-                </tr>
-              </table>
+               <tr style="background-color: #4ca1af; color: #2c3e50">
+                 <th @click="sorted('surname')"  rowspan="2" style="cursor:pointer; text-align: left; border-bottom: 2px solid #2c3e50; border-right: 2px dotted #2c3e50;">Benutzer</th>
+                 <th colspan="4" style="border-right: 2px dotted #2c3e50;">Smallscreen11</th>
+                 <th colspan="3" style="border-right: 2px dotted #2c3e50;">Bigscreen</th>
+                 <th colspan="3" style="border-right: 2px dotted #2c3e50;">Portale</th>
+                 <th colspan="2" style="border-right: 2px dotted #2c3e50;">Optin</th>
+                 <th rowspan="2" @click="sorted('online')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Online</th>
+               </tr>
+               <tr style="background-color: #4ca1af; color: #2c3e50">
+                 <th @click="sorted('ssc_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
+                 <th @click="sorted('ssc_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
+                 <th @click="sorted('ssc_orders')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Saves</th>
+                 <th @click="sorted('ssc_impact')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Impact</th>
+                 <th @click="sorted('bsc_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
+                 <th @click="sorted('bsc_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
+                 <th @click="sorted('bsc_orders')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Saves</th>
+                 <th @click="sorted('portal_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">CR</th>
+                 <th @click="sorted('portal_calls')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Calls</th>
+                 <th @click="sorted('portal_orders')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Saves</th>
+                 <th @click="sorted('optin_cr')" style="cursor:pointer; border-bottom: 2px solid #2c3e50;">Quote</th>
+                 <th @click="sorted('optin')" style="cursor:pointer; border-right: 2px dotted #2c3e50; border-bottom: 2px solid #2c3e50;">Stück</th>
+               </tr>
+               <tr v-bind:class= "[user.ssc_cr > 51 ? 'good-bg' : 'bad-bg']" v-for="user in sortedUsers">
+                 <td style="text-align: left; border-right: 2px dotted #2c3e50;">{{user.surname}} {{user.lastname}}</td>
+                 <td>{{user.ssc_cr}}%</td>
+                 <td>{{user.ssc_calls}}</td>
+                 <td>{{user.ssc_orders}}</td>
+                 <td style="border-right: 2px dotted #2c3e50;">{{parseFloat(user.ssc_impact).toFixed(1).replace(".", ',')}}%</td>
+                 <td>{{user.bsc_cr}}%</td>
+                 <td>{{user.bsc_calls}}</td>
+                 <td style="border-right: 2px dotted #2c3e50;">{{user.bsc_orders}}</td>
+                 <td>{{user.portal_cr}}%</td>
+                 <td>{{user.portal_calls}}</td>
+                 <td style="border-right: 2px dotted #2c3e50;">{{user.portal_orders}}</td>
+                 <td>{{user.optin_cr}}%</td>
+                 <td style="border-right: 2px dotted #2c3e50;">{{user.optin}}</td>
+                 <td v-if="checkIfOnline(user.online_till)" style="color: #2c3e50"><i class="fas fa-check-circle"></i></td>
+                 <td v-else><i class="fas fa-times-circle"  style="color: #2c3e50"></i></td>
+               </tr>
+               <tr style="font-weight: bold; background-color: #4ca1af; color: #2c3e50; border-top: 2px solid #2c3e50;">
+                 <td style="text-align: left; border-right: 2px dotted #2c3e50;">Projekt</td>
+                 <td>{{sscCR}}%</td>
+                 <td>{{sscCalls}}</td>
+                 <td>{{sscSaves}}</td>
+                 <td style="border-right: 2px dotted #2c3e50;"></td>
+                 <td>{{bscCR}}%</td>
+                 <td>{{bscCalls}}</td>
+                 <td style="border-right: 2px dotted #2c3e50;">{{bscSaves}}</td>
+                 <td>{{portalCR}}%</td>
+                 <td>{{portalCalls}}</td>
+                 <td style="border-right: 2px dotted #2c3e50;">{{portalSaves}}</td>
+                 <td>{{optinQuota }}%</td>
+                 <td style="border-right: 2px dotted #2c3e50;">{{optin}}</td>
+                 <td></td>
+               </tr>
+             </table>
+
             </div>
           </div>
         </div>
@@ -288,12 +269,12 @@
     export default {
       data(){
         return{
-          users: [1,2,3],
+          users: [],
           currentSort:'ssc_cr',
           currentSortDir:'desc',
           SscGeVoCr: 0,
-          sscCalls: 0,
-          bscCalls: 0,
+          sscCalls: 11,
+          bscCalls: 11,
           bscSaves: 0,
           portalCalls: 0,
           portalSaves: 0,
@@ -317,6 +298,7 @@
       mounted() {
         var self = this;
         console.log('ptable Component mounted.')
+
         self.getUserData('Mobile')
         self.getDailyQouta('Mobile')
         this.timer =
@@ -381,11 +363,11 @@
         },
       },
       methods:{
-        reload() {
-          this.state = false;
-          this.value++;
-          this.$nextTick(() => this.state = true);
-        },
+        // reload() {
+        //   this.state = false;
+        //   this.value++;
+        //   this.$nextTick(() => this.state = true);
+        // },
         sorted(s) {
           //if s == current sort, reverse
           if(s === this.currentSort) {
@@ -406,58 +388,55 @@
           });
           parameters = JSON.stringify(parameters);
 
-          console.log(parameters);
-          var currentdate = new Date();
-          let timestamp = "Last Sync: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
-                + currentdate.getFullYear() + " @ "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
+          // console.log(parameters);
+          // var currentdate = new Date();
+          // let timestamp = "Last Sync: " + currentdate.getDate() + "/"
+          //       + (currentdate.getMonth()+1)  + "/"
+          //       + currentdate.getFullYear() + " @ "
+          //       + currentdate.getHours() + ":"
+          //       + currentdate.getMinutes() + ":"
+          //       + currentdate.getSeconds();
 
           axios.get
+          // ('http://'+host+'/care4as/care4as/public/users/getTrackingAlt/'+dep)
           // ('http://'+host+'/care4as/care4as/public/users/getTracking/'+parameters)
           ('http://'+host+'/users/getTracking/'+parameters)
+          // ('http://'+host+'/users/getTrackingAlt/'+dep)
           .then(response => {
-            if(response.data)
-            {
-              // console.log(response.data)
-              var currentdate = new Date();
-              console.log('update: '+timestamp)
-              if(this.department == 'Mobile')
-              {
-                // console.log(response.data[1])
-                this.users = response.data[1]
-                this.sscCalls = response.data[2]['ssc_calls']
-                this.sscSaves = response.data[2]['ssc_orders']
-                this.bscSaves = response.data[2]['bsc_orders']
-                this.bscCalls = response.data[2]['bsc_calls']
-                this.portalCalls = response.data[2]['portal_calls']
-                this.portalSaves = response.data[2]['portal_orders']
-                this.calls = response.data[2]['calls']
-                this.saves = response.data[2]['orders']
-                this.optin = response.data[2]['optin']
-                this.agl0stk = response.data[2]['al_0']
-                this.agl1stk = response.data[2]['al_1']
-                this.agl2stk = response.data[2]['al_2']
-                this.agl3stk = response.data[2]['al_3']
-                this.agl4stk = response.data[2]['al_4']
-                this.agl5stk = response.data[2]['al_5']
-                this.top5user = response.data[3]
-              }
 
-              this.createAglChart();
+            this.users = response.data[1]
+            // this.users = response.data[1]
+            this.sscCalls = response.data[2]['ssc_calls']
+            this.sscSaves = response.data[2]['ssc_saves']
+            this.bscSaves = response.data[2]['bsc_saves']
+            this.bscCalls = response.data[2]['bsc_calls']
+            this.portalCalls = response.data[2]['portal_calls']
+            this.portalSaves = response.data[2]['portal_saves']
+            this.calls = response.data[2]['calls']
+            this.saves = response.data[2]['orders']
+            this.optin = response.data[2]['optins']
+            this.agl0stk = response.data[2]['al_0']
+            this.agl1stk = response.data[2]['al_1']
+            this.agl2stk = response.data[2]['al_2']
+            this.agl3stk = response.data[2]['al_3']
+            this.agl4stk = response.data[2]['al_4']
+            this.agl5stk = response.data[2]['al_5']
+            this.top5user = response.data[3]
+            this.createAglChart();
+            this.setUsers(response.data[1])
 
-            }
-            else
-            {
-              console.log('No Data avaiable')
-            }
+
             })
           .catch(function (err) {
             console.log('Error fetching Performance Table data')
             console.log(err.response);
           })
+
+        },
+        setUsers(userob)
+        {
+          this.users = userob
+          // console.log(this.users)
         },
         changeDepartment(dep)
         {
@@ -473,14 +452,13 @@
             this.getUserData(dep)
             this.getDailyQouta(dep)
           }.bind(this), 60000);
-
           // console.log(this.department)
         },
         getDailyQouta(dep){
           var host = window.location.host;
           let department = dep
-          let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
-          this.createChart('dailyQuota', testarray)
+          // let testarray = [[0,15.38,30.3,33.33,36.25,40.91,45.99,45.18,49.48],[0,0,25,36.11,35,37.35,42.31,43.9,47.59],["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00"]]
+          // this.createChart('dailyQuota', testarray)
           // axios.get('http://'+host+'/care4as/care4as/public/kdw/getQuotas/'+department) // Richtige Daten
           axios.get('http://'+host+'/kdw/getQuotas/'+department)
           .then(response =>
@@ -568,9 +546,6 @@
           $('#aglchartcontainer').append('<canvas id="'+chartId+'" width="" height="" style="max-width: 100%;"></canvas>')
           // console.log('test')
         }
-
-
-
       const ctx = document.getElementById(chartId);
       let myChart = new Chart(ctx, {
         type: 'doughnut',

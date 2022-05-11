@@ -123,7 +123,7 @@ export default {
       })
     .catch(err => {
       this.createChart('myChart' + this.userid, testdata)
-      console.log('error Tracker11')
+      console.log('error Tracker')
       console.log(testdata)
       console.log(err);
     })

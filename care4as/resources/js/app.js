@@ -24,6 +24,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('simulator', require('./components/TrainingsSimulator.vue').default);
 Vue.component('trackchart', require('./components/Tracker.vue').default);
 Vue.component('ptable', require('./components/performanceTable.vue').default);
+Vue.component('ptablealt', require('./components/performanceTableAlt.vue').default);
 
 Vue.component('ptool', require('./components/pausetracker.vue').default);
 Vue.component('timetracker', require('./components/TimeTracking.vue').default);

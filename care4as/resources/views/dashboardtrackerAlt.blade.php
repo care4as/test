@@ -3,7 +3,7 @@
 @section('additional_css')
 <link rel="stylesheet" type="text/css" href="{{asset('slick/slick/slick.css')}}"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
-<script src="{{asset('js/app.js?v='.time())}}" ></script>
+<!-- <script src="{{asset('js/app.js?v='.time())}}" ></script> -->
 <style>
 td,tr,table
 {
@@ -127,7 +127,7 @@ margin: 0 auto;
  color: black !important;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Radio+Canada:wght@300;400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Radio+Canada:wght@300;400;500;600;700&display=swap'); */
 </style>
 @endsection
 
@@ -159,7 +159,7 @@ margin: 0 auto;
       <div class="row m-4 borders-roundedlight">
         <div class="col">
           <div class="row">
-              <ptable></ptable>
+              <ptableAlt></ptableAlt>
               </div>
             </div>
           </div>
@@ -213,7 +213,7 @@ margin: 0 auto;
                             </span>
                           </a>
                         </h5>
-                      <!-- <trackchart :userid="{{$user->id}}"> </trackchart> -->
+                      <trackchart :userid="{{$user->id}}"> </trackchart>
                     </div>
                   @endforeach
                 </div>
@@ -348,8 +348,8 @@ margin: 0 auto;
 </div>
 @endsection
 @section('additional_js')
-<script src="/js/app.js"></script>
-<script type="text/javascript" src="/js/app.js?v=2.4.1"></script>
+<!-- <script src="/js/app.js"></script> -->
+<!-- <script type="text/javascript" src="/js/app.js?v=2.4.1"></script> -->
 <script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
 

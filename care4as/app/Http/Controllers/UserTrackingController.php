@@ -112,16 +112,12 @@ class UserTrackingController extends Controller
           $user->orders = $user->ssc_orders + $user->bsc_orders + $user->portal_orders;
           $user->optins = $user->salesdata->optin;
 
-          if($user->ssc_calls != 0)
-          {
-            $user->ssc_quota = round(($user->ssc_orders*100/$user->ssc_calls),2);
-          }
-          else {
-            $user->ssc_quota = 0;
-          }
 
+          $user->ssccr = $this->getQuota($user->ssc_calls, $user->ssc_orders);
           $user->cr = $this->getQuota($user->calls, $user->orders);
           $user->bsccr = $this->getQuota($user->bsc_calls, $user->bsc_orders);
+          $user->portalcr = $this->getQuota($user->portal_calls, $user->portal_orders);
+          $user->optincr = $this->getQuota($user->calls, $user->optins);
         }
         //the users in the dsl department
         else {
@@ -205,7 +201,7 @@ class UserTrackingController extends Controller
       } else {
         $project = '1und1 DSL Retention';
       }
-      
+
       $trackCalls = DB::table('track_calls')
         ->whereDate('created_at', '=', Carbon::today())
         ->get();
@@ -226,7 +222,7 @@ class UserTrackingController extends Controller
         ->whereIn('department', ['Agenten', 'Backoffice', 'Qualitätsmanagement'])
         ->get();
       }
-      
+
 
       foreach($users as $key => $user){
         $user->calls = $trackCalls->where('user_id', $user->id)->sum('calls');
@@ -251,7 +247,7 @@ class UserTrackingController extends Controller
         $user->al_5 = $trackEvents->where('created_by', $user->id)->where('al_group', 5)->where('product_category', 'SSC')->where('event_category', 'Save')->count();
       }
 
-      //Sum SSC Calls and Saves 
+      //Sum SSC Calls and Saves
       $sumSscCalls = $users->sum('ssc_calls');
       $sumSscOrders = $users->sum('ssc_orders');
 
@@ -298,11 +294,14 @@ class UserTrackingController extends Controller
 
     public function getTracking($id='')
     {
+      // the goal is to create an array like array(array(12:30,13:30),array(12%,27%,34%)) to connect quotas to timestamps
       $timestamparray = array();
       $quotaarray = array();
 
+      //get the tracking for the user
       $user = User::find($id);
 
+      // die getrackten intermediates from the kdw tool
       $intermediates = DB::Table('intermediate_status')
       ->where('person_id',$user->{'1u1_person_id'})
       ->whereDate('date',Carbon::today())
