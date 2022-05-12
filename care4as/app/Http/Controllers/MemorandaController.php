@@ -37,12 +37,14 @@ class MemorandaController extends Controller
      */
     public function store(Request $request)
     {
+        //reuqired are content title an to whom the memo goes
         $request->validate([
           'content' => 'required',
           'to' => 'required',
           'title' => 'required',
         ]);
 
+        //if an image is attached
         if(request('image'))
         {
           $has_image = 1;
@@ -50,7 +52,7 @@ class MemorandaController extends Controller
         else {
           $has_image = false;
         }
-
+        // for the TranformRequestToModel function to work we need an array of properties which we dont take from the request
         $additionalProperties = array(
           'created_by' => Auth()->id(),
           'has_image' => $has_image
@@ -61,6 +63,7 @@ class MemorandaController extends Controller
         $memo = new Memoranda;
         $memo->TranformRequestToModel($transformed,$additionalProperties);
 
+        //saves the image in folder publc/MeMoImages and the data to the database
         if($file = request()->file('image'))
         {
           $image = new Image;
@@ -73,6 +76,7 @@ class MemorandaController extends Controller
           $image->save();
         }
 
+        //selects the recipients
         if($request->to != 'all')
         {
           $recipients = User::where('status',1)

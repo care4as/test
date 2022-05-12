@@ -85,8 +85,11 @@ Route::group(['middleware' => 'auth'], function () {
   // Ende  DASHBOARD
 
   // Start MEMORANDA
+    //returns the view to create Memorandas
     Route::view('/memos/create', 'createMemo')->name('memo.create');
+    //saves Memos in the db
     Route::post('/memos/store', 'MemorandaController@store')->name('memo.store');
+    //
     Route::get('/memo/read/{id}', 'MemorandaController@read')->name('memo.read');
     Route::get('/memo/checkMeMos', 'MemorandaController@checkMemos')->name('memo.check');
   // Ende  MEMORANDA
@@ -217,7 +220,7 @@ Route::group(['middleware' => 'auth'], function () {
   // Ende  REPORTING
 
   // Start KONFIGURATION
-    // REPORTING
+    //
       Route::get('/config/app', 'Configcontroller@index')->name('config.view')->middleware('hasRight:config_base');
       Route::get('/config/activateIntervallMailMobile', 'Configcontroller@activateIntermediateMailMobile')->name('config.activateIntermediateMail.mobile')->middleware('hasRight:config_base');
       Route::get('/config/activateIntervallMailDSL', 'Configcontroller@activateIntermediateMailDSL')->name('config.activateIntermediateMail.dsl')->middleware('hasRight:config_base');
@@ -231,6 +234,7 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/config/deactivateIntervallMailMobile', 'Configcontroller@deactivateIntermediateMailMobile')->name('config.deactivateIntermediateMail.mobile')->middleware('hasRight:config_base');
       Route::get('/config/deactivateIntervallMailDSL', 'Configcontroller@deactivateIntermediateMailDSL')->name('config.deactivateIntermediateMail.dsl')->middleware('hasRight:config_base');
       Route::post('/config/updateEmailprovider', 'Configcontroller@updateEmailprovider')->name('config.updateEmailprovider')->middleware('hasRight:config_base');
+      //deletes a queue process from the database
       Route::get('/config/deleteProcess/{id}', 'Configcontroller@deleteProcess')->name('config.deleteProcess')->middleware('hasRight:config_base');
       Route::post('/config/telefonica/changePauseConfig', 'Configcontroller@changePIPTelefonica')->name('telefonica.changePausePeople')->middleware('hasRight:config_base');
       Route::get('/config/sendIntermail', 'Configcontroller@sendInters')->name('intersmail.rene');

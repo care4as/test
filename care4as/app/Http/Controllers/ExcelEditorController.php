@@ -30,8 +30,12 @@ class ExcelEditorController extends Controller
       $fromRow = 1;
       $insertData = array();
 
+      //disables the querie log for better performanc
       DB::disableQueryLog();
+
+      //disables the webservers memory limit for realy big files
       ini_set('memory_limit', '-1');
+      //disables the default exec time cause realy big files can take up to 20 minutes to import
       ini_set('max_execution_time', '0'); // for infinite time of execution
 
       $request->validate([
@@ -39,11 +43,12 @@ class ExcelEditorController extends Controller
         // 'name' => 'required',
       ]);
 
+      //in this two lines the excel file is transformed to an php array
       $file = request()->file('file');
-
       $data = Excel::ToArray(new DataImport, $file)[0];
 
       // dd($data);
+      //iterate through the files to make an db importable array
       for ($i=$fromRow-1; $i <= count($data)-1; $i++) {
       // for ($i=$fromRow-1; $i <= 10; $i++) {
 
@@ -242,7 +247,7 @@ class ExcelEditorController extends Controller
         } else if ($insertData[$i]['date'] < $minDate){
           $minDate = $insertData[$i]['date'];
         }
-        
+
         if ($maxDate == null) {
           $maxDate = $insertData[$i]['date'];
         } else if ($insertData[$i]['date'] > $maxDate){
@@ -357,7 +362,7 @@ class ExcelEditorController extends Controller
           } else if ($insertData[$i]['date'] < $minDate){
             $minDate = $insertData[$i]['date'];
           }
-          
+
           if ($maxDate == null) {
             $maxDate = $insertData[$i]['date'];
           } else if ($insertData[$i]['date'] > $maxDate){
@@ -958,7 +963,7 @@ class ExcelEditorController extends Controller
         } else if ($date < $minDate){
           $minDate = $date;
         }
-        
+
         if ($maxDate == null) {
           $maxDate = $date;
         } else if ($date > $maxDate){
@@ -1042,22 +1047,22 @@ class ExcelEditorController extends Controller
           [
             'department_desc' => $insertarray[$i]['department_desc'],
             'calls' => $insertarray[$i]['calls'],
-            'calls_smallscreen' => $insertarray[$i]['calls_smallscreen'], 
-            'calls_bigscreen' => $insertarray[$i]['calls_bigscreen'], 
-            'calls_portale' => $insertarray[$i]['calls_portale'], 
-            'orders' => $insertarray[$i]['orders'], 
-            'orders_smallscreen' => $insertarray[$i]['orders_smallscreen'], 
-            'orders_bigscreen' => $insertarray[$i]['orders_bigscreen'], 
-            'orders_portale' => $insertarray[$i]['orders_portale'], 
-            'Rabatt_Guthaben_Brutto_Mobile' => $insertarray[$i]['Rabatt_Guthaben_Brutto_Mobile'], 
-            'mvlzNeu' => $insertarray[$i]['mvlzNeu'], 
-            'rlzPlus' => $insertarray[$i]['rlzPlus'], 
+            'calls_smallscreen' => $insertarray[$i]['calls_smallscreen'],
+            'calls_bigscreen' => $insertarray[$i]['calls_bigscreen'],
+            'calls_portale' => $insertarray[$i]['calls_portale'],
+            'orders' => $insertarray[$i]['orders'],
+            'orders_smallscreen' => $insertarray[$i]['orders_smallscreen'],
+            'orders_bigscreen' => $insertarray[$i]['orders_bigscreen'],
+            'orders_portale' => $insertarray[$i]['orders_portale'],
+            'Rabatt_Guthaben_Brutto_Mobile' => $insertarray[$i]['Rabatt_Guthaben_Brutto_Mobile'],
+            'mvlzNeu' => $insertarray[$i]['mvlzNeu'],
+            'rlzPlus' => $insertarray[$i]['rlzPlus'],
             'orders_kuerue' => $insertarray[$i]['orders_kuerue'],
           ]
         );
       }
 
-      
+
 
       // return response()->json($insertarray);
       // return redirect()->back();
@@ -1244,19 +1249,19 @@ class ExcelEditorController extends Controller
             $availbenchArray[$i]['acceptance_rate'] = floatval(str_replace(',', '.', str_replace('.', '', $row[22])));
             $availbenchArray[$i]['total_costs_per_interval'] = floatval(str_replace(',', '.', str_replace('.', '', $row[23])));
             $availbenchArray[$i]['malus_approval_done'] = intval($row[24]);
-  
+
             if ($minDate == null) {
               $minDate = $availbenchArray[$i]['date_date'];
             } else if ($availbenchArray[$i]['date_date'] < $minDate){
               $minDate = $availbenchArray[$i]['date_date'];
             }
-  
+
             if ($maxDate == null) {
               $maxDate = $availbenchArray[$i]['date_date'];
             } else if ($availbenchArray[$i]['date_date'] > $maxDate){
               $maxDate = $availbenchArray[$i]['date_date'];
             }
-  
+
             $i++;
           }
         }
@@ -1578,7 +1583,7 @@ class ExcelEditorController extends Controller
       // $modul = 'Userübersicht';
 
       $startDateString = request('dailyAgentStartDate');
-      $endDateString = request('dailyAgentEndDate'); 
+      $endDateString = request('dailyAgentEndDate');
       $filter = request('dailyAgentFilter');
       $groupName = request('dailyAgentAgentGroupName');
       $agentId = request('dailyAgentAgentId');
@@ -1667,7 +1672,7 @@ class ExcelEditorController extends Controller
             return (new DailyAgentExport)->whereStartDate($startDate)->whereEndDate($endDate)->whereStatus($statusArray)->whereAgentId(intval($agentId))->download('DailyAgentExport.xlsx');
           }
         break;
-  
+
       }
     }
 

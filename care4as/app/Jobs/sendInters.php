@@ -37,6 +37,16 @@ class sendInters implements ShouldQueue
      */
     public function handle()
     {
+      /*
+
+      this job is supposed to collect the dsl sales information from the kdw tool and send it to the scriptmaster pc controlled
+      by Rene Schmidt.
+
+      1. Collect the data
+      2.
+      */
+
+      // the salesinfo of today
       $dslSalesData = DB::connection('mysqlkdwtracking')
       ->table('1und1_dslr_tracking_inb_new_ebk')
       // ->whereIn('MA_id', $userids)
@@ -45,7 +55,6 @@ class sendInters implements ShouldQueue
 
       // dd($dslSalesData);
       $retsaves = $dslSalesData->sum('ret_de_1u1_rt_save');
-
       $calls = $dslSalesData->sum('calls');
 
       $data = array('retsaves' =>$retsaves,
@@ -75,6 +84,7 @@ class sendInters implements ShouldQueue
         // $asString = 0.2 .' Minutes';
         }
 
+      //repeats the process
       $this::dispatch()->delay(now()->add($asString))->onConnection('database')->onQueue('sendInters');
     }
 }

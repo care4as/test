@@ -48,11 +48,14 @@ class Intermediate implements ShouldQueue
      */
     public function handle()
     {
+      //gets all the mobile retention salesdata from today
       $mobileSalesSata = DB::connection('mysqlkdwtracking')
       ->table('1und1_mr_tracking_inb_new_ebk')
       // ->whereIn('MA_id', $userids)
       ->whereDate('date', '=', Carbon::today())
       ->get();
+
+      //gets all the dsl  retention salesdata from today, as of now not wanted
 
       $dslSalesData = DB::connection('mysqlkdwtracking')
       ->table('1und1_dslr_tracking_inb_new_ebk')
@@ -60,23 +63,19 @@ class Intermediate implements ShouldQueue
       ->whereDate('date', '=', Carbon::today())
       ->get();
 
+      //get the agent_ids to connect with the user in our db
       $trackingidsMobile = $mobileSalesSata->pluck('agent_ds_id')->toArray();
       $trackingidsDSL = $dslSalesData->pluck('agent_ds_id')->toArray();
       $trackingids = array_merge($trackingidsMobile, $trackingidsDSL);
 
-
+      //gets the users from our db
       $users = User::whereIn('kdw_tracking_id',$trackingids)
       ->where(function ($q) {
           $q->where('role','Agent_Mobile')->orWhere('role', 'Agent_DSL');
         })
       ->get();
 
-      // $usersDSL = User::whereIn('kdw_tracking_id',$trackingidsMobile)
-      // ->where('role','Agent_DSL')
-      // ->get();
-
-      // dd($users);
-
+      //connects the data to the users
       if(!$users->first())
       {
         $insertarray[] = array(
@@ -99,9 +98,10 @@ class Intermediate implements ShouldQueue
 
       foreach($users as $user)
       {
+        // if the user is the mobile department
         if($user->salesdata = $mobileSalesSata->where('agent_ds_id', $user->kdw_tracking_id)->first())
         {
-          // dd($user);
+          // check if the user has valid data
           if($user->{'1u1_person_id'})
           {
               $insertarray[] = array(
@@ -121,12 +121,10 @@ class Intermediate implements ShouldQueue
           }
 
         }
+        //if the user is in the dsl department
         else {
-
             $user->salesdata = $dslSalesData->where('agent_ds_id', $user->kdw_tracking_id)->first();
-
             // dd($user);
-
             if($user->{'1u1_person_id'})
             {
               $insertarray[] = array(
@@ -153,6 +151,7 @@ class Intermediate implements ShouldQueue
         DB::table('intermediate_status')->insert($insertarray);
       }
 
+    //puts itself back in the queue, by finding the next xx:30 o'clock Timestamp, except its after 22:00 o'clock or before 8:00 o'clock
     $time =  time();
 
     if (Carbon::parse($time) < Carbon::createFromTimeString('22:00'))
@@ -173,6 +172,7 @@ class Intermediate implements ShouldQueue
       $asString = ($timediff/60) + 1 .' Minutes';
     }
 
+    //put the whole process back in the database
    if ($this->repeat != 'nonsync') {
 
     $this::dispatch('repeat')->delay(now()->add($asString))->onQueue('intermediate')->onConnection('database');

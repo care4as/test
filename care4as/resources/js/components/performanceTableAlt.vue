@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-5 m-2 center_items bg-white shadow">
         <div class="row m-0 center_items" v-if="department=='Mobile'">
-           <div class="col-md-5 rotated  m-2 p-2" v-bind:class= "[this.sscCR > 51.7 ? 'bg-success' : 'bg-danger text-white']">
+           <div class="col-md-5 rotated  m-2 p-2" v-bind:class= "[this.sscCR > 50.5 ? 'bg-success' : 'bg-danger text-white']">
              <div class="row m-1 text-center">
                SSC-CR:
              </div>
@@ -19,7 +19,7 @@
                 <p>Calls: {{sscCalls}} / Saves: {{sscSaves}}</p>
               </div>
             </div>
-            <div class="col-md-5 m-2 rotated bg-light p-2" v-bind:class= "[this.bscCR > 20 ? 'bg-success' : 'bg-danger text-white']">
+            <div class="col-md-5 m-2 rotated bg-light p-2" v-bind:class= "[this.bscCR > 18 ? 'bg-success' : 'bg-danger text-white']">
               <div class="row m-1">
                 BSC-CR:
               </div>
@@ -35,7 +35,7 @@
                <p>Calls: {{bscCalls}} / Saves: {{bscSaves}}</p>
              </div>
             </div>
-            <div class="col-md-5 m-2 rotated bg-light p-2 " v-bind:class= "[this.portalCR > 60 ? 'bg-success' : 'bg-danger text-white']">
+            <div class="col-md-5 m-2 rotated bg-light p-2 " v-bind:class= "[this.portalCR > 68 ? 'bg-success' : 'bg-danger text-white']">
               <div class="row m-1">
                 Portal-CR:
               </div>
@@ -84,7 +84,7 @@
                       <th @click="sorted('orders')" style="cursor:pointer">BSC-Saves</th>
                       <th @click="sorted('online')" style="cursor:pointer">online</th>
                     </tr>
-                    <tr class="" v-bind:class= "[user.ssccr > 50 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers" :key="sortedUsers.id">
+                    <tr class="" v-bind:class= "[user.ssccr > 50.5 ? 'bg-success' : 'bg-danger text-white']" v-for="user in sortedUsers" :key="sortedUsers.id">
                       <td>{{user.surname}} {{user.lastname}}</td>
                       <td>{{user.ssccr}}%</td>
                       <td>{{user.ssc_calls}}</td>
@@ -164,6 +164,7 @@ import Chart from 'chart.js';
         }, 60000);
       },
       computed:{
+        //sorts the users based on the attributes u click in the table, like ssccr, ssccalls etc.
         sortedUsers:function() {
           return this.users.sort((a,b) => {
             let modifier = 1;
@@ -223,6 +224,7 @@ import Chart from 'chart.js';
         //   this.value++;
         //   this.$nextTick(() => this.state = true);
         // },
+        //sorts the users based on the attributes u click in the table, like ssccr, ssccalls etc.
         sorted(s) {
           //if s == current sort, reverse
           if(s === this.currentSort) {
@@ -230,6 +232,7 @@ import Chart from 'chart.js';
           }
           this.currentSort = s;
         },
+        //gets the user data, the sales data per user
         getUserData(dep){
 
           var host = window.location.host;
@@ -283,10 +286,10 @@ import Chart from 'chart.js';
                 // this.agl5stk = response.data[2]['al_5']
                 // this.top5user = response.data[3]
 
-              console.log("User:")
-              console.log(this.users)
+              // console.log("User:")
+              // console.log(this.users)
               // this.createAglChart();
-              this.users = response.data[0]
+              // this.users = response.data[0]
             }
             else
             {
@@ -298,6 +301,7 @@ import Chart from 'chart.js';
             console.log(err.response);
           })
         },
+        // if the user wants
         changeDepartment(dep)
         {
           this.department = dep
