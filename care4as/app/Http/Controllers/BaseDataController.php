@@ -92,9 +92,11 @@ class BaseDataController extends Controller
     }
 
     public function getDbEntries($employees, $projects){
+       
         $data = DB::table('basedatachange')
         ->get();      
 
+        dd($data);
         // Werte lesbar machen
         foreach($data as $key => $entry){
             if($entry->type == 'contract_hours'){
