@@ -96,7 +96,6 @@ class BaseDataController extends Controller
         $data = DB::table('basedatachange')
         ->get();      
 
-        dd($data);
         // Werte lesbar machen
         foreach($data as $key => $entry){
             if($entry->type == 'contract_hours'){
@@ -107,6 +106,7 @@ class BaseDataController extends Controller
                 $entry->value_old = $projects->where('ds_id', $entry->value_old)->first()->bezeichnung;
                 $entry->value_new = $projects->where('ds_id', $entry->value_new)->first()->bezeichnung;
             }
+            dd($entry);
             $entry->ds_id = $employees->where('ds_id', $entry->ds_id)->first()->familienname . ', ' . $employees->where('ds_id', $entry->ds_id)->first()->vorname;
         }
 
