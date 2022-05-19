@@ -14,7 +14,7 @@ class BaseDataController extends Controller
         
         $data = array();
         $data['employees'] = $this->getAllEmployees();
-        $data['unfiltered_employees'] = $this->getAllEmployees();
+        $data['unfiltered_employees'] = $this->getUnfilteredEmployees();
         $data['projects'] = $this->getAllProjects();
         $data['entries'] = $this->getDbEntries($data['unfiltered_employees'], $data['projects']);
 
@@ -106,7 +106,6 @@ class BaseDataController extends Controller
                 $entry->value_old = $projects->where('ds_id', $entry->value_old)->first()->bezeichnung;
                 $entry->value_new = $projects->where('ds_id', $entry->value_new)->first()->bezeichnung;
             }
-            dd($entry);
             $entry->ds_id = $employees->where('ds_id', $entry->ds_id)->first()->familienname . ', ' . $employees->where('ds_id', $entry->ds_id)->first()->vorname;
         }
 
