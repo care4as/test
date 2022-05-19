@@ -14,8 +14,9 @@ class BaseDataController extends Controller
         
         $data = array();
         $data['employees'] = $this->getAllEmployees();
+        $data['unfiltered_employees'] = $this->getAllEmployees();
         $data['projects'] = $this->getAllProjects();
-        $data['entries'] = $this->getDbEntries($data['employees'], $data['projects']);
+        $data['entries'] = $this->getDbEntries($data['unfiltered_employees'], $data['projects']);
 
         return view('usermanagement.baseDataChange', compact('data'));
     }
@@ -58,7 +59,7 @@ class BaseDataController extends Controller
     }
 
     public function getAllEmployees(){
-        $data =  DB::connection('mysqlkdw')                            
+        $data = DB::connection('mysqlkdw')                            
         ->table('MA')
         ->where(function($query){
             $query
@@ -71,8 +72,17 @@ class BaseDataController extends Controller
         return $data;
     }
 
+    public function getUnfilteredEmployees(){
+        $data = DB::connection('mysqlkdw')                            
+        ->table('MA')
+        ->get(['ds_id', 'vorname', 'familienname'])
+        ->sortBy('familienname');
+
+        return $data;
+    }
+
     public function getAllProjects(){
-        $data =  DB::connection('mysqlkdw')                            
+        $data = DB::connection('mysqlkdw')                            
         ->table('projekte')
         ->where('in_progress', 1)
         ->get(['ds_id', 'bezeichnung'])
@@ -82,7 +92,7 @@ class BaseDataController extends Controller
     }
 
     public function getDbEntries($employees, $projects){
-        $data =  DB::table('basedatachange')
+        $data = DB::table('basedatachange')
         ->get();      
 
         // Werte lesbar machen
