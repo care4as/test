@@ -153,7 +153,7 @@ function roundUp($calls,$quotient)
               <input type="radio" class="btn-check" name="show_container" value="show_history_container" id="show_history_container" autocomplete="off" onchange="updateShowContainer()">
               <label class="btn btn-outline-primary" for="show_history_container" style="min-width: 150px;">Historie</label>
               <input type="radio" class="btn-check" name="show_container" value="show_month_container" id="show_month_container" autocomplete="off" onchange="updateShowContainer()">
-              <label class="btn btn-outline-primary last-btn-group-element" for="show_month_container" style="min-width: 150px;">Monatsübersicht</label>
+              <label class="btn btn-outline-primary last-btn-group-element" for="show_month_container" style="min-width: 150px;">Wochenübersicht</label>
             </div>
           </div>
         </div>
@@ -212,17 +212,59 @@ function roundUp($calls,$quotient)
             </div>
             <div class="max-main-container" style="margin-top: 40px">
                 <div class="tracking_title">
+                    Zielerreichung
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; margin: 10px; row-gap: 10px;" >
+                    <div style="font-weight: bold;">Bezeichnung</div>
+                    <div style="text-align: center; font-weight: bold;">Wert</div>
+                    <div>Saves Heute</div>
+                    <div style="text-align: center">
+                        @if($userdata->soll_h_day == 8) {{$history->whereIn('product_category',["SSC", "BSC", "Portale"])->where('event_category', 'Save')->count()}} / {{$value = ceil((31.25 * 40) / 100)}}
+                        @elseif($userdata->soll_h_day == 7) {{$history->whereIn('product_category',["SSC", "BSC", "Portale"])->where('event_category', 'Save')->count()}} / {{$value = ceil((31.25 * 35) / 100)}}
+                        @elseif($userdata->soll_h_day == 6) {{$history->whereIn('product_category',["SSC", "BSC", "Portale"])->where('event_category', 'Save')->count()}} / {{$value = ceil((31.25 * 30) / 100)}}
+                        @elseif($userdata->soll_h_day == 5) {{$history->whereIn('product_category',["SSC", "BSC", "Portale"])->where('event_category', 'Save')->count()}} / {{$value = ceil((31.25 * 25) / 100)}}
+                        @elseif($userdata->soll_h_day == 4) {{$history->whereIn('product_category',["SSC", "BSC", "Portale"])->where('event_category', 'Save')->count()}} / {{$value = ceil((31.25 * 20) / 100)}}
+                        @elseif($userdata->soll_h_day == 3) {{$history->whereIn('product_category',["SSC", "BSC", "Portale"])->where('event_category', 'Save')->count()}} / {{$value = ceil((31.25 * 15) / 100)}}
+                        @else Fehler Sollstunden KDW
+                        @endif
+                    </div>
+                    <div>Saves Woche (fortlaufend)</div>
+                    <div style="text-align: center">
+                    @if(date('w') <= 5)
+                        @if($userdata->soll_h_day == 8) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (40 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 7) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (35 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 6) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (30 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 5) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (25 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 4) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (20 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 3) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (15 - $userVacation)) / 100) * date('w'))}}
+                        @else Fehler Sollstunden KDW
+                        @endif
+                    @else
+                        @if($userdata->soll_h_day == 8) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (40 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 7) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (35 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 6) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (30 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 5) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (25 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 4) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (20 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 3) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (15 - $userVacation)) / 100) * 5)}}
+                        @else Fehler Sollstunden KDW
+                        @endif
+                    @endif
+                    </div>
+                </div>
+            </div>
+            <div class="max-main-container" style="margin-top: 40px">
+                <div class="tracking_title">
                     Sonstige KPI
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; margin: 10px; row-gap: 10px;" >
                     <div style="font-weight: bold;">Bezeichnung</div>
                     <div style="text-align: center; font-weight: bold;">Wert</div>
                     <div>RLZ+24 Anteil</div>
-                    <div style="text-align: center">{{roundUP(($allSavesD = $sscSaves + $bscSaves + $portaleSaves),$rlzP = $history->where('event_category','Save')->where('runtime', 1)->count())}}%</i></div>
+                    <div style="text-align: center">{{roundUP(($allSavesD = $sscSaves + $bscSaves + $portaleSaves),$rlzP = $history->where('event_category','Save')->where('runtime', 1)->count())}}%</div>
                     <div>OptIn Quote</div>
-                    <div style="text-align: center">{{roundUp($allCallsD,$history->where('optin',1)->count())}}%</i></div>
+                    <div style="text-align: center">{{roundUp($allCallsD,$history->where('optin',1)->count())}}%</div>
                 </div>
-            </div>
+            </div>    
         </div>
         <!-- START ORDERS -->
             <div class="col-xl-6 col-lg-12">
@@ -383,7 +425,7 @@ function roundUp($calls,$quotient)
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
-                    Monatsübersicht
+                    Wochenübersicht
                 </div>
                 <div style="display: flex; margin: 10px; row-gap: 20px; flex-wrap: wrap; justify-content: space-around;">
                     <div id="month_saves">
@@ -428,25 +470,27 @@ function roundUp($calls,$quotient)
                     <div id="month_carecoins">
                         <div style="display: grid; grid-template-columns: 1fr 1fr ; row-gap: 10px; text-align: center;" >
                             <div style="font-weight: bold; grid-column: 1 / span 2;">CareCoins</div>
-                            <div style="text-align: left;">Soll</div>
+                            <div style="text-align: left;">Soll:</div>
                               <div id="careCoinShould">
                                 @if($userdata)
-                                  @if($userdata->soll_h_day == 8) {{$CCTreshold = 5000 -($userVacation*28.5)}}
-                                    @elseif($userdata->soll_h_day == 7) {{$CCTreshold = 4375 -($userVacation*28.5)}}
-                                    @elseif($userdata->soll_h_day == 6) {{$CCTreshold = 3750 -($userVacation*28.5)}}
-                                    @elseif($userdata->soll_h_day == 5) {{$CCTreshold = 3125 -($userVacation*28.5)}}
-                                    @elseif($userdata->soll_h_day == 4) {{$CCTreshold = 2500 -($userVacation*28.5)}}
-                                    @elseif($userdata->soll_h_day == 3) {{$CCTreshold = 1875 -($userVacation*28.5)}}
+                                  @if($userdata->soll_h_day == 8) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 7) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 6) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 5) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 4) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 3) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
                                     @else Fehler Sollstunden KDW {{$CCTreshold = 0}}
                                   @endif
                                 @else
                                   keine Userdaten
                                   {{$CCTreshold = 0}}
                                 @endif</div>
-                            <div  style="text-align: left;">Ist</div>
+                            <div  style="text-align: left;">Ist:</div>
                             <div id="careCoinIs">{{$CCState = $Allsaves * 20}}</div>
-                            <div style="text-align: left;">Differenz</div>
+                            <div style="text-align: left;">Differenz:</div>
                             <div id="careCoinDifference">{{$CCState - $CCTreshold}} </div>
+                            <div style="text-align: left;">Saves zum Wochenziel:</div>
+                            <div id="careCoinDifference">{{floor(($CCState - $CCTreshold) / 20)}} </div>
                         </div>
                     </div>
                 </div>

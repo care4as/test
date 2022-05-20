@@ -36,19 +36,19 @@ class AgentTrackingController extends Controller
       //get userdata from kdw tool
       $userdata = DB::connection('mysqlkdw')->table('MA')->where('ds_id',Auth()->user()->ds_id)->first();
       //get vacation days within this month
-      $startOfMonth = new \Carbon\Carbon('first day of this month');
+      $startOfWeek = new \Carbon\Carbon('first day of this week');
 
       $userVacation = DB::connection('mysqlkdw')
       ->table('chronology_work')
       ->where('MA_id',Auth()->user()->ds_id)
       ->whereIn('state_id', [2, 11])
-      ->where('work_date','>', $startOfMonth)
+      ->where('work_date','>', $startOfWeek)
       ->sum('work_hours');
       // dd($userVacation->sum('work_hours'));
 
       $monthSP = Auth()->user()->load('TrackingOverall')->TrackingOverall;
       $trackcalls = Auth()->user()->load('TrackingCallsToday')->TrackingCallsToday;
-      $trackcallsM = Auth()->user()->load('TrackingCallsMonth')->TrackingCallsMonth;
+      $trackcallsM = Auth()->user()->load('TrackingCallsWeek')->TrackingCallsWeek;
 
       $history = Auth()->user()->load('TrackingToday')->TrackingToday;
 
