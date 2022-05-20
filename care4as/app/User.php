@@ -47,7 +47,7 @@ class User extends Authenticatable
     {
       // $month = Carbon::now()->month;
 
-      $date = new \Carbon\Carbon('this week');
+      $date = new \Carbon\Carbon('Monday this week');
       return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at','>=',$date);
       // return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at', DB::raw('CURDATE()'));
     }
