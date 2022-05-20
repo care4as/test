@@ -474,11 +474,11 @@ function roundUp($calls,$quotient)
                               <div id="careCoinShould">
                                 @if($userdata)
                                   @if($userdata->soll_h_day == 8) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
-                                    @elseif($userdata->soll_h_day == 7) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
-                                    @elseif($userdata->soll_h_day == 6) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
-                                    @elseif($userdata->soll_h_day == 5) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
-                                    @elseif($userdata->soll_h_day == 4) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
-                                    @elseif($userdata->soll_h_day == 3) {{$CCTreshold = ((40 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 7) {{$CCTreshold = ((35 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 6) {{$CCTreshold = ((30 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 5) {{$CCTreshold = ((25 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 4) {{$CCTreshold = ((20 - $userVacation) * 31.25)}}
+                                    @elseif($userdata->soll_h_day == 3) {{$CCTreshold = ((15 - $userVacation) * 31.25)}}
                                     @else Fehler Sollstunden KDW {{$CCTreshold = 0}}
                                   @endif
                                 @else
