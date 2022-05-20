@@ -36,7 +36,7 @@ class AgentTrackingController extends Controller
       //get userdata from kdw tool
       $userdata = DB::connection('mysqlkdw')->table('MA')->where('ds_id',Auth()->user()->ds_id)->first();
       //get vacation days within this month
-      $startOfWeek = new \Carbon\Carbon('first day of this week');
+      $startOfWeek = new \Carbon\Carbon('Monday this week');
 
       $userVacation = DB::connection('mysqlkdw')
       ->table('chronology_work')
