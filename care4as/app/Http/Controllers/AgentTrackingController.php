@@ -46,9 +46,20 @@ class AgentTrackingController extends Controller
       ->sum('work_hours');
       // dd($userVacation->sum('work_hours'));
 
-      $monthSP = Auth()->user()->load('TrackingOverall')->TrackingOverall;
+      $startOfMonth = new \Carbon\Carbon('First day of this month');
+      $userVacationM = DB::connection('mysqlkdw')
+      ->table('chronology_work')
+      ->where('MA_id',Auth()->user()->ds_id)
+      ->whereIn('state_id', [2, 11])
+      ->where('work_date','>', $startOfMonth)
+      ->sum('work_hours');
+      // dd($userVacation->sum('work_hours'));
+
+      $weekSP = Auth()->user()->load('TrackingOverall')->TrackingOverall;
+      $monthSP = Auth()->user()->load('TrackingOverallMonth')->TrackingOverallMonth;
       $trackcalls = Auth()->user()->load('TrackingCallsToday')->TrackingCallsToday;
-      $trackcallsM = Auth()->user()->load('TrackingCallsWeek')->TrackingCallsWeek;
+      $trackcallsW = Auth()->user()->load('TrackingCallsWeek')->TrackingCallsWeek;
+      $trackcallsM = Auth()->user()->load('TrackingCallsMonth')->TrackingCallsMonth;
 
       $history = Auth()->user()->load('TrackingToday')->TrackingToday;
 
@@ -63,10 +74,10 @@ class AgentTrackingController extends Controller
 
       // dd($history2[1]);
       if ($department != 1) {
-        return view('trackingDSL', compact('history','history2','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+        return view('trackingDSL', compact('history','history2','trackcalls','monthSP','weekSP', 'userdata','trackcallsW','trackcallsM','userVacation','userVacationM'));
       }
       else {
-        return view('trackingMobile', compact('history','history2','trackcalls','monthSP','userdata','trackcallsM','userVacation'));
+        return view('trackingMobile', compact('history','history2','trackcalls','monthSP','weekSP','userdata','trackcallsW','trackcallsM','userVacation','userVacationM'));
       }
 
     }

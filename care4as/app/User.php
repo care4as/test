@@ -51,6 +51,15 @@ class User extends Authenticatable
       return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at','>=',$date);
       // return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at', DB::raw('CURDATE()'));
     }
+    public function TrackingOverallMonth()
+    {
+      // $month = Carbon::now()->month;
+
+      $date = new \Carbon\Carbon('first day of this month');
+      return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at','>=',$date);
+      // return $this->hasMany('\App\TrackEvent','created_by')->whereDate('created_at', DB::raw('CURDATE()'));
+    }
+    
     public function TrackingAll()
     {
       // $month = Carbon::now()->month;

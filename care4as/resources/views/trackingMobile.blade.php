@@ -152,8 +152,10 @@ function roundUp($calls,$quotient)
               <label class="btn btn-outline-primary first-btn-group-element" for="show_tracking_container" style="min-width: 150px;" >Tracking</label>
               <input type="radio" class="btn-check" name="show_container" value="show_history_container" id="show_history_container" autocomplete="off" onchange="updateShowContainer()">
               <label class="btn btn-outline-primary" for="show_history_container" style="min-width: 150px;">Historie</label>
+              <input type="radio" class="btn-check" name="show_container" value="show_week_container" id="show_week_container" autocomplete="off" onchange="updateShowContainer()">
+              <label class="btn btn-outline-primary" for="show_week_container" style="min-width: 150px;">Wochenübersicht</label>
               <input type="radio" class="btn-check" name="show_container" value="show_month_container" id="show_month_container" autocomplete="off" onchange="updateShowContainer()">
-              <label class="btn btn-outline-primary last-btn-group-element" for="show_month_container" style="min-width: 150px;">Wochenübersicht</label>
+              <label class="btn btn-outline-primary last-btn-group-element" for="show_month_container" style="min-width: 150px;">Monatsübersicht</label>
             </div>
           </div>
         </div>
@@ -231,21 +233,21 @@ function roundUp($calls,$quotient)
                     <div>Saves Woche (fortlaufend)</div>
                     <div style="text-align: center">
                     @if(date('w') <= 5)
-                        @if($userdata->soll_h_day == 8) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (40 - $userVacation)) / 100) * date('w'))}}
-                        @elseif($userdata->soll_h_day == 7) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (35 - $userVacation)) / 100) * date('w'))}}
-                        @elseif($userdata->soll_h_day == 6) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (30 - $userVacation)) / 100) * date('w'))}}
-                        @elseif($userdata->soll_h_day == 5) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (25 - $userVacation)) / 100) * date('w'))}}
-                        @elseif($userdata->soll_h_day == 4) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (20 - $userVacation)) / 100) * date('w'))}}
-                        @elseif($userdata->soll_h_day == 3) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (15 - $userVacation)) / 100) * date('w'))}}
+                        @if($userdata->soll_h_day == 8) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (40 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 7) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (35 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 6) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (30 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 5) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (25 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 4) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (20 - $userVacation)) / 100) * date('w'))}}
+                        @elseif($userdata->soll_h_day == 3) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (15 - $userVacation)) / 100) * date('w'))}}
                         @else Fehler Sollstunden KDW
                         @endif
                     @else
-                        @if($userdata->soll_h_day == 8) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (40 - $userVacation)) / 100) * 5)}}
-                        @elseif($userdata->soll_h_day == 7) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (35 - $userVacation)) / 100) * 5)}}
-                        @elseif($userdata->soll_h_day == 6) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (30 - $userVacation)) / 100) * 5)}}
-                        @elseif($userdata->soll_h_day == 5) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (25 - $userVacation)) / 100) * 5)}}
-                        @elseif($userdata->soll_h_day == 4) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (20 - $userVacation)) / 100) * 5)}}
-                        @elseif($userdata->soll_h_day == 3) {{$monthSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (15 - $userVacation)) / 100) * 5)}}
+                        @if($userdata->soll_h_day == 8) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (40 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 7) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (35 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 6) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (30 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 5) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (25 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 4) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (20 - $userVacation)) / 100) * 5)}}
+                        @elseif($userdata->soll_h_day == 3) {{$weekSP->whereIn("product_category",["SSC", "BSC", "Portale"])->where("event_category","Save")->count()}} / {{$value = ceil(((31.25 * (15 - $userVacation)) / 100) * 5)}}
                         @else Fehler Sollstunden KDW
                         @endif
                     @endif
@@ -421,53 +423,54 @@ function roundUp($calls,$quotient)
                 </div>
             </div>
     <!-- END ORDERS -->
-      <div class="row" id="month_container" style="display: none;">
+    <!-- WEEK CONTAINER -->
+    <div class="row" id="week_container" style="display: none;">
         <div class="col-md-12">
             <div class="max-main-container">
                 <div class="tracking_title">
                     Wochenübersicht
                 </div>
                 <div style="display: flex; margin: 10px; row-gap: 20px; flex-wrap: wrap; justify-content: space-around;">
-                    <div id="month_saves">
+                    <div id="week_saves">
                         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; row-gap: 10px; text-align: center; column-gap:10px;" >
                             <div style="text-align: left; font-weight: bold;">Queue</div>
                             <div style="font-weight: bold;">Calls</div>
                             <div style="font-weight: bold;">Saves</div>
                             <div style="font-weight: bold;">CR</div>
                             <div style="text-align: left;">SSC</div>
-                            <div id="sscCalls">{{$sscCallsM = $trackcallsM->where('category',1)->sum('calls')}}</div>
-                            <div id="sscSaves">{{$sscSavesM = $monthSP->where("product_category","SSC")->where("event_category","Save")->count()}}</div>
+                            <div id="sscCalls">{{$sscCallsW = $trackcallsW->where('category',1)->sum('calls')}}</div>
+                            <div id="sscSaves">{{$sscSavesW = $weekSP->where("product_category","SSC")->where("event_category","Save")->count()}}</div>
                             <div style="display:flex">
-                                <div id="sscCr">{{roundUp($sscCallsM,$sscSavesM)}}</div>
+                                <div id="sscCr">{{roundUp($sscCallsW,$sscSavesW)}}</div>
                                 <div>%</div>
                             </div>
                             <div style="text-align: left;">BSC</div>
-                            <div id="bscCalls">{{$bscCallsM = $trackcallsM->where('category',2)->sum('calls')}}</div>
-                            <div id="bscSaves">{{$bscSavesM = $monthSP->where("product_category","BSC")->where("event_category","Save")->count()}}</div>
+                            <div id="bscCalls">{{$bscCallsW = $trackcallsW->where('category',2)->sum('calls')}}</div>
+                            <div id="bscSaves">{{$bscSavesW = $weekSP->where("product_category","BSC")->where("event_category","Save")->count()}}</div>
                             <div style="display:flex">
-                                <div id="bscCr">{{roundUp($bscCallsM,$bscSavesM)}}</div>
+                                <div id="bscCr">{{roundUp($bscCallsW,$bscSavesW)}}</div>
                                 <div>%</div>
                             </div>
                             <div style="text-align: left;">Portale</div>
-                            <div id="portaleCalls">{{$portalCallsM = $trackcallsM->where('category',3)->sum('calls')}}</div>
-                            <div id="portaleSaves">{{$portaleSavesM = $monthSP->where("product_category","Portale")->where("event_category","Save")->count()}}</div>
+                            <div id="portaleCalls">{{$portalCallsW = $trackcallsW->where('category',3)->sum('calls')}}</div>
+                            <div id="portaleSaves">{{$portaleSavesW = $weekSP->where("product_category","Portale")->where("event_category","Save")->count()}}</div>
                             <div style="display:flex">
-                                <div id="portaleCr">{{roundUp($portalCallsM,$portaleSavesM)}}</div>
+                                <div id="portaleCr">{{roundUp($portalCallsW,$portaleSavesW)}}</div>
                                 <div>%</div>
                             </div>
                             <div style="text-align: left;">OptIn</div>
-                            <div id="optinCalls">{{$optinCalls = $trackcallsM->where('category','!=',4)->sum('calls')}}</div>
-                            <div id="optinSaves">{{$optin = $monthSP->where('optin',1)->count()}}</div>
+                            <div id="optinCalls">{{$optinCallsW = $trackcallsW->where('category','!=',4)->sum('calls')}}</div>
+                            <div id="optinSaves">{{$optinW = $weekSP->where('optin',1)->count()}}</div>
                             <div style="display:flex">
-                                <div id="optinCr">{{roundUp($optinCalls,$optin)}}</div>
+                                <div id="optinCr">{{roundUp($optinCallsW,$optinW)}}</div>
                                 <div>%</div>
                             </div>
                         </div>
                     </div>
                     @php
-                      $Allsaves = $sscSavesM + $bscSavesM + $portaleSavesM;
+                      $AllsavesW = $sscSavesW + $bscSavesW + $portaleSavesW;
                     @endphp
-                    <div id="month_carecoins">
+                    <div id="week_carecoins">
                         <div style="display: grid; grid-template-columns: 1fr 1fr ; row-gap: 10px; text-align: center;" >
                             <div style="font-weight: bold; grid-column: 1 / span 2;">CareCoins</div>
                             <div style="text-align: left;">Soll:</div>
@@ -486,11 +489,11 @@ function roundUp($calls,$quotient)
                                   {{$CCTreshold = 0}}
                                 @endif</div>
                             <div  style="text-align: left;">Ist:</div>
-                            <div id="careCoinIs">{{$CCState = $Allsaves * 20}}</div>
+                            <div id="careCoinIs">{{$CCState = $AllsavesW * 20}}</div>
                             <div style="text-align: left;">Differenz:</div>
                             <div id="careCoinDifference">{{$CCState - $CCTreshold}} </div>
                             <div style="text-align: left;">Saves zum Wochenziel:</div>
-                            <div id="careCoinDifference">{{floor(($CCState - $CCTreshold) / 20)}} </div>
+                            <div>{{floor(($CCState - $CCTreshold) / 20)}} </div>
                         </div>
                     </div>
                 </div>
@@ -594,7 +597,7 @@ function roundUp($calls,$quotient)
                             Geschätzte Provision
                         </div>
                         <div class="tracking_description">
-                            Berücksichtigt werden die im Tool hinterlegten Werte des laufenden Monats und nicht die tatsächlich bestätigten Geschäftsvorfälle.
+                            Berücksichtigt werden die im Tool hinterlegten Werte der laufenden Woche und nicht die tatsächlich bestätigten Geschäftsvorfälle.
                         </div>
                         <div id="provisionSum" style="text-align: center; font-size: 2em; margin-top: 30px; margin-bottom:30px;">
                             0,00€
@@ -621,6 +624,209 @@ function roundUp($calls,$quotient)
             </div>
         </div>
     </div>
+    <!-- END WEEK CONTAINER -->
+    <!-- MONTH CONTAINER -->
+    <div class="row" id="month_container" style="display: none;">
+        <div class="col-md-12">
+            <div class="max-main-container">
+                <div class="tracking_title">
+                    Monatsübersicht
+                </div>
+                <div style="display: flex; margin: 10px; row-gap: 20px; flex-wrap: wrap; justify-content: space-around;">
+                    <div id="month_saves">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; row-gap: 10px; text-align: center; column-gap:10px;" >
+                            <div style="text-align: left; font-weight: bold;">Queue</div>
+                            <div style="font-weight: bold;">Calls</div>
+                            <div style="font-weight: bold;">Saves</div>
+                            <div style="font-weight: bold;">CR</div>
+                            <div style="text-align: left;">SSC</div>
+                            <div id="sscCallsM">{{$sscCallsM = $trackcallsM->where('category',1)->sum('calls')}}</div>
+                            <div id="sscSavesM">{{$sscSavesM = $monthSP->where("product_category","SSC")->where("event_category","Save")->count()}}</div>
+                            <div style="display:flex">
+                                <div id="sscCrM">{{roundUp($sscCallsM,$sscSavesM)}}</div>
+                                <div>%</div>
+                            </div>
+                            <div style="text-align: left;">BSC</div>
+                            <div id="bscCallsM">{{$bscCallsM = $trackcallsM->where('category',2)->sum('calls')}}</div>
+                            <div id="bscSavesM">{{$bscSavesM = $monthSP->where("product_category","BSC")->where("event_category","Save")->count()}}</div>
+                            <div style="display:flex">
+                                <div id="bscCrM">{{roundUp($bscCallsM,$bscSavesM)}}</div>
+                                <div>%</div>
+                            </div>
+                            <div style="text-align: left;">Portale</div>
+                            <div id="portaleCallsM">{{$portalCallsM = $trackcallsM->where('category',3)->sum('calls')}}</div>
+                            <div id="portaleSavesM">{{$portaleSavesM = $monthSP->where("product_category","Portale")->where("event_category","Save")->count()}}</div>
+                            <div style="display:flex">
+                                <div id="portaleCrM">{{roundUp($portalCallsM,$portaleSavesM)}}</div>
+                                <div>%</div>
+                            </div>
+                            <div style="text-align: left;">OptIn</div>
+                            <div id="optinCallsM">{{$optinCallsM = $trackcallsM->where('category','!=',4)->sum('calls')}}</div>
+                            <div id="optinSavesM">{{$optinM = $monthSP->where('optin',1)->count()}}</div>
+                            <div style="display:flex">
+                                <div id="optinCrM">{{roundUp($optinCallsM,$optinM)}}</div>
+                                <div>%</div>
+                            </div>
+                        </div>
+                    </div>
+                    @php
+                      $AllsavesM = $sscSavesM + $bscSavesM + $portaleSavesM;
+                    @endphp
+                    <div id="month_carecoins">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr ; row-gap: 10px; text-align: center;" >
+                            <div style="font-weight: bold; grid-column: 1 / span 2;">CareCoins</div>
+                            <div style="text-align: left;">Soll:</div>
+                              <div id="careCoinShouldM">
+                                @if($userdata)
+                                    @if($userdata->soll_h_day == 8) {{$CCTresholdM = 5000 -($userVacationM*28.5)}}
+                                    @elseif($userdata->soll_h_day == 7) {{$CCTresholdM = 4375 -($userVacationM*28.5)}}
+                                    @elseif($userdata->soll_h_day == 6) {{$CCTresholdM = 3750 -($userVacationM*28.5)}}
+                                    @elseif($userdata->soll_h_day == 5) {{$CCTresholdM = 3125 -($userVacationM*28.5)}}
+                                    @elseif($userdata->soll_h_day == 4) {{$CCTresholdM = 2500 -($userVacationM*28.5)}}
+                                    @elseif($userdata->soll_h_day == 3) {{$CCTresholdM = 1875 -($userVacationM*28.5)}}
+                                    @else Fehler Sollstunden KDW {{$CCTresholdM = 0}}
+                                  @endif
+                                @else
+                                  keine Userdaten
+                                  {{$CCTresholdM = 0}}
+                                @endif</div>
+                            <div  style="text-align: left;">Ist:</div>
+                            <div id="careCoinIsM">{{$CCStateM = $AllsavesM * 20}}</div>
+                            <div style="text-align: left;">Differenz:</div>
+                            <div id="careCoinDifferenceM">{{$CCStateM - $CCTresholdM}} </div>
+                            <div style="text-align: left;">Saves zum Monatsziel:</div>
+                            <div>{{floor(($CCStateM - $CCTresholdM) / 20)}} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="max-main-container">
+                <div class="tracking_title">
+                    Provisionsschätzer
+                </div>
+                <div style="display: grid; margin: 10px; grid-template-columns: auto 1fr; gap: 10px;">
+                    <div id="provision_goalsM" style="white-space: nowrap;">
+                        <div style="text-align: center; font-weight: bold;">
+                            Ziele
+                        </div>
+                        <div>
+                            <div class="form-check">
+                                <abbr title="SSC Save: +1,25€&#013;BSC Save: +1,25€&#013;Portale Save: +1,25€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment1M" onchange="calcProvisionM()">
+                                    Ziel 1: CareCoin Ist >= CareCoin Soll
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <abbr title="SSC Save: +0,50€&#013;BSC Save: +0,50€&#013;Portale Save: +0,50€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment2M" onchange="calcProvisionM()">
+                                    Ziel 2: OptIn Quote >= 13,50%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <abbr title="SSC Save: +1,25€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment3M" onchange="calcProvisionM()">
+                                    Ziel 3: SSC CR >= 51,50%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <abbr title="BSC Save: +0,75€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment4M" onchange="calcProvisionM()">
+                                    Ziel 4: BSC CR >= 18,50%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <abbr title="Portale Save: +0,75€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment5M" onchange="calcProvisionM()">
+                                    Ziel 5: Portale CR >= 68,00%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <abbr title="SSC Save: +2,00€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment6M" onchange="calcProvisionM()">
+                                    Ziel 6: Ziel 1 + SSC CR >= 60,00%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <abbr title="BSC Save: +2,50€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment7M" onchange="calcProvisionM()">
+                                    Ziel 7: Ziel 1 + BSC CR >= 25,00%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <abbr title="Portale Save: +2,50€" style="margin-right: 5px;"><i class="far fa-question-circle"></i></abbr>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" id="attainment8M" onchange="calcProvisionM()">
+                                    Ziel 8: Ziel 1 + Portale CR >= 80,00%
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="provision_valueM">
+                        <div style="text-align: center; font-weight: bold;">
+                            Geschätzte Provision
+                        </div>
+                        <div class="tracking_description">
+                            Berücksichtigt werden die im Tool hinterlegten Werte des laufenden Monats und nicht die tatsächlich bestätigten Geschäftsvorfälle.
+                        </div>
+                        <div id="provisionSumM" style="text-align: center; font-size: 2em; margin-top: 30px; margin-bottom:30px;">
+                            0,00€
+                        </div>
+                        <div style="width:max-content;margin:auto;">
+                            <div style="text-align: center">Vergütung je Save</div>
+                            <div style="display: flex">
+                                <div style="display:flex; margin:0 20px">
+                                    <div>SSC:</div>
+                                    <div style="margin-left:5px" id="sscSaveValueM">0,00 €</div>
+                                </div>
+                                <div style="display:flex; margin:0 20px">
+                                    <div>BSC:</div>
+                                    <div style="margin-left:5px" id="bscSaveValueM">0,00 €</div>
+                                </div>
+                                <div style="display:flex; margin:0 20px">
+                                    <div>Portale:</div>
+                                    <div style="margin-left:5px" id="portaleSaveValueM">0,00 €</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END MONTH CONTAINER -->
     <div class="row" id="history_container" style="display: none">
         <!-- END ORDERS -->
         <!-- START HISTORY -->
@@ -809,6 +1015,7 @@ function roundUp($calls,$quotient)
 
 <script>
     var trackingContainer = document.getElementById('tracking_container');
+    var weekContainer = document.getElementById('week_container');
     var monthContainer = document.getElementById('month_container');
     var historyContainer = document.getElementById('history_container');
 
@@ -818,16 +1025,24 @@ function roundUp($calls,$quotient)
 
         if(selectedShowContainer == 'show_tracking_container'){
             trackingContainer.style.display = 'flex';
+            weekContainer.style.display = 'none';
+            historyContainer.style.display = 'none';
             monthContainer.style.display = 'none';
-            historyContainer.style.display = 'none';
-        } else if (selectedShowContainer == 'show_month_container'){
+        } else if (selectedShowContainer == 'show_week_container'){
             trackingContainer.style.display = 'none';
-            monthContainer.style.display = 'flex';
+            weekContainer.style.display = 'flex';
             historyContainer.style.display = 'none';
+            monthContainer.style.display = 'none';
         } else if (selectedShowContainer == 'show_history_container'){
             trackingContainer.style.display = 'none';
-            monthContainer.style.display = 'none';
+            weekContainer.style.display = 'none';
             historyContainer.style.display = 'flex';
+            monthContainer.style.display = 'none';
+        } else if (selectedShowContainer == 'show_month_container'){
+            trackingContainer.style.display = 'none';
+            weekContainer.style.display = 'none';
+            historyContainer.style.display = 'none';
+            monthContainer.style.display = 'flex';
         }
     }
 
@@ -848,9 +1063,26 @@ function roundUp($calls,$quotient)
     var careCoinIs = document.getElementById('careCoinIs').innerText
     var careCoinDifference = document.getElementById('careCoinDifference').innerText
 
+    // Month
+    var sscCallsM = document.getElementById('sscCallsM').innerText
+    var sscSavesM = document.getElementById('sscSavesM').innerText
+    var sscCrM = document.getElementById('sscCrM').innerText
+    var bscCallsM = document.getElementById('bscCallsM').innerText
+    var bscSavesM = document.getElementById('bscSavesM').innerText
+    var bscCrM = document.getElementById('bscCrM').innerText
+    var portaleCallsM = document.getElementById('portaleCallsM').innerText
+    var portaleSavesM = document.getElementById('portaleSavesM').innerText
+    var portaleCrM = document.getElementById('portaleCrM').innerText
+    var optinCrM = document.getElementById('optinCrM').innerText
+    var careCoinShouldM = document.getElementById('careCoinShouldM').innerText
+    var careCoinIsM = document.getElementById('careCoinIsM').innerText
+    var careCoinDifferenceM = document.getElementById('careCoinDifferenceM').innerText
+
     $(document).ready(function() {
         checkAttainment();
         calcProvision();
+        checkAttainmentM();
+        calcProvisionM();
         $('#historyNews').DataTable({
            "order": [[ 0, "desc" ]]
         })
@@ -913,6 +1145,63 @@ function roundUp($calls,$quotient)
             document.getElementById('attainment8').checked = false;
         }
     }
+    function checkAttainmentM(){
+        //Attainment 1
+        if(careCoinDifferenceM >= 0){
+            document.getElementById('attainment1M').checked = true;
+        } else {
+            document.getElementById('attainment1M').checked = false;
+        }
+
+        //Attainment 2
+        if(optinCrM >= 13.5){
+            document.getElementById('attainment2M').checked = true;
+        } else {
+            document.getElementById('attainment2M').checked = false;
+        }
+
+        //Attainment 3
+        if(sscCrM >= 51.5){
+            document.getElementById('attainment3M').checked = true;
+        } else {
+            document.getElementById('attainment3M').checked = false;
+        }
+
+        //Attainment 4
+        if(bscCrM >= 18.5){
+            document.getElementById('attainment4M').checked = true;
+        } else {
+            document.getElementById('attainment4M').checked = false;
+        }
+
+        //Attainment 5
+        if(portaleCrM >= 68){
+            document.getElementById('attainment5M').checked = true;
+        } else {
+            document.getElementById('attainment5M').checked = false;
+        }
+
+        //Attainment 6
+        if(careCoinIsM >= careCoinShouldM && sscCrM >= 60){
+            document.getElementById('attainment6M').checked = true;
+        } else {
+            document.getElementById('attainment6M').checked = false;
+        }
+
+        //Attainment 7
+        if(careCoinIsM >= careCoinShouldM && bscCrM >= 25){
+            document.getElementById('attainment7M').checked = true;
+        } else {
+            document.getElementById('attainment7M').checked = false;
+        }
+
+        //Attainment 8
+        if(careCoinIsM >= careCoinShouldM && portaleCrM >= 80){
+            document.getElementById('attainment8M').checked = true;
+        } else {
+            document.getElementById('attainment8M').checked = false;
+        }
+    }
 
     function calcProvision(){
         var sscSaveSum = 0.00;
@@ -971,6 +1260,65 @@ function roundUp($calls,$quotient)
         document.getElementById('sscSaveValue').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(sscSaveSum);
         document.getElementById('bscSaveValue').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(bscSaveSum);
         document.getElementById('portaleSaveValue').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(portaleSaveSum);
+    }
+
+    function calcProvisionM(){
+        var sscSaveSumM = 0.00;
+        var bscSaveSumM = 0.00;
+        var portaleSaveSumM = 0.00;
+
+        var provisionSumM = document.getElementById('provisionSumM').innerText
+
+        //Attainment 1
+        if(document.getElementById('attainment1M').checked == true){
+            sscSaveSumM += 1.25;
+            bscSaveSumM += 1.25;
+            portaleSaveSumM += 1.25;
+        }
+
+        //Attainment 2
+        if(document.getElementById('attainment2M').checked == true){
+            sscSaveSumM += 0.50;
+            bscSaveSumM += 0.50;
+            portaleSaveSumM += 0.50;
+        }
+
+        //Attainment 3
+        if(document.getElementById('attainment3M').checked == true){
+            sscSaveSumM += 1.25;
+        }
+
+        //Attainment 4
+        if(document.getElementById('attainment4M').checked == true){
+            bscSaveSumM += 0.75;
+        }
+
+        //Attainment 5
+        if(document.getElementById('attainment5M').checked == true){
+            portaleSaveSumM += 0.75;
+        }
+
+        //Attainment 6
+        if(document.getElementById('attainment6M').checked == true){
+            sscSaveSumM += 2.00;
+        }
+
+        //Attainment 7
+        if(document.getElementById('attainment7M').checked == true){
+            bscSaveSumM += 2.50;
+        }
+
+        //Attainment 8
+        if(document.getElementById('attainment8M').checked == true){
+            portaleSaveSumM += 2.50;
+        }
+
+        provisionSumM = (sscSavesM * sscSaveSumM) + (bscSavesM * bscSaveSumM) + (portaleSavesM * portaleSaveSumM);
+
+        document.getElementById('provisionSumM').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(provisionSumM);
+        document.getElementById('sscSaveValueM').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(sscSaveSumM);
+        document.getElementById('bscSaveValueM').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(bscSaveSumM);
+        document.getElementById('portaleSaveValueM').innerText = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(portaleSaveSumM);
     }
 
 </script>
