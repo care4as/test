@@ -253,8 +253,6 @@
 </template>
 
 <script>
-import { HotUpdateChunk } from 'webpack';
-
     export default {
       data(){
         return{
@@ -392,6 +390,7 @@ import { HotUpdateChunk } from 'webpack';
           ('http://'+host+'/users/getTracking/'+parameters)
           // ('http://'+host+'/users/getTrackingAlt/'+dep)
           .then(response => {
+            console.log('updating data ...');
 
             this.users = response.data[1]
             // this.users = response.data[1]
@@ -414,9 +413,14 @@ import { HotUpdateChunk } from 'webpack';
             this.createAglChart();
             this.setUsers(response.data[1])
 
-          
 
-            console.log('updating data ...');
+            console.log("forcing update")
+            this.$forceUpdate()
+            
+            console.log("response data")
+            console.log(response)
+
+            
             })
           .catch(function (err) {
             console.log('Error fetching Performance Table data')
