@@ -217,6 +217,7 @@ import Chart from 'chart.js';
             return 0
           }
         },
+        
       },
       methods:{
         // reload() {
