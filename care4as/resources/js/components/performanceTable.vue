@@ -254,8 +254,8 @@
 
 <script>
     export default {
-      data(){
-        return{
+      data: {
+
           users: [],
           currentSort:'ssc_cr',
           currentSortDir:'desc',
@@ -280,7 +280,7 @@
           agl5stk: 0,
           aglAllStk: 0,
           top5user: [],
-        }
+        
       },
       mounted() {
         var self = this;
