@@ -256,7 +256,7 @@
     export default {
       data(){
         return{
-          users: [1,2,3],
+          users: [],
           currentSort:'ssc_cr',
           currentSortDir:'desc',
           SscGeVoCr: 0,
@@ -279,7 +279,7 @@
           agl4stk: 0,
           agl5stk: 0,
           aglAllStk: 0,
-          top5user: [1,2,3],
+          top5user: [],
         }
       },
       mounted() {
