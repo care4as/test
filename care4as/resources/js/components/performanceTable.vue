@@ -402,7 +402,7 @@
             this.portalSaves = response.data[2]['portal_orders']
             this.calls = response.data[2]['calls']
             this.saves = response.data[2]['orders']
-            this.optin = response.data[2]['optins']
+            this.optin = response.data[2]['optin']
             this.agl0stk = response.data[2]['al_0']
             this.agl1stk = response.data[2]['al_1']
             this.agl2stk = response.data[2]['al_2']
