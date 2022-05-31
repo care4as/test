@@ -348,9 +348,6 @@
             return 0
           }
         },
-        sscCalls: function(){
-          return this.sscCalls
-        }
       },
       methods:{
         // reload() {
