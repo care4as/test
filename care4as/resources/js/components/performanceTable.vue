@@ -31,9 +31,9 @@
                   <div style="font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.6rem;">SSC</div>
                   <div style="font-family: 'Radio Canada', sans-serif; font-size: 1.3rem; font-weight: 300; display: grid; grid-template-columns: auto 1fr; column-gap: 15px; margin-top: auto; margin-bottom: auto;">
                     <div>Calls:</div>
-                    <div>{{sscCalls}}</div>
+                    <div>{{this.sscCalls}}</div>
                     <div>Saves:</div>
-                    <div>{{sscSaves}}</div>
+                    <div>{{this.sscSaves}}</div>
                   </div>
                 </div>
                 <div style="height: 100%; position: relative; display: inline-flex;">
@@ -253,6 +253,8 @@
 </template>
 
 <script>
+import { HotUpdateChunk } from 'webpack';
+
     export default {
       data(){
         return{
@@ -412,7 +414,9 @@
             this.createAglChart();
             this.setUsers(response.data[1])
 
+          
 
+            console.log('updating data ...');
             })
           .catch(function (err) {
             console.log('Error fetching Performance Table data')
