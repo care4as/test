@@ -30,7 +30,7 @@
                 <div style="flex-grow:1; display: flex; flex-direction: column;">
                   <div style="font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.6rem;">SSC</div>
                   <div style="font-family: 'Radio Canada', sans-serif; font-size: 1.3rem; font-weight: 300; display: grid; grid-template-columns: auto 1fr; column-gap: 15px; margin-top: auto; margin-bottom: auto;">
-                    <div>Calls1:</div>
+                    <div>Calls:</div>
                     <div>{{sscCalls}}</div>
                     <div>Saves:</div>
                     <div>{{sscSaves}}</div>
@@ -40,7 +40,7 @@
                     <svg viewBox="0 0 1 1" style="width: 100%; height: 100%;"></svg>
                     <div v-bind:class= "[this.sscCR > 51.7 ? 'good-cr' : 'bad-cr']" style="border-radius: 100px; text-align: center; position: absolute; top:0; left:0; bottom:0; right:0; display: flex;">
                       <div style="margin: auto; font-family: 'Radio Canada', sans-serif; font-weight: bold; font-size: 1.2em;">
-                        {{sscCR }}%
+                        {{sscCR}}%
                       </div>
                     </div>
                 </div>
@@ -248,19 +248,6 @@
 
       </div>
     </div>
-  <!-- <div class="row mt-4 center_items">
-    <div class="btn-group dropend">
-      <button type="button" class="btn btn-secondary dropdown-toggle rounded-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-bars fa-3x"></i>
-      </button>
-      <div class="dropdown-menu">
-        <div class="d-flex center_items m-2">
-          <button type="button" name="button" class="p-2 m-2 iconbutton" @click="changeDepartment('Mobile')"><i class="fas fa-mobile-alt fa-7x"></i></button>
-          <button type="button" name="button" class="p-2 m-2 iconbutton" @click="changeDepartment('DSL')"><i class="fas fa-desktop fa-7x"></i></button>
-        </div>
-      </div>
-    </div>
-  </div> -->
 </div>
 
 </template>
@@ -273,8 +260,8 @@
           currentSort:'ssc_cr',
           currentSortDir:'desc',
           SscGeVoCr: 0,
-          sscCalls: 11,
-          bscCalls: 11,
+          sscCalls: 0,
+          bscCalls: 0,
           bscSaves: 0,
           portalCalls: 0,
           portalSaves: 0,
@@ -378,7 +365,7 @@
         getUserData(dep){
 
           var host = window.location.host;
-          var department = this.department;
+          var department = dep;
           var team = document.getElementById('team_selection').value;
 
           var parameters = [];
