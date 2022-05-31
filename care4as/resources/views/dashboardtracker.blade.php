@@ -84,18 +84,6 @@ height: 200px;
 max-width: 300px;
 margin: 0 auto;
 }
-/* #chart1.line {
-  height: 350px;
-  width: 75%;
-  margin: 0 auto;
-}
-.chart
-{
-  height: 350px;
-  max-width: 100%;
-  margin: 0 auto;
-
-} */
 
 .nav-tabs{
   border: none;
@@ -139,33 +127,16 @@ margin: 0 auto;
       <div class="row m-4 borders-roundedlight">
         <div class="col">
           <div class="row">
-              <ptable></ptable>
-              </div>
-            </div>
+            <ptable></ptable>
           </div>
         </div>
-    </div>
-  </div>
-@endsection
-
-@section('additional_modal')
-<div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content bg-danger text-white" >
-      <div class="modal-body">
-        <h5>&#128577;&#128580;&#128560; Fehler aufgetreten &#128577;&#128580;&#128560;</h5>
-        <p id="failFile"></p>
-        <p id="failLine"></p>
-        <p id="failContent"></p>
       </div>
     </div>
   </div>
 </div>
 @endsection
+
 @section('additional_js')
-<script src="/js/app.js"></script>
-<script type="text/javascript" src="/js/app.js?v=2.4.1"></script>
-<script type="text/javascript" src="{{asset('slick/slick/slick.min.js')}}"></script>
 <script type="text/javascript">
 
 $(document).ready(function(){
